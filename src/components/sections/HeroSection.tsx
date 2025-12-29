@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import heroKitesurf from "@/assets/hero-kitesurf.jpg";
 import heroWingfoil from "@/assets/wingfoil.jpg";
@@ -144,15 +145,15 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-fade-in" style={{ animationDelay: "0.3s" }}>
             <Button variant="heroFilled" size="xl" asChild>
-              <a href="#contact">
+              <Link to="/contact-reservation-kitesurf-hyeres">
                 Réserver un Cours
                 <ArrowRight className="w-5 h-5" />
-              </a>
+              </Link>
             </Button>
             <Button variant="hero" size="xl" asChild>
-              <a href="#tarifs">
+              <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres">
                 Voir les Tarifs
-              </a>
+              </Link>
             </Button>
           </div>
 
