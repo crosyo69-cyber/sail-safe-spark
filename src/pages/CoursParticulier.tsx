@@ -331,6 +331,43 @@ const CoursParticulier = () => {
           </div>
         </section>
 
+        {/* Related Offers Section */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-4">
+                Autres Formules Kitesurf
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <Link 
+                to="/stage-kitesurf-100-glisse-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-sunset/50 transition-colors group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-sunset transition-colors">Stage 100% Glisse</h3>
+                <p className="text-muted-foreground text-sm mb-3">5 jours consécutifs pour l'autonomie</p>
+                <span className="text-sunset text-sm font-medium">Dès 399€ →</span>
+              </Link>
+              <Link 
+                to="/session-kitesurf-carte-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-sunset/50 transition-colors group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-sunset transition-colors">Sessions à la Carte</h3>
+                <p className="text-muted-foreground text-sm mb-3">Flexibilité totale</p>
+                <span className="text-sunset text-sm font-medium">Dès 120€ →</span>
+              </Link>
+              <Link 
+                to="/location-materiel-kitesurf-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-sunset/50 transition-colors group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-sunset transition-colors">Location Matériel</h3>
+                <p className="text-muted-foreground text-sm mb-3">Pratiquez en autonomie</p>
+                <span className="text-sunset text-sm font-medium">Dès 30€/jour →</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-br from-navy via-navy to-sunset/30">
           <div className="container mx-auto px-4 text-center">
