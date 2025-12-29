@@ -73,6 +73,62 @@ const Index = () => {
           text: "Bien encadré, le kitesurf est un sport sûr. Notre école dispose d'un bateau d'assistance permanent, de matériel sécurisé et d'un moniteur diplômé d'État.",
         },
       },
+      {
+        "@type": "Question",
+        name: "Faut-il savoir nager pour faire du kitesurf ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Oui, il est nécessaire de savoir nager pour pratiquer le kitesurf en toute sécurité. Vous devez être à l'aise dans l'eau et capable de nager 50 mètres.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "À partir de quel âge peut-on apprendre le kitesurf ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Nous acceptons les enfants à partir de 10 ans pour le kitesurf, à condition qu'ils pèsent au moins 35 kg. Le wingfoil est accessible dès 8 ans.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Pourquoi un bateau d'assistance est-il important ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Le bateau permet de vous récupérer rapidement si vous dérivez, de vous ramener au point de départ, et d'intervenir en cas de problème. C'est un gain de temps énorme pour votre apprentissage.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Quelle est la meilleure période pour apprendre à l'Almanarre ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "L'Almanarre bénéficie de vents réguliers de mars à novembre. Le Mistral et le Levant offrent d'excellentes conditions. L'été combine eau chaude et vent régulier.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Quelle différence entre kitesurf et wingfoil ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Le kitesurf utilise une aile tractée par des lignes (25m), offrant puissance et sauts. Le wingfoil se pratique avec une aile tenue à la main sur un foil, plus accessible et avec une sensation unique de vol.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Le matériel est-il fourni pendant les cours ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Oui, tout le matériel est inclus : aile, planche, harnais, combinaison, casque et gilet de flottaison. Nous utilisons du matériel récent et adapté à votre niveau.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Comment se passe une séance type de kitesurf ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Une séance dure 3 heures : briefing sécurité et théorie (30 min), échauffement et manipulation de l'aile au sol (30 min), puis pratique dans l'eau avec le bateau d'assistance (2h).",
+        },
+      },
     ],
   };
 
