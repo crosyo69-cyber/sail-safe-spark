@@ -15,7 +15,7 @@ const Index = () => {
     name: "KiteSurf Passion",
     description: "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999. Bateau d'assistance, moniteur diplômé d'État, spot de l'Almanarre.",
     url: "https://www.kitesurfpassion.com",
-    telephone: "+33488927183",
+    telephone: "+33672716905",
     email: "contact@kitesurfpassion.com",
     address: {
       "@type": "PostalAddress",
@@ -81,7 +81,7 @@ const Index = () => {
         <title>École Kitesurf Hyères | Cours avec Bateau d'Assistance | KiteSurf Passion</title>
         <meta
           name="description"
-          content="Apprenez le kitesurf à Hyères depuis 1999. École itinérante avec bateau d'assistance, moniteur expert. Spot Almanarre idéal. ☎ 04 88 92 71 83"
+          content="Apprenez le kitesurf à Hyères depuis 1999. École itinérante avec bateau d'assistance, moniteur expert. Spot Almanarre idéal. ☎ 06 72 71 69 05"
         />
         <meta
           name="keywords"

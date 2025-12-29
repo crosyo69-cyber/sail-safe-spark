@@ -47,10 +47,10 @@ const Contact = () => {
   return (
     <>
       <Helmet>
-        <title>Contact & Réservation | École Kitesurf Hyères | 04 88 92 71 83</title>
+        <title>Contact & Réservation | École Kitesurf Hyères | 06 72 71 69 05</title>
         <meta
           name="description"
-          content="Contactez KiteSurf Passion pour réserver vos cours de kitesurf à Hyères. Réponse sous 24h. ☎ 04 88 92 71 83 ou formulaire."
+          content="Contactez KiteSurf Passion pour réserver vos cours de kitesurf à Hyères. Réponse sous 24h. ☎ 06 72 71 69 05 ou formulaire."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres" />
       </Helmet>
@@ -229,7 +229,7 @@ const Contact = () => {
 
                 <div className="space-y-6">
                   <a
-                    href="tel:0488927183"
+                    href="tel:0672716905"
                     className="flex items-start gap-4 p-6 bg-card rounded-2xl border border-border/50 hover:border-primary transition-colors"
                   >
                     <div className="w-12 h-12 bg-sunset/10 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -237,7 +237,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-display font-bold text-foreground mb-1">Téléphone</h3>
-                      <p className="text-primary font-semibold text-lg">04 88 92 71 83</p>
+                      <p className="text-primary font-semibold text-lg">06 72 71 69 05</p>
                       <p className="text-muted-foreground text-sm">Réponse rapide garantie</p>
                     </div>
                   </a>
