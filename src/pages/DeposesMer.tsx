@@ -4,7 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Check, Anchor, Shield, MapPin, Users, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
-
+import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
 const dropPrices = [
   { 
     name: "Dépose Mer", 
@@ -118,26 +118,37 @@ const DeposesMer = () => {
 
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-16 bg-gradient-to-b from-primary/10 to-background">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6">
+        <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <img
+              src={bateauSecurite}
+              alt="Bateau de sécurité kitesurf sur la baie d'Hyères avec kitesurfeurs"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
+          </div>
+
+          {/* Content */}
+          <div className="container mx-auto px-4 text-center relative z-10 pt-32 pb-16">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-primary-foreground mb-6 drop-shadow-lg">
               Déposes en{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-turquoise to-primary-foreground">
                 Mer
               </span>
             </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-8">
+            <p className="text-primary-foreground/90 text-lg max-w-2xl mx-auto mb-8 drop-shadow-md">
               Accédez aux meilleurs spots de kitesurf de la baie d'Hyères en toute sécurité. 
               Notre bateau vous dépose directement sur zone pour des sessions inoubliables.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="default" size="lg" asChild>
+              <Button variant="heroFilled" size="lg" asChild>
                 <Link to="/contact-reservation-kitesurf-hyeres">
                   <Anchor className="w-5 h-5 mr-2" />
                   Réserver une Dépose en Mer
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild>
+              <Button variant="hero" size="lg" asChild>
                 <a href="tel:0672716905">
                   <Phone className="w-5 h-5 mr-2" />
                   06 72 71 69 05
