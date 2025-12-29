@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 
 import heroKitesurf from "@/assets/hero-kitesurf.jpg";
 import wingfoil from "@/assets/wingfoil.jpg";
@@ -99,10 +100,12 @@ export function GallerySection() {
                 index === 5 && "lg:col-span-2"
               )}
             >
-              <img
+              <OptimizedImage
                 src={image.src}
                 alt={image.alt}
+                priority={index < 2}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                wrapperClassName="w-full h-full"
               />
               
               {/* Overlay */}

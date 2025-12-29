@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import kitesurfImage from "@/assets/kitesurf-lesson.jpg";
 import wingfoilImage from "@/assets/wingfoil.jpg";
 import pumpfoilImage from "@/assets/pumpfoil.jpg";
@@ -76,10 +77,12 @@ export function ActivitiesSection() {
             >
               <div className="aspect-[4/3] relative">
                 {/* Image */}
-                <img
+                <OptimizedImage
                   src={activity.image}
                   alt={`${activity.title} à Hyères - KiteSurf Passion`}
+                  priority={index < 2}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  wrapperClassName="w-full h-full"
                 />
 
                 {/* Overlay */}

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap&font-display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -219,5 +219,32 @@
       hsl(var(--primary) / 0) 100%
     );
     background-size: 200% 100%;
+  }
+
+  /* Image optimization utilities */
+  .img-lazy {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .img-lazy.loaded {
+    opacity: 1;
+  }
+
+  /* Content visibility for performance */
+  .content-visibility-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+  }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
