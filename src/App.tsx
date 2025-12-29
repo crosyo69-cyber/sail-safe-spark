@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import CoursKitesurf from "./pages/CoursKitesurf";
@@ -14,7 +14,8 @@ import CoursPumpfoil from "./pages/CoursPumpfoil";
 import SpotAlmanarre from "./pages/SpotAlmanarre";
 import LocationMateriel from "./pages/LocationMateriel";
 import DeposesMer from "./pages/DeposesMer";
-import FoilTracteWakeboard from "./pages/FoilTracteWakeboard";
+import FoilTracte from "./pages/FoilTracte";
+import Wakeboard from "./pages/Wakeboard";
 import Tarifs from "./pages/Tarifs";
 import Contact from "./pages/Contact";
 import APropos from "./pages/APropos";
@@ -42,7 +43,10 @@ const App = () => (
             <Route path="/spot-kitesurf-almanarre-hyeres-var" element={<SpotAlmanarre />} />
             <Route path="/location-materiel-kitesurf-hyeres" element={<LocationMateriel />} />
             <Route path="/deposes-mer-kitesurf-hyeres" element={<DeposesMer />} />
-            <Route path="/foil-tracte-wakeboard-hyeres" element={<FoilTracteWakeboard />} />
+            <Route path="/foil-tracte-hyeres" element={<FoilTracte />} />
+            <Route path="/wakeboard-hyeres" element={<Wakeboard />} />
+            {/* Redirection de l'ancienne URL vers les nouvelles pages */}
+            <Route path="/foil-tracte-wakeboard-hyeres" element={<Navigate to="/foil-tracte-hyeres" replace />} />
             <Route path="/tarifs-cours-kitesurf-wingfoil-hyeres" element={<Tarifs />} />
             <Route path="/contact-reservation-kitesurf-hyeres" element={<Contact />} />
             <Route path="/a-propos-ecole-kitesurf-hyeres" element={<APropos />} />

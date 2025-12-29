@@ -84,9 +84,17 @@
     <priority>0.7</priority>
   </url>
   
-  <!-- Foil Tracté & Wakeboard -->
+  <!-- Foil Tracté -->
   <url>
-    <loc>https://www.kitesurfpassion.com/foil-tracte-wakeboard-hyeres</loc>
+    <loc>https://www.kitesurfpassion.com/foil-tracte-hyeres</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Wakeboard -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/wakeboard-hyeres</loc>
     <lastmod>2024-12-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

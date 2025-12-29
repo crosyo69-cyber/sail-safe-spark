@@ -227,12 +227,12 @@ const StageWingfoil = () => {
                 <span className="text-primary text-sm font-medium">50€ →</span>
               </Link>
               <Link 
-                to="/foil-tracte-wakeboard-hyeres"
+                to="/foil-tracte-hyeres"
                 className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
               >
-                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Foil Tracté & Wakeboard</h3>
-                <p className="text-muted-foreground text-sm mb-3">Sensations garanties</p>
-                <span className="text-primary text-sm font-medium">Dès 40€ →</span>
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Foil Tracté</h3>
+                <p className="text-muted-foreground text-sm mb-3">Apprenez à voler</p>
+                <span className="text-primary text-sm font-medium">Dès 50€ →</span>
               </Link>
             </div>
           </div>
