@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import heroKitesurf from "@/assets/hero-kitesurf.jpg";
@@ -41,6 +41,7 @@ const slides = [
 
 const trustBadges = [
   { icon: Award, text: "1ère école Var 83" },
+  { icon: GraduationCap, text: "2 500 élèves formés" },
   { icon: Users, text: "25 ans d'expérience" },
   { icon: Star, text: "Note 4.9/5" },
 ];
