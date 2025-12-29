@@ -129,11 +129,11 @@ export function CTASection() {
           <div className="flex items-center justify-center gap-3 text-primary-foreground/80">
             <span>ou appelez-nous directement :</span>
             <a
-              href="tel:0488927183"
+              href="tel:0672716905"
               className="inline-flex items-center gap-2 text-sunset hover:text-sunset-light font-bold transition-colors"
             >
               <Phone className="w-5 h-5" />
-              04 88 92 71 83
+              06 72 71 69 05
             </a>
           </div>
         </div>

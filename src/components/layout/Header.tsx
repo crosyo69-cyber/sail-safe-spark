@@ -81,10 +81,10 @@ export function Header() {
 
         {/* CTA Button */}
         <div className="flex items-center gap-3">
-          <a href="tel:0488927183" className="hidden sm:block">
+          <a href="tel:0672716905" className="hidden sm:block">
             <Button variant={isScrolled ? "sunset" : "heroFilled"} size="default">
               <Phone className="w-4 h-4" />
-              04 88 92 71 83
+              06 72 71 69 05
             </Button>
           </a>
 
@@ -121,10 +121,10 @@ export function Header() {
                 {item.name}
               </Link>
             ))}
-            <a href="tel:0488927183" className="mt-2">
+            <a href="tel:0672716905" className="mt-2">
               <Button variant="sunset" size="lg" className="w-full">
                 <Phone className="w-4 h-4" />
-                04 88 92 71 83
+                06 72 71 69 05
               </Button>
             </a>
           </nav>

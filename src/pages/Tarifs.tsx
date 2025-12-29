@@ -181,7 +181,7 @@ const Tarifs = () => {
                 <Link to="/contact-reservation-kitesurf-hyeres">Réserver en Ligne</Link>
               </Button>
               <Button variant="hero" size="lg" asChild>
-                <a href="tel:0488927183">Appeler : 04 88 92 71 83</a>
+                <a href="tel:0672716905">Appeler : 06 72 71 69 05</a>
               </Button>
             </div>
           </div>
