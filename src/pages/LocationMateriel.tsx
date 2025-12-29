@@ -275,6 +275,44 @@ const LocationMateriel = () => {
           </div>
         </section>
 
+        {/* Related Services */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-10">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-4">
+                Services Complémentaires
+              </h2>
+              <p className="text-muted-foreground">Pour les pratiquants autonomes</p>
+            </div>
+            <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <Link 
+                to="/deposes-mer-kitesurf-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Déposes en Mer</h3>
+                <p className="text-muted-foreground text-sm mb-3">Départ bateau vers le large</p>
+                <span className="text-primary text-sm font-medium">Dès 45€ →</span>
+              </Link>
+              <Link 
+                to="/stage-kitesurf-100-glisse-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Stage Kitesurf</h3>
+                <p className="text-muted-foreground text-sm mb-3">Pas encore autonome ?</p>
+                <span className="text-primary text-sm font-medium">Dès 399€ →</span>
+              </Link>
+              <Link 
+                to="/spot-kitesurf-almanarre-hyeres-var"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Le Spot</h3>
+                <p className="text-muted-foreground text-sm mb-3">Découvrez l'Almanarre</p>
+                <span className="text-primary text-sm font-medium">En savoir plus →</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* CTA */}
         <section className="py-16 bg-primary text-primary-foreground">
           <div className="container mx-auto px-4 text-center">

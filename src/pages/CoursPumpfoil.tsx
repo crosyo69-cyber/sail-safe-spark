@@ -243,6 +243,44 @@ export default function CoursPumpfoil() {
           </div>
         </section>
 
+        {/* Related Activities */}
+        <section className="py-16 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-10">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-4">
+                Découvrez Aussi
+              </h2>
+              <p className="text-muted-foreground">Nos autres activités de glisse à Hyères</p>
+            </div>
+            <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <Link 
+                to="/stage-kitesurf-100-glisse-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-ocean/50 transition-colors text-center group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-ocean transition-colors">Stage Kitesurf</h3>
+                <p className="text-muted-foreground text-sm mb-3">5 jours pour l'autonomie</p>
+                <span className="text-ocean text-sm font-medium">Dès 399€ →</span>
+              </Link>
+              <Link 
+                to="/stage-wingfoil-hyeres-almanarre"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-ocean/50 transition-colors text-center group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-ocean transition-colors">Stage Wing Foil</h3>
+                <p className="text-muted-foreground text-sm mb-3">Volez sur l'eau</p>
+                <span className="text-ocean text-sm font-medium">Dès 90€ →</span>
+              </Link>
+              <Link 
+                to="/foil-tracte-wakeboard-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-ocean/50 transition-colors text-center group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-ocean transition-colors">Foil Tracté & Wakeboard</h3>
+                <p className="text-muted-foreground text-sm mb-3">Sensations tractées</p>
+                <span className="text-ocean text-sm font-medium">Dès 40€ →</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         <CTASection />
       </main>
 
