@@ -78,7 +78,7 @@ const APropos = () => {
 
   const milestones = [
     { year: "1999", title: "Création de l'école", description: "Yohan Cros fonde KiteSurf Passion sur le spot de l'Almanarre et acquiert son premier bateau d'assistance." },
-    { year: "2005", title: "Reconnaissance professionnelle", description: "Obtention du BPJEPS et développement de l'école avec une clientèle fidèle." },
+    { year: "2001", title: "Reconnaissance professionnelle", description: "Obtention du BPJEPS et développement de l'école avec une clientèle fidèle." },
     { year: "2010", title: "Formateur de moniteurs", description: "Yohan devient formateur officiel pour les futurs moniteurs." },
     { year: "2018", title: "Wingfoil", description: "Introduction du wingfoil, nouvelle discipline en plein essor." },
     { year: "2024", title: "Pumpfoil & 25 ans", description: "Arrivée du pumpfoil et célébration d'un quart de siècle dédié à la passion des sports de glisse. Plus de 2 500 élèves formés." }
