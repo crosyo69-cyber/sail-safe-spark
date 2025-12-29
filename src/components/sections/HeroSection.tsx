@@ -35,7 +35,7 @@ export function HeroSection() {
           {/* Main Title */}
           <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-primary-foreground leading-tight mb-6 animate-fade-in" style={{ animationDelay: "0.1s" }}>
             Apprenez le Kitesurf en{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunset to-sunset-light">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-ocean to-turquoise">
               Toute Sécurité
             </span>{" "}
             à Hyères
