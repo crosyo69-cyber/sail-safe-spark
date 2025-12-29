@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
+import { BlogComments } from "@/components/BlogComments";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { Calendar, Clock, ArrowLeft, ArrowRight, User, Tag, Facebook, Twitter, Linkedin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -1006,6 +1007,11 @@ const BlogArticle = () => {
                 <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres">Voir les Tarifs</Link>
               </Button>
             </div>
+          </div>
+
+          {/* Comments Section */}
+          <div className="max-w-3xl mx-auto mt-12">
+            <BlogComments articleSlug={slug || ""} />
           </div>
 
           {/* Related Articles */}
