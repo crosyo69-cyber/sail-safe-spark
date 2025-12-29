@@ -5,7 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, Anchor, Shield, Waves, Heart, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
-import foilWakeboardHero from "@/assets/foil-wakeboard-hyeres.jpg";
+import wakeboardHero from "@/assets/wakeboard-hyeres.jpg";
 
 const breadcrumbItems = [
   { label: "Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
@@ -88,7 +88,7 @@ const Wakeboard = () => {
         <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0">
             <img
-              src={foilWakeboardHero}
+              src={wakeboardHero}
               alt="Session de wakeboard sur la baie d'Hyères avec bateau de traction"
               className="w-full h-full object-cover"
             />
