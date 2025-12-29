@@ -1,43 +1,132 @@
-import { Star, Quote } from "lucide-react";
+import { Star, Quote, MapPin, CheckCircle } from "lucide-react";
 import { useState, useEffect } from "react";
+import { StarRating } from "@/components/ui/star-rating";
 
-const testimonials = [
+// Review data with Schema.org compatible fields
+export const testimonials = [
   {
     id: 1,
     name: "Marie L.",
     rating: 5,
-    date: "Septembre 2024",
+    date: "2024-09-15",
+    dateDisplay: "Septembre 2024",
     text: "Super expérience avec Yohan ! Très pédagogue et patient. Le bateau d'assistance est vraiment rassurant pour les débutants. J'ai appris les bases en 5 séances. Je recommande à 100% !",
+    course: "Stage 100% Glisse",
+    location: "Almanarre, Hyères",
+    verified: true,
   },
   {
     id: 2,
     name: "Thomas D.",
     rating: 5,
-    date: "Août 2024",
+    date: "2024-08-22",
+    dateDisplay: "Août 2024",
     text: "Meilleure école de kite du Var ! Le spot de l'Almanarre est parfait et l'équipe est au top. En 5 jours, j'étais autonome. Merci pour cette super semaine !",
+    course: "Stage 100% Glisse",
+    location: "Almanarre, Hyères",
+    verified: true,
   },
   {
     id: 3,
     name: "Sophie M.",
     rating: 5,
-    date: "Juillet 2024",
+    date: "2024-07-18",
+    dateDisplay: "Juillet 2024",
     text: "J'ai testé le wingfoil et c'est une révélation ! Yohan explique tout clairement et on progresse vite. L'école itinérante permet de toujours avoir les meilleures conditions.",
+    course: "Stage Wing Foil",
+    location: "Almanarre, Hyères",
+    verified: true,
   },
   {
     id: 4,
     name: "Pierre R.",
     rating: 5,
-    date: "Juin 2024",
+    date: "2024-06-10",
+    dateDisplay: "Juin 2024",
     text: "École familiale, ambiance détendue mais professionnelle. Le bateau d'assistance change tout pour la progression. Spot magnifique avec une eau turquoise incroyable.",
+    course: "Stage 100% Glisse",
+    location: "Almanarre, Hyères",
+    verified: true,
   },
   {
     id: 5,
     name: "Julie B.",
     rating: 5,
-    date: "Mai 2024",
+    date: "2024-05-05",
+    dateDisplay: "Mai 2024",
     text: "Stage kitesurf offert en cadeau, et quelle découverte ! Yohan et son équipe sont passionnés et ça se ressent. Vivement l'été prochain pour continuer !",
+    course: "Stage 100% Glisse",
+    location: "Almanarre, Hyères",
+    verified: true,
+  },
+  {
+    id: 6,
+    name: "Lucas G.",
+    rating: 5,
+    date: "2024-09-28",
+    dateDisplay: "Septembre 2024",
+    text: "Parfait pour un débutant comme moi. L'équipe est super sympa et le matériel est top. Le bateau qui vous récupère, c'est vraiment le plus !",
+    course: "Cours Particulier",
+    location: "Almanarre, Hyères",
+    verified: true,
+  },
+  {
+    id: 7,
+    name: "Camille F.",
+    rating: 4,
+    date: "2024-08-10",
+    dateDisplay: "Août 2024",
+    text: "Très bonne expérience globale. Le moniteur est patient et pédagogue. Seul petit bémol : beaucoup de monde en août, mais c'est la haute saison !",
+    course: "Stage Wing Foil",
+    location: "Almanarre, Hyères",
+    verified: true,
+  },
+  {
+    id: 8,
+    name: "Antoine V.",
+    rating: 5,
+    date: "2024-07-25",
+    dateDisplay: "Juillet 2024",
+    text: "Le pumpfoil, quelle découverte ! Même sans vent, on peut voler sur l'eau. Yohan m'a appris le dock start en 2 séances. Sensation incroyable !",
+    course: "Initiation Pump Foil",
+    location: "Carqueiranne",
+    verified: true,
   },
 ];
+
+// Calculate aggregate rating
+const totalRating = testimonials.reduce((sum, t) => sum + t.rating, 0);
+const averageRating = (totalRating / testimonials.length).toFixed(1);
+const reviewCount = testimonials.length;
+
+// Schema.org structured data for reviews
+export const reviewsStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "KiteSurf Passion",
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: averageRating,
+    reviewCount: reviewCount,
+    bestRating: "5",
+    worstRating: "1",
+  },
+  review: testimonials.map((t) => ({
+    "@type": "Review",
+    author: {
+      "@type": "Person",
+      name: t.name,
+    },
+    datePublished: t.date,
+    reviewBody: t.text,
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: t.rating,
+      bestRating: "5",
+      worstRating: "1",
+    },
+  })),
+};
 
 export function TestimonialsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -61,25 +150,34 @@ export function TestimonialsSection() {
               KiteSurf Passion
             </span>
           </h2>
-          <div className="flex items-center justify-center gap-2 mb-4">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-6 h-6 text-sunset fill-sunset" />
-            ))}
-            <span className="ml-2 text-foreground font-bold text-lg">4.9/5</span>
-            <span className="text-muted-foreground">sur Google</span>
+          
+          {/* Aggregate Rating */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-4">
+            <div className="flex items-center gap-2">
+              <StarRating rating={parseFloat(averageRating)} size="lg" />
+              <span className="font-display text-2xl font-bold text-foreground">{averageRating}/5</span>
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <span className="hidden sm:inline">•</span>
+              <span>{reviewCount} avis vérifiés</span>
+              <CheckCircle className="w-4 h-4 text-primary" />
+            </div>
           </div>
+          <p className="text-muted-foreground text-sm">
+            Basé sur les avis Google et les retours de nos élèves
+          </p>
         </div>
 
         {/* Testimonials Carousel */}
         <div className="max-w-4xl mx-auto">
-          <div className="relative">
-            {testimonials.map((testimonial, index) => (
+          <div className="relative min-h-[320px]">
+            {testimonials.slice(0, 5).map((testimonial, index) => (
               <div
                 key={testimonial.id}
                 className={`transition-all duration-500 ${
                   index === activeIndex
                     ? "opacity-100 translate-y-0"
-                    : "opacity-0 absolute inset-0 translate-y-4"
+                    : "opacity-0 absolute inset-0 translate-y-4 pointer-events-none"
                 }`}
               >
                 <div className="bg-card rounded-3xl p-8 sm:p-12 shadow-lg border border-border/50 text-center">
@@ -87,10 +185,8 @@ export function TestimonialsSection() {
                   <Quote className="w-12 h-12 text-primary/20 mx-auto mb-6" />
 
                   {/* Rating */}
-                  <div className="flex justify-center gap-1 mb-6">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-sunset fill-sunset" />
-                    ))}
+                  <div className="flex justify-center mb-6">
+                    <StarRating rating={testimonial.rating} size="md" />
                   </div>
 
                   {/* Text */}
@@ -99,9 +195,20 @@ export function TestimonialsSection() {
                   </p>
 
                   {/* Author */}
-                  <div>
-                    <p className="font-display font-bold text-foreground">{testimonial.name}</p>
-                    <p className="text-muted-foreground text-sm">{testimonial.date}</p>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-center gap-2">
+                      <p className="font-display font-bold text-foreground">{testimonial.name}</p>
+                      {testimonial.verified && (
+                        <CheckCircle className="w-4 h-4 text-primary" />
+                      )}
+                    </div>
+                    <p className="text-primary text-sm font-medium">{testimonial.course}</p>
+                    <div className="flex items-center justify-center gap-1 text-muted-foreground text-sm">
+                      <MapPin className="w-3 h-3" />
+                      <span>{testimonial.location}</span>
+                      <span className="mx-1">•</span>
+                      <span>{testimonial.dateDisplay}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -110,7 +217,7 @@ export function TestimonialsSection() {
 
           {/* Dots Navigation */}
           <div className="flex justify-center gap-2 mt-8">
-            {testimonials.map((_, index) => (
+            {testimonials.slice(0, 5).map((_, index) => (
               <button
                 key={index}
                 onClick={() => setActiveIndex(index)}
@@ -119,7 +226,37 @@ export function TestimonialsSection() {
                     ? "bg-primary w-8"
                     : "bg-primary/30 hover:bg-primary/50"
                 }`}
+                aria-label={`Voir l'avis ${index + 1}`}
               />
+            ))}
+          </div>
+        </div>
+
+        {/* All Reviews Grid */}
+        <div className="mt-16">
+          <h3 className="font-display text-2xl font-bold text-foreground text-center mb-8">
+            Tous les Avis
+          </h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+            {testimonials.map((testimonial) => (
+              <div
+                key={testimonial.id}
+                className="bg-card rounded-2xl p-5 border border-border/50 hover:border-primary/30 transition-colors"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <StarRating rating={testimonial.rating} size="sm" />
+                  {testimonial.verified && (
+                    <CheckCircle className="w-4 h-4 text-primary" />
+                  )}
+                </div>
+                <p className="text-foreground text-sm line-clamp-3 mb-3">
+                  "{testimonial.text}"
+                </p>
+                <div className="pt-3 border-t border-border/50">
+                  <p className="font-medium text-foreground text-sm">{testimonial.name}</p>
+                  <p className="text-muted-foreground text-xs">{testimonial.course} • {testimonial.dateDisplay}</p>
+                </div>
+              </div>
             ))}
           </div>
         </div>

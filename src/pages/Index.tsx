@@ -4,7 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { WhyUsSection } from "@/components/sections/WhyUsSection";
 import { ActivitiesSection } from "@/components/sections/ActivitiesSection";
-import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
+import { TestimonialsSection, reviewsStructuredData } from "@/components/sections/TestimonialsSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { CTASection } from "@/components/sections/CTASection";
 import { GallerySection } from "@/components/sections/GallerySection";
@@ -162,6 +162,7 @@ const Index = () => {
         {/* Structured Data */}
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
+        <script type="application/ld+json">{JSON.stringify(reviewsStructuredData)}</script>
       </Helmet>
 
       <Header />
