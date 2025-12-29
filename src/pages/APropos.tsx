@@ -569,6 +569,9 @@ const APropos = () => {
               <div className="mt-4 text-primary-foreground">
                 <p className="text-xl font-display font-bold text-primary">{milestones[lightboxIndex].year}</p>
                 <p className="text-lg font-semibold">{milestones[lightboxIndex].title}</p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  {lightboxIndex + 1} / {milestones.length}
+                </p>
               </div>
             </div>
           )}
