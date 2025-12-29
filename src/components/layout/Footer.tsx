@@ -1,20 +1,21 @@
 import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
+import { NewsletterForm } from "@/components/NewsletterForm";
 
 const footerLinks = {
   activities: [
     { name: "Cours Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
     { name: "Stage Wing Foil", href: "/stage-wingfoil-hyeres-almanarre" },
     { name: "Initiation Pump Foil", href: "/cours-pumpfoil-dock-start-hyeres" },
-    { name: "Downwind Foil", href: "/contact-reservation-kitesurf-hyeres" },
+    { name: "Foil Tracté & Wakeboard", href: "/foil-tracte-wakeboard-hyeres" },
   ],
   quickLinks: [
     { name: "Accueil", href: "/" },
     { name: "Tarifs", href: "/tarifs-cours-kitesurf-wingfoil-hyeres" },
     { name: "Le Spot Almanarre", href: "/spot-kitesurf-almanarre-hyeres-var" },
-    { name: "Notre Histoire", href: "/ecole-kitesurf-hyeres-depuis-1999" },
-    { name: "Bons Cadeaux", href: "/bon-cadeau-stage-kitesurf-hyeres" },
-    { name: "Blog", href: "/blog-kitesurf-wingfoil-hyeres" },
+    { name: "Blog", href: "/blog-kitesurf-hyeres" },
+    { name: "À Propos", href: "/a-propos-ecole-kitesurf-hyeres" },
+    { name: "Contact", href: "/contact-reservation-kitesurf-hyeres" },
   ],
   legal: [
     { name: "Mentions Légales", href: "/mentions-legales" },
@@ -103,10 +104,10 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Contact & Newsletter */}
           <div>
             <h3 className="font-display font-bold text-lg mb-6">Contact</h3>
-            <ul className="space-y-4">
+            <ul className="space-y-4 mb-6">
               <li>
                 <a
                   href="tel:0672716905"
@@ -139,6 +140,15 @@ export function Footer() {
                 </span>
               </li>
             </ul>
+            
+            {/* Newsletter */}
+            <div className="pt-4 border-t border-primary-foreground/10">
+              <h4 className="font-display font-semibold text-sm mb-3">Newsletter</h4>
+              <p className="text-primary-foreground/60 text-xs mb-3">
+                Recevez nos conseils et prévisions météo
+              </p>
+              <NewsletterForm variant="footer" />
+            </div>
           </div>
         </div>
 

@@ -2,8 +2,9 @@ import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
+import { NewsletterForm } from "@/components/NewsletterForm";
 import { Link } from "react-router-dom";
-import { Calendar, Clock, ArrowRight, Tag } from "lucide-react";
+import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/almanarre-sunset.jpg";
 
@@ -255,6 +256,13 @@ const Blog = () => {
                 </Link>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* Newsletter Section */}
+        <section className="py-16 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <NewsletterForm />
           </div>
         </section>
 
