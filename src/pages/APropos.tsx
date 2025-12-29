@@ -562,11 +562,12 @@ const APropos = () => {
           {lightboxIndex !== null && (
             <div className="text-center">
               <img 
+                key={lightboxIndex}
                 src={milestones[lightboxIndex].image} 
                 alt={`${milestones[lightboxIndex].title} - ${milestones[lightboxIndex].year}`}
-                className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
+                className="w-full h-auto max-h-[80vh] object-contain rounded-lg animate-fade-in"
               />
-              <div className="mt-4 text-primary-foreground">
+              <div className="mt-4 text-primary-foreground animate-fade-in" key={`info-${lightboxIndex}`}>
                 <p className="text-xl font-display font-bold text-primary">{milestones[lightboxIndex].year}</p>
                 <p className="text-lg font-semibold">{milestones[lightboxIndex].title}</p>
                 <p className="text-sm text-muted-foreground mt-2">
