@@ -30,16 +30,16 @@ const pricingData = {
     { name: "Stage Initiation", sessions: "5 jours", price: "520€", note: "Juillet/Août" },
     { name: "Cours 2h30", sessions: "1 séance", price: "90€", note: "Hors saison" },
     { name: "Cours 2h30", sessions: "1 séance", price: "110€", note: "Juillet/Août" },
-    { name: "Foil Tracté 20 min", sessions: "Simulateur", price: "50€" },
-    { name: "Foil Tracté 40 min", sessions: "Simulateur", price: "80€" },
   ],
   pumpfoil: [
     { name: "Pump Foil / Dock Start", sessions: "1h30 (3 pers. max)", price: "50€", popular: true },
   ],
-  foilWakeboard: [
-    { name: "Foil Tracté 20 min", sessions: "Simulateur", price: "50€" },
-    { name: "Foil Tracté 40 min", sessions: "Simulateur", price: "80€", popular: true },
-    { name: "Wakeboard 15 min", sessions: "Session tractée", price: "40€" },
+  foilTracte: [
+    { name: "Foil Tracté 20 min", sessions: "Initiation", price: "50€" },
+    { name: "Foil Tracté 40 min", sessions: "Apprentissage complet", price: "80€", popular: true },
+  ],
+  wakeboard: [
+    { name: "Wakeboard 15 min", sessions: "Session tractée", price: "40€", popular: true },
   ],
   deposesMer: [
     { name: "Dépose en Mer", sessions: "1 dépose", price: "45€" },
@@ -182,23 +182,28 @@ const Tarifs = () => {
           </div>
         </section>
 
-        {/* Foil Tracté & Wakeboard */}
+        {/* Foil Tracté */}
         <section className="py-16 bg-secondary/30">
           <div className="container mx-auto px-4">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-ocean to-turquoise">Foil Tracté & Wakeboard</span>
-            </h2>
+            <div className="text-center mb-8">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-turquoise to-primary">Foil Tracté</span>
+              </h2>
+              <p className="text-muted-foreground text-sm">
+                Apprenez à voler sur l'eau en toute sécurité
+              </p>
+            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
-              {pricingData.foilWakeboard.map((item, index) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto mb-6">
+              {pricingData.foilTracte.map((item, index) => (
                 <div 
                   key={`${item.name}-${index}`} 
                   className={`bg-card rounded-2xl p-5 border ${
-                    item.popular ? "border-ocean shadow-lg" : "border-border/50"
+                    item.popular ? "border-turquoise shadow-lg" : "border-border/50"
                   } relative`}
                 >
                   {item.popular && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-ocean text-primary-foreground text-xs px-3 py-1 rounded-full font-bold">
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-turquoise text-primary-foreground text-xs px-3 py-1 rounded-full font-bold">
                       Recommandé
                     </span>
                   )}
@@ -207,6 +212,58 @@ const Tarifs = () => {
                   <p className="font-display text-2xl font-bold text-foreground">{item.price}</p>
                 </div>
               ))}
+            </div>
+            
+            <div className="text-center">
+              <Link 
+                to="/foil-tracte-hyeres" 
+                className="text-turquoise hover:text-turquoise/80 text-sm font-medium transition-colors"
+              >
+                En savoir plus sur le foil tracté →
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Wakeboard */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-8">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunset to-sunset-light">Wakeboard</span>
+              </h2>
+              <p className="text-muted-foreground text-sm">
+                Glisse tractée fun et accessible à tous
+              </p>
+            </div>
+
+            <div className="max-w-xs mx-auto mb-6">
+              {pricingData.wakeboard.map((item, index) => (
+                <div 
+                  key={`${item.name}-${index}`} 
+                  className={`bg-card rounded-2xl p-6 border ${
+                    item.popular ? "border-sunset shadow-lg" : "border-border/50"
+                  } relative`}
+                >
+                  {item.popular && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-sunset text-primary-foreground text-xs px-3 py-1 rounded-full font-bold">
+                      Session Fun
+                    </span>
+                  )}
+                  <h3 className="font-display font-bold text-foreground mb-2">{item.name}</h3>
+                  <p className="text-muted-foreground text-sm mb-3">{item.sessions}</p>
+                  <p className="font-display text-3xl font-bold text-foreground">{item.price}</p>
+                </div>
+              ))}
+            </div>
+            
+            <div className="text-center">
+              <Link 
+                to="/wakeboard-hyeres" 
+                className="text-sunset hover:text-sunset/80 text-sm font-medium transition-colors"
+              >
+                En savoir plus sur le wakeboard →
+              </Link>
             </div>
           </div>
         </section>
