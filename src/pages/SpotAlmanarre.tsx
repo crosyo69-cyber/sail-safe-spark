@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { 
@@ -18,6 +19,10 @@ import {
   CheckCircle
 } from "lucide-react";
 import almanarre from "@/assets/almanarre-sunset.jpg";
+
+const breadcrumbItems = [
+  { label: "Spot Almanarre" }
+];
 
 const spotFeatures = [
   {
@@ -128,6 +133,7 @@ export default function SpotAlmanarre() {
       </Helmet>
 
       <Header />
+      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
       
       <main>
         {/* Hero Section */}

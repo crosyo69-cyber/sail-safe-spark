@@ -1,9 +1,14 @@
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, Gift } from "lucide-react";
 import { Link } from "react-router-dom";
+
+const breadcrumbItems = [
+  { label: "Tarifs" }
+];
 
 const pricingData = {
   kitesurf: [
@@ -73,6 +78,7 @@ const Tarifs = () => {
       </Helmet>
 
       <Header />
+      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
 
       <main>
         {/* Hero */}

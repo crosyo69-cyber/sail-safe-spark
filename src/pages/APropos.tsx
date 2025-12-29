@@ -1,12 +1,17 @@
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Award, Ship, Heart, Users, Calendar, MapPin, Shield, Sparkles } from "lucide-react";
 import kitesurfLesson from "@/assets/kitesurf-lesson.jpg";
 import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
 import almanarreSunset from "@/assets/almanarre-sunset.jpg";
+
+const breadcrumbItems = [
+  { label: "À Propos" }
+];
 
 const APropos = () => {
   const structuredData = {
@@ -100,6 +105,7 @@ const APropos = () => {
       </Helmet>
 
       <Header />
+      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
 
       <main className="min-h-screen">
         {/* Hero Section */}

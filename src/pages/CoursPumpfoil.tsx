@@ -1,11 +1,16 @@
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { CTASection } from "@/components/sections/CTASection";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Check, ArrowRight, Waves, Zap, Target, Clock } from "lucide-react";
 import pumpfoilImage from "@/assets/pumpfoil.jpg";
+
+const breadcrumbItems = [
+  { label: "Initiation Pump Foil" }
+];
 
 const features = [
   {
@@ -84,6 +89,7 @@ export default function CoursPumpfoil() {
       </Helmet>
 
       <Header />
+      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
 
       <main>
         {/* Hero Section */}

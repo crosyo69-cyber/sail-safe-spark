@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, Shield, RefreshCw, Users, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -8,6 +9,10 @@ import kiteEquipment from "@/assets/kite-equipment.jpg";
 import kiteWing from "@/assets/kite-wing.jpg";
 import kiteBoard from "@/assets/kite-board.jpg";
 import kiteGear from "@/assets/kite-gear.jpg";
+
+const breadcrumbItems = [
+  { label: "Location Matériel" }
+];
 
 const equipmentGallery = [
   { src: kiteWing, alt: "Aile de kitesurf colorée sur la plage de l'Almanarre", title: "Ailes" },
@@ -99,6 +104,7 @@ const LocationMateriel = () => {
       </Helmet>
 
       <Header />
+      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
 
       <main>
         {/* Hero with Image */}

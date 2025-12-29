@@ -1,10 +1,15 @@
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowRight, Ship, Users, Clock, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import kitesurfImage from "@/assets/kitesurf-lesson.jpg";
+
+const breadcrumbItems = [
+  { label: "Cours Kitesurf" }
+];
 
 const stages = [
   {
@@ -94,6 +99,7 @@ const CoursKitesurf = () => {
       </Helmet>
 
       <Header />
+      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
 
       <main>
         {/* Hero */}

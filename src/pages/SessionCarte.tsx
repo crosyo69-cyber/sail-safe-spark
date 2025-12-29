@@ -1,11 +1,17 @@
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Ship, Users, Award, Clock, CheckCircle, Calendar, Settings, Repeat } from "lucide-react";
 import kitesurfLesson from "@/assets/kitesurf-lesson.jpg";
 import kiteBoard from "@/assets/kite-board.jpg";
+
+const breadcrumbItems = [
+  { label: "Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
+  { label: "Sessions à la Carte" }
+];
 
 const SessionCarte = () => {
   const structuredData = {
@@ -111,6 +117,7 @@ const SessionCarte = () => {
       </Helmet>
 
       <Header />
+      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
 
       <main className="min-h-screen">
         {/* Hero Section */}
