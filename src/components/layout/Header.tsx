@@ -19,6 +19,7 @@ const navigation = [
   },
   { name: "Tarifs", href: "/tarifs-cours-kitesurf-wingfoil-hyeres" },
   { name: "Le Spot", href: "/spot-kitesurf-almanarre-hyeres-var" },
+  { name: "À Propos", href: "/a-propos-ecole-kitesurf-hyeres" },
   { name: "Contact", href: "/contact-reservation-kitesurf-hyeres" },
 ];
 

@@ -14,6 +14,7 @@ import DeposesMer from "./pages/DeposesMer";
 import FoilTracteWakeboard from "./pages/FoilTracteWakeboard";
 import Tarifs from "./pages/Tarifs";
 import Contact from "./pages/Contact";
+import APropos from "./pages/APropos";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/foil-tracte-wakeboard-hyeres" element={<FoilTracteWakeboard />} />
             <Route path="/tarifs-cours-kitesurf-wingfoil-hyeres" element={<Tarifs />} />
             <Route path="/contact-reservation-kitesurf-hyeres" element={<Contact />} />
+            <Route path="/a-propos-ecole-kitesurf-hyeres" element={<APropos />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
