@@ -7,6 +7,7 @@ import { ActivitiesSection } from "@/components/sections/ActivitiesSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { CTASection } from "@/components/sections/CTASection";
+import { GallerySection } from "@/components/sections/GallerySection";
 
 const Index = () => {
   const structuredData = {
@@ -113,6 +114,7 @@ const Index = () => {
         <HeroSection />
         <WhyUsSection />
         <ActivitiesSection />
+        <GallerySection />
         <TestimonialsSection />
         <FAQSection />
         <CTASection />
