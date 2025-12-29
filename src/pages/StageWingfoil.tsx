@@ -12,6 +12,63 @@ const breadcrumbItems = [
 ];
 
 const StageWingfoil = () => {
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "Le wingfoil est-il plus facile que le kitesurf ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Oui, le wingfoil est généralement plus accessible que le kitesurf. Il n'y a pas de lignes à gérer, l'aile se tient à la main et la progression est souvent plus rapide pour les débutants.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Quel vent faut-il pour faire du wingfoil ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Le wingfoil se pratique dès 12 nœuds de vent, soit moins que le kitesurf. C'est un avantage majeur qui permet de naviguer plus souvent à l'Almanarre.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Combien coûte un stage de wingfoil à Hyères ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Notre stage initiation wingfoil 5 jours est à 440€ hors saison (520€ en juillet/août). Il comprend 4 leçons de 2h30 plus une session de foil tracté de 40 minutes.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Faut-il savoir faire du kitesurf avant le wingfoil ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Non, le wingfoil est une discipline indépendante. Vous pouvez débuter directement en wingfoil sans expérience préalable en kitesurf ou autres sports de glisse.",
+        },
+      },
+    ],
+  };
+
+  const courseStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: "Stage Wing Foil Initiation",
+    description: "Stage de wingfoil pour débutants à Hyères, sport tendance accessible à tous",
+    provider: {
+      "@type": "Organization",
+      name: "KiteSurf Passion",
+      sameAs: "https://www.kitesurfpassion.com",
+    },
+    offers: {
+      "@type": "Offer",
+      price: "440",
+      priceCurrency: "EUR",
+      availability: "https://schema.org/InStock",
+    },
+  };
+
   return (
     <>
       <Helmet>
@@ -21,6 +78,8 @@ const StageWingfoil = () => {
           content="Découvrez le wingfoil à Hyères. Sport tendance 2024, plus accessible que le kite. Cours avec bateau assistance, spot Almanarre parfait."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/stage-wingfoil-hyeres-almanarre" />
+        <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
+        <script type="application/ld+json">{JSON.stringify(courseStructuredData)}</script>
       </Helmet>
 
       <Header />

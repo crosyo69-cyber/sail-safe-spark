@@ -87,6 +87,71 @@ const programSteps = [
 ];
 
 const CoursKitesurf = () => {
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "Combien de temps faut-il pour apprendre le kitesurf ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "En moyenne, 5 séances de 3 heures (soit un stage de 5 jours) suffisent pour devenir autonome. Notre pédagogie avec bateau d'assistance accélère considérablement la progression.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Quel est le prix d'un stage de kitesurf à Hyères ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Notre stage 100% Glisse (5 jours consécutifs) est à 399€ hors saison et 499€ en juillet/août. Tout est inclus : matériel, combinaison, bateau d'assistance et foil tracté en cas de jour sans vent.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Le kitesurf est-il accessible aux débutants ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Oui ! Le kitesurf est accessible à tous dès 10 ans (35 kg minimum). Notre encadrement avec bateau d'assistance et notre spot protégé de l'Almanarre sont idéaux pour débuter en toute sécurité.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Pourquoi un bateau d'assistance est-il important ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Le bateau permet de vous récupérer rapidement si vous dérivez, de vous ramener au point de départ et d'intervenir en cas de problème. C'est un gain de temps énorme pour votre apprentissage.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Quelle est la meilleure période pour apprendre le kitesurf à Hyères ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "L'Almanarre bénéficie de vents réguliers de mars à novembre. Le Mistral et le Levant offrent d'excellentes conditions. L'été combine eau chaude et vent régulier, idéal pour débuter.",
+        },
+      },
+    ],
+  };
+
+  const courseStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: "Stage Kitesurf Débutant",
+    description: "Stage de kitesurf 5 jours pour débutants avec bateau d'assistance à Hyères",
+    provider: {
+      "@type": "Organization",
+      name: "KiteSurf Passion",
+      sameAs: "https://www.kitesurfpassion.com",
+    },
+    offers: {
+      "@type": "Offer",
+      price: "399",
+      priceCurrency: "EUR",
+      availability: "https://schema.org/InStock",
+    },
+  };
+
   return (
     <>
       <Helmet>
@@ -96,6 +161,8 @@ const CoursKitesurf = () => {
           content="Apprenez le kitesurf à Hyères avec notre stage débutant 5 séances. Bateau d'assistance, moniteur expert, spot Almanarre idéal. Autonomie garantie !"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" />
+        <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
+        <script type="application/ld+json">{JSON.stringify(courseStructuredData)}</script>
       </Helmet>
 
       <Header />
