@@ -8,12 +8,60 @@ import { Award, Ship, Heart, Users, Calendar, MapPin, Shield, Sparkles } from "l
 import kitesurfLesson from "@/assets/kitesurf-lesson.jpg";
 import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
 import almanarreSunset from "@/assets/almanarre-sunset.jpg";
+import { useEffect, useRef, useState } from "react";
 
 const breadcrumbItems = [
   { label: "À Propos" }
 ];
 
 const APropos = () => {
+  const [visibleMilestones, setVisibleMilestones] = useState<number[]>([]);
+  const [timelineProgress, setTimelineProgress] = useState(0);
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const milestoneRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-10% 0px -10% 0px',
+      threshold: 0.3
+    };
+
+    const milestoneObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const index = parseInt(entry.target.getAttribute('data-index') || '0');
+        if (entry.isIntersecting) {
+          setVisibleMilestones(prev => [...new Set([...prev, index])]);
+        }
+      });
+    }, observerOptions);
+
+    milestoneRefs.current.forEach((ref) => {
+      if (ref) milestoneObserver.observe(ref);
+    });
+
+    const handleScroll = () => {
+      if (!timelineRef.current) return;
+      
+      const rect = timelineRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const timelineTop = rect.top;
+      const timelineHeight = rect.height;
+      
+      // Calculate progress based on how much of the timeline is above the viewport center
+      const scrolledPast = windowHeight / 2 - timelineTop;
+      const progress = Math.max(0, Math.min(1, scrolledPast / timelineHeight));
+      setTimelineProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      milestoneObserver.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
@@ -207,40 +255,72 @@ const APropos = () => {
             </div>
 
             <div className="max-w-4xl mx-auto">
-              <div className="relative">
-                {/* Timeline line */}
-                <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-turquoise to-sunset transform md:-translate-x-1/2" />
+              <div className="relative" ref={timelineRef}>
+                {/* Timeline line background */}
+                <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-border transform md:-translate-x-1/2" />
                 
-                {milestones.map((milestone, index) => (
-                  <div 
-                    key={milestone.year}
-                    className={`relative flex items-center gap-8 mb-12 ${
-                      index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                    }`}
-                  >
-                    <div className={`hidden md:block flex-1 ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>
-                      <div className="bg-card border border-border rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
-                        <span className="text-2xl font-display font-bold text-primary">{milestone.year}</span>
-                        <h3 className="text-lg font-bold text-foreground mt-2">{milestone.title}</h3>
-                        <p className="text-muted-foreground mt-1">{milestone.description}</p>
+                {/* Timeline line progress */}
+                <div 
+                  className="absolute left-4 md:left-1/2 top-0 w-0.5 bg-gradient-to-b from-primary via-turquoise to-sunset transform md:-translate-x-1/2 transition-all duration-300 ease-out"
+                  style={{ height: `${timelineProgress * 100}%` }}
+                />
+                
+                {milestones.map((milestone, index) => {
+                  const isVisible = visibleMilestones.includes(index);
+                  
+                  return (
+                    <div 
+                      key={milestone.year}
+                      ref={(el) => (milestoneRefs.current[index] = el)}
+                      data-index={index}
+                      className={`relative flex items-center gap-8 mb-12 ${
+                        index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                      }`}
+                    >
+                      <div className={`hidden md:block flex-1 ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>
+                        <div 
+                          className={`bg-card border border-border rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-700 ease-out ${
+                            isVisible 
+                              ? 'opacity-100 translate-x-0' 
+                              : index % 2 === 0 
+                                ? 'opacity-0 -translate-x-8' 
+                                : 'opacity-0 translate-x-8'
+                          }`}
+                        >
+                          <span className="text-2xl font-display font-bold text-primary">{milestone.year}</span>
+                          <h3 className="text-lg font-bold text-foreground mt-2">{milestone.title}</h3>
+                          <p className="text-muted-foreground mt-1">{milestone.description}</p>
+                        </div>
                       </div>
-                    </div>
-                    
-                    {/* Timeline dot */}
-                    <div className="absolute left-4 md:left-1/2 w-4 h-4 bg-primary rounded-full transform md:-translate-x-1/2 ring-4 ring-background" />
-                    
-                    {/* Mobile card */}
-                    <div className="md:hidden ml-12 flex-1">
-                      <div className="bg-card border border-border rounded-xl p-6 shadow-lg">
-                        <span className="text-2xl font-display font-bold text-primary">{milestone.year}</span>
-                        <h3 className="text-lg font-bold text-foreground mt-2">{milestone.title}</h3>
-                        <p className="text-muted-foreground mt-1">{milestone.description}</p>
+                      
+                      {/* Timeline dot */}
+                      <div 
+                        className={`absolute left-4 md:left-1/2 w-4 h-4 rounded-full transform md:-translate-x-1/2 ring-4 ring-background transition-all duration-500 ${
+                          isVisible 
+                            ? 'bg-primary scale-100' 
+                            : 'bg-border scale-75'
+                        }`}
+                      />
+                      
+                      {/* Mobile card */}
+                      <div className="md:hidden ml-12 flex-1">
+                        <div 
+                          className={`bg-card border border-border rounded-xl p-6 shadow-lg transition-all duration-700 ease-out ${
+                            isVisible 
+                              ? 'opacity-100 translate-x-0' 
+                              : 'opacity-0 translate-x-8'
+                          }`}
+                        >
+                          <span className="text-2xl font-display font-bold text-primary">{milestone.year}</span>
+                          <h3 className="text-lg font-bold text-foreground mt-2">{milestone.title}</h3>
+                          <p className="text-muted-foreground mt-1">{milestone.description}</p>
+                        </div>
                       </div>
+                      
+                      <div className="hidden md:block flex-1" />
                     </div>
-                    
-                    <div className="hidden md:block flex-1" />
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
