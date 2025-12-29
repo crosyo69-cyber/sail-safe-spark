@@ -5,7 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { Link, useSearchParams } from "react-router-dom";
-import { Calendar, Clock, ArrowRight, Search, X } from "lucide-react";
+import { Calendar, Clock, ArrowRight, Search, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/almanarre-sunset.jpg";
@@ -165,6 +165,21 @@ const Blog = () => {
 
   const featuredArticles = filteredArticles.filter(article => article.featured);
 
+  // Pagination
+  const ARTICLES_PER_PAGE = 6;
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE);
+  const paginatedArticles = filteredArticles.slice(
+    (currentPage - 1) * ARTICLES_PER_PAGE,
+    currentPage * ARTICLES_PER_PAGE
+  );
+
+  // Reset page when filters change
+  const handleCategoryChangeWithReset = (category: string) => {
+    setCurrentPage(1);
+    handleCategoryChange(category);
+  };
+
   // Count articles per category
   const getCategoryCount = (category: string): number => {
     if (category === "Tous") return blogArticles.length;
@@ -249,7 +264,7 @@ const Blog = () => {
                   type="text"
                   placeholder="Rechercher un article..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
                   className="pl-10 pr-10 py-2 rounded-full border-border/50 focus:border-primary"
                   maxLength={100}
                 />
@@ -270,7 +285,7 @@ const Blog = () => {
               {categories.map((category) => (
                 <button
                   key={category}
-                  onClick={() => handleCategoryChange(category)}
+                  onClick={() => handleCategoryChangeWithReset(category)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center gap-2 ${
                     category === selectedCategory
                       ? "bg-primary text-primary-foreground"
@@ -363,7 +378,7 @@ const Blog = () => {
             </h2>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredArticles.map((article) => (
+              {paginatedArticles.map((article) => (
                 <Link
                   key={article.slug}
                   to={`/blog/${article.slug}`}
@@ -394,6 +409,43 @@ const Blog = () => {
                 </Link>
               ))}
             </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-12">
+                <button
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="p-2 rounded-full border border-border/50 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  aria-label="Page précédente"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`w-10 h-10 rounded-full text-sm font-medium transition-colors ${
+                      page === currentPage
+                        ? "bg-primary text-primary-foreground"
+                        : "border border-border/50 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/50"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+                
+                <button
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="p-2 rounded-full border border-border/50 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  aria-label="Page suivante"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            )}
           </div>
         </section>
 
