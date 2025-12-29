@@ -16,6 +16,8 @@ import timeline2018 from "@/assets/timeline-2018-wingfoil.jpg";
 import timeline2024 from "@/assets/timeline-2024-pumpfoil.jpg";
 import { useEffect, useRef, useState } from "react";
 import { useParallax } from "@/hooks/use-parallax";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { X } from "lucide-react";
 
 const breadcrumbItems = [
   { label: "À Propos" }
@@ -24,6 +26,7 @@ const breadcrumbItems = [
 const APropos = () => {
   const [visibleMilestones, setVisibleMilestones] = useState<number[]>([]);
   const [timelineProgress, setTimelineProgress] = useState(0);
+  const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
   const milestoneRefs = useRef<(HTMLDivElement | null)[]>([]);
   
@@ -304,7 +307,10 @@ const APropos = () => {
                                 : 'opacity-0 translate-x-8'
                           }`}
                         >
-                          <div className="aspect-[16/9] overflow-hidden">
+                          <div 
+                            className="aspect-[16/9] overflow-hidden cursor-pointer"
+                            onClick={() => setLightboxImage({ src: milestone.image, alt: `${milestone.title} - ${milestone.year}` })}
+                          >
                             <img 
                               src={milestone.image} 
                               alt={`${milestone.title} - ${milestone.year}`}
@@ -337,11 +343,14 @@ const APropos = () => {
                               : 'opacity-0 translate-x-8'
                           }`}
                         >
-                          <div className="aspect-[16/9] overflow-hidden">
+                          <div 
+                            className="aspect-[16/9] overflow-hidden cursor-pointer"
+                            onClick={() => setLightboxImage({ src: milestone.image, alt: `${milestone.title} - ${milestone.year}` })}
+                          >
                             <img 
                               src={milestone.image} 
                               alt={`${milestone.title} - ${milestone.year}`}
-                              className="w-full h-full object-cover"
+                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                             />
                           </div>
                           <div className="p-4">
@@ -502,6 +511,26 @@ const APropos = () => {
           </div>
         </section>
       </main>
+
+      {/* Lightbox Dialog */}
+      <Dialog open={!!lightboxImage} onOpenChange={() => setLightboxImage(null)}>
+        <DialogContent className="max-w-4xl p-0 bg-transparent border-none overflow-hidden">
+          <button 
+            onClick={() => setLightboxImage(null)}
+            className="absolute top-4 right-4 z-10 p-2 bg-background/80 backdrop-blur-sm rounded-full text-foreground hover:bg-background transition-colors"
+            aria-label="Fermer"
+          >
+            <X className="w-5 h-5" />
+          </button>
+          {lightboxImage && (
+            <img 
+              src={lightboxImage.src} 
+              alt={lightboxImage.alt}
+              className="w-full h-auto max-h-[85vh] object-contain rounded-lg"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
 
       <Footer />
     </>
