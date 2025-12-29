@@ -15,10 +15,13 @@ const equipmentGallery = [
   { src: kiteGear, alt: "Combinaison et harnais de kitesurf professionnels", title: "Équipements" },
 ];
 const rentalPrices = [
-  { name: "Location Demi-Journée", duration: "3 heures", price: "60€", description: "Idéal pour une session rapide" },
-  { name: "Location Journée", duration: "Journée complète", price: "90€", popular: true, description: "Profitez du spot toute la journée" },
-  { name: "Location Week-end", duration: "2 jours", price: "150€", description: "Un week-end de glisse intensif" },
-  { name: "Location Semaine", duration: "7 jours", price: "350€", description: "Pour les séjours prolongés" },
+  { name: "Aile de Kitesurf", duration: "À la journée", price: "30€", description: "Différentes tailles disponibles" },
+  { name: "Foil", duration: "À la journée", price: "20€", description: "Foil complet avec ailes" },
+  { name: "Planche Twin Tip", duration: "À la journée", price: "10€", description: "Différentes tailles disponibles" },
+  { name: "Combinaison 5/3", duration: "À la journée", price: "10€", description: "Intégrale néoprène" },
+  { name: "Harnais", duration: "À la journée", price: "5€", description: "Ceinture ou culotte" },
+  { name: "Casque", duration: "À la journée", price: "3€", description: "Protection obligatoire" },
+  { name: "Gilet", duration: "À la journée", price: "2€", description: "Gilet de flottaison" },
 ];
 
 const equipmentIncluded = [
@@ -55,7 +58,7 @@ const LocationMateriel = () => {
         <title>Location Matériel Kitesurf Hyères | Louer Équipement Almanarre & Giens</title>
         <meta
           name="description"
-          content="Location de matériel kitesurf à Hyères : ailes, planches, harnais. Équipement récent à l'Almanarre et Giens. Réservez votre matériel dès 60€/demi-journée."
+          content="Location de matériel kitesurf à Hyères : ailes (30€), planches (10€), foil (20€), combinaisons. Équipement récent à l'Almanarre et Giens."
         />
         <meta
           name="keywords"
@@ -74,8 +77,8 @@ const LocationMateriel = () => {
             },
             "offers": {
               "@type": "AggregateOffer",
-              "lowPrice": "60",
-              "highPrice": "350",
+              "lowPrice": "2",
+              "highPrice": "30",
               "priceCurrency": "EUR",
               "availability": "https://schema.org/InStock"
             },
@@ -194,23 +197,15 @@ const LocationMateriel = () => {
               </span>
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
               {rentalPrices.map((item) => (
                 <div
                   key={item.name}
-                  className={`bg-card rounded-2xl p-6 border ${
-                    item.popular ? "border-primary shadow-glow" : "border-border/50"
-                  } relative`}
+                  className="bg-card rounded-2xl p-5 border border-border/50 text-center"
                 >
-                  {item.popular && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full font-bold">
-                      Populaire
-                    </span>
-                  )}
-                  <h3 className="font-display font-bold text-foreground mb-2">{item.name}</h3>
-                  <p className="text-muted-foreground text-sm mb-2">{item.duration}</p>
-                  <p className="text-muted-foreground text-xs mb-4">{item.description}</p>
-                  <p className="font-display text-3xl font-bold text-foreground">{item.price}</p>
+                  <h3 className="font-display font-bold text-foreground mb-1 text-sm">{item.name}</h3>
+                  <p className="text-muted-foreground text-xs mb-3">{item.duration}</p>
+                  <p className="font-display text-2xl font-bold text-sunset">{item.price}</p>
                 </div>
               ))}
             </div>

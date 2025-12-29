@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     question: "Quel est le prix d'un stage de kitesurf débutant ?",
-    answer: "Notre stage débutant complet (5 séances) est à 350€, tout inclus : matériel, combinaison, bateau d'assistance et assurance. Des formules cours particuliers sont aussi disponibles pour une progression encore plus rapide.",
+    answer: "Notre stage 100% Glisse (5 jours consécutifs) est à 399€ hors saison (499€ en juillet/août), tout inclus : matériel, combinaison, bateau d'assistance et foil tracté inclus en cas de jour sans vent.",
   },
   {
     question: "Faut-il savoir nager pour faire du kitesurf ?",
