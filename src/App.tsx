@@ -7,6 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import CoursKitesurf from "./pages/CoursKitesurf";
 import StageWingfoil from "./pages/StageWingfoil";
+import CoursPumpfoil from "./pages/CoursPumpfoil";
 import Tarifs from "./pages/Tarifs";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/cours-kitesurf-hyeres-debutant" element={<CoursKitesurf />} />
             <Route path="/stage-wingfoil-hyeres-almanarre" element={<StageWingfoil />} />
+            <Route path="/cours-pumpfoil-dock-start-hyeres" element={<CoursPumpfoil />} />
             <Route path="/tarifs-cours-kitesurf-wingfoil-hyeres" element={<Tarifs />} />
             <Route path="/contact-reservation-kitesurf-hyeres" element={<Contact />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
