@@ -55,27 +55,27 @@ const stages = [
 
 const programSteps = [
   {
-    day: "Séance 1",
+    day: "Jour 1",
     title: "Découverte & Sécurité",
     content: "Présentation du matériel, règles de sécurité, fenêtre de vent. Pilotage de l'aile sur la plage.",
   },
   {
-    day: "Séance 2",
+    day: "Jour 2",
     title: "Premiers Pas dans l'Eau",
     content: "Bodydrag, nage tractée par l'aile, gestion de la puissance dans l'eau.",
   },
   {
-    day: "Séance 3",
+    day: "Jour 3",
     title: "Waterstart",
     content: "Mise en place de la planche, premiers waterstarts, gestion de l'équilibre.",
   },
   {
-    day: "Séance 4",
+    day: "Jour 4",
     title: "Navigation",
     content: "Premiers bords, maintien de la trajectoire, arrêts contrôlés.",
   },
   {
-    day: "Séance 5",
+    day: "Jour 5",
     title: "Autonomie",
     content: "Remonter au vent, virages, validation de l'autonomie. Vous êtes prêt à naviguer seul !",
   },
@@ -114,7 +114,7 @@ const CoursKitesurf = () => {
                 Apprenez le Kitesurf à Hyères
               </h1>
               <p className="text-primary-foreground/80 text-lg mb-8">
-                Stage complet de 5 séances avec bateau d'assistance pour une progression rapide et sécurisée sur le spot de l'Almanarre.
+                Stage 100% Glisse sur 5 jours consécutifs avec bateau d'assistance pour une progression rapide et sécurisée sur le spot de l'Almanarre.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button variant="sunset" size="lg" asChild>
@@ -137,8 +137,8 @@ const CoursKitesurf = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 { icon: Ship, title: "Bateau d'Assistance", desc: "Sécurité maximale" },
-                { icon: Users, title: "Petits Groupes", desc: "4 élèves maximum" },
-                { icon: Clock, title: "15h de Formation", desc: "5 séances de 3h" },
+                { icon: Users, title: "Petits Groupes", desc: "3-4 élèves / moniteur" },
+                { icon: Clock, title: "5 Jours Consécutifs", desc: "Stage intensif" },
                 { icon: Award, title: "Moniteur Diplômé", desc: "25 ans d'expérience" },
               ].map((item) => (
                 <div key={item.title} className="bg-card rounded-2xl p-6 border border-border/50 text-center">
