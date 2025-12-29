@@ -377,6 +377,24 @@ const Blog = () => {
               {selectedCategory === "Tous" ? "Tous les Articles" : `Articles ${selectedCategory}`}
             </h2>
 
+            {filteredArticles.length === 0 ? (
+              <div className="text-center py-16 bg-muted/30 rounded-2xl">
+                <Search className="w-12 h-12 text-muted-foreground/50 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">Aucun article trouvé</h3>
+                <p className="text-muted-foreground mb-6">
+                  {searchQuery 
+                    ? `Aucun résultat pour "${searchQuery}"${selectedCategory !== "Tous" ? ` dans la catégorie ${selectedCategory}` : ""}.`
+                    : `Aucun article dans la catégorie ${selectedCategory} pour le moment.`
+                  }
+                </p>
+                <Button 
+                  variant="outline" 
+                  onClick={() => { setSearchQuery(""); handleCategoryChangeWithReset("Tous"); }}
+                >
+                  Voir tous les articles
+                </Button>
+              </div>
+            ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {paginatedArticles.map((article) => (
                 <Link
@@ -409,6 +427,7 @@ const Blog = () => {
                 </Link>
               ))}
             </div>
+            )}
 
             {/* Pagination */}
             {totalPages > 1 && (
