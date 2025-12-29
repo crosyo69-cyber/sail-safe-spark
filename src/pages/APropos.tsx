@@ -8,6 +8,12 @@ import { Award, Ship, Heart, Users, Calendar, MapPin, Shield, Sparkles } from "l
 import kitesurfLesson from "@/assets/kitesurf-lesson.jpg";
 import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
 import almanarreSunset from "@/assets/almanarre-sunset.jpg";
+import timeline1999 from "@/assets/timeline-1999-creation.jpg";
+import timeline2001 from "@/assets/timeline-2001-bpjeps.jpg";
+import timeline2006 from "@/assets/timeline-2006-students.jpg";
+import timeline2010 from "@/assets/timeline-2010-formateur.jpg";
+import timeline2018 from "@/assets/timeline-2018-wingfoil.jpg";
+import timeline2024 from "@/assets/timeline-2024-pumpfoil.jpg";
 import { useEffect, useRef, useState } from "react";
 import { useParallax } from "@/hooks/use-parallax";
 
@@ -135,12 +141,12 @@ const APropos = () => {
   ];
 
   const milestones = [
-    { year: "1999", title: "Création de l'école", description: "Yohan Cros fonde KiteSurf Passion sur le spot de l'Almanarre et acquiert son premier bateau d'assistance." },
-    { year: "2001", title: "Reconnaissance professionnelle", description: "Obtention du BPJEPS et développement de l'école avec une clientèle fidèle." },
-    { year: "2006", title: "1 000 élèves formés", description: "Cap symbolique franchi, témoignant de la confiance accordée par les passionnés de glisse." },
-    { year: "2010", title: "Formateur de moniteurs", description: "Yohan devient formateur officiel pour les futurs moniteurs." },
-    { year: "2018", title: "Wingfoil", description: "Introduction du wingfoil, nouvelle discipline en plein essor." },
-    { year: "2024", title: "Pumpfoil & 25 ans", description: "Arrivée du pumpfoil et célébration d'un quart de siècle dédié à la passion des sports de glisse. Plus de 2 500 élèves formés." }
+    { year: "1999", title: "Création de l'école", description: "Yohan Cros fonde KiteSurf Passion sur le spot de l'Almanarre et acquiert son premier bateau d'assistance.", image: timeline1999 },
+    { year: "2001", title: "Reconnaissance professionnelle", description: "Obtention du BPJEPS et développement de l'école avec une clientèle fidèle.", image: timeline2001 },
+    { year: "2006", title: "1 000 élèves formés", description: "Cap symbolique franchi, témoignant de la confiance accordée par les passionnés de glisse.", image: timeline2006 },
+    { year: "2010", title: "Formateur de moniteurs", description: "Yohan devient formateur officiel pour les futurs moniteurs.", image: timeline2010 },
+    { year: "2018", title: "Wingfoil", description: "Introduction du wingfoil, nouvelle discipline en plein essor.", image: timeline2018 },
+    { year: "2024", title: "Pumpfoil & 25 ans", description: "Arrivée du pumpfoil et célébration d'un quart de siècle dédié à la passion des sports de glisse. Plus de 2 500 élèves formés.", image: timeline2024 }
   ];
 
   return (
@@ -284,13 +290,13 @@ const APropos = () => {
                       key={milestone.year}
                       ref={(el) => (milestoneRefs.current[index] = el)}
                       data-index={index}
-                      className={`relative flex items-center gap-8 mb-12 ${
+                      className={`relative flex items-center gap-8 mb-16 ${
                         index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
                       }`}
                     >
                       <div className={`hidden md:block flex-1 ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>
                         <div 
-                          className={`bg-card border border-border rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-700 ease-out ${
+                          className={`bg-card border border-border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-700 ease-out ${
                             isVisible 
                               ? 'opacity-100 translate-x-0' 
                               : index % 2 === 0 
@@ -298,9 +304,18 @@ const APropos = () => {
                                 : 'opacity-0 translate-x-8'
                           }`}
                         >
-                          <span className="text-2xl font-display font-bold text-primary">{milestone.year}</span>
-                          <h3 className="text-lg font-bold text-foreground mt-2">{milestone.title}</h3>
-                          <p className="text-muted-foreground mt-1">{milestone.description}</p>
+                          <div className="aspect-[16/9] overflow-hidden">
+                            <img 
+                              src={milestone.image} 
+                              alt={`${milestone.title} - ${milestone.year}`}
+                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                            />
+                          </div>
+                          <div className="p-5">
+                            <span className="text-2xl font-display font-bold text-primary">{milestone.year}</span>
+                            <h3 className="text-lg font-bold text-foreground mt-2">{milestone.title}</h3>
+                            <p className="text-muted-foreground mt-1 text-sm">{milestone.description}</p>
+                          </div>
                         </div>
                       </div>
                       
@@ -316,15 +331,24 @@ const APropos = () => {
                       {/* Mobile card */}
                       <div className="md:hidden ml-12 flex-1">
                         <div 
-                          className={`bg-card border border-border rounded-xl p-6 shadow-lg transition-all duration-700 ease-out ${
+                          className={`bg-card border border-border rounded-xl overflow-hidden shadow-lg transition-all duration-700 ease-out ${
                             isVisible 
                               ? 'opacity-100 translate-x-0' 
                               : 'opacity-0 translate-x-8'
                           }`}
                         >
-                          <span className="text-2xl font-display font-bold text-primary">{milestone.year}</span>
-                          <h3 className="text-lg font-bold text-foreground mt-2">{milestone.title}</h3>
-                          <p className="text-muted-foreground mt-1">{milestone.description}</p>
+                          <div className="aspect-[16/9] overflow-hidden">
+                            <img 
+                              src={milestone.image} 
+                              alt={`${milestone.title} - ${milestone.year}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="p-4">
+                            <span className="text-xl font-display font-bold text-primary">{milestone.year}</span>
+                            <h3 className="text-base font-bold text-foreground mt-1">{milestone.title}</h3>
+                            <p className="text-muted-foreground mt-1 text-sm">{milestone.description}</p>
+                          </div>
                         </div>
                       </div>
                       
