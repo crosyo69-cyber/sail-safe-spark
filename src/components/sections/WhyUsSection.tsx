@@ -1,0 +1,78 @@
+import { Ship, MapPin, GraduationCap, Waves } from "lucide-react";
+
+const features = [
+  {
+    icon: Ship,
+    title: "Bateau d'Assistance",
+    description: "Sécurité maximale, récupération systématique, progression rapide. Vous êtes toujours accompagnés sur l'eau.",
+    gradient: "from-sunset to-sunset-light",
+  },
+  {
+    icon: MapPin,
+    title: "École Itinérante",
+    description: "Nous nous déplaçons des 2 côtés de la presqu'île selon les conditions météo pour un apprentissage optimal.",
+    gradient: "from-primary to-turquoise",
+  },
+  {
+    icon: GraduationCap,
+    title: "Moniteur Expert",
+    description: "Yohan Cros, diplômé d'État BPJEPS depuis 1999, formateur de moniteurs et passionné de glisse.",
+    gradient: "from-turquoise to-ocean-light",
+  },
+  {
+    icon: Waves,
+    title: "Spot Mythique",
+    description: "L'Almanarre : eau plate idéale, vent régulier, conditions parfaites pour débutants et confirmés.",
+    gradient: "from-ocean-light to-primary",
+  },
+];
+
+export function WhyUsSection() {
+  return (
+    <section className="py-24 bg-gradient-to-b from-background to-secondary/30">
+      <div className="container mx-auto px-4">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <span className="inline-block text-primary font-semibold mb-4">Pourquoi nous choisir</span>
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-6">
+            Pourquoi Choisir{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">
+              KiteSurf Passion
+            </span>{" "}
+            à Hyères ?
+          </h2>
+          <p className="text-muted-foreground text-lg">
+            Depuis 1999, nous formons des riders passionnés avec une pédagogie unique et une sécurité maximale.
+          </p>
+        </div>
+
+        {/* Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {features.map((feature, index) => (
+            <div
+              key={feature.title}
+              className="group relative bg-card rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 border border-border/50 overflow-hidden"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              {/* Gradient background on hover */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
+              
+              {/* Icon */}
+              <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                <feature.icon className="w-7 h-7 text-primary-foreground" />
+              </div>
+
+              {/* Content */}
+              <h3 className="font-display text-xl font-bold text-foreground mb-3">
+                {feature.title}
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                {feature.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
