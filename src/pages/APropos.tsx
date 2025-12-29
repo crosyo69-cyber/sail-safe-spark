@@ -4,7 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Award, Ship, Heart, Users, Calendar, MapPin, Shield, Sparkles } from "lucide-react";
+import { Award, Ship, Heart, Users, Calendar, MapPin, Shield, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import kitesurfLesson from "@/assets/kitesurf-lesson.jpg";
 import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
 import almanarreSunset from "@/assets/almanarre-sunset.jpg";
@@ -18,6 +18,7 @@ import { useEffect, useRef, useState } from "react";
 import { useParallax } from "@/hooks/use-parallax";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { X } from "lucide-react";
+import { useCallback } from "react";
 
 const breadcrumbItems = [
   { label: "À Propos" }
@@ -26,7 +27,7 @@ const breadcrumbItems = [
 const APropos = () => {
   const [visibleMilestones, setVisibleMilestones] = useState<number[]>([]);
   const [timelineProgress, setTimelineProgress] = useState(0);
-  const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
   const milestoneRefs = useRef<(HTMLDivElement | null)[]>([]);
   
@@ -151,6 +152,25 @@ const APropos = () => {
     { year: "2018", title: "Wingfoil", description: "Introduction du wingfoil, nouvelle discipline en plein essor.", image: timeline2018 },
     { year: "2024", title: "Pumpfoil & 25 ans", description: "Arrivée du pumpfoil et célébration d'un quart de siècle dédié à la passion des sports de glisse. Plus de 2 500 élèves formés.", image: timeline2024 }
   ];
+
+  const navigateLightbox = useCallback((direction: 'prev' | 'next') => {
+    if (lightboxIndex === null) return;
+    const newIndex = direction === 'prev' 
+      ? (lightboxIndex - 1 + milestones.length) % milestones.length
+      : (lightboxIndex + 1) % milestones.length;
+    setLightboxIndex(newIndex);
+  }, [lightboxIndex, milestones.length]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (lightboxIndex === null) return;
+      if (e.key === 'ArrowLeft') navigateLightbox('prev');
+      if (e.key === 'ArrowRight') navigateLightbox('next');
+      if (e.key === 'Escape') setLightboxIndex(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxIndex, navigateLightbox]);
 
   return (
     <>
@@ -309,7 +329,7 @@ const APropos = () => {
                         >
                           <div 
                             className="aspect-[16/9] overflow-hidden cursor-pointer"
-                            onClick={() => setLightboxImage({ src: milestone.image, alt: `${milestone.title} - ${milestone.year}` })}
+                            onClick={() => setLightboxIndex(index)}
                           >
                             <img 
                               src={milestone.image} 
@@ -345,7 +365,7 @@ const APropos = () => {
                         >
                           <div 
                             className="aspect-[16/9] overflow-hidden cursor-pointer"
-                            onClick={() => setLightboxImage({ src: milestone.image, alt: `${milestone.title} - ${milestone.year}` })}
+                            onClick={() => setLightboxIndex(index)}
                           >
                             <img 
                               src={milestone.image} 
@@ -513,21 +533,44 @@ const APropos = () => {
       </main>
 
       {/* Lightbox Dialog */}
-      <Dialog open={!!lightboxImage} onOpenChange={() => setLightboxImage(null)}>
+      <Dialog open={lightboxIndex !== null} onOpenChange={() => setLightboxIndex(null)}>
         <DialogContent className="max-w-4xl p-0 bg-transparent border-none overflow-hidden">
           <button 
-            onClick={() => setLightboxImage(null)}
+            onClick={() => setLightboxIndex(null)}
             className="absolute top-4 right-4 z-10 p-2 bg-background/80 backdrop-blur-sm rounded-full text-foreground hover:bg-background transition-colors"
             aria-label="Fermer"
           >
             <X className="w-5 h-5" />
           </button>
-          {lightboxImage && (
-            <img 
-              src={lightboxImage.src} 
-              alt={lightboxImage.alt}
-              className="w-full h-auto max-h-[85vh] object-contain rounded-lg"
-            />
+          
+          {/* Navigation arrows */}
+          <button 
+            onClick={() => navigateLightbox('prev')}
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 bg-background/80 backdrop-blur-sm rounded-full text-foreground hover:bg-background transition-colors"
+            aria-label="Photo précédente"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <button 
+            onClick={() => navigateLightbox('next')}
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 bg-background/80 backdrop-blur-sm rounded-full text-foreground hover:bg-background transition-colors"
+            aria-label="Photo suivante"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+
+          {lightboxIndex !== null && (
+            <div className="text-center">
+              <img 
+                src={milestones[lightboxIndex].image} 
+                alt={`${milestones[lightboxIndex].title} - ${milestones[lightboxIndex].year}`}
+                className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
+              />
+              <div className="mt-4 text-primary-foreground">
+                <p className="text-xl font-display font-bold text-primary">{milestones[lightboxIndex].year}</p>
+                <p className="text-lg font-semibold">{milestones[lightboxIndex].title}</p>
+              </div>
+            </div>
           )}
         </DialogContent>
       </Dialog>
