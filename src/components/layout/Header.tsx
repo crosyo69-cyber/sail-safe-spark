@@ -8,6 +8,7 @@ const navigation = [
   { name: "Accueil", href: "/" },
   { name: "Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
   { name: "Wing Foil", href: "/stage-wingfoil-hyeres-almanarre" },
+  { name: "Foil Tracté & Wakeboard", href: "/foil-tracte-wakeboard-hyeres" },
   { 
     name: "Location", 
     href: "/location-materiel-kitesurf-hyeres",
