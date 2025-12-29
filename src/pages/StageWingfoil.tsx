@@ -1,10 +1,15 @@
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import wingfoilImage from "@/assets/wingfoil.jpg";
+
+const breadcrumbItems = [
+  { label: "Stage Wing Foil" }
+];
 
 const StageWingfoil = () => {
   return (
@@ -19,6 +24,7 @@ const StageWingfoil = () => {
       </Helmet>
 
       <Header />
+      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
 
       <main>
         {/* Hero */}

@@ -1,10 +1,15 @@
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, Anchor, Shield, Waves, Users, Phone, Zap, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import foilWakeboardHero from "@/assets/foil-wakeboard-hyeres.jpg";
+
+const breadcrumbItems = [
+  { label: "Foil Tracté & Wakeboard" }
+];
 
 const foilPrices = [
   { 
@@ -115,6 +120,7 @@ const FoilTracteWakeboard = () => {
       </Helmet>
 
       <Header />
+      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
 
       <main>
         {/* Hero */}
