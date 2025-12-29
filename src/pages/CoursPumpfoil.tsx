@@ -41,23 +41,11 @@ const includes = [
 
 const pricing = [
   {
-    name: "Séance Découverte",
+    name: "Séance Pump Foil / Dock Start",
     duration: "1h30",
-    price: "90€",
-    description: "Idéal pour découvrir le pumpfoil"
-  },
-  {
-    name: "Pack 3 Séances",
-    duration: "3 x 1h30",
-    price: "250€",
-    description: "Pour acquérir les bases solides",
+    price: "50€",
+    description: "3 personnes maximum, tout matériel inclus",
     popular: true
-  },
-  {
-    name: "Pack 5 Séances",
-    duration: "5 x 1h30",
-    price: "400€",
-    description: "Progression complète jusqu'à l'autonomie"
   }
 ];
 
@@ -66,7 +54,7 @@ export default function CoursPumpfoil() {
     <>
       <Helmet>
         <title>Initiation Pump Foil Hyères | Dock Start | École Almanarre Var</title>
-        <meta name="description" content="Apprenez le pumpfoil à Hyères. Volez sur l'eau sans vent ! Cours dock start, progression rapide, bateau assistance. À partir de 90€." />
+        <meta name="description" content="Apprenez le pumpfoil à Hyères. Volez sur l'eau sans vent ! Cours dock start, progression rapide, bateau assistance. 50€ la séance." />
         <meta name="keywords" content="pumpfoil hyères, cours pumpfoil var, dock start hyères, foil sans vent, école pumpfoil almanarre" />
         <link rel="canonical" href="https://kitesurfpassion.com/cours-pumpfoil-dock-start-hyeres" />
         <script type="application/ld+json">
@@ -88,7 +76,7 @@ export default function CoursPumpfoil() {
             },
             "offers": {
               "@type": "Offer",
-              "price": "90",
+              "price": "50",
               "priceCurrency": "EUR"
             }
           })}

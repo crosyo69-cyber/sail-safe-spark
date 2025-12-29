@@ -90,26 +90,40 @@ const StageWingfoil = () => {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center py-4 border-b border-border">
                     <div>
-                      <span className="font-semibold text-foreground">Cours Découverte</span>
-                      <p className="text-muted-foreground text-sm">2h - Initiation et premiers vols</p>
+                      <span className="font-semibold text-foreground">Stage Initiation 5 jours</span>
+                      <p className="text-muted-foreground text-sm">4 leçons de 2h30 + simulateur foil tracté 40min</p>
                     </div>
-                    <span className="font-display text-2xl font-bold text-foreground">120€</span>
+                    <div className="text-right">
+                      <span className="font-display text-2xl font-bold text-foreground">440€</span>
+                      <p className="text-primary text-xs">Hors saison (520€ juil./août)</p>
+                    </div>
                   </div>
                   
                   <div className="flex justify-between items-center py-4 border-b border-border">
                     <div>
-                      <span className="font-semibold text-foreground">Stage 3 Séances</span>
-                      <p className="text-muted-foreground text-sm">6h - Vers l'autonomie</p>
+                      <span className="font-semibold text-foreground">Cours 2h30</span>
+                      <p className="text-muted-foreground text-sm">Séance à la carte</p>
                     </div>
-                    <span className="font-display text-2xl font-bold text-foreground">320€</span>
+                    <div className="text-right">
+                      <span className="font-display text-2xl font-bold text-foreground">90€</span>
+                      <p className="text-primary text-xs">Hors saison (110€ juil./août)</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-between items-center py-4 border-b border-border">
+                    <div>
+                      <span className="font-semibold text-foreground">Foil Tracté 40 min</span>
+                      <p className="text-muted-foreground text-sm">Simulateur de foil</p>
+                    </div>
+                    <span className="font-display text-2xl font-bold text-foreground">80€</span>
                   </div>
                   
                   <div className="flex justify-between items-center py-4">
                     <div>
-                      <span className="font-semibold text-foreground">Cours Privé</span>
-                      <p className="text-muted-foreground text-sm">2h - Progression maximale</p>
+                      <span className="font-semibold text-foreground">Foil Tracté 20 min</span>
+                      <p className="text-muted-foreground text-sm">Découverte simulateur</p>
                     </div>
-                    <span className="font-display text-2xl font-bold text-foreground">180€</span>
+                    <span className="font-display text-2xl font-bold text-foreground">50€</span>
                   </div>
                 </div>
 

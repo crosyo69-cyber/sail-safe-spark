@@ -7,19 +7,48 @@ import { Link } from "react-router-dom";
 
 const pricingData = {
   kitesurf: [
-    { name: "Stage Découverte", sessions: "2 séances (6h)", price: "150€" },
-    { name: "Stage Autonomie", sessions: "5 séances (15h)", price: "350€", popular: true },
-    { name: "Cours Privé", sessions: "1 séance (3h)", price: "180€" },
-    { name: "Perfectionnement", sessions: "1 séance (3h)", price: "90€" },
+    { name: "Stage 100% Glisse", sessions: "5 jours consécutifs", price: "399€", note: "Hors saison", popular: true },
+    { name: "Stage 100% Glisse", sessions: "5 jours consécutifs", price: "499€", note: "Juillet/Août" },
+    { name: "Stage Semi-Privé (2 pers.)", sessions: "5 jours", price: "599€", note: "Hors saison" },
+    { name: "Stage Semi-Privé (2 pers.)", sessions: "5 jours", price: "699€", note: "Juillet/Août" },
+    { name: "1 Session Groupe", sessions: "1 séance", price: "120€", note: "Hors saison" },
+    { name: "1 Session Groupe", sessions: "1 séance", price: "130€", note: "Juillet/Août" },
+    { name: "3 Sessions Groupe", sessions: "3 séances", price: "330€", note: "Hors saison" },
+    { name: "3 Sessions Groupe", sessions: "3 séances", price: "360€", note: "Juillet/Août" },
+    { name: "5 Sessions Groupe", sessions: "5 séances", price: "500€", note: "Hors saison" },
+    { name: "5 Sessions Groupe", sessions: "5 séances", price: "570€", note: "Juillet/Août" },
+    { name: "Cours Particulier", sessions: "2 heures", price: "230€", note: "Hors saison" },
+    { name: "Cours Particulier", sessions: "2 heures", price: "380€", note: "Juillet/Août" },
   ],
   wingfoil: [
-    { name: "Cours Découverte", sessions: "1 séance (2h)", price: "120€" },
-    { name: "Stage 3 Séances", sessions: "3 séances (6h)", price: "320€" },
-    { name: "Cours Privé", sessions: "1 séance (2h)", price: "180€" },
+    { name: "Stage Initiation", sessions: "5 jours", price: "440€", note: "Hors saison", popular: true },
+    { name: "Stage Initiation", sessions: "5 jours", price: "520€", note: "Juillet/Août" },
+    { name: "Cours 2h30", sessions: "1 séance", price: "90€", note: "Hors saison" },
+    { name: "Cours 2h30", sessions: "1 séance", price: "110€", note: "Juillet/Août" },
+    { name: "Foil Tracté 20 min", sessions: "Simulateur", price: "50€" },
+    { name: "Foil Tracté 40 min", sessions: "Simulateur", price: "80€" },
   ],
   pumpfoil: [
-    { name: "Initiation", sessions: "1 séance (1h30)", price: "90€" },
-    { name: "Pack 3 Séances", sessions: "3 séances (4h30)", price: "240€" },
+    { name: "Pump Foil / Dock Start", sessions: "1h30 (3 pers. max)", price: "50€", popular: true },
+  ],
+  foilWakeboard: [
+    { name: "Foil Tracté 20 min", sessions: "Simulateur", price: "50€" },
+    { name: "Foil Tracté 40 min", sessions: "Simulateur", price: "80€", popular: true },
+    { name: "Wakeboard 15 min", sessions: "Session tractée", price: "40€" },
+  ],
+  deposesMer: [
+    { name: "Dépose en Mer", sessions: "1 dépose", price: "45€" },
+    { name: "Location + Dépose", sessions: "Matériel complet", price: "80€", popular: true },
+    { name: "Carnet 10 Déposes", sessions: "10 déposes", price: "300€" },
+  ],
+  location: [
+    { name: "Aile de Kitesurf", sessions: "À la journée", price: "30€" },
+    { name: "Foil", sessions: "À la journée", price: "20€" },
+    { name: "Planche Twin Tip", sessions: "À la journée", price: "10€" },
+    { name: "Combinaison 5/3", sessions: "À la journée", price: "10€" },
+    { name: "Harnais", sessions: "À la journée", price: "5€" },
+    { name: "Casque", sessions: "À la journée", price: "3€" },
+    { name: "Gilet", sessions: "À la journée", price: "2€" },
   ],
 };
 
@@ -65,11 +94,11 @@ const Tarifs = () => {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">Kitesurf</span>
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-              {pricingData.kitesurf.map((item) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+              {pricingData.kitesurf.map((item, index) => (
                 <div
-                  key={item.name}
-                  className={`bg-card rounded-2xl p-6 border ${
+                  key={`${item.name}-${index}`}
+                  className={`bg-card rounded-2xl p-5 border ${
                     item.popular ? "border-primary shadow-glow" : "border-border/50"
                   } relative`}
                 >
@@ -78,9 +107,10 @@ const Tarifs = () => {
                       Populaire
                     </span>
                   )}
-                  <h3 className="font-display font-bold text-foreground mb-2">{item.name}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">{item.sessions}</p>
-                  <p className="font-display text-3xl font-bold text-foreground">{item.price}</p>
+                  <h3 className="font-display font-bold text-foreground mb-1 text-sm">{item.name}</h3>
+                  <p className="text-muted-foreground text-xs mb-2">{item.sessions}</p>
+                  {item.note && <p className="text-primary text-xs mb-2">{item.note}</p>}
+                  <p className="font-display text-2xl font-bold text-foreground">{item.price}</p>
                 </div>
               ))}
             </div>
@@ -94,12 +124,23 @@ const Tarifs = () => {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunset to-sunset-light">Wing Foil</span>
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              {pricingData.wingfoil.map((item) => (
-                <div key={item.name} className="bg-card rounded-2xl p-6 border border-border/50">
-                  <h3 className="font-display font-bold text-foreground mb-2">{item.name}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">{item.sessions}</p>
-                  <p className="font-display text-3xl font-bold text-foreground">{item.price}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+              {pricingData.wingfoil.map((item, index) => (
+                <div 
+                  key={`${item.name}-${index}`} 
+                  className={`bg-card rounded-2xl p-5 border ${
+                    item.popular ? "border-sunset shadow-lg" : "border-border/50"
+                  } relative`}
+                >
+                  {item.popular && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-sunset text-primary-foreground text-xs px-3 py-1 rounded-full font-bold">
+                      Populaire
+                    </span>
+                  )}
+                  <h3 className="font-display font-bold text-foreground mb-1 text-sm">{item.name}</h3>
+                  <p className="text-muted-foreground text-xs mb-2">{item.sessions}</p>
+                  {item.note && <p className="text-sunset text-xs mb-2">{item.note}</p>}
+                  <p className="font-display text-2xl font-bold text-foreground">{item.price}</p>
                 </div>
               ))}
             </div>
@@ -113,12 +154,98 @@ const Tarifs = () => {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-turquoise to-primary">Pump Foil</span>
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
-              {pricingData.pumpfoil.map((item) => (
-                <div key={item.name} className="bg-card rounded-2xl p-6 border border-border/50">
+            <div className="max-w-md mx-auto">
+              {pricingData.pumpfoil.map((item, index) => (
+                <div 
+                  key={`${item.name}-${index}`} 
+                  className={`bg-card rounded-2xl p-6 border ${
+                    item.popular ? "border-primary shadow-glow" : "border-border/50"
+                  } relative`}
+                >
+                  {item.popular && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full font-bold">
+                      Recommandé
+                    </span>
+                  )}
                   <h3 className="font-display font-bold text-foreground mb-2">{item.name}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">{item.sessions}</p>
+                  <p className="text-muted-foreground text-sm mb-3">{item.sessions}</p>
                   <p className="font-display text-3xl font-bold text-foreground">{item.price}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Foil Tracté & Wakeboard */}
+        <section className="py-16 bg-secondary/30">
+          <div className="container mx-auto px-4">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-ocean to-turquoise">Foil Tracté & Wakeboard</span>
+            </h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+              {pricingData.foilWakeboard.map((item, index) => (
+                <div 
+                  key={`${item.name}-${index}`} 
+                  className={`bg-card rounded-2xl p-5 border ${
+                    item.popular ? "border-ocean shadow-lg" : "border-border/50"
+                  } relative`}
+                >
+                  {item.popular && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-ocean text-primary-foreground text-xs px-3 py-1 rounded-full font-bold">
+                      Recommandé
+                    </span>
+                  )}
+                  <h3 className="font-display font-bold text-foreground mb-1 text-sm">{item.name}</h3>
+                  <p className="text-muted-foreground text-xs mb-2">{item.sessions}</p>
+                  <p className="font-display text-2xl font-bold text-foreground">{item.price}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Déposes en Mer */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-ocean">Déposes en Mer</span>
+            </h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+              {pricingData.deposesMer.map((item, index) => (
+                <div 
+                  key={`${item.name}-${index}`} 
+                  className={`bg-card rounded-2xl p-5 border ${
+                    item.popular ? "border-primary shadow-glow" : "border-border/50"
+                  } relative`}
+                >
+                  {item.popular && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full font-bold">
+                      Populaire
+                    </span>
+                  )}
+                  <h3 className="font-display font-bold text-foreground mb-1 text-sm">{item.name}</h3>
+                  <p className="text-muted-foreground text-xs mb-2">{item.sessions}</p>
+                  <p className="font-display text-2xl font-bold text-foreground">{item.price}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Location Matériel */}
+        <section className="py-16 bg-secondary/30">
+          <div className="container mx-auto px-4">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunset to-sunset-light">Location Matériel</span>
+            </h2>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 max-w-5xl mx-auto">
+              {pricingData.location.map((item, index) => (
+                <div key={`${item.name}-${index}`} className="bg-card rounded-xl p-4 border border-border/50 text-center">
+                  <h3 className="font-display font-bold text-foreground text-xs mb-1">{item.name}</h3>
+                  <p className="font-display text-xl font-bold text-sunset">{item.price}</p>
                 </div>
               ))}
             </div>
