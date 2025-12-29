@@ -318,6 +318,44 @@ const Stage100Glisse = () => {
           </div>
         </section>
 
+        {/* Related Offers Section */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-4">
+                Autres Formules Kitesurf
+              </h2>
+              <p className="text-muted-foreground">Découvrez nos autres options d'apprentissage</p>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <Link 
+                to="/session-kitesurf-carte-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Sessions à la Carte</h3>
+                <p className="text-muted-foreground text-sm mb-3">Flexibilité totale selon vos disponibilités</p>
+                <span className="text-primary text-sm font-medium">Dès 120€ →</span>
+              </Link>
+              <Link 
+                to="/cours-particulier-kitesurf-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Cours Particulier</h3>
+                <p className="text-muted-foreground text-sm mb-3">Moniteur 100% dédié à votre progression</p>
+                <span className="text-primary text-sm font-medium">Dès 230€ →</span>
+              </Link>
+              <Link 
+                to="/location-materiel-kitesurf-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Location Matériel</h3>
+                <p className="text-muted-foreground text-sm mb-3">Après votre stage, louez votre équipement</p>
+                <span className="text-primary text-sm font-medium">Dès 30€/jour →</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-br from-navy via-navy to-primary/30">
           <div className="container mx-auto px-4 text-center">

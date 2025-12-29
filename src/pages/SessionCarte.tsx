@@ -298,6 +298,43 @@ const SessionCarte = () => {
           </div>
         </section>
 
+        {/* Related Offers Section */}
+        <section className="py-16 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-4">
+                Autres Formules Kitesurf
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <Link 
+                to="/stage-kitesurf-100-glisse-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Stage 100% Glisse</h3>
+                <p className="text-muted-foreground text-sm mb-3">5 jours consécutifs pour l'autonomie</p>
+                <span className="text-primary text-sm font-medium">Dès 399€ →</span>
+              </Link>
+              <Link 
+                to="/cours-particulier-kitesurf-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Cours Particulier</h3>
+                <p className="text-muted-foreground text-sm mb-3">Moniteur 100% dédié</p>
+                <span className="text-primary text-sm font-medium">Dès 230€ →</span>
+              </Link>
+              <Link 
+                to="/stage-wingfoil-hyeres-almanarre"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Stage Wing Foil</h3>
+                <p className="text-muted-foreground text-sm mb-3">Découvrez le vol sur l'eau</p>
+                <span className="text-primary text-sm font-medium">Dès 90€ →</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-br from-navy via-navy to-primary/30">
           <div className="container mx-auto px-4 text-center">
