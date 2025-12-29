@@ -375,6 +375,447 @@ Réservez votre stage dès maintenant pour profiter des meilleures conditions !
     `,
     tags: ["Période", "Saison", "Var", "Conditions"],
   },
+  "choisir-aile-wingfoil-debutant": {
+    content: `
+## Comment Choisir son Aile de Wingfoil : Le Guide Complet
+
+Choisir sa première aile de wingfoil peut sembler complexe. Voici tous les critères pour faire le bon choix et progresser rapidement.
+
+### Les Critères Essentiels
+
+#### La Taille de l'Aile
+
+La taille de votre wing dépend principalement de deux facteurs :
+
+- **Votre poids** : Plus vous êtes lourd, plus vous avez besoin de surface
+- **La force du vent** : Plus le vent est faible, plus l'aile doit être grande
+
+| Poids | Vent Léger (10-15 nœuds) | Vent Moyen (15-20 nœuds) | Vent Fort (20+ nœuds) |
+|-------|-------------------------|-------------------------|----------------------|
+| 60-70 kg | 5-6 m² | 4-5 m² | 3-4 m² |
+| 70-85 kg | 6-7 m² | 5-6 m² | 4-5 m² |
+| 85-100 kg | 7-8 m² | 6-7 m² | 5-6 m² |
+
+#### La Forme de l'Aile
+
+Deux profils principaux existent :
+
+- **Profil plat** : Plus stable, idéal pour débuter
+- **Profil creux** : Plus de puissance, pour riders avancés
+
+### Les Poignées : Rigides ou Souples ?
+
+Pour débuter, privilégiez les **poignées rigides** :
+
+- Meilleur contrôle
+- Position des mains fixe
+- Apprentissage facilité
+
+Les handles souples (boom) viendront avec l'expérience.
+
+### Les Fenêtres Transparentes
+
+Les fenêtres sur l'aile sont essentielles :
+
+- **Visibilité** des autres usagers
+- **Sécurité** accrue sur l'eau
+- Préférez une aile avec 2-3 fenêtres minimum
+
+### Notre Recommandation pour Débuter
+
+Pour un débutant de 75 kg :
+
+- **Taille** : 5-6 m²
+- **Type** : Gonflable à profil stable
+- **Poignées** : Rigides
+- **Fenêtres** : 2-3 fenêtres
+
+### Les Marques de Référence
+
+Plusieurs marques proposent d'excellentes wings pour débutants :
+
+- Duotone
+- F-One
+- Naish
+- North
+- Ozone
+
+### L'Avantage de Tester Avant d'Acheter
+
+Chez KiteSurf Passion, nous vous permettons de tester différentes ailes pendant vos cours. C'est la meilleure façon de trouver celle qui vous convient avant d'investir.
+    `,
+    tags: ["Wing Foil", "Matériel", "Débutant", "Conseils"],
+  },
+  "wingfoil-vs-kitesurf-differences": {
+    content: `
+## Wingfoil vs Kitesurf : Le Comparatif Complet
+
+Vous hésitez entre le wingfoil et le kitesurf ? Voici une analyse détaillée pour vous aider à choisir la discipline qui vous correspond.
+
+### Vue d'Ensemble
+
+| Critère | Kitesurf | Wingfoil |
+|---------|----------|----------|
+| Apprentissage | 5-8 jours | 3-5 jours |
+| Vent minimum | 12-14 nœuds | 10-12 nœuds |
+| Équipement | Aile + lignes + planche | Wing + foil + planche |
+| Sensations | Puissance, sauts | Vol, glisse |
+| Espace nécessaire | Large zone | Zone compacte |
+
+### L'Apprentissage
+
+#### Kitesurf
+- Pilotage de l'aile à maîtriser d'abord
+- Gestion des lignes (20-25m)
+- Coordination complexe
+- 5-8 jours pour l'autonomie
+
+#### Wingfoil
+- Aile tenue à la main directement
+- Pas de lignes à gérer
+- Équilibre sur le foil à travailler
+- 3-5 jours pour les premiers vols
+
+### Les Sensations
+
+#### Kitesurf
+- **Puissance** : tracté par l'aile
+- **Sauts** : possibilité de s'envoler
+- **Vitesse** : pointes à 40+ nœuds
+- **Adrénaline** : sensations fortes
+
+#### Wingfoil
+- **Vol silencieux** au-dessus de l'eau
+- **Légèreté** : sensation de voler
+- **Connexion** avec les éléments
+- **Méditation** en mouvement
+
+### Les Conditions Requises
+
+#### Pour le Kitesurf
+- Zone dégagée importante
+- Vent stable 12+ nœuds
+- Pas d'obstacles sous le vent
+- Espace pour décollage/atterrissage
+
+#### Pour le Wingfoil
+- Zone plus compacte suffisante
+- Vent dès 10 nœuds
+- Praticable près des côtes
+- Plus de spots accessibles
+
+### Le Matériel
+
+#### Kitesurf
+- Investissement : 2000-3500€
+- Encombrement : sac volumineux
+- Préparation : 15-20 min
+- Entretien : lignes à vérifier
+
+#### Wingfoil
+- Investissement : 2500-4000€
+- Encombrement : moyen
+- Préparation : 5-10 min
+- Entretien : foil à rincer
+
+### Pour Qui ?
+
+**Choisissez le Kitesurf si :**
+- Vous aimez les sensations fortes
+- Vous voulez sauter
+- Vous disposez de temps pour apprendre
+- Vous avez accès à de grands spots
+
+**Choisissez le Wingfoil si :**
+- Vous cherchez la glisse pure
+- Vous voulez progresser vite
+- Vous naviguez sur des spots variés
+- Vous aimez les sensations de vol
+
+### Notre Conseil
+
+Pourquoi choisir ? Essayez les deux ! Chez KiteSurf Passion, nous proposons des initiations aux deux disciplines pour vous aider à trouver votre préférence.
+    `,
+    tags: ["Wing Foil", "Kitesurf", "Comparatif", "Choix"],
+  },
+  "technique-pumping-foil-progresser": {
+    content: `
+## Maîtriser la Technique du Pumping en Foil
+
+Le pumping est l'art de propulser votre foil sans traction externe. Découvrez les techniques pour progresser et voler plus longtemps.
+
+### Qu'est-ce que le Pumping ?
+
+Le pumping consiste à générer de la vitesse par un mouvement de balancier :
+
+- **Flexion/extension** des jambes
+- **Transfert de poids** avant/arrière
+- **Coordination** du haut et bas du corps
+- **Rythme** régulier et efficace
+
+### Les Fondamentaux
+
+#### La Position de Base
+
+- Pieds écartés largeur d'épaules
+- Genoux légèrement fléchis
+- Dos droit, regard vers l'avant
+- Bras le long du corps (ou tenant la wing)
+
+#### Le Mouvement
+
+1. **Charge** : Fléchir les genoux, appui sur l'avant
+2. **Poussée** : Extension, transfert vers l'arrière
+3. **Vol** : Profiter de la portance générée
+4. **Préparation** : Revenir en position de charge
+
+### Les Erreurs à Éviter
+
+❌ Pomper trop vite et de façon saccadée
+❌ Négliger la phase de glisse
+❌ Se pencher trop en avant ou en arrière
+❌ Oublier de respirer !
+
+### Exercices de Progression
+
+#### Niveau 1 : Sur le sable
+- Simuler le mouvement sans planche
+- Travailler le rythme
+- 10 séries de 20 mouvements
+
+#### Niveau 2 : En tracté
+- Se faire tracter par le bateau
+- Maintenir le foil levé
+- Ajouter quelques pumps
+
+#### Niveau 3 : Dock Start
+- Départ du ponton
+- Premiers mètres autonomes
+- Augmenter la distance progressivement
+
+### Le Matériel Adapté
+
+Pour le pumping efficace :
+
+- **Foil** : Grande surface d'aile (1500-2000 cm²)
+- **Mât** : 70-85 cm
+- **Planche** : Volume adapté à votre poids
+
+### Tableau de Progression
+
+| Niveau | Objectif | Temps estimé |
+|--------|----------|--------------|
+| Débutant | 10 pumps | 2-3 sessions |
+| Intermédiaire | 50m | 5-6 sessions |
+| Avancé | 200m+ | 10+ sessions |
+| Expert | Sans limite | Pratique régulière |
+
+### L'Entraînement Physique
+
+Le pumping sollicite :
+
+- **Quadriceps** et ischio-jambiers
+- **Core** (abdominaux/lombaires)
+- **Cardio** pour l'endurance
+
+Exercices complémentaires recommandés :
+- Squats
+- Gainage
+- Corde à sauter
+
+### Nos Cours de Pumpfoil
+
+Chez KiteSurf Passion, nous proposons des sessions dédiées au pumpfoil avec accompagnement personnalisé et matériel adapté.
+    `,
+    tags: ["Pump Foil", "Technique", "Progression", "Entraînement"],
+  },
+  "premiers-vols-wingfoil-conseils": {
+    content: `
+## Vos Premiers Vols en Wingfoil : 5 Conseils Essentiels
+
+Le moment où vous décollez pour la première fois en wingfoil est magique. Voici 5 conseils pour y arriver plus rapidement et en toute sécurité.
+
+### Conseil 1 : Maîtriser la Wing au Sol d'Abord
+
+Avant même de toucher l'eau, prenez le temps de :
+
+- **Gonfler et dégonfler** l'aile plusieurs fois
+- **Sentir la puissance** du vent dans l'aile
+- **Pratiquer les transitions** de bord à bord
+- **Marcher avec l'aile** face au vent
+
+Cette étape souvent négligée vous fera gagner un temps précieux sur l'eau.
+
+### Conseil 2 : Commencer Sans le Foil
+
+Les premières sessions devraient se faire sur une planche classique :
+
+- Apprenez à **gérer la wing dans l'eau**
+- Travaillez le **waterstart** avec l'aile
+- Habituez-vous à la **position de navigation**
+- Comprenez la **gestion de la puissance**
+
+Une fois ces bases acquises, passez au foil.
+
+### Conseil 3 : Le Bon Moment pour Décoller
+
+Le décollage ne doit pas être forcé. Attendez que :
+
+- Vous ayez **suffisamment de vitesse**
+- La wing soit **correctement positionnée**
+- Votre poids soit **centré sur la planche**
+- Vous vous sentiez **stable et confiant**
+
+Signes que vous êtes prêt :
+- La planche accélère naturellement
+- Le nez veut se lever
+- Vous sentez la portance du foil
+
+### Conseil 4 : Gérer l'Altitude
+
+Une fois en vol, la clé est la **subtilité** :
+
+#### Pour Monter
+- Léger transfert de poids vers l'arrière
+- Augmenter la puissance dans la wing
+- Mouvement progressif
+
+#### Pour Descendre
+- Léger transfert vers l'avant
+- Réduire la puissance (wing vers le haut)
+- Ne jamais sur-corriger
+
+#### L'Erreur Classique
+Trop de corrections = oscillations = chute
+Restez calme, faites des micro-ajustements.
+
+### Conseil 5 : Accepter les Chutes
+
+Les chutes font partie de l'apprentissage :
+
+- **Lâchez la wing** en cas de déséquilibre
+- **Protégez votre tête** (casque obligatoire)
+- **Éloignez-vous du matériel** en tombant
+- **Analysez** ce qui s'est passé avant de repartir
+
+Chaque chute vous apprend quelque chose !
+
+### Récapitulatif
+
+| Étape | Focus | Durée moyenne |
+|-------|-------|---------------|
+| Wing au sol | Maniement | 30 min |
+| Wing dans l'eau | Waterstart | 1-2 sessions |
+| Planche + wing | Navigation | 1-2 sessions |
+| Premiers vols | Décollage | 2-3 sessions |
+| Stabilisation | Maintien | 3-5 sessions |
+
+### Notre Accompagnement
+
+Chez KiteSurf Passion, nos moniteurs vous guident pas à pas vers vos premiers vols. Le bateau d'assistance permet de multiplier les tentatives et d'accélérer votre progression.
+    `,
+    tags: ["Wing Foil", "Premiers Vols", "Conseils", "Débutant"],
+  },
+  "pumpfoil-entrainement-sans-vent": {
+    content: `
+## Pumpfoil : L'Entraînement Idéal les Jours Sans Vent
+
+Pas de vent ? C'est l'occasion parfaite pour une session de pumpfoil ! Découvrez comment transformer les jours calmes en sessions productives.
+
+### Pourquoi le Pumpfoil Sans Vent ?
+
+Les avantages sont nombreux :
+
+- **Aucune dépendance météo** : pratiquez quand vous voulez
+- **Progression en foil** : améliorez votre équilibre
+- **Cardio intense** : excellent entraînement physique
+- **Sensations uniques** : le vol à l'état pur
+
+### Les Conditions Idéales
+
+Le pumpfoil sans vent est optimal quand :
+
+- **Eau plate** : pas de clapot
+- **Pas de courant** fort
+- **Zone dégagée** : sans obstacles
+- **Température agréable** : pour le confort
+
+### Types de Sessions
+
+#### Session Courte (30 min)
+- Échauffement : 5 min de natation
+- Technique : 15 min de pumping fractionné
+- Cool down : 10 min de glisse douce
+
+#### Session Longue (1h)
+- Échauffement complet
+- Travail de distance
+- Exercices de virages
+- Récupération active
+
+### Le Matériel Recommandé
+
+Pour le pumping pur, optimisez votre setup :
+
+| Élément | Spécification | Pourquoi |
+|---------|---------------|----------|
+| Foil | 1800-2200 cm² | Plus de portance |
+| Mât | 75-85 cm | Stabilité |
+| Planche | 80-120L | Facilité de départ |
+| Stab | Grand | Stabilité en vol |
+
+### Programme d'Entraînement
+
+#### Semaine 1-2 : Fondations
+- 3 sessions de 30 min
+- Focus : régularité du mouvement
+- Objectif : 20 pumps consécutifs
+
+#### Semaine 3-4 : Endurance
+- 3 sessions de 45 min
+- Focus : distance
+- Objectif : 50 mètres
+
+#### Semaine 5+ : Performance
+- 2-3 sessions de 1h
+- Focus : efficacité
+- Objectif : 100+ mètres
+
+### Les Bénéfices Physiques
+
+Le pumpfoil développe :
+
+- **Cuisses** : quadriceps et ischio-jambiers
+- **Core** : gainage permanent
+- **Cardio** : effort soutenu
+- **Équilibre** : proprioception
+
+C'est un entraînement complet équivalent à :
+- 30 min de course
+- 45 min de vélo
+- 1h de natation
+
+### Combiner avec le Wingfoil
+
+Le pumpfoil améliore directement votre wingfoil :
+
+- Meilleur contrôle du foil
+- Récupération plus facile après les chutes
+- Capacité à pumper pour reprendre de la vitesse
+- Transitions plus fluides
+
+### Nos Offres Pumpfoil
+
+| Formule | Durée | Tarif |
+|---------|-------|-------|
+| Découverte | 1h | 50€ |
+| Initiation | 2h | 90€ |
+| Pack 5 sessions | 5x1h | 200€ |
+
+Profitez des jours sans vent pour progresser avec nous !
+    `,
+    tags: ["Pump Foil", "Sans Vent", "Entraînement", "Fitness"],
+  },
 };
 
 const BlogArticle = () => {
