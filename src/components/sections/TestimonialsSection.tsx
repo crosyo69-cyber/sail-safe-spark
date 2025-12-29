@@ -1,7 +1,8 @@
-import { Star, Quote, MapPin, CheckCircle } from "lucide-react";
+import { Star, Quote, MapPin, CheckCircle, MessageSquarePlus } from "lucide-react";
 import { useState, useEffect } from "react";
 import { StarRating } from "@/components/ui/star-rating";
-
+import { ReviewSubmissionForm } from "@/components/ReviewSubmissionForm";
+import { Button } from "@/components/ui/button";
 // Review data with Schema.org compatible fields
 export const testimonials = [
   {
@@ -130,7 +131,7 @@ export const reviewsStructuredData = {
 
 export function TestimonialsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
-
+  const [showReviewForm, setShowReviewForm] = useState(false);
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % testimonials.length);
@@ -259,6 +260,35 @@ export function TestimonialsSection() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Review Submission Section */}
+        <div className="mt-16 max-w-xl mx-auto">
+          {!showReviewForm ? (
+            <div className="text-center">
+              <Button
+                size="lg"
+                onClick={() => setShowReviewForm(true)}
+                className="gap-2"
+              >
+                <MessageSquarePlus className="w-5 h-5" />
+                Laisser votre avis
+              </Button>
+              <p className="text-muted-foreground text-sm mt-3">
+                Vous avez suivi un cours avec nous ? Partagez votre expérience !
+              </p>
+            </div>
+          ) : (
+            <div className="animate-fade-in">
+              <ReviewSubmissionForm />
+              <button
+                onClick={() => setShowReviewForm(false)}
+                className="w-full text-center text-sm text-muted-foreground hover:text-foreground mt-4 transition-colors"
+              >
+                ← Retour aux témoignages
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </section>
