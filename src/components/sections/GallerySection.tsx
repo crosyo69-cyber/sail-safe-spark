@@ -1,0 +1,155 @@
+import { useState } from "react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
+
+import heroKitesurf from "@/assets/hero-kitesurf.jpg";
+import wingfoil from "@/assets/wingfoil.jpg";
+import pumpfoil from "@/assets/pumpfoil.jpg";
+import foilWakeboard from "@/assets/foil-wakeboard-hyeres.jpg";
+import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
+import almanarre from "@/assets/almanarre-sunset.jpg";
+import kitesurfLesson from "@/assets/kitesurf-lesson.jpg";
+import downwind from "@/assets/downwind.jpg";
+
+const galleryImages = [
+  {
+    src: heroKitesurf,
+    alt: "Session kitesurf sur la baie d'Hyères",
+    title: "Kitesurf",
+    category: "Kitesurf"
+  },
+  {
+    src: wingfoil,
+    alt: "Cours de wing foil à l'Almanarre",
+    title: "Wing Foil",
+    category: "Wing Foil"
+  },
+  {
+    src: pumpfoil,
+    alt: "Initiation pumpfoil dock start",
+    title: "Pumpfoil",
+    category: "Pumpfoil"
+  },
+  {
+    src: foilWakeboard,
+    alt: "Session wakeboard et foil tracté",
+    title: "Foil Tracté & Wakeboard",
+    category: "Wakeboard"
+  },
+  {
+    src: bateauSecurite,
+    alt: "Bateau de sécurité pour les cours de kitesurf",
+    title: "Bateau d'Assistance",
+    category: "Sécurité"
+  },
+  {
+    src: almanarre,
+    alt: "Coucher de soleil sur le spot de l'Almanarre",
+    title: "Spot Almanarre",
+    category: "Le Spot"
+  },
+  {
+    src: kitesurfLesson,
+    alt: "Cours de kitesurf avec moniteur diplômé",
+    title: "Cours Encadrés",
+    category: "Formation"
+  },
+  {
+    src: downwind,
+    alt: "Session downwind en kitesurf",
+    title: "Downwind",
+    category: "Kitesurf"
+  },
+];
+
+export function GallerySection() {
+  const [selectedImage, setSelectedImage] = useState<typeof galleryImages[0] | null>(null);
+
+  return (
+    <section className="py-20 bg-muted/30">
+      <div className="container mx-auto px-4">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+            Notre Univers
+          </span>
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">
+            Galerie{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">
+              Photo
+            </span>
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Découvrez nos activités nautiques sur les plus beaux spots de la baie d'Hyères. 
+            Kitesurf, wingfoil, pumpfoil et wakeboard dans un cadre exceptionnel.
+          </p>
+        </div>
+
+        {/* Gallery Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {galleryImages.map((image, index) => (
+            <button
+              key={index}
+              onClick={() => setSelectedImage(image)}
+              className={cn(
+                "group relative overflow-hidden rounded-2xl aspect-square cursor-pointer",
+                "transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20",
+                // Make first and fifth images larger on desktop
+                index === 0 && "md:col-span-2 md:row-span-2",
+                index === 5 && "lg:col-span-2"
+              )}
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-navy/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
+              {/* Content */}
+              <div className="absolute inset-0 flex flex-col justify-end p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                <span className="text-turquoise text-xs font-medium mb-1">
+                  {image.category}
+                </span>
+                <h3 className="text-primary-foreground font-display font-semibold text-lg">
+                  {image.title}
+                </h3>
+              </div>
+
+              {/* Corner accent */}
+              <div className="absolute top-3 right-3 w-8 h-8 border-t-2 border-r-2 border-primary-foreground/50 rounded-tr-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </button>
+          ))}
+        </div>
+
+        {/* Lightbox Dialog */}
+        <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
+          <DialogContent className="max-w-4xl p-0 overflow-hidden bg-background/95 backdrop-blur-xl border-border">
+            {selectedImage && (
+              <div className="relative">
+                <img
+                  src={selectedImage.src}
+                  alt={selectedImage.alt}
+                  className="w-full h-auto max-h-[80vh] object-contain"
+                />
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-background to-transparent">
+                  <span className="text-primary text-sm font-medium">
+                    {selectedImage.category}
+                  </span>
+                  <h3 className="text-foreground font-display font-bold text-xl">
+                    {selectedImage.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm mt-1">
+                    {selectedImage.alt}
+                  </p>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+      </div>
+    </section>
+  );
+}
