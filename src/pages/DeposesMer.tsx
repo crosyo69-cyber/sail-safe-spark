@@ -68,7 +68,7 @@ const DeposesMer = () => {
         />
         <meta
           name="keywords"
-          content="déposes en mer kitesurf Hyères, bateau sécurité kitesurf Almanarre, dépôt en mer kitesurf Giens, downwind kitesurf var"
+          content="déposes en mer kitesurf Hyères, bateau sécurité kitesurf Almanarre, dépose en mer kitesurf Giens, downwind kitesurf var"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" />
         <script type="application/ld+json">
@@ -134,7 +134,7 @@ const DeposesMer = () => {
               <Button variant="default" size="lg" asChild>
                 <Link to="/contact-reservation-kitesurf-hyeres">
                   <Anchor className="w-5 h-5 mr-2" />
-                  Réserver un Dépôt en Mer
+                  Réserver une Dépose en Mer
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild>
@@ -287,7 +287,7 @@ const DeposesMer = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="heroFilled" size="lg" asChild>
-                <Link to="/contact-reservation-kitesurf-hyeres">Réserver un Dépôt en Mer</Link>
+                <Link to="/contact-reservation-kitesurf-hyeres">Réserver une Dépose en Mer</Link>
               </Button>
               <Button variant="hero" size="lg" asChild>
                 <a href="tel:0672716905">Appeler : 06 72 71 69 05</a>
