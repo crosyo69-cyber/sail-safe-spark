@@ -8,6 +8,7 @@ const navigation = [
   { name: "Accueil", href: "/" },
   { name: "Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
   { name: "Wing Foil", href: "/stage-wingfoil-hyeres-almanarre" },
+  { name: "Location", href: "/location-materiel-kitesurf-hyeres" },
   { name: "Tarifs", href: "/tarifs-cours-kitesurf-wingfoil-hyeres" },
   { name: "Le Spot", href: "/spot-kitesurf-almanarre-hyeres-var" },
   { name: "Contact", href: "/contact-reservation-kitesurf-hyeres" },
