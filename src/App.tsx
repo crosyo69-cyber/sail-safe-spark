@@ -21,6 +21,7 @@ import Contact from "./pages/Contact";
 import APropos from "./pages/APropos";
 import Blog from "./pages/Blog";
 import BlogArticle from "./pages/BlogArticle";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -52,6 +53,7 @@ const App = () => (
             <Route path="/a-propos-ecole-kitesurf-hyeres" element={<APropos />} />
             <Route path="/blog-kitesurf-hyeres" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogArticle />} />
+            <Route path="/auth" element={<Auth />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
