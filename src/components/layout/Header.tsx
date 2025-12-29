@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
@@ -8,7 +8,14 @@ const navigation = [
   { name: "Accueil", href: "/" },
   { name: "Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
   { name: "Wing Foil", href: "/stage-wingfoil-hyeres-almanarre" },
-  { name: "Location", href: "/location-materiel-kitesurf-hyeres" },
+  { 
+    name: "Location", 
+    href: "/location-materiel-kitesurf-hyeres",
+    submenu: [
+      { name: "Location Matériel", href: "/location-materiel-kitesurf-hyeres" },
+      { name: "Déposes en Mer", href: "/deposes-mer-kitesurf-hyeres" },
+    ]
+  },
   { name: "Tarifs", href: "/tarifs-cours-kitesurf-wingfoil-hyeres" },
   { name: "Le Spot", href: "/spot-kitesurf-almanarre-hyeres-var" },
   { name: "Contact", href: "/contact-reservation-kitesurf-hyeres" },
@@ -17,6 +24,7 @@ const navigation = [
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -26,6 +34,14 @@ export function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const isActiveLink = (href: string, submenu?: { name: string; href: string }[]) => {
+    if (location.pathname === href) return true;
+    if (submenu) {
+      return submenu.some(item => location.pathname === item.href);
+    }
+    return false;
+  };
 
   return (
     <header
@@ -61,22 +77,61 @@ export function Header() {
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-1">
           {navigation.map((item) => (
-            <Link
-              key={item.name}
-              to={item.href}
-              className={cn(
-                "px-4 py-2 rounded-lg font-medium transition-all duration-300",
-                location.pathname === item.href
-                  ? isScrolled
-                    ? "bg-primary/10 text-primary"
-                    : "bg-primary-foreground/20 text-primary-foreground"
-                  : isScrolled
-                    ? "text-foreground hover:bg-muted"
-                    : "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
+            <div key={item.name} className="relative group">
+              {item.submenu ? (
+                <>
+                  <button
+                    className={cn(
+                      "px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center gap-1",
+                      isActiveLink(item.href, item.submenu)
+                        ? isScrolled
+                          ? "bg-primary/10 text-primary"
+                          : "bg-primary-foreground/20 text-primary-foreground"
+                        : isScrolled
+                          ? "text-foreground hover:bg-muted"
+                          : "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                    )}
+                  >
+                    {item.name}
+                    <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+                  </button>
+                  <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                    <div className="bg-background/98 backdrop-blur-xl rounded-xl border border-border shadow-lg py-2 min-w-[200px]">
+                      {item.submenu.map((subItem) => (
+                        <Link
+                          key={subItem.name}
+                          to={subItem.href}
+                          className={cn(
+                            "block px-4 py-2 font-medium transition-colors",
+                            location.pathname === subItem.href
+                              ? "bg-primary/10 text-primary"
+                              : "text-foreground hover:bg-muted"
+                          )}
+                        >
+                          {subItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <Link
+                  to={item.href}
+                  className={cn(
+                    "px-4 py-2 rounded-lg font-medium transition-all duration-300",
+                    location.pathname === item.href
+                      ? isScrolled
+                        ? "bg-primary/10 text-primary"
+                        : "bg-primary-foreground/20 text-primary-foreground"
+                      : isScrolled
+                        ? "text-foreground hover:bg-muted"
+                        : "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                  )}
+                >
+                  {item.name}
+                </Link>
               )}
-            >
-              {item.name}
-            </Link>
+            </div>
           ))}
         </nav>
 
@@ -108,19 +163,59 @@ export function Header() {
         <div className="lg:hidden absolute top-full left-0 right-0 bg-background/98 backdrop-blur-xl border-b border-border animate-fade-in">
           <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
             {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={cn(
-                  "px-4 py-3 rounded-lg font-medium transition-colors",
-                  location.pathname === item.href
-                    ? "bg-primary/10 text-primary"
-                    : "text-foreground hover:bg-muted"
+              <div key={item.name}>
+                {item.submenu ? (
+                  <>
+                    <button
+                      onClick={() => setOpenSubmenu(openSubmenu === item.name ? null : item.name)}
+                      className={cn(
+                        "w-full px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-between",
+                        isActiveLink(item.href, item.submenu)
+                          ? "bg-primary/10 text-primary"
+                          : "text-foreground hover:bg-muted"
+                      )}
+                    >
+                      {item.name}
+                      <ChevronDown className={cn(
+                        "w-4 h-4 transition-transform",
+                        openSubmenu === item.name && "rotate-180"
+                      )} />
+                    </button>
+                    {openSubmenu === item.name && (
+                      <div className="ml-4 mt-2 space-y-2">
+                        {item.submenu.map((subItem) => (
+                          <Link
+                            key={subItem.name}
+                            to={subItem.href}
+                            className={cn(
+                              "block px-4 py-2 rounded-lg font-medium transition-colors",
+                              location.pathname === subItem.href
+                                ? "bg-primary/10 text-primary"
+                                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                            )}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            {subItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <Link
+                    to={item.href}
+                    className={cn(
+                      "block px-4 py-3 rounded-lg font-medium transition-colors",
+                      location.pathname === item.href
+                        ? "bg-primary/10 text-primary"
+                        : "text-foreground hover:bg-muted"
+                    )}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
                 )}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
+              </div>
             ))}
             <a href="tel:0672716905" className="mt-2">
               <Button variant="sunset" size="lg" className="w-full">

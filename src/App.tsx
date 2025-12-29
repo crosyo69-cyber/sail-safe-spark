@@ -10,6 +10,7 @@ import StageWingfoil from "./pages/StageWingfoil";
 import CoursPumpfoil from "./pages/CoursPumpfoil";
 import SpotAlmanarre from "./pages/SpotAlmanarre";
 import LocationMateriel from "./pages/LocationMateriel";
+import DeposesMer from "./pages/DeposesMer";
 import Tarifs from "./pages/Tarifs";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/cours-pumpfoil-dock-start-hyeres" element={<CoursPumpfoil />} />
             <Route path="/spot-kitesurf-almanarre-hyeres-var" element={<SpotAlmanarre />} />
             <Route path="/location-materiel-kitesurf-hyeres" element={<LocationMateriel />} />
+            <Route path="/deposes-mer-kitesurf-hyeres" element={<DeposesMer />} />
             <Route path="/tarifs-cours-kitesurf-wingfoil-hyeres" element={<Tarifs />} />
             <Route path="/contact-reservation-kitesurf-hyeres" element={<Contact />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
