@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -8,6 +8,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Calendar, Clock, ArrowRight, Search, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import heroImage from "@/assets/almanarre-sunset.jpg";
 
 const breadcrumbItems = [
@@ -136,6 +137,7 @@ const getCategorySlug = (category: string): string => {
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const categoryParam = searchParams.get("categorie");
   
   // Get selected category from URL or default to "Tous"
@@ -145,12 +147,21 @@ const Blog = () => {
 
   const handleCategoryChange = (category: string) => {
     setSearchQuery(""); // Reset search when changing category
+    setIsLoading(true);
     if (category === "Tous") {
       setSearchParams({});
     } else {
       setSearchParams({ categorie: getCategorySlug(category) });
     }
   };
+
+  // Simulate loading effect
+  useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => setIsLoading(false), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading, selectedCategory, searchQuery]);
 
   // Filter articles based on selected category and search query
   const filteredArticles = blogArticles.filter(article => {
@@ -264,7 +275,7 @@ const Blog = () => {
                   type="text"
                   placeholder="Rechercher un article..."
                   value={searchQuery}
-                  onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
+                  onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); setIsLoading(true); }}
                   className="pl-10 pr-10 py-2 rounded-full border-border/50 focus:border-primary"
                   maxLength={100}
                 />
@@ -377,7 +388,25 @@ const Blog = () => {
               {selectedCategory === "Tous" ? "Tous les Articles" : `Articles ${selectedCategory}`}
             </h2>
 
-            {filteredArticles.length === 0 ? (
+            {isLoading ? (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="bg-card rounded-2xl overflow-hidden border border-border/50">
+                    <Skeleton className="aspect-video w-full" />
+                    <div className="p-5 space-y-3">
+                      <div className="flex gap-3">
+                        <Skeleton className="h-5 w-20 rounded-full" />
+                        <Skeleton className="h-5 w-16" />
+                      </div>
+                      <Skeleton className="h-6 w-full" />
+                      <Skeleton className="h-6 w-3/4" />
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-2/3" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : filteredArticles.length === 0 ? (
               <div className="text-center py-16 bg-muted/30 rounded-2xl">
                 <Search className="w-12 h-12 text-muted-foreground/50 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-foreground mb-2">Aucun article trouvé</h3>
