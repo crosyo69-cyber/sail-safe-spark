@@ -9,6 +9,7 @@ import kitesurfLesson from "@/assets/kitesurf-lesson.jpg";
 import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
 import almanarreSunset from "@/assets/almanarre-sunset.jpg";
 import { useEffect, useRef, useState } from "react";
+import { useParallax } from "@/hooks/use-parallax";
 
 const breadcrumbItems = [
   { label: "À Propos" }
@@ -19,6 +20,15 @@ const APropos = () => {
   const [timelineProgress, setTimelineProgress] = useState(0);
   const timelineRef = useRef<HTMLDivElement>(null);
   const milestoneRefs = useRef<(HTMLDivElement | null)[]>([]);
+  
+  // Parallax refs for images
+  const founderImageRef = useRef<HTMLDivElement>(null);
+  const securityImageRef = useRef<HTMLDivElement>(null);
+  const spotImageRef = useRef<HTMLDivElement>(null);
+  
+  const founderParallax = useParallax(founderImageRef, 0.15);
+  const securityParallax = useParallax(securityImageRef, 0.15);
+  const spotParallax = useParallax(spotImageRef, 0.15);
 
   useEffect(() => {
     const observerOptions = {
@@ -219,13 +229,14 @@ const APropos = () => {
                 </div>
               </div>
               <div className="order-1 lg:order-2">
-                <div className="relative">
+                <div className="relative overflow-hidden rounded-2xl" ref={founderImageRef}>
                   <img 
                     src={kitesurfLesson} 
                     alt="Yohan Cros, moniteur de kitesurf diplômé d'État à Hyères" 
-                    className="rounded-2xl shadow-2xl w-full aspect-[4/3] object-cover"
+                    className="shadow-2xl w-full aspect-[4/3] object-cover transition-transform duration-100 will-change-transform"
+                    style={{ transform: `translateY(${founderParallax}px) scale(1.1)` }}
                   />
-                  <div className="absolute -bottom-6 -left-6 bg-card border border-border rounded-xl p-4 shadow-xl">
+                  <div className="absolute -bottom-6 -left-6 bg-card border border-border rounded-xl p-4 shadow-xl z-10">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-gradient-to-br from-primary to-turquoise rounded-full flex items-center justify-center">
                         <Sparkles className="w-6 h-6 text-primary-foreground" />
@@ -359,11 +370,12 @@ const APropos = () => {
         <section className="py-20 bg-gradient-to-br from-primary/10 to-turquoise/10">
           <div className="container mx-auto px-4">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div>
+              <div className="overflow-hidden rounded-2xl" ref={securityImageRef}>
                 <img 
                   src={bateauSecurite} 
                   alt="Bateau d'assistance sécurité kitesurf Hyères" 
-                  className="rounded-2xl shadow-2xl w-full aspect-[4/3] object-cover"
+                  className="shadow-2xl w-full aspect-[4/3] object-cover transition-transform duration-100 will-change-transform"
+                  style={{ transform: `translateY(${securityParallax}px) scale(1.1)` }}
                 />
               </div>
               <div>
@@ -429,11 +441,14 @@ const APropos = () => {
                 </div>
               </div>
               <div className="order-1 lg:order-2">
-                <img 
-                  src={almanarreSunset} 
-                  alt="Coucher de soleil sur le spot de l'Almanarre à Hyères" 
-                  className="rounded-2xl shadow-2xl w-full aspect-[4/3] object-cover"
-                />
+                <div className="overflow-hidden rounded-2xl" ref={spotImageRef}>
+                  <img 
+                    src={almanarreSunset} 
+                    alt="Coucher de soleil sur le spot de l'Almanarre à Hyères" 
+                    className="shadow-2xl w-full aspect-[4/3] object-cover transition-transform duration-100 will-change-transform"
+                    style={{ transform: `translateY(${spotParallax}px) scale(1.1)` }}
+                  />
+                </div>
               </div>
             </div>
           </div>
