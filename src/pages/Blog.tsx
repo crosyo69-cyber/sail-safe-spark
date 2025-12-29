@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { NewsletterForm } from "@/components/NewsletterForm";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/almanarre-sunset.jpg";
@@ -73,7 +74,42 @@ export const blogArticles = [
 
 const categories = ["Tous", "Kitesurf", "Wing Foil", "Pump Foil", "Le Spot", "Sécurité"];
 
+// Map URL-friendly slugs to display names
+const categorySlugMap: Record<string, string> = {
+  "kitesurf": "Kitesurf",
+  "wingfoil": "Wing Foil", 
+  "pumpfoil": "Pump Foil",
+  "le-spot": "Le Spot",
+  "securite": "Sécurité",
+};
+
+const getCategorySlug = (category: string): string => {
+  return category.toLowerCase().replace(/ /g, "").replace("é", "e");
+};
+
 const Blog = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryParam = searchParams.get("categorie");
+  
+  // Get selected category from URL or default to "Tous"
+  const selectedCategory = categoryParam 
+    ? (categorySlugMap[categoryParam] || "Tous")
+    : "Tous";
+
+  const handleCategoryChange = (category: string) => {
+    if (category === "Tous") {
+      setSearchParams({});
+    } else {
+      setSearchParams({ categorie: getCategorySlug(category) });
+    }
+  };
+
+  // Filter articles based on selected category
+  const filteredArticles = selectedCategory === "Tous" 
+    ? blogArticles 
+    : blogArticles.filter(article => article.category === selectedCategory);
+
+  const featuredArticles = filteredArticles.filter(article => article.featured);
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Blog",
@@ -149,8 +185,9 @@ const Blog = () => {
               {categories.map((category) => (
                 <button
                   key={category}
+                  onClick={() => handleCategoryChange(category)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    category === "Tous"
+                    category === selectedCategory
                       ? "bg-primary text-primary-foreground"
                       : "bg-background text-muted-foreground hover:bg-primary/10 hover:text-primary border border-border/50"
                   }`}
@@ -165,14 +202,14 @@ const Blog = () => {
         {/* Featured Articles */}
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-10">
-              Articles à la Une
-            </h2>
+            {featuredArticles.length > 0 && (
+              <>
+                <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-10">
+                  Articles à la Une
+                </h2>
 
-            <div className="grid md:grid-cols-2 gap-8 mb-16">
-              {blogArticles
-                .filter((article) => article.featured)
-                .map((article) => (
+                <div className="grid md:grid-cols-2 gap-8 mb-16">
+                  {featuredArticles.map((article) => (
                   <Link
                     key={article.slug}
                     to={`/blog/${article.slug}`}
@@ -217,15 +254,17 @@ const Blog = () => {
                     </div>
                   </Link>
                 ))}
-            </div>
+              </div>
+            </>
+            )}
 
             {/* All Articles */}
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-10">
-              Tous les Articles
+              {selectedCategory === "Tous" ? "Tous les Articles" : `Articles ${selectedCategory}`}
             </h2>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {blogArticles.map((article) => (
+              {filteredArticles.map((article) => (
                 <Link
                   key={article.slug}
                   to={`/blog/${article.slug}`}
