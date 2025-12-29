@@ -4,7 +4,16 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Check, Shield, RefreshCw, Users, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
+import kiteEquipment from "@/assets/kite-equipment.jpg";
+import kiteWing from "@/assets/kite-wing.jpg";
+import kiteBoard from "@/assets/kite-board.jpg";
+import kiteGear from "@/assets/kite-gear.jpg";
 
+const equipmentGallery = [
+  { src: kiteWing, alt: "Aile de kitesurf colorée sur la plage de l'Almanarre", title: "Ailes" },
+  { src: kiteBoard, alt: "Planche de kitesurf twintip design moderne", title: "Planches" },
+  { src: kiteGear, alt: "Combinaison et harnais de kitesurf professionnels", title: "Équipements" },
+];
 const rentalPrices = [
   { name: "Location Demi-Journée", duration: "3 heures", price: "60€", description: "Idéal pour une session rapide" },
   { name: "Location Journée", duration: "Journée complète", price: "90€", popular: true, description: "Profitez du spot toute la journée" },
@@ -89,9 +98,17 @@ const LocationMateriel = () => {
       <Header />
 
       <main>
-        {/* Hero */}
-        <section className="pt-32 pb-16 bg-gradient-to-b from-primary/10 to-background">
-          <div className="container mx-auto px-4 text-center">
+        {/* Hero with Image */}
+        <section className="relative pt-32 pb-16 overflow-hidden">
+          <div className="absolute inset-0">
+            <img
+              src={kiteEquipment}
+              alt="Matériel de kitesurf complet : aile, planche, harnais et combinaison sur la plage"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background" />
+          </div>
+          <div className="container mx-auto px-4 text-center relative z-10">
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6">
               Location de Matériel{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">
@@ -112,6 +129,33 @@ const LocationMateriel = () => {
                   06 72 71 69 05
                 </a>
               </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Equipment Gallery */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
+              Notre{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">
+                Matériel
+              </span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+              {equipmentGallery.map((item) => (
+                <div key={item.title} className="group relative rounded-2xl overflow-hidden">
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <h3 className="font-display text-xl font-bold text-foreground">{item.title}</h3>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
