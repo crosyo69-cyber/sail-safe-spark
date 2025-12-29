@@ -1,14 +1,68 @@
+# Robots.txt pour KiteSurf Passion
+# https://www.kitesurfpassion.com
+
+# Googlebot (Google Search)
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
+# Google Images
+User-agent: Googlebot-Image
+Allow: /
+
+# Bingbot (Bing Search)
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 2
 
-User-agent: Twitterbot
+# Yandex
+User-agent: Yandex
+Allow: /
+Crawl-delay: 2
+
+# Baidu
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 3
+
+# DuckDuckGo
+User-agent: DuckDuckBot
 Allow: /
 
+# Facebook
 User-agent: facebookexternalhit
 Allow: /
 
+# Twitter
+User-agent: Twitterbot
+Allow: /
+
+# LinkedIn
+User-agent: LinkedInBot
+Allow: /
+
+# Pinterest
+User-agent: Pinterest
+Allow: /
+
+# WhatsApp
+User-agent: WhatsApp
+Allow: /
+
+# Slack
+User-agent: Slackbot
+Allow: /
+
+# Tous les autres bots
 User-agent: *
 Allow: /
+Crawl-delay: 5
+
+# Bloquer les chemins inutiles
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /*?*
+Disallow: /404
+
+# Sitemap
+Sitemap: https://www.kitesurfpassion.com/sitemap.xml

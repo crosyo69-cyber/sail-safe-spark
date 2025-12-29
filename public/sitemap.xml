@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  
+  <!-- Page d'accueil -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Cours Kitesurf - Hub principal -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Stage 100% Glisse -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/stage-kitesurf-100-glisse-hyeres</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Sessions à la Carte -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/session-kitesurf-carte-hyeres</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Cours Particulier -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/cours-particulier-kitesurf-hyeres</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Stage Wing Foil -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/stage-wingfoil-hyeres-almanarre</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Cours Pump Foil -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/cours-pumpfoil-dock-start-hyeres</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Spot Almanarre -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/spot-kitesurf-almanarre-hyeres-var</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Location Matériel -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/location-materiel-kitesurf-hyeres</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Déposes en Mer -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Foil Tracté & Wakeboard -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/foil-tracte-wakeboard-hyeres</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Tarifs -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/tarifs-cours-kitesurf-wingfoil-hyeres</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Contact & Réservation -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- À Propos -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/a-propos-ecole-kitesurf-hyeres</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+</urlset>
