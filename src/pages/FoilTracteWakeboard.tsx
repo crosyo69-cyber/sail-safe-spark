@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Check, Anchor, Shield, Waves, Users, Phone, Zap, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
