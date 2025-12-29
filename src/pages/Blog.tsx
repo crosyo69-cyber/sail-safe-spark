@@ -5,7 +5,8 @@ import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { Link, useSearchParams } from "react-router-dom";
-import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { Calendar, Clock, ArrowRight, Search, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/almanarre-sunset.jpg";
 
@@ -134,6 +135,7 @@ const getCategorySlug = (category: string): string => {
 
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState("");
   const categoryParam = searchParams.get("categorie");
   
   // Get selected category from URL or default to "Tous"
@@ -142,6 +144,7 @@ const Blog = () => {
     : "Tous";
 
   const handleCategoryChange = (category: string) => {
+    setSearchQuery(""); // Reset search when changing category
     if (category === "Tous") {
       setSearchParams({});
     } else {
@@ -149,10 +152,16 @@ const Blog = () => {
     }
   };
 
-  // Filter articles based on selected category
-  const filteredArticles = selectedCategory === "Tous" 
-    ? blogArticles 
-    : blogArticles.filter(article => article.category === selectedCategory);
+  // Filter articles based on selected category and search query
+  const filteredArticles = blogArticles.filter(article => {
+    const matchesCategory = selectedCategory === "Tous" || article.category === selectedCategory;
+    const searchLower = searchQuery.toLowerCase().trim();
+    const matchesSearch = searchLower === "" || 
+      article.title.toLowerCase().includes(searchLower) ||
+      article.excerpt.toLowerCase().includes(searchLower) ||
+      article.category.toLowerCase().includes(searchLower);
+    return matchesCategory && matchesSearch;
+  });
 
   const featuredArticles = filteredArticles.filter(article => article.featured);
 
@@ -229,9 +238,34 @@ const Blog = () => {
           </div>
         </section>
 
-        {/* Categories Filter */}
+        {/* Search & Categories Filter */}
         <section className="py-8 bg-muted/30 border-b border-border/50">
           <div className="container mx-auto px-4">
+            {/* Search Bar */}
+            <div className="max-w-md mx-auto mb-6">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Rechercher un article..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-10 py-2 rounded-full border-border/50 focus:border-primary"
+                  maxLength={100}
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="Effacer la recherche"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Categories */}
             <div className="flex flex-wrap gap-3 justify-center">
               {categories.map((category) => (
                 <button
@@ -254,6 +288,13 @@ const Blog = () => {
                 </button>
               ))}
             </div>
+
+            {/* Search Results Info */}
+            {searchQuery && (
+              <p className="text-center text-sm text-muted-foreground mt-4">
+                {filteredArticles.length} résultat{filteredArticles.length !== 1 ? 's' : ''} pour "{searchQuery}"
+              </p>
+            )}
           </div>
         </section>
 
