@@ -155,6 +155,12 @@ const Blog = () => {
     : blogArticles.filter(article => article.category === selectedCategory);
 
   const featuredArticles = filteredArticles.filter(article => article.featured);
+
+  // Count articles per category
+  const getCategoryCount = (category: string): number => {
+    if (category === "Tous") return blogArticles.length;
+    return blogArticles.filter(article => article.category === category).length;
+  };
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Blog",
@@ -231,13 +237,20 @@ const Blog = () => {
                 <button
                   key={category}
                   onClick={() => handleCategoryChange(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors flex items-center gap-2 ${
                     category === selectedCategory
                       ? "bg-primary text-primary-foreground"
                       : "bg-background text-muted-foreground hover:bg-primary/10 hover:text-primary border border-border/50"
                   }`}
                 >
                   {category}
+                  <span className={`text-xs px-1.5 py-0.5 rounded-full ${
+                    category === selectedCategory
+                      ? "bg-primary-foreground/20"
+                      : "bg-muted"
+                  }`}>
+                    {getCategoryCount(category)}
+                  </span>
                 </button>
               ))}
             </div>
