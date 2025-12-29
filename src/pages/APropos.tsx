@@ -334,7 +334,7 @@ const APropos = () => {
                             <img 
                               src={milestone.image} 
                               alt={`${milestone.title} - ${milestone.year}`}
-                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                              className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                             />
                           </div>
                           <div className="p-5">
@@ -370,7 +370,7 @@ const APropos = () => {
                             <img 
                               src={milestone.image} 
                               alt={`${milestone.title} - ${milestone.year}`}
-                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                              className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                             />
                           </div>
                           <div className="p-4">
