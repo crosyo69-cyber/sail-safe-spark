@@ -6,6 +6,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import CoursKitesurf from "./pages/CoursKitesurf";
+import Stage100Glisse from "./pages/Stage100Glisse";
+import SessionCarte from "./pages/SessionCarte";
+import CoursParticulier from "./pages/CoursParticulier";
 import StageWingfoil from "./pages/StageWingfoil";
 import CoursPumpfoil from "./pages/CoursPumpfoil";
 import SpotAlmanarre from "./pages/SpotAlmanarre";
@@ -29,6 +32,9 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/cours-kitesurf-hyeres-debutant" element={<CoursKitesurf />} />
+            <Route path="/stage-kitesurf-100-glisse-hyeres" element={<Stage100Glisse />} />
+            <Route path="/session-kitesurf-carte-hyeres" element={<SessionCarte />} />
+            <Route path="/cours-particulier-kitesurf-hyeres" element={<CoursParticulier />} />
             <Route path="/stage-wingfoil-hyeres-almanarre" element={<StageWingfoil />} />
             <Route path="/cours-pumpfoil-dock-start-hyeres" element={<CoursPumpfoil />} />
             <Route path="/spot-kitesurf-almanarre-hyeres-var" element={<SpotAlmanarre />} />

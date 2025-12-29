@@ -6,7 +6,15 @@ import { Link, useLocation } from "react-router-dom";
 
 const navigation = [
   { name: "Accueil", href: "/" },
-  { name: "Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
+  { 
+    name: "Kitesurf", 
+    href: "/cours-kitesurf-hyeres-debutant",
+    submenu: [
+      { name: "Stage 100% Glisse", href: "/stage-kitesurf-100-glisse-hyeres" },
+      { name: "Session à la Carte", href: "/session-kitesurf-carte-hyeres" },
+      { name: "Cours Particulier", href: "/cours-particulier-kitesurf-hyeres" },
+    ]
+  },
   { name: "Wing Foil", href: "/stage-wingfoil-hyeres-almanarre" },
   { name: "Foil Tracté & Wakeboard", href: "/foil-tracte-wakeboard-hyeres" },
   { 
