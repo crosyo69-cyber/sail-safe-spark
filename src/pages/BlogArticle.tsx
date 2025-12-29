@@ -3,7 +3,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Link, useParams, Navigate } from "react-router-dom";
-import { Calendar, Clock, ArrowLeft, ArrowRight, Share2, User, Tag } from "lucide-react";
+import { Calendar, Clock, ArrowLeft, ArrowRight, User, Tag, Facebook, Twitter, Linkedin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { blogArticles } from "./Blog";
 
@@ -916,10 +916,45 @@ const BlogArticle = () => {
                   <span className="text-sm text-muted-foreground">Moniteur Diplômé d'État</span>
                 </div>
               </div>
-              <Button variant="ghost" size="sm">
-                <Share2 className="w-4 h-4 mr-2" />
-                Partager
-              </Button>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground mr-2 hidden sm:inline">Partager :</span>
+                <a
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://www.kitesurfpassion.com/blog/${slug}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full text-muted-foreground hover:text-[#1877F2] hover:bg-[#1877F2]/10 transition-colors"
+                  aria-label="Partager sur Facebook"
+                >
+                  <Facebook className="w-5 h-5" />
+                </a>
+                <a
+                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://www.kitesurfpassion.com/blog/${slug}`)}&text=${encodeURIComponent(article.title)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                  aria-label="Partager sur X"
+                >
+                  <Twitter className="w-5 h-5" />
+                </a>
+                <a
+                  href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`https://www.kitesurfpassion.com/blog/${slug}`)}&title=${encodeURIComponent(article.title)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full text-muted-foreground hover:text-[#0A66C2] hover:bg-[#0A66C2]/10 transition-colors"
+                  aria-label="Partager sur LinkedIn"
+                >
+                  <Linkedin className="w-5 h-5" />
+                </a>
+                <a
+                  href={`https://wa.me/?text=${encodeURIComponent(article.title + ' ' + `https://www.kitesurfpassion.com/blog/${slug}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-full text-muted-foreground hover:text-[#25D366] hover:bg-[#25D366]/10 transition-colors"
+                  aria-label="Partager sur WhatsApp"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                </a>
+              </div>
             </div>
           </header>
 
