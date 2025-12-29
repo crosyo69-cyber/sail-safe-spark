@@ -13,10 +13,18 @@ const navigation = [
       { name: "Stage 100% Glisse", href: "/stage-kitesurf-100-glisse-hyeres" },
       { name: "Session à la Carte", href: "/session-kitesurf-carte-hyeres" },
       { name: "Cours Particulier", href: "/cours-particulier-kitesurf-hyeres" },
+      { name: "Wakeboard", href: "/wakeboard-hyeres" },
     ]
   },
-  { name: "Wing Foil", href: "/stage-wingfoil-hyeres-almanarre" },
-  { name: "Foil Tracté & Wakeboard", href: "/foil-tracte-wakeboard-hyeres" },
+  { 
+    name: "Wing Foil", 
+    href: "/stage-wingfoil-hyeres-almanarre",
+    submenu: [
+      { name: "Stage Wing Foil", href: "/stage-wingfoil-hyeres-almanarre" },
+      { name: "Pump Foil", href: "/cours-pumpfoil-dock-start-hyeres" },
+      { name: "Foil Tracté", href: "/foil-tracte-hyeres" },
+    ]
+  },
   { 
     name: "Location", 
     href: "/location-materiel-kitesurf-hyeres",

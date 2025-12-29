@@ -3,12 +3,13 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
-import { Check, Anchor, Shield, Waves, Users, Phone, Zap, Heart } from "lucide-react";
+import { Check, Anchor, Shield, Zap, Users, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import foilWakeboardHero from "@/assets/foil-wakeboard-hyeres.jpg";
 
 const breadcrumbItems = [
-  { label: "Foil Tracté & Wakeboard" }
+  { label: "Wing Foil", href: "/stage-wingfoil-hyeres-almanarre" },
+  { label: "Foil Tracté" }
 ];
 
 const foilPrices = [
@@ -24,15 +25,6 @@ const foilPrices = [
     price: "80€",
     popular: true,
     features: ["Temps de pratique optimal", "Progression assurée", "Conseils personnalisés"]
-  },
-];
-
-const wakeboardPrices = [
-  { 
-    name: "Session 15 min", 
-    description: "Session wakeboard tractée",
-    price: "40€",
-    features: ["Sensations garanties", "Tous niveaux", "Matériel inclus"]
   },
 ];
 
@@ -54,66 +46,43 @@ const foilBenefits = [
   },
 ];
 
-const wakeboardBenefits = [
-  {
-    icon: Heart,
-    title: "Activité ludique",
-    description: "Fun et accessible, parfait pour tous les âges"
-  },
-  {
-    icon: Waves,
-    title: "Sensations de glisse",
-    description: "Profitez de la baie d'Hyères en toute liberté"
-  },
-  {
-    icon: Shield,
-    title: "Encadrement pro",
-    description: "Moniteur expérimenté pour votre sécurité"
-  },
-];
-
-const FoilTracteWakeboard = () => {
+const FoilTracte = () => {
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "SportsActivityLocation",
-    "name": "Foil Tracté & Wakeboard - KiteSurf Passion Hyères",
-    "description": "Sessions de foil tracté et wakeboard sur la baie d'Hyères. Découvrez les sensations du foil et du wakeboard avec notre bateau et moniteur diplômé.",
-    "url": "https://www.kitesurfpassion.com/foil-tracte-wakeboard-hyeres",
-    "telephone": "+33672716905",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Hyères",
-      "addressRegion": "Var",
-      "postalCode": "83400",
-      "addressCountry": "FR"
+    "@type": "Course",
+    "name": "Foil Tracté Hyères - Initiation au vol sur l'eau",
+    "description": "Sessions de foil tracté sur la baie d'Hyères. Découvrez les sensations du foil en toute sécurité, tracté par notre bateau avec moniteur diplômé.",
+    "url": "https://www.kitesurfpassion.com/foil-tracte-hyeres",
+    "provider": {
+      "@type": "LocalBusiness",
+      "name": "KiteSurf Passion",
+      "telephone": "+33672716905",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Hyères",
+        "addressRegion": "Var",
+        "postalCode": "83400",
+        "addressCountry": "FR"
+      }
     },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 43.0817,
-      "longitude": 6.1366
-    },
-    "priceRange": "40€ - 80€",
-    "areaServed": {
-      "@type": "GeoCircle",
-      "geoMidpoint": {
-        "@type": "GeoCoordinates",
-        "latitude": 43.0817,
-        "longitude": 6.1366
-      },
-      "geoRadius": "10000"
+    "offers": {
+      "@type": "AggregateOffer",
+      "lowPrice": "50",
+      "highPrice": "80",
+      "priceCurrency": "EUR"
     }
   };
 
   return (
     <>
       <Helmet>
-        <title>Foil Tracté & Wakeboard Hyères | Session Bateau Baie d'Hyères</title>
+        <title>Foil Tracté Hyères | Initiation Vol sur l'Eau - Baie d'Hyères</title>
         <meta 
           name="description" 
-          content="Découvrez le foil tracté et le wakeboard sur la baie d'Hyères. Sessions encadrées par moniteur diplômé, bateau sécurisé. Sensations garanties dès 40€ !" 
+          content="Découvrez le foil tracté à Hyères : apprenez à voler sur l'eau en toute sécurité. Sessions de 20 à 40 min avec bateau et moniteur diplômé. Dès 50€ !" 
         />
-        <meta name="keywords" content="foil tracté Hyères, foil tracté bateau Hyères, wakeboard Hyères, wakeboard baie d'Hyères, activités nautiques Hyères" />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/foil-tracte-wakeboard-hyeres" />
+        <meta name="keywords" content="foil tracté Hyères, foil tracté bateau, initiation foil Hyères, apprendre foil bateau, foil débutant Var" />
+        <link rel="canonical" href="https://www.kitesurfpassion.com/foil-tracte-hyeres" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
@@ -125,27 +94,25 @@ const FoilTracteWakeboard = () => {
       <main>
         {/* Hero */}
         <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
-          {/* Background Image */}
           <div className="absolute inset-0">
             <img
               src={foilWakeboardHero}
-              alt="Session de wakeboard sur la baie d'Hyères avec bateau de traction"
+              alt="Session de foil tracté sur la baie d'Hyères avec bateau de traction"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
           </div>
 
-          {/* Content */}
           <div className="container mx-auto px-4 text-center relative z-10 pt-32 pb-16">
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-primary-foreground mb-6 drop-shadow-lg">
-              Foil Tracté &{" "}
+              Foil Tracté{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-turquoise to-primary-foreground">
-                Wakeboard
+                Hyères
               </span>
             </h1>
             <p className="text-primary-foreground/90 text-lg max-w-2xl mx-auto mb-8 drop-shadow-md">
-              Découvrez les sensations uniques du foil tracté et du wakeboard sur la baie d'Hyères. 
-              Sessions encadrées par notre moniteur diplômé avec bateau sécurisé.
+              Découvrez les sensations uniques du foil tracté sur la baie d'Hyères. 
+              La méthode idéale pour apprendre à voler sur l'eau en toute sécurité.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="heroFilled" size="lg" asChild>
@@ -172,7 +139,7 @@ const FoilTracteWakeboard = () => {
                 Simulateur de Foil
               </span>
               <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
-                Foil Tracté
+                Apprenez à Voler sur l'Eau
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Le foil tracté est la méthode idéale pour découvrir les sensations du foil en toute sécurité. 
@@ -200,7 +167,7 @@ const FoilTracteWakeboard = () => {
               ))}
             </div>
 
-            {/* Foil Prices */}
+            {/* Prices */}
             <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
               {foilPrices.map((item, index) => (
                 <div 
@@ -237,89 +204,27 @@ const FoilTracteWakeboard = () => {
           </div>
         </section>
 
-        {/* Wakeboard Section */}
-        <section className="py-20 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <span className="inline-block px-4 py-2 bg-sunset/10 text-sunset rounded-full text-sm font-medium mb-4">
-                Glisse Tractée
-              </span>
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
-                Wakeboard
-              </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Le wakeboard est une activité ludique et accessible à tous. 
-                Profitez de la magnifique baie d'Hyères pour des sessions de glisse inoubliables.
-              </p>
-            </div>
-
-            {/* Benefits */}
-            <div className="grid md:grid-cols-3 gap-8 mb-16">
-              {wakeboardBenefits.map((benefit, index) => (
-                <div 
-                  key={index}
-                  className="bg-card p-6 rounded-2xl border border-border hover:border-sunset/30 transition-all duration-300 hover:shadow-lg"
-                >
-                  <div className="w-12 h-12 bg-sunset/10 rounded-xl flex items-center justify-center mb-4">
-                    <benefit.icon className="w-6 h-6 text-sunset" />
-                  </div>
-                  <h3 className="font-display text-xl font-semibold text-foreground mb-2">
-                    {benefit.title}
-                  </h3>
-                  <p className="text-muted-foreground">
-                    {benefit.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Wakeboard Price */}
-            <div className="max-w-sm mx-auto">
-              {wakeboardPrices.map((item, index) => (
-                <div 
-                  key={index}
-                  className="bg-card p-6 rounded-2xl border border-border hover:border-sunset/30 transition-all duration-300 hover:shadow-xl"
-                >
-                  <h3 className="font-display text-xl font-semibold text-foreground mb-1">
-                    {item.name}
-                  </h3>
-                  <p className="text-muted-foreground text-sm mb-4">{item.description}</p>
-                  <div className="text-3xl font-bold text-sunset mb-4">{item.price}</div>
-                  <ul className="space-y-2">
-                    {item.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Check className="w-4 h-4 text-sunset flex-shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Activité Complémentaire */}
-        <section className="py-16 bg-background">
+        {/* Passerelle vers Wingfoil */}
+        <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="bg-gradient-to-r from-primary/5 to-turquoise/5 rounded-3xl p-8 md:p-12 border border-primary/10">
               <div className="max-w-3xl mx-auto text-center">
                 <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-4">
-                  Activités Complémentaires au Kitesurf
+                  Prêt pour le Wing Foil ?
                 </h2>
                 <p className="text-muted-foreground mb-6">
-                  Le foil tracté et le wakeboard sont des activités parfaites pour compléter votre pratique du kitesurf. 
-                  Découvrez de nouvelles sensations ou initiez vos proches à la glisse nautique !
+                  Le foil tracté est une excellente préparation au wing foil. 
+                  Une fois à l'aise avec l'équilibre sur le foil, passez à l'étape supérieure avec nos stages wing foil !
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Link to="/cours-kitesurf-hyeres-debutant">
-                    <Button variant="outline" size="lg">
-                      Découvrir le Kitesurf
+                  <Link to="/stage-wingfoil-hyeres-almanarre">
+                    <Button variant="default" size="lg">
+                      Stages Wing Foil
                     </Button>
                   </Link>
-                  <Link to="/stage-wingfoil-hyeres-almanarre">
+                  <Link to="/cours-pumpfoil-dock-start-hyeres">
                     <Button variant="outline" size="lg">
-                      Stages Wing Foil
+                      Initiation Pump Foil
                     </Button>
                   </Link>
                 </div>
@@ -329,7 +234,7 @@ const FoilTracteWakeboard = () => {
         </section>
 
         {/* Related Activities */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
             <div className="text-center mb-10">
               <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-4">
@@ -346,20 +251,20 @@ const FoilTracteWakeboard = () => {
                 <span className="text-primary text-sm font-medium">Dès 90€ →</span>
               </Link>
               <Link 
+                to="/wakeboard-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Wakeboard</h3>
+                <p className="text-muted-foreground text-sm mb-3">Glisse tractée fun</p>
+                <span className="text-primary text-sm font-medium">40€ →</span>
+              </Link>
+              <Link 
                 to="/cours-pumpfoil-dock-start-hyeres"
                 className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
               >
                 <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Initiation Pump Foil</h3>
                 <p className="text-muted-foreground text-sm mb-3">Sans vent, sans vagues</p>
                 <span className="text-primary text-sm font-medium">50€ →</span>
-              </Link>
-              <Link 
-                to="/stage-kitesurf-100-glisse-hyeres"
-                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
-              >
-                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Stage Kitesurf</h3>
-                <p className="text-muted-foreground text-sm mb-3">5 jours pour l'autonomie</p>
-                <span className="text-primary text-sm font-medium">Dès 399€ →</span>
               </Link>
             </div>
           </div>
@@ -369,11 +274,11 @@ const FoilTracteWakeboard = () => {
         <section className="py-20 bg-gradient-to-r from-navy via-primary/90 to-turquoise text-primary-foreground">
           <div className="container mx-auto px-4 text-center">
             <h2 className="font-display text-3xl sm:text-4xl font-bold mb-4">
-              Prêt à Vivre l'Expérience ?
+              Prêt à Voler sur l'Eau ?
             </h2>
             <p className="text-primary-foreground/80 max-w-xl mx-auto mb-8">
-              Réservez votre session de foil tracté ou de wakeboard dès maintenant. 
-              Sensations garanties sur la magnifique baie d'Hyères !
+              Réservez votre session de foil tracté et découvrez les sensations uniques 
+              du vol sur la magnifique baie d'Hyères !
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="heroFilled" size="lg" asChild>
@@ -398,4 +303,4 @@ const FoilTracteWakeboard = () => {
   );
 };
 
-export default FoilTracteWakeboard;
+export default FoilTracte;

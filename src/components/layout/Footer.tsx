@@ -7,7 +7,8 @@ const footerLinks = {
     { name: "Cours Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
     { name: "Stage Wing Foil", href: "/stage-wingfoil-hyeres-almanarre" },
     { name: "Initiation Pump Foil", href: "/cours-pumpfoil-dock-start-hyeres" },
-    { name: "Foil Tracté & Wakeboard", href: "/foil-tracte-wakeboard-hyeres" },
+    { name: "Foil Tracté", href: "/foil-tracte-hyeres" },
+    { name: "Wakeboard", href: "/wakeboard-hyeres" },
   ],
   quickLinks: [
     { name: "Accueil", href: "/" },
