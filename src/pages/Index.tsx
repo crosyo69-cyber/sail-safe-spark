@@ -13,16 +13,35 @@ const Index = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+    "@id": "https://www.kitesurfpassion.com/#organization",
     name: "KiteSurf Passion",
-    description: "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999. Bateau d'assistance, moniteur diplômé d'État, spot de l'Almanarre.",
+    description: "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999. Plus de 2 500 élèves formés. Bateau d'assistance, moniteur diplômé d'État, spot de l'Almanarre.",
     url: "https://www.kitesurfpassion.com",
     telephone: "+33672716905",
     email: "contact@kitesurfpassion.com",
+    foundingDate: "1999",
+    founder: {
+      "@type": "Person",
+      name: "Yohan Cros",
+      jobTitle: "Moniteur diplômé d'État BPJEPS et formateur de moniteurs",
+    },
+    numberOfEmployees: {
+      "@type": "QuantitativeValue",
+      value: 1,
+    },
+    slogan: "Apprenez le kitesurf en toute sécurité à Hyères",
+    knowsAbout: ["Kitesurf", "Wingfoil", "Pumpfoil", "Foil tracté", "Wakeboard"],
+    hasCredential: {
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: "BPJEPS",
+      name: "Brevet Professionnel de la Jeunesse, de l'Éducation Populaire et du Sport",
+    },
     address: {
       "@type": "PostalAddress",
       streetAddress: "52 Avenue Général de Gaulle",
       addressLocality: "Carqueiranne",
       postalCode: "83320",
+      addressRegion: "Var",
       addressCountry: "FR",
     },
     geo: {
@@ -30,10 +49,21 @@ const Index = () => {
       latitude: "43.0817",
       longitude: "6.1366",
     },
+    areaServed: {
+      "@type": "GeoCircle",
+      geoMidpoint: {
+        "@type": "GeoCoordinates",
+        latitude: "43.0817",
+        longitude: "6.1366",
+      },
+      geoRadius: "30000",
+    },
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: "4.9",
       reviewCount: "127",
+      bestRating: "5",
+      worstRating: "1",
     },
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
@@ -43,6 +73,46 @@ const Index = () => {
     },
     priceRange: "€€",
     image: "https://www.kitesurfpassion.com/og-image.jpg",
+    sameAs: [
+      "https://www.facebook.com/kitesurfpassion",
+      "https://www.instagram.com/kitesurfpassion",
+    ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Cours et stages de sports nautiques",
+      itemListElement: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Course",
+            name: "Stage Kitesurf 100% Glisse",
+            description: "5 jours consécutifs pour devenir autonome en kitesurf",
+          },
+          price: "399",
+          priceCurrency: "EUR",
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Course",
+            name: "Stage Wingfoil Initiation",
+            description: "Initiation au wingfoil sur 5 jours",
+          },
+          price: "440",
+          priceCurrency: "EUR",
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Course",
+            name: "Initiation Pumpfoil",
+            description: "Découverte du pumpfoil et dock start",
+          },
+          price: "50",
+          priceCurrency: "EUR",
+        },
+      ],
+    },
   };
 
   const faqStructuredData = {
