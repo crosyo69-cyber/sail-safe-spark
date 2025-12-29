@@ -116,4 +116,55 @@
     <priority>0.6</priority>
   </url>
   
+  <!-- Blog -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/blog-kitesurf-hyeres</loc>
+    <lastmod>2024-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Articles Blog -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/blog/debuter-kitesurf-hyeres-guide-complet</loc>
+    <lastmod>2024-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.kitesurfpassion.com/blog/wingfoil-sport-tendance-2024</loc>
+    <lastmod>2024-12-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.kitesurfpassion.com/blog/conditions-meteo-almanarre-guide</loc>
+    <lastmod>2024-12-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.kitesurfpassion.com/blog/pourquoi-bateau-assistance-essentiel</loc>
+    <lastmod>2024-11-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.kitesurfpassion.com/blog/pumpfoil-dock-start-initiation</loc>
+    <lastmod>2024-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.kitesurfpassion.com/blog/meilleure-periode-kitesurf-var</loc>
+    <lastmod>2024-11-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
 </urlset>
