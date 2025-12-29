@@ -322,6 +322,43 @@ const FoilTracteWakeboard = () => {
           </div>
         </section>
 
+        {/* Related Activities */}
+        <section className="py-16 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-10">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-4">
+                Découvrez Aussi
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <Link 
+                to="/stage-wingfoil-hyeres-almanarre"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Stage Wing Foil</h3>
+                <p className="text-muted-foreground text-sm mb-3">Volez sur l'eau en autonomie</p>
+                <span className="text-primary text-sm font-medium">Dès 90€ →</span>
+              </Link>
+              <Link 
+                to="/cours-pumpfoil-dock-start-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Initiation Pump Foil</h3>
+                <p className="text-muted-foreground text-sm mb-3">Sans vent, sans vagues</p>
+                <span className="text-primary text-sm font-medium">50€ →</span>
+              </Link>
+              <Link 
+                to="/stage-kitesurf-100-glisse-hyeres"
+                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
+              >
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Stage Kitesurf</h3>
+                <p className="text-muted-foreground text-sm mb-3">5 jours pour l'autonomie</p>
+                <span className="text-primary text-sm font-medium">Dès 399€ →</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-r from-navy via-primary/90 to-turquoise text-primary-foreground">
           <div className="container mx-auto px-4 text-center">
