@@ -42,7 +42,7 @@ export function WhyUsSection() {
             à Hyères ?
           </h2>
           <p className="text-muted-foreground text-lg">
-            Depuis 1999, nous formons des riders passionnés avec une pédagogie unique et une sécurité maximale.
+            Depuis 1999, nous avons formé plus de 2 500 élèves avec une pédagogie unique et une sécurité maximale.
           </p>
         </div>
 
