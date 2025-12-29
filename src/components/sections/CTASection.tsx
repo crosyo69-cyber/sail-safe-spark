@@ -54,7 +54,7 @@ export function CTASection() {
             ?
           </h2>
           <p className="text-primary-foreground/80 text-lg mb-12 max-w-2xl mx-auto">
-            Réservez dès maintenant votre stage à Hyères et rejoignez les 1000+ riders formés depuis 1999
+            Réservez dès maintenant votre stage à Hyères et rejoignez les 2 500 élèves formés depuis 1999
           </p>
 
           {/* Form */}

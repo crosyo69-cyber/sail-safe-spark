@@ -151,7 +151,7 @@ const APropos = () => {
                     Titulaire du <strong className="text-foreground">BPJEPS</strong> (Brevet Professionnel de la Jeunesse, de l'Éducation Populaire et du Sport), Yohan est également <strong className="text-foreground">formateur de moniteurs</strong>. Cette double casquette lui confère une expertise pédagogique unique, qu'il met au service de tous ses élèves.
                   </p>
                   <p>
-                    Avec plus de <strong className="text-foreground">25 ans d'expérience</strong>, Yohan a formé des centaines de kitesurfeurs et continue de transmettre sa passion avec le même enthousiasme qu'au premier jour. Sa connaissance parfaite du spot de l'Almanarre et des conditions météorologiques locales garantit des sessions optimales en toute sécurité.
+                    Avec plus de <strong className="text-foreground">25 ans d'expérience</strong>, Yohan a formé plus de <strong className="text-foreground">2 500 élèves</strong> et continue de transmettre sa passion avec le même enthousiasme qu'au premier jour. Sa connaissance parfaite du spot de l'Almanarre et des conditions météorologiques locales garantit des sessions optimales en toute sécurité.
                   </p>
                 </div>
                 <div className="mt-8 flex flex-wrap gap-4">
@@ -182,7 +182,7 @@ const APropos = () => {
                         <Sparkles className="w-6 h-6 text-primary-foreground" />
                       </div>
                       <div>
-                        <p className="font-bold text-foreground">+500</p>
+                        <p className="font-bold text-foreground">+2 500</p>
                         <p className="text-sm text-muted-foreground">Élèves formés</p>
                       </div>
                     </div>
