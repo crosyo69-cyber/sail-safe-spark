@@ -319,7 +319,7 @@ const APropos = () => {
                     >
                       <div className={`hidden md:block flex-1 ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>
                         <div 
-                          className={`bg-card border border-border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-700 ease-out ${
+                          className={`bg-card border border-border rounded-xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-500 ease-out ${
                             isVisible 
                               ? 'opacity-100 translate-x-0' 
                               : index % 2 === 0 
@@ -357,7 +357,7 @@ const APropos = () => {
                       {/* Mobile card */}
                       <div className="md:hidden ml-12 flex-1">
                         <div 
-                          className={`bg-card border border-border rounded-xl overflow-hidden shadow-lg transition-all duration-700 ease-out ${
+                          className={`bg-card border border-border rounded-xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-500 ease-out ${
                             isVisible 
                               ? 'opacity-100 translate-x-0' 
                               : 'opacity-0 translate-x-8'
