@@ -5,7 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, Anchor, Shield, Zap, Users, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
-import foilWakeboardHero from "@/assets/foil-wakeboard-hyeres.jpg";
+import foilTracteHero from "@/assets/foil-tracte-hyeres.jpg";
 
 const breadcrumbItems = [
   { label: "Wing Foil", href: "/stage-wingfoil-hyeres-almanarre" },
@@ -96,8 +96,8 @@ const FoilTracte = () => {
         <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0">
             <img
-              src={foilWakeboardHero}
-              alt="Session de foil tracté sur la baie d'Hyères avec bateau de traction"
+              src={foilTracteHero}
+              alt="Foil tracté Hyères - Session foil remorqué bateau école KiteSurf Passion Almanarre Var"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
