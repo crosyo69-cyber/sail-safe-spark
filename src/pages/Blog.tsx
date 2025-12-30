@@ -24,7 +24,8 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2024-12-15",
     readTime: "8 min",
-    image: "blog-kite-duotone.jpg",
+    image: "blog-kitesurf-debut.jpg",
+    alt: "Débuter en kitesurf - Guide complet",
     featured: true,
   },
   {
@@ -344,7 +345,7 @@ const Blog = () => {
                     <div className="aspect-video overflow-hidden">
                       <img
                         src={`/src/assets/${article.image}`}
-                        alt={article.title}
+                        alt={article.alt || article.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
                       />
@@ -435,7 +436,7 @@ const Blog = () => {
                     <div className="aspect-video overflow-hidden relative">
                       <img
                         src={`/src/assets/${article.image}`}
-                        alt={article.title}
+                        alt={article.alt || article.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
                       />
