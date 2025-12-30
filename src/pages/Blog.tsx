@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShareButtons } from "@/components/ShareButtons";
-import heroImage from "@/assets/almanarre-sunset.jpg";
+import heroImage from "@/assets/blog-hero.jpg";
 
 const breadcrumbItems = [
   { label: "Blog & Actualités" }
@@ -245,11 +245,11 @@ const Blog = () => {
           <div className="absolute inset-0">
             <img
               src={heroImage}
-              alt="Blog kitesurf Hyères - actualités et conseils"
+              alt="Blog kitesurf wingfoil pumpfoil - Presqu'île de Giens"
               className="w-full h-full object-cover"
               loading="eager"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-navy/90 to-navy/60" />
+            <div className="absolute inset-0 bg-gradient-to-r from-navy/70 via-navy/40 to-navy/20" />
           </div>
 
           <div className="relative z-10 container mx-auto px-4">
