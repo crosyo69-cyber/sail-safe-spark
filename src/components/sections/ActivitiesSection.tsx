@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import kitesurfImage from "@/assets/kitesurf-cours-hyeres.jpg";
 import wingfoilImage from "@/assets/wingfoil-hyeres.jpg";
-import pumpfoilImage from "@/assets/pumpfoil.jpg";
+import pumpfoilImage from "@/assets/pumpfoil-hyeres.jpg";
 import downwindImage from "@/assets/downwind.jpg";
 
 const activities = [

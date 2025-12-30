@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Check, ArrowRight, Waves, Zap, Target, Clock } from "lucide-react";
 import pumpfoilImage from "@/assets/pumpfoil-hyeres-cours.jpg";
+import pumpfoilInitiation from "@/assets/pumpfoil-initiation.jpg";
 
 const breadcrumbItems = [
   { label: "Initiation Pump Foil" }
@@ -240,8 +241,8 @@ export default function CoursPumpfoil() {
               </div>
               <div className="relative">
                 <img
-                  src={pumpfoilImage}
-                  alt="Séance initiation pumpfoil dock start Hyères Almanarre Var"
+                  src={pumpfoilInitiation}
+                  alt="Séance initiation pumpfoil dock start Hyères Almanarre Var - Moniteur école KiteSurf Passion"
                   className="rounded-3xl shadow-2xl"
                 />
               </div>

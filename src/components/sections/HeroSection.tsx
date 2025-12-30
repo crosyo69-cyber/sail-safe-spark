@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import heroKitesurf from "@/assets/kitesurf-hyeres.jpg";
 import heroWingfoil from "@/assets/wingfoil-hyeres.jpg";
-import heroPumpfoil from "@/assets/pumpfoil-hyeres-cours.jpg";
+import heroPumpfoil from "@/assets/pumpfoil-hyeres.jpg";
 
 const slides = [
   {
