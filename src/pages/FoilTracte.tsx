@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Check, Anchor, Shield, Zap, Users, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import foilTracteHero from "@/assets/foil-tracte-hyeres.jpg";
+import { FoilWakeboardTestimonials } from "@/components/sections/FoilWakeboardTestimonials";
 
 const breadcrumbItems = [
   { label: "Wing Foil", href: "/stage-wingfoil-hyeres-almanarre" },
@@ -204,8 +205,14 @@ const FoilTracte = () => {
           </div>
         </section>
 
+        {/* Témoignages Foil Tracté */}
+        <FoilWakeboardTestimonials 
+          variant="foilTracte" 
+          title="Ils Ont Testé le Foil Tracté" 
+        />
+
         {/* Passerelle vers Wingfoil */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
             <div className="bg-gradient-to-r from-primary/5 to-turquoise/5 rounded-3xl p-8 md:p-12 border border-primary/10">
               <div className="max-w-3xl mx-auto text-center">
