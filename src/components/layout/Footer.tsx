@@ -16,6 +16,7 @@ import logoVisitvar from "@/assets/logo-visitvar.png";
 import logoPagesjaunes from "@/assets/logo-pagesjaunes.png";
 import logoWanderlog from "@/assets/logo-wanderlog.png";
 import logoBiereIlesDor from "@/assets/logo-biere-iles-dor.png";
+import logoCitoofrance from "@/assets/logo-citoofrance.png";
 
 const footerLinks = {
   activities: [
@@ -395,6 +396,19 @@ export function Footer() {
               <img 
                 src={logoBiereIlesDor} 
                 alt="La Bière des Îles d'Or - Partenaire brasserie artisanale" 
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+            <a 
+              href="https://citoofrance.com/ecole/hyeres/kitesurf-passion/#google_vignette" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="Citoo France - Annuaire écoles de kitesurf"
+            >
+              <img 
+                src={logoCitoofrance} 
+                alt="Citoo France - Annuaire des écoles de kitesurf" 
                 className="h-10 w-auto object-contain"
               />
             </a>
