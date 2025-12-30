@@ -62,7 +62,7 @@ export const blogArticles = [
     category: "Pump Foil",
     date: "2024-11-20",
     readTime: "5 min",
-    image: "blog-kitesurf-jump.jpg",
+    image: "blog-pumpfoil.jpg",
   },
   {
     slug: "meilleure-periode-kitesurf-var",
@@ -98,7 +98,7 @@ export const blogArticles = [
     category: "Pump Foil",
     date: "2024-10-15",
     readTime: "5 min",
-    image: "blog-kitesurf-jump.jpg",
+    image: "blog-pumpfoil.jpg",
   },
   {
     slug: "premiers-vols-wingfoil-conseils",
