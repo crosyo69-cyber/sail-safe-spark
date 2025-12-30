@@ -5,6 +5,7 @@ import { OptimizedImage } from "@/components/ui/optimized-image";
 import kitesurfImage from "@/assets/kitesurf-cours-hyeres.jpg";
 import wingfoilImage from "@/assets/wingfoil-hyeres.jpg";
 import pumpfoilImage from "@/assets/pumpfoil-hyeres.jpg";
+import foilTracteImage from "@/assets/foil-tracte-hyeres.jpg";
 import wakeboardImage from "@/assets/wakeboard-hyeres.jpg";
 import downwindImage from "@/assets/downwind.jpg";
 
@@ -34,6 +35,15 @@ const activities = [
     price: "50€",
     image: pumpfoilImage,
     link: "/cours-pumpfoil-dock-start-hyeres",
+    featured: false,
+  },
+  {
+    id: "foil-tracte",
+    title: "Foil Tracté",
+    description: "Découvrez les sensations du foil tracté par bateau. Idéal pour s'initier au vol sans vent.",
+    price: "À partir de 50€",
+    image: foilTracteImage,
+    link: "/foil-tracte-hyeres",
     featured: false,
   },
   {
