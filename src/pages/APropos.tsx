@@ -283,6 +283,94 @@ const APropos = () => {
           </div>
         </section>
 
+        {/* Certifications Section */}
+        <section className="py-16 bg-gradient-to-br from-primary/5 via-background to-turquoise/5">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                <Award className="w-4 h-4" />
+                Certifications & Diplômes
+              </span>
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
+                Qualifications Professionnelles
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Des diplômes d'État reconnus garantissant un enseignement de qualité et une sécurité optimale.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+              {/* BPJEPS Badge */}
+              <div className="group relative bg-card border border-border rounded-2xl p-6 text-center hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-turquoise/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative z-10">
+                  <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-primary to-turquoise rounded-full flex items-center justify-center shadow-lg">
+                    <Award className="w-10 h-10 text-primary-foreground" />
+                  </div>
+                  <h3 className="font-display font-bold text-foreground text-lg mb-2">BPJEPS</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Brevet Professionnel de la Jeunesse, de l'Éducation Populaire et du Sport
+                  </p>
+                  <span className="inline-block mt-3 px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full">
+                    Depuis 2001
+                  </span>
+                </div>
+              </div>
+
+              {/* Formateur Badge */}
+              <div className="group relative bg-card border border-border rounded-2xl p-6 text-center hover:shadow-xl hover:shadow-sunset/10 hover:-translate-y-1 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-sunset/10 to-primary/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative z-10">
+                  <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-sunset to-primary rounded-full flex items-center justify-center shadow-lg">
+                    <Users className="w-10 h-10 text-primary-foreground" />
+                  </div>
+                  <h3 className="font-display font-bold text-foreground text-lg mb-2">Formateur</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Habilité à former les futurs moniteurs professionnels
+                  </p>
+                  <span className="inline-block mt-3 px-3 py-1 bg-sunset/10 text-sunset text-xs font-medium rounded-full">
+                    Depuis 2010
+                  </span>
+                </div>
+              </div>
+
+              {/* Experience Badge */}
+              <div className="group relative bg-card border border-border rounded-2xl p-6 text-center hover:shadow-xl hover:shadow-turquoise/10 hover:-translate-y-1 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-turquoise/10 to-primary/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative z-10">
+                  <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-turquoise to-primary rounded-full flex items-center justify-center shadow-lg">
+                    <Calendar className="w-10 h-10 text-primary-foreground" />
+                  </div>
+                  <h3 className="font-display font-bold text-foreground text-lg mb-2">25+ Ans</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    D'expérience dans l'enseignement des sports de glisse
+                  </p>
+                  <span className="inline-block mt-3 px-3 py-1 bg-turquoise/10 text-turquoise text-xs font-medium rounded-full">
+                    Depuis 1999
+                  </span>
+                </div>
+              </div>
+
+              {/* Students Badge */}
+              <div className="group relative bg-card border border-border rounded-2xl p-6 text-center hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-sunset/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative z-10">
+                  <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-primary to-sunset rounded-full flex items-center justify-center shadow-lg">
+                    <Sparkles className="w-10 h-10 text-primary-foreground" />
+                  </div>
+                  <h3 className="font-display font-bold text-foreground text-lg mb-2">2 500+</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Élèves formés avec succès sur le spot de l'Almanarre
+                  </p>
+                  <span className="inline-block mt-3 px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full">
+                    Bilan 2024
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* History Timeline */}
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
