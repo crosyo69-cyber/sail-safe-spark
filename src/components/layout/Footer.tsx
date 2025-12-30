@@ -1,6 +1,8 @@
 import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 import { NewsletterForm } from "@/components/NewsletterForm";
+import logoFfvl from "@/assets/logo-ffvl.png";
+import logoEfk from "@/assets/logo-efk.png";
 
 const footerLinks = {
   activities: [
@@ -68,6 +70,39 @@ export function Footer() {
               >
                 <Youtube className="w-5 h-5" />
               </a>
+            </div>
+            
+            {/* Logos FFVL/EFK */}
+            <div className="mt-6 pt-4 border-t border-primary-foreground/10">
+              <p className="text-xs text-primary-foreground/60 mb-3">École FFVL labellisée EFK</p>
+              <div className="flex items-center gap-3">
+                <a 
+                  href="https://ffvl.fr" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-white/90 rounded-lg p-2 hover:bg-white transition-colors"
+                  title="Fédération Française de Vol Libre"
+                >
+                  <img 
+                    src={logoFfvl} 
+                    alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
+                    className="h-10 w-auto object-contain"
+                  />
+                </a>
+                <a 
+                  href="https://ffvl.fr/ecole-francaise-kite" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-white/90 rounded-lg p-2 hover:bg-white transition-colors"
+                  title="École Française de Kite"
+                >
+                  <img 
+                    src={logoEfk} 
+                    alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
+                    className="h-10 w-auto object-contain"
+                  />
+                </a>
+              </div>
             </div>
           </div>
 
