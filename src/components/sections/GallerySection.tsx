@@ -5,7 +5,7 @@ import { OptimizedImage } from "@/components/ui/optimized-image";
 
 import heroKitesurf from "@/assets/kitesurf-hyeres.jpg";
 import wingfoil from "@/assets/wingfoil-hyeres.jpg";
-import pumpfoil from "@/assets/pumpfoil.jpg";
+import pumpfoil from "@/assets/pumpfoil-dock-start.jpg";
 import foilWakeboard from "@/assets/foil-wakeboard-hyeres.jpg";
 import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
 import almanarre from "@/assets/almanarre-sunset.jpg";
@@ -27,7 +27,7 @@ const galleryImages = [
   },
   {
     src: pumpfoil,
-    alt: "Initiation pumpfoil dock start",
+    alt: "Pumpfoil Hyères dock start - Cours pump foil école KiteSurf Passion Almanarre Var",
     title: "Pumpfoil",
     category: "Pumpfoil"
   },
