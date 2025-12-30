@@ -114,7 +114,7 @@ const Stage100Glisse = () => {
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${hero100Glisse})` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/80 to-navy/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy/80 via-navy/50 to-navy/30" />
           
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl">
