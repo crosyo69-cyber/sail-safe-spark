@@ -30,6 +30,7 @@ const Blog = lazy(() => import("./pages/Blog"));
 const BlogArticle = lazy(() => import("./pages/BlogArticle"));
 const Auth = lazy(() => import("./pages/Auth"));
 const UnsubscribeAlerts = lazy(() => import("./pages/UnsubscribeAlerts"));
+const MentionsLegales = lazy(() => import("./pages/MentionsLegales"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -80,6 +81,7 @@ const App = () => (
               <Route path="/blog/:slug" element={<BlogArticle />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/desabonnement-alertes" element={<UnsubscribeAlerts />} />
+              <Route path="/mentions-legales" element={<MentionsLegales />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
