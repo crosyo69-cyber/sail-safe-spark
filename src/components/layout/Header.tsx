@@ -48,9 +48,14 @@ export function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      // Always show header, just change styling based on scroll position
+      setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener("scroll", handleScroll);
+    
+    // Check initial scroll position on mount
+    handleScroll();
+    
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
