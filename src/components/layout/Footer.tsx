@@ -10,6 +10,7 @@ import logoOtCarqueiranne from "@/assets/logo-ot-carqueiranne.jpg";
 import logoTripadvisor from "@/assets/logo-tripadvisor.png";
 import logoSpeedkart from "@/assets/logo-speedkart.jpg";
 import logoProvenceMed from "@/assets/logo-provence-med.png";
+import logoThespot2be from "@/assets/logo-thespot2be.png";
 
 const footerLinks = {
   activities: [
@@ -311,6 +312,19 @@ export function Footer() {
               <img 
                 src={logoSpeedkart} 
                 alt="Speedkart partenaire" 
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+            <a 
+              href="https://thespot2be.com/ecole/328c1fe0367717f6" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="TheSpot2be - Plateforme spots kitesurf"
+            >
+              <img 
+                src={logoThespot2be} 
+                alt="TheSpot2be - Partenaire école kitesurf" 
                 className="h-10 w-auto object-contain"
               />
             </a>
