@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { WeatherWidget } from "@/components/sections/WeatherWidget";
 import { 
   MapPin, 
   Wind, 
@@ -233,6 +234,9 @@ export default function SpotAlmanarre() {
             </div>
           </div>
         </section>
+
+        {/* Weather Widget Section */}
+        <WeatherWidget />
 
         {/* Conditions Section */}
         <section id="conditions" className="py-20">
