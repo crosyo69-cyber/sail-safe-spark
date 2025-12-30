@@ -7,6 +7,7 @@ import heroKitesurf from "@/assets/kitesurf-hyeres.jpg";
 import wingfoil from "@/assets/wingfoil-hyeres.jpg";
 import pumpfoil from "@/assets/pumpfoil-dock-start.jpg";
 import foilTracte from "@/assets/foil-tracte-hyeres.jpg";
+import wakeboard from "@/assets/wakeboard-hyeres.jpg";
 import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
 import almanarre from "@/assets/almanarre-sunset.jpg";
 import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
@@ -36,6 +37,12 @@ const galleryImages = [
     alt: "Foil tracté Hyères - Session foil remorqué bateau école KiteSurf Passion Almanarre Var",
     title: "Foil Tracté",
     category: "Foil Tracté"
+  },
+  {
+    src: wakeboard,
+    alt: "Wakeboard Hyères - Session wakeboard tractée bateau école KiteSurf Passion Almanarre Var",
+    title: "Wakeboard",
+    category: "Wakeboard"
   },
   {
     src: bateauSecurite,
