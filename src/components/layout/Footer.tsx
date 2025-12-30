@@ -13,6 +13,7 @@ import logoProvenceMed from "@/assets/logo-provence-med.png";
 import logoThespot2be from "@/assets/logo-thespot2be.png";
 import logoHotelRichiardi from "@/assets/logo-hotel-richiardi.png";
 import logoVisitvar from "@/assets/logo-visitvar.png";
+import logoPagesjaunes from "@/assets/logo-pagesjaunes.png";
 
 const footerLinks = {
   activities: [
@@ -353,6 +354,19 @@ export function Footer() {
               <img 
                 src={logoVisitvar} 
                 alt="Visit Var - Tourisme département du Var" 
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+            <a 
+              href="https://www.pagesjaunes.fr/pros/51934489" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="Pages Jaunes - Annuaire professionnel"
+            >
+              <img 
+                src={logoPagesjaunes} 
+                alt="Pages Jaunes - Fiche professionnelle Kitesurf Passion" 
                 className="h-10 w-auto object-contain"
               />
             </a>
