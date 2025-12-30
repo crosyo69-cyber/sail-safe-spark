@@ -2,3 +2,6 @@ project_id = "unqxudbxxzzmmbwwxwcr"
 
 [functions.weather-alerts]
 verify_jwt = false
+
+[functions.unsubscribe-weather]
+verify_jwt = false

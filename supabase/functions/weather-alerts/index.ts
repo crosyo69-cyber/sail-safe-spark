@@ -53,6 +53,7 @@ function getWindDirection(degrees: number): string {
 async function sendEmailAlert(
   email: string,
   windData: WindguruData,
+  unsubscribeToken: string,
   resendApiKey: string
 ): Promise<boolean> {
   try {
@@ -61,6 +62,8 @@ async function sendEmailAlert(
     const windDirection = windData.wind_direction 
       ? getWindDirection(windData.wind_direction) 
       : "N/A";
+
+    const unsubscribeUrl = `https://kitesurfpassion.fr/desabonnement-alertes?token=${unsubscribeToken}`;
 
     const emailResponse = await resend.emails.send({
       from: "Kitesurf Passion <onboarding@resend.dev>",
@@ -87,6 +90,7 @@ async function sendEmailAlert(
             .cta { text-align: center; margin: 30px 0; }
             .cta a { background: #0891b2; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; }
             .footer { background: #f8fafc; padding: 20px; text-align: center; color: #64748b; font-size: 12px; }
+            .footer a { color: #0891b2; }
           </style>
         </head>
         <body>
@@ -127,8 +131,8 @@ async function sendEmailAlert(
               <p><strong>L'équipe Kitesurf Passion</strong></p>
             </div>
             <div class="footer">
-              <p>Vous recevez cet email car vous êtes abonné aux alertes météo.</p>
-              <p><a href="https://kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var">Se désabonner</a></p>
+              <p>Vous recevez cet email car vous êtes abonné aux alertes météo de Kitesurf Passion.</p>
+              <p><a href="${unsubscribeUrl}">Se désabonner des alertes météo</a></p>
             </div>
           </div>
         </body>
@@ -180,7 +184,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Fetch all enabled subscriptions where current wind is in range
     const { data: subscriptions, error } = await supabase
       .from("weather_alert_subscriptions")
-      .select("*")
+      .select("email, unsubscribe_token")
       .eq("enabled", true)
       .lte("min_wind", windData.wind_avg)
       .gte("max_wind", windData.wind_avg);
@@ -195,7 +199,12 @@ const handler = async (req: Request): Promise<Response> => {
     // Send emails to all matching subscriptions
     let sentCount = 0;
     for (const subscription of subscriptions || []) {
-      const success = await sendEmailAlert(subscription.email, windData, resendApiKey);
+      const success = await sendEmailAlert(
+        subscription.email, 
+        windData, 
+        subscription.unsubscribe_token,
+        resendApiKey
+      );
       if (success) sentCount++;
     }
 
