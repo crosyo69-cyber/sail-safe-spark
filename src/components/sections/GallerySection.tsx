@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 
 import heroKitesurf from "@/assets/hero-kitesurf.jpg";
-import wingfoil from "@/assets/wingfoil.jpg";
+import wingfoil from "@/assets/wingfoil-hyeres.jpg";
 import pumpfoil from "@/assets/pumpfoil.jpg";
 import foilWakeboard from "@/assets/foil-wakeboard-hyeres.jpg";
 import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
@@ -21,7 +21,7 @@ const galleryImages = [
   },
   {
     src: wingfoil,
-    alt: "Cours de wing foil à l'Almanarre",
+    alt: "Cours wingfoil Hyères Almanarre - Stage wing foil école KiteSurf Passion Var",
     title: "Wing Foil",
     category: "Wing Foil"
   },

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import kitesurfImage from "@/assets/kitesurf-lesson.jpg";
-import wingfoilImage from "@/assets/wingfoil.jpg";
+import wingfoilImage from "@/assets/wingfoil-hyeres.jpg";
 import pumpfoilImage from "@/assets/pumpfoil.jpg";
 import downwindImage from "@/assets/downwind.jpg";
 
