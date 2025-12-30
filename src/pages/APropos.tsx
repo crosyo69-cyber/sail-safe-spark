@@ -4,7 +4,9 @@ import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Award, Ship, Heart, Users, Calendar, MapPin, Shield, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
+import { Award, Ship, Heart, Users, Calendar, MapPin, Shield, Sparkles, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
+import logoFfvl from "@/assets/logo-ffvl.png";
+import logoEfk from "@/assets/logo-efk.png";
 import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
 import portraitYohan from "@/assets/portrait-yohan-cros.jpg";
 import bateauSecurite from "@/assets/bateau-assistance-kitesurf.jpg";
@@ -366,6 +368,50 @@ const APropos = () => {
                     Bilan 2024
                   </span>
                 </div>
+              </div>
+            </div>
+            
+            {/* Logos FFVL/EFK Section */}
+            <div className="mt-12 pt-8 border-t border-border">
+              <div className="text-center mb-6">
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+                  <Shield className="w-4 h-4" />
+                  École FFVL labellisée EFK
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-6">
+                <a 
+                  href="https://ffvl.fr" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="group bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col items-center gap-2"
+                  title="Fédération Française de Vol Libre"
+                >
+                  <img 
+                    src={logoFfvl} 
+                    alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
+                    className="h-16 w-auto object-contain"
+                  />
+                  <span className="text-xs text-muted-foreground flex items-center gap-1 group-hover:text-primary transition-colors">
+                    FFVL <ExternalLink className="w-3 h-3" />
+                  </span>
+                </a>
+                <a 
+                  href="https://ffvl.fr/ecole-francaise-kite" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="group bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col items-center gap-2"
+                  title="École Française de Kite"
+                >
+                  <img 
+                    src={logoEfk} 
+                    alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
+                    className="h-16 w-auto object-contain"
+                  />
+                  <span className="text-xs text-muted-foreground flex items-center gap-1 group-hover:text-primary transition-colors">
+                    EFK <ExternalLink className="w-3 h-3" />
+                  </span>
+                </a>
               </div>
             </div>
           </div>

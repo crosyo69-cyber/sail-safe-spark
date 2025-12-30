@@ -1,4 +1,6 @@
-import { Ship, MapPin, GraduationCap, Waves } from "lucide-react";
+import { Ship, MapPin, GraduationCap, Waves, ExternalLink, Shield } from "lucide-react";
+import logoFfvl from "@/assets/logo-ffvl.png";
+import logoEfk from "@/assets/logo-efk.png";
 
 const features = [
   {
@@ -71,6 +73,44 @@ export function WhyUsSection() {
               </p>
             </div>
           ))}
+        </div>
+        
+        {/* Certifications FFVL/EFK */}
+        <div className="mt-16 pt-10 border-t border-border/50">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10">
+            <div className="flex items-center gap-2 text-center md:text-left">
+              <Shield className="w-5 h-5 text-primary" />
+              <span className="text-sm font-medium text-foreground">École FFVL labellisée EFK</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <a 
+                href="https://ffvl.fr" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group bg-white rounded-xl p-3 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                title="Fédération Française de Vol Libre"
+              >
+                <img 
+                  src={logoFfvl} 
+                  alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
+                  className="h-12 w-auto object-contain"
+                />
+              </a>
+              <a 
+                href="https://ffvl.fr/ecole-francaise-kite" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group bg-white rounded-xl p-3 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                title="École Française de Kite"
+              >
+                <img 
+                  src={logoEfk} 
+                  alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
+                  className="h-12 w-auto object-contain"
+                />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
