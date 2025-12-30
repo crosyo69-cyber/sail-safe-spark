@@ -5,6 +5,10 @@ import logoFfvl from "@/assets/logo-ffvl.png";
 import logoEfk from "@/assets/logo-efk.png";
 import logoDuotone from "@/assets/logo-duotone.png";
 import logoWelcomeSurfShop from "@/assets/logo-welcome-surf-shop.avif";
+import logoOtHyeres from "@/assets/logo-ot-hyeres.png";
+import logoOtCarqueiranne from "@/assets/logo-ot-carqueiranne.png";
+import logoTripadvisor from "@/assets/logo-tripadvisor.png";
+import logoSpeedkart from "@/assets/logo-speedkart.png";
 
 const footerLinks = {
   activities: [
@@ -243,6 +247,65 @@ export function Footer() {
               <div className="h-10 w-16 flex items-center justify-center">
                 <Stethoscope className="w-8 h-8 text-green-600" />
               </div>
+            </a>
+          </div>
+        </div>
+
+        {/* Offices de Tourisme & Partenaires */}
+        <div className="mt-8 pt-6 border-t border-primary-foreground/10">
+          <h3 className="font-display font-bold text-lg text-center mb-6">Offices de Tourisme & Partenaires</h3>
+          <div className="flex flex-wrap justify-center items-center gap-8">
+            <a 
+              href="https://hyeres.fr/un-nouveau-site-internet-pour-loffice-de-tourisme-provence-mediterranee/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="Office de Tourisme Hyères"
+            >
+              <img 
+                src={logoOtHyeres} 
+                alt="Office de Tourisme Hyères" 
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+            <a 
+              href="https://www.carqueiranne.fr/se-divertir/tourisme/office-de-tourisme-673.html" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="Office de Tourisme Carqueiranne"
+            >
+              <img 
+                src={logoOtCarqueiranne} 
+                alt="Office de Tourisme Carqueiranne" 
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+            <a 
+              href="https://www.tripadvisor.fr/Attraction_Review-g1080042-d9464816-Reviews-Kitesurf_Passion-Carqueiranne_Var_Provence_Alpes_Cote_d_Azur.html" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="TripAdvisor Kitesurf Passion"
+            >
+              <img 
+                src={logoTripadvisor} 
+                alt="TripAdvisor Kitesurf Passion" 
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+            <a 
+              href="https://www.speedkart.fr" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="Speedkart"
+            >
+              <img 
+                src={logoSpeedkart} 
+                alt="Speedkart partenaire" 
+                className="h-10 w-auto object-contain"
+              />
             </a>
           </div>
         </div>
