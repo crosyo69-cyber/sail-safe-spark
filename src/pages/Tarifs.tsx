@@ -5,6 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, Gift, Download, AlertCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { MeetingPointsSection } from "@/components/sections/MeetingPointsSection";
 
 import bonCadeauKitesurf from "@/assets/bon-cadeau-kitesurf.jpg";
 import bonCadeauWingfoil from "@/assets/bon-cadeau-wingfoil.jpg";
@@ -371,6 +372,9 @@ const Tarifs = () => {
             </div>
           </div>
         </section>
+
+        {/* Points de Rendez-vous */}
+        <MeetingPointsSection />
 
         {/* Bons cadeaux */}
         <section className="py-16 bg-background">

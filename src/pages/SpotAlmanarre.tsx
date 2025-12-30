@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { WindguruWidget } from "@/components/sections/WindguruWidget";
 import { WeatherAlertSubscription } from "@/components/WeatherAlertSubscription";
+import { MeetingPointsSection } from "@/components/sections/MeetingPointsSection";
 
 import { 
   MapPin, 
@@ -355,6 +356,9 @@ export default function SpotAlmanarre() {
             </div>
           </div>
         </section>
+
+        {/* Points de Rendez-vous */}
+        <MeetingPointsSection />
 
         {/* Map Section */}
         <section className="py-20">
