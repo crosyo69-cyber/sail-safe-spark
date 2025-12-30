@@ -76,7 +76,8 @@ export function Footer() {
             
             {/* Logos FFVL/EFK */}
             <div className="mt-6 pt-4 border-t border-primary-foreground/10">
-              <p className="text-xs text-primary-foreground/60 mb-3">École FFVL labellisée EFK</p>
+              <p className="text-xs text-primary-foreground/60 mb-1">École FFVL labellisée EFK</p>
+              <p className="text-xs text-primary-foreground/50 mb-3 font-mono">N° Affiliation : 01926</p>
               <div className="flex items-center gap-3">
                 <a 
                   href="https://ffvl.fr" 
