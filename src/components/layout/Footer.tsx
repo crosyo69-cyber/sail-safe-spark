@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 import { NewsletterForm } from "@/components/NewsletterForm";
@@ -41,9 +42,9 @@ const footerLinks = {
   ],
 };
 
-export function Footer() {
+export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
   return (
-    <footer className="bg-navy text-primary-foreground">
+    <footer ref={ref} className="bg-navy text-primary-foreground">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* About */}
@@ -439,4 +440,6 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+});
+
+Footer.displayName = "Footer";
