@@ -5,7 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Award, Ship, Heart, Users, Calendar, MapPin, Shield, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
-import kitesurfLesson from "@/assets/kitesurf-lesson.jpg";
+import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
 import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
 import almanarreSunset from "@/assets/almanarre-sunset.jpg";
 import timeline1999 from "@/assets/timeline-1999-creation.jpg";

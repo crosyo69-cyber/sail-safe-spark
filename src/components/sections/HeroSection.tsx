@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
-import heroKitesurf from "@/assets/hero-kitesurf.jpg";
+import heroKitesurf from "@/assets/kitesurf-hyeres.jpg";
 import heroWingfoil from "@/assets/wingfoil-hyeres.jpg";
 import heroPumpfoil from "@/assets/pumpfoil-hyeres-cours.jpg";
 

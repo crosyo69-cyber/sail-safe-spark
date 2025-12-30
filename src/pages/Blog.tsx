@@ -24,7 +24,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2024-12-15",
     readTime: "8 min",
-    image: "kitesurf-lesson.jpg",
+    image: "kitesurf-cours-hyeres.jpg",
     featured: true,
   },
   {
