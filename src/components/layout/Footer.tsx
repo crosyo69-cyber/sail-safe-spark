@@ -233,6 +233,17 @@ export function Footer() {
                 className="h-10 w-auto object-contain"
               />
             </a>
+            <a 
+              href="https://www.provencemed.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="Provence Médical - Partenaire médical"
+            >
+              <div className="h-10 w-16 flex items-center justify-center">
+                <Stethoscope className="w-8 h-8 text-green-600" />
+              </div>
+            </a>
           </div>
         </div>
           </div>
