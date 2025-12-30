@@ -11,6 +11,28 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShareButtons } from "@/components/ShareButtons";
 import heroImage from "@/assets/blog-hero.jpg";
+import blogKitesurfDebut from "@/assets/blog-kitesurf-debut.jpg";
+import blogWingfoil from "@/assets/blog-wingfoil.jpg";
+import blogKitesurfAction from "@/assets/blog-kitesurf-action.jpg";
+import blogBateauGroupe from "@/assets/blog-bateau-groupe.jpg";
+import blogPumpfoil from "@/assets/blog-pumpfoil.jpg";
+import blogKiteDuotone from "@/assets/blog-kite-duotone.jpg";
+import blogPumpfoilDock from "@/assets/blog-pumpfoil-dock.jpg";
+
+// Image mapping for dynamic resolution
+const imageMap: Record<string, string> = {
+  "blog-kitesurf-debut.jpg": blogKitesurfDebut,
+  "blog-wingfoil.jpg": blogWingfoil,
+  "blog-kitesurf-action.jpg": blogKitesurfAction,
+  "blog-bateau-groupe.jpg": blogBateauGroupe,
+  "blog-pumpfoil.jpg": blogPumpfoil,
+  "blog-kite-duotone.jpg": blogKiteDuotone,
+  "blog-pumpfoil-dock.jpg": blogPumpfoilDock,
+};
+
+const getArticleImage = (imageName: string): string => {
+  return imageMap[imageName] || blogKitesurfAction;
+};
 
 const breadcrumbItems = [
   { label: "Blog & Actualités" }
@@ -344,7 +366,7 @@ const Blog = () => {
                   >
                     <div className="aspect-video overflow-hidden">
                       <img
-                        src={`/src/assets/${article.image}`}
+                        src={getArticleImage(article.image)}
                         alt={article.alt || article.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
@@ -435,7 +457,7 @@ const Blog = () => {
                   <Link to={`/blog/${article.slug}`}>
                     <div className="aspect-video overflow-hidden relative">
                       <img
-                        src={`/src/assets/${article.image}`}
+                        src={getArticleImage(article.image)}
                         alt={article.alt || article.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
