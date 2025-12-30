@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Check, Anchor, Shield, Waves, Heart, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import wakeboardHero from "@/assets/wakeboard-hyeres.jpg";
+import { FoilWakeboardTestimonials } from "@/components/sections/FoilWakeboardTestimonials";
 
 const breadcrumbItems = [
   { label: "Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
@@ -185,8 +186,14 @@ const Wakeboard = () => {
           </div>
         </section>
 
+        {/* Témoignages Wakeboard */}
+        <FoilWakeboardTestimonials 
+          variant="wakeboard" 
+          title="Ils Ont Testé le Wakeboard" 
+        />
+
         {/* Passerelle vers Kitesurf */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
             <div className="bg-gradient-to-r from-sunset/5 to-primary/5 rounded-3xl p-8 md:p-12 border border-sunset/10">
               <div className="max-w-3xl mx-auto text-center">
