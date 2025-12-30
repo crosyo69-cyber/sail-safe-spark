@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { PWAInstallBanner } from "@/components/PWAInstallBanner";
+import { CookieConsent } from "@/components/CookieConsent";
 
 // Critical path - loaded immediately
 import Index from "./pages/Index";
@@ -53,6 +54,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <PWAInstallBanner />
+        <CookieConsent />
         <BrowserRouter>
           <Suspense fallback={<PageLoader />}>
             <Routes>
