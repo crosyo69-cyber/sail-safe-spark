@@ -14,6 +14,7 @@ import logoThespot2be from "@/assets/logo-thespot2be.png";
 import logoHotelRichiardi from "@/assets/logo-hotel-richiardi.png";
 import logoVisitvar from "@/assets/logo-visitvar.png";
 import logoPagesjaunes from "@/assets/logo-pagesjaunes.png";
+import logoWanderlog from "@/assets/logo-wanderlog.png";
 
 const footerLinks = {
   activities: [
@@ -367,6 +368,19 @@ export function Footer() {
               <img 
                 src={logoPagesjaunes} 
                 alt="Pages Jaunes - Fiche professionnelle Kitesurf Passion" 
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+            <a 
+              href="https://wanderlog.com/fr/place/details/653258/kitesurf-passion" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="Wanderlog - Guide voyage"
+            >
+              <img 
+                src={logoWanderlog} 
+                alt="Wanderlog - Kitesurf Passion guide voyage" 
                 className="h-10 w-auto object-contain"
               />
             </a>
