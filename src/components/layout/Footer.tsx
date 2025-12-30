@@ -1,7 +1,7 @@
 import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 import { NewsletterForm } from "@/components/NewsletterForm";
-import { WeatherWidgetCompact } from "@/components/WeatherWidgetCompact";
+
 import logoFfvl from "@/assets/logo-ffvl.png";
 import logoEfk from "@/assets/logo-efk.png";
 import logoDuotone from "@/assets/logo-duotone.png";
@@ -220,10 +220,6 @@ export function Footer() {
               <NewsletterForm variant="footer" />
             </div>
             
-            {/* Compact Weather Widget */}
-            <div className="mt-6">
-              <WeatherWidgetCompact />
-            </div>
           </div>
         </div>
 
