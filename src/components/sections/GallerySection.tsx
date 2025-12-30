@@ -3,19 +3,19 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 
-import heroKitesurf from "@/assets/hero-kitesurf.jpg";
+import heroKitesurf from "@/assets/kitesurf-hyeres.jpg";
 import wingfoil from "@/assets/wingfoil-hyeres.jpg";
 import pumpfoil from "@/assets/pumpfoil.jpg";
 import foilWakeboard from "@/assets/foil-wakeboard-hyeres.jpg";
 import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
 import almanarre from "@/assets/almanarre-sunset.jpg";
-import kitesurfLesson from "@/assets/kitesurf-lesson.jpg";
+import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
 import downwind from "@/assets/downwind.jpg";
 
 const galleryImages = [
   {
     src: heroKitesurf,
-    alt: "Session kitesurf sur la baie d'Hyères",
+    alt: "Kitesurf Hyères Almanarre - Session kitefoil école KiteSurf Passion Var",
     title: "Kitesurf",
     category: "Kitesurf"
   },
@@ -51,7 +51,7 @@ const galleryImages = [
   },
   {
     src: kitesurfLesson,
-    alt: "Cours de kitesurf avec moniteur diplômé",
+    alt: "Cours kitesurf Hyères - Formation encadrée école KiteSurf Passion Almanarre",
     title: "Cours Encadrés",
     category: "Formation"
   },

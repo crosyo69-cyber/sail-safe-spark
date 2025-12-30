@@ -5,7 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowRight, Ship, Users, Clock, Award } from "lucide-react";
 import { Link } from "react-router-dom";
-import kitesurfImage from "@/assets/kitesurf-lesson.jpg";
+import kitesurfImage from "@/assets/kitesurf-cours-hyeres.jpg";
 
 const breadcrumbItems = [
   { label: "Cours Kitesurf" }

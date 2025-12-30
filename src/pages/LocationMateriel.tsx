@@ -5,19 +5,19 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, Shield, RefreshCw, Users, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
-import kiteEquipment from "@/assets/kite-equipment.jpg";
-import kiteWing from "@/assets/kite-wing.jpg";
-import kiteBoard from "@/assets/kite-board.jpg";
-import kiteGear from "@/assets/kite-gear.jpg";
+import kiteEquipment from "@/assets/kitesurf-hyeres.jpg";
+import kiteWing from "@/assets/aile-kitesurf-hyeres.jpg";
+import kiteBoard from "@/assets/kitesurf-action-hyeres.jpg";
+import kiteGear from "@/assets/kitesurf-cours-hyeres.jpg";
 
 const breadcrumbItems = [
   { label: "Location Matériel" }
 ];
 
 const equipmentGallery = [
-  { src: kiteWing, alt: "Aile de kitesurf colorée sur la plage de l'Almanarre", title: "Ailes" },
-  { src: kiteBoard, alt: "Planche de kitesurf twintip design moderne", title: "Planches" },
-  { src: kiteGear, alt: "Combinaison et harnais de kitesurf professionnels", title: "Équipements" },
+  { src: kiteWing, alt: "Location aile kitesurf Hyères Almanarre - Matériel école KiteSurf Passion", title: "Ailes" },
+  { src: kiteBoard, alt: "Location planche kitesurf Hyères - Équipement twintip école KiteSurf Passion", title: "Planches" },
+  { src: kiteGear, alt: "Location équipement kitesurf Hyères - Combinaison harnais école KiteSurf Passion", title: "Équipements" },
 ];
 const rentalPrices = [
   { name: "Aile de Kitesurf", duration: "À la journée", price: "30€", description: "Différentes tailles disponibles" },
