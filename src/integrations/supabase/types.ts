@@ -87,6 +87,7 @@ export type Database = {
           id: string
           max_wind: number
           min_wind: number
+          unsubscribe_token: string
           updated_at: string
         }
         Insert: {
@@ -96,6 +97,7 @@ export type Database = {
           id?: string
           max_wind?: number
           min_wind?: number
+          unsubscribe_token?: string
           updated_at?: string
         }
         Update: {
@@ -105,6 +107,7 @@ export type Database = {
           id?: string
           max_wind?: number
           min_wind?: number
+          unsubscribe_token?: string
           updated_at?: string
         }
         Relationships: []
@@ -114,7 +117,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      delete_weather_subscription: {
+        Args: { p_token: string }
+        Returns: boolean
+      }
+      unsubscribe_weather_alert: { Args: { p_token: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
