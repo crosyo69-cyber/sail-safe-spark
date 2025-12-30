@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Ship, Users, Award, Clock, CheckCircle, Calendar, Settings, Repeat } from "lucide-react";
 import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
-import kiteBoard from "@/assets/kitesurf-action-hyeres.jpg";
+import heroSessionCarte from "@/assets/hero-session-carte.jpg";
 
 const breadcrumbItems = [
   { label: "Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
@@ -124,9 +124,9 @@ const SessionCarte = () => {
         <section className="relative pt-32 pb-20 overflow-hidden">
           <div 
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${kiteBoard})` }}
+            style={{ backgroundImage: `url(${heroSessionCarte})` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/80 to-navy/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy/75 via-navy/45 to-navy/25" />
           
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl">
