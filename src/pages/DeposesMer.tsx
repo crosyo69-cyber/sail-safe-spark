@@ -5,7 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, Anchor, Shield, MapPin, Users, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
-import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
+import bateauSecurite from "@/assets/bateau-assistance-kitesurf.jpg";
 
 const breadcrumbItems = [
   { label: "Déposes en Mer" }
@@ -130,7 +130,7 @@ const DeposesMer = () => {
           <div className="absolute inset-0">
             <img
               src={bateauSecurite}
-              alt="Bateau de sécurité kitesurf sur la baie d'Hyères avec kitesurfeurs"
+              alt="Bateau d'assistance de l'école de kitesurf Hyères"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />

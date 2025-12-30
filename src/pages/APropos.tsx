@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Award, Ship, Heart, Users, Calendar, MapPin, Shield, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
-import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
+import bateauSecurite from "@/assets/bateau-assistance-kitesurf.jpg";
 import almanarreSunset from "@/assets/almanarre-sunset.jpg";
 import timeline1999 from "@/assets/timeline-1999-creation.jpg";
 import timeline2001 from "@/assets/timeline-2001-bpjeps.jpg";
@@ -426,7 +426,7 @@ const APropos = () => {
               <div className="overflow-hidden rounded-2xl" ref={securityImageRef}>
                 <img 
                   src={bateauSecurite} 
-                  alt="Bateau d'assistance sécurité kitesurf Hyères" 
+                  alt="Bateau d'assistance de l'école de kitesurf Hyères"
                   className="shadow-2xl w-full aspect-[4/3] object-cover transition-transform duration-100 will-change-transform"
                   style={{ transform: `translateY(${securityParallax}px) scale(1.1)` }}
                 />

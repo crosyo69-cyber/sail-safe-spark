@@ -8,7 +8,7 @@ import wingfoil from "@/assets/wingfoil-hyeres.jpg";
 import pumpfoil from "@/assets/pumpfoil-dock-start.jpg";
 import foilTracte from "@/assets/foil-tracte-hyeres.jpg";
 import wakeboard from "@/assets/wakeboard-hyeres.jpg";
-import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
+import bateauSecurite from "@/assets/bateau-assistance-kitesurf.jpg";
 import almanarre from "@/assets/almanarre-sunset.jpg";
 import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
 import downwind from "@/assets/downwind.jpg";
@@ -46,7 +46,7 @@ const galleryImages = [
   },
   {
     src: bateauSecurite,
-    alt: "Bateau de sécurité pour les cours de kitesurf",
+    alt: "Bateau d'assistance de l'école de kitesurf Hyères Almanarre",
     title: "Bateau d'Assistance",
     category: "Sécurité"
   },
