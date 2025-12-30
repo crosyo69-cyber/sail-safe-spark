@@ -6,7 +6,7 @@ import { OptimizedImage } from "@/components/ui/optimized-image";
 import heroKitesurf from "@/assets/kitesurf-hyeres.jpg";
 import wingfoil from "@/assets/wingfoil-hyeres.jpg";
 import pumpfoil from "@/assets/pumpfoil-dock-start.jpg";
-import foilWakeboard from "@/assets/foil-wakeboard-hyeres.jpg";
+import foilTracte from "@/assets/foil-tracte-hyeres.jpg";
 import bateauSecurite from "@/assets/bateau-securite-hyeres.jpg";
 import almanarre from "@/assets/almanarre-sunset.jpg";
 import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
@@ -32,10 +32,10 @@ const galleryImages = [
     category: "Pumpfoil"
   },
   {
-    src: foilWakeboard,
-    alt: "Session wakeboard et foil tracté",
-    title: "Foil Tracté & Wakeboard",
-    category: "Wakeboard"
+    src: foilTracte,
+    alt: "Foil tracté Hyères - Session foil remorqué bateau école KiteSurf Passion Almanarre Var",
+    title: "Foil Tracté",
+    category: "Foil Tracté"
   },
   {
     src: bateauSecurite,
