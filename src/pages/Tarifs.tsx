@@ -3,8 +3,12 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
-import { Check, Gift } from "lucide-react";
+import { Check, Gift, Download } from "lucide-react";
 import { Link } from "react-router-dom";
+
+import bonCadeauKitesurf from "@/assets/bon-cadeau-kitesurf.jpg";
+import bonCadeauWingfoil from "@/assets/bon-cadeau-wingfoil.jpg";
+import bonCadeauFoilTracte from "@/assets/bon-cadeau-foil-tracte.jpg";
 
 const breadcrumbItems = [
   { label: "Tarifs" }
@@ -340,18 +344,101 @@ const Tarifs = () => {
         {/* Bons cadeaux */}
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center">
+            <div className="text-center mb-12">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-sunset/10 rounded-2xl mb-6">
                 <Gift className="w-8 h-8 text-sunset" />
               </div>
               <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-4">
                 Offrez un Bon Cadeau
               </h2>
-              <p className="text-muted-foreground mb-8">
-                Valable 1 an, toutes activités. À partir de 90€.
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Offrez une expérience inoubliable à vos proches ! Nos bons cadeaux sont valables 1 an et disponibles pour toutes nos activités.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+              {/* Bon Cadeau Kitesurf */}
+              <div className="bg-card rounded-2xl overflow-hidden border border-border/50 shadow-lg hover:shadow-xl transition-shadow">
+                <div className="aspect-[2/1] overflow-hidden">
+                  <img 
+                    src={bonCadeauKitesurf} 
+                    alt="Bon cadeau Kitesurf Hyères - École KiteSurf Passion Almanarre" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-5 text-center">
+                  <h3 className="font-display font-bold text-foreground mb-2">Bon Cadeau Kitesurf</h3>
+                  <p className="text-muted-foreground text-sm mb-4">
+                    Offrez l'apprentissage du kitesurf. Stage ou séances à la carte.
+                  </p>
+                  <a 
+                    href={bonCadeauKitesurf} 
+                    download="bon-cadeau-kitesurf-hyeres.jpg"
+                    className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors text-sm"
+                  >
+                    <Download className="w-4 h-4" />
+                    Télécharger le bon
+                  </a>
+                </div>
+              </div>
+
+              {/* Bon Cadeau Wingfoil */}
+              <div className="bg-card rounded-2xl overflow-hidden border border-border/50 shadow-lg hover:shadow-xl transition-shadow">
+                <div className="aspect-[2/1] overflow-hidden">
+                  <img 
+                    src={bonCadeauWingfoil} 
+                    alt="Bon cadeau Wingfoil Hyères - École KiteSurf Passion Almanarre" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-5 text-center">
+                  <h3 className="font-display font-bold text-foreground mb-2">Bon Cadeau Wingfoil</h3>
+                  <p className="text-muted-foreground text-sm mb-4">
+                    Offrez la découverte du wingfoil. Une discipline tendance et accessible.
+                  </p>
+                  <a 
+                    href={bonCadeauWingfoil} 
+                    download="bon-cadeau-wingfoil-hyeres.jpg"
+                    className="inline-flex items-center justify-center gap-2 bg-sunset hover:bg-sunset/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors text-sm"
+                  >
+                    <Download className="w-4 h-4" />
+                    Télécharger le bon
+                  </a>
+                </div>
+              </div>
+
+              {/* Bon Cadeau Foil Tracté */}
+              <div className="bg-card rounded-2xl overflow-hidden border border-border/50 shadow-lg hover:shadow-xl transition-shadow">
+                <div className="aspect-[2/1] overflow-hidden">
+                  <img 
+                    src={bonCadeauFoilTracte} 
+                    alt="Bon cadeau Foil Tracté Hyères - École KiteSurf Passion Almanarre" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-5 text-center">
+                  <h3 className="font-display font-bold text-foreground mb-2">Bon Cadeau Foil Tracté</h3>
+                  <p className="text-muted-foreground text-sm mb-4">
+                    Offrez les sensations du vol sur l'eau. Idéal pour une initiation.
+                  </p>
+                  <a 
+                    href={bonCadeauFoilTracte} 
+                    download="bon-cadeau-foil-tracte-hyeres.jpg"
+                    className="inline-flex items-center justify-center gap-2 bg-turquoise hover:bg-turquoise/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors text-sm"
+                  >
+                    <Download className="w-4 h-4" />
+                    Télécharger le bon
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center mt-8">
+              <p className="text-muted-foreground text-sm mb-4">
+                Pour personnaliser votre bon cadeau ou commander plusieurs bons, contactez-nous.
               </p>
               <Button variant="sunset" size="lg" asChild>
-                <Link to="/contact-reservation-kitesurf-hyeres">Commander un Bon Cadeau</Link>
+                <Link to="/contact-reservation-kitesurf-hyeres">Commander un Bon Personnalisé</Link>
               </Button>
             </div>
           </div>
