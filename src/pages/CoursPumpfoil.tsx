@@ -101,7 +101,7 @@ export default function CoursPumpfoil() {
               alt="Cours Pumpfoil Hyères - Dock Start Pump Foil école KiteSurf Passion Var"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-navy/70 via-navy/40 to-transparent" />
           </div>
 
           <div className="container mx-auto px-4 relative z-10">

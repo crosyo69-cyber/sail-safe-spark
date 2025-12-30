@@ -101,7 +101,7 @@ const FoilTracte = () => {
               alt="Foil tracté Hyères - Session foil remorqué bateau école KiteSurf Passion Almanarre Var"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/25 to-background" />
           </div>
 
           <div className="container mx-auto px-4 text-center relative z-10 pt-32 pb-16">

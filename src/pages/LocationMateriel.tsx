@@ -115,7 +115,7 @@ const LocationMateriel = () => {
               alt="Matériel de kitesurf complet : aile, planche, harnais et combinaison sur la plage"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background" />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background" />
           </div>
           <div className="container mx-auto px-4 text-center relative z-10">
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6">

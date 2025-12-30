@@ -177,7 +177,7 @@ const CoursKitesurf = () => {
               alt="Cours de kitesurf à Hyères - élèves en formation"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-navy/90 to-navy/60" />
+            <div className="absolute inset-0 bg-gradient-to-r from-navy/70 via-navy/40 to-navy/20" />
           </div>
 
           <div className="relative z-10 container mx-auto px-4">
