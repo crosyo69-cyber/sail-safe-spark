@@ -1,5 +1,5 @@
+import { memo } from "react";
 import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import kitesurfImage from "@/assets/kitesurf-cours-hyeres.jpg";
@@ -66,7 +66,7 @@ const activities = [
   },
 ];
 
-export function ActivitiesSection() {
+export const ActivitiesSection = memo(function ActivitiesSection() {
   return (
     <section id="activites" className="py-24 bg-background">
       <div className="container mx-auto px-4">
@@ -136,4 +136,4 @@ export function ActivitiesSection() {
       </div>
     </section>
   );
-}
+});

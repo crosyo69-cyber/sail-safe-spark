@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, memo } from "react";
 import { cn } from "@/lib/utils";
 
 interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -10,7 +10,7 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   placeholder?: "blur" | "empty";
 }
 
-export function OptimizedImage({
+export const OptimizedImage = memo(function OptimizedImage({
   src,
   alt,
   className,
@@ -21,10 +21,16 @@ export function OptimizedImage({
 }: OptimizedImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
-  const imgRef = useRef<HTMLImageElement>(null);
+  const imgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (priority) {
+      setIsInView(true);
+      return;
+    }
+
+    // Use native lazy loading when IntersectionObserver is not needed
+    if ('loading' in HTMLImageElement.prototype && !priority) {
       setIsInView(true);
       return;
     }
@@ -37,7 +43,7 @@ export function OptimizedImage({
         }
       },
       {
-        rootMargin: "200px", // Start loading 200px before entering viewport
+        rootMargin: "200px",
         threshold: 0.01,
       }
     );
@@ -71,9 +77,10 @@ export function OptimizedImage({
           alt={alt}
           loading={priority ? "eager" : "lazy"}
           decoding="async"
+          fetchPriority={priority ? "high" : "auto"}
           onLoad={() => setIsLoaded(true)}
           className={cn(
-            "transition-opacity duration-500",
+            "transition-opacity duration-300",
             isLoaded ? "opacity-100" : "opacity-0",
             className
           )}
@@ -82,4 +89,4 @@ export function OptimizedImage({
       )}
     </div>
   );
-}
+});

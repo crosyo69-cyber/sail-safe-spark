@@ -1,7 +1,7 @@
+import { memo, useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState, useEffect, useCallback } from "react";
 import heroKitesurf from "@/assets/kitesurf-hyeres.jpg";
 import heroWingfoil from "@/assets/wingfoil-hyeres.jpg";
 import heroPumpfoil from "@/assets/pumpfoil-hyeres.jpg";
@@ -46,7 +46,7 @@ const trustBadges = [
   { icon: Star, text: "Note 4.9/5" },
 ];
 
-export function HeroSection() {
+export const HeroSection = memo(function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
@@ -200,4 +200,4 @@ export function HeroSection() {
       </div>
     </section>
   );
-}
+});

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { OptimizedImage } from "@/components/ui/optimized-image";
@@ -70,7 +70,7 @@ const galleryImages = [
   },
 ];
 
-export function GallerySection() {
+export const GallerySection = memo(function GallerySection() {
   const [selectedImage, setSelectedImage] = useState<typeof galleryImages[0] | null>(null);
 
   return (
@@ -162,4 +162,4 @@ export function GallerySection() {
       </div>
     </section>
   );
-}
+});
