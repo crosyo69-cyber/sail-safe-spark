@@ -1,5 +1,5 @@
 # Robots.txt pour KiteSurf Passion
-# https://www.kitesurfpassion.com
+# https://kitesurfpassion.fr
 
 # Googlebot (Google Search)
 User-agent: Googlebot
@@ -63,6 +63,8 @@ Disallow: /api/
 Disallow: /*.json$
 Disallow: /*?*
 Disallow: /404
+Disallow: /auth
+Disallow: /desabonnement-alertes
 
 # Sitemap
-Sitemap: https://www.kitesurfpassion.com/sitemap.xml
+Sitemap: https://kitesurfpassion.fr/sitemap.xml
