@@ -15,6 +15,7 @@ import logoHotelRichiardi from "@/assets/logo-hotel-richiardi.png";
 import logoVisitvar from "@/assets/logo-visitvar.png";
 import logoPagesjaunes from "@/assets/logo-pagesjaunes.png";
 import logoWanderlog from "@/assets/logo-wanderlog.png";
+import logoBiereIlesDor from "@/assets/logo-biere-iles-dor.png";
 
 const footerLinks = {
   activities: [
@@ -381,6 +382,19 @@ export function Footer() {
               <img 
                 src={logoWanderlog} 
                 alt="Wanderlog - Kitesurf Passion guide voyage" 
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+            <a 
+              href="https://www.labieredesilesdor.fr/lien-surf+et+wing+surf+carqueiranne+kitesurf+passion-108.html" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="La Bière des Îles d'Or - Brasserie artisanale"
+            >
+              <img 
+                src={logoBiereIlesDor} 
+                alt="La Bière des Îles d'Or - Partenaire brasserie artisanale" 
                 className="h-10 w-auto object-contain"
               />
             </a>
