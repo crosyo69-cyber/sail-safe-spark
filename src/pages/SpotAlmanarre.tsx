@@ -5,6 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { WindguruWidget } from "@/components/sections/WindguruWidget";
+import { WeatherAlertSubscription } from "@/components/WeatherAlertSubscription";
 
 import { 
   MapPin, 
@@ -239,6 +240,12 @@ export default function SpotAlmanarre() {
         {/* Weather Widget Section */}
         <WindguruWidget />
 
+        {/* Weather Alerts Subscription */}
+        <section className="py-12 bg-background">
+          <div className="container mx-auto px-4 max-w-xl">
+            <WeatherAlertSubscription />
+          </div>
+        </section>
 
         {/* Conditions Section */}
         <section id="conditions" className="py-20">

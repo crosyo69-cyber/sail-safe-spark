@@ -79,6 +79,36 @@ export type Database = {
         }
         Relationships: []
       }
+      weather_alert_subscriptions: {
+        Row: {
+          created_at: string
+          email: string
+          enabled: boolean
+          id: string
+          max_wind: number
+          min_wind: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          enabled?: boolean
+          id?: string
+          max_wind?: number
+          min_wind?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          enabled?: boolean
+          id?: string
+          max_wind?: number
+          min_wind?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
