@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { WindguruWidget } from "@/components/sections/WindguruWidget";
 
 import { 
   MapPin, 
@@ -234,6 +235,9 @@ export default function SpotAlmanarre() {
             </div>
           </div>
         </section>
+
+        {/* Weather Widget Section */}
+        <WindguruWidget />
 
 
         {/* Conditions Section */}
