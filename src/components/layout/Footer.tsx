@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import logoFfvl from "@/assets/logo-ffvl.png";
 import logoEfk from "@/assets/logo-efk.png";
+import logoDuotone from "@/assets/logo-duotone.png";
+import logoWelcomeSurfShop from "@/assets/logo-welcome-surf-shop.avif";
 
 const footerLinks = {
   activities: [
@@ -184,7 +186,40 @@ export function Footer() {
                 Recevez nos conseils et prévisions météo
               </p>
               <NewsletterForm variant="footer" />
-            </div>
+        </div>
+
+        {/* Partenaires */}
+        <div className="mt-12 pt-8 border-t border-primary-foreground/10">
+          <h3 className="font-display font-bold text-lg text-center mb-6">Nos Partenaires</h3>
+          <div className="flex flex-wrap justify-center items-center gap-8">
+            <a 
+              href="https://www.duotonesports.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="Duotone Kiteboarding"
+            >
+              <img 
+                src={logoDuotone} 
+                alt="Logo Duotone - Partenaire école kitesurf" 
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+            <a 
+              href="https://www.welcomesurfshop.com/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="Welcome Surf Shop"
+            >
+              <img 
+                src={logoWelcomeSurfShop} 
+                alt="Logo Welcome Surf Shop - Partenaire école kitesurf" 
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+          </div>
+        </div>
           </div>
         </div>
 
