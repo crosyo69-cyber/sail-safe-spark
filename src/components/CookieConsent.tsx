@@ -20,6 +20,15 @@ interface CookiePreferences {
 const COOKIE_CONSENT_KEY = 'cookie-consent';
 const COOKIE_PREFERENCES_KEY = 'cookie-preferences';
 
+// Global function to open cookie preferences from anywhere
+let openCookiePreferencesGlobal: (() => void) | null = null;
+
+export const openCookiePreferences = () => {
+  if (openCookiePreferencesGlobal) {
+    openCookiePreferencesGlobal();
+  }
+};
+
 export const CookieConsent = () => {
   const [showBanner, setShowBanner] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
@@ -30,6 +39,15 @@ export const CookieConsent = () => {
   });
 
   useEffect(() => {
+    // Register global function to open preferences
+    openCookiePreferencesGlobal = () => {
+      const savedPreferences = localStorage.getItem(COOKIE_PREFERENCES_KEY);
+      if (savedPreferences) {
+        setPreferences(JSON.parse(savedPreferences));
+      }
+      setShowPreferences(true);
+    };
+
     const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
     if (!consent) {
       // Delay showing banner for better UX
@@ -41,6 +59,10 @@ export const CookieConsent = () => {
         setPreferences(JSON.parse(savedPreferences));
       }
     }
+
+    return () => {
+      openCookiePreferencesGlobal = null;
+    };
   }, []);
 
   const saveConsent = (prefs: CookiePreferences) => {
@@ -87,8 +109,6 @@ export const CookieConsent = () => {
       });
     }
   };
-
-  if (!showBanner && !showPreferences) return null;
 
   return (
     <>

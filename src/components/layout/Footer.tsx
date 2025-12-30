@@ -1,8 +1,8 @@
 import { forwardRef } from "react";
-import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Instagram, Youtube, Cookie } from "lucide-react";
 import { Link } from "react-router-dom";
 import { NewsletterForm } from "@/components/NewsletterForm";
-
+import { openCookiePreferences } from "@/components/CookieConsent";
 import logoFfvl from "@/assets/logo-ffvl.png";
 import logoEfk from "@/assets/logo-efk.png";
 import logoDuotone from "@/assets/logo-duotone.png";
@@ -41,6 +41,16 @@ const footerLinks = {
     { name: "Politique de Confidentialité", href: "/politique-confidentialite" },
   ],
 };
+
+const CookieLink = () => (
+  <button
+    onClick={openCookiePreferences}
+    className="flex items-center gap-2 text-primary-foreground/60 hover:text-primary-foreground transition-colors text-sm"
+  >
+    <Cookie className="w-4 h-4" />
+    Gérer mes cookies
+  </button>
+);
 
 export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
   return (
@@ -425,7 +435,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
           <p className="text-primary-foreground/50 text-sm">
             © {new Date().getFullYear()} KiteSurf Passion. Tous droits réservés.
           </p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap items-center gap-4 md:gap-6">
             {footerLinks.legal.map((link) => (
               <Link
                 key={link.name}
@@ -435,6 +445,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
                 {link.name}
               </Link>
             ))}
+            <CookieLink />
           </div>
         </div>
       </div>
