@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -12,7 +12,8 @@ interface NewsletterFormProps {
   className?: string;
 }
 
-export function NewsletterForm({ variant = "default", className = "" }: NewsletterFormProps) {
+export const NewsletterForm = forwardRef<HTMLDivElement, NewsletterFormProps>(
+  function NewsletterForm({ variant = "default", className = "" }, ref) {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -147,4 +148,6 @@ export function NewsletterForm({ variant = "default", className = "" }: Newslett
       </div>
     </div>
   );
-}
+});
+
+NewsletterForm.displayName = "NewsletterForm";
