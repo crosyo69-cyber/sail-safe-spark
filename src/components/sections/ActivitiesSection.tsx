@@ -5,6 +5,7 @@ import { OptimizedImage } from "@/components/ui/optimized-image";
 import kitesurfImage from "@/assets/kitesurf-cours-hyeres.jpg";
 import wingfoilImage from "@/assets/wingfoil-hyeres.jpg";
 import pumpfoilImage from "@/assets/pumpfoil-hyeres.jpg";
+import wakeboardImage from "@/assets/wakeboard-hyeres.jpg";
 import downwindImage from "@/assets/downwind.jpg";
 
 const activities = [
@@ -33,6 +34,15 @@ const activities = [
     price: "50€",
     image: pumpfoilImage,
     link: "/cours-pumpfoil-dock-start-hyeres",
+    featured: false,
+  },
+  {
+    id: "wakeboard",
+    title: "Wakeboard",
+    description: "Glisse tractée fun et accessible à tous. 15 min de sensations sur la baie d'Hyères.",
+    price: "40€",
+    image: wakeboardImage,
+    link: "/wakeboard-hyeres",
     featured: false,
   },
   {
