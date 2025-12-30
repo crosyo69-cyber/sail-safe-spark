@@ -6,7 +6,7 @@ import { CTASection } from "@/components/sections/CTASection";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Check, ArrowRight, Waves, Zap, Target, Clock } from "lucide-react";
-import pumpfoilImage from "@/assets/pumpfoil.jpg";
+import pumpfoilImage from "@/assets/pumpfoil-hyeres-cours.jpg";
 
 const breadcrumbItems = [
   { label: "Initiation Pump Foil" }
@@ -97,7 +97,7 @@ export default function CoursPumpfoil() {
           <div className="absolute inset-0">
             <img
               src={pumpfoilImage}
-              alt="Cours de Pumpfoil à Hyères - KiteSurf Passion"
+              alt="Cours Pumpfoil Hyères - Dock Start Pump Foil école KiteSurf Passion Var"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/70 to-transparent" />
@@ -241,7 +241,7 @@ export default function CoursPumpfoil() {
               <div className="relative">
                 <img
                   src={pumpfoilImage}
-                  alt="Séance de pumpfoil à Hyères"
+                  alt="Séance initiation pumpfoil dock start Hyères Almanarre Var"
                   className="rounded-3xl shadow-2xl"
                 />
               </div>
