@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShareButtons } from "@/components/ShareButtons";
 import heroImage from "@/assets/blog-hero.jpg";
+import blogCtaImage from "@/assets/blog-kitesurf-sunset-cta.jpg";
 import blogKitesurfDebut from "@/assets/blog-kitesurf-debut.jpg";
 import blogWingfoil from "@/assets/blog-wingfoil.jpg";
 import blogKitesurfAction from "@/assets/blog-kitesurf-action.jpg";
@@ -536,12 +537,20 @@ const Blog = () => {
         </section>
 
         {/* CTA */}
-        <section className="py-16 bg-gradient-to-br from-primary via-primary to-turquoise">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="font-display text-3xl font-bold text-primary-foreground mb-4">
+        <section className="py-16 relative overflow-hidden">
+          <div className="absolute inset-0">
+            <img 
+              src={blogCtaImage} 
+              alt="Kitesurf au coucher de soleil à Hyères" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-navy/60" />
+          </div>
+          <div className="container mx-auto px-4 text-center relative z-10">
+            <h2 className="font-display text-3xl font-bold text-white mb-4">
               Prêt à Vous Lancer ?
             </h2>
-            <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
+            <p className="text-white/90 mb-8 max-w-xl mx-auto">
               Passez de la théorie à la pratique avec nos stages encadrés par des professionnels.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
