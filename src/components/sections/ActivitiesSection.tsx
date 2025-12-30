@@ -2,7 +2,7 @@ import { memo } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { OptimizedImage } from "@/components/ui/optimized-image";
-import kitesurfImage from "@/assets/kitesurf-cours-hyeres.jpg";
+import kitesurfImage from "@/assets/kitesurf-action-duotone.jpg";
 import wingfoilImage from "@/assets/wingfoil-hyeres.jpg";
 import pumpfoilImage from "@/assets/pumpfoil-hyeres.jpg";
 import foilTracteImage from "@/assets/foil-tracte-hyeres.jpg";
