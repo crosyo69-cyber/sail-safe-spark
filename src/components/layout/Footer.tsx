@@ -12,6 +12,7 @@ import logoSpeedkart from "@/assets/logo-speedkart.jpg";
 import logoProvenceMed from "@/assets/logo-provence-med.png";
 import logoThespot2be from "@/assets/logo-thespot2be.png";
 import logoHotelRichiardi from "@/assets/logo-hotel-richiardi.png";
+import logoVisitvar from "@/assets/logo-visitvar.png";
 
 const footerLinks = {
   activities: [
@@ -339,6 +340,19 @@ export function Footer() {
               <img 
                 src={logoHotelRichiardi} 
                 alt="Hôtel Richiardi - Partenaire hébergement école kitesurf" 
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+            <a 
+              href="https://www.visitvar.fr/fiche/kite-surf-passion-4627343" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="Visit Var - Tourisme Var"
+            >
+              <img 
+                src={logoVisitvar} 
+                alt="Visit Var - Tourisme département du Var" 
                 className="h-10 w-auto object-contain"
               />
             </a>
