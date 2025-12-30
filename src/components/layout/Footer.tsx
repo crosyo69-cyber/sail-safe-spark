@@ -1,4 +1,4 @@
-import { Phone, Mail, MapPin, Facebook, Instagram, Youtube, Stethoscope } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import logoFfvl from "@/assets/logo-ffvl.png";
@@ -9,6 +9,7 @@ import logoOtHyeres from "@/assets/logo-ot-hyeres.png";
 import logoOtCarqueiranne from "@/assets/logo-ot-carqueiranne.jpg";
 import logoTripadvisor from "@/assets/logo-tripadvisor.png";
 import logoSpeedkart from "@/assets/logo-speedkart.jpg";
+import logoProvenceMed from "@/assets/logo-provence-med.png";
 
 const footerLinks = {
   activities: [
@@ -190,8 +191,12 @@ export function Footer() {
                   className="flex items-center gap-3 text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                   title="Provence Médical - Partenaire école kitesurf"
                 >
-                  <div className="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
-                    <Stethoscope className="w-5 h-5 text-green-400" />
+                  <div className="w-10 h-10 bg-white/90 rounded-lg flex items-center justify-center overflow-hidden">
+                    <img 
+                      src={logoProvenceMed} 
+                      alt="Provence Médical - Partenaire école kitesurf" 
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   <span className="text-sm">www.provencemed.com</span>
                 </a>
@@ -242,11 +247,13 @@ export function Footer() {
               target="_blank" 
               rel="noopener noreferrer"
               className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
-              title="Provence Médical - Partenaire médical"
+              title="Provence Méditerranée - Partenaire médical"
             >
-              <div className="h-10 w-16 flex items-center justify-center">
-                <Stethoscope className="w-8 h-8 text-green-600" />
-              </div>
+              <img 
+                src={logoProvenceMed} 
+                alt="Provence Médical - Partenaire école kitesurf" 
+                className="h-10 w-auto object-contain"
+              />
             </a>
           </div>
         </div>
