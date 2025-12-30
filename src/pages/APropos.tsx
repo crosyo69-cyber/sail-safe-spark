@@ -150,7 +150,7 @@ const APropos = () => {
     { year: "2001", title: "Reconnaissance professionnelle", description: "Obtention du BPJEPS et développement de l'école avec une clientèle fidèle.", image: timeline2001 },
     { year: "2006", title: "1 000 élèves formés", description: "Cap symbolique franchi, témoignant de la confiance accordée par les passionnés de glisse.", image: timeline2006 },
     { year: "2010", title: "Formateur de moniteurs", description: "Yohan devient formateur officiel pour les futurs moniteurs.", image: timeline2010 },
-    { year: "2018", title: "Wingfoil", description: "Introduction du wingfoil, nouvelle discipline en plein essor.", image: timeline2018 },
+    { year: "2018", title: "Wingfoil", description: "Introduction du wingfoil, nouvelle discipline en plein essor.", image: timeline2018, alt: "Wingfoil 2018 - Yohan Cros en action sur l'eau" },
     { year: "2024", title: "Pumpfoil & 25 ans", description: "Arrivée du pumpfoil et célébration d'un quart de siècle dédié à la passion des sports de glisse. Plus de 2 500 élèves formés.", image: timeline2024 }
   ];
 
