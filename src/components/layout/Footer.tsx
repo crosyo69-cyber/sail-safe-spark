@@ -6,9 +6,9 @@ import logoEfk from "@/assets/logo-efk.png";
 import logoDuotone from "@/assets/logo-duotone.png";
 import logoWelcomeSurfShop from "@/assets/logo-welcome-surf-shop.avif";
 import logoOtHyeres from "@/assets/logo-ot-hyeres.png";
-import logoOtCarqueiranne from "@/assets/logo-ot-carqueiranne.png";
+import logoOtCarqueiranne from "@/assets/logo-ot-carqueiranne.jpg";
 import logoTripadvisor from "@/assets/logo-tripadvisor.png";
-import logoSpeedkart from "@/assets/logo-speedkart.png";
+import logoSpeedkart from "@/assets/logo-speedkart.jpg";
 
 const footerLinks = {
   activities: [
