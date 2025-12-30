@@ -3,8 +3,6 @@ import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
-import logoFfvl from "@/assets/logo-ffvl.png";
-import logoEfk from "@/assets/logo-efk.png";
 
 const navigation = [
   { name: "Accueil", href: "/" },
@@ -156,38 +154,8 @@ export function Header() {
           ))}
         </nav>
 
-        {/* FFVL/EFK Badges & CTA Button */}
+        {/* CTA Button */}
         <div className="flex items-center gap-3">
-          {/* Logos FFVL/EFK */}
-          <div className="hidden md:flex items-center gap-2">
-            <a 
-              href="https://ffvl.fr" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center"
-              title="École labellisée FFVL"
-            >
-              <img 
-                src={logoFfvl} 
-                alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
-                className="h-8 w-auto object-contain"
-              />
-            </a>
-            <a 
-              href="https://ffvl.fr/ecole-francaise-kite" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center"
-              title="École Française de Kite"
-            >
-              <img 
-                src={logoEfk} 
-                alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
-                className="h-8 w-auto object-contain"
-              />
-            </a>
-          </div>
-          
           <a href="tel:0672716905" className="hidden sm:block">
             <Button variant={isScrolled ? "sunset" : "heroFilled"} size="default">
               <Phone className="w-4 h-4" />
