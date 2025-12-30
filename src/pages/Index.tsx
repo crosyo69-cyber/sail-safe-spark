@@ -9,6 +9,7 @@ import { TestimonialsSection, reviewsStructuredData } from "@/components/section
 import { FAQSection } from "@/components/sections/FAQSection";
 import { CTASection } from "@/components/sections/CTASection";
 import { GallerySection } from "@/components/sections/GallerySection";
+import { MeetingPointsSection } from "@/components/sections/MeetingPointsSection";
 
 const Index = () => {
   const structuredData = {
@@ -251,6 +252,7 @@ const Index = () => {
         <div className="content-visibility-auto">
           <FAQSection />
         </div>
+        <MeetingPointsSection />
         <CTASection />
       </main>
 
