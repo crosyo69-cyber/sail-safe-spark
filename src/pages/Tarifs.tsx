@@ -3,7 +3,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
-import { Check, Gift, Download } from "lucide-react";
+import { Check, Gift, Download, AlertCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import bonCadeauKitesurf from "@/assets/bon-cadeau-kitesurf.jpg";
@@ -336,6 +336,37 @@ const Tarifs = () => {
                     </li>
                   ))}
                 </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Information Licence FFVL */}
+        <section className="py-12 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto">
+              <div className="bg-primary/10 border border-primary/30 rounded-2xl p-6 flex items-start gap-4">
+                <div className="flex-shrink-0">
+                  <AlertCircle className="w-6 h-6 text-primary mt-0.5" />
+                </div>
+                <div>
+                  <h3 className="font-display font-bold text-foreground mb-2">
+                    Licence FFVL Obligatoire
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    Pour les stages <strong className="text-foreground">Kitesurf</strong> et <strong className="text-foreground">Wingfoil</strong>, 
+                    une licence FFVL (Fédération Française de Vol Libre) est obligatoire. 
+                    Elle peut être souscrite directement auprès de notre école ou en ligne sur{" "}
+                    <a 
+                      href="https://www.ffvl.fr" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-primary hover:text-primary/80 underline underline-offset-2 font-medium transition-colors"
+                    >
+                      www.ffvl.fr
+                    </a>.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
