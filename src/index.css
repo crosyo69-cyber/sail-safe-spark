@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap&font-display=swap');
+/* Fonts are loaded via index.html with preload for better performance */
 
 @tailwind base;
 @tailwind components;
@@ -234,7 +234,19 @@
   /* Content visibility for performance */
   .content-visibility-auto {
     content-visibility: auto;
-    contain-intrinsic-size: 0 500px;
+    contain-intrinsic-size: 0 600px;
+  }
+
+  /* GPU acceleration for animations */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Optimized transitions */
+  .transition-gpu {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backface-visibility: hidden;
   }
 
   /* Reduce motion for accessibility */

@@ -1,3 +1,4 @@
+import { memo, lazy, Suspense } from "react";
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -241,9 +242,15 @@ const Index = () => {
         <HeroSection />
         <WhyUsSection />
         <ActivitiesSection />
-        <GallerySection />
-        <TestimonialsSection />
-        <FAQSection />
+        <div className="content-visibility-auto">
+          <GallerySection />
+        </div>
+        <div className="content-visibility-auto">
+          <TestimonialsSection />
+        </div>
+        <div className="content-visibility-auto">
+          <FAQSection />
+        </div>
         <CTASection />
       </main>
 

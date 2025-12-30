@@ -1,9 +1,8 @@
+import { memo, useState, useEffect } from "react";
 import { Star, Quote, MapPin, CheckCircle, MessageSquarePlus } from "lucide-react";
-import { useState, useEffect } from "react";
 import { StarRating } from "@/components/ui/star-rating";
 import { ReviewSubmissionForm } from "@/components/ReviewSubmissionForm";
 import { Button } from "@/components/ui/button";
-// Review data with Schema.org compatible fields
 export const testimonials = [
   {
     id: 1,
@@ -129,7 +128,7 @@ export const reviewsStructuredData = {
   })),
 };
 
-export function TestimonialsSection() {
+export const TestimonialsSection = memo(function TestimonialsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [showReviewForm, setShowReviewForm] = useState(false);
   useEffect(() => {
@@ -293,4 +292,4 @@ export function TestimonialsSection() {
       </div>
     </section>
   );
-}
+});

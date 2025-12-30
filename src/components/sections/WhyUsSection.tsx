@@ -1,4 +1,5 @@
-import { Ship, MapPin, GraduationCap, Waves, ExternalLink, Shield } from "lucide-react";
+import { memo } from "react";
+import { Ship, MapPin, GraduationCap, Waves, Shield } from "lucide-react";
 import logoFfvl from "@/assets/logo-ffvl.png";
 import logoEfk from "@/assets/logo-efk.png";
 
@@ -29,7 +30,7 @@ const features = [
   },
 ];
 
-export function WhyUsSection() {
+export const WhyUsSection = memo(function WhyUsSection() {
   return (
     <section className="py-24 bg-gradient-to-b from-background to-secondary/30">
       <div className="container mx-auto px-4">
@@ -115,4 +116,4 @@ export function WhyUsSection() {
       </div>
     </section>
   );
-}
+});
