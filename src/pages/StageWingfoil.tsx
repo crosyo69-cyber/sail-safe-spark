@@ -5,7 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import wingfoilImage from "@/assets/wingfoil.jpg";
+import wingfoilImage from "@/assets/wingfoil-hyeres.jpg";
 
 const breadcrumbItems = [
   { label: "Stage Wing Foil" }
@@ -91,7 +91,7 @@ const StageWingfoil = () => {
           <div className="absolute inset-0">
             <img
               src={wingfoilImage}
-              alt="Stage wingfoil à Hyères - vol sur foil"
+              alt="Stage wingfoil Hyères Almanarre - Cours wing foil école KiteSurf Passion Var"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-navy/90 to-navy/60" />

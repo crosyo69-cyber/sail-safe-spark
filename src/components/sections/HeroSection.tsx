@@ -3,7 +3,7 @@ import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, Grad
 import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import heroKitesurf from "@/assets/hero-kitesurf.jpg";
-import heroWingfoil from "@/assets/wingfoil.jpg";
+import heroWingfoil from "@/assets/wingfoil-hyeres.jpg";
 import heroPumpfoil from "@/assets/pumpfoil-hyeres-cours.jpg";
 
 const slides = [
