@@ -24,7 +24,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2024-12-15",
     readTime: "8 min",
-    image: "kitesurf-cours-hyeres.jpg",
+    image: "blog-kite-duotone.jpg",
     featured: true,
   },
   {
@@ -34,7 +34,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2024-12-10",
     readTime: "6 min",
-    image: "wingfoil.jpg",
+    image: "blog-wingfoil.jpg",
     featured: true,
   },
   {
@@ -44,7 +44,7 @@ export const blogArticles = [
     category: "Le Spot",
     date: "2024-12-05",
     readTime: "5 min",
-    image: "almanarre-sunset.jpg",
+    image: "blog-kitesurf-action.jpg",
   },
   {
     slug: "pourquoi-bateau-assistance-essentiel",
@@ -53,7 +53,7 @@ export const blogArticles = [
     category: "Sécurité",
     date: "2024-11-28",
     readTime: "4 min",
-    image: "bateau-securite-hyeres.jpg",
+    image: "blog-bateau-groupe.jpg",
   },
   {
     slug: "pumpfoil-dock-start-initiation",
@@ -62,7 +62,7 @@ export const blogArticles = [
     category: "Pump Foil",
     date: "2024-11-20",
     readTime: "5 min",
-    image: "pumpfoil.jpg",
+    image: "blog-kitesurf-jump.jpg",
   },
   {
     slug: "meilleure-periode-kitesurf-var",
@@ -71,7 +71,7 @@ export const blogArticles = [
     category: "Le Spot",
     date: "2024-11-15",
     readTime: "7 min",
-    image: "downwind.jpg",
+    image: "blog-kite-duotone.jpg",
   },
   {
     slug: "choisir-aile-wingfoil-debutant",
@@ -80,7 +80,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2024-11-10",
     readTime: "6 min",
-    image: "kite-wing.jpg",
+    image: "blog-wingfoil.jpg",
   },
   {
     slug: "wingfoil-vs-kitesurf-differences",
@@ -89,7 +89,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2024-10-25",
     readTime: "7 min",
-    image: "wingfoil.jpg",
+    image: "blog-kitesurf-action.jpg",
   },
   {
     slug: "technique-pumping-foil-progresser",
@@ -98,7 +98,7 @@ export const blogArticles = [
     category: "Pump Foil",
     date: "2024-10-15",
     readTime: "5 min",
-    image: "pumpfoil.jpg",
+    image: "blog-kitesurf-jump.jpg",
   },
   {
     slug: "premiers-vols-wingfoil-conseils",
@@ -107,7 +107,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2024-10-05",
     readTime: "4 min",
-    image: "wingfoil.jpg",
+    image: "blog-wingfoil.jpg",
   },
   {
     slug: "pumpfoil-entrainement-sans-vent",
@@ -116,7 +116,7 @@ export const blogArticles = [
     category: "Pump Foil",
     date: "2024-09-28",
     readTime: "4 min",
-    image: "foil-wakeboard-hyeres.jpg",
+    image: "blog-bateau-groupe.jpg",
   },
 ];
 
