@@ -5,7 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Ship, Users, Award, Clock, CheckCircle, Calendar, Target, Zap, Shield, Radio } from "lucide-react";
-import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
+import kitesurfLesson from "@/assets/stage-100-glisse-action.jpg";
 import hero100Glisse from "@/assets/hero-100-glisse.jpg";
 
 const breadcrumbItems = [
