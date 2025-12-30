@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Award, Ship, Heart, Users, Calendar, MapPin, Shield, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
+import portraitYohan from "@/assets/portrait-yohan-cros.jpg";
 import bateauSecurite from "@/assets/bateau-assistance-kitesurf.jpg";
 import almanarreSunset from "@/assets/almanarre-sunset.jpg";
 import timeline1999 from "@/assets/timeline-1999-creation.jpg";
@@ -260,9 +261,9 @@ const APropos = () => {
               <div className="order-1 lg:order-2">
                 <div className="relative overflow-hidden rounded-2xl" ref={founderImageRef}>
                   <img 
-                    src={kitesurfLesson} 
-                    alt="Yohan Cros, moniteur de kitesurf diplômé d'État à Hyères" 
-                    className="shadow-2xl w-full aspect-[4/3] object-cover transition-transform duration-100 will-change-transform"
+                    src={portraitYohan} 
+                    alt="Portrait de Yohan Cros, fondateur de l'école KiteSurf Passion" 
+                    className="shadow-2xl w-full aspect-[4/3] object-cover object-top transition-transform duration-100 will-change-transform"
                     style={{ transform: `translateY(${founderParallax}px) scale(1.1)` }}
                   />
                   <div className="absolute -bottom-6 -left-6 bg-card border border-border rounded-xl p-4 shadow-xl z-10">
