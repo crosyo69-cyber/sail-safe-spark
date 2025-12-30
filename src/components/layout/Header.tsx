@@ -3,6 +3,7 @@ import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
+import logoKitesurfPassion from "@/assets/logo-kitesurf-passion.png";
 
 const navigation = [
   { name: "Accueil", href: "/" },
@@ -74,9 +75,11 @@ export function Header() {
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-primary to-turquoise rounded-xl flex items-center justify-center">
-            <span className="text-primary-foreground font-display font-black text-lg">KP</span>
-          </div>
+          <img 
+            src={logoKitesurfPassion} 
+            alt="Logo école kitesurf wingfoil pumpfoil" 
+            className="h-12 w-auto object-contain"
+          />
           <div className="hidden sm:block">
             <span className={cn(
               "font-display font-bold text-lg transition-colors",
