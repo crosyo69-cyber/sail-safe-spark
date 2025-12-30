@@ -19,6 +19,7 @@ import {
   CheckCircle
 } from "lucide-react";
 import almanarre from "@/assets/almanarre-sunset.jpg";
+import spotVueAerienne from "@/assets/spot-almanarre-vue-aerienne.jpg";
 
 const breadcrumbItems = [
   { label: "Spot Almanarre" }
@@ -207,6 +208,28 @@ export default function SpotAlmanarre() {
                   </p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Photo du Spot Section */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-10">
+              <h2 className="font-display font-bold text-3xl md:text-4xl text-foreground mb-4">
+                Vue Panoramique du <span className="text-primary">Spot</span>
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Découvrez l'ambiance unique de l'Almanarre, avec ses dizaines de kites colorés sur la baie.
+              </p>
+            </div>
+            
+            <div className="rounded-2xl overflow-hidden border border-border/50 shadow-lg">
+              <img 
+                src={spotVueAerienne}
+                alt="Spot kitesurf Presqu'île de Giens - Vue aérienne de la baie de l'Almanarre avec de nombreux kitesurfeurs"
+                className="w-full h-auto object-cover"
+              />
             </div>
           </div>
         </section>
