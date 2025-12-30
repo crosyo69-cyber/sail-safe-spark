@@ -29,7 +29,7 @@ const MentionsLegales = () => {
             <Mail className="w-4 h-4 text-primary" />
             <a href="mailto:contact@kitesurfpassion.com" className="text-primary hover:underline">contact@kitesurfpassion.com</a>
           </p>
-          <p><strong>SIRET :</strong> [Numéro SIRET à compléter]</p>
+          <p><strong>SIRET :</strong> 432 262 129 00039</p>
           <p><strong>Code APE :</strong> 8551Z - Enseignement de disciplines sportives et d'activités de loisirs</p>
           <p><strong>Numéro d'affiliation FFVL :</strong> 01926</p>
           <p><strong>Diplôme :</strong> BPJEPS Activités Nautiques mention Kitesurf</p>
