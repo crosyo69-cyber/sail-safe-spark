@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import heroKitesurf from "@/assets/hero-kitesurf.jpg";
 import heroWingfoil from "@/assets/wingfoil.jpg";
-import heroPumpfoil from "@/assets/pumpfoil.jpg";
+import heroPumpfoil from "@/assets/pumpfoil-hyeres-cours.jpg";
 
 const slides = [
   {
@@ -30,7 +30,7 @@ const slides = [
   {
     id: "pumpfoil",
     image: heroPumpfoil,
-    alt: "Initiation Pumpfoil Hyères - Cours Pump Foil Dock Start Var",
+    alt: "Cours Pumpfoil Hyères - Dock Start Pump Foil école KiteSurf Passion Var",
     preTitle: "Sans vent, sans vagues",
     titleStart: "Initiez-vous au Pumpfoil en",
     titleHighlight: "Toute Confiance",
