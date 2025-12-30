@@ -116,7 +116,7 @@ export const blogArticles = [
     category: "Pump Foil",
     date: "2024-09-28",
     readTime: "4 min",
-    image: "blog-bateau-groupe.jpg",
+    image: "blog-pumpfoil-dock.jpg",
   },
 ];
 
