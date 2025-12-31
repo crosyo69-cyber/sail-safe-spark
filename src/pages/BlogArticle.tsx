@@ -7,6 +7,7 @@ import { Link, useParams, Navigate } from "react-router-dom";
 import { Calendar, Clock, ArrowLeft, ArrowRight, User, Tag, Facebook, Twitter, Linkedin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { blogArticles } from "./Blog";
+import DOMPurify from "dompurify";
 
 // Article content data
 const articleContent: Record<string, { content: string; tags: string[] }> = {
@@ -970,7 +971,7 @@ const BlogArticle = () => {
 
           {/* Article Content */}
           <div className="max-w-3xl mx-auto prose prose-lg prose-headings:font-display prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-a:text-primary prose-strong:text-foreground">
-            <div dangerouslySetInnerHTML={{ __html: content.content.replace(/\n/g, '<br />') }} />
+            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content.content.replace(/\n/g, '<br />')) }} />
           </div>
 
           {/* Tags */}
