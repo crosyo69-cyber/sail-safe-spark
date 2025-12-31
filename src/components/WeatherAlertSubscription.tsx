@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bell, BellOff, Wind, Mail, Check } from "lucide-react";
+import { Bell, Wind, Mail, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -43,33 +43,6 @@ export const WeatherAlertSubscription = () => {
     } catch (error: any) {
       console.error("Error subscribing:", error);
       toast.error("Erreur lors de l'inscription. Veuillez réessayer.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleUnsubscribe = async () => {
-    if (!email) {
-      toast.error("Veuillez entrer votre adresse email");
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      const { error } = await supabase
-        .from("weather_alert_subscriptions")
-        .delete()
-        .eq("email", email);
-
-      if (error) throw error;
-
-      setIsSubscribed(false);
-      setEmail("");
-      toast.success("Vous êtes désabonné des alertes météo");
-    } catch (error: any) {
-      console.error("Error unsubscribing:", error);
-      toast.error("Erreur lors de la désinscription. Veuillez réessayer.");
     } finally {
       setIsLoading(false);
     }
@@ -156,26 +129,16 @@ export const WeatherAlertSubscription = () => {
             </p>
           </div>
 
-          <div className="flex gap-2">
-            <Button 
-              type="submit" 
-              className="flex-1"
-              disabled={isLoading}
-            >
-              {isLoading ? "Inscription..." : "S'abonner aux alertes"}
-            </Button>
-            {email && (
-              <Button 
-                type="button"
-                variant="outline"
-                onClick={handleUnsubscribe}
-                disabled={isLoading}
-                className="gap-2"
-              >
-                <BellOff className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
+          <Button 
+            type="submit" 
+            className="w-full"
+            disabled={isLoading}
+          >
+            {isLoading ? "Inscription..." : "S'abonner aux alertes"}
+          </Button>
+          <p className="text-xs text-muted-foreground text-center mt-2">
+            Pour vous désabonner, utilisez le lien dans l'email d'alerte.
+          </p>
         </form>
       </CardContent>
     </Card>
