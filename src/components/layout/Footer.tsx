@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { Phone, Mail, MapPin, Facebook, Instagram, Youtube, Cookie } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Cookie } from "lucide-react";
 import { Link } from "react-router-dom";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { openCookiePreferences } from "@/components/CookieConsent";
@@ -68,33 +68,42 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
                 <p className="text-xs text-primary-foreground/60">Hyères • Depuis 1999</p>
               </div>
             </div>
-            <p className="text-primary-foreground/70 text-sm leading-relaxed mb-6">
+            <p className="text-primary-foreground/70 text-sm leading-relaxed mb-4">
               Première école de kitesurf du Var, fondée en 1999. Apprenez avec un moniteur diplômé d'État et bénéficiez d'un bateau d'assistance pour votre sécurité.
+            </p>
+            <p className="text-primary-foreground/60 text-xs mb-3 italic">
+              Suivez-nous sur les réseaux sociaux pour plus de contenu et d'actualités !
             </p>
             <div className="flex gap-3">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/kitesurfpassion"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center hover:bg-primary transition-colors"
+                className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center hover:bg-[#1877F2] hover:text-white transition-all duration-300 group"
+                aria-label="Suivez-nous sur Facebook"
+                title="Facebook KiteSurf Passion"
               >
-                <Facebook className="w-5 h-5" />
+                <Facebook className="w-5 h-5 group-hover:scale-110 transition-transform" />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/kitesurfpassion"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center hover:bg-primary transition-colors"
+                className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center hover:bg-gradient-to-br hover:from-[#833AB4] hover:via-[#FD1D1D] hover:to-[#F77737] hover:text-white transition-all duration-300 group"
+                aria-label="Suivez-nous sur Instagram"
+                title="Instagram KiteSurf Passion"
               >
-                <Instagram className="w-5 h-5" />
+                <Instagram className="w-5 h-5 group-hover:scale-110 transition-transform" />
               </a>
               <a
-                href="https://youtube.com"
+                href="https://www.linkedin.com/company/kitesurf-passion"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center hover:bg-primary transition-colors"
+                className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center hover:bg-[#0A66C2] hover:text-white transition-all duration-300 group"
+                aria-label="Suivez-nous sur LinkedIn"
+                title="LinkedIn KiteSurf Passion"
               >
-                <Youtube className="w-5 h-5" />
+                <Linkedin className="w-5 h-5 group-hover:scale-110 transition-transform" />
               </a>
             </div>
             
