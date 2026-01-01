@@ -6,10 +6,20 @@ import { Button } from "@/components/ui/button";
 import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const breadcrumbItems = [
   { label: "Contact & Réservation" }
 ];
+
+const activityLabels: Record<string, string> = {
+  "kitesurf": "Kitesurf débutant",
+  "kitesurf-perf": "Kitesurf perfectionnement",
+  "wingfoil": "Wing Foil",
+  "pumpfoil": "Pump Foil",
+  "downwind": "Downwind",
+  "autre": "Autre",
+};
 
 const Contact = () => {
   const { toast } = useToast();
@@ -29,24 +39,46 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const { error } = await supabase.functions.invoke("send-contact-email", {
+        body: {
+          name: `${formData.firstName} ${formData.lastName}`,
+          email: formData.email,
+          phone: formData.phone,
+          activity: activityLabels[formData.activity] || formData.activity,
+          startDate: formData.dates,
+          participants: formData.people,
+          message: formData.message,
+        },
+      });
 
-    toast({
-      title: "Demande envoyée !",
-      description: "Nous vous recontacterons sous 24h pour confirmer votre réservation.",
-    });
+      if (error) throw error;
 
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      activity: "kitesurf",
-      dates: "",
-      people: "1",
-      message: "",
-    });
-    setIsSubmitting(false);
+      toast({
+        title: "Demande envoyée !",
+        description: "Nous vous recontacterons sous 24h pour confirmer votre réservation.",
+      });
+
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        activity: "kitesurf",
+        dates: "",
+        people: "1",
+        message: "",
+      });
+    } catch (error: any) {
+      console.error("Error sending contact form:", error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue. Veuillez réessayer ou nous appeler directement.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
