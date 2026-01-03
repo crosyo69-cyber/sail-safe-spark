@@ -36,7 +36,9 @@ export function CTASection() {
       <div className="absolute inset-0">
         <img
           src={sunsetImage}
-          alt="Coucher de soleil sur l'Almanarre à Hyères"
+          alt="Coucher de soleil kitesurf Almanarre Hyères - École KiteSurf Passion Var"
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-navy/80" />

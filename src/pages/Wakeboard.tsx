@@ -90,7 +90,9 @@ const Wakeboard = () => {
           <div className="absolute inset-0">
             <img
               src={wakeboardHero}
-              alt="Session de wakeboard sur la baie d'Hyères avec bateau de traction"
+              alt="Wakeboard Hyères baie de Giens - Session glisse tractée école KiteSurf Passion Var"
+              loading="eager"
+              fetchPriority="high"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/25 to-background" />

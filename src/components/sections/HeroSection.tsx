@@ -30,7 +30,7 @@ const slides = [
   {
     id: "pumpfoil",
     image: heroPumpfoil,
-    alt: "Pump foil sur la presqu'île de Giens",
+    alt: "Cours Pumpfoil Hyères Giens - Dock start pump foil école KiteSurf Passion Var",
     preTitle: "Sensations uniques",
     titleStart: "Découvrez le Pump Foil en",
     titleHighlight: "Toute Confiance",

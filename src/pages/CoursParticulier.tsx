@@ -113,10 +113,15 @@ const CoursParticulier = () => {
       <main className="min-h-screen">
         {/* Hero Section */}
         <section className="relative pt-32 pb-20 overflow-hidden">
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${heroKitesurf})` }}
-          />
+          <div className="absolute inset-0">
+            <img
+              src={heroKitesurf}
+              alt="Cours particulier kitesurf Hyères - Formation premium moniteur dédié école KiteSurf Passion Var"
+              loading="eager"
+              fetchPriority="high"
+              className="w-full h-full object-cover"
+            />
+          </div>
           <div className="absolute inset-0 bg-gradient-to-r from-navy/75 via-navy/45 to-navy/25" />
           
           <div className="container mx-auto px-4 relative z-10">
@@ -250,7 +255,9 @@ const CoursParticulier = () => {
               <div>
                 <img 
                   src={kitesurfLesson} 
-                  alt="Cours particulier kitesurf avec moniteur à Hyères" 
+                  alt="Cours particulier kitesurf moniteur Hyères - Encadrement premium école KiteSurf Passion Almanarre" 
+                  loading="lazy"
+                  decoding="async"
                   className="rounded-2xl shadow-2xl w-full aspect-[4/3] object-cover"
                 />
               </div>

@@ -9,6 +9,29 @@ import { Button } from "@/components/ui/button";
 import { blogArticles } from "./Blog";
 import DOMPurify from "dompurify";
 
+// Image imports for article pages
+import blogKitesurfDebut from "@/assets/blog-kitesurf-debut.jpg";
+import blogWingfoil from "@/assets/blog-wingfoil.jpg";
+import blogKitesurfAction from "@/assets/blog-kitesurf-action.jpg";
+import blogBateauGroupe from "@/assets/blog-bateau-groupe.jpg";
+import blogPumpfoil from "@/assets/blog-pumpfoil.jpg";
+import blogKiteDuotone from "@/assets/blog-kite-duotone.jpg";
+import blogPumpfoilDock from "@/assets/blog-pumpfoil-dock.jpg";
+
+const imageMap: Record<string, string> = {
+  "blog-kitesurf-debut.jpg": blogKitesurfDebut,
+  "blog-wingfoil.jpg": blogWingfoil,
+  "blog-kitesurf-action.jpg": blogKitesurfAction,
+  "blog-bateau-groupe.jpg": blogBateauGroupe,
+  "blog-pumpfoil.jpg": blogPumpfoil,
+  "blog-kite-duotone.jpg": blogKiteDuotone,
+  "blog-pumpfoil-dock.jpg": blogPumpfoilDock,
+};
+
+const getArticleImage = (imageName: string): string => {
+  return imageMap[imageName] || blogKitesurfAction;
+};
+
 // Article content data
 const articleContent: Record<string, { content: string; tags: string[] }> = {
   "debuter-kitesurf-hyeres-guide-complet": {
@@ -963,8 +986,11 @@ const BlogArticle = () => {
           {/* Article Image */}
           <div className="max-w-4xl mx-auto mb-12">
             <img
-              src={`/src/assets/${article.image}`}
-              alt={article.title}
+              src={getArticleImage(article.image)}
+              alt={article.alt || `${article.title} - École KiteSurf Passion Hyères Almanarre`}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
               className="w-full rounded-2xl"
             />
           </div>

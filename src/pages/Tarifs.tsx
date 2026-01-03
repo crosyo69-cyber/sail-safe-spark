@@ -398,6 +398,8 @@ const Tarifs = () => {
                   <img 
                     src={bonCadeauKitesurf} 
                     alt="Bon cadeau Kitesurf Hyères - École KiteSurf Passion Almanarre" 
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -423,6 +425,8 @@ const Tarifs = () => {
                   <img 
                     src={bonCadeauWingfoil} 
                     alt="Bon cadeau Wingfoil Hyères - École KiteSurf Passion Almanarre" 
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -448,6 +452,8 @@ const Tarifs = () => {
                   <img 
                     src={bonCadeauFoilTracte} 
                     alt="Bon cadeau Foil Tracté Hyères - École KiteSurf Passion Almanarre" 
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                   />
                 </div>

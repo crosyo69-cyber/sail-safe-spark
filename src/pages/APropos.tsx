@@ -148,12 +148,12 @@ const APropos = () => {
   ];
 
   const milestones = [
-    { year: "1999", title: "Création de l'école", description: "Yohan Cros fonde KiteSurf Passion sur le spot de l'Almanarre et acquiert son premier bateau d'assistance.", image: timeline1999 },
-    { year: "2001", title: "Reconnaissance professionnelle", description: "Obtention du BPJEPS et développement de l'école avec une clientèle fidèle.", image: timeline2001 },
-    { year: "2006", title: "1 000 élèves formés", description: "Cap symbolique franchi, témoignant de la confiance accordée par les passionnés de glisse.", image: timeline2006 },
-    { year: "2010", title: "Formateur de moniteurs", description: "Yohan devient formateur officiel pour les futurs moniteurs.", image: timeline2010 },
-    { year: "2018", title: "Wingfoil", description: "Introduction du wingfoil, nouvelle discipline en plein essor.", image: timeline2018, alt: "Wingfoil 2018 - Yohan Cros en action sur l'eau" },
-    { year: "2024", title: "Pumpfoil & 25 ans", description: "Arrivée du pumpfoil et célébration d'un quart de siècle dédié à la passion des sports de glisse. Plus de 2 500 élèves formés.", image: timeline2024 }
+    { year: "1999", title: "Création de l'école", description: "Yohan Cros fonde KiteSurf Passion sur le spot de l'Almanarre et acquiert son premier bateau d'assistance.", image: timeline1999, alt: "Création école kitesurf Hyères 1999 - Yohan Cros fondateur KiteSurf Passion" },
+    { year: "2001", title: "Reconnaissance professionnelle", description: "Obtention du BPJEPS et développement de l'école avec une clientèle fidèle.", image: timeline2001, alt: "Diplôme BPJEPS moniteur kitesurf 2001 - École KiteSurf Passion Hyères" },
+    { year: "2006", title: "1 000 élèves formés", description: "Cap symbolique franchi, témoignant de la confiance accordée par les passionnés de glisse.", image: timeline2006, alt: "1000 élèves kitesurf formés 2006 - École KiteSurf Passion Almanarre" },
+    { year: "2010", title: "Formateur de moniteurs", description: "Yohan devient formateur officiel pour les futurs moniteurs.", image: timeline2010, alt: "Formation moniteurs kitesurf 2010 - Yohan Cros formateur FFVL Var" },
+    { year: "2018", title: "Wingfoil", description: "Introduction du wingfoil, nouvelle discipline en plein essor.", image: timeline2018, alt: "Wingfoil Hyères 2018 - Nouvelle discipline école KiteSurf Passion Var" },
+    { year: "2024", title: "Pumpfoil & 25 ans", description: "Arrivée du pumpfoil et célébration d'un quart de siècle dédié à la passion des sports de glisse. Plus de 2 500 élèves formés.", image: timeline2024, alt: "25 ans école kitesurf Hyères 2024 - Pumpfoil KiteSurf Passion Almanarre" }
   ];
 
   const navigateLightbox = useCallback((direction: 'prev' | 'next') => {
@@ -389,7 +389,8 @@ const APropos = () => {
                 >
                   <img 
                     src={logoFfvl} 
-                    alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
+                    alt="Logo FFVL Fédération Française de Vol Libre - École kitesurf certifiée Hyères" 
+                    loading="lazy"
                     className="h-16 w-auto object-contain"
                   />
                   <span className="text-xs text-muted-foreground flex items-center gap-1 group-hover:text-primary transition-colors">
@@ -405,7 +406,8 @@ const APropos = () => {
                 >
                   <img 
                     src={logoEfk} 
-                    alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
+                    alt="Logo EFK École Française de Kite - Certification école KiteSurf Passion Hyères" 
+                    loading="lazy"
                     className="h-16 w-auto object-contain"
                   />
                   <span className="text-xs text-muted-foreground flex items-center gap-1 group-hover:text-primary transition-colors">
@@ -468,7 +470,9 @@ const APropos = () => {
                           >
                             <img 
                               src={milestone.image} 
-                              alt={`${milestone.title} - ${milestone.year}`}
+                              alt={milestone.alt || `${milestone.title} - ${milestone.year}`}
+                              loading="lazy"
+                              decoding="async"
                               className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                             />
                           </div>
@@ -504,7 +508,9 @@ const APropos = () => {
                           >
                             <img 
                               src={milestone.image} 
-                              alt={`${milestone.title} - ${milestone.year}`}
+                              alt={milestone.alt || `${milestone.title} - ${milestone.year}`}
+                              loading="lazy"
+                              decoding="async"
                               className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                             />
                           </div>
