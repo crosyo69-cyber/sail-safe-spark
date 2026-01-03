@@ -48,7 +48,7 @@ export const blogArticles = [
     date: "2024-12-15",
     readTime: "8 min",
     image: "blog-kitesurf-debut.jpg",
-    alt: "Débuter en kitesurf - Guide complet",
+    alt: "Débuter kitesurf Hyères Almanarre - Guide débutant école KiteSurf Passion Var",
     featured: true,
   },
   {
@@ -59,6 +59,7 @@ export const blogArticles = [
     date: "2024-12-10",
     readTime: "6 min",
     image: "blog-wingfoil.jpg",
+    alt: "Wingfoil Hyères tendance 2024 - Stage wing foil école KiteSurf Passion Almanarre",
     featured: true,
   },
   {
@@ -69,6 +70,7 @@ export const blogArticles = [
     date: "2024-12-05",
     readTime: "5 min",
     image: "blog-kitesurf-action.jpg",
+    alt: "Conditions météo kitesurf Almanarre Hyères - Vent Mistral spot Var",
   },
   {
     slug: "pourquoi-bateau-assistance-essentiel",
@@ -78,6 +80,7 @@ export const blogArticles = [
     date: "2024-11-28",
     readTime: "4 min",
     image: "blog-bateau-groupe.jpg",
+    alt: "Bateau assistance kitesurf Hyères - Sécurité école KiteSurf Passion Var",
   },
   {
     slug: "pumpfoil-dock-start-initiation",
@@ -87,6 +90,7 @@ export const blogArticles = [
     date: "2024-11-20",
     readTime: "5 min",
     image: "blog-pumpfoil.jpg",
+    alt: "Pumpfoil dock start Hyères Giens - Initiation foil école KiteSurf Passion Var",
   },
   {
     slug: "meilleure-periode-kitesurf-var",
@@ -96,6 +100,7 @@ export const blogArticles = [
     date: "2024-11-15",
     readTime: "7 min",
     image: "blog-kite-duotone.jpg",
+    alt: "Meilleure période kitesurf Var Hyères - Saison spot Almanarre",
   },
   {
     slug: "choisir-aile-wingfoil-debutant",
@@ -105,6 +110,7 @@ export const blogArticles = [
     date: "2024-11-10",
     readTime: "6 min",
     image: "blog-wingfoil.jpg",
+    alt: "Choisir aile wingfoil débutant - Conseil matériel école KiteSurf Passion Hyères",
   },
   {
     slug: "wingfoil-vs-kitesurf-differences",
@@ -114,6 +120,7 @@ export const blogArticles = [
     date: "2024-10-25",
     readTime: "7 min",
     image: "blog-kitesurf-action.jpg",
+    alt: "Wingfoil vs kitesurf comparatif - Différences glisse école Hyères Var",
   },
   {
     slug: "technique-pumping-foil-progresser",
@@ -123,6 +130,7 @@ export const blogArticles = [
     date: "2024-10-15",
     readTime: "5 min",
     image: "blog-pumpfoil.jpg",
+    alt: "Technique pumping foil Hyères - Progresser pumpfoil école KiteSurf Passion Var",
   },
   {
     slug: "premiers-vols-wingfoil-conseils",
@@ -132,6 +140,7 @@ export const blogArticles = [
     date: "2024-10-05",
     readTime: "4 min",
     image: "blog-wingfoil.jpg",
+    alt: "Premiers vols wingfoil conseils - Apprendre wing foil Hyères Almanarre Var",
   },
   {
     slug: "pumpfoil-entrainement-sans-vent",

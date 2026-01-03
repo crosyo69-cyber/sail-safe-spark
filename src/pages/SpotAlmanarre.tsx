@@ -143,10 +143,15 @@ export default function SpotAlmanarre() {
       <main>
         {/* Hero Section */}
         <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${almanarre})` }}
-          />
+          <div className="absolute inset-0">
+            <img
+              src={almanarre}
+              alt="Spot kitesurf Almanarre Hyères - Coucher de soleil plage de glisse Var"
+              loading="eager"
+              fetchPriority="high"
+              className="w-full h-full object-cover"
+            />
+          </div>
           <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background" />
           
           <div className="container mx-auto px-4 relative z-10 text-center py-32">
@@ -232,6 +237,8 @@ export default function SpotAlmanarre() {
               <img 
                 src={spotVueAerienne}
                 alt="Spot kitesurf Presqu'île de Giens - Vue aérienne de la baie de l'Almanarre avec de nombreux kitesurfeurs"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-auto object-cover"
               />
             </div>

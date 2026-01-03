@@ -112,7 +112,9 @@ const LocationMateriel = () => {
           <div className="absolute inset-0">
             <img
               src={kiteEquipment}
-              alt="Matériel de kitesurf complet : aile, planche, harnais et combinaison sur la plage"
+              alt="Location matériel kitesurf Hyères Almanarre - Aile planche harnais école KiteSurf Passion Var"
+              loading="eager"
+              fetchPriority="high"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background" />
@@ -157,6 +159,8 @@ const LocationMateriel = () => {
                   <img
                     src={item.src}
                     alt={item.alt}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent" />

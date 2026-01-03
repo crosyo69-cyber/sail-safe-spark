@@ -110,10 +110,15 @@ const Stage100Glisse = () => {
       <main className="min-h-screen">
         {/* Hero Section */}
         <section className="relative pt-32 pb-20 overflow-hidden">
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${hero100Glisse})` }}
-          />
+          <div className="absolute inset-0">
+            <img
+              src={hero100Glisse}
+              alt="Stage kitesurf 100% Glisse Hyères Almanarre - Formation intensive école KiteSurf Passion Var"
+              loading="eager"
+              fetchPriority="high"
+              className="w-full h-full object-cover"
+            />
+          </div>
           <div className="absolute inset-0 bg-gradient-to-r from-navy/80 via-navy/50 to-navy/30" />
           
           <div className="container mx-auto px-4 relative z-10">
@@ -317,7 +322,9 @@ const Stage100Glisse = () => {
               <div>
                 <img 
                   src={kitesurfLesson} 
-                  alt="Stage kitesurf avec bateau d'assistance à Hyères" 
+                  alt="Stage kitesurf bateau assistance Hyères - Sécurité école KiteSurf Passion Almanarre Var" 
+                  loading="lazy"
+                  decoding="async"
                   className="rounded-2xl shadow-2xl w-full aspect-[4/3] object-cover"
                 />
               </div>
