@@ -2,12 +2,12 @@ import { memo } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { OptimizedImage } from "@/components/ui/optimized-image";
-import kitesurfImage from "@/assets/kitesurf-action-duotone.jpg";
-import wingfoilImage from "@/assets/wingfoil-hyeres.jpg";
-import pumpfoilImage from "@/assets/pumpfoil-hyeres.jpg";
-import foilTracteImage from "@/assets/foil-tracte-hyeres.jpg";
-import wakeboardImage from "@/assets/wakeboard-hyeres.jpg";
-import downwindImage from "@/assets/downwind.jpg";
+import kitesurfImage from "@/assets/kitesurf-action-duotone.jpg?webp";
+import wingfoilImage from "@/assets/wingfoil-hyeres.jpg?webp";
+import pumpfoilImage from "@/assets/pumpfoil-hyeres.jpg?webp";
+import foilTracteImage from "@/assets/foil-tracte-hyeres.jpg?webp";
+import wakeboardImage from "@/assets/wakeboard-hyeres.jpg?webp";
+import downwindImage from "@/assets/downwind.jpg?webp";
 
 const activities = [
   {

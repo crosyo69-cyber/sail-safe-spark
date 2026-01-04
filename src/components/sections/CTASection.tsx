@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Phone, Send } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import sunsetImage from "@/assets/almanarre-sunset.jpg";
+import sunsetImage from "@/assets/almanarre-sunset.jpg?webp";
 
 export function CTASection() {
   const { toast } = useToast();
