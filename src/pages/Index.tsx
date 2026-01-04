@@ -204,6 +204,83 @@ const Index = () => {
     ],
   };
 
+  const imageGalleryStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ImageGallery",
+    name: "Galerie photos KiteSurf Passion Hyères",
+    description: "Photos de cours de kitesurf, wingfoil et pumpfoil à Hyères sur le spot de l'Almanarre",
+    image: [
+      {
+        "@type": "ImageObject",
+        name: "Cours kitesurf Hyères Almanarre",
+        description: "Session de kitesurf sur le spot de l'Almanarre à Hyères avec l'école KiteSurf Passion",
+        contentUrl: "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
+        creditText: "KiteSurf Passion",
+        copyrightNotice: "© KiteSurf Passion",
+        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+        contentLocation: {
+          "@type": "Place",
+          name: "Plage de l'Almanarre, Hyères",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Hyères",
+            addressRegion: "Var",
+            addressCountry: "FR",
+          },
+        },
+      },
+      {
+        "@type": "ImageObject",
+        name: "Stage wingfoil Hyères Var",
+        description: "Cours de wingfoil sur la plage de l'Almanarre à Hyères - école KiteSurf Passion",
+        contentUrl: "https://www.kitesurfpassion.com/assets/wingfoil-hyeres.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.com/assets/wingfoil-hyeres.jpg",
+        creditText: "KiteSurf Passion",
+        copyrightNotice: "© KiteSurf Passion",
+        contentLocation: {
+          "@type": "Place",
+          name: "Plage de l'Almanarre, Hyères",
+        },
+      },
+      {
+        "@type": "ImageObject",
+        name: "Pumpfoil dock start Hyères",
+        description: "Initiation au pumpfoil avec dock start à Hyères - école KiteSurf Passion",
+        contentUrl: "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres.jpg",
+        creditText: "KiteSurf Passion",
+        copyrightNotice: "© KiteSurf Passion",
+        contentLocation: {
+          "@type": "Place",
+          name: "Presqu'île de Giens, Hyères",
+        },
+      },
+      {
+        "@type": "ImageObject",
+        name: "Bateau assistance kitesurf Hyères",
+        description: "Bateau d'assistance pour les cours de kitesurf à Hyères - sécurité maximale",
+        contentUrl: "https://www.kitesurfpassion.com/assets/bateau-assistance-kitesurf.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.com/assets/bateau-assistance-kitesurf.jpg",
+        creditText: "KiteSurf Passion",
+        copyrightNotice: "© KiteSurf Passion",
+      },
+      {
+        "@type": "ImageObject",
+        name: "Coucher de soleil Almanarre Hyères",
+        description: "Vue du spot de kitesurf de l'Almanarre au coucher du soleil à Hyères",
+        contentUrl: "https://www.kitesurfpassion.com/assets/almanarre-sunset.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.com/assets/almanarre-sunset.jpg",
+        creditText: "KiteSurf Passion",
+        copyrightNotice: "© KiteSurf Passion",
+        contentLocation: {
+          "@type": "Place",
+          name: "Plage de l'Almanarre, Hyères",
+        },
+      },
+    ],
+  };
+
   return (
     <>
       <Helmet>
@@ -235,6 +312,7 @@ const Index = () => {
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(reviewsStructuredData)}</script>
+        <script type="application/ld+json">{JSON.stringify(imageGalleryStructuredData)}</script>
       </Helmet>
 
       <Header />
