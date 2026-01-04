@@ -2,9 +2,9 @@ import { memo, useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroKitesurf from "@/assets/kitesurf-hyeres.jpg";
-import heroWingfoil from "@/assets/wingfoil-hyeres.jpg";
-import heroPumpfoil from "@/assets/pumpfoil-hyeres.jpg";
+import heroKitesurf from "@/assets/kitesurf-hyeres.jpg?webp";
+import heroWingfoil from "@/assets/wingfoil-hyeres.jpg?webp";
+import heroPumpfoil from "@/assets/pumpfoil-hyeres.jpg?webp";
 
 const slides = [
   {

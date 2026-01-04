@@ -3,15 +3,15 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 
-import heroKitesurf from "@/assets/kitesurf-hyeres.jpg";
-import wingfoil from "@/assets/wingfoil-hyeres.jpg";
-import pumpfoil from "@/assets/pumpfoil-dock-start.jpg";
-import foilTracte from "@/assets/foil-tracte-hyeres.jpg";
-import wakeboard from "@/assets/wakeboard-hyeres.jpg";
-import bateauSecurite from "@/assets/bateau-assistance-kitesurf.jpg";
-import almanarre from "@/assets/almanarre-sunset.jpg";
-import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
-import downwind from "@/assets/downwind.jpg";
+import heroKitesurf from "@/assets/kitesurf-hyeres.jpg?webp";
+import wingfoil from "@/assets/wingfoil-hyeres.jpg?webp";
+import pumpfoil from "@/assets/pumpfoil-dock-start.jpg?webp";
+import foilTracte from "@/assets/foil-tracte-hyeres.jpg?webp";
+import wakeboard from "@/assets/wakeboard-hyeres.jpg?webp";
+import bateauSecurite from "@/assets/bateau-assistance-kitesurf.jpg?webp";
+import almanarre from "@/assets/almanarre-sunset.jpg?webp";
+import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg?webp";
+import downwind from "@/assets/downwind.jpg?webp";
 
 const galleryImages = [
   {
