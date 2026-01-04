@@ -87,6 +87,29 @@ export default function CoursPumpfoil() {
             }
           })}
         </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ImageObject",
+            "name": "Cours pumpfoil dock start Hyères",
+            "description": "Initiation au pumpfoil avec technique dock start sur la presqu'île de Giens à Hyères - école KiteSurf Passion",
+            "contentUrl": "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres-cours.jpg",
+            "thumbnailUrl": "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres-cours.jpg",
+            "creditText": "KiteSurf Passion",
+            "copyrightNotice": "© KiteSurf Passion",
+            "acquireLicensePage": "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+            "contentLocation": {
+              "@type": "Place",
+              "name": "Presqu'île de Giens, Hyères",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Hyères",
+                "addressRegion": "Var",
+                "addressCountry": "FR"
+              }
+            }
+          })}
+        </script>
       </Helmet>
 
       <Header />
