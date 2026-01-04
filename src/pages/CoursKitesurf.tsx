@@ -152,6 +152,28 @@ const CoursKitesurf = () => {
     },
   };
 
+  const imageStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    name: "Stage kitesurf Hyères Almanarre",
+    description: "Formation kitesurf avec élèves et moniteur diplômé sur le spot de l'Almanarre à Hyères - école KiteSurf Passion",
+    contentUrl: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
+    creditText: "KiteSurf Passion",
+    copyrightNotice: "© KiteSurf Passion",
+    acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+    contentLocation: {
+      "@type": "Place",
+      name: "Plage de l'Almanarre, Hyères",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Hyères",
+        addressRegion: "Var",
+        addressCountry: "FR",
+      },
+    },
+  };
+
   return (
     <>
       <Helmet>
@@ -163,6 +185,7 @@ const CoursKitesurf = () => {
         <link rel="canonical" href="https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" />
         <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(courseStructuredData)}</script>
+        <script type="application/ld+json">{JSON.stringify(imageStructuredData)}</script>
       </Helmet>
 
       <Header />

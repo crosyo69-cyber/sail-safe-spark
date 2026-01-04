@@ -69,6 +69,28 @@ const StageWingfoil = () => {
     },
   };
 
+  const imageStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    name: "Stage wingfoil Hyères Almanarre",
+    description: "Cours de wingfoil sur le spot de l'Almanarre à Hyères - école KiteSurf Passion Var",
+    contentUrl: "https://www.kitesurfpassion.com/assets/wingfoil-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.com/assets/wingfoil-hyeres.jpg",
+    creditText: "KiteSurf Passion",
+    copyrightNotice: "© KiteSurf Passion",
+    acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+    contentLocation: {
+      "@type": "Place",
+      name: "Plage de l'Almanarre, Hyères",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Hyères",
+        addressRegion: "Var",
+        addressCountry: "FR",
+      },
+    },
+  };
+
   return (
     <>
       <Helmet>
@@ -80,6 +102,7 @@ const StageWingfoil = () => {
         <link rel="canonical" href="https://www.kitesurfpassion.com/stage-wingfoil-hyeres-almanarre" />
         <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(courseStructuredData)}</script>
+        <script type="application/ld+json">{JSON.stringify(imageStructuredData)}</script>
       </Helmet>
 
       <Header />
