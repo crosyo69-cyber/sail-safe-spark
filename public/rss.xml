@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>KiteSurf Passion - Blog Kitesurf Hyères</title>
+    <link>https://www.kitesurfpassion.com/blog-actualites-kitesurf-hyeres</link>
+    <description>Actualités, conseils et guides sur le kitesurf, wingfoil et pumpfoil à Hyères. Découvrez le spot de l'Almanarre avec l'école KiteSurf Passion.</description>
+    <language>fr-FR</language>
+    <lastBuildDate>Sun, 05 Jan 2025 10:00:00 +0100</lastBuildDate>
+    <atom:link href="https://www.kitesurfpassion.com/rss.xml" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>https://www.kitesurfpassion.com/favicon.ico</url>
+      <title>KiteSurf Passion</title>
+      <link>https://www.kitesurfpassion.com</link>
+    </image>
+    
+    <item>
+      <title>Débuter le Kitesurf à Hyères : Guide Complet 2024</title>
+      <link>https://www.kitesurfpassion.com/blog/debuter-kitesurf-hyeres-guide-complet</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/debuter-kitesurf-hyeres-guide-complet</guid>
+      <pubDate>Sun, 15 Dec 2024 10:00:00 +0100</pubDate>
+      <category>Kitesurf</category>
+      <description>Tout ce que vous devez savoir pour commencer le kitesurf à Hyères. Quel matériel choisir, comment se préparer, et pourquoi l'Almanarre est le spot idéal pour les débutants.</description>
+    </item>
+    
+    <item>
+      <title>Wing Foil : Le Sport de Glisse Tendance en 2024</title>
+      <link>https://www.kitesurfpassion.com/blog/wingfoil-sport-tendance-2024</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/wingfoil-sport-tendance-2024</guid>
+      <pubDate>Tue, 10 Dec 2024 10:00:00 +0100</pubDate>
+      <category>Wing Foil</category>
+      <description>Découvrez pourquoi le wingfoil conquiert la Méditerranée. Plus accessible que le kitesurf, le wingfoil offre des sensations uniques de vol sur l'eau.</description>
+    </item>
+    
+    <item>
+      <title>Comprendre les Conditions Météo à l'Almanarre</title>
+      <link>https://www.kitesurfpassion.com/blog/conditions-meteo-almanarre-guide</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/conditions-meteo-almanarre-guide</guid>
+      <pubDate>Thu, 05 Dec 2024 10:00:00 +0100</pubDate>
+      <category>Le Spot</category>
+      <description>Mistral ou Levant ? Apprenez à décrypter les conditions météo du spot de l'Almanarre pour naviguer dans les meilleures conditions possibles.</description>
+    </item>
+    
+    <item>
+      <title>Pourquoi un Bateau d'Assistance est Essentiel pour Apprendre</title>
+      <link>https://www.kitesurfpassion.com/blog/pourquoi-bateau-assistance-essentiel</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/pourquoi-bateau-assistance-essentiel</guid>
+      <pubDate>Thu, 28 Nov 2024 10:00:00 +0100</pubDate>
+      <category>Sécurité</category>
+      <description>L'importance du bateau d'assistance dans l'apprentissage du kitesurf. Sécurité, progression rapide et gain de temps : découvrez tous les avantages.</description>
+    </item>
+    
+    <item>
+      <title>Pumpfoil et Dock Start : L'Initiation au Foil Sans Vent</title>
+      <link>https://www.kitesurfpassion.com/blog/pumpfoil-dock-start-initiation</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/pumpfoil-dock-start-initiation</guid>
+      <pubDate>Wed, 20 Nov 2024 10:00:00 +0100</pubDate>
+      <category>Pump Foil</category>
+      <description>Pas de vent ? Pas de problème ! Le pumpfoil permet de voler sur l'eau par tous les temps. Découvrez cette discipline accessible à tous.</description>
+    </item>
+    
+    <item>
+      <title>Quelle est la Meilleure Période pour le Kitesurf dans le Var ?</title>
+      <link>https://www.kitesurfpassion.com/blog/meilleure-periode-kitesurf-var</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/meilleure-periode-kitesurf-var</guid>
+      <pubDate>Fri, 15 Nov 2024 10:00:00 +0100</pubDate>
+      <category>Le Spot</category>
+      <description>De mars à novembre, le Var offre des conditions exceptionnelles. Analyse mois par mois des meilleures périodes pour pratiquer le kitesurf et le wingfoil.</description>
+    </item>
+    
+    <item>
+      <title>Choisir son Aile de Kite : Le Guide des Tailles</title>
+      <link>https://www.kitesurfpassion.com/blog/choisir-aile-kite-guide-tailles</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/choisir-aile-kite-guide-tailles</guid>
+      <pubDate>Fri, 08 Nov 2024 10:00:00 +0100</pubDate>
+      <category>Kitesurf</category>
+      <description>Comment choisir la bonne taille d'aile en fonction de votre poids et des conditions de vent ? Guide pratique pour bien s'équiper.</description>
+    </item>
+  </channel>
+</rss>
