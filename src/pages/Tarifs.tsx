@@ -70,6 +70,39 @@ const included = [
   "Photos de vos sessions (sur demande)",
 ];
 
+const imageGalleryStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "ImageGallery",
+  name: "Bons Cadeaux KiteSurf Passion Hyères",
+  description: "Collection de bons cadeaux pour offrir des cours de kitesurf, wingfoil et foil tracté à Hyères",
+  image: [
+    {
+      "@type": "ImageObject",
+      name: "Bon cadeau Kitesurf Hyères",
+      description: "Bon cadeau pour offrir un stage ou des cours de kitesurf à l'école KiteSurf Passion Hyères",
+      contentUrl: "https://www.kitesurfpassion.com/assets/bon-cadeau-kitesurf.jpg",
+      creditText: "KiteSurf Passion",
+      copyrightNotice: "© KiteSurf Passion",
+    },
+    {
+      "@type": "ImageObject",
+      name: "Bon cadeau Wingfoil Hyères",
+      description: "Bon cadeau pour offrir des cours de wingfoil à l'école KiteSurf Passion Hyères",
+      contentUrl: "https://www.kitesurfpassion.com/assets/bon-cadeau-wingfoil.jpg",
+      creditText: "KiteSurf Passion",
+      copyrightNotice: "© KiteSurf Passion",
+    },
+    {
+      "@type": "ImageObject",
+      name: "Bon cadeau Foil Tracté Hyères",
+      description: "Bon cadeau pour offrir une session de foil tracté à l'école KiteSurf Passion Hyères",
+      contentUrl: "https://www.kitesurfpassion.com/assets/bon-cadeau-foil-tracte.jpg",
+      creditText: "KiteSurf Passion",
+      copyrightNotice: "© KiteSurf Passion",
+    },
+  ],
+};
+
 const Tarifs = () => {
   return (
     <>
@@ -80,6 +113,9 @@ const Tarifs = () => {
           content="Découvrez nos tarifs transparents pour cours de kitesurf, wingfoil et pumpfoil à Hyères. Stage dès 350€. Devis gratuit sous 24h."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/tarifs-cours-kitesurf-wingfoil-hyeres" />
+        <script type="application/ld+json">
+          {JSON.stringify(imageGalleryStructuredData)}
+        </script>
       </Helmet>
 
       <Header />

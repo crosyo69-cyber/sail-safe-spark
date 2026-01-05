@@ -45,6 +45,28 @@ const Stage100Glisse = () => {
     ]
   };
 
+  const imageStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    name: "Stage kitesurf 100% Glisse Hyères",
+    description: "Stage intensif kitesurf 5 jours sur le spot de l'Almanarre à Hyères - école KiteSurf Passion Var",
+    contentUrl: "https://www.kitesurfpassion.com/assets/hero-100-glisse.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.com/assets/hero-100-glisse.jpg",
+    creditText: "KiteSurf Passion",
+    copyrightNotice: "© KiteSurf Passion",
+    acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+    contentLocation: {
+      "@type": "Place",
+      name: "Plage de l'Almanarre, Hyères",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Hyères",
+        addressRegion: "Var",
+        addressCountry: "FR",
+      },
+    },
+  };
+
   const programSteps = [
     {
       day: "Jour 1",
@@ -101,6 +123,9 @@ const Stage100Glisse = () => {
         <meta property="og:type" content="website" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(imageStructuredData)}
         </script>
       </Helmet>
 
