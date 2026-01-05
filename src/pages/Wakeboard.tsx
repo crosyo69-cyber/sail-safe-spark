@@ -66,6 +66,28 @@ const Wakeboard = () => {
     }
   };
 
+  const imageStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    name: "Wakeboard Hyères baie de Giens",
+    description: "Session de wakeboard tractée par bateau sur la baie d'Hyères - école KiteSurf Passion Var",
+    contentUrl: "https://www.kitesurfpassion.com/assets/wakeboard-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.com/assets/wakeboard-hyeres.jpg",
+    creditText: "KiteSurf Passion",
+    copyrightNotice: "© KiteSurf Passion",
+    acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+    contentLocation: {
+      "@type": "Place",
+      name: "Baie d'Hyères",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Hyères",
+        addressRegion: "Var",
+        addressCountry: "FR",
+      },
+    },
+  };
+
   return (
     <>
       <Helmet>
@@ -78,6 +100,9 @@ const Wakeboard = () => {
         <link rel="canonical" href="https://www.kitesurfpassion.com/wakeboard-hyeres" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(imageStructuredData)}
         </script>
       </Helmet>
 

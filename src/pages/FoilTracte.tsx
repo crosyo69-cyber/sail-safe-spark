@@ -74,6 +74,28 @@ const FoilTracte = () => {
     }
   };
 
+  const imageStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    name: "Foil tracté Hyères bateau",
+    description: "Session de foil tracté par bateau sur la baie d'Hyères - école KiteSurf Passion initiation au vol",
+    contentUrl: "https://www.kitesurfpassion.com/assets/foil-tracte-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.com/assets/foil-tracte-hyeres.jpg",
+    creditText: "KiteSurf Passion",
+    copyrightNotice: "© KiteSurf Passion",
+    acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+    contentLocation: {
+      "@type": "Place",
+      name: "Baie d'Hyères",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Hyères",
+        addressRegion: "Var",
+        addressCountry: "FR",
+      },
+    },
+  };
+
   return (
     <>
       <Helmet>
@@ -86,6 +108,9 @@ const FoilTracte = () => {
         <link rel="canonical" href="https://www.kitesurfpassion.com/foil-tracte-hyeres" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(imageStructuredData)}
         </script>
       </Helmet>
 
