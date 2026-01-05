@@ -124,6 +124,28 @@ const APropos = () => {
     "knowsAbout": ["Kitesurf", "Wing Foil", "Pump Foil", "Sports nautiques", "Sécurité en mer"]
   };
 
+  const imageStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    name: "Portrait Yohan Cros moniteur kitesurf Hyères",
+    description: "Yohan Cros, fondateur et moniteur diplômé d'État de l'école KiteSurf Passion à Hyères depuis 1999",
+    contentUrl: "https://www.kitesurfpassion.com/assets/portrait-yohan-cros.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.com/assets/portrait-yohan-cros.jpg",
+    creditText: "KiteSurf Passion",
+    copyrightNotice: "© KiteSurf Passion",
+    acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+    contentLocation: {
+      "@type": "Place",
+      name: "Plage de l'Almanarre, Hyères",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Hyères",
+        addressRegion: "Var",
+        addressCountry: "FR",
+      },
+    },
+  };
+
   const values = [
     {
       icon: Shield,
@@ -192,6 +214,9 @@ const APropos = () => {
         </script>
         <script type="application/ld+json">
           {JSON.stringify(personStructuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(imageStructuredData)}
         </script>
       </Helmet>
 
