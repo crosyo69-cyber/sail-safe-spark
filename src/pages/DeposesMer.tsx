@@ -96,26 +96,13 @@ const DeposesMer = () => {
             },
             "areaServed": ["Hyères", "Almanarre", "Giens", "Var"],
             "description": "Service de déposes en mer pour kitesurfeurs autonomes avec bateau de sécurité",
-            "offers": [
-              {
-                "@type": "Offer",
-                "name": "Dépose Mer",
-                "price": "45",
-                "priceCurrency": "EUR"
-              },
-              {
-                "@type": "Offer",
-                "name": "Location + Dépose",
-                "price": "80",
-                "priceCurrency": "EUR"
-              },
-              {
-                "@type": "Offer",
-                "name": "Carnet 10 Déposes",
-                "price": "300",
-                "priceCurrency": "EUR"
-              }
-            ]
+            "offers": {
+              "@type": "AggregateOffer",
+              "lowPrice": "45",
+              "highPrice": "300",
+              "priceCurrency": "EUR",
+              "offerCount": 3
+            }
           })}
         </script>
       </Helmet>

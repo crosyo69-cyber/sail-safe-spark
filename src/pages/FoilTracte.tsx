@@ -70,7 +70,8 @@ const FoilTracte = () => {
       "@type": "AggregateOffer",
       "lowPrice": "50",
       "highPrice": "80",
-      "priceCurrency": "EUR"
+      "priceCurrency": "EUR",
+      "offerCount": 2
     }
   };
 

@@ -85,6 +85,7 @@ const LocationMateriel = () => {
               "lowPrice": "2",
               "highPrice": "30",
               "priceCurrency": "EUR",
+              "offerCount": 8,
               "availability": "https://schema.org/InStock"
             },
             "provider": {

@@ -29,26 +29,13 @@ const SessionCarte = () => {
         "addressCountry": "FR"
       }
     },
-    "offers": [
-      {
-        "@type": "Offer",
-        "name": "1 Session Groupe - Hors saison",
-        "price": "120",
-        "priceCurrency": "EUR"
-      },
-      {
-        "@type": "Offer",
-        "name": "3 Sessions Groupe - Hors saison",
-        "price": "330",
-        "priceCurrency": "EUR"
-      },
-      {
-        "@type": "Offer",
-        "name": "5 Sessions Groupe - Hors saison",
-        "price": "500",
-        "priceCurrency": "EUR"
-      }
-    ]
+    "offers": {
+      "@type": "AggregateOffer",
+      "lowPrice": "120",
+      "highPrice": "660",
+      "priceCurrency": "EUR",
+      "offerCount": 6
+    }
   };
 
   const sessionFormats = [
