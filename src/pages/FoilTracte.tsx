@@ -71,7 +71,8 @@ const FoilTracte = () => {
       "lowPrice": "50",
       "highPrice": "80",
       "priceCurrency": "EUR",
-      "offerCount": 2
+      "offerCount": 2,
+      "availability": "https://schema.org/InStock"
     }
   };
 

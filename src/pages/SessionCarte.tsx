@@ -34,7 +34,8 @@ const SessionCarte = () => {
       "lowPrice": "120",
       "highPrice": "660",
       "priceCurrency": "EUR",
-      "offerCount": 6
+      "offerCount": 6,
+      "availability": "https://schema.org/InStock"
     }
   };
 

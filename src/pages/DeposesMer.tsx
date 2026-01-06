@@ -101,7 +101,8 @@ const DeposesMer = () => {
               "lowPrice": "45",
               "highPrice": "300",
               "priceCurrency": "EUR",
-              "offerCount": 3
+              "offerCount": 3,
+              "availability": "https://schema.org/InStock"
             }
           })}
         </script>
