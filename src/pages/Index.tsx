@@ -82,6 +82,7 @@ const Index = () => {
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Cours et stages de sports nautiques",
+      numberOfItems: 3,
       itemListElement: [
         {
           "@type": "Offer",
