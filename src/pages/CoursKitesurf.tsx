@@ -152,6 +152,30 @@ const CoursKitesurf = () => {
     },
   };
 
+  const productStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "Stage Kitesurf 100% Glisse - Hyères",
+    description: "Stage de kitesurf 5 jours pour débutants avec bateau d'assistance à l'Almanarre, Hyères. Devenez autonome en kitesurf avec un moniteur diplômé d'État.",
+    image: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
+    brand: {
+      "@type": "Brand",
+      name: "KiteSurf Passion"
+    },
+    offers: {
+      "@type": "AggregateOffer",
+      lowPrice: "230",
+      highPrice: "599",
+      priceCurrency: "EUR",
+      offerCount: 3,
+      availability: "https://schema.org/InStock",
+      seller: {
+        "@type": "Organization",
+        name: "KiteSurf Passion"
+      }
+    }
+  };
+
   const imageStructuredData = {
     "@context": "https://schema.org",
     "@type": "ImageObject",
@@ -185,6 +209,7 @@ const CoursKitesurf = () => {
         <link rel="canonical" href="https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" />
         <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(courseStructuredData)}</script>
+        <script type="application/ld+json">{JSON.stringify(productStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(imageStructuredData)}</script>
       </Helmet>
 
