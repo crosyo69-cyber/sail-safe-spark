@@ -69,6 +69,28 @@ const StageWingfoil = () => {
     },
   };
 
+  const productStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "Stage Wingfoil Initiation - Hyères",
+    description: "Stage de wingfoil 5 jours pour débutants à l'Almanarre, Hyères. Sport tendance accessible à tous avec foil tracté inclus.",
+    image: "https://www.kitesurfpassion.com/assets/wingfoil-hyeres.jpg",
+    brand: {
+      "@type": "Brand",
+      name: "KiteSurf Passion"
+    },
+    offers: {
+      "@type": "Offer",
+      price: "440",
+      priceCurrency: "EUR",
+      availability: "https://schema.org/InStock",
+      seller: {
+        "@type": "Organization",
+        name: "KiteSurf Passion"
+      }
+    }
+  };
+
   const imageStructuredData = {
     "@context": "https://schema.org",
     "@type": "ImageObject",
@@ -102,6 +124,7 @@ const StageWingfoil = () => {
         <link rel="canonical" href="https://www.kitesurfpassion.com/stage-wingfoil-hyeres-almanarre" />
         <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(courseStructuredData)}</script>
+        <script type="application/ld+json">{JSON.stringify(productStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(imageStructuredData)}</script>
       </Helmet>
 
