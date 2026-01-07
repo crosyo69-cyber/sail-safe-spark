@@ -34,15 +34,41 @@ const CoursParticulier = () => {
         "@type": "Offer",
         "name": "Cours Particulier 2h - Hors saison",
         "price": "230",
-        "priceCurrency": "EUR"
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock"
       },
       {
         "@type": "Offer",
         "name": "Cours Particulier 2h - Juillet/Août",
         "price": "380",
-        "priceCurrency": "EUR"
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock"
       }
     ]
+  };
+
+  const productStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "Cours Particulier Kitesurf - Hyères",
+    description: "Cours de kitesurf 100% individualisé de 2h à Hyères. Progression rapide et sécurisée avec moniteur diplômé dédié et bateau d'assistance.",
+    image: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
+    brand: {
+      "@type": "Brand",
+      name: "KiteSurf Passion"
+    },
+    offers: {
+      "@type": "AggregateOffer",
+      lowPrice: "230",
+      highPrice: "380",
+      priceCurrency: "EUR",
+      offerCount: 2,
+      availability: "https://schema.org/InStock",
+      seller: {
+        "@type": "Organization",
+        name: "KiteSurf Passion"
+      }
+    }
   };
 
   const advantages = [
@@ -104,6 +130,9 @@ const CoursParticulier = () => {
         <meta property="og:type" content="website" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(productStructuredData)}
         </script>
       </Helmet>
 

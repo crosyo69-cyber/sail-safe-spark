@@ -34,15 +34,41 @@ const Stage100Glisse = () => {
         "@type": "Offer",
         "name": "Stage 100% Glisse - Hors saison",
         "price": "399",
-        "priceCurrency": "EUR"
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock"
       },
       {
         "@type": "Offer",
         "name": "Stage 100% Glisse - Juillet/Août",
         "price": "499",
-        "priceCurrency": "EUR"
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock"
       }
     ]
+  };
+
+  const productStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "Stage Kitesurf 100% Glisse - Hyères",
+    description: "Stage kitesurf intensif 5 jours consécutifs à Hyères. Atteignez l'autonomie avec bateau d'assistance, petits groupes et moniteur diplômé.",
+    image: "https://www.kitesurfpassion.com/assets/hero-100-glisse.jpg",
+    brand: {
+      "@type": "Brand",
+      name: "KiteSurf Passion"
+    },
+    offers: {
+      "@type": "AggregateOffer",
+      lowPrice: "399",
+      highPrice: "599",
+      priceCurrency: "EUR",
+      offerCount: 3,
+      availability: "https://schema.org/InStock",
+      seller: {
+        "@type": "Organization",
+        name: "KiteSurf Passion"
+      }
+    }
   };
 
   const imageStructuredData = {
@@ -123,6 +149,9 @@ const Stage100Glisse = () => {
         <meta property="og:type" content="website" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(productStructuredData)}
         </script>
         <script type="application/ld+json">
           {JSON.stringify(imageStructuredData)}
