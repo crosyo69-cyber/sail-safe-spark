@@ -71,6 +71,28 @@ const CoursParticulier = () => {
     }
   };
 
+  const imageStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    name: "Cours particulier kitesurf Hyères",
+    description: "Cours particulier de kitesurf avec moniteur dédié sur le spot de l'Almanarre à Hyères - école KiteSurf Passion Var",
+    contentUrl: "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
+    creditText: "KiteSurf Passion",
+    copyrightNotice: "© KiteSurf Passion",
+    acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+    contentLocation: {
+      "@type": "Place",
+      name: "Plage de l'Almanarre, Hyères",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Hyères",
+        addressRegion: "Var",
+        addressCountry: "FR",
+      },
+    },
+  };
+
   const advantages = [
     { icon: User, title: "100% Dédié", desc: "Attention exclusive du moniteur" },
     { icon: Target, title: "Progression Rapide", desc: "Objectifs personnalisés" },
@@ -133,6 +155,9 @@ const CoursParticulier = () => {
         </script>
         <script type="application/ld+json">
           {JSON.stringify(productStructuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(imageStructuredData)}
         </script>
       </Helmet>
 
