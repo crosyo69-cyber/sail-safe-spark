@@ -62,7 +62,30 @@ const Wakeboard = () => {
     "offers": {
       "@type": "Offer",
       "price": "40",
-      "priceCurrency": "EUR"
+      "priceCurrency": "EUR",
+      "availability": "https://schema.org/InStock"
+    }
+  };
+
+  const productStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "Wakeboard Session Tractée - Hyères",
+    description: "Session de wakeboard de 15 min sur la baie d'Hyères. Activité fun et accessible à tous les âges dès 8 ans, encadrée par moniteur diplômé.",
+    image: "https://www.kitesurfpassion.com/assets/wakeboard-hyeres.jpg",
+    brand: {
+      "@type": "Brand",
+      name: "KiteSurf Passion"
+    },
+    offers: {
+      "@type": "Offer",
+      price: "40",
+      priceCurrency: "EUR",
+      availability: "https://schema.org/InStock",
+      seller: {
+        "@type": "Organization",
+        name: "KiteSurf Passion"
+      }
     }
   };
 
@@ -100,6 +123,9 @@ const Wakeboard = () => {
         <link rel="canonical" href="https://www.kitesurfpassion.com/wakeboard-hyeres" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(productStructuredData)}
         </script>
         <script type="application/ld+json">
           {JSON.stringify(imageStructuredData)}
