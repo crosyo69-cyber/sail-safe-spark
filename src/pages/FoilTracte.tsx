@@ -76,6 +76,30 @@ const FoilTracte = () => {
     }
   };
 
+  const productStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "Foil Tracté Initiation - Hyères",
+    description: "Sessions de foil tracté de 20 à 40 min sur la baie d'Hyères. Découvrez les sensations du vol sur l'eau en toute sécurité avec moniteur diplômé.",
+    image: "https://www.kitesurfpassion.com/assets/foil-tracte-hyeres.jpg",
+    brand: {
+      "@type": "Brand",
+      name: "KiteSurf Passion"
+    },
+    offers: {
+      "@type": "AggregateOffer",
+      lowPrice: "50",
+      highPrice: "80",
+      priceCurrency: "EUR",
+      offerCount: 2,
+      availability: "https://schema.org/InStock",
+      seller: {
+        "@type": "Organization",
+        name: "KiteSurf Passion"
+      }
+    }
+  };
+
   const imageStructuredData = {
     "@context": "https://schema.org",
     "@type": "ImageObject",
@@ -110,6 +134,9 @@ const FoilTracte = () => {
         <link rel="canonical" href="https://www.kitesurfpassion.com/foil-tracte-hyeres" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(productStructuredData)}
         </script>
         <script type="application/ld+json">
           {JSON.stringify(imageStructuredData)}
