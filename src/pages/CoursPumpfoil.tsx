@@ -3,11 +3,35 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { CTASection } from "@/components/sections/CTASection";
+import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Check, ArrowRight, Waves, Zap, Target, Clock } from "lucide-react";
 import pumpfoilImage from "@/assets/pumpfoil-hyeres-cours.jpg";
 import pumpfoilInitiation from "@/assets/pumpfoil-initiation.jpg";
+
+const pumpfoilFaqs = [
+  {
+    question: "Qu'est-ce que le pumpfoil et comment ça fonctionne ?",
+    answer: "Le pumpfoil est un sport nautique où vous volez au-dessus de l'eau grâce à un mouvement de pompage des jambes, sans vent ni vagues. C'est un excellent workout qui combine cardio et renforcement musculaire tout en offrant des sensations de glisse uniques.",
+  },
+  {
+    question: "Le pumpfoil est-il accessible aux débutants à Hyères ?",
+    answer: "Oui ! Avec notre méthode dock start sur le spot de l'Almanarre, vous apprenez à décoller facilement depuis un ponton. La technique est accessible et vous volerez dès les premières séances avec l'encadrement de notre moniteur diplômé.",
+  },
+  {
+    question: "Combien coûte une séance de pumpfoil à l'Almanarre ?",
+    answer: "La séance de pumpfoil avec dock start dure 1h30 et coûte 50€. Elle se fait en petit groupe de 3 personnes maximum, avec tout le matériel fourni et un bateau d'assistance à proximité.",
+  },
+  {
+    question: "Faut-il du vent pour faire du pumpfoil ?",
+    answer: "Non, c'est justement l'avantage du pumpfoil ! Vous pouvez pratiquer même par jour sans vent. C'est l'activité idéale quand les conditions ne permettent pas le kitesurf ou le wingfoil à Hyères.",
+  },
+  {
+    question: "Le pumpfoil aide-t-il pour progresser en wingfoil ?",
+    answer: "Absolument ! Le pumpfoil développe l'équilibre sur le foil et la sensation de vol. C'est un excellent complément pour progresser plus rapidement en wingfoil, car vous apprenez à maîtriser le foil sans gérer l'aile en même temps.",
+  },
+];
 
 const breadcrumbItems = [
   { label: "Initiation Pump Foil" }
@@ -56,12 +80,22 @@ const pricing = [
 ];
 
 export default function CoursPumpfoil() {
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: pumpfoilFaqs.map(faq => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: { "@type": "Answer", text: faq.answer }
+    }))
+  };
+
   return (
     <>
       <Helmet>
-        <title>Initiation Pump Foil Hyères | Dock Start | École Almanarre Var</title>
-        <meta name="description" content="Apprenez le pumpfoil à Hyères. Volez sur l'eau sans vent ! Cours dock start, progression rapide, bateau assistance. 50€ la séance." />
-        <meta name="keywords" content="pumpfoil hyères, cours pumpfoil var, dock start hyères, foil sans vent, école pumpfoil almanarre" />
+        <title>Cours Pumpfoil Hyères Almanarre | Dock Start Var</title>
+        <meta name="description" content="Cours pumpfoil Hyères Almanarre. Volez sur l'eau sans vent ! Dock start, progression rapide, moniteur diplômé, bateau assistance. 50€ la séance." />
+        <meta name="keywords" content="pumpfoil hyères, cours pumpfoil almanarre, dock start hyères, foil sans vent, école pumpfoil var" />
         <link rel="canonical" href="https://kitesurfpassion.com/cours-pumpfoil-dock-start-hyeres" />
         <script type="application/ld+json">
           {JSON.stringify({
@@ -134,6 +168,9 @@ export default function CoursPumpfoil() {
             }
           })}
         </script>
+        <script type="application/ld+json">
+          {JSON.stringify(faqStructuredData)}
+        </script>
       </Helmet>
 
       <Header />
@@ -157,11 +194,11 @@ export default function CoursPumpfoil() {
             <div className="max-w-2xl">
               <span className="inline-block text-sunset font-semibold mb-4">Nouveau Sport</span>
               <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-primary-foreground mb-6">
-                Initiation{" "}
+                Cours{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-ocean to-turquoise">
-                  Pump Foil
+                  Pumpfoil
                 </span>{" "}
-                à Hyères
+                Hyères Almanarre
               </h1>
               <p className="text-primary-foreground/90 text-lg sm:text-xl mb-8 max-w-xl">
                 Volez sur l'eau sans vent ni vagues ! Découvrez le pumpfoil, le sport nautique fitness par excellence, avec notre méthode dock start.
@@ -336,6 +373,14 @@ export default function CoursPumpfoil() {
             </div>
           </div>
         </section>
+
+        {/* FAQ Section */}
+        <ActivityFAQ
+          title="Questions Fréquentes Pumpfoil"
+          subtitle="Tout savoir sur nos cours de pumpfoil à Hyères Almanarre"
+          faqs={pumpfoilFaqs}
+          accentColor="ocean"
+        />
 
         <CTASection />
       </main>

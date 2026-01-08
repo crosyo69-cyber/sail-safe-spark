@@ -5,8 +5,32 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Ship, Star, Award, Clock, CheckCircle, Target, Zap, Shield, User } from "lucide-react";
+import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
 import heroKitesurf from "@/assets/kitesurf-hyeres.jpg";
+
+const coursParticulierFaqs = [
+  {
+    question: "Pourquoi choisir un cours particulier de kitesurf à Hyères ?",
+    answer: "Le cours particulier offre une progression 3 fois plus rapide qu'en groupe. Vous bénéficiez d'un moniteur 100% dédié qui adapte le contenu à vos objectifs et corrige vos gestes en temps réel sur le spot de l'Almanarre.",
+  },
+  {
+    question: "Combien coûte un cours particulier de kitesurf à l'Almanarre ?",
+    answer: "Le cours particulier de 2 heures avec moniteur diplômé dédié est à 230€ hors saison et 380€ en juillet/août. Tout le matériel et le bateau d'assistance sont inclus.",
+  },
+  {
+    question: "Le cours particulier est-il adapté aux vrais débutants ?",
+    answer: "Absolument ! C'est même l'option idéale pour débuter en toute confiance. L'encadrement individualisé permet de progresser à votre rythme, sans pression, avec des explications adaptées à votre niveau.",
+  },
+  {
+    question: "Quelle est la durée idéale pour un cours particulier ?",
+    answer: "Chaque séance dure 2 heures, la durée optimale pour apprendre efficacement sans fatigue excessive. Vous pouvez enchaîner plusieurs séances sur différents jours selon vos objectifs.",
+  },
+  {
+    question: "Peut-on prendre un cours particulier à deux personnes ?",
+    answer: "Oui, nous proposons des cours semi-privatifs pour 2 personnes qui souhaitent progresser ensemble. Le tarif est ajusté et vous conservez une attention quasi-individualisée de la part du moniteur.",
+  },
+];
 
 const breadcrumbItems = [
   { label: "Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
@@ -138,16 +162,26 @@ const CoursParticulier = () => {
     }
   ];
 
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: coursParticulierFaqs.map(faq => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: { "@type": "Answer", text: faq.answer }
+    }))
+  };
+
   return (
     <>
       <Helmet>
-        <title>Cours Particulier Kitesurf à Hyères | Leçon Privée Almanarre</title>
+        <title>Cours Particulier Kitesurf Hyères Almanarre | Leçon Privée Var</title>
         <meta
           name="description"
-          content="Cours particulier kitesurf à Hyères. Progression 100% individualisée avec moniteur diplômé. Bateau d'assistance, encadrement premium. À partir de 230€."
+          content="Cours particulier kitesurf Hyères Almanarre. Progression 100% individualisée avec moniteur diplômé dédié. Bateau d'assistance, encadrement premium. Dès 230€."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/cours-particulier-kitesurf-hyeres" />
-        <meta property="og:title" content="Cours Particulier Kitesurf | KiteSurf Passion Hyères" />
+        <meta property="og:title" content="Cours Particulier Kitesurf Hyères Almanarre | KiteSurf Passion" />
         <meta property="og:description" content="Leçon privée de kitesurf avec moniteur dédié. Progression rapide et sécurisée sur le spot de l'Almanarre." />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">
@@ -158,6 +192,9 @@ const CoursParticulier = () => {
         </script>
         <script type="application/ld+json">
           {JSON.stringify(imageStructuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(faqStructuredData)}
         </script>
       </Helmet>
 
@@ -185,7 +222,7 @@ const CoursParticulier = () => {
                 Encadrement Premium
               </span>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-primary-foreground mb-6">
-                Cours Particulier <span className="text-sunset">Kitesurf</span> à Hyères
+                Cours Particulier <span className="text-sunset">Kitesurf</span> Hyères Almanarre
               </h1>
               <p className="text-primary-foreground/80 text-lg mb-8">
                 Bénéficiez d'un cours 100% individualisé avec un moniteur diplômé entièrement dédié à votre progression. L'approche la plus efficace pour apprendre le kitesurf.
@@ -435,6 +472,14 @@ const CoursParticulier = () => {
             </div>
           </div>
         </section>
+
+        {/* FAQ Section */}
+        <ActivityFAQ
+          title="Questions Fréquentes Kitesurf"
+          subtitle="Tout savoir sur nos cours particuliers à Hyères Almanarre"
+          faqs={coursParticulierFaqs}
+          accentColor="sunset"
+        />
 
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-br from-navy via-navy to-sunset/30">

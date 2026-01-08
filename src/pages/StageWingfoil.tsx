@@ -3,9 +3,33 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
+import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 import { Check, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import wingfoilImage from "@/assets/wingfoil-hyeres.jpg";
+
+const wingfoilFaqs = [
+  {
+    question: "Le wingfoil est-il plus facile que le kitesurf à apprendre ?",
+    answer: "Oui, le wingfoil est généralement plus accessible. Il n'y a pas de lignes à gérer, l'aile se tient directement à la main. La progression est souvent plus rapide pour les débutants, surtout sur notre spot de l'Almanarre à Hyères.",
+  },
+  {
+    question: "Quel vent faut-il pour pratiquer le wingfoil à l'Almanarre ?",
+    answer: "Le wingfoil se pratique dès 12 nœuds de vent, soit moins que le kitesurf (15-20 nœuds). C'est un avantage majeur qui permet de naviguer plus souvent sur le spot de l'Almanarre à Hyères.",
+  },
+  {
+    question: "Combien coûte un stage de wingfoil à Hyères Almanarre ?",
+    answer: "Notre stage initiation wingfoil 5 jours est à 440€ hors saison (520€ en juillet/août). Il comprend 4 leçons de 2h30 plus une session de foil tracté de 40 minutes pour accélérer votre progression.",
+  },
+  {
+    question: "Faut-il avoir fait du kitesurf avant le wingfoil ?",
+    answer: "Non, le wingfoil est une discipline indépendante. Vous pouvez débuter directement en wingfoil sans expérience préalable en kitesurf. Notre école à Hyères propose des cours adaptés aux vrais débutants.",
+  },
+  {
+    question: "Pourquoi l'Almanarre est-il idéal pour apprendre le wingfoil ?",
+    answer: "L'Almanarre offre des conditions parfaites : eau plate dans la lagune, vents réguliers, faible profondeur et espace dégagé. Notre bateau d'assistance vous sécurise pendant toute la durée du cours.",
+  },
+];
 
 const breadcrumbItems = [
   { label: "Stage Wing Foil" }
@@ -116,16 +140,27 @@ const StageWingfoil = () => {
   return (
     <>
       <Helmet>
-        <title>Stage Wing Foil Hyères | Cours Wingfoil Almanarre | KiteSurf Passion</title>
+        <title>Stage Wingfoil Hyères Almanarre | Cours Wing Foil Var</title>
         <meta
           name="description"
-          content="Découvrez le wingfoil à Hyères. Sport tendance 2024, plus accessible que le kite. Cours avec bateau assistance, spot Almanarre parfait."
+          content="Stage wingfoil Hyères Almanarre : sport tendance accessible à tous. Cours avec bateau d'assistance, moniteur diplômé. Dès 440€ le stage 5 jours."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/stage-wingfoil-hyeres-almanarre" />
         <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(courseStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(productStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(imageStructuredData)}</script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: wingfoilFaqs.map(faq => ({
+              "@type": "Question",
+              name: faq.question,
+              acceptedAnswer: { "@type": "Answer", text: faq.answer }
+            }))
+          })}
+        </script>
       </Helmet>
 
       <Header />
@@ -149,7 +184,7 @@ const StageWingfoil = () => {
             <div className="max-w-2xl">
               <span className="inline-block text-sunset font-semibold mb-4">Wing Foil</span>
               <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-primary-foreground mb-6">
-                Stage Wing Foil à l'Almanarre
+                Stage <span className="text-sunset">Wingfoil</span> Hyères Almanarre
               </h1>
               <p className="text-primary-foreground/80 text-lg mb-8">
                 Le sport de glisse tendance ! Plus accessible que le kitesurf, le wingfoil vous offre des sensations uniques de vol sur l'eau.
@@ -248,8 +283,16 @@ const StageWingfoil = () => {
           </div>
         </section>
 
+        {/* FAQ Section */}
+        <ActivityFAQ
+          title="Questions Fréquentes Wingfoil"
+          subtitle="Tout savoir sur nos cours de wingfoil à Hyères Almanarre"
+          faqs={wingfoilFaqs}
+          accentColor="primary"
+        />
+
         {/* Related Activities */}
-        <section className="py-16 bg-muted/30">
+        <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
             <div className="text-center mb-10">
               <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-4">
@@ -270,7 +313,7 @@ const StageWingfoil = () => {
                 to="/cours-pumpfoil-dock-start-hyeres"
                 className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
               >
-                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Initiation Pump Foil</h3>
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Cours Pumpfoil</h3>
                 <p className="text-muted-foreground text-sm mb-3">Sans vent, sans vagues</p>
                 <span className="text-primary text-sm font-medium">50€ →</span>
               </Link>
