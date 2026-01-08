@@ -5,8 +5,32 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Ship, Users, Award, Clock, CheckCircle, Calendar, Target, Zap, Shield, Radio } from "lucide-react";
+import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 import kitesurfLesson from "@/assets/stage-100-glisse-action.jpg";
 import hero100Glisse from "@/assets/hero-100-glisse.jpg";
+
+const stage100GlisseFaqs = [
+  {
+    question: "Combien de temps dure le stage 100% Glisse à Hyères ?",
+    answer: "Le stage 100% Glisse dure 5 jours consécutifs, à raison de 3 heures par jour. Cette immersion intensive sur le spot de l'Almanarre permet une progression optimale vers l'autonomie en kitesurf.",
+  },
+  {
+    question: "Quel est le prix du stage kitesurf 100% Glisse à l'Almanarre ?",
+    answer: "Le stage est à 399€ hors saison et 499€ en juillet/août. Ce tarif inclut tout le matériel (aile, planche, combinaison, harnais), le bateau d'assistance permanent et l'encadrement par un moniteur diplômé d'État.",
+  },
+  {
+    question: "Pourquoi choisir l'Almanarre pour apprendre le kitesurf ?",
+    answer: "L'Almanarre à Hyères est l'un des meilleurs spots de France pour débuter : eau peu profonde, vents réguliers (Mistral et Levant), espace dégagé et cadre naturel exceptionnel. Notre école y est implantée depuis 1999.",
+  },
+  {
+    question: "Le bateau d'assistance est-il vraiment utile pour apprendre ?",
+    answer: "Absolument ! Le bateau vous récupère si vous dérivez, vous ramène au point de départ rapidement et intervient en cas de besoin. Vous passez plus de temps à naviguer et moins à nager, ce qui accélère votre progression.",
+  },
+  {
+    question: "À quel niveau peut-on espérer arriver après le stage ?",
+    answer: "À la fin des 5 jours, vous serez capable de naviguer de manière autonome : départ de la plage, navigation dans les deux sens, remontée au vent et arrêts contrôlés. Vous pourrez ensuite louer du matériel et pratiquer seul.",
+  },
+];
 
 const breadcrumbItems = [
   { label: "Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
@@ -138,13 +162,13 @@ const Stage100Glisse = () => {
   return (
     <>
       <Helmet>
-        <title>Stage Kitesurf 100% Glisse à Hyères | 5 Jours Intensifs Almanarre</title>
+        <title>Stage Kitesurf 100% Glisse Hyères Almanarre | 5 Jours Intensifs</title>
         <meta
           name="description"
-          content="Stage kitesurf 100% glisse à Hyères : 5 jours consécutifs pour atteindre l'autonomie. Bateau d'assistance, petits groupes, moniteur diplômé. Dès 399€."
+          content="Stage kitesurf 100% glisse à Hyères Almanarre : 5 jours consécutifs pour l'autonomie. Bateau d'assistance, moniteur diplômé, petits groupes. Dès 399€."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/stage-kitesurf-100-glisse-hyeres" />
-        <meta property="og:title" content="Stage Kitesurf 100% Glisse à Hyères | KiteSurf Passion" />
+        <meta property="og:title" content="Stage Kitesurf 100% Glisse Hyères Almanarre | KiteSurf Passion" />
         <meta property="og:description" content="Stage intensif de 5 jours pour devenir autonome en kitesurf. Progression rapide garantie sur le spot de l'Almanarre." />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">
@@ -155,6 +179,17 @@ const Stage100Glisse = () => {
         </script>
         <script type="application/ld+json">
           {JSON.stringify(imageStructuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: stage100GlisseFaqs.map(faq => ({
+              "@type": "Question",
+              name: faq.question,
+              acceptedAnswer: { "@type": "Answer", text: faq.answer }
+            }))
+          })}
         </script>
       </Helmet>
 
@@ -182,7 +217,7 @@ const Stage100Glisse = () => {
                 Stage Intensif
               </span>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-primary-foreground mb-6">
-                Stage Kitesurf <span className="text-sunset">100% Glisse</span> à Hyères
+                Stage Kitesurf <span className="text-sunset">100% Glisse</span> Hyères Almanarre
               </h1>
               <p className="text-primary-foreground/80 text-lg mb-8">
                 5 jours consécutifs pour atteindre l'autonomie. Progression rapide, encadrement professionnel et sécurité maximale sur le spot de l'Almanarre.
@@ -423,6 +458,14 @@ const Stage100Glisse = () => {
             </div>
           </div>
         </section>
+
+        {/* FAQ Section */}
+        <ActivityFAQ
+          title="Questions Fréquentes Kitesurf"
+          subtitle="Tout savoir sur notre stage 100% Glisse à Hyères Almanarre"
+          faqs={stage100GlisseFaqs}
+          accentColor="primary"
+        />
 
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-br from-navy via-navy to-primary/30">

@@ -5,8 +5,32 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Ship, Users, Award, Clock, CheckCircle, Calendar, Settings, Repeat } from "lucide-react";
+import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
 import heroSessionCarte from "@/assets/hero-session-carte.jpg";
+
+const sessionCarteFaqs = [
+  {
+    question: "Qu'est-ce qu'une session kitesurf à la carte à Hyères ?",
+    answer: "Les sessions à la carte vous offrent une flexibilité totale : vous choisissez vos créneaux selon vos disponibilités et la météo. Idéal pour les locaux ou ceux qui ne peuvent pas s'engager sur 5 jours consécutifs.",
+  },
+  {
+    question: "Combien coûte une session de kitesurf à l'Almanarre ?",
+    answer: "Une session individuelle de 3 heures est à 120€ hors saison (130€ en juillet/août). Des packs de 3 et 5 sessions sont disponibles avec des tarifs dégressifs. Matériel et bateau d'assistance inclus.",
+  },
+  {
+    question: "Les sessions à la carte conviennent-elles aux débutants ?",
+    answer: "Oui, les sessions sont adaptées à tous les niveaux. Pour les vrais débutants, nous recommandons un minimum de 5 sessions pour atteindre l'autonomie, mais vous pouvez les répartir sur plusieurs semaines selon votre rythme.",
+  },
+  {
+    question: "Comment réserver une session à la carte ?",
+    answer: "Contactez-nous par téléphone ou via le formulaire pour convenir d'un créneau. Nous planifions ensemble en fonction de la météo annoncée et de vos disponibilités sur le spot de l'Almanarre.",
+  },
+  {
+    question: "Puis-je combiner sessions à la carte et stage ?",
+    answer: "Absolument ! Les sessions à la carte sont parfaites en complément d'un stage pour consolider vos acquis. Beaucoup d'élèves font le stage 100% Glisse puis ajoutent quelques sessions pour perfectionner certaines techniques.",
+  },
+];
 
 const breadcrumbItems = [
   { label: "Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
@@ -87,20 +111,33 @@ const SessionCarte = () => {
     }
   ];
 
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: sessionCarteFaqs.map(faq => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: { "@type": "Answer", text: faq.answer }
+    }))
+  };
+
   return (
     <>
       <Helmet>
-        <title>Session Kitesurf à la Carte Hyères | Cours Flexibles Almanarre</title>
+        <title>Cours Kitesurf à la Carte Hyères Almanarre | Sessions Flexibles Var</title>
         <meta
           name="description"
-          content="Sessions kitesurf à la carte à Hyères. Flexibilité totale, progression ciblée selon votre niveau. Séances individuelles ou en pack. Dès 120€."
+          content="Cours kitesurf à la carte Hyères Almanarre. Flexibilité totale, progression ciblée selon votre niveau. Séances individuelles ou en pack. Dès 120€."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/session-kitesurf-carte-hyeres" />
-        <meta property="og:title" content="Session Kitesurf à la Carte | KiteSurf Passion Hyères" />
+        <meta property="og:title" content="Cours Kitesurf à la Carte Hyères Almanarre | KiteSurf Passion" />
         <meta property="og:description" content="Cours de kitesurf flexibles à Hyères. Choisissez vos créneaux et progressez selon vos objectifs." />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(faqStructuredData)}
         </script>
       </Helmet>
 
@@ -128,7 +165,7 @@ const SessionCarte = () => {
                 Flexibilité Maximale
               </span>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-primary-foreground mb-6">
-                Session Kitesurf <span className="text-primary">à la Carte</span> à Hyères
+                Cours <span className="text-primary">Kitesurf</span> à la Carte Hyères Almanarre
               </h1>
               <p className="text-primary-foreground/80 text-lg mb-8">
                 Des sessions personnalisables selon votre niveau et vos disponibilités. Progressez à votre rythme avec un encadrement professionnel sur le spot de l'Almanarre.
@@ -336,6 +373,14 @@ const SessionCarte = () => {
             </div>
           </div>
         </section>
+
+        {/* FAQ Section */}
+        <ActivityFAQ
+          title="Questions Fréquentes Kitesurf"
+          subtitle="Tout savoir sur nos sessions à la carte à Hyères Almanarre"
+          faqs={sessionCarteFaqs}
+          accentColor="primary"
+        />
 
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-br from-navy via-navy to-primary/30">
