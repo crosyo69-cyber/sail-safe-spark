@@ -7,6 +7,7 @@ import { Check, Anchor, Shield, Waves, Heart, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import wakeboardHero from "@/assets/wakeboard-hyeres.jpg";
 import { FoilWakeboardTestimonials } from "@/components/sections/FoilWakeboardTestimonials";
+import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 
 const breadcrumbItems = [
   { label: "Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
@@ -273,6 +274,39 @@ const Wakeboard = () => {
             </div>
           </div>
         </section>
+
+        {/* FAQ SEO */}
+        <ActivityFAQ
+          title="Questions Fréquentes"
+          subtitle="Tout savoir sur le wakeboard à Hyères et dans la baie de Giens"
+          accentColor="sunset"
+          faqs={[
+            {
+              question: "Le wakeboard est-il accessible aux débutants à Hyères ?",
+              answer: "Oui, le wakeboard est une activité idéale pour les débutants ! Notre moniteur diplômé adapte la vitesse du bateau et vous guide pas à pas. La baie d'Hyères offre des conditions parfaites avec son eau calme et protégée."
+            },
+            {
+              question: "À partir de quel âge peut-on faire du wakeboard ?",
+              answer: "Le wakeboard est accessible dès 8 ans. Les enfants utilisent du matériel adapté à leur taille et leur poids. Notre moniteur veille à leur sécurité et ajuste la session selon leur niveau. Une activité familiale parfaite !"
+            },
+            {
+              question: "Que comprend une session de wakeboard de 15 minutes ?",
+              answer: "La session inclut tout le matériel (planche, gilet, combinaison si besoin), l'encadrement par notre moniteur diplômé et bien sûr le temps de glisse tractée par notre bateau sur la baie d'Hyères. 15 minutes suffisent pour ressentir de vraies sensations !"
+            },
+            {
+              question: "Faut-il une condition physique particulière pour le wakeboard ?",
+              answer: "Le wakeboard demande un minimum de tonus musculaire au niveau des bras et des jambes, mais reste accessible à tous. Savoir nager est obligatoire. Notre moniteur adapte l'intensité à chaque participant pour que tout le monde profite."
+            },
+            {
+              question: "Quelle différence entre wakeboard et ski nautique ?",
+              answer: "Le wakeboard se pratique avec une seule planche, pieds fixés, position latérale (comme en snowboard). Le ski nautique utilise deux skis, position face au bateau. Le wakeboard offre plus de possibilités de figures et une sensation de glisse différente."
+            },
+            {
+              question: "Où se déroulent les sessions de wakeboard à Hyères ?",
+              answer: "Les sessions ont lieu sur la baie d'Hyères, un plan d'eau exceptionnel bordé par la presqu'île de Giens et les îles d'Or. Les conditions sont idéales toute l'année : eau calme, températures agréables et cadre naturel préservé."
+            }
+          ]}
+        />
 
         {/* Related Activities */}
         <section className="py-16 bg-background">

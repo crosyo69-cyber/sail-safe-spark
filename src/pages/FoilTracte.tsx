@@ -7,6 +7,7 @@ import { Check, Anchor, Shield, Zap, Users, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import foilTracteHero from "@/assets/foil-tracte-hyeres.jpg";
 import { FoilWakeboardTestimonials } from "@/components/sections/FoilWakeboardTestimonials";
+import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 
 const breadcrumbItems = [
   { label: "Wing Foil", href: "/stage-wingfoil-hyeres-almanarre" },
@@ -295,6 +296,39 @@ const FoilTracte = () => {
             </div>
           </div>
         </section>
+
+        {/* FAQ SEO */}
+        <ActivityFAQ
+          title="Questions Fréquentes"
+          subtitle="Tout savoir sur le foil tracté à Hyères et dans la baie de Giens"
+          accentColor="primary"
+          faqs={[
+            {
+              question: "Qu'est-ce que le foil tracté et comment ça fonctionne ?",
+              answer: "Le foil tracté est une méthode d'initiation au foil où vous êtes remorqué par un bateau. Une planche équipée d'un hydrofoil vous permet de vous élever au-dessus de l'eau. C'est la façon la plus simple et sécurisée de découvrir les sensations du vol, sans avoir besoin de vent ni d'aile."
+            },
+            {
+              question: "Faut-il savoir nager pour faire du foil tracté à Hyères ?",
+              answer: "Oui, il est nécessaire de savoir nager pour pratiquer le foil tracté. Vous portez un gilet de flottaison fourni par notre école, mais une aisance dans l'eau est indispensable pour votre sécurité. Notre moniteur diplômé reste à proximité en bateau."
+            },
+            {
+              question: "Quel est l'âge minimum pour une session de foil tracté ?",
+              answer: "Le foil tracté est accessible dès 12 ans, sous réserve de savoir nager et d'avoir une condition physique adaptée. Pour les mineurs, une autorisation parentale est requise. Notre moniteur évalue chaque participant avant la session."
+            },
+            {
+              question: "Combien de temps faut-il pour réussir à voler en foil tracté ?",
+              answer: "La plupart des débutants parviennent à décoller et voler quelques secondes dès leur première session de 20 minutes. Avec une session de 40 minutes, vous aurez le temps de stabiliser votre vol et de ressentir pleinement les sensations uniques du foil."
+            },
+            {
+              question: "Le foil tracté est-il une bonne préparation au wing foil ?",
+              answer: "Absolument ! Le foil tracté est le tremplin idéal vers le wing foil. Vous apprenez l'équilibre et la position sur le foil sans gérer l'aile. Une fois à l'aise avec la planche, la transition vers le wing foil à l'Almanarre devient beaucoup plus rapide."
+            },
+            {
+              question: "Où se déroulent les sessions de foil tracté à Hyères ?",
+              answer: "Les sessions ont lieu sur la baie d'Hyères, près de la presqu'île de Giens. Ce plan d'eau protégé offre des conditions idéales pour l'apprentissage : eau calme, faible profondeur et paysages magnifiques avec vue sur les îles d'Or."
+            }
+          ]}
+        />
 
         {/* Related Activities */}
         <section className="py-16 bg-background">
