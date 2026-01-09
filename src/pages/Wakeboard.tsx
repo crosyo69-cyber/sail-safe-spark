@@ -118,7 +118,7 @@ const Wakeboard = () => {
         <title>Wakeboard Hyères | Session Glisse Tractée - Baie d'Hyères</title>
         <meta 
           name="description" 
-          content="Sessions de wakeboard à Hyères : glisse tractée fun et accessible. 15 min de sensations sur la baie d'Hyères avec bateau et moniteur. 40€ la session !" 
+          content="Wakeboard Hyères Almanarre : glisse tractée fun près de Giens. 15 min de sensations avec bateau et moniteur diplômé. 40€ la session !" 
         />
         <meta name="keywords" content="wakeboard Hyères, wakeboard baie d'Hyères, wakeboard bateau Hyères, glisse tractée Var, activité nautique Hyères" />
         <link rel="canonical" href="https://www.kitesurfpassion.com/wakeboard-hyeres" />

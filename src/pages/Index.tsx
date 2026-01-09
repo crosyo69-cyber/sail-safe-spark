@@ -288,7 +288,7 @@ const Index = () => {
         <title>École Kitesurf Hyères | Cours avec Bateau d'Assistance | KiteSurf Passion</title>
         <meta
           name="description"
-          content="Apprenez le kitesurf à Hyères depuis 1999. École itinérante avec bateau d'assistance, moniteur expert. Spot Almanarre idéal. ☎ 06 72 71 69 05"
+          content="École kitesurf, wingfoil et pumpfoil à Hyères Almanarre depuis 1999. Bateau d'assistance, moniteur diplômé, 2500 élèves. ☎ 06 72 71 69 05"
         />
         <meta
           name="keywords"
