@@ -256,7 +256,7 @@ const Blog = () => {
   return (
     <>
       <Helmet>
-        <title>Blog Kitesurf Hyères | Conseils, Guides & Actualités | KiteSurf Passion</title>
+        <title>Blog Kitesurf Hyères | Conseils & Guides</title>
         <meta
           name="description"
           content="Conseils d'experts, guides pratiques et actualités sur le kitesurf, wingfoil et sports de glisse à Hyères. Apprenez avec KiteSurf Passion depuis 1999."

@@ -124,7 +124,7 @@ const SessionCarte = () => {
   return (
     <>
       <Helmet>
-        <title>Cours Kitesurf à la Carte Hyères Almanarre | Sessions Flexibles Var</title>
+        <title>Cours Kitesurf Hyères | Sessions à la Carte</title>
         <meta
           name="description"
           content="Cours kitesurf à la carte Hyères Almanarre. Flexibilité totale, progression ciblée selon votre niveau. Séances individuelles ou en pack. Dès 120€."

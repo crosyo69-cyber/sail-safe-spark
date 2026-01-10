@@ -200,7 +200,7 @@ const APropos = () => {
   return (
     <>
       <Helmet>
-        <title>À Propos - KiteSurf Passion | École depuis 1999 à Hyères</title>
+        <title>École Kitesurf Hyères depuis 1999 | À Propos</title>
         <meta 
           name="description" 
           content="Découvrez l'histoire de KiteSurf Passion, fondée en 1999 par Yohan Cros, moniteur diplômé d'État BPJEPS. 25 ans d'expertise en kitesurf, wingfoil et pumpfoil à Hyères." 

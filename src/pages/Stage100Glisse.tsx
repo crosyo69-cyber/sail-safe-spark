@@ -162,7 +162,7 @@ const Stage100Glisse = () => {
   return (
     <>
       <Helmet>
-        <title>Stage Kitesurf 100% Glisse Hyères Almanarre | 5 Jours Intensifs</title>
+        <title>Stage Kitesurf Hyères | 100% Glisse 5 Jours</title>
         <meta
           name="description"
           content="Stage kitesurf 100% glisse à Hyères Almanarre : 5 jours consécutifs pour l'autonomie. Bateau d'assistance, moniteur diplômé, petits groupes. Dès 399€."

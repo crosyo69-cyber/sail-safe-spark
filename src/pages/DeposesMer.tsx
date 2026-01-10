@@ -68,7 +68,7 @@ const DeposesMer = () => {
   return (
     <>
       <Helmet>
-        <title>Déposes en Mer Kitesurf Hyères | Bateau Sécurité Almanarre & Giens</title>
+        <title>Déposes Mer Kitesurf Hyères | Bateau Almanarre</title>
         <meta
           name="description"
           content="Service de déposes en mer pour kitesurf à Hyères. Bateau sécurité sur l'Almanarre et Giens. Accès aux meilleurs spots dès 45€. Réservez votre dépose."
