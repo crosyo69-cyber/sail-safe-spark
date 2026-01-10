@@ -107,6 +107,62 @@ const DeposesMer = () => {
             }
           })}
         </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "Qu'est-ce qu'une dépose en mer pour le kitesurf ?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Une dépose en mer est un service de transport en bateau qui vous emmène directement sur les meilleurs spots de navigation. Vous évitez le départ depuis la plage et accédez à des zones de kitesurf optimales sur la baie d'Hyères, l'Almanarre ou la presqu'île de Giens."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Quel niveau de kitesurf faut-il pour les déposes en mer ?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Le service est réservé aux kitesurfeurs autonomes. Vous devez maîtriser le waterstart, naviguer de manière indépendante, gérer votre matériel en toutes situations et connaître les règles de priorité. En cas de doute, contactez-nous pour évaluer votre niveau."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Le bateau de sécurité reste-t-il sur zone pendant ma session ?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Oui, notre bateau d'assistance reste sur zone pendant toute la durée de votre session. Un professionnel veille à votre sécurité et peut intervenir rapidement en cas de besoin. C'est la garantie de naviguer sereinement sur les spots de Hyères."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Puis-je combiner location de matériel et dépose en mer ?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Absolument ! Notre formule Location + Dépose à 80€ inclut le matériel complet (aile, planche, harnais) et la dépose en mer. C'est la solution idéale pour les riders autonomes en voyage qui n'ont pas apporté leur équipement."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Sur quels spots les déposes en mer sont-elles possibles ?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Nous proposons des déposes sur l'Almanarre, la presqu'île de Giens et la baie d'Hyères. Le choix du spot dépend des conditions météo du jour. Notre connaissance locale nous permet de vous placer sur la meilleure zone pour votre session."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Le carnet de 10 déposes est-il nominatif ?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Le carnet de 10 déposes peut être partagé entre plusieurs personnes (famille, groupe d'amis). À 30€ la dépose au lieu de 45€, c'est l'offre idéale pour les pratiquants réguliers sur les spots de Hyères. Validité d'un an."
+                }
+              }
+            ]
+          })}
+        </script>
       </Helmet>
 
       <Header />
