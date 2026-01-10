@@ -126,7 +126,7 @@ const FoilTracte = () => {
   return (
     <>
       <Helmet>
-        <title>Foil Tracté Hyères | Initiation Vol sur l'Eau - Baie d'Hyères</title>
+        <title>Foil Tracté Hyères Almanarre | Voler sur l'Eau</title>
         <meta 
           name="description" 
           content="Foil tracté Hyères Almanarre : volez sur l'eau en sécurité près de Giens. Sessions 20-40 min avec bateau et moniteur diplômé. Dès 50€ !" 

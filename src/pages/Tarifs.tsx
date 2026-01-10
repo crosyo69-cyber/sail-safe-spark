@@ -107,7 +107,7 @@ const Tarifs = () => {
   return (
     <>
       <Helmet>
-        <title>Tarifs Cours Kitesurf & Wingfoil Hyères | Prix École Almanarre</title>
+        <title>Tarifs Kitesurf Wingfoil Hyères | Prix Almanarre</title>
         <meta
           name="description"
           content="Découvrez nos tarifs transparents pour cours de kitesurf, wingfoil et pumpfoil à Hyères. Stage dès 350€. Devis gratuit sous 24h."

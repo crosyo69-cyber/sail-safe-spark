@@ -175,7 +175,7 @@ const CoursParticulier = () => {
   return (
     <>
       <Helmet>
-        <title>Cours Particulier Kitesurf Hyères Almanarre | Leçon Privée Var</title>
+        <title>Cours Particulier Kitesurf Hyères | Leçon Privée</title>
         <meta
           name="description"
           content="Cours particulier kitesurf Hyères Almanarre. Progression 100% individualisée avec moniteur diplômé dédié. Bateau d'assistance, encadrement premium. Dès 230€."

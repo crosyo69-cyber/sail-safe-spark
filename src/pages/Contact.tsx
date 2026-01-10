@@ -84,7 +84,7 @@ const Contact = () => {
   return (
     <>
       <Helmet>
-        <title>Contact & Réservation | École Kitesurf Hyères | 06 72 71 69 05</title>
+        <title>Contact Kitesurf Hyères | Réservation Almanarre</title>
         <meta
           name="description"
           content="Contactez KiteSurf Passion pour réserver vos cours de kitesurf à Hyères. Réponse sous 24h. ☎ 06 72 71 69 05 ou formulaire."
