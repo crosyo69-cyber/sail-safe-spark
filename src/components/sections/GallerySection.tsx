@@ -46,25 +46,25 @@ const galleryImages = [
   },
   {
     src: bateauSecurite,
-    alt: "Bateau d'assistance de l'école de kitesurf Hyères Almanarre",
+    alt: "Bateau d'assistance kitesurf Hyères Almanarre - Sécurité école KiteSurf Passion Var",
     title: "Bateau d'Assistance",
     category: "Sécurité"
   },
   {
     src: almanarre,
-    alt: "Coucher de soleil sur le spot de l'Almanarre",
+    alt: "Coucher de soleil spot kitesurf Almanarre Hyères - École KiteSurf Passion Var",
     title: "Spot Almanarre",
     category: "Le Spot"
   },
   {
     src: kitesurfLesson,
-    alt: "Cours kitesurf Hyères - Formation encadrée école KiteSurf Passion Almanarre",
+    alt: "Cours kitesurf Hyères Almanarre - Formation encadrée école KiteSurf Passion Var",
     title: "Cours Encadrés",
     category: "Formation"
   },
   {
     src: downwind,
-    alt: "Session downwind en kitesurf",
+    alt: "Session downwind kitesurf Hyères Almanarre - Navigation école KiteSurf Passion Var",
     title: "Downwind",
     category: "Kitesurf"
   },
