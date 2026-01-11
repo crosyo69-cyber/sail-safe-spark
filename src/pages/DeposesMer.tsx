@@ -163,6 +163,14 @@ const DeposesMer = () => {
             ]
           })}
         </script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Déposes en Mer", "item": "https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" }
+          ]
+        })}</script>
       </Helmet>
 
       <Header />

@@ -139,6 +139,15 @@ const SessionCarte = () => {
         <script type="application/ld+json">
           {JSON.stringify(faqStructuredData)}
         </script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Kitesurf", "item": "https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" },
+            { "@type": "ListItem", "position": 3, "name": "Sessions à la Carte", "item": "https://www.kitesurfpassion.com/session-kitesurf-carte-hyeres" }
+          ]
+        })}</script>
       </Helmet>
 
       <Header />

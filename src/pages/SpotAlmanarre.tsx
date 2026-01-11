@@ -160,6 +160,14 @@ export default function SpotAlmanarre() {
         <script type="application/ld+json">
           {JSON.stringify(imageStructuredData)}
         </script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Spot Almanarre", "item": "https://www.kitesurfpassion.com/spot-kitesurf-almanarre-hyeres-var" }
+          ]
+        })}</script>
       </Helmet>
 
       <Header />

@@ -161,6 +161,14 @@ const StageWingfoil = () => {
             }))
           })}
         </script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Stage Wing Foil", "item": "https://www.kitesurfpassion.com/stage-wingfoil-hyeres-almanarre" }
+          ]
+        })}</script>
       </Helmet>
 
       <Header />
