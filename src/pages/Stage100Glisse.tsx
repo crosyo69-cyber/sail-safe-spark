@@ -191,6 +191,15 @@ const Stage100Glisse = () => {
             }))
           })}
         </script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Kitesurf", "item": "https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" },
+            { "@type": "ListItem", "position": 3, "name": "Stage 100% Glisse", "item": "https://www.kitesurfpassion.com/stage-kitesurf-100-glisse-hyeres" }
+          ]
+        })}</script>
       </Helmet>
 
       <Header />

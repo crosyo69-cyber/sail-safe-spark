@@ -90,6 +90,14 @@ const Contact = () => {
           content="Contactez KiteSurf Passion pour réserver vos cours de kitesurf à Hyères. Réponse sous 24h. ☎ 06 72 71 69 05 ou formulaire."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Contact & Réservation", "item": "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres" }
+          ]
+        })}</script>
       </Helmet>
 
       <Header />

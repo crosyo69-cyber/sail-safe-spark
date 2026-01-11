@@ -171,6 +171,14 @@ export default function CoursPumpfoil() {
         <script type="application/ld+json">
           {JSON.stringify(faqStructuredData)}
         </script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Initiation Pump Foil", "item": "https://www.kitesurfpassion.com/cours-pumpfoil-dock-start-hyeres" }
+          ]
+        })}</script>
       </Helmet>
 
       <Header />

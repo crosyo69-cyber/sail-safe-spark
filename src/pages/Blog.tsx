@@ -267,6 +267,14 @@ const Blog = () => {
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/blog-kitesurf-hyeres" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Blog & Actualités", "item": "https://www.kitesurfpassion.com/blog-kitesurf-hyeres" }
+          ]
+        })}</script>
       </Helmet>
 
       <Header />

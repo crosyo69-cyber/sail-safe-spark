@@ -177,6 +177,15 @@ const Wakeboard = () => {
         />
         <meta name="keywords" content="wakeboard Hyères, wakeboard baie d'Hyères, wakeboard bateau Hyères, glisse tractée Var, activité nautique Hyères" />
         <link rel="canonical" href="https://www.kitesurfpassion.com/wakeboard-hyeres" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Kitesurf", "item": "https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" },
+            { "@type": "ListItem", "position": 3, "name": "Wakeboard", "item": "https://www.kitesurfpassion.com/wakeboard-hyeres" }
+          ]
+        })}</script>
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>

@@ -314,6 +314,13 @@ const Index = () => {
         <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(reviewsStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(imageGalleryStructuredData)}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" }
+          ]
+        })}</script>
       </Helmet>
 
       <Header />
