@@ -1057,7 +1057,7 @@ const BlogArticle = () => {
                     <div className="aspect-video overflow-hidden">
                       <img
                         src={`/src/assets/${related.image}`}
-                        alt={related.title}
+                        alt={`${related.title} - Blog kitesurf Hyères Almanarre école KiteSurf Passion Var`}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
