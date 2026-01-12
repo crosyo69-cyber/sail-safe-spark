@@ -1,0 +1,57 @@
+/* TEAM */
+
+Fondateur & Moniteur: Yohan Cros
+Rôle: Moniteur diplômé d'État (BPJEPS), Formateur de moniteurs
+Localisation: Hyères, Var, France
+Contact: contact@kitesurfpassion.com
+LinkedIn: https://www.linkedin.com/company/kitesurf-passion
+
+/* SITE */
+
+Nom: Kitesurf Passion
+URL: https://kitesurfpassion.fr
+Description: École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999
+Langues: Français, English
+Dernière mise à jour: 2026-01-12
+
+/* TECHNOLOGIES */
+
+Framework: React 18
+Build Tool: Vite
+Langage: TypeScript
+Styling: Tailwind CSS
+UI Components: Radix UI, shadcn/ui
+Animations: Framer Motion
+Icons: Lucide React
+Backend: Lovable Cloud (Supabase)
+Hébergement: Lovable
+Domaine: IONOS
+
+/* CERTIFICATIONS & LABELS */
+
+Label: École Française de Kite (EFK)
+Fédération: FFVL (Fédération Française de Vol Libre)
+N° Affiliation: 01926
+SIRET: 432 262 129 00039
+Diplôme: BPJEPS (2001)
+
+/* PARTENAIRES */
+
+Équipement: Duotone Kiteboarding
+Surf Shop: Welcome Surf Shop
+Tourisme: Office de Tourisme Hyères, Office de Tourisme Carqueiranne
+Avis: TripAdvisor
+
+/* REMERCIEMENTS */
+
+Merci à tous nos élèves et partenaires qui nous font confiance depuis 1999.
+Merci aux moniteurs et formateurs de la FFVL.
+Merci à la communauté kitesurf de l'Almanarre.
+
+/* STANDARDS */
+
+robots.txt: https://kitesurfpassion.fr/robots.txt
+sitemap.xml: https://kitesurfpassion.fr/sitemap.xml
+llms.txt: https://kitesurfpassion.fr/llms.txt
+security.txt: https://kitesurfpassion.fr/.well-known/security.txt
+rss.xml: https://kitesurfpassion.fr/rss.xml
