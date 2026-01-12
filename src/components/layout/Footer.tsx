@@ -39,6 +39,7 @@ const footerLinks = {
   legal: [
     { name: "Mentions Légales", href: "/mentions-legales" },
     { name: "Politique de Confidentialité", href: "/politique-confidentialite" },
+    { name: "llms.txt", href: "/llms.txt", external: true },
   ],
 };
 
@@ -456,13 +457,26 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
           </p>
           <div className="flex flex-wrap items-center gap-4 md:gap-6">
             {footerLinks.legal.map((link) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                className="text-primary-foreground/50 hover:text-primary-foreground/70 transition-colors text-sm"
-              >
-                {link.name}
-              </Link>
+              'external' in link && link.external ? (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary-foreground/50 hover:text-primary-foreground/70 transition-colors text-sm font-mono"
+                  title="Fichier pour les crawlers IA"
+                >
+                  {link.name}
+                </a>
+              ) : (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className="text-primary-foreground/50 hover:text-primary-foreground/70 transition-colors text-sm"
+                >
+                  {link.name}
+                </Link>
+              )
             ))}
             <CookieLink />
           </div>
