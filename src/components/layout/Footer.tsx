@@ -40,6 +40,7 @@ const footerLinks = {
     { name: "Mentions Légales", href: "/mentions-legales" },
     { name: "Politique de Confidentialité", href: "/politique-confidentialite" },
     { name: "llms.txt", href: "/llms.txt", external: true },
+    { name: "security.txt", href: "/.well-known/security.txt", external: true },
   ],
 };
 
