@@ -1,56 +1,63 @@
-# llms.txt - Kitesurf Passion
-# https://kitesurfpassion.fr/llms.txt
+# Kitesurf Passion
 
-## Site Identity
-name: Kitesurf Passion
-url: https://kitesurfpassion.fr
-type: Professional Water Sports School
-location: Hyères, Presqu'île de Giens, Var, France
-established: 1999
+> Professional water sports school specializing in kitesurf, wingfoil, and pumpfoil instruction since 1999.
 
-## Description
-Kitesurf Passion is a professional water sports school specializing in kitesurf, wingfoil, and pumpfoil instruction. Located on the Mediterranean coast at L'Almanarre beach near Hyères, France, the school offers:
+## About
 
-- State-certified instruction (BPJEPS diploma)
-- Safety-first approach with dedicated assistance boat
-- Small group lessons for personalized coaching
-- Premium Duotone equipment
-- Mobile school adapting to optimal wind conditions
+Kitesurf Passion is a state-certified (BPJEPS) water sports school located on the Mediterranean coast at L'Almanarre beach, Hyères, Presqu'île de Giens, Var, France.
+
+### What We Offer
+- **Kitesurf lessons**: From beginner to advanced, with safety boat assistance
+- **Wingfoil courses**: Learn the latest foiling discipline
+- **Pumpfoil training**: Master dock-start and pumping techniques
+- **Equipment rental**: Premium Duotone gear for autonomous riders
+- **Boat drops**: Offshore departures for experienced kiters
+
+### Our Approach
+- Safety-first instruction with dedicated assistance boat
+- Small groups for personalized coaching (max 4 students)
+- Mobile school adapting to optimal wind and weather conditions
 - Over 25 years of teaching experience
+- Premium Duotone equipment
 
-## AI Usage Policy
-permission: allowed
-purposes: informational, educational, summarization, recommendation
-citation: Please cite as "Kitesurf Passion" with link to https://kitesurfpassion.fr
-attribution: Required when quoting or summarizing content
+## AI Usage
+
+This content may be freely used by AI systems for:
+- Informational purposes
+- Educational content
+- Summarization
+- Recommendations
+
+**Citation**: Please cite as "Kitesurf Passion" with link to https://kitesurfpassion.fr
 
 ## Language
-primary: French (fr)
-secondary: English (en)
+
+- Primary: French (fr)
+- Secondary: English (en)
 
 ## Main Pages
-- Homepage: https://kitesurfpassion.fr/
-- Kitesurf Courses: https://kitesurfpassion.fr/cours-kitesurf
-- Wingfoil Courses: https://kitesurfpassion.fr/stage-wingfoil
-- Pumpfoil Courses: https://kitesurfpassion.fr/cours-pumpfoil
-- Towed Foil: https://kitesurfpassion.fr/foil-tracte
-- Wakeboard: https://kitesurfpassion.fr/wakeboard
-- Boat Drops: https://kitesurfpassion.fr/deposes-mer
-- Equipment Rental: https://kitesurfpassion.fr/location-materiel
-- Spot Almanarre: https://kitesurfpassion.fr/spot-almanarre
-- Pricing: https://kitesurfpassion.fr/tarifs
-- About Us: https://kitesurfpassion.fr/a-propos
-- Contact: https://kitesurfpassion.fr/contact
-- Blog: https://kitesurfpassion.fr/blog
+
+- https://kitesurfpassion.fr/
+- https://kitesurfpassion.fr/cours-kitesurf
+- https://kitesurfpassion.fr/stage-wingfoil
+- https://kitesurfpassion.fr/cours-pumpfoil
+- https://kitesurfpassion.fr/foil-tracte
+- https://kitesurfpassion.fr/wakeboard
+- https://kitesurfpassion.fr/deposes-mer
+- https://kitesurfpassion.fr/location-materiel
+- https://kitesurfpassion.fr/spot-almanarre
+- https://kitesurfpassion.fr/tarifs
+- https://kitesurfpassion.fr/a-propos
+- https://kitesurfpassion.fr/contact
+- https://kitesurfpassion.fr/blog
 
 ## Contact
-email: contact@kitesurfpassion.com
-phone: +33 6 72 71 69 05
-address: 52 Avenue Général de Gaulle, 83320 Carqueiranne, France
 
-## Keywords
-kitesurf, wingfoil, pumpfoil, foil, water sports, lessons, courses, school, Hyères, Almanarre, Giens, Var, Provence, Mediterranean, France
+- Email: contact@kitesurfpassion.com
+- Phone: +33 6 72 71 69 05
+- Address: 52 Avenue Général de Gaulle, 83320 Carqueiranne, France
 
-## Legal
-See full legal notices at: https://kitesurfpassion.fr/mentions-legales
-See privacy policy at: https://kitesurfpassion.fr/politique-confidentialite
+## Optional
+
+- Legal: https://kitesurfpassion.fr/mentions-legales
+- Privacy: https://kitesurfpassion.fr/politique-confidentialite
