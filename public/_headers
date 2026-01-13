@@ -11,3 +11,17 @@
   
   # Content Security Policy
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://cdn.windguru.cz; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://www.windguru.cz; frame-src 'self' https://www.windguru.cz https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self' https://wa.me https://api.whatsapp.com; upgrade-insecure-requests
+
+# Text files - Proper MIME types
+/*.txt
+  Content-Type: text/plain; charset=utf-8
+  
+/.well-known/*
+  Content-Type: text/plain; charset=utf-8
+
+# XML files
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+
+/rss.xml
+  Content-Type: application/rss+xml; charset=utf-8
