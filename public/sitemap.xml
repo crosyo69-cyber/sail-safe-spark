@@ -191,4 +191,26 @@
     <priority>0.7</priority>
   </url>
   
+  <!-- Fichiers Metadata -->
+  <url>
+    <loc>https://www.kitesurfpassion.fr/llms.txt</loc>
+    <lastmod>2024-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.kitesurfpassion.fr/.well-known/security.txt</loc>
+    <lastmod>2024-12-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.kitesurfpassion.fr/humans.txt</loc>
+    <lastmod>2024-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
 </urlset>
