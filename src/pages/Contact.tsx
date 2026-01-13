@@ -21,6 +21,9 @@ const activityLabels: Record<string, string> = {
   "autre": "Autre",
 };
 
+// Rate limiting constants
+const RATE_LIMIT_COOLDOWN_MS = 60000; // 1 minute between submissions
+
 const Contact = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
@@ -34,25 +37,110 @@ const Contact = () => {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Anti-bot measures
+  const [honeypot, setHoneypot] = useState("");
+  const [formTimestamp] = useState(Date.now());
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Honeypot check - if filled, silently reject (bots fill all fields)
+    if (honeypot) {
+      console.log("Bot detected");
+      toast({
+        title: "Demande envoyée !",
+        description: "Nous vous recontacterons sous 24h pour confirmer votre réservation.",
+      });
+      return;
+    }
+    
+    // Time-based check - form should take at least 3 seconds to fill
+    if (Date.now() - formTimestamp < 3000) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez prendre le temps de remplir le formulaire.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Client-side rate limiting using localStorage
+    const lastSubmit = localStorage.getItem('lastContactSubmit');
+    if (lastSubmit && Date.now() - parseInt(lastSubmit) < RATE_LIMIT_COOLDOWN_MS) {
+      const remainingSeconds = Math.ceil((RATE_LIMIT_COOLDOWN_MS - (Date.now() - parseInt(lastSubmit))) / 1000);
+      toast({
+        title: "Veuillez patienter",
+        description: `Vous pourrez soumettre à nouveau dans ${remainingSeconds} secondes.`,
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Client-side validation
+    const firstName = formData.firstName.trim();
+    const lastName = formData.lastName.trim();
+    const email = formData.email.trim().toLowerCase();
+    const phone = formData.phone.trim();
+    
+    if (firstName.length < 2 || firstName.length > 50) {
+      toast({
+        title: "Erreur",
+        description: "Le prénom doit contenir entre 2 et 50 caractères.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (lastName.length < 2 || lastName.length > 50) {
+      toast({
+        title: "Erreur",
+        description: "Le nom doit contenir entre 2 et 50 caractères.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email) || email.length > 255) {
+      toast({
+        title: "Erreur",
+        description: "Adresse email invalide.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (phone && !/^[\d\s\+\-\(\)\.]+$/.test(phone)) {
+      toast({
+        title: "Erreur",
+        description: "Numéro de téléphone invalide.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
       const { error } = await supabase.functions.invoke("send-contact-email", {
         body: {
-          name: `${formData.firstName} ${formData.lastName}`,
-          email: formData.email,
-          phone: formData.phone,
+          name: `${firstName} ${lastName}`,
+          email: email,
+          phone: phone || undefined,
           activity: activityLabels[formData.activity] || formData.activity,
-          startDate: formData.dates,
+          startDate: formData.dates.trim() || undefined,
           participants: formData.people,
-          message: formData.message,
+          message: formData.message.trim() || undefined,
+          honeypot: honeypot,
+          formTimestamp: formTimestamp,
         },
       });
 
       if (error) throw error;
+
+      // Record submission time for rate limiting
+      localStorage.setItem('lastContactSubmit', Date.now().toString());
 
       toast({
         title: "Demande envoyée !",
@@ -127,6 +215,18 @@ const Contact = () => {
                 </h2>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Honeypot field - hidden from users, bots will fill it */}
+                  <input
+                    type="text"
+                    name="website"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    style={{ position: 'absolute', left: '-9999px', opacity: 0 }}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                  />
+                  
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-2">
@@ -137,6 +237,7 @@ const Contact = () => {
                         value={formData.firstName}
                         onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                         required
+                        maxLength={50}
                         className="w-full h-12 px-4 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:border-primary transition-colors"
                       />
                     </div>
@@ -149,6 +250,7 @@ const Contact = () => {
                         value={formData.lastName}
                         onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                         required
+                        maxLength={50}
                         className="w-full h-12 px-4 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:border-primary transition-colors"
                       />
                     </div>
@@ -164,6 +266,7 @@ const Contact = () => {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         required
+                        maxLength={255}
                         className="w-full h-12 px-4 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:border-primary transition-colors"
                       />
                     </div>
@@ -176,6 +279,7 @@ const Contact = () => {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         required
+                        maxLength={20}
                         className="w-full h-12 px-4 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:border-primary transition-colors"
                       />
                     </div>
@@ -226,6 +330,7 @@ const Contact = () => {
                       placeholder="Ex: du 15 au 20 juillet"
                       value={formData.dates}
                       onChange={(e) => setFormData({ ...formData, dates: e.target.value })}
+                      maxLength={100}
                       className="w-full h-12 px-4 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:border-primary transition-colors"
                     />
                   </div>
@@ -239,6 +344,7 @@ const Contact = () => {
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder="Précisez votre niveau, vos attentes, ou toute question..."
+                      maxLength={2000}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:border-primary transition-colors resize-none"
                     />
                   </div>

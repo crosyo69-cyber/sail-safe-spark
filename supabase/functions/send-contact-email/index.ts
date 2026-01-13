@@ -17,6 +17,97 @@ interface ContactFormRequest {
   endDate?: string;
   participants?: string;
   message?: string;
+  honeypot?: string;
+  formTimestamp?: number;
+}
+
+// HTML entity encoding to prevent XSS in email content
+function escapeHtml(text: string | undefined): string {
+  if (!text) return '';
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Input validation and sanitization
+function validateAndSanitizeInput(data: ContactFormRequest): {
+  isValid: boolean;
+  error?: string;
+  sanitized?: {
+    name: string;
+    email: string;
+    phone?: string;
+    activity: string;
+    startDate?: string;
+    endDate?: string;
+    participants?: string;
+    message?: string;
+  };
+} {
+  // Check honeypot - if filled, it's a bot
+  if (data.honeypot) {
+    console.log("Bot detected via honeypot");
+    return { isValid: false, error: "Invalid submission" };
+  }
+
+  // Check form timestamp - form should take at least 3 seconds to fill
+  if (data.formTimestamp && Date.now() - data.formTimestamp < 3000) {
+    console.log("Form submitted too quickly, likely a bot");
+    return { isValid: false, error: "Veuillez remplir le formulaire correctement" };
+  }
+
+  // Validate required fields
+  if (!data.name || !data.email || !data.activity) {
+    return { isValid: false, error: "Nom, email et activité sont requis" };
+  }
+
+  // Validate and sanitize name
+  const name = String(data.name).trim();
+  if (name.length < 2 || name.length > 100) {
+    return { isValid: false, error: "Le nom doit contenir entre 2 et 100 caractères" };
+  }
+
+  // Validate email format
+  const email = String(data.email).trim().toLowerCase();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email) || email.length > 255) {
+    return { isValid: false, error: "Adresse email invalide" };
+  }
+
+  // Validate phone if provided
+  const phone = data.phone ? String(data.phone).trim().slice(0, 20) : undefined;
+  if (phone && !/^[\d\s\+\-\(\)\.]+$/.test(phone)) {
+    return { isValid: false, error: "Numéro de téléphone invalide" };
+  }
+
+  // Validate activity
+  const activity = String(data.activity).trim().slice(0, 100);
+  if (activity.length < 1) {
+    return { isValid: false, error: "Activité requise" };
+  }
+
+  // Sanitize optional fields
+  const startDate = data.startDate ? String(data.startDate).trim().slice(0, 100) : undefined;
+  const endDate = data.endDate ? String(data.endDate).trim().slice(0, 100) : undefined;
+  const participants = data.participants ? String(data.participants).trim().slice(0, 20) : undefined;
+  const message = data.message ? String(data.message).trim().slice(0, 2000) : undefined;
+
+  return {
+    isValid: true,
+    sanitized: {
+      name,
+      email,
+      phone,
+      activity,
+      startDate,
+      endDate,
+      participants,
+      message,
+    },
+  };
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -29,13 +120,14 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const data: ContactFormRequest = await req.json();
-    console.log("Form data received:", { ...data, email: "***" });
+    console.log("Form data received (sanitized log)");
 
-    // Validate required fields
-    if (!data.name || !data.email || !data.activity) {
-      console.error("Missing required fields");
+    // Validate and sanitize input
+    const validation = validateAndSanitizeInput(data);
+    if (!validation.isValid || !validation.sanitized) {
+      console.error("Validation failed:", validation.error);
       return new Response(
-        JSON.stringify({ error: "Nom, email et activité sont requis" }),
+        JSON.stringify({ error: validation.error }),
         {
           status: 400,
           headers: { "Content-Type": "application/json", ...corsHeaders },
@@ -43,50 +135,52 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Email to the business owner
+    const sanitized = validation.sanitized;
+
+    // Email to the business owner - all user data is HTML-escaped
     const ownerEmailHtml = `
       <h2>Nouvelle demande de réservation</h2>
       <table style="border-collapse: collapse; width: 100%; max-width: 600px;">
         <tr style="background-color: #f5f5f5;">
           <td style="padding: 10px; border: 1px solid #ddd;"><strong>Nom</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;">${data.name}</td>
+          <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(sanitized.name)}</td>
         </tr>
         <tr>
           <td style="padding: 10px; border: 1px solid #ddd;"><strong>Email</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;"><a href="mailto:${data.email}">${data.email}</a></td>
+          <td style="padding: 10px; border: 1px solid #ddd;"><a href="mailto:${escapeHtml(sanitized.email)}">${escapeHtml(sanitized.email)}</a></td>
         </tr>
-        ${data.phone ? `
+        ${sanitized.phone ? `
         <tr style="background-color: #f5f5f5;">
           <td style="padding: 10px; border: 1px solid #ddd;"><strong>Téléphone</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;"><a href="tel:${data.phone}">${data.phone}</a></td>
+          <td style="padding: 10px; border: 1px solid #ddd;"><a href="tel:${escapeHtml(sanitized.phone)}">${escapeHtml(sanitized.phone)}</a></td>
         </tr>
         ` : ''}
         <tr>
           <td style="padding: 10px; border: 1px solid #ddd;"><strong>Activité</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;">${data.activity}</td>
+          <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(sanitized.activity)}</td>
         </tr>
-        ${data.startDate ? `
+        ${sanitized.startDate ? `
         <tr style="background-color: #f5f5f5;">
           <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date de début</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;">${data.startDate}</td>
+          <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(sanitized.startDate)}</td>
         </tr>
         ` : ''}
-        ${data.endDate ? `
+        ${sanitized.endDate ? `
         <tr>
           <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date de fin</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;">${data.endDate}</td>
+          <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(sanitized.endDate)}</td>
         </tr>
         ` : ''}
-        ${data.participants ? `
+        ${sanitized.participants ? `
         <tr style="background-color: #f5f5f5;">
           <td style="padding: 10px; border: 1px solid #ddd;"><strong>Nombre de participants</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;">${data.participants}</td>
+          <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(sanitized.participants)}</td>
         </tr>
         ` : ''}
-        ${data.message ? `
+        ${sanitized.message ? `
         <tr>
           <td style="padding: 10px; border: 1px solid #ddd;"><strong>Message</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;">${data.message}</td>
+          <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(sanitized.message)}</td>
         </tr>
         ` : ''}
       </table>
@@ -95,7 +189,7 @@ const handler = async (req: Request): Promise<Response> => {
       </p>
     `;
 
-    // Email confirmation to the customer
+    // Email confirmation to the customer - all user data is HTML-escaped
     const customerEmailHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); padding: 30px; text-align: center;">
@@ -104,19 +198,19 @@ const handler = async (req: Request): Promise<Response> => {
         </div>
         
         <div style="padding: 30px; background: #ffffff;">
-          <h2 style="color: #0284c7;">Bonjour ${data.name},</h2>
+          <h2 style="color: #0284c7;">Bonjour ${escapeHtml(sanitized.name)},</h2>
           
-          <p>Nous avons bien reçu votre demande de réservation pour <strong>${data.activity}</strong>.</p>
+          <p>Nous avons bien reçu votre demande de réservation pour <strong>${escapeHtml(sanitized.activity)}</strong>.</p>
           
           <p>Notre équipe vous contactera dans les plus brefs délais pour confirmer votre réservation.</p>
           
           <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3 style="color: #0284c7; margin-top: 0;">Récapitulatif de votre demande</h3>
             <ul style="padding-left: 20px;">
-              <li><strong>Activité :</strong> ${data.activity}</li>
-              ${data.startDate ? `<li><strong>Date de début :</strong> ${data.startDate}</li>` : ''}
-              ${data.endDate ? `<li><strong>Date de fin :</strong> ${data.endDate}</li>` : ''}
-              ${data.participants ? `<li><strong>Participants :</strong> ${data.participants}</li>` : ''}
+              <li><strong>Activité :</strong> ${escapeHtml(sanitized.activity)}</li>
+              ${sanitized.startDate ? `<li><strong>Date de début :</strong> ${escapeHtml(sanitized.startDate)}</li>` : ''}
+              ${sanitized.endDate ? `<li><strong>Date de fin :</strong> ${escapeHtml(sanitized.endDate)}</li>` : ''}
+              ${sanitized.participants ? `<li><strong>Participants :</strong> ${escapeHtml(sanitized.participants)}</li>` : ''}
             </ul>
           </div>
           
@@ -154,14 +248,14 @@ const handler = async (req: Request): Promise<Response> => {
       body: JSON.stringify({
         from: "KiteSurf Passion <noreply@kitesurfpassion.com>",
         to: ["contact@kitesurfpassion.com"],
-        subject: `Nouvelle réservation: ${data.activity} - ${data.name}`,
+        subject: `Nouvelle réservation: ${escapeHtml(sanitized.activity)} - ${escapeHtml(sanitized.name)}`,
         html: ownerEmailHtml,
-        reply_to: data.email,
+        reply_to: sanitized.email,
       }),
     });
 
     const ownerResult = await ownerEmailResponse.json();
-    console.log("Owner email response:", ownerResult);
+    console.log("Owner email sent successfully");
 
     if (!ownerEmailResponse.ok) {
       throw new Error(ownerResult.message || "Failed to send owner email");
@@ -178,14 +272,14 @@ const handler = async (req: Request): Promise<Response> => {
       },
       body: JSON.stringify({
         from: "KiteSurf Passion <noreply@kitesurfpassion.com>",
-        to: [data.email],
+        to: [sanitized.email],
         subject: "Confirmation de votre demande - KiteSurf Passion",
         html: customerEmailHtml,
       }),
     });
 
     const customerResult = await customerEmailResponse.json();
-    console.log("Customer email response:", customerResult);
+    console.log("Customer email sent successfully");
 
     if (!customerEmailResponse.ok) {
       console.error("Failed to send customer email:", customerResult);
@@ -205,7 +299,7 @@ const handler = async (req: Request): Promise<Response> => {
   } catch (error: any) {
     console.error("Error in send-contact-email function:", error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: "Une erreur est survenue. Veuillez réessayer." }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
