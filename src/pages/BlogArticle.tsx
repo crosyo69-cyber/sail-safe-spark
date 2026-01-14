@@ -34,6 +34,655 @@ const getArticleImage = (imageName: string): string => {
 
 // Article content data
 const articleContent: Record<string, { content: string; tags: string[] }> = {
+  "erreurs-debutant-kitesurf-eviter": {
+    content: `
+## 10 Erreurs de Débutant en Kitesurf : Comment les Éviter
+
+L'apprentissage du kitesurf est passionnant, mais certaines erreurs peuvent ralentir votre progression ou compromettre votre sécurité. Voici les 10 erreurs les plus fréquentes et nos conseils pour les éviter.
+
+### Erreur 1 : Négliger la Phase Théorique
+
+Beaucoup de débutants veulent aller dans l'eau immédiatement. Pourtant, comprendre la théorie est essentiel :
+
+- **La fenêtre de vent** : zone de puissance vs zone neutre
+- **Les règles de priorité** : qui passe en premier ?
+- **Les systèmes de sécurité** : quick release, leash, chicken loop
+
+**Notre conseil** : Prenez le temps d'écouter attentivement les briefings. Cette base théorique vous évitera bien des problèmes sur l'eau.
+
+### Erreur 2 : Choisir une Aile Trop Grande
+
+L'excès de puissance est dangereux pour un débutant :
+
+- Difficulté à contrôler l'aile
+- Risque d'être tiré violemment
+- Impossibilité de relâcher la tension
+
+**Notre conseil** : Faites confiance à votre moniteur pour le choix de la taille. Mieux vaut une aile trop petite que trop grande au début.
+
+### Erreur 3 : Regarder l'Aile au Lieu de l'Horizon
+
+C'est l'erreur la plus courante :
+
+❌ Regarder constamment l'aile → perte d'équilibre, mauvaise trajectoire
+
+✅ Regarder l'horizon → meilleur équilibre, pilotage instinctif
+
+**Notre conseil** : Une fois l'aile lancée, ne la regardez plus. Pilotez par les sensations dans la barre.
+
+### Erreur 4 : Se Crisper sur la Barre
+
+La tension excessive fatigue et réduit le contrôle :
+
+- Bras tendus = fatigue rapide
+- Mains serrées = réactions brutales
+- Épaules crispées = douleurs
+
+**Notre conseil** : Gardez les bras légèrement fléchis, les mains souples. Laissez le harnais faire le travail.
+
+### Erreur 5 : Négliger le Bodydrag
+
+Le bodydrag (nage tractée) n'est pas optionnel :
+
+- Permet de récupérer sa planche
+- Développe le pilotage dans l'eau
+- Prépare au waterstart
+
+**Notre conseil** : Maîtrisez parfaitement le bodydrag avant de passer à la planche. C'est votre assurance-vie sur l'eau.
+
+### Erreur 6 : Vouloir Aller Trop Vite
+
+La précipitation est l'ennemi de la progression :
+
+| Approche précipitée | Approche progressive |
+|---------------------|---------------------|
+| Frustration | Confiance |
+| Mauvaises habitudes | Bases solides |
+| Risques accrus | Sécurité optimale |
+
+**Notre conseil** : Respectez les étapes. Chaque compétence acquise construit la suivante.
+
+### Erreur 7 : Sortir par Conditions Inadaptées
+
+Naviguer dans des conditions trop fortes ou instables :
+
+- Vent trop fort pour votre niveau
+- Rafales imprévisibles
+- Courants forts
+
+**Notre conseil** : Écoutez les conseils de votre moniteur et apprenez à lire les conditions. Le spot de [l'Almanarre](/spot-kitesurf-almanarre-hyeres-var) offre des conditions idéales pour débuter.
+
+### Erreur 8 : Oublier les Règles de Priorité
+
+Les règles de navigation existent pour la sécurité de tous :
+
+- **Tribord amure prioritaire** sur bâbord
+- **Rider qui saute** doit avoir l'espace libre sous le vent
+- **Celui qui remonte au vent** s'écarte de celui qui descend
+
+**Notre conseil** : Apprenez ces règles par cœur avant d'être autonome.
+
+### Erreur 9 : Sous-estimer l'Importance de l'Échauffement
+
+Le kitesurf sollicite tout le corps :
+
+- Épaules et bras (pilotage)
+- Core (équilibre)
+- Jambes (position sur la planche)
+
+**Notre conseil** : 10 minutes d'échauffement avant chaque session. Votre corps vous remerciera.
+
+### Erreur 10 : Apprendre Seul Sans Encadrement
+
+L'apprentissage autodidacte est risqué :
+
+- Acquisition de mauvaises habitudes
+- Risques de sécurité accrus
+- Progression plus lente
+- Danger pour les autres usagers
+
+**Notre conseil** : Investissez dans un [stage encadré](/cours-kitesurf-hyeres-debutant) avec des professionnels. C'est le meilleur investissement pour votre progression et votre sécurité.
+
+### En Résumé
+
+| Erreur | Solution |
+|--------|----------|
+| Négliger la théorie | Écouter les briefings |
+| Aile trop grande | Faire confiance au moniteur |
+| Regarder l'aile | Fixer l'horizon |
+| Se crisper | Rester souple |
+| Sauter le bodydrag | Le maîtriser parfaitement |
+| Aller trop vite | Respecter les étapes |
+| Mauvaises conditions | Apprendre à lire le spot |
+| Ignorer les priorités | Connaître les règles |
+| Pas d'échauffement | 10 min avant chaque session |
+| Apprendre seul | Prendre des cours |
+
+Chez KiteSurf Passion, notre [bateau d'assistance](/blog/pourquoi-bateau-assistance-essentiel) et nos 25 ans d'expérience vous garantissent une progression en toute sécurité.
+    `,
+    tags: ["Débutant", "Erreurs", "Conseils", "Progression", "Sécurité"],
+  },
+  "regles-securite-kitesurf-wingfoil": {
+    content: `
+## Règles de Sécurité en Kitesurf et Wingfoil : Le Guide Complet
+
+La sécurité est la base de toute pratique réussie. Chez KiteSurf Passion, nous mettons l'accent sur la sécurité depuis 1999. Voici toutes les règles essentielles à connaître.
+
+### Avant la Session : La Préparation
+
+#### Vérification du Matériel
+
+Avant chaque sortie, contrôlez systématiquement :
+
+- **Aile/Wing** : pas de déchirure, coutures intactes
+- **Lignes** : pas de nœuds, longueurs égales, pas d'usure
+- **Barre** : chicken loop fonctionnel, quick release opérationnel
+- **Harnais** : crochet sécurisé, pas d'usure
+- **Leash** : attache solide, longueur adaptée
+
+#### Analyse des Conditions
+
+Avant de vous mettre à l'eau :
+
+| Élément | Ce qu'il faut vérifier |
+|---------|----------------------|
+| Vent | Force, direction, régularité |
+| Courant | Sens et intensité |
+| Marée | Montante ou descendante |
+| Obstacles | Baigneurs, rochers, bouées |
+| Zone de repli | Où atterrir en cas de problème |
+
+### Les Systèmes de Sécurité
+
+#### Le Quick Release (Largage Rapide)
+
+Le système le plus important de votre équipement :
+
+1. **Pousse** le chicken loop pour se détacher de l'aile
+2. **L'aile se met en drapeau** et perd toute puissance
+3. **Le leash** maintient le contact avec l'aile
+
+**Exercice obligatoire** : Pratiquez le largage à sec avant chaque session.
+
+#### Le Leash de Sécurité
+
+- Relie le rider à l'aile après largage
+- Permet de ne pas perdre le matériel
+- **Attention** : savoir le larguer aussi en cas d'urgence
+
+### Les Règles de Navigation
+
+#### Priorités sur l'Eau
+
+Les règles internationales s'appliquent :
+
+1. **Tribord amure** (vent venant de droite) est prioritaire sur bâbord amure
+2. **Celui qui remonte au vent** s'écarte de celui qui descend
+3. **Le rider en l'air** doit avoir l'espace libre sous lui
+4. **Le débutant** doit céder le passage aux autres
+
+#### Distances de Sécurité
+
+Maintenez toujours :
+
+- **50 mètres** des baigneurs et plages surveillées
+- **100 mètres** des embarcations à moteur
+- **200 mètres** des zones de baignade balisées
+- **Distance de lignes** entre riders (2x la longueur des lignes)
+
+### Sécurité Spécifique au Wingfoil
+
+Le wingfoil présente des risques particuliers :
+
+#### Le Foil
+
+- **Bords tranchants** : attention lors des manipulations
+- **Mât rigide** : danger en cas de chute
+- **Casque obligatoire** : protège des impacts
+
+#### La Chute
+
+- **Lâchez la wing** immédiatement
+- **Éloignez-vous** du matériel en tombant
+- **Protégez votre tête** avec les bras
+- **Localisez le foil** avant de remonter sur la planche
+
+### Les Conditions Dangereuses à Éviter
+
+#### Ne naviguez JAMAIS :
+
+❌ **Vent offshore** (qui pousse vers le large)
+❌ **Orage** à proximité (risque de foudre)
+❌ **Vent instable** avec fortes rafales
+❌ **Visibilité réduite** (brouillard, nuit)
+❌ **Seul** sans surveillance
+
+#### Conditions Limites
+
+- **Vent > 25 nœuds** pour débutants : à éviter
+- **Courant fort** : risque de dérive
+- **Eau froide** : risque d'hypothermie
+
+### L'Importance du Bateau d'Assistance
+
+Notre [bateau d'assistance](/blog/pourquoi-bateau-assistance-essentiel) fait la différence :
+
+| Sans Bateau | Avec Bateau |
+|------------|-------------|
+| Récupération longue | Intervention en 2 min |
+| Fatigue importante | Énergie préservée |
+| Zone limitée | Toute la baie accessible |
+| Stress en cas de problème | Sérénité totale |
+
+### Auto-Sauvetage
+
+Si vous êtes loin du bord, maîtrisez l'auto-sauvetage :
+
+1. **Larguez** votre aile (quick release)
+2. **Enroulez les lignes** sur la barre
+3. **Remontez sur l'aile** à plat ventre
+4. **Pagayez** vers le rivage
+
+**Notre conseil** : Pratiquez cette technique régulièrement en conditions calmes.
+
+### Équipements de Sécurité Obligatoires
+
+Pour toute session :
+
+- ✅ **Casque** : protection contre les impacts
+- ✅ **Gilet** : flottabilité et protection
+- ✅ **Combinaison** : adaptée à la température
+- ✅ **Leash** : connexion avec le matériel
+
+### Communication et Signaux
+
+Connaissez les signaux de base :
+
+- **Bras levé** : besoin d'aide
+- **Bras croisés au-dessus de la tête** : tout va bien
+- **Taper sur la tête** : OK, pas de problème
+
+### Check-list Avant Session
+
+✅ Météo vérifiée (force et direction du vent)
+✅ Matériel contrôlé
+✅ Systèmes de sécurité testés
+✅ Zone de navigation identifiée
+✅ Point de repli prévu
+✅ Quelqu'un sait où vous êtes
+✅ Téléphone étanche ou VHF
+
+### Notre Engagement Sécurité
+
+Chez KiteSurf Passion, la sécurité n'est pas négociable :
+
+- Moniteur diplômé d'État (BPJEPS)
+- Bateau d'assistance permanent
+- Ratio élève/moniteur limité
+- Matériel vérifié quotidiennement
+- 25 ans d'expérience sans accident grave
+
+Découvrez nos [stages encadrés](/cours-kitesurf-hyeres-debutant) pour apprendre en toute sécurité.
+    `,
+    tags: ["Sécurité", "Règles", "Navigation", "Kitesurf", "Wingfoil"],
+  },
+  "guide-equipement-kitesurf-debutant": {
+    content: `
+## Guide Équipement Kitesurf : Tout Savoir pour Bien S'Équiper
+
+Choisir son matériel de kitesurf peut sembler complexe. Ce guide complet vous explique tout sur les ailes, planches, harnais et accessoires pour faire les bons choix.
+
+### L'Aile de Kitesurf
+
+L'aile est le moteur de votre progression. Voici ce qu'il faut savoir.
+
+#### Les Types d'Ailes
+
+| Type | Caractéristiques | Pour qui ? |
+|------|-----------------|------------|
+| **Hybride** | Polyvalente, stable | Débutants à intermédiaires |
+| **C-Kite** | Puissante, réactive | Riders confirmés, freestyle |
+| **Delta/Bow** | Dépuissance importante | Débutants, lightwind |
+| **Foil Kite** | Légère, vol bas | Kitefoil, vent léger |
+
+#### Quelle Taille Choisir ?
+
+La taille dépend de votre poids et du vent :
+
+| Poids | 10-15 nœuds | 15-20 nœuds | 20-25 nœuds | 25+ nœuds |
+|-------|------------|------------|------------|----------|
+| 55-65 kg | 12-14 m² | 10-12 m² | 8-10 m² | 6-8 m² |
+| 65-75 kg | 14-16 m² | 12-14 m² | 9-11 m² | 7-9 m² |
+| 75-85 kg | 16-18 m² | 14-16 m² | 10-12 m² | 8-10 m² |
+| 85+ kg | 18+ m² | 16-18 m² | 12-14 m² | 10-12 m² |
+
+#### Notre Recommandation Débutant
+
+Pour commencer, privilégiez :
+
+- **Type** : Hybride ou Delta
+- **Taille** : 12-14 m² (pour 75 kg)
+- **Marque** : Duotone, North, Core, Eleveight
+
+### La Barre de Contrôle
+
+La barre est votre interface avec l'aile.
+
+#### Éléments Essentiels
+
+- **Barre** : aluminium ou carbone, 45-55 cm
+- **Lignes** : 4 ou 5 lignes, 20-27 m
+- **Chicken loop** : système de connexion au harnais
+- **Quick release** : largage rapide de sécurité
+- **Trim/Depower** : réglage de puissance
+
+#### Compatibilité
+
+Chaque marque a son système propre. Restez cohérent :
+- Aile Duotone → Barre Duotone
+- Aile North → Barre North
+
+### La Planche (Board)
+
+#### Twin-Tip : Le Standard
+
+La twin-tip est symétrique et idéale pour débuter :
+
+- **Longueur** : 130-145 cm selon votre poids
+- **Largeur** : 38-45 cm (plus large = plus stable)
+- **Pads et straps** : réglables pour le confort
+
+| Poids | Longueur recommandée |
+|-------|---------------------|
+| 50-65 kg | 130-136 cm |
+| 65-80 kg | 136-142 cm |
+| 80-95 kg | 142-148 cm |
+| 95+ kg | 148+ cm |
+
+#### Autres Types de Planches
+
+- **Directionnelle** : pour les vagues
+- **Foilboard** : pour le kitefoil
+- **Strapless** : pour le surf kite
+
+### Le Harnais
+
+Le harnais répartit la traction de l'aile sur votre corps.
+
+#### Harnais Culotte vs Ceinture
+
+| Harnais Culotte | Harnais Ceinture |
+|-----------------|------------------|
+| Plus de maintien | Plus de liberté |
+| Idéal débutant | Pour riders confirmés |
+| Évite de remonter | Peut remonter |
+| Moins d'amplitude | Plus d'amplitude |
+
+#### Notre Conseil
+
+**Débutant** : Harnais culotte avec bon maintien dorsal
+**Intermédiaire** : Harnais ceinture rigide
+
+### La Combinaison
+
+Adaptez votre combinaison à la saison :
+
+| Température eau | Type de combinaison |
+|-----------------|---------------------|
+| 22°C+ | Shorty 2mm ou lycra |
+| 18-22°C | Intégrale 3/2mm |
+| 15-18°C | Intégrale 4/3mm |
+| <15°C | Intégrale 5/4mm + accessoires |
+
+#### Accessoires
+
+- **Chaussons** : protection et chaleur
+- **Gants** : pour l'hiver
+- **Cagoule** : températures froides
+
+### Équipements de Sécurité
+
+Obligatoires pour votre protection :
+
+#### Casque
+
+- Protection contre les impacts (planche, foil)
+- Indispensable pour les débutants
+- Modèles spécifiques sports nautiques
+
+#### Gilet d'Impact
+
+- Flottabilité (50N minimum)
+- Protection des côtes
+- Aide au waterstart
+
+### Budget et Investissement
+
+#### Pack Complet Neuf
+
+| Niveau | Budget | Ce que ça comprend |
+|--------|--------|-------------------|
+| Débutant | 1800-2500€ | Aile + barre + planche |
+| Intermédiaire | 2500-3500€ | Quiver 2 ailes + planche |
+| Confirmé | 3500-5000€ | Quiver complet + foil |
+
+#### L'Option Occasion
+
+Pour débuter, le marché de l'occasion offre de bonnes opportunités :
+
+- **Économie** : 30-50% par rapport au neuf
+- **Points de vigilance** : état des coutures, lignes, valves
+
+### Tester Avant d'Acheter
+
+Chez KiteSurf Passion, nous vous permettons de :
+
+- **Tester différentes tailles** d'ailes pendant les cours
+- **Essayer plusieurs planches** pour trouver la bonne
+- **Bénéficier de conseils** personnalisés sur votre équipement
+
+### Où Acheter ?
+
+- **Pro shops locaux** : conseils personnalisés
+- **Sites spécialisés** : large choix, prix compétitifs
+- **Occasion** : leboncoin, groupes Facebook spécialisés
+
+### Check-list Équipement Débutant
+
+✅ Aile hybride/delta 12-14 m²
+✅ Barre compatible avec l'aile
+✅ Twin-tip 136-142 cm
+✅ Harnais culotte
+✅ Combinaison adaptée à la saison
+✅ Casque nautique
+✅ Gilet d'impact
+✅ Leash de sécurité
+
+Besoin de conseils personnalisés ? Contactez-nous pour discuter de votre projet d'équipement après votre [stage de kitesurf](/stage-kitesurf-100-glisse-hyeres).
+    `,
+    tags: ["Équipement", "Matériel", "Aile", "Planche", "Harnais", "Débutant"],
+  },
+  "progression-pumpfoil-debutant-expert": {
+    content: `
+## Progression Pumpfoil : Du Débutant à l'Expert en 8 Semaines
+
+Le pumpfoil est une discipline complète qui permet de pratiquer le foil sans dépendre du vent. Suivez notre programme structuré pour progresser efficacement.
+
+### Semaine 1-2 : Les Fondamentaux
+
+#### Objectifs
+
+- Comprendre le fonctionnement du foil
+- Maîtriser l'équilibre statique
+- Réussir ses premiers pumps
+
+#### Exercices au Sol
+
+Avant l'eau, travaillez les bases :
+
+1. **Squats rythmés** : 3 séries de 15 répétitions
+2. **Gainage dynamique** : 30 secondes, 3 répétitions
+3. **Simulation du mouvement** : visualisez le pumping
+
+#### Premières Sessions Tractées
+
+Le bateau vous tracte pour comprendre le foil :
+
+- **Position de base** : pieds écartés, genoux fléchis
+- **Équilibre** : maintenir le foil stable sous l'eau
+- **Décollage** : sentir la portance du foil
+
+| Session | Objectif | Durée |
+|---------|----------|-------|
+| 1 | Équilibre tracté | 45 min |
+| 2 | Premiers décollages | 45 min |
+| 3 | Maintien en vol | 45 min |
+
+### Semaine 3-4 : Le Dock Start
+
+#### Technique du Dock Start
+
+Le départ du ponton est la clé de l'autonomie :
+
+1. **Position de départ** : planche perpendiculaire au ponton
+2. **Course d'élan** : 3-4 pas rapides
+3. **Impulsion** : saut vers l'avant
+4. **Atterrissage** : pieds sur les pads, genoux fléchis
+5. **Premier pump** : immédiatement après le contact
+
+#### Les Erreurs à Éviter
+
+❌ Sauter trop haut (vous perdez de la vitesse)
+❌ Regarder la planche (vous déséquilibre)
+❌ Pomper trop tôt (le foil n'a pas assez de vitesse)
+
+#### Objectif Semaine 4
+
+- Réussir le dock start 1 fois sur 3
+- Maintenir 3-5 pumps après le départ
+- Distance : 5-10 mètres
+
+### Semaine 5-6 : L'Endurance
+
+#### Augmenter la Distance
+
+Le travail d'endurance commence :
+
+| Semaine | Distance objectif | Pumps consécutifs |
+|---------|------------------|-------------------|
+| 5 | 20-30 mètres | 15-20 |
+| 6 | 40-50 mètres | 25-30 |
+
+#### Optimiser le Mouvement
+
+Pour aller plus loin avec moins d'effort :
+
+- **Amplitude** : mouvements amples mais fluides
+- **Rythme** : régulier, pas trop rapide
+- **Respiration** : synchronisée avec le pumping
+- **Regard** : vers l'horizon, pas vers les pieds
+
+#### Exercices Spécifiques
+
+1. **Pumping lent** : focus sur l'amplitude
+2. **Pumping rapide** : travail du cardio
+3. **Pumping mixte** : alternance lent/rapide
+
+### Semaine 7-8 : La Performance
+
+#### Objectifs Avancés
+
+- Distance : 100+ mètres
+- Virages de base
+- Récupération après perte de vitesse
+
+#### Technique de Virage
+
+Pour changer de direction :
+
+1. **Réduire légèrement l'altitude** du foil
+2. **Transférer le poids** vers le nouveau bord
+3. **Accompagner** avec les hanches
+4. **Reprendre** le pumping dans la nouvelle direction
+
+#### Programme Semaine Type
+
+| Jour | Session | Focus |
+|------|---------|-------|
+| Lundi | 45 min | Distance |
+| Mercredi | 30 min | Technique |
+| Vendredi | 1h | Virages |
+| Dimanche | 45 min | Libre |
+
+### Au-delà : Niveau Expert
+
+#### Objectifs Long Terme
+
+- Distance : 500+ mètres
+- Virages enchaînés
+- Downwind en pumpfoil
+- Combinaison avec le wingfoil
+
+#### Statistiques de Progression
+
+| Niveau | Distance | Temps de vol | Virages |
+|--------|----------|--------------|---------|
+| Débutant | 10-20m | 10-15 sec | 0 |
+| Intermédiaire | 50-100m | 30-60 sec | 1-2 |
+| Avancé | 200-500m | 2-5 min | 3-5 |
+| Expert | 1km+ | 10+ min | Illimité |
+
+### Le Matériel Adapté à Chaque Niveau
+
+#### Débutant
+
+- **Foil** : Grande surface (2000+ cm²), aspect ratio faible
+- **Planche** : Grande (100+ L), stable
+- **Mât** : Court (60-70 cm)
+
+#### Intermédiaire
+
+- **Foil** : Surface moyenne (1500-2000 cm²)
+- **Planche** : Moyenne (70-90 L)
+- **Mât** : Standard (70-80 cm)
+
+#### Expert
+
+- **Foil** : Surface réduite (1200-1500 cm²), aspect ratio élevé
+- **Planche** : Compacte (50-70 L)
+- **Mât** : Long (80-90 cm)
+
+### Bénéfices du Pumpfoil
+
+Le pumpfoil améliore :
+
+- ✅ **Équilibre** : proprioception en conditions instables
+- ✅ **Cardio** : effort soutenu, excellente condition physique
+- ✅ **Technique foil** : transferable au wingfoil et kitefoil
+- ✅ **Mental** : concentration et persévérance
+
+### Notre Programme de Cours
+
+Chez KiteSurf Passion, nous proposons :
+
+| Formule | Durée | Contenu | Tarif |
+|---------|-------|---------|-------|
+| Découverte | 1h | Initiation tractée | 50€ |
+| Dock Start | 2h | Apprentissage autonome | 90€ |
+| Pack Progression | 5x1h | Programme complet | 200€ |
+
+### Conseils pour Progresser Plus Vite
+
+1. **Régularité** : 2-3 sessions par semaine minimum
+2. **Patience** : chaque session apporte du progrès
+3. **Analyse** : filmez-vous pour corriger vos erreurs
+4. **Récupération** : le corps a besoin de repos
+5. **Plaisir** : le pumpfoil doit rester ludique
+
+Prêt à vous lancer ? Découvrez nos [cours de pumpfoil](/cours-pumpfoil-dock-start-hyeres) à Hyères !
+    `,
+    tags: ["Pumpfoil", "Progression", "Dock Start", "Entraînement", "Programme"],
+  },
   "debuter-kitesurf-hyeres-guide-complet": {
     content: `
 ## Pourquoi Choisir Hyères pour Débuter le Kitesurf ?
