@@ -120,28 +120,28 @@ const Stage100Glisse = () => {
   const programSteps = [
     {
       day: "Jour 1",
-      title: "Découverte & Sécurité",
-      content: "Présentation du matériel, règles de sécurité, fenêtre de vent. Pilotage de l'aile sur la plage.",
+      title: "Découverte & Fondamentaux",
+      content: "Présentation du matériel et des règles de sécurité essentielles. Compréhension de la fenêtre de vent et gestion des risques. Initiation au body drag. Pour les plus à l'aise : premières tentatives de waterstart.",
     },
     {
       day: "Jour 2",
-      title: "Premiers Pas dans l'Eau",
-      content: "Bodydrag, nage tractée par l'aile, gestion de la puissance dans l'eau.",
+      title: "Premiers Waterstarts",
+      content: "Consolidation du waterstart et équilibre dans l'eau avec la planche aux pieds. Travail du maniement de la planche et contrôle de l'équilibre. Positionnement du corps et premières sensations de glisse.",
     },
     {
       day: "Jour 3",
-      title: "Waterstart",
-      content: "Mise en place de la planche, premiers waterstarts, gestion de l'équilibre.",
+      title: "Contrôle & Trajectoire",
+      content: "Affinage du positionnement corporel pour une posture optimale. Apprentissage du contrôle de la vitesse et maîtrise de la trajectoire. Stabilité en navigation.",
     },
     {
       day: "Jour 4",
-      title: "Navigation",
-      content: "Premiers bords, maintien de la trajectoire, arrêts contrôlés.",
+      title: "Navigation Confirmée",
+      content: "Navigation fluide dans les deux sens : tribord et bâbord amure. Construction de la confiance et développement de l'indépendance sur la planche.",
     },
     {
       day: "Jour 5",
-      title: "Autonomie",
-      content: "Remonter au vent, virages, validation de l'autonomie. Vous êtes prêt à naviguer seul !",
+      title: "Autonomie Complète",
+      content: "Apprentissage de la remontée au vent pour revenir à votre point de départ. Réalisation de demi-tours contrôlés. Fluidité et autonomie totale : vous êtes prêt à naviguer seul !",
     },
   ];
 
@@ -355,10 +355,10 @@ const Stage100Glisse = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
-                Programme du Stage
+                Programme Kitesurf – Stage Progressif 5 Jours
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Une progression pédagogique éprouvée pour vous amener vers l'autonomie en 5 jours.
+                Une pédagogie axée sur la sécurité, la progression et l'autonomie. Chaque jour vous rapproche de la liberté sur l'eau.
               </p>
             </div>
 
