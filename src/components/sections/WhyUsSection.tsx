@@ -19,7 +19,7 @@ const features = [
   {
     icon: GraduationCap,
     title: "Moniteur Expert",
-    description: "Yohan Cros, diplômé d'État BPJEPS depuis 1999, formateur de moniteurs et passionné de glisse.",
+    description: "Yoanne Cros, diplômé d'État BPJEPS depuis 1999, formateur de moniteurs et passionné de glisse.",
     gradient: "from-turquoise to-ocean-light",
   },
   {

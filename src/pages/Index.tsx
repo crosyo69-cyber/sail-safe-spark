@@ -24,7 +24,7 @@ const Index = () => {
     foundingDate: "1999",
     founder: {
       "@type": "Person",
-      name: "Yohan Cros",
+      name: "Yoanne Cros",
       jobTitle: "Moniteur diplômé d'État BPJEPS et formateur de moniteurs",
     },
     numberOfEmployees: {

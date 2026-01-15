@@ -422,10 +422,10 @@ const CoursParticulier = () => {
                 Votre Moniteur
               </span>
               <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-6">
-                Yohan Cros, 25 Ans d'Expérience
+                Yoanne Cros, 25 Ans d'Expérience
               </h2>
               <p className="text-muted-foreground text-lg mb-8">
-                Moniteur diplômé d'État BPJEPS et formateur de moniteurs, Yohan vous transmet sa passion et son expertise. Sa parfaite connaissance du spot de l'Almanarre garantit des conditions d'apprentissage optimales.
+                Moniteur diplômé d'État BPJEPS et formateur de moniteurs, Yoanne vous transmet sa passion et son expertise. Sa parfaite connaissance du spot de l'Almanarre garantit des conditions d'apprentissage optimales.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <div className="flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg">

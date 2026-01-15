@@ -1516,7 +1516,7 @@ const BlogArticle = () => {
     dateModified: article.date,
     author: {
       "@type": "Person",
-      name: "Yohan Cros",
+      name: "Yoanne Cros",
       jobTitle: "Moniteur Diplômé d'État",
     },
     publisher: {
@@ -1595,7 +1595,7 @@ const BlogArticle = () => {
                   <User className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <span className="block font-medium text-foreground">Yohan Cros</span>
+                  <span className="block font-medium text-foreground">Yoanne Cros</span>
                   <span className="text-sm text-muted-foreground">Moniteur Diplômé d'État</span>
                 </div>
               </div>

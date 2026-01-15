@@ -138,7 +138,7 @@ const PolitiqueConfidentialite = () => {
                 <p>Le responsable du traitement des données personnelles est :</p>
                 <div className="bg-muted/50 rounded-lg p-4 space-y-2">
                   <p><strong>Kitesurf Passion</strong></p>
-                  <p>Représenté par : Yohan Cros</p>
+                  <p>Représenté par : Yoanne Cros</p>
                   <p>Adresse : 52 Avenue Général de Gaulle, 83320 Carqueiranne, France</p>
                   <p>
                     Email : <a href="mailto:contact@kitesurfpassion.com" className="text-primary hover:underline">
@@ -260,7 +260,7 @@ const PolitiqueConfidentialite = () => {
                 <p>Vos données personnelles peuvent être transmises aux destinataires suivants :</p>
                 
                 <h3 className="font-semibold text-foreground mt-4 mb-2">5.1 Destinataires internes</h3>
-                <p>Seul le responsable du traitement (Yohan Cros) a accès à vos données.</p>
+                <p>Seul le responsable du traitement (Yoanne Cros) a accès à vos données.</p>
                 
                 <h3 className="font-semibold text-foreground mt-4 mb-2">5.2 Sous-traitants</h3>
                 <ul className="list-disc list-inside space-y-2 ml-4">
