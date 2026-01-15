@@ -109,7 +109,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
                 <Linkedin className="w-5 h-5 group-hover:scale-110 transition-transform" />
               </a>
               <a
-                href="https://www.youtube.com/@kitesurfpassion"
+                href="https://www.youtube.com/@yoanne0"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-primary-foreground/10 rounded-lg flex items-center justify-center hover:bg-[#FF0000] hover:text-white transition-all duration-300 group"
