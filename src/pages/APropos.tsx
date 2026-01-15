@@ -91,11 +91,11 @@ const APropos = () => {
     "mainEntity": {
       "@type": "LocalBusiness",
       "name": "KiteSurf Passion",
-      "description": "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999. Fondée par Yohan Cros, moniteur diplômé d'État BPJEPS et formateur de moniteurs.",
+      "description": "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999. Fondée par Yoanne Cros, moniteur diplômé d'État BPJEPS et formateur de moniteurs.",
       "foundingDate": "1999",
       "founder": {
         "@type": "Person",
-        "name": "Yohan Cros",
+        "name": "Yoanne Cros",
         "jobTitle": "Moniteur diplômé d'État BPJEPS, Formateur de moniteurs",
         "description": "Plus de 25 ans d'expérience dans l'enseignement des sports de glisse nautiques"
       },
@@ -114,7 +114,7 @@ const APropos = () => {
   const personStructuredData = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "name": "Yohan Cros",
+    "name": "Yoanne Cros",
     "jobTitle": "Moniteur diplômé d'État BPJEPS",
     "worksFor": {
       "@type": "LocalBusiness",
@@ -127,8 +127,8 @@ const APropos = () => {
   const imageStructuredData = {
     "@context": "https://schema.org",
     "@type": "ImageObject",
-    name: "Portrait Yohan Cros moniteur kitesurf Hyères",
-    description: "Yohan Cros, fondateur et moniteur diplômé d'État de l'école KiteSurf Passion à Hyères depuis 1999",
+    name: "Portrait Yoanne Cros moniteur kitesurf Hyères",
+    description: "Yoanne Cros, fondateur et moniteur diplômé d'État de l'école KiteSurf Passion à Hyères depuis 1999",
     contentUrl: "https://www.kitesurfpassion.com/assets/portrait-yohan-cros.jpg",
     thumbnailUrl: "https://www.kitesurfpassion.com/assets/portrait-yohan-cros.jpg",
     creditText: "KiteSurf Passion",
@@ -265,17 +265,17 @@ const APropos = () => {
                   Moniteur Diplômé d'État
                 </span>
                 <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-6">
-                  Yohan Cros
+                  Yoanne Cros
                 </h2>
                 <div className="space-y-4 text-muted-foreground">
                   <p>
-                    Passionné de sports nautiques depuis son plus jeune âge, <strong className="text-foreground">Yohan Cros</strong> a découvert le kitesurf dès ses débuts en France à la fin des années 90. Convaincu du potentiel de cette discipline révolutionnaire, il fonde <strong className="text-foreground">KiteSurf Passion</strong> en 1999 sur le spot de l'Almanarre.
+                    Passionné de sports nautiques depuis son plus jeune âge, <strong className="text-foreground">Yoanne Cros</strong> a découvert le kitesurf dès ses débuts en France à la fin des années 90. Convaincu du potentiel de cette discipline révolutionnaire, il fonde <strong className="text-foreground">KiteSurf Passion</strong> en 1999 sur le spot de l'Almanarre.
                   </p>
                   <p>
-                    Titulaire du <strong className="text-foreground">BPJEPS</strong> (Brevet Professionnel de la Jeunesse, de l'Éducation Populaire et du Sport), Yohan est également <strong className="text-foreground">formateur de moniteurs</strong>. Cette double casquette lui confère une expertise pédagogique unique, qu'il met au service de tous ses élèves.
+                    Titulaire du <strong className="text-foreground">BPJEPS</strong> (Brevet Professionnel de la Jeunesse, de l'Éducation Populaire et du Sport), Yoanne est également <strong className="text-foreground">formateur de moniteurs</strong>. Cette double casquette lui confère une expertise pédagogique unique, qu'il met au service de tous ses élèves.
                   </p>
                   <p>
-                    Avec plus de <strong className="text-foreground">25 ans d'expérience</strong>, Yohan a formé plus de <strong className="text-foreground">2 500 élèves</strong> et continue de transmettre sa passion avec le même enthousiasme qu'au premier jour. Sa connaissance parfaite du spot de l'Almanarre et des conditions météorologiques locales garantit des sessions optimales en toute sécurité.
+                    Avec plus de <strong className="text-foreground">25 ans d'expérience</strong>, Yoanne a formé plus de <strong className="text-foreground">2 500 élèves</strong> et continue de transmettre sa passion avec le même enthousiasme qu'au premier jour. Sa connaissance parfaite du spot de l'Almanarre et des conditions météorologiques locales garantit des sessions optimales en toute sécurité.
                   </p>
                 </div>
                 <div className="mt-8 flex flex-wrap gap-4">
@@ -297,7 +297,7 @@ const APropos = () => {
                 <div className="relative overflow-hidden rounded-2xl" ref={founderImageRef}>
                   <img 
                     src={portraitYohan} 
-                    alt="Portrait de Yohan Cros, fondateur de l'école KiteSurf Passion" 
+                    alt="Portrait de Yoanne Cros, fondateur de l'école KiteSurf Passion" 
                     className="shadow-2xl w-full aspect-[4/3] object-cover object-top transition-transform duration-100 will-change-transform"
                     style={{ transform: `translateY(${founderParallax}px) scale(1.1)` }}
                   />

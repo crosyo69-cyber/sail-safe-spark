@@ -10,7 +10,7 @@ export const foilWakeboardTestimonials = [
     rating: 5,
     date: "2024-09-20",
     dateDisplay: "Septembre 2024",
-    text: "Le foil tracté, quelle sensation incroyable ! J'avais peur au début mais Yohan est super rassurant. En 20 min, je volais déjà au-dessus de l'eau. Une expérience magique sur la baie d'Hyères !",
+    text: "Le foil tracté, quelle sensation incroyable ! J'avais peur au début mais Yoanne est super rassurant. En 20 min, je volais déjà au-dessus de l'eau. Une expérience magique sur la baie d'Hyères !",
     course: "Foil Tracté",
     location: "Baie d'Hyères",
     verified: true,

@@ -15,7 +15,7 @@ const MentionsLegales = () => {
         <div className="space-y-3">
           <p><strong>Raison sociale :</strong> Kitesurf Passion</p>
           <p><strong>Forme juridique :</strong> Entreprise individuelle</p>
-          <p><strong>Responsable de la publication :</strong> Yohan Cros</p>
+          <p><strong>Responsable de la publication :</strong> Yoanne Cros</p>
           <p><strong>Adresse du siège social :</strong></p>
           <p className="flex items-start gap-2 ml-4">
             <MapPin className="w-4 h-4 mt-1 text-primary shrink-0" />
@@ -104,7 +104,7 @@ const MentionsLegales = () => {
           </ul>
           
           <p className="mt-4"><strong>Responsable du traitement :</strong></p>
-          <p>Yohan Cros - Kitesurf Passion</p>
+          <p>Yoanne Cros - Kitesurf Passion</p>
           <p>Email : <a href="mailto:contact@kitesurfpassion.com" className="text-primary hover:underline">contact@kitesurfpassion.com</a></p>
           
           <p className="mt-4"><strong>Données collectées :</strong></p>
