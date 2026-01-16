@@ -34,15 +34,15 @@ const sessionCarteFaqs = [
 
 const breadcrumbItems = [
   { label: "Kitesurf", href: "/cours-kitesurf-hyeres-debutant" },
-  { label: "Sessions à la Carte" }
+  { label: "Cours à la Carte" }
 ];
 
 const SessionCarte = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Course",
-    "name": "Session Kitesurf à la Carte",
-    "description": "Sessions de kitesurf personnalisables à Hyères. Flexibilité des créneaux, progression ciblée selon votre niveau.",
+    "name": "Cours Kitesurf à la Carte",
+    "description": "Cours de kitesurf personnalisables à Hyères. Flexibilité des créneaux, progression ciblée selon votre niveau.",
     "provider": {
       "@type": "LocalBusiness",
       "name": "KiteSurf Passion",
@@ -124,14 +124,14 @@ const SessionCarte = () => {
   return (
     <>
       <Helmet>
-        <title>Cours Kitesurf Hyères | Sessions à la Carte</title>
+        <title>Cours Kitesurf à la Carte Hyères | Flexibilité Totale</title>
         <meta
           name="description"
           content="Cours kitesurf à la carte Hyères Almanarre. Flexibilité totale, progression ciblée selon votre niveau. Séances individuelles ou en pack. Dès 120€."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/session-kitesurf-carte-hyeres" />
         <meta property="og:title" content="Cours Kitesurf à la Carte Hyères Almanarre | KiteSurf Passion" />
-        <meta property="og:description" content="Cours de kitesurf flexibles à Hyères. Choisissez vos créneaux et progressez selon vos objectifs." />
+        <meta property="og:description" content="Cours de kitesurf à la carte à Hyères. Choisissez vos créneaux et progressez selon vos objectifs." />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
@@ -145,7 +145,7 @@ const SessionCarte = () => {
           "itemListElement": [
             { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
             { "@type": "ListItem", "position": 2, "name": "Kitesurf", "item": "https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" },
-            { "@type": "ListItem", "position": 3, "name": "Sessions à la Carte", "item": "https://www.kitesurfpassion.com/session-kitesurf-carte-hyeres" }
+            { "@type": "ListItem", "position": 3, "name": "Cours à la Carte", "item": "https://www.kitesurfpassion.com/session-kitesurf-carte-hyeres" }
           ]
         })}</script>
       </Helmet>
@@ -214,7 +214,7 @@ const SessionCarte = () => {
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
-                  Tarifs Sessions à la Carte
+                  Tarifs Cours à la Carte
                 </h2>
                 <p className="text-muted-foreground">
                   Tout le matériel et le bateau d'assistance sont inclus.
@@ -277,7 +277,7 @@ const SessionCarte = () => {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-6">
-                  Pourquoi Choisir les Sessions à la Carte ?
+                  Pourquoi Choisir les Cours à la Carte ?
                 </h2>
                 <div className="space-y-6">
                   {whyChoose.map((item) => (
