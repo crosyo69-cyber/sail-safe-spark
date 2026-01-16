@@ -9,26 +9,26 @@ import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
 import heroSessionCarte from "@/assets/hero-session-carte.jpg";
 
-const sessionCarteFaqs = [
+const coursCarteFaqs = [
   {
-    question: "Qu'est-ce qu'une session kitesurf à la carte à Hyères ?",
-    answer: "Les sessions à la carte vous offrent une flexibilité totale : vous choisissez vos créneaux selon vos disponibilités et la météo. Idéal pour les locaux ou ceux qui ne peuvent pas s'engager sur 5 jours consécutifs.",
+    question: "Qu'est-ce qu'un cours kitesurf à la carte à Hyères ?",
+    answer: "Les cours à la carte vous offrent une flexibilité totale : vous choisissez vos créneaux selon vos disponibilités et la météo. Idéal pour les locaux ou ceux qui ne peuvent pas s'engager sur 5 jours consécutifs.",
   },
   {
-    question: "Combien coûte une session de kitesurf à l'Almanarre ?",
-    answer: "Une session individuelle de 3 heures est à 120€ hors saison (130€ en juillet/août). Des packs de 3 et 5 sessions sont disponibles avec des tarifs dégressifs. Matériel et bateau d'assistance inclus.",
+    question: "Combien coûte un cours de kitesurf à l'Almanarre ?",
+    answer: "Un cours de 3 heures est à 120€ hors saison (130€ en juillet/août). Des packs de 3 et 5 cours sont disponibles avec des tarifs dégressifs. Matériel et bateau d'assistance inclus.",
   },
   {
-    question: "Les sessions à la carte conviennent-elles aux débutants ?",
-    answer: "Oui, les sessions sont adaptées à tous les niveaux. Pour les vrais débutants, nous recommandons un minimum de 5 sessions pour atteindre l'autonomie, mais vous pouvez les répartir sur plusieurs semaines selon votre rythme.",
+    question: "Les cours à la carte conviennent-ils aux débutants ?",
+    answer: "Oui, les cours sont adaptés à tous les niveaux. Pour les vrais débutants, nous recommandons un minimum de 5 cours pour atteindre l'autonomie, mais vous pouvez les répartir sur plusieurs semaines selon votre rythme.",
   },
   {
-    question: "Comment réserver une session à la carte ?",
+    question: "Comment réserver un cours à la carte ?",
     answer: "Contactez-nous par téléphone ou via le formulaire pour convenir d'un créneau. Nous planifions ensemble en fonction de la météo annoncée et de vos disponibilités sur le spot de l'Almanarre.",
   },
   {
-    question: "Puis-je combiner sessions à la carte et stage ?",
-    answer: "Absolument ! Les sessions à la carte sont parfaites en complément d'un stage pour consolider vos acquis. Beaucoup d'élèves font le stage 100% Glisse puis ajoutent quelques sessions pour perfectionner certaines techniques.",
+    question: "Puis-je combiner cours à la carte et stage ?",
+    answer: "Absolument ! Les cours à la carte sont parfaits en complément d'un stage pour consolider vos acquis. Beaucoup d'élèves font le stage 100% Glisse puis ajoutent quelques cours pour perfectionner certaines techniques.",
   },
 ];
 
@@ -114,7 +114,7 @@ const SessionCarte = () => {
   const faqStructuredData = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: sessionCarteFaqs.map(faq => ({
+    mainEntity: coursCarteFaqs.map(faq => ({
       "@type": "Question",
       name: faq.question,
       acceptedAnswer: { "@type": "Answer", text: faq.answer }
@@ -386,8 +386,8 @@ const SessionCarte = () => {
         {/* FAQ Section */}
         <ActivityFAQ
           title="Questions Fréquentes Kitesurf"
-          subtitle="Tout savoir sur nos sessions à la carte à Hyères Almanarre"
-          faqs={sessionCarteFaqs}
+          subtitle="Tout savoir sur nos cours à la carte à Hyères Almanarre"
+          faqs={coursCarteFaqs}
           accentColor="primary"
         />
 
