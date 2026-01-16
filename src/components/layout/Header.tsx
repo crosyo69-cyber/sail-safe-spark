@@ -11,7 +11,7 @@ const navigation = [
     href: "/cours-kitesurf-hyeres-debutant",
     submenu: [
       { name: "Stage 100% Glisse", href: "/stage-kitesurf-100-glisse-hyeres" },
-      { name: "Session à la Carte", href: "/session-kitesurf-carte-hyeres" },
+      { name: "Cours à la Carte", href: "/session-kitesurf-carte-hyeres" },
       { name: "Cours Particulier", href: "/cours-particulier-kitesurf-hyeres" },
       { name: "Wakeboard", href: "/wakeboard-hyeres" },
     ]
