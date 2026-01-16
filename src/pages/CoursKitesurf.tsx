@@ -384,7 +384,7 @@ const CoursKitesurf = () => {
                   <Link to="/stage-kitesurf-100-glisse-hyeres">Stage 100% Glisse</Link>
                 </Button>
                 <Button variant="outline" asChild>
-                  <Link to="/session-kitesurf-carte-hyeres">Sessions à la Carte</Link>
+                  <Link to="/session-kitesurf-carte-hyeres">Cours à la Carte</Link>
                 </Button>
                 <Button variant="outline" asChild>
                   <Link to="/cours-particulier-kitesurf-hyeres">Cours Particulier</Link>

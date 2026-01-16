@@ -466,7 +466,7 @@ const CoursParticulier = () => {
                 to="/session-kitesurf-carte-hyeres"
                 className="bg-card border border-border rounded-2xl p-6 hover:border-sunset/50 transition-colors group"
               >
-                <h3 className="font-bold text-foreground mb-2 group-hover:text-sunset transition-colors">Sessions à la Carte</h3>
+                <h3 className="font-bold text-foreground mb-2 group-hover:text-sunset transition-colors">Cours à la Carte</h3>
                 <p className="text-muted-foreground text-sm mb-3">Flexibilité totale</p>
                 <span className="text-sunset text-sm font-medium">Dès 120€ →</span>
               </Link>
