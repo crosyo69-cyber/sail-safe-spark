@@ -230,7 +230,7 @@ const handler = async (req: Request): Promise<Response> => {
           </p>
           <p style="margin: 0;">
             📞 <a href="tel:0672716905" style="color: #60a5fa;">06 72 71 69 05</a> | 
-            ✉️ <a href="mailto:contact@kitesurfpassion.com" style="color: #60a5fa;">contact@kitesurfpassion.com</a>
+            ✉️ <a href="mailto:crosyo69@gmail.com" style="color: #60a5fa;">crosyo69@gmail.com</a>
           </p>
         </div>
       </div>
@@ -247,7 +247,7 @@ const handler = async (req: Request): Promise<Response> => {
       },
       body: JSON.stringify({
         from: "KiteSurf Passion <noreply@kitesurfpassion.com>",
-        to: ["contact@kitesurfpassion.com"],
+        to: ["crosyo69@gmail.com"],
         subject: `Nouvelle réservation: ${escapeHtml(sanitized.activity)} - ${escapeHtml(sanitized.name)}`,
         html: ownerEmailHtml,
         reply_to: sanitized.email,

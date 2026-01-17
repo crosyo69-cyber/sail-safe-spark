@@ -395,7 +395,7 @@ const Contact = () => {
                   </a>
 
                   <a
-                    href="mailto:contact@kitesurfpassion.com"
+                    href="mailto:crosyo69@gmail.com"
                     className="flex items-start gap-4 p-6 bg-card rounded-2xl border border-border/50 hover:border-primary transition-colors"
                   >
                     <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -403,7 +403,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-display font-bold text-foreground mb-1">Email</h3>
-                      <p className="text-primary font-semibold">contact@kitesurfpassion.com</p>
+                      <p className="text-primary font-semibold">crosyo69@gmail.com</p>
                       <p className="text-muted-foreground text-sm">Réponse sous 24h</p>
                     </div>
                   </a>

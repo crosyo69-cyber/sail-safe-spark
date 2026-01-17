@@ -141,8 +141,8 @@ const PolitiqueConfidentialite = () => {
                   <p>Représenté par : Yoanne Cros</p>
                   <p>Adresse : 52 Avenue Général de Gaulle, 83320 Carqueiranne, France</p>
                   <p>
-                    Email : <a href="mailto:contact@kitesurfpassion.com" className="text-primary hover:underline">
-                      contact@kitesurfpassion.com
+                    Email : <a href="mailto:crosyo69@gmail.com" className="text-primary hover:underline">
+                      crosyo69@gmail.com
                     </a>
                   </p>
                   <p>
@@ -358,8 +358,8 @@ const PolitiqueConfidentialite = () => {
                   </h4>
                   <p className="text-sm">
                     Envoyez votre demande par email à{" "}
-                    <a href="mailto:contact@kitesurfpassion.com" className="text-primary hover:underline">
-                      contact@kitesurfpassion.com
+                    <a href="mailto:crosyo69@gmail.com" className="text-primary hover:underline">
+                      crosyo69@gmail.com
                     </a>{" "}
                     en précisant votre identité et le droit que vous souhaitez exercer. 
                     Nous répondrons dans un délai d'un mois.
@@ -505,11 +505,11 @@ const PolitiqueConfidentialite = () => {
                   </p>
                   <div className="flex flex-col sm:flex-row justify-center gap-4">
                     <a 
-                      href="mailto:contact@kitesurfpassion.com" 
+                      href="mailto:crosyo69@gmail.com" 
                       className="inline-flex items-center justify-center gap-2 text-primary font-medium hover:underline"
                     >
                       <Mail className="w-5 h-5" />
-                      contact@kitesurfpassion.com
+                      crosyo69@gmail.com
                     </a>
                     <a 
                       href="tel:0672716905" 
