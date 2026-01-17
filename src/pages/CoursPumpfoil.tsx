@@ -71,7 +71,7 @@ const includes = [
 
 const pricing = [
   {
-    name: "Séance Pump Foil / Dock Start",
+    name: "Cours Pump Foil / Dock Start",
     duration: "1h30",
     price: "50€",
     description: "3 personnes maximum, tout matériel inclus",

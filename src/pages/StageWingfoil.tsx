@@ -258,7 +258,7 @@ const StageWingfoil = () => {
                   <div className="flex justify-between items-center py-4 border-b border-border">
                     <div>
                       <span className="font-semibold text-foreground">Cours 2h30</span>
-                      <p className="text-muted-foreground text-sm">Séance à la carte</p>
+                      <p className="text-muted-foreground text-sm">Cours à la carte</p>
                     </div>
                     <div className="text-right">
                       <span className="font-display text-2xl font-bold text-foreground">90€</span>
