@@ -159,7 +159,7 @@ const SessionCarte = () => {
           <div className="absolute inset-0">
             <img
               src={heroSessionCarte}
-              alt="Session kitesurf à la carte Hyères Almanarre - Perfectionnement école KiteSurf Passion Var"
+              alt="Cours kitesurf à la carte Hyères Almanarre - Perfectionnement école KiteSurf Passion Var"
               loading="eager"
               fetchPriority="high"
               className="w-full h-full object-cover"

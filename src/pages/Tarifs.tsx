@@ -450,7 +450,7 @@ const Tarifs = () => {
                 <div className="p-5 text-center">
                   <h3 className="font-display font-bold text-foreground mb-2">Bon Cadeau Kitesurf</h3>
                   <p className="text-muted-foreground text-sm mb-4">
-                    Offrez l'apprentissage du kitesurf. Stage ou séances à la carte.
+                    Offrez l'apprentissage du kitesurf. Stage ou cours à la carte.
                   </p>
                   <a 
                     href={bonCadeauKitesurf} 
