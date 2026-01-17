@@ -20,7 +20,7 @@ const Index = () => {
     description: "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999. Plus de 2 500 élèves formés. Bateau d'assistance, moniteur diplômé d'État, spot de l'Almanarre.",
     url: "https://www.kitesurfpassion.com",
     telephone: "+33672716905",
-    email: "contact@kitesurfpassion.com",
+    email: "crosyo69@gmail.com",
     foundingDate: "1999",
     founder: {
       "@type": "Person",

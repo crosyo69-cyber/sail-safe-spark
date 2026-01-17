@@ -107,7 +107,7 @@ const APropos = () => {
         "addressCountry": "FR"
       },
       "telephone": "+33672716905",
-      "email": "contact@kitesurfpassion.com"
+      "email": "crosyo69@gmail.com"
     }
   };
 

@@ -3,7 +3,7 @@
 # Standard: https://securitytxt.org/
 
 # Contact pour signaler une vulnérabilité
-Contact: mailto:contact@kitesurfpassion.com
+Contact: mailto:crosyo69@gmail.com
 Contact: https://kitesurfpassion.fr/contact-reservation-kitesurf-hyeres
 
 # Langue préférée pour les rapports

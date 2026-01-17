@@ -27,7 +27,7 @@ const MentionsLegales = () => {
           </p>
           <p className="flex items-center gap-2">
             <Mail className="w-4 h-4 text-primary" />
-            <a href="mailto:contact@kitesurfpassion.com" className="text-primary hover:underline">contact@kitesurfpassion.com</a>
+            <a href="mailto:crosyo69@gmail.com" className="text-primary hover:underline">crosyo69@gmail.com</a>
           </p>
           <p><strong>SIRET :</strong> 432 262 129 00039</p>
           <p><strong>Code APE :</strong> 8551Z - Enseignement de disciplines sportives et d'activités de loisirs</p>
@@ -105,7 +105,7 @@ const MentionsLegales = () => {
           
           <p className="mt-4"><strong>Responsable du traitement :</strong></p>
           <p>Yoanne Cros - Kitesurf Passion</p>
-          <p>Email : <a href="mailto:contact@kitesurfpassion.com" className="text-primary hover:underline">contact@kitesurfpassion.com</a></p>
+          <p>Email : <a href="mailto:crosyo69@gmail.com" className="text-primary hover:underline">crosyo69@gmail.com</a></p>
           
           <p className="mt-4"><strong>Données collectées :</strong></p>
           <ul className="list-disc list-inside ml-4 space-y-1">
@@ -135,8 +135,8 @@ const MentionsLegales = () => {
           <p className="mt-4">
             Pour exercer vos droits ou pour toute question relative à la protection de vos données, 
             contactez-nous par email à{" "}
-            <a href="mailto:contact@kitesurfpassion.com" className="text-primary hover:underline">
-              contact@kitesurfpassion.com
+            <a href="mailto:crosyo69@gmail.com" className="text-primary hover:underline">
+              crosyo69@gmail.com
             </a>.
           </p>
           
@@ -322,10 +322,10 @@ const MentionsLegales = () => {
                 <p className="text-center text-muted-foreground">
                   Pour toute question concernant ces mentions légales, contactez-nous :<br />
                   <a 
-                    href="mailto:contact@kitesurfpassion.com" 
+                    href="mailto:crosyo69@gmail.com" 
                     className="text-primary font-medium hover:underline"
                   >
-                    contact@kitesurfpassion.com
+                    crosyo69@gmail.com
                   </a>
                   {" "}ou{" "}
                   <a 
