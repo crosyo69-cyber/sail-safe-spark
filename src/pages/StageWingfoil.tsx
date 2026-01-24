@@ -124,6 +124,12 @@ const StageWingfoil = () => {
     thumbnailUrl: "https://www.kitesurfpassion.com/assets/wingfoil-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
+    creator: {
+      "@type": "Organization",
+      name: "KiteSurf Passion",
+      url: "https://www.kitesurfpassion.com",
+    },
+    license: "https://www.kitesurfpassion.com/mentions-legales",
     acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
     contentLocation: {
       "@type": "Place",

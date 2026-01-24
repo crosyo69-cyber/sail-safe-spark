@@ -83,6 +83,13 @@ const imageGalleryStructuredData = {
       contentUrl: "https://www.kitesurfpassion.com/assets/bon-cadeau-kitesurf.jpg",
       creditText: "KiteSurf Passion",
       copyrightNotice: "© KiteSurf Passion",
+      creator: {
+        "@type": "Organization",
+        name: "KiteSurf Passion",
+        url: "https://www.kitesurfpassion.com",
+      },
+      license: "https://www.kitesurfpassion.com/mentions-legales",
+      acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
     },
     {
       "@type": "ImageObject",
@@ -91,6 +98,13 @@ const imageGalleryStructuredData = {
       contentUrl: "https://www.kitesurfpassion.com/assets/bon-cadeau-wingfoil.jpg",
       creditText: "KiteSurf Passion",
       copyrightNotice: "© KiteSurf Passion",
+      creator: {
+        "@type": "Organization",
+        name: "KiteSurf Passion",
+        url: "https://www.kitesurfpassion.com",
+      },
+      license: "https://www.kitesurfpassion.com/mentions-legales",
+      acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
     },
     {
       "@type": "ImageObject",
@@ -99,6 +113,13 @@ const imageGalleryStructuredData = {
       contentUrl: "https://www.kitesurfpassion.com/assets/bon-cadeau-foil-tracte.jpg",
       creditText: "KiteSurf Passion",
       copyrightNotice: "© KiteSurf Passion",
+      creator: {
+        "@type": "Organization",
+        name: "KiteSurf Passion",
+        url: "https://www.kitesurfpassion.com",
+      },
+      license: "https://www.kitesurfpassion.com/mentions-legales",
+      acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
     },
   ],
 };

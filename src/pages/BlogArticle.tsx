@@ -1525,6 +1525,13 @@ const BlogArticle = () => {
       logo: {
         "@type": "ImageObject",
         url: "https://www.kitesurfpassion.com/logo.png",
+        creator: {
+          "@type": "Organization",
+          name: "KiteSurf Passion",
+          url: "https://www.kitesurfpassion.com",
+        },
+        license: "https://www.kitesurfpassion.com/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
       },
     },
     mainEntityOfPage: {
