@@ -219,6 +219,12 @@ const Index = () => {
         thumbnailUrl: "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
+        creator: {
+          "@type": "Organization",
+          name: "KiteSurf Passion",
+          url: "https://www.kitesurfpassion.com",
+        },
+        license: "https://www.kitesurfpassion.com/mentions-legales",
         acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
         contentLocation: {
           "@type": "Place",
@@ -239,6 +245,13 @@ const Index = () => {
         thumbnailUrl: "https://www.kitesurfpassion.com/assets/wingfoil-hyeres.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
+        creator: {
+          "@type": "Organization",
+          name: "KiteSurf Passion",
+          url: "https://www.kitesurfpassion.com",
+        },
+        license: "https://www.kitesurfpassion.com/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
         contentLocation: {
           "@type": "Place",
           name: "Plage de l'Almanarre, Hyères",
@@ -252,6 +265,13 @@ const Index = () => {
         thumbnailUrl: "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
+        creator: {
+          "@type": "Organization",
+          name: "KiteSurf Passion",
+          url: "https://www.kitesurfpassion.com",
+        },
+        license: "https://www.kitesurfpassion.com/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
         contentLocation: {
           "@type": "Place",
           name: "Presqu'île de Giens, Hyères",
@@ -265,6 +285,13 @@ const Index = () => {
         thumbnailUrl: "https://www.kitesurfpassion.com/assets/bateau-assistance-kitesurf.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
+        creator: {
+          "@type": "Organization",
+          name: "KiteSurf Passion",
+          url: "https://www.kitesurfpassion.com",
+        },
+        license: "https://www.kitesurfpassion.com/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
       },
       {
         "@type": "ImageObject",
@@ -274,6 +301,13 @@ const Index = () => {
         thumbnailUrl: "https://www.kitesurfpassion.com/assets/almanarre-sunset.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
+        creator: {
+          "@type": "Organization",
+          name: "KiteSurf Passion",
+          url: "https://www.kitesurfpassion.com",
+        },
+        license: "https://www.kitesurfpassion.com/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
         contentLocation: {
           "@type": "Place",
           name: "Plage de l'Almanarre, Hyères",
