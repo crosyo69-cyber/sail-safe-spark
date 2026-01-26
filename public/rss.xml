@@ -2,16 +2,52 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>KiteSurf Passion - Blog Kitesurf Hyères</title>
-    <link>https://www.kitesurfpassion.com/blog-actualites-kitesurf-hyeres</link>
+    <link>https://www.kitesurfpassion.com/blog-kitesurf-hyeres</link>
     <description>Actualités, conseils et guides sur le kitesurf, wingfoil et pumpfoil à Hyères. Découvrez le spot de l'Almanarre avec l'école KiteSurf Passion.</description>
     <language>fr-FR</language>
-    <lastBuildDate>Sun, 05 Jan 2025 10:00:00 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 26 Jan 2025 10:00:00 +0100</lastBuildDate>
     <atom:link href="https://www.kitesurfpassion.com/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://www.kitesurfpassion.com/favicon.ico</url>
       <title>KiteSurf Passion</title>
       <link>https://www.kitesurfpassion.com</link>
     </image>
+    
+    <item>
+      <title>10 Erreurs de Débutant en Kitesurf et Comment les Éviter</title>
+      <link>https://www.kitesurfpassion.com/blog/erreurs-debutant-kitesurf-eviter</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/erreurs-debutant-kitesurf-eviter</guid>
+      <pubDate>Sun, 12 Jan 2025 10:00:00 +0100</pubDate>
+      <category>Kitesurf</category>
+      <description>Découvrez les erreurs les plus fréquentes des débutants en kitesurf et nos conseils d'experts pour les éviter. Progressez plus vite et en toute sécurité.</description>
+    </item>
+    
+    <item>
+      <title>Règles de Sécurité en Kitesurf et Wingfoil : Le Guide Complet</title>
+      <link>https://www.kitesurfpassion.com/blog/regles-securite-kitesurf-wingfoil</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/regles-securite-kitesurf-wingfoil</guid>
+      <pubDate>Wed, 08 Jan 2025 10:00:00 +0100</pubDate>
+      <category>Sécurité</category>
+      <description>La sécurité est notre priorité. Découvrez toutes les règles essentielles pour pratiquer le kitesurf et le wingfoil en toute sérénité à Hyères.</description>
+    </item>
+    
+    <item>
+      <title>Guide Équipement Kitesurf : Ailes, Planches et Harnais pour Débuter</title>
+      <link>https://www.kitesurfpassion.com/blog/guide-equipement-kitesurf-debutant</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/guide-equipement-kitesurf-debutant</guid>
+      <pubDate>Sun, 05 Jan 2025 10:00:00 +0100</pubDate>
+      <category>Kitesurf</category>
+      <description>Tout savoir sur le matériel de kitesurf : comment choisir son aile, sa planche et son harnais. Conseils d'experts pour bien s'équiper.</description>
+    </item>
+    
+    <item>
+      <title>Progression Pumpfoil : Du Débutant à l'Expert en 8 Semaines</title>
+      <link>https://www.kitesurfpassion.com/blog/progression-pumpfoil-debutant-expert</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/progression-pumpfoil-debutant-expert</guid>
+      <pubDate>Thu, 02 Jan 2025 10:00:00 +0100</pubDate>
+      <category>Pump Foil</category>
+      <description>Programme complet pour progresser en pumpfoil. Du dock start aux longues distances, suivez notre méthode éprouvée pour maîtriser le pumping.</description>
+    </item>
     
     <item>
       <title>Débuter le Kitesurf à Hyères : Guide Complet 2024</title>
@@ -68,12 +104,48 @@
     </item>
     
     <item>
-      <title>Choisir son Aile de Kite : Le Guide des Tailles</title>
-      <link>https://www.kitesurfpassion.com/blog/choisir-aile-kite-guide-tailles</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/choisir-aile-kite-guide-tailles</guid>
+      <title>Comment Choisir son Aile de Wingfoil : Guide Débutant</title>
+      <link>https://www.kitesurfpassion.com/blog/choisir-aile-wingfoil-debutant</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/choisir-aile-wingfoil-debutant</guid>
       <pubDate>Fri, 08 Nov 2024 10:00:00 +0100</pubDate>
-      <category>Kitesurf</category>
-      <description>Comment choisir la bonne taille d'aile en fonction de votre poids et des conditions de vent ? Guide pratique pour bien s'équiper.</description>
+      <category>Wing Foil</category>
+      <description>Guide complet pour choisir votre première wing : taille, volume, marques recommandées. Conseils d'experts pour bien débuter en wingfoil.</description>
+    </item>
+    
+    <item>
+      <title>Wingfoil vs Kitesurf : Quelles Différences et Lequel Choisir ?</title>
+      <link>https://www.kitesurfpassion.com/blog/wingfoil-vs-kitesurf-differences</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/wingfoil-vs-kitesurf-differences</guid>
+      <pubDate>Mon, 04 Nov 2024 10:00:00 +0100</pubDate>
+      <category>Général</category>
+      <description>Comparatif détaillé entre wingfoil et kitesurf. Découvrez les avantages de chaque discipline pour choisir celle qui vous correspond.</description>
+    </item>
+    
+    <item>
+      <title>Maîtriser la Technique du Pumping en Foil</title>
+      <link>https://www.kitesurfpassion.com/blog/technique-pumping-foil-progresser</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/technique-pumping-foil-progresser</guid>
+      <pubDate>Mon, 28 Oct 2024 10:00:00 +0100</pubDate>
+      <category>Pump Foil</category>
+      <description>Apprenez les secrets du pumping efficace. Technique, timing, positionnement : tous nos conseils pour progresser rapidement en pumpfoil.</description>
+    </item>
+    
+    <item>
+      <title>Vos Premiers Vols en Wingfoil : 5 Conseils Essentiels</title>
+      <link>https://www.kitesurfpassion.com/blog/premiers-vols-wingfoil-conseils</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/premiers-vols-wingfoil-conseils</guid>
+      <pubDate>Mon, 21 Oct 2024 10:00:00 +0100</pubDate>
+      <category>Wing Foil</category>
+      <description>Prêt à décoller ? Découvrez nos 5 conseils essentiels pour réussir vos premiers vols en wingfoil et progresser en toute sécurité.</description>
+    </item>
+    
+    <item>
+      <title>Pumpfoil : L'Entraînement Idéal les Jours Sans Vent</title>
+      <link>https://www.kitesurfpassion.com/blog/pumpfoil-entrainement-sans-vent</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/pumpfoil-entrainement-sans-vent</guid>
+      <pubDate>Mon, 14 Oct 2024 10:00:00 +0100</pubDate>
+      <category>Pump Foil</category>
+      <description>Transformez les jours sans vent en opportunité d'entraînement. Le pumpfoil développe votre équilibre et votre cardio pour mieux performer en kite ou wing.</description>
     </item>
   </channel>
 </rss>
