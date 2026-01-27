@@ -109,16 +109,36 @@
 
   html {
     scroll-behavior: smooth;
+    /* Prevent horizontal overflow */
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', sans-serif;
+    /* Text rendering optimization */
+    text-rendering: optimizeLegibility;
+    /* Prevent content jumping on scrollbar appearance */
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
     @apply font-extrabold tracking-tight;
+    /* Optimize text rendering for headings */
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Prevent CLS from images */
+  img {
+    content-visibility: auto;
+  }
+
+  /* Improve FID by deferring non-critical rendering */
+  @media (prefers-reduced-motion: no-preference) {
+    :root {
+      scroll-behavior: smooth;
+    }
   }
 }
 
@@ -231,10 +251,26 @@
     opacity: 1;
   }
 
-  /* Content visibility for performance */
+  /* Content visibility for performance - CLS optimization */
   .content-visibility-auto {
     content-visibility: auto;
     contain-intrinsic-size: 0 600px;
+  }
+
+  /* Different contain sizes for various sections */
+  .content-visibility-gallery {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 800px;
+  }
+
+  .content-visibility-testimonials {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+  }
+
+  .content-visibility-faq {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 700px;
   }
 
   /* GPU acceleration for animations */
@@ -243,10 +279,31 @@
     will-change: transform;
   }
 
-  /* Optimized transitions */
+  /* Optimized transitions - FID improvement */
   .transition-gpu {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     backface-visibility: hidden;
+  }
+
+  /* Interaction optimization */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent CLS on font loading */
+  .font-fallback {
+    font-synthesis: none;
+  }
+
+  /* Optimize paint containment */
+  .contain-paint {
+    contain: paint;
+  }
+
+  /* Layout containment for sections */
+  .contain-layout {
+    contain: layout;
   }
 
   /* Reduce motion for accessibility */
