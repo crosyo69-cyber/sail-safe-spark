@@ -213,6 +213,26 @@ const CoursKitesurf = () => {
           content="Apprenez le kitesurf à Hyères avec notre stage débutant 5 séances. Bateau d'assistance, moniteur expert, spot Almanarre idéal. Autonomie garantie !"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Cours Kitesurf Débutant Hyères | Stage avec Bateau d'Assistance" />
+        <meta property="og:description" content="Stage kitesurf 5 jours dès 399€ à Hyères. Bateau d'assistance, moniteur diplômé, spot Almanarre. Devenez autonome !" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" />
+        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Cours de kitesurf débutant à Hyères - École KiteSurf Passion Almanarre" />
+        <meta property="og:site_name" content="KiteSurf Passion" />
+        <meta property="og:locale" content="fr_FR" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Cours Kitesurf Débutant Hyères" />
+        <meta name="twitter:description" content="Stage kitesurf 5 jours avec bateau d'assistance à Hyères Almanarre." />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="Cours kitesurf Hyères Almanarre" />
+        
         <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(courseStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(productStructuredData)}</script>

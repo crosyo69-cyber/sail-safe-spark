@@ -178,6 +178,26 @@ const Contact = () => {
           content="Contactez KiteSurf Passion pour réserver vos cours de kitesurf à Hyères. Réponse sous 24h. ☎ 06 72 71 69 05 ou formulaire."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Contact & Réservation Kitesurf Hyères | KiteSurf Passion" />
+        <meta property="og:description" content="Réservez votre cours de kitesurf, wingfoil ou pumpfoil à Hyères. Réponse garantie sous 24h. ☎ 06 72 71 69 05" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Réservation cours kitesurf Hyères - École KiteSurf Passion" />
+        <meta property="og:site_name" content="KiteSurf Passion" />
+        <meta property="og:locale" content="fr_FR" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Réservation Kitesurf Hyères" />
+        <meta name="twitter:description" content="Réservez votre cours de kitesurf à Hyères. Réponse sous 24h !" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="Contact kitesurf Hyères" />
+        
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",

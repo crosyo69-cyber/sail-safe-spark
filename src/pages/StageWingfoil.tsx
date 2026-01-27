@@ -152,6 +152,26 @@ const StageWingfoil = () => {
           content="Stage wingfoil Hyères Almanarre : sport tendance accessible à tous. Cours avec bateau d'assistance, moniteur diplômé. Dès 440€ le stage 5 jours."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/stage-wingfoil-hyeres-almanarre" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Stage Wingfoil Hyères Almanarre | Cours Wing Foil Var" />
+        <meta property="og:description" content="Apprenez le wingfoil à Hyères dès 440€. Sport tendance, progression rapide, bateau d'assistance. Volez sur l'eau !" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.kitesurfpassion.com/stage-wingfoil-hyeres-almanarre" />
+        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Stage wingfoil à Hyères Almanarre - École KiteSurf Passion Var" />
+        <meta property="og:site_name" content="KiteSurf Passion" />
+        <meta property="og:locale" content="fr_FR" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Stage Wingfoil Hyères Almanarre" />
+        <meta name="twitter:description" content="Cours wingfoil dès 440€ à Hyères. Sport tendance, progression rapide !" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="Stage wingfoil Hyères Almanarre" />
+        
         <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(courseStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(productStructuredData)}</script>
