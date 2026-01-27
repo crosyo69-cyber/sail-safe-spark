@@ -363,13 +363,13 @@ const Index = () => {
         <HeroSection />
         <WhyUsSection />
         <ActivitiesSection />
-        <div className="content-visibility-auto">
+        <div className="content-visibility-gallery contain-layout">
           <GallerySection />
         </div>
-        <div className="content-visibility-auto">
+        <div className="content-visibility-testimonials contain-layout">
           <TestimonialsSection />
         </div>
-        <div className="content-visibility-auto">
+        <div className="content-visibility-faq contain-layout">
           <FAQSection />
         </div>
         <MeetingPointsSection />

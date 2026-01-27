@@ -2,9 +2,21 @@ import { memo, useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
 import { Link } from "react-router-dom";
+
+// Preload hero images for faster LCP
 import heroKitesurf from "@/assets/kitesurf-hyeres.jpg?webp";
 import heroWingfoil from "@/assets/wingfoil-hyeres.jpg?webp";
 import heroPumpfoil from "@/assets/pumpfoil-hyeres.jpg?webp";
+
+// Preload first image for LCP optimization
+if (typeof window !== 'undefined') {
+  const link = document.createElement('link');
+  link.rel = 'preload';
+  link.as = 'image';
+  link.href = heroKitesurf;
+  link.fetchPriority = 'high';
+  document.head.appendChild(link);
+}
 
 const slides = [
   {
@@ -74,37 +86,46 @@ export const HeroSection = memo(function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Images */}
+      {/* Background Images - Optimized for LCP */}
       {slides.map((s, index) => (
         <div
           key={s.id}
           className={`absolute inset-0 transition-opacity duration-1000 ${
             index === currentSlide ? "opacity-100" : "opacity-0"
           }`}
+          style={{ contain: 'paint' }}
         >
           <img
             src={s.image}
             alt={s.alt}
+            width={1920}
+            height={1080}
             loading={index === 0 ? "eager" : "lazy"}
-            decoding="async"
-            fetchPriority={index === 0 ? "high" : "auto"}
+            decoding={index === 0 ? "sync" : "async"}
+            fetchPriority={index === 0 ? "high" : "low"}
             className="w-full h-full object-cover"
+            style={{ 
+              aspectRatio: '16/9',
+              objectFit: 'cover',
+              // Prevent CLS
+              minHeight: '100vh',
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/30 to-navy/70" />
         </div>
       ))}
 
-      {/* Navigation Arrows */}
+      {/* Navigation Arrows - Touch optimized */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 md:left-8 z-20 p-2 rounded-full bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 transition-all"
+        className="absolute left-4 md:left-8 z-20 p-2 rounded-full bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 transition-all touch-target"
         aria-label="Diapositive précédente"
       >
         <ChevronLeft className="w-6 h-6" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-4 md:right-8 z-20 p-2 rounded-full bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 transition-all"
+        className="absolute right-4 md:right-8 z-20 p-2 rounded-full bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/20 transition-all touch-target"
         aria-label="Diapositive suivante"
       >
         <ChevronRight className="w-6 h-6" />
