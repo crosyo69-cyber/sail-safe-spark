@@ -96,7 +96,26 @@ export default function CoursPumpfoil() {
         <title>Cours Pumpfoil Hyères Almanarre | Dock Start Var</title>
         <meta name="description" content="Cours pumpfoil Hyères Almanarre. Volez sur l'eau sans vent ! Dock start, progression rapide, moniteur diplômé, bateau assistance. 50€ la séance." />
         <meta name="keywords" content="pumpfoil hyères, cours pumpfoil almanarre, dock start hyères, foil sans vent, école pumpfoil var" />
-        <link rel="canonical" href="https://kitesurfpassion.com/cours-pumpfoil-dock-start-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.com/cours-pumpfoil-dock-start-hyeres" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Cours Pumpfoil Hyères | Dock Start à l'Almanarre" />
+        <meta property="og:description" content="Volez sur l'eau sans vent ! Cours pumpfoil dès 50€ à Hyères. Dock start, progression rapide, moniteur diplômé." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.kitesurfpassion.com/cours-pumpfoil-dock-start-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Cours pumpfoil dock start Hyères - École KiteSurf Passion" />
+        <meta property="og:site_name" content="KiteSurf Passion" />
+        <meta property="og:locale" content="fr_FR" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Cours Pumpfoil Hyères | Dock Start" />
+        <meta name="twitter:description" content="Volez sur l'eau sans vent ! Pumpfoil dès 50€ à Hyères." />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="Pumpfoil dock start Hyères" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",

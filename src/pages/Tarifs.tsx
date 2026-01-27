@@ -134,6 +134,26 @@ const Tarifs = () => {
           content="Découvrez nos tarifs transparents pour cours de kitesurf, wingfoil et pumpfoil à Hyères. Stage dès 350€. Devis gratuit sous 24h."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/tarifs-cours-kitesurf-wingfoil-hyeres" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Tarifs Kitesurf & Wingfoil Hyères | KiteSurf Passion" />
+        <meta property="og:description" content="Stage kitesurf dès 399€, wingfoil dès 440€. Tout inclus : matériel, bateau, moniteur diplômé. Réservez votre cours à Hyères !" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.kitesurfpassion.com/tarifs-cours-kitesurf-wingfoil-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Tarifs cours de kitesurf et wingfoil à Hyères - École KiteSurf Passion" />
+        <meta property="og:site_name" content="KiteSurf Passion" />
+        <meta property="og:locale" content="fr_FR" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Tarifs Kitesurf & Wingfoil Hyères" />
+        <meta name="twitter:description" content="Stage kitesurf dès 399€, wingfoil dès 440€. Tout inclus à Hyères !" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="Tarifs cours kitesurf wingfoil Hyères" />
+        
         <script type="application/ld+json">
           {JSON.stringify(imageGalleryStructuredData)}
         </script>

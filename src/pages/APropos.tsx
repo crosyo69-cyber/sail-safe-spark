@@ -212,9 +212,26 @@ const APropos = () => {
           content="Découvrez l'histoire de KiteSurf Passion, fondée en 1999 par Yohan Cros, moniteur diplômé d'État BPJEPS. 25 ans d'expertise en kitesurf, wingfoil et pumpfoil à Hyères." 
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/a-propos-ecole-kitesurf-hyeres" />
-        <meta property="og:title" content="À Propos - KiteSurf Passion | École depuis 1999" />
-        <meta property="og:description" content="25 ans d'expérience dans l'enseignement des sports de glisse à Hyères. Découvrez notre histoire et nos valeurs." />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="À Propos - KiteSurf Passion | École depuis 1999 à Hyères" />
+        <meta property="og:description" content="25 ans d'expérience dans l'enseignement du kitesurf à Hyères. Yohan Cros, moniteur diplômé BPJEPS, formateur de moniteurs." />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.kitesurfpassion.com/a-propos-ecole-kitesurf-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="École KiteSurf Passion Hyères - Depuis 1999" />
+        <meta property="og:site_name" content="KiteSurf Passion" />
+        <meta property="og:locale" content="fr_FR" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="À Propos - KiteSurf Passion Hyères" />
+        <meta name="twitter:description" content="25 ans d'expérience en kitesurf à Hyères. Découvrez notre histoire." />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="École KiteSurf Passion Hyères depuis 1999" />
+        
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>

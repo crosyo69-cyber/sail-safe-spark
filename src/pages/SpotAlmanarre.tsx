@@ -160,6 +160,26 @@ export default function SpotAlmanarre() {
           content="spot kitesurf almanarre, plage almanarre hyères, kitesurf var, wingfoil hyères, conditions vent almanarre, spot débutant kitesurf"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.com/spot-kitesurf-almanarre-hyeres-var" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Spot Kitesurf Almanarre Hyères | Meilleur Spot du Var" />
+        <meta property="og:description" content="L'Almanarre : le meilleur spot kitesurf du Var. Vent régulier, eaux plates, 300 jours de soleil. Conditions idéales pour apprendre !" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.kitesurfpassion.com/spot-kitesurf-almanarre-hyeres-var" />
+        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Spot kitesurf Almanarre Hyères - Vue de la plage" />
+        <meta property="og:site_name" content="KiteSurf Passion" />
+        <meta property="og:locale" content="fr_FR" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Spot Kitesurf Almanarre Hyères" />
+        <meta name="twitter:description" content="Le meilleur spot kitesurf du Var : vent régulier, eaux plates, conditions idéales." />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content="Spot Almanarre Hyères kitesurf" />
+        
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
