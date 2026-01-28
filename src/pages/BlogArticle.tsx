@@ -1490,6 +1490,39 @@ Profitez des jours sans vent pour progresser avec nous !
     `,
     tags: ["Pump Foil", "Sans Vent", "Entraînement", "Fitness"],
   },
+  "ecole-kitesurf-hyeres-almanarre-cours": {
+    content: `
+## Découvrez le Kitesurf à Hyères avec KiteSurf Passion
+
+**L'Almanarre vous attend pour une expérience de glisse inoubliable**
+
+Vous rêvez de glisser sur les eaux turquoise de la Méditerranée ? Notre **école de kitesurf Hyères** vous accompagne depuis 1999 dans la découverte de ce sport spectaculaire. Située sur le **spot de kitesurf Almanarre**, reconnu comme l'un des meilleurs spots de **kitesurf Var**, notre école offre des conditions idéales pour apprendre et progresser en toute sécurité.
+
+### Des Cours Adaptés à Tous les Niveaux
+
+Que vous soyez totalement novice ou pratiquant confirmé, nos **cours de kitesurf débutant** sont conçus pour une progression rapide et sécurisée. Notre moniteur diplômé d'État (BPJEPS) vous guide pas à pas, de la découverte de l'aile jusqu'à vos premières navigations autonomes.
+
+Ce qui distingue notre approche pédagogique :
+
+- **Bateau d'assistance permanent** pour une sécurité maximale
+- **Petits groupes** de 4 élèves maximum
+- **Matériel récent** Duotone adapté à votre niveau
+- **École itinérante** : nous choisissons le meilleur spot selon les conditions météo
+
+### Location et Équipement Premium
+
+Vous êtes déjà autonome ? Notre service de **location de kitesurf Hyères** met à votre disposition un équipement complet et performant. Ailes, planches, harnais et combinaisons : tout est inclus pour profiter pleinement de votre session sur l'Almanarre.
+
+Le spot bénéficie de vents réguliers (Mistral et Levant) de mars à novembre, avec une eau peu profonde idéale pour l'apprentissage et le perfectionnement.
+
+### Passez à l'Action
+
+Rejoignez les **2 500 élèves** déjà formés par notre école et vivez l'expérience du kitesurf sur la côte varoise. Réservez dès maintenant votre [stage 100% Glisse](/stage-kitesurf-100-glisse-hyeres) ou votre [cours particulier](/cours-particulier-kitesurf-hyeres) et laissez-vous porter par le vent méditerranéen.
+
+**Contactez-nous au 06 72 71 69 05** ou [réservez directement en ligne](/contact-reservation-kitesurf-hyeres) !
+    `,
+    tags: ["Kitesurf", "Hyères", "Almanarre", "Débutant", "Cours"],
+  },
 };
 
 const BlogArticle = () => {
