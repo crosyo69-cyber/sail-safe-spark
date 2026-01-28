@@ -5,13 +5,49 @@
     <link>https://www.kitesurfpassion.com/blog-kitesurf-hyeres</link>
     <description>Actualités, conseils et guides sur le kitesurf, wingfoil et pumpfoil à Hyères. Découvrez le spot de l'Almanarre avec l'école KiteSurf Passion.</description>
     <language>fr-FR</language>
-    <lastBuildDate>Sun, 26 Jan 2025 10:00:00 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 28 Jan 2025 10:00:00 +0100</lastBuildDate>
     <atom:link href="https://www.kitesurfpassion.com/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://www.kitesurfpassion.com/favicon.ico</url>
       <title>KiteSurf Passion</title>
       <link>https://www.kitesurfpassion.com</link>
     </image>
+    
+    <item>
+      <title>École de Kitesurf à Hyères : Découvrez l'Almanarre</title>
+      <link>https://www.kitesurfpassion.com/blog/ecole-kitesurf-hyeres-almanarre-cours</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/ecole-kitesurf-hyeres-almanarre-cours</guid>
+      <pubDate>Tue, 28 Jan 2025 10:00:00 +0100</pubDate>
+      <category>Kitesurf</category>
+      <description>Cours de kitesurf débutant, location de matériel et spot mythique de l'Almanarre. Découvrez pourquoi Hyères est la destination kitesurf du Var.</description>
+    </item>
+    
+    <item>
+      <title>Stage Wingfoil à Hyères : Apprenez à Voler sur l'Eau</title>
+      <link>https://www.kitesurfpassion.com/blog/stage-wingfoil-hyeres-apprendre-voler</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/stage-wingfoil-hyeres-apprendre-voler</guid>
+      <pubDate>Mon, 27 Jan 2025 10:00:00 +0100</pubDate>
+      <category>Wing Foil</category>
+      <description>Cours de wingfoil débutant à Hyères avec moniteur diplômé. Découvrez le sport tendance sur le spot de l'Almanarre dans le Var.</description>
+    </item>
+    
+    <item>
+      <title>Pumpfoil à Hyères : Initiez-vous au Dock Start</title>
+      <link>https://www.kitesurfpassion.com/blog/pumpfoil-hyeres-dock-start-initiation</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/pumpfoil-hyeres-dock-start-initiation</guid>
+      <pubDate>Sun, 26 Jan 2025 10:00:00 +0100</pubDate>
+      <category>Pump Foil</category>
+      <description>Cours de pumpfoil et dock start à Hyères. Sport sans vent accessible à tous sur la presqu'île de Giens dans le Var.</description>
+    </item>
+    
+    <item>
+      <title>Foil Tracté à Hyères : Vivez les Sensations du Vol</title>
+      <link>https://www.kitesurfpassion.com/blog/foil-tracte-hyeres-sensations-vol</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/foil-tracte-hyeres-sensations-vol</guid>
+      <pubDate>Sat, 25 Jan 2025 10:00:00 +0100</pubDate>
+      <category>Kitesurf</category>
+      <description>Découvrez le foil tracté par bateau à Hyères. Idéal pour s'initier au vol sans vent sur la baie de Giens dans le Var.</description>
+    </item>
     
     <item>
       <title>10 Erreurs de Débutant en Kitesurf et Comment les Éviter</title>

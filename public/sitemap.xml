@@ -127,7 +127,7 @@
   <!-- Blog -->
   <url>
     <loc>https://www.kitesurfpassion.com/blog-kitesurf-hyeres</loc>
-    <lastmod>2026-01-25</lastmod>
+    <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -148,7 +148,36 @@
     <priority>0.3</priority>
   </url>
   
-  <!-- Articles Blog -->
+  <!-- Nouveaux Articles SEO Blog -->
+  <url>
+    <loc>https://www.kitesurfpassion.com/blog/ecole-kitesurf-hyeres-almanarre-cours</loc>
+    <lastmod>2026-01-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.kitesurfpassion.com/blog/stage-wingfoil-hyeres-apprendre-voler</loc>
+    <lastmod>2026-01-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.kitesurfpassion.com/blog/pumpfoil-hyeres-dock-start-initiation</loc>
+    <lastmod>2026-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.kitesurfpassion.com/blog/foil-tracte-hyeres-sensations-vol</loc>
+    <lastmod>2026-01-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Articles Blog existants -->
   <url>
     <loc>https://www.kitesurfpassion.com/blog/erreurs-debutant-kitesurf-eviter</loc>
     <lastmod>2026-01-25</lastmod>
