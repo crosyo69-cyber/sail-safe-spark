@@ -202,6 +202,38 @@ export const blogArticles = [
     alt: "École de kitesurf Hyères Almanarre - Cours débutant spot Var KiteSurf Passion",
     featured: true,
   },
+  {
+    slug: "stage-wingfoil-hyeres-apprendre-voler",
+    title: "Stage Wingfoil à Hyères : Apprenez à Voler sur l'Eau",
+    excerpt: "Cours de wingfoil débutant à Hyères avec moniteur diplômé. Découvrez le sport tendance sur le spot de l'Almanarre dans le Var.",
+    category: "Wing Foil",
+    date: "2025-01-27",
+    readTime: "3 min",
+    image: "blog-wingfoil.jpg",
+    alt: "Stage wingfoil Hyères Almanarre - Cours débutant école KiteSurf Passion Var",
+    featured: true,
+  },
+  {
+    slug: "pumpfoil-hyeres-dock-start-initiation",
+    title: "Pumpfoil à Hyères : Initiez-vous au Dock Start",
+    excerpt: "Cours de pumpfoil et dock start à Hyères. Sport sans vent accessible à tous sur la presqu'île de Giens dans le Var.",
+    category: "Pump Foil",
+    date: "2025-01-26",
+    readTime: "3 min",
+    image: "blog-pumpfoil.jpg",
+    alt: "Pumpfoil dock start Hyères Giens - Initiation foil école KiteSurf Passion Var",
+    featured: true,
+  },
+  {
+    slug: "foil-tracte-hyeres-sensations-vol",
+    title: "Foil Tracté à Hyères : Vivez les Sensations du Vol",
+    excerpt: "Découvrez le foil tracté par bateau à Hyères. Idéal pour s'initier au vol sans vent sur la baie de Giens dans le Var.",
+    category: "Kitesurf",
+    date: "2025-01-25",
+    readTime: "3 min",
+    image: "blog-bateau-groupe.jpg",
+    alt: "Foil tracté bateau Hyères - Initiation vol école KiteSurf Passion Var",
+  },
 ];
 
 const categories = ["Tous", "Kitesurf", "Wing Foil", "Pump Foil", "Le Spot", "Sécurité"];
