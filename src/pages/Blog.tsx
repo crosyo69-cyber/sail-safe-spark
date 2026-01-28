@@ -191,6 +191,17 @@ export const blogArticles = [
     readTime: "4 min",
     image: "blog-pumpfoil-dock.jpg",
   },
+  {
+    slug: "ecole-kitesurf-hyeres-almanarre-cours",
+    title: "École de Kitesurf à Hyères : Découvrez l'Almanarre",
+    excerpt: "Cours de kitesurf débutant, location de matériel et spot mythique de l'Almanarre. Découvrez pourquoi Hyères est la destination kitesurf du Var.",
+    category: "Kitesurf",
+    date: "2025-01-28",
+    readTime: "3 min",
+    image: "blog-kitesurf-action.jpg",
+    alt: "École de kitesurf Hyères Almanarre - Cours débutant spot Var KiteSurf Passion",
+    featured: true,
+  },
 ];
 
 const categories = ["Tous", "Kitesurf", "Wing Foil", "Pump Foil", "Le Spot", "Sécurité"];
