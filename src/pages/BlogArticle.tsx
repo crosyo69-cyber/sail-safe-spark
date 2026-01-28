@@ -1523,6 +1523,168 @@ Rejoignez les **2 500 élèves** déjà formés par notre école et vivez l'exp�
     `,
     tags: ["Kitesurf", "Hyères", "Almanarre", "Débutant", "Cours"],
   },
+  "stage-wingfoil-hyeres-apprendre-voler": {
+    content: `
+## Stage Wingfoil à Hyères : Apprenez à Voler sur l'Eau
+
+**Le wingfoil, le sport de glisse qui conquiert la Méditerranée**
+
+Le **wingfoil** est devenu LE sport tendance des passionnés de glisse. Notre **école de wingfoil Hyères** vous propose des **cours de wingfoil débutant** adaptés à tous les niveaux sur le mythique **spot de l'Almanarre**. Depuis 1999, KiteSurf Passion forme les riders du Var aux sports nautiques les plus innovants.
+
+### Pourquoi Choisir le Wingfoil ?
+
+Le wingfoil offre une accessibilité exceptionnelle par rapport au kitesurf traditionnel. Plus besoin de longues lignes ni de zone de décollage étendue. Avec une wing (aile à main) et un foil, vous découvrez :
+
+- **Des sensations uniques** de vol au-dessus de l'eau
+- **Une pratique plus accessible** dès 8 à 10 nœuds de vent
+- **Un apprentissage progressif** et sécurisé
+- **Une liberté totale** sans contrainte de lignes
+
+### Notre Pédagogie Wingfoil dans le Var
+
+Notre moniteur diplômé d'État vous accompagne à chaque étape de votre **stage wingfoil Var** :
+
+- **Séance 1** : Manipulation de la wing sur la plage et premiers bords
+- **Séance 2** : Équilibre sur la planche avec le foil
+- **Séance 3** : Premiers décollages et sensations de vol
+- **Séance 4-5** : Autonomie et navigation sur le plan d'eau
+
+Notre école itinérante choisit le meilleur spot de la **presqu'île de Giens** selon les conditions du jour.
+
+### Le Spot Idéal pour Apprendre
+
+Le **spot wingfoil Almanarre** offre des conditions exceptionnelles :
+
+- Eau peu profonde sur plusieurs centaines de mètres
+- Vents réguliers (Mistral et Levant) de mars à novembre
+- Plan d'eau protégé, idéal pour les débutants
+- Cadre naturel préservé avec vue sur les îles d'Or
+
+### Réservez Votre Stage Wingfoil
+
+Rejoignez les **2 500 élèves** formés par notre école et découvrez le vol sur l'eau. Nos [stages wingfoil](/stage-wingfoil-hyeres-almanarre) sont disponibles toute l'année.
+
+**Appelez-nous au 06 72 71 69 05** ou [réservez en ligne](/contact-reservation-kitesurf-hyeres) !
+    `,
+    tags: ["Wingfoil", "Hyères", "Almanarre", "Débutant", "Stage"],
+  },
+  "pumpfoil-hyeres-dock-start-initiation": {
+    content: `
+## Pumpfoil à Hyères : Initiez-vous au Dock Start
+
+**Le sport de foil accessible par tous les temps**
+
+Pas de vent ? Pas de vagues ? Aucun problème ! Le **pumpfoil** vous permet de voler sur l'eau grâce à la seule force de vos jambes. Notre **école de pumpfoil Hyères** vous initie au **dock start pumpfoil** sur la **presqu'île de Giens**, dans un cadre exceptionnel du Var.
+
+### Qu'est-ce que le Pumpfoil ?
+
+Le pumpfoil combine une planche équipée d'un foil et une technique de pompage qui génère la portance nécessaire au vol. C'est le sport de foil le plus accessible :
+
+- **Aucune condition météo requise** : ni vent, ni vagues
+- **Progression visible dès la première séance**
+- **Excellent entraînement cardio et renforcement musculaire**
+- **Complément parfait** au wingfoil et au kitesurf
+
+### Le Dock Start : La Clé de l'Autonomie
+
+Le **dock start Giens** consiste à démarrer depuis un ponton fixe. Notre méthode pédagogique vous fait progresser rapidement :
+
+- **Étape 1** : Équilibre statique sur la planche au ponton
+- **Étape 2** : Impulsion et premiers mètres de vol
+- **Étape 3** : Technique de pumping pour prolonger le vol
+- **Étape 4** : Enchaînement de plusieurs dizaines de mètres
+
+### Pourquoi Choisir Hyères pour le Pumpfoil ?
+
+Le **spot pumpfoil Var** de la presqu'île de Giens offre des conditions idéales :
+
+- Eau calme et protégée, parfaite pour l'apprentissage
+- Pontons adaptés au dock start
+- Profondeur suffisante pour le foil
+- Cadre naturel exceptionnel face aux îles d'Or
+
+### Nos Formules d'Initiation Pumpfoil
+
+| Formule | Durée | Tarif |
+|---------|-------|-------|
+| Découverte | 1h | 50€ |
+| Initiation complète | 2h | 90€ |
+| Pack progression | 5x1h | 200€ |
+
+Tout le matériel est fourni : planche, foil adapté aux débutants, gilet de sauvetage.
+
+### Réservez Votre Séance Pumpfoil
+
+Découvrez les sensations du vol sans dépendre des conditions météo. Notre [initiation pumpfoil](/cours-pumpfoil-dock-start-hyeres) est accessible toute l'année.
+
+**Contactez-nous au 06 72 71 69 05** ou [réservez en ligne](/contact-reservation-kitesurf-hyeres) !
+    `,
+    tags: ["Pumpfoil", "Dock Start", "Hyères", "Giens", "Initiation"],
+  },
+  "foil-tracte-hyeres-sensations-vol": {
+    content: `
+## Foil Tracté à Hyères : Vivez les Sensations du Vol
+
+**Découvrez le foil sans vent, tracté par bateau**
+
+Vous voulez découvrir les sensations uniques du foil sans attendre le vent ? Le **foil tracté Hyères** est la solution idéale. Notre **école de foil tracté Var** vous fait vivre l'expérience du vol sur l'eau, tractée par notre bateau d'assistance sur la magnifique **baie de Giens**.
+
+### Le Foil Tracté : L'Initiation Parfaite
+
+Le **foil tracté bateau** est le moyen le plus rapide et le plus sécurisé pour découvrir les sensations du vol :
+
+- **Aucune condition de vent requise**
+- **Vitesse contrôlée** par le pilote du bateau
+- **Sécurité maximale** avec récupération immédiate
+- **Progression garantie** dès la première session
+
+### Comment ça Marche ?
+
+Le principe est simple : vous êtes tracté par notre bateau à une vitesse constante qui permet au foil de décoller :
+
+- **Phase 1** : Départ dans l'eau, prise d'appui sur la planche
+- **Phase 2** : Montée progressive en vitesse par le bateau
+- **Phase 3** : Décollage naturel grâce à la portance du foil
+- **Phase 4** : Vol stable et sensations de glisse pure
+
+Notre moniteur vous accompagne via radio pour ajuster votre position et optimiser votre vol.
+
+### Pourquoi le Foil Tracté à Hyères ?
+
+La **baie de Hyères Giens** offre un plan d'eau exceptionnel :
+
+- Eau calme et protégée, idéale pour le décollage
+- Zone de navigation sécurisée loin des baigneurs
+- Paysages spectaculaires (îles d'Or, presqu'île de Giens)
+- Eau tempérée de mai à octobre
+
+### Pour Qui est le Foil Tracté ?
+
+Le **foil tracté débutant** s'adresse à tous :
+
+- **Curieux** souhaitant découvrir le foil sans engagement
+- **Kitesurfeurs** voulant se préparer au kitefoil
+- **Wingfoileurs** cherchant à progresser rapidement
+- **Familles** pour une activité accessible dès 10 ans
+
+### Nos Tarifs Foil Tracté
+
+| Formule | Durée | Tarif |
+|---------|-------|-------|
+| Découverte | 15 min | 50€ |
+| Session | 30 min | 90€ |
+| Pack duo | 2x15 min | 80€ |
+
+Le matériel complet est fourni : planche foil, combinaison, gilet, casque.
+
+### Réservez Votre Session Foil Tracté
+
+Vivez les sensations du vol sur l'eau dès aujourd'hui ! Notre [foil tracté](/foil-tracte-hyeres) est disponible toute la saison.
+
+**Appelez-nous au 06 72 71 69 05** ou [réservez en ligne](/contact-reservation-kitesurf-hyeres) !
+    `,
+    tags: ["Foil Tracté", "Bateau", "Hyères", "Giens", "Débutant"],
+  },
 };
 
 const BlogArticle = () => {
