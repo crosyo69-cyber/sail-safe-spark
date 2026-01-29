@@ -67,4 +67,4 @@ Disallow: /auth
 Disallow: /desabonnement-alertes
 
 # Sitemap - URL unique HTTPS avec www
-Sitemap: https://www.kitesurfpassion.com/sitemap.xml
+Sitemap: https://www.kitesurfpassion.fr/sitemap.xml
