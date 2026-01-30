@@ -76,7 +76,7 @@ const CoursParticulier = () => {
     "@type": "Product",
     name: "Cours Particulier Kitesurf - Hyères",
     description: "Cours de kitesurf 100% individualisé de 2h à Hyères. Progression rapide et sécurisée avec moniteur diplômé dédié et bateau d'assistance.",
-    image: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
@@ -100,17 +100,17 @@ const CoursParticulier = () => {
     "@type": "ImageObject",
     name: "Cours particulier kitesurf Hyères",
     description: "Cours particulier de kitesurf avec moniteur dédié sur le spot de l'Almanarre à Hyères - école KiteSurf Passion Var",
-    contentUrl: "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {
       "@type": "Organization",
       name: "KiteSurf Passion",
-      url: "https://www.kitesurfpassion.com",
+      url: "https://www.kitesurfpassion.fr",
     },
-    license: "https://www.kitesurfpassion.com/mentions-legales",
-    acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+    license: "https://www.kitesurfpassion.fr/mentions-legales",
+    acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
     contentLocation: {
       "@type": "Place",
       name: "Plage de l'Almanarre, Hyères",
@@ -186,7 +186,7 @@ const CoursParticulier = () => {
           name="description"
           content="Cours particulier kitesurf Hyères Almanarre. Progression 100% individualisée avec moniteur diplômé dédié. Bateau d'assistance, encadrement premium. Dès 230€."
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/cours-particulier-kitesurf-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres" />
         <meta property="og:title" content="Cours Particulier Kitesurf Hyères Almanarre | KiteSurf Passion" />
         <meta property="og:description" content="Leçon privée de kitesurf avec moniteur dédié. Progression rapide et sécurisée sur le spot de l'Almanarre." />
         <meta property="og:type" content="website" />
@@ -206,9 +206,9 @@ const CoursParticulier = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Kitesurf", "item": "https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" },
-            { "@type": "ListItem", "position": 3, "name": "Cours Particulier", "item": "https://www.kitesurfpassion.com/cours-particulier-kitesurf-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "Kitesurf", "item": "https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" },
+            { "@type": "ListItem", "position": 3, "name": "Cours Particulier", "item": "https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres" }
           ]
         })}</script>
       </Helmet>

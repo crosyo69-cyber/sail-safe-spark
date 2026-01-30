@@ -80,46 +80,46 @@ const imageGalleryStructuredData = {
       "@type": "ImageObject",
       name: "Bon cadeau Kitesurf Hyères",
       description: "Bon cadeau pour offrir un stage ou des cours de kitesurf à l'école KiteSurf Passion Hyères",
-      contentUrl: "https://www.kitesurfpassion.com/assets/bon-cadeau-kitesurf.jpg",
+      contentUrl: "https://www.kitesurfpassion.fr/assets/bon-cadeau-kitesurf.jpg",
       creditText: "KiteSurf Passion",
       copyrightNotice: "© KiteSurf Passion",
       creator: {
         "@type": "Organization",
         name: "KiteSurf Passion",
-        url: "https://www.kitesurfpassion.com",
+        url: "https://www.kitesurfpassion.fr",
       },
-      license: "https://www.kitesurfpassion.com/mentions-legales",
-      acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+      license: "https://www.kitesurfpassion.fr/mentions-legales",
+      acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
     },
     {
       "@type": "ImageObject",
       name: "Bon cadeau Wingfoil Hyères",
       description: "Bon cadeau pour offrir des cours de wingfoil à l'école KiteSurf Passion Hyères",
-      contentUrl: "https://www.kitesurfpassion.com/assets/bon-cadeau-wingfoil.jpg",
+      contentUrl: "https://www.kitesurfpassion.fr/assets/bon-cadeau-wingfoil.jpg",
       creditText: "KiteSurf Passion",
       copyrightNotice: "© KiteSurf Passion",
       creator: {
         "@type": "Organization",
         name: "KiteSurf Passion",
-        url: "https://www.kitesurfpassion.com",
+        url: "https://www.kitesurfpassion.fr",
       },
-      license: "https://www.kitesurfpassion.com/mentions-legales",
-      acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+      license: "https://www.kitesurfpassion.fr/mentions-legales",
+      acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
     },
     {
       "@type": "ImageObject",
       name: "Bon cadeau Foil Tracté Hyères",
       description: "Bon cadeau pour offrir une session de foil tracté à l'école KiteSurf Passion Hyères",
-      contentUrl: "https://www.kitesurfpassion.com/assets/bon-cadeau-foil-tracte.jpg",
+      contentUrl: "https://www.kitesurfpassion.fr/assets/bon-cadeau-foil-tracte.jpg",
       creditText: "KiteSurf Passion",
       copyrightNotice: "© KiteSurf Passion",
       creator: {
         "@type": "Organization",
         name: "KiteSurf Passion",
-        url: "https://www.kitesurfpassion.com",
+        url: "https://www.kitesurfpassion.fr",
       },
-      license: "https://www.kitesurfpassion.com/mentions-legales",
-      acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+      license: "https://www.kitesurfpassion.fr/mentions-legales",
+      acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
     },
   ],
 };
@@ -133,14 +133,14 @@ const Tarifs = () => {
           name="description"
           content="Découvrez nos tarifs transparents pour cours de kitesurf, wingfoil et pumpfoil à Hyères. Stage dès 350€. Devis gratuit sous 24h."
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/tarifs-cours-kitesurf-wingfoil-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" />
         
         {/* Open Graph */}
         <meta property="og:title" content="Tarifs Kitesurf & Wingfoil Hyères | KiteSurf Passion" />
         <meta property="og:description" content="Stage kitesurf dès 399€, wingfoil dès 440€. Tout inclus : matériel, bateau, moniteur diplômé. Réservez votre cours à Hyères !" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.kitesurfpassion.com/tarifs-cours-kitesurf-wingfoil-hyeres" />
-        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:url" content="https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Tarifs cours de kitesurf et wingfoil à Hyères - École KiteSurf Passion" />
@@ -151,7 +151,7 @@ const Tarifs = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Tarifs Kitesurf & Wingfoil Hyères" />
         <meta name="twitter:description" content="Stage kitesurf dès 399€, wingfoil dès 440€. Tout inclus à Hyères !" />
-        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta name="twitter:image:alt" content="Tarifs cours kitesurf wingfoil Hyères" />
         
         <script type="application/ld+json">
@@ -161,8 +161,8 @@ const Tarifs = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Tarifs", "item": "https://www.kitesurfpassion.com/tarifs-cours-kitesurf-wingfoil-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "Tarifs", "item": "https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" }
           ]
         })}</script>
       </Helmet>

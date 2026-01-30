@@ -76,7 +76,7 @@ const Stage100Glisse = () => {
     "@type": "Product",
     name: "Stage Kitesurf 100% Glisse - Hyères",
     description: "Stage kitesurf intensif 5 jours consécutifs à Hyères. Atteignez l'autonomie avec bateau d'assistance, petits groupes et moniteur diplômé.",
-    image: "https://www.kitesurfpassion.com/assets/hero-100-glisse.jpg",
+    image: "https://www.kitesurfpassion.fr/assets/hero-100-glisse.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
@@ -100,17 +100,17 @@ const Stage100Glisse = () => {
     "@type": "ImageObject",
     name: "Stage kitesurf 100% Glisse Hyères",
     description: "Stage intensif kitesurf 5 jours sur le spot de l'Almanarre à Hyères - école KiteSurf Passion Var",
-    contentUrl: "https://www.kitesurfpassion.com/assets/hero-100-glisse.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.com/assets/hero-100-glisse.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/assets/hero-100-glisse.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/hero-100-glisse.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {
       "@type": "Organization",
       name: "KiteSurf Passion",
-      url: "https://www.kitesurfpassion.com",
+      url: "https://www.kitesurfpassion.fr",
     },
-    license: "https://www.kitesurfpassion.com/mentions-legales",
-    acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+    license: "https://www.kitesurfpassion.fr/mentions-legales",
+    acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
     contentLocation: {
       "@type": "Place",
       name: "Plage de l'Almanarre, Hyères",
@@ -173,7 +173,7 @@ const Stage100Glisse = () => {
           name="description"
           content="Stage kitesurf 100% glisse à Hyères Almanarre : 5 jours consécutifs pour l'autonomie. Bateau d'assistance, moniteur diplômé, petits groupes. Dès 399€."
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/stage-kitesurf-100-glisse-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres" />
         <meta property="og:title" content="Stage Kitesurf 100% Glisse Hyères Almanarre | KiteSurf Passion" />
         <meta property="og:description" content="Stage intensif de 5 jours pour devenir autonome en kitesurf. Progression rapide garantie sur le spot de l'Almanarre." />
         <meta property="og:type" content="website" />
@@ -201,9 +201,9 @@ const Stage100Glisse = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Kitesurf", "item": "https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" },
-            { "@type": "ListItem", "position": 3, "name": "Stage 100% Glisse", "item": "https://www.kitesurfpassion.com/stage-kitesurf-100-glisse-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "Kitesurf", "item": "https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" },
+            { "@type": "ListItem", "position": 3, "name": "Stage 100% Glisse", "item": "https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres" }
           ]
         })}</script>
       </Helmet>

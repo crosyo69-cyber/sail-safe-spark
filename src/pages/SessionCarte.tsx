@@ -129,7 +129,7 @@ const SessionCarte = () => {
           name="description"
           content="Cours kitesurf à la carte Hyères Almanarre. Flexibilité totale, progression ciblée selon votre niveau. Séances individuelles ou en pack. Dès 120€."
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/session-kitesurf-carte-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres" />
         <meta property="og:title" content="Cours Kitesurf à la Carte Hyères Almanarre | KiteSurf Passion" />
         <meta property="og:description" content="Cours de kitesurf à la carte à Hyères. Choisissez vos créneaux et progressez selon vos objectifs." />
         <meta property="og:type" content="website" />
@@ -143,9 +143,9 @@ const SessionCarte = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Kitesurf", "item": "https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" },
-            { "@type": "ListItem", "position": 3, "name": "Cours à la Carte", "item": "https://www.kitesurfpassion.com/session-kitesurf-carte-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "Kitesurf", "item": "https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" },
+            { "@type": "ListItem", "position": 3, "name": "Cours à la Carte", "item": "https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres" }
           ]
         })}</script>
       </Helmet>
