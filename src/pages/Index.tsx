@@ -15,10 +15,10 @@ const Index = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "@id": "https://www.kitesurfpassion.com/#organization",
+    "@id": "https://www.kitesurfpassion.fr/#organization",
     name: "KiteSurf Passion",
     description: "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999. Plus de 2 500 élèves formés. Bateau d'assistance, moniteur diplômé d'État, spot de l'Almanarre.",
-    url: "https://www.kitesurfpassion.com",
+    url: "https://www.kitesurfpassion.fr",
     telephone: "+33672716905",
     email: "crosyo69@gmail.com",
     foundingDate: "1999",
@@ -74,7 +74,7 @@ const Index = () => {
       closes: "19:00",
     },
     priceRange: "€€",
-    image: "https://www.kitesurfpassion.com/og-image.jpg",
+    image: "https://www.kitesurfpassion.fr/og-image.jpg",
     sameAs: [
       "https://www.facebook.com/kitesurfpassion",
       "https://www.instagram.com/kitesurfpassion",
@@ -215,17 +215,17 @@ const Index = () => {
         "@type": "ImageObject",
         name: "Cours kitesurf Hyères Almanarre",
         description: "Session de kitesurf sur le spot de l'Almanarre à Hyères avec l'école KiteSurf Passion",
-        contentUrl: "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
-        thumbnailUrl: "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
+        contentUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
         creator: {
           "@type": "Organization",
           name: "KiteSurf Passion",
-          url: "https://www.kitesurfpassion.com",
+          url: "https://www.kitesurfpassion.fr",
         },
-        license: "https://www.kitesurfpassion.com/mentions-legales",
-        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+        license: "https://www.kitesurfpassion.fr/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
         contentLocation: {
           "@type": "Place",
           name: "Plage de l'Almanarre, Hyères",
@@ -241,17 +241,17 @@ const Index = () => {
         "@type": "ImageObject",
         name: "Stage wingfoil Hyères Var",
         description: "Cours de wingfoil sur la plage de l'Almanarre à Hyères - école KiteSurf Passion",
-        contentUrl: "https://www.kitesurfpassion.com/assets/wingfoil-hyeres.jpg",
-        thumbnailUrl: "https://www.kitesurfpassion.com/assets/wingfoil-hyeres.jpg",
+        contentUrl: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
         creator: {
           "@type": "Organization",
           name: "KiteSurf Passion",
-          url: "https://www.kitesurfpassion.com",
+          url: "https://www.kitesurfpassion.fr",
         },
-        license: "https://www.kitesurfpassion.com/mentions-legales",
-        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+        license: "https://www.kitesurfpassion.fr/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
         contentLocation: {
           "@type": "Place",
           name: "Plage de l'Almanarre, Hyères",
@@ -261,17 +261,17 @@ const Index = () => {
         "@type": "ImageObject",
         name: "Pumpfoil dock start Hyères",
         description: "Initiation au pumpfoil avec dock start à Hyères - école KiteSurf Passion",
-        contentUrl: "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres.jpg",
-        thumbnailUrl: "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres.jpg",
+        contentUrl: "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
         creator: {
           "@type": "Organization",
           name: "KiteSurf Passion",
-          url: "https://www.kitesurfpassion.com",
+          url: "https://www.kitesurfpassion.fr",
         },
-        license: "https://www.kitesurfpassion.com/mentions-legales",
-        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+        license: "https://www.kitesurfpassion.fr/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
         contentLocation: {
           "@type": "Place",
           name: "Presqu'île de Giens, Hyères",
@@ -281,33 +281,33 @@ const Index = () => {
         "@type": "ImageObject",
         name: "Bateau assistance kitesurf Hyères",
         description: "Bateau d'assistance pour les cours de kitesurf à Hyères - sécurité maximale",
-        contentUrl: "https://www.kitesurfpassion.com/assets/bateau-assistance-kitesurf.jpg",
-        thumbnailUrl: "https://www.kitesurfpassion.com/assets/bateau-assistance-kitesurf.jpg",
+        contentUrl: "https://www.kitesurfpassion.fr/assets/bateau-assistance-kitesurf.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.fr/assets/bateau-assistance-kitesurf.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
         creator: {
           "@type": "Organization",
           name: "KiteSurf Passion",
-          url: "https://www.kitesurfpassion.com",
+          url: "https://www.kitesurfpassion.fr",
         },
-        license: "https://www.kitesurfpassion.com/mentions-legales",
-        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+        license: "https://www.kitesurfpassion.fr/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
       },
       {
         "@type": "ImageObject",
         name: "Coucher de soleil Almanarre Hyères",
         description: "Vue du spot de kitesurf de l'Almanarre au coucher du soleil à Hyères",
-        contentUrl: "https://www.kitesurfpassion.com/assets/almanarre-sunset.jpg",
-        thumbnailUrl: "https://www.kitesurfpassion.com/assets/almanarre-sunset.jpg",
+        contentUrl: "https://www.kitesurfpassion.fr/assets/almanarre-sunset.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.fr/assets/almanarre-sunset.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
         creator: {
           "@type": "Organization",
           name: "KiteSurf Passion",
-          url: "https://www.kitesurfpassion.com",
+          url: "https://www.kitesurfpassion.fr",
         },
-        license: "https://www.kitesurfpassion.com/mentions-legales",
-        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+        license: "https://www.kitesurfpassion.fr/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
         contentLocation: {
           "@type": "Place",
           name: "Plage de l'Almanarre, Hyères",
@@ -328,14 +328,14 @@ const Index = () => {
           name="keywords"
           content="cours kitesurf hyères, école kitesurf almanarre, stage wingfoil var, école kitesurf bateau assistance, kitesurf débutant hyères"
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/" />
         
         {/* Open Graph */}
         <meta property="og:title" content="École Kitesurf Hyères | Cours avec Bateau d'Assistance | KiteSurf Passion" />
         <meta property="og:description" content="Apprenez le kitesurf à Hyères depuis 1999. École itinérante avec bateau d'assistance, moniteur expert." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.kitesurfpassion.com/" />
-        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:url" content="https://www.kitesurfpassion.fr/" />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta property="og:locale" content="fr_FR" />
         
         {/* Twitter */}
@@ -352,7 +352,7 @@ const Index = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" }
           ]
         })}</script>
       </Helmet>
