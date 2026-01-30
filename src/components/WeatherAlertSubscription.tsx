@@ -59,18 +59,26 @@ export const WeatherAlertSubscription = () => {
     setIsLoading(true);
 
     try {
+      // Use INSERT only - upsert requires UPDATE permission which RLS blocks
       const { error } = await supabase
         .from("weather_alert_subscriptions")
-        .upsert({
+        .insert({
           email: validatedEmail,
           min_wind: windRange[0],
           max_wind: windRange[1],
           enabled: true,
-        }, {
-          onConflict: "email"
         });
 
-      if (error) throw error;
+      // Handle duplicate email case gracefully
+      if (error) {
+        if (error.code === "23505") {
+          // Email already subscribed - show success message anyway
+          setIsSubscribed(true);
+          toast.success("Vous êtes déjà abonné aux alertes météo !");
+          return;
+        }
+        throw error;
+      }
 
       setIsSubscribed(true);
       toast.success("Vous êtes maintenant abonné aux alertes météo !");
