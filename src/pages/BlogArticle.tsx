@@ -1719,19 +1719,21 @@ const BlogArticle = () => {
       name: "KiteSurf Passion",
       logo: {
         "@type": "ImageObject",
-        url: "https://www.kitesurfpassion.com/logo.png",
+        url: "https://www.kitesurfpassion.fr/logo.png",
+        creditText: "KiteSurf Passion",
+        copyrightNotice: "© KiteSurf Passion",
         creator: {
           "@type": "Organization",
           name: "KiteSurf Passion",
-          url: "https://www.kitesurfpassion.com",
+          url: "https://www.kitesurfpassion.fr",
         },
-        license: "https://www.kitesurfpassion.com/mentions-legales",
-        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+        license: "https://www.kitesurfpassion.fr/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
       },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://www.kitesurfpassion.com/blog/${slug}`,
+      "@id": `https://www.kitesurfpassion.fr/blog/${slug}`,
     },
   };
 
@@ -1745,15 +1747,15 @@ const BlogArticle = () => {
       <Helmet>
         <title>{article.title} | Blog KiteSurf Passion</title>
         <meta name="description" content={article.excerpt} />
-        <link rel="canonical" href={`https://www.kitesurfpassion.com/blog/${slug}`} />
+        <link rel="canonical" href={`https://www.kitesurfpassion.fr/blog/${slug}`} />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Blog & Actualités", "item": "https://www.kitesurfpassion.com/blog-kitesurf-hyeres" },
-            { "@type": "ListItem", "position": 3, "name": article.title, "item": `https://www.kitesurfpassion.com/blog/${slug}` }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "Blog & Actualités", "item": "https://www.kitesurfpassion.fr/blog-kitesurf-hyeres" },
+            { "@type": "ListItem", "position": 3, "name": article.title, "item": `https://www.kitesurfpassion.fr/blog/${slug}` }
           ]
         })}</script>
       </Helmet>
@@ -1804,7 +1806,7 @@ const BlogArticle = () => {
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground mr-2 hidden sm:inline">Partager :</span>
                 <a
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://www.kitesurfpassion.com/blog/${slug}`)}`}
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://www.kitesurfpassion.fr/blog/${slug}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 rounded-full text-muted-foreground hover:text-[#1877F2] hover:bg-[#1877F2]/10 transition-colors"
@@ -1813,7 +1815,7 @@ const BlogArticle = () => {
                   <Facebook className="w-5 h-5" />
                 </a>
                 <a
-                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://www.kitesurfpassion.com/blog/${slug}`)}&text=${encodeURIComponent(article.title)}`}
+                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://www.kitesurfpassion.fr/blog/${slug}`)}&text=${encodeURIComponent(article.title)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
@@ -1822,7 +1824,7 @@ const BlogArticle = () => {
                   <Twitter className="w-5 h-5" />
                 </a>
                 <a
-                  href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`https://www.kitesurfpassion.com/blog/${slug}`)}&title=${encodeURIComponent(article.title)}`}
+                  href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`https://www.kitesurfpassion.fr/blog/${slug}`)}&title=${encodeURIComponent(article.title)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 rounded-full text-muted-foreground hover:text-[#0A66C2] hover:bg-[#0A66C2]/10 transition-colors"
@@ -1831,7 +1833,7 @@ const BlogArticle = () => {
                   <Linkedin className="w-5 h-5" />
                 </a>
                 <a
-                  href={`https://wa.me/?text=${encodeURIComponent(article.title + ' ' + `https://www.kitesurfpassion.com/blog/${slug}`)}`}
+                  href={`https://wa.me/?text=${encodeURIComponent(article.title + ' ' + `https://www.kitesurfpassion.fr/blog/${slug}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 rounded-full text-muted-foreground hover:text-[#25D366] hover:bg-[#25D366]/10 transition-colors"
