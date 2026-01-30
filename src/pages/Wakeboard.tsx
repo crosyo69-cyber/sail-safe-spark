@@ -47,7 +47,7 @@ const Wakeboard = () => {
     "@type": "Course",
     "name": "Wakeboard Hyères - Session Glisse Tractée",
     "description": "Sessions de wakeboard sur la baie d'Hyères. Activité ludique et accessible à tous, encadrée par notre moniteur diplômé avec bateau sécurisé.",
-    "url": "https://www.kitesurfpassion.com/wakeboard-hyeres",
+    "url": "https://www.kitesurfpassion.fr/wakeboard-hyeres",
     "provider": {
       "@type": "LocalBusiness",
       "name": "KiteSurf Passion",
@@ -73,7 +73,7 @@ const Wakeboard = () => {
     "@type": "Product",
     name: "Wakeboard Session Tractée - Hyères",
     description: "Session de wakeboard de 15 min sur la baie d'Hyères. Activité fun et accessible à tous les âges dès 8 ans, encadrée par moniteur diplômé.",
-    image: "https://www.kitesurfpassion.com/assets/wakeboard-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
@@ -95,17 +95,17 @@ const Wakeboard = () => {
     "@type": "ImageObject",
     name: "Wakeboard Hyères baie de Giens",
     description: "Session de wakeboard tractée par bateau sur la baie d'Hyères - école KiteSurf Passion Var",
-    contentUrl: "https://www.kitesurfpassion.com/assets/wakeboard-hyeres.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.com/assets/wakeboard-hyeres.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {
       "@type": "Organization",
       name: "KiteSurf Passion",
-      url: "https://www.kitesurfpassion.com",
+      url: "https://www.kitesurfpassion.fr",
     },
-    license: "https://www.kitesurfpassion.com/mentions-legales",
-    acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+    license: "https://www.kitesurfpassion.fr/mentions-legales",
+    acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
     contentLocation: {
       "@type": "Place",
       name: "Baie d'Hyères",
@@ -182,14 +182,14 @@ const Wakeboard = () => {
           content="Wakeboard Hyères Almanarre : glisse tractée fun près de Giens. 15 min de sensations avec bateau et moniteur diplômé. 40€ la session !" 
         />
         <meta name="keywords" content="wakeboard Hyères, wakeboard baie d'Hyères, wakeboard bateau Hyères, glisse tractée Var, activité nautique Hyères" />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/wakeboard-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/wakeboard-hyeres" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Kitesurf", "item": "https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" },
-            { "@type": "ListItem", "position": 3, "name": "Wakeboard", "item": "https://www.kitesurfpassion.com/wakeboard-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "Kitesurf", "item": "https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" },
+            { "@type": "ListItem", "position": 3, "name": "Wakeboard", "item": "https://www.kitesurfpassion.fr/wakeboard-hyeres" }
           ]
         })}</script>
         <script type="application/ld+json">

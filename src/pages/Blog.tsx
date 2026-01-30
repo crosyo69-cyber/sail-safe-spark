@@ -318,20 +318,22 @@ const Blog = () => {
     "@type": "Blog",
     name: "Blog KiteSurf Passion",
     description: "Actualités, conseils et guides sur le kitesurf, wingfoil et sports de glisse à Hyères",
-    url: "https://www.kitesurfpassion.com/blog-kitesurf-hyeres",
+    url: "https://www.kitesurfpassion.fr/blog-kitesurf-hyeres",
     publisher: {
       "@type": "Organization",
       name: "KiteSurf Passion",
       logo: {
         "@type": "ImageObject",
-        url: "https://www.kitesurfpassion.com/logo.png",
+        url: "https://www.kitesurfpassion.fr/logo.png",
+        creditText: "KiteSurf Passion",
+        copyrightNotice: "© KiteSurf Passion",
         creator: {
           "@type": "Organization",
           name: "KiteSurf Passion",
-          url: "https://www.kitesurfpassion.com",
+          url: "https://www.kitesurfpassion.fr",
         },
-        license: "https://www.kitesurfpassion.com/mentions-legales",
-        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+        license: "https://www.kitesurfpassion.fr/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
       },
     },
     blogPost: blogArticles.map((article) => ({
@@ -339,7 +341,7 @@ const Blog = () => {
       headline: article.title,
       description: article.excerpt,
       datePublished: article.date,
-      url: `https://www.kitesurfpassion.com/blog/${article.slug}`,
+      url: `https://www.kitesurfpassion.fr/blog/${article.slug}`,
     })),
   };
 
@@ -355,14 +357,14 @@ const Blog = () => {
           name="keywords"
           content="blog kitesurf hyères, conseils wingfoil, guide débutant kitesurf, conditions almanarre, météo kitesurf var"
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/blog-kitesurf-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/blog-kitesurf-hyeres" />
         
         {/* Open Graph */}
         <meta property="og:title" content="Blog Kitesurf Hyères | Conseils & Guides d'Experts" />
         <meta property="og:description" content="25 ans d'expérience partagée : conseils pour débuter, guides des spots, conditions météo et actualités kitesurf à Hyères." />
         <meta property="og:type" content="blog" />
-        <meta property="og:url" content="https://www.kitesurfpassion.com/blog-kitesurf-hyeres" />
-        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:url" content="https://www.kitesurfpassion.fr/blog-kitesurf-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Blog kitesurf wingfoil - Conseils et guides pratiques Hyères" />
@@ -373,7 +375,7 @@ const Blog = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Blog Kitesurf Hyères | Conseils d'Experts" />
         <meta name="twitter:description" content="Guides pratiques et conseils pour progresser en kitesurf et wingfoil à Hyères." />
-        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta name="twitter:image:alt" content="Blog kitesurf wingfoil Hyères" />
         
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
@@ -381,8 +383,8 @@ const Blog = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Blog & Actualités", "item": "https://www.kitesurfpassion.com/blog-kitesurf-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "Blog & Actualités", "item": "https://www.kitesurfpassion.fr/blog-kitesurf-hyeres" }
           ]
         })}</script>
       </Helmet>
@@ -592,7 +594,7 @@ const Blog = () => {
                       />
                       <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
                         <ShareButtons 
-                          url={`https://www.kitesurfpassion.com/blog/${article.slug}`}
+                          url={`https://www.kitesurfpassion.fr/blog/${article.slug}`}
                           title={article.title}
                         />
                       </div>
