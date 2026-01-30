@@ -4,11 +4,30 @@ import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { CTASection } from "@/components/sections/CTASection";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
+import { RelatedBlogArticles } from "@/components/sections/RelatedBlogArticles";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Check, ArrowRight, Waves, Zap, Target, Clock } from "lucide-react";
 import pumpfoilImage from "@/assets/pumpfoil-hyeres-cours.jpg";
 import pumpfoilInitiation from "@/assets/pumpfoil-initiation.jpg";
+
+const pumpfoilBlogArticles = [
+  {
+    slug: "pumpfoil-sport-nautique-sans-vent",
+    title: "Pumpfoil : Le Sport Nautique qui Révolutionne la Glisse",
+    excerpt: "Découvrez le pumpfoil, cette discipline innovante qui permet de voler sur l'eau sans vent ni vagues.",
+  },
+  {
+    slug: "dock-start-technique-pumpfoil-debutant",
+    title: "Dock Start : La Technique Clé pour Débuter en Pumpfoil",
+    excerpt: "Maîtrisez le dock start, la technique de départ depuis un ponton pour apprendre le pumpfoil facilement.",
+  },
+  {
+    slug: "pumpfoil-entrainement-foil-wingfoil",
+    title: "Pumpfoil : L'Entraînement Parfait pour Progresser en Wingfoil",
+    excerpt: "Comment le pumpfoil peut accélérer votre progression en wingfoil et améliorer votre équilibre sur le foil.",
+  },
+];
 
 const pumpfoilFaqs = [
   {
@@ -412,6 +431,14 @@ export default function CoursPumpfoil() {
           title="Questions Fréquentes Pumpfoil"
           subtitle="Tout savoir sur nos cours de pumpfoil à Hyères Almanarre"
           faqs={pumpfoilFaqs}
+          accentColor="ocean"
+        />
+
+        {/* Blog Articles Section */}
+        <RelatedBlogArticles
+          title="Nos Articles Pumpfoil"
+          subtitle="Guides et conseils pour découvrir le pumpfoil"
+          articles={pumpfoilBlogArticles}
           accentColor="ocean"
         />
 
