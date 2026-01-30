@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,20 +7,54 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Bell, Wind, Mail, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { z } from "zod";
+
+// Email validation schema
+const emailSchema = z.string().trim().email({ message: "Adresse email invalide" }).max(255);
 
 export const WeatherAlertSubscription = () => {
   const [email, setEmail] = useState("");
   const [windRange, setWindRange] = useState([10, 30]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  
+  // Honeypot field - should remain empty
+  const [honeypot, setHoneypot] = useState("");
+  
+  // Track form load time to detect bots
+  const formLoadTime = useRef<number>(Date.now());
+  
+  // Reset form load time on mount
+  useEffect(() => {
+    formLoadTime.current = Date.now();
+  }, []);
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email) {
-      toast.error("Veuillez entrer votre adresse email");
+    // Bot detection: honeypot field should be empty
+    if (honeypot) {
+      // Silently reject - don't reveal bot detection
+      setIsSubscribed(true);
       return;
     }
+    
+    // Bot detection: form submitted too quickly (less than 2 seconds)
+    const timeElapsed = Date.now() - formLoadTime.current;
+    if (timeElapsed < 2000) {
+      // Silently reject - don't reveal timing detection
+      setIsSubscribed(true);
+      return;
+    }
+    
+    // Validate email with zod
+    const emailValidation = emailSchema.safeParse(email);
+    if (!emailValidation.success) {
+      toast.error(emailValidation.error.errors[0]?.message || "Adresse email invalide");
+      return;
+    }
+    
+    const validatedEmail = emailValidation.data;
 
     setIsLoading(true);
 
@@ -28,7 +62,7 @@ export const WeatherAlertSubscription = () => {
       const { error } = await supabase
         .from("weather_alert_subscriptions")
         .upsert({
-          email,
+          email: validatedEmail,
           min_wind: windRange[0],
           max_wind: windRange[1],
           enabled: true,
@@ -40,8 +74,8 @@ export const WeatherAlertSubscription = () => {
 
       setIsSubscribed(true);
       toast.success("Vous êtes maintenant abonné aux alertes météo !");
-    } catch (error: any) {
-      console.error("Error subscribing:", error);
+    } catch (error: unknown) {
+      console.error("Subscription error");
       toast.error("Erreur lors de l'inscription. Veuillez réessayer.");
     } finally {
       setIsLoading(false);
@@ -88,18 +122,33 @@ export const WeatherAlertSubscription = () => {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubscribe} className="space-y-6">
+          {/* Honeypot field - hidden from users, visible to bots */}
+          <div className="hidden" aria-hidden="true">
+            <label htmlFor="website">Website</label>
+            <input
+              type="text"
+              id="website"
+              name="website"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
+          
           <div className="space-y-2">
-            <Label htmlFor="email" className="flex items-center gap-2">
+            <Label htmlFor="weather-email" className="flex items-center gap-2">
               <Mail className="h-4 w-4" />
               Adresse email
             </Label>
             <Input
-              id="email"
+              id="weather-email"
               type="email"
               placeholder="votre@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              maxLength={255}
               className="bg-background"
             />
           </div>

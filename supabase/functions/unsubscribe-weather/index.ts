@@ -66,12 +66,12 @@ const handler = async (req: Request): Promise<Response> => {
         throw deleteError;
       }
 
-      console.log("Subscription deleted for email:", subscription.email);
+      // Log for audit purposes only - don't expose email in response
+      console.log("Subscription deleted for id:", subscription.id);
       return new Response(
         JSON.stringify({ 
           success: true, 
-          message: "Abonnement supprimé définitivement",
-          email: subscription.email.replace(/(.{2}).*(@.*)/, "$1***$2")
+          message: "Abonnement supprimé définitivement"
         }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
@@ -86,24 +86,23 @@ const handler = async (req: Request): Promise<Response> => {
       }
 
       if (!unsubResult) {
-        // Already unsubscribed
+        // Already unsubscribed - don't disclose email
         return new Response(
           JSON.stringify({ 
             success: true, 
             message: "Vous êtes déjà désabonné",
-            email: subscription.email.replace(/(.{2}).*(@.*)/, "$1***$2"),
             alreadyUnsubscribed: true
           }),
           { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
 
-      console.log("Subscription disabled for email:", subscription.email);
+      // Log for audit purposes only - don't expose email in response
+      console.log("Subscription disabled for id:", subscription.id);
       return new Response(
         JSON.stringify({ 
           success: true, 
-          message: "Désabonnement effectué avec succès",
-          email: subscription.email.replace(/(.{2}).*(@.*)/, "$1***$2")
+          message: "Désabonnement effectué avec succès"
         }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
