@@ -4,10 +4,28 @@ import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
+import { RelatedBlogArticles } from "@/components/sections/RelatedBlogArticles";
 import { Check, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import wingfoilImage from "@/assets/wingfoil-hyeres.jpg";
 
+const wingfoilBlogArticles = [
+  {
+    slug: "wingfoil-vs-kitesurf-quel-sport-choisir",
+    title: "Wingfoil vs Kitesurf : Quel Sport de Glisse Choisir ?",
+    excerpt: "Comparatif complet entre wingfoil et kitesurf pour vous aider à choisir le sport qui correspond à vos attentes.",
+  },
+  {
+    slug: "apprendre-wingfoil-debutant-guide-complet",
+    title: "Apprendre le Wingfoil Débutant : Guide Complet",
+    excerpt: "Toutes les étapes pour bien débuter en wingfoil, du choix du matériel aux premières sensations de vol.",
+  },
+  {
+    slug: "meilleur-spot-wingfoil-hyeres-almanarre",
+    title: "Almanarre : Le Meilleur Spot Wingfoil de la Côte d'Azur",
+    excerpt: "Découvrez pourquoi l'Almanarre est considéré comme le spot idéal pour apprendre et progresser en wingfoil.",
+  },
+];
 const wingfoilFaqs = [
   {
     question: "Le wingfoil est-il plus facile que le kitesurf à apprendre ?",
@@ -322,6 +340,14 @@ const StageWingfoil = () => {
           title="Questions Fréquentes Wingfoil"
           subtitle="Tout savoir sur nos cours de wingfoil à Hyères Almanarre"
           faqs={wingfoilFaqs}
+          accentColor="primary"
+        />
+
+        {/* Blog Articles Section */}
+        <RelatedBlogArticles
+          title="Nos Articles Wingfoil"
+          subtitle="Guides et conseils pour progresser en wing foil"
+          articles={wingfoilBlogArticles}
           accentColor="primary"
         />
 

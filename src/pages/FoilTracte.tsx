@@ -3,11 +3,30 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
+import { RelatedBlogArticles } from "@/components/sections/RelatedBlogArticles";
 import { Check, Anchor, Shield, Zap, Users, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import foilTracteHero from "@/assets/foil-tracte-hyeres.jpg";
 import { FoilWakeboardTestimonials } from "@/components/sections/FoilWakeboardTestimonials";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
+
+const foilTracteBlogArticles = [
+  {
+    slug: "foil-tracte-initiation-vol-eau",
+    title: "Foil Tracté : L'Initiation Parfaite au Vol sur l'Eau",
+    excerpt: "Découvrez pourquoi le foil tracté est la méthode idéale pour apprendre à voler sur l'eau en toute sécurité.",
+  },
+  {
+    slug: "du-foil-tracte-au-wingfoil-progression",
+    title: "Du Foil Tracté au Wingfoil : Parcours de Progression Idéal",
+    excerpt: "Comment le foil tracté prépare parfaitement à la pratique du wingfoil et accélère votre progression.",
+  },
+  {
+    slug: "sensations-foil-tracte-hyeres-baie-giens",
+    title: "Sensations Foil Tracté sur la Baie d'Hyères",
+    excerpt: "Témoignages et retours d'expérience sur les sessions de foil tracté dans le cadre exceptionnel de la baie d'Hyères.",
+  },
+];
 
 const breadcrumbItems = [
   { label: "Wing Foil", href: "/stage-wingfoil-hyeres-almanarre" },
@@ -439,6 +458,14 @@ const FoilTracte = () => {
             </div>
           </div>
         </section>
+
+        {/* Blog Articles Section */}
+        <RelatedBlogArticles
+          title="Nos Articles Foil"
+          subtitle="Guides et conseils pour apprendre le foil"
+          articles={foilTracteBlogArticles}
+          accentColor="primary"
+        />
 
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-r from-navy via-primary/90 to-turquoise text-primary-foreground">
