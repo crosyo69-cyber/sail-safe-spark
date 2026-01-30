@@ -77,7 +77,7 @@ const DeposesMer = () => {
           name="keywords"
           content="déposes en mer kitesurf Hyères, bateau sécurité kitesurf Almanarre, dépose en mer kitesurf Giens, downwind kitesurf var"
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -167,8 +167,8 @@ const DeposesMer = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Déposes en Mer", "item": "https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "Déposes en Mer", "item": "https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" }
           ]
         })}</script>
       </Helmet>

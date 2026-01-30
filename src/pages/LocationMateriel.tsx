@@ -69,7 +69,7 @@ const LocationMateriel = () => {
           name="keywords"
           content="location matériel kitesurf Hyères, location kitesurf Almanarre, louer matériel kitesurf Giens, location équipement kitesurf Var"
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/location-materiel-kitesurf-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -106,8 +106,8 @@ const LocationMateriel = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Location Matériel", "item": "https://www.kitesurfpassion.com/location-materiel-kitesurf-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "Location Matériel", "item": "https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" }
           ]
         })}</script>
       </Helmet>

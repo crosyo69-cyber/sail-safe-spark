@@ -73,7 +73,7 @@ const FoilTracte = () => {
     "@type": "Course",
     "name": "Foil Tracté Hyères - Initiation au vol sur l'eau",
     "description": "Sessions de foil tracté sur la baie d'Hyères. Découvrez les sensations du foil en toute sécurité, tracté par notre bateau avec moniteur diplômé.",
-    "url": "https://www.kitesurfpassion.com/foil-tracte-hyeres",
+    "url": "https://www.kitesurfpassion.fr/foil-tracte-hyeres",
     "provider": {
       "@type": "LocalBusiness",
       "name": "KiteSurf Passion",
@@ -101,7 +101,7 @@ const FoilTracte = () => {
     "@type": "Product",
     name: "Foil Tracté Initiation - Hyères",
     description: "Sessions de foil tracté de 20 à 40 min sur la baie d'Hyères. Découvrez les sensations du vol sur l'eau en toute sécurité avec moniteur diplômé.",
-    image: "https://www.kitesurfpassion.com/assets/foil-tracte-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/assets/foil-tracte-hyeres.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
@@ -125,17 +125,17 @@ const FoilTracte = () => {
     "@type": "ImageObject",
     name: "Foil tracté Hyères bateau",
     description: "Session de foil tracté par bateau sur la baie d'Hyères - école KiteSurf Passion initiation au vol",
-    contentUrl: "https://www.kitesurfpassion.com/assets/foil-tracte-hyeres.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.com/assets/foil-tracte-hyeres.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/assets/foil-tracte-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/foil-tracte-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {
       "@type": "Organization",
       name: "KiteSurf Passion",
-      url: "https://www.kitesurfpassion.com",
+      url: "https://www.kitesurfpassion.fr",
     },
-    license: "https://www.kitesurfpassion.com/mentions-legales",
-    acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+    license: "https://www.kitesurfpassion.fr/mentions-legales",
+    acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
     contentLocation: {
       "@type": "Place",
       name: "Baie d'Hyères",
@@ -212,7 +212,7 @@ const FoilTracte = () => {
           content="Foil tracté Hyères Almanarre : volez sur l'eau en sécurité près de Giens. Sessions 20-40 min avec bateau et moniteur diplômé. Dès 50€ !" 
         />
         <meta name="keywords" content="foil tracté Hyères, foil tracté bateau, initiation foil Hyères, apprendre foil bateau, foil débutant Var" />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/foil-tracte-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/foil-tracte-hyeres" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
@@ -229,9 +229,9 @@ const FoilTracte = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Wing Foil", "item": "https://www.kitesurfpassion.com/stage-wingfoil-hyeres-almanarre" },
-            { "@type": "ListItem", "position": 3, "name": "Foil Tracté", "item": "https://www.kitesurfpassion.com/foil-tracte-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "Wing Foil", "item": "https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre" },
+            { "@type": "ListItem", "position": 3, "name": "Foil Tracté", "item": "https://www.kitesurfpassion.fr/foil-tracte-hyeres" }
           ]
         })}</script>
       </Helmet>
