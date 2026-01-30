@@ -39,7 +39,6 @@ const UnsubscribeAlerts = () => {
       }
 
       setEmail(data.email || "");
-      
       if (data.alreadyUnsubscribed) {
         setStatus("already_unsubscribed");
       } else if (action === "delete") {
@@ -158,7 +157,7 @@ const UnsubscribeAlerts = () => {
                 <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
                 <CardTitle>Alertes désactivées</CardTitle>
                 <CardDescription>
-                  {email && `L'adresse ${email} `}ne recevra plus d'alertes météo.
+                  Vous ne recevrez plus d'alertes météo.
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center space-y-4">
@@ -204,7 +203,7 @@ const UnsubscribeAlerts = () => {
                 <CheckCircle className="w-16 h-16 text-amber-500 mx-auto mb-4" />
                 <CardTitle>Déjà désabonné</CardTitle>
                 <CardDescription>
-                  {email && `L'adresse ${email} `}est déjà désabonnée des alertes météo.
+                  Vous êtes déjà désabonné des alertes météo.
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
