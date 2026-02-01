@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Ship, Users, Award, Clock, CheckCircle, Calendar, Settings, Repeat } from "lucide-react";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
+import { getProductRatingData } from "@/lib/seo-ratings";
 import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
 import heroSessionCarte from "@/assets/hero-session-carte.jpg";
 
@@ -60,7 +61,8 @@ const SessionCarte = () => {
       "priceCurrency": "EUR",
       "offerCount": 6,
       "availability": "https://schema.org/InStock"
-    }
+    },
+    ...getProductRatingData()
   };
 
   const sessionFormats = [

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Ship, Users, Award, Clock, CheckCircle, Calendar, Target, Zap, Shield, Radio } from "lucide-react";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
+import { getProductRatingData } from "@/lib/seo-ratings";
 import kitesurfLesson from "@/assets/stage-100-glisse-action.jpg";
 import hero100Glisse from "@/assets/hero-100-glisse.jpg";
 
@@ -92,7 +93,8 @@ const Stage100Glisse = () => {
         "@type": "Organization",
         name: "KiteSurf Passion"
       }
-    }
+    },
+    ...getProductRatingData()
   };
 
   const imageStructuredData = {

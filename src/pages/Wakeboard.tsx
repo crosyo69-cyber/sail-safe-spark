@@ -5,6 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, Anchor, Shield, Waves, Heart, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getProductRatingData } from "@/lib/seo-ratings";
 import wakeboardHero from "@/assets/wakeboard-hyeres.jpg";
 import { FoilWakeboardTestimonials } from "@/components/sections/FoilWakeboardTestimonials";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
@@ -79,15 +80,18 @@ const Wakeboard = () => {
       name: "KiteSurf Passion"
     },
     offers: {
-      "@type": "Offer",
-      price: "40",
+      "@type": "AggregateOffer",
+      lowPrice: "40",
+      highPrice: "40",
       priceCurrency: "EUR",
+      offerCount: 1,
       availability: "https://schema.org/InStock",
       seller: {
         "@type": "Organization",
         name: "KiteSurf Passion"
       }
-    }
+    },
+    ...getProductRatingData()
   };
 
   const imageStructuredData = {

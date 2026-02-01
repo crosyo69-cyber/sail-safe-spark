@@ -5,6 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, Shield, RefreshCw, Users, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getProductRatingData } from "@/lib/seo-ratings";
 import kiteEquipment from "@/assets/kitesurf-hyeres.jpg";
 import kiteWing from "@/assets/aile-kitesurf-hyeres.jpg";
 import kiteBoard from "@/assets/kitesurf-action-hyeres.jpg";
@@ -76,6 +77,7 @@ const LocationMateriel = () => {
             "@type": "Product",
             "name": "Location Matériel Kitesurf",
             "description": "Location de matériel de kitesurf à Hyères - Ailes, planches, harnais et équipements complets",
+            "image": "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
             "brand": {
               "@type": "Brand",
               "name": "KiteSurf Passion"
@@ -86,7 +88,11 @@ const LocationMateriel = () => {
               "highPrice": "30",
               "priceCurrency": "EUR",
               "offerCount": 8,
-              "availability": "https://schema.org/InStock"
+              "availability": "https://schema.org/InStock",
+              "seller": {
+                "@type": "Organization",
+                "name": "KiteSurf Passion"
+              }
             },
             "provider": {
               "@type": "LocalBusiness",
@@ -99,7 +105,8 @@ const LocationMateriel = () => {
                 "postalCode": "83400",
                 "addressCountry": "FR"
               }
-            }
+            },
+            ...getProductRatingData()
           })}
         </script>
         <script type="application/ld+json">{JSON.stringify({
