@@ -104,6 +104,17 @@ export const reviewsStructuredData = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: "KiteSurf Passion",
+  telephone: "+33672716905",
+  priceRange: "€€",
+  image: "https://www.kitesurfpassion.fr/og-image.jpg",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "52 Avenue Général de Gaulle",
+    addressLocality: "Carqueiranne",
+    postalCode: "83320",
+    addressRegion: "Var",
+    addressCountry: "FR",
+  },
   aggregateRating: {
     "@type": "AggregateRating",
     ratingValue: averageRating,
