@@ -7,6 +7,7 @@ import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 import { RelatedBlogArticles } from "@/components/sections/RelatedBlogArticles";
 import { Check, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getProductRatingData } from "@/lib/seo-ratings";
 import wingfoilImage from "@/assets/wingfoil-hyeres.jpg";
 
 const wingfoilBlogArticles = [
@@ -122,15 +123,18 @@ const StageWingfoil = () => {
       name: "KiteSurf Passion"
     },
     offers: {
-      "@type": "Offer",
-      price: "440",
+      "@type": "AggregateOffer",
+      lowPrice: "90",
+      highPrice: "440",
       priceCurrency: "EUR",
+      offerCount: 2,
       availability: "https://schema.org/InStock",
       seller: {
         "@type": "Organization",
         name: "KiteSurf Passion"
       }
-    }
+    },
+    ...getProductRatingData()
   };
 
   const imageStructuredData = {

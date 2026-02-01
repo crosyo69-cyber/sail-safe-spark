@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Ship, Star, Award, Clock, CheckCircle, Target, Zap, Shield, User } from "lucide-react";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
+import { getProductRatingData } from "@/lib/seo-ratings";
 import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
 import heroKitesurf from "@/assets/kitesurf-hyeres.jpg";
 
@@ -92,7 +93,8 @@ const CoursParticulier = () => {
         "@type": "Organization",
         name: "KiteSurf Passion"
       }
-    }
+    },
+    ...getProductRatingData()
   };
 
   const imageStructuredData = {

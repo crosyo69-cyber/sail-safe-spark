@@ -8,6 +8,7 @@ import { RelatedBlogArticles } from "@/components/sections/RelatedBlogArticles";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Check, ArrowRight, Waves, Zap, Target, Clock } from "lucide-react";
+import { getProductRatingData } from "@/lib/seo-ratings";
 import pumpfoilImage from "@/assets/pumpfoil-hyeres-cours.jpg";
 import pumpfoilInitiation from "@/assets/pumpfoil-initiation.jpg";
 
@@ -172,15 +173,18 @@ export default function CoursPumpfoil() {
               "name": "KiteSurf Passion"
             },
             "offers": {
-              "@type": "Offer",
-              "price": "50",
+              "@type": "AggregateOffer",
+              "lowPrice": "50",
+              "highPrice": "50",
               "priceCurrency": "EUR",
+              "offerCount": 1,
               "availability": "https://schema.org/InStock",
               "seller": {
                 "@type": "Organization",
                 "name": "KiteSurf Passion"
               }
-            }
+            },
+            ...getProductRatingData()
           })}
         </script>
         <script type="application/ld+json">
