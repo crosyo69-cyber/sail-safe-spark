@@ -1707,34 +1707,43 @@ const BlogArticle = () => {
     "@type": "BlogPosting",
     headline: article.title,
     description: article.excerpt,
+    image: `https://www.kitesurfpassion.fr/src/assets/${article.image}`,
     datePublished: article.date,
     dateModified: article.date,
     author: {
       "@type": "Person",
       name: "Yoanne Cros",
       jobTitle: "Moniteur Diplômé d'État",
+      url: "https://www.kitesurfpassion.fr/ecole-kitesurf-hyeres-almanarre",
     },
     publisher: {
       "@type": "Organization",
       name: "KiteSurf Passion",
+      url: "https://www.kitesurfpassion.fr",
+      telephone: "+33672716905",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "52 Avenue Général de Gaulle",
+        addressLocality: "Carqueiranne",
+        postalCode: "83320",
+        addressRegion: "Var",
+        addressCountry: "FR",
+      },
       logo: {
         "@type": "ImageObject",
-        url: "https://www.kitesurfpassion.fr/logo.png",
-        creditText: "KiteSurf Passion",
-        copyrightNotice: "© KiteSurf Passion",
-        creator: {
-          "@type": "Organization",
-          name: "KiteSurf Passion",
-          url: "https://www.kitesurfpassion.fr",
-        },
-        license: "https://www.kitesurfpassion.fr/mentions-legales",
-        acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
+        url: "https://www.kitesurfpassion.fr/og-image.jpg",
+        width: 1200,
+        height: 630,
       },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `https://www.kitesurfpassion.fr/blog/${slug}`,
     },
+    keywords: content.tags.join(", "),
+    articleSection: article.category,
+    wordCount: content.content.split(/\s+/).length,
+    inLanguage: "fr-FR",
   };
 
   // Find related articles
