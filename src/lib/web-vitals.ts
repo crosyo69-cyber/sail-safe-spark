@@ -1,4 +1,5 @@
 import { onCLS, onFCP, onINP, onLCP, onTTFB, type Metric } from 'web-vitals';
+import { trackEvent, isAnalyticsEnabled } from './analytics';
 
 // Core Web Vitals thresholds (Google's recommendations)
 const thresholds = {
@@ -38,23 +39,31 @@ function logMetric(metric: Metric) {
     styles[rating]
   );
 
-  // Send to analytics if available
+  // Send to Google Analytics 4
   sendToAnalytics(metric);
 }
 
 function sendToAnalytics(metric: Metric) {
-  // Send to Google Analytics 4 if available
-  if (typeof window !== 'undefined' && 'gtag' in window) {
-    const gtag = (window as any).gtag;
-    gtag('event', metric.name, {
-      event_category: 'Web Vitals',
+  // Send to Google Analytics 4 via our analytics module
+  if (isAnalyticsEnabled()) {
+    trackEvent('web_vitals', {
+      event_category: 'Core Web Vitals',
       event_label: metric.id,
-      value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+      metric_name: metric.name,
+      metric_value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+      metric_rating: getRating(metric.name as MetricName, metric.value),
+      metric_delta: Math.round(metric.delta),
+      navigation_type: metric.navigationType || 'unknown',
       non_interaction: true,
     });
+
+    console.log(
+      `%c[CWV] → Sent ${metric.name} to GA4`,
+      'color: #4285f4; font-size: 10px'
+    );
   }
 
-  // Store metrics locally for debugging
+  // Store metrics locally for dashboard
   if (typeof window !== 'undefined') {
     const storedMetrics = JSON.parse(sessionStorage.getItem('cwv-metrics') || '{}');
     storedMetrics[metric.name] = {
