@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { PWAInstallBanner } from "@/components/PWAInstallBanner";
 import { CookieConsent } from "@/components/CookieConsent";
+import { WebVitalsDashboard } from "@/components/WebVitalsDashboard";
 
 // Critical path - loaded immediately
 import Index from "./pages/Index";
@@ -58,6 +59,7 @@ const App = () => (
         <Sonner />
         <PWAInstallBanner />
         <CookieConsent />
+        <WebVitalsDashboard />
         <BrowserRouter>
           <Suspense fallback={<PageLoader />}>
             <Routes>
