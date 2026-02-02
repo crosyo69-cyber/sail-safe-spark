@@ -70,7 +70,7 @@ export const SeasonPricingSection = ({
         {/* Grille Haute Saison / Basse Saison */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
           {/* Bloc Haute Saison */}
-          <div className="bg-card rounded-3xl border-2 border-sunset/30 overflow-hidden shadow-lg">
+          <div className="bg-card rounded-3xl border-2 border-sunset/30 overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:border-sunset/50 hover:-translate-y-1">
             {/* Header Haute Saison */}
             <div className="bg-gradient-to-r from-sunset to-sunset-light p-5">
               <div className="flex items-center justify-between">
@@ -108,7 +108,7 @@ export const SeasonPricingSection = ({
                   key={`high-${item.name}-${index}`}
                   className={`bg-background/50 rounded-xl p-4 border ${
                     item.popular ? "border-sunset shadow-md" : "border-border/30"
-                  } relative flex items-center justify-between gap-4`}
+                  } relative flex items-center justify-between gap-4 transition-all duration-200 hover:bg-background hover:shadow-md hover:scale-[1.02] cursor-pointer`}
                 >
                   {item.popular && (
                     <span className="absolute -top-2 right-4 bg-sunset text-white text-xs px-2 py-0.5 rounded-full font-semibold">
@@ -137,7 +137,7 @@ export const SeasonPricingSection = ({
           </div>
 
           {/* Bloc Basse Saison */}
-          <div className="bg-card rounded-3xl border-2 border-primary/30 overflow-hidden shadow-lg relative">
+          <div className="bg-card rounded-3xl border-2 border-primary/30 overflow-hidden shadow-lg relative transition-all duration-300 hover:shadow-2xl hover:border-primary/50 hover:-translate-y-1">
             {/* Badge économies */}
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
               <span className="bg-primary text-white text-sm px-4 py-1.5 rounded-full font-bold shadow-glow">
@@ -182,7 +182,7 @@ export const SeasonPricingSection = ({
                   key={`low-${item.name}-${index}`}
                   className={`bg-background/50 rounded-xl p-4 border ${
                     item.popular ? `${accentColor} shadow-md` : "border-border/30"
-                  } relative flex items-center justify-between gap-4`}
+                  } relative flex items-center justify-between gap-4 transition-all duration-200 hover:bg-background hover:shadow-md hover:scale-[1.02] cursor-pointer`}
                 >
                   {item.popular && (
                     <span className={`absolute -top-2 right-4 bg-primary text-white text-xs px-2 py-0.5 rounded-full font-semibold`}>
