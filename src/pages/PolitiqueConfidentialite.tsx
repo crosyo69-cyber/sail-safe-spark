@@ -69,7 +69,9 @@ const PolitiqueConfidentialite = () => {
           content="Politique de confidentialité de Kitesurf Passion : traitement des données personnelles, droits RGPD, cookies et sécurité des informations." 
         />
         <meta name="robots" content="noindex, follow" />
-        <link rel="canonical" href="https://kitesurfpassion.fr/politique-confidentialite" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/politique-confidentialite" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/politique-confidentialite" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/politique-confidentialite" />
       </Helmet>
 
       <Header />
