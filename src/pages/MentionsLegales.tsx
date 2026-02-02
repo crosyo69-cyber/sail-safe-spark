@@ -252,7 +252,9 @@ const MentionsLegales = () => {
           content="Mentions légales du site Kitesurf Passion : informations sur l'éditeur, l'hébergeur, la propriété intellectuelle et la protection des données personnelles." 
         />
         <meta name="robots" content="noindex, follow" />
-        <link rel="canonical" href="https://kitesurfpassion.fr/mentions-legales" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/mentions-legales" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/mentions-legales" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/mentions-legales" />
       </Helmet>
 
       <Header />
