@@ -264,6 +264,7 @@ export default function SpotAlmanarre() {
               src={almanarre}
               alt="Spot kitesurf Almanarre Hyères - Coucher de soleil plage de glisse Var"
               loading="eager"
+              decoding="sync"
               fetchPriority="high"
               className="w-full h-full object-cover"
             />

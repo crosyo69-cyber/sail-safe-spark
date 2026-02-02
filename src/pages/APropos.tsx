@@ -326,6 +326,8 @@ const APropos = () => {
                     alt="Portrait de Yoanne Cros, fondateur de l'école KiteSurf Passion" 
                     className="shadow-2xl w-full aspect-[4/3] object-cover object-top transition-transform duration-100 will-change-transform"
                     style={{ transform: `translateY(${founderParallax}px) scale(1.1)` }}
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="absolute -bottom-6 -left-6 bg-card border border-border rounded-xl p-4 shadow-xl z-10">
                     <div className="flex items-center gap-3">
@@ -450,6 +452,7 @@ const APropos = () => {
                     src={logoFfvl} 
                     alt="Logo FFVL Fédération Française de Vol Libre - École kitesurf certifiée Hyères" 
                     loading="lazy"
+                    decoding="async"
                     className="h-16 w-auto object-contain"
                   />
                   <span className="text-xs text-muted-foreground flex items-center gap-1 group-hover:text-primary transition-colors">
@@ -467,6 +470,7 @@ const APropos = () => {
                     src={logoEfk} 
                     alt="Logo EFK École Française de Kite - Certification école KiteSurf Passion Hyères" 
                     loading="lazy"
+                    decoding="async"
                     className="h-16 w-auto object-contain"
                   />
                   <span className="text-xs text-muted-foreground flex items-center gap-1 group-hover:text-primary transition-colors">
@@ -629,6 +633,8 @@ const APropos = () => {
                   alt="Bateau d'assistance de l'école de kitesurf Hyères"
                   className="shadow-2xl w-full aspect-[4/3] object-cover transition-transform duration-100 will-change-transform"
                   style={{ transform: `translateY(${securityParallax}px) scale(1.1)` }}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div>
@@ -700,6 +706,8 @@ const APropos = () => {
                     alt="Coucher de soleil sur le spot de l'Almanarre à Hyères" 
                     className="shadow-2xl w-full aspect-[4/3] object-cover transition-transform duration-100 will-change-transform"
                     style={{ transform: `translateY(${spotParallax}px) scale(1.1)` }}
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
               </div>

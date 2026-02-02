@@ -322,6 +322,7 @@ const CoursKitesurf = () => {
               src={kitesurfImage}
               alt="Stage kitesurf Hyères Almanarre - Formation élèves école KiteSurf Passion Var"
               loading="eager"
+              decoding="sync"
               fetchPriority="high"
               className="w-full h-full object-cover"
             />
