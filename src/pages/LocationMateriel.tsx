@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, Shield, RefreshCw, Users, Phone } from "lucide-react";
+import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 import { Link } from "react-router-dom";
 import { getProductRatingData } from "@/lib/seo-ratings";
 import kiteEquipment from "@/assets/kitesurf-hyeres.jpg?webp";
@@ -57,7 +58,40 @@ const advantages = [
   },
 ];
 
+const locationFaqs = [
+  {
+    question: "Quel niveau faut-il pour louer du matériel kitesurf à Hyères ?",
+    answer: "La location est réservée aux pratiquants autonomes. Vous devez maîtriser le waterstart, naviguer de manière indépendante et gérer votre matériel. Un justificatif de niveau (carte IKO, attestation d'école) peut vous être demandé."
+  },
+  {
+    question: "Quelles tailles d'ailes sont disponibles à l'Almanarre ?",
+    answer: "Nous proposons des ailes de 7m² à 14m² pour s'adapter à toutes les conditions de vent. Notre équipe vous conseille la taille idéale selon la météo du jour et votre poids."
+  },
+  {
+    question: "Puis-je réserver du matériel à l'avance ?",
+    answer: "Oui, la réservation est conseillée 48h à l'avance, surtout en haute saison. Contactez-nous par téléphone ou via le formulaire. Annulation gratuite en cas de conditions météo défavorables."
+  },
+  {
+    question: "Le matériel de sécurité est-il fourni ?",
+    answer: "Oui, la location inclut tout l'équipement de sécurité : gilet de flottaison, casque, et combinaison néoprène adaptée à la saison. Tout est vérifié avant chaque location."
+  },
+  {
+    question: "Où puis-je récupérer le matériel loué ?",
+    answer: "Le matériel est à récupérer directement sur le spot de l'Almanarre ou sur la presqu'île de Giens selon votre choix. Notre équipe vous accueille et vous conseille sur les conditions du jour."
+  }
+];
+
 const LocationMateriel = () => {
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: locationFaqs.map(faq => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: { "@type": "Answer", text: faq.answer }
+    }))
+  };
+
   return (
     <>
       <Helmet>
@@ -73,6 +107,26 @@ const LocationMateriel = () => {
         <link rel="canonical" href="https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Location Matériel Kitesurf Hyères | Almanarre & Giens" />
+        <meta property="og:description" content="Louez ailes, planches et équipements kitesurf à Hyères. Matériel récent et vérifié. Dès 10€/jour." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Location matériel kitesurf Hyères - École KiteSurf Passion" />
+        <meta property="og:site_name" content="KiteSurf Passion" />
+        <meta property="og:locale" content="fr_FR" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Location Kitesurf Hyères | Matériel Almanarre" />
+        <meta name="twitter:description" content="Ailes, planches, foils à louer dès 10€/jour à Hyères." />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta name="twitter:image:alt" content="Location kitesurf Hyères" />
+        
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -111,6 +165,7 @@ const LocationMateriel = () => {
             ...getProductRatingData()
           })}
         </script>
+        <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
@@ -342,6 +397,14 @@ const LocationMateriel = () => {
             </div>
           </div>
         </section>
+
+        {/* FAQ SEO */}
+        <ActivityFAQ
+          title="Questions Fréquentes"
+          subtitle="Tout savoir sur la location de matériel kitesurf à Hyères"
+          accentColor="primary"
+          faqs={locationFaqs}
+        />
 
         {/* CTA */}
         <section className="py-16 bg-primary text-primary-foreground">

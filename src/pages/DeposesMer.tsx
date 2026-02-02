@@ -81,6 +81,26 @@ const DeposesMer = () => {
         <link rel="canonical" href="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Déposes en Mer Kitesurf Hyères | Bateau Almanarre & Giens" />
+        <meta property="og:description" content="Accédez aux meilleurs spots kitesurf de Hyères par bateau. Dépose en mer sécurisée dès 45€. Almanarre, Giens, baie d'Hyères." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Dépose en mer kitesurf Hyères - Bateau école KiteSurf Passion" />
+        <meta property="og:site_name" content="KiteSurf Passion" />
+        <meta property="og:locale" content="fr_FR" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Déposes Mer Kitesurf Hyères | Bateau Almanarre" />
+        <meta name="twitter:description" content="Bateau sécurité pour kitesurf dès 45€ à Hyères." />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta name="twitter:image:alt" content="Dépose mer kitesurf Hyères" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",

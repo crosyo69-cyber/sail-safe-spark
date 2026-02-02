@@ -189,6 +189,27 @@ const Wakeboard = () => {
         <link rel="canonical" href="https://www.kitesurfpassion.fr/wakeboard-hyeres" />
         <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/wakeboard-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/wakeboard-hyeres" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Wakeboard Hyères | Glisse Tractée Baie de Giens" />
+        <meta property="og:description" content="Sessions wakeboard dès 40€ sur la baie d'Hyères. Fun et accessible dès 8 ans avec moniteur diplômé." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.kitesurfpassion.fr/wakeboard-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Wakeboard Hyères - Session bateau école KiteSurf Passion" />
+        <meta property="og:site_name" content="KiteSurf Passion" />
+        <meta property="og:locale" content="fr_FR" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Wakeboard Hyères | Sensations Glisse" />
+        <meta name="twitter:description" content="Sessions wakeboard dès 40€ sur la baie d'Hyères !" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta name="twitter:image:alt" content="Wakeboard Hyères baie Giens" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/wakeboard-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/wakeboard-hyeres" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",

@@ -217,6 +217,25 @@ const FoilTracte = () => {
         <link rel="canonical" href="https://www.kitesurfpassion.fr/foil-tracte-hyeres" />
         <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/foil-tracte-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/foil-tracte-hyeres" />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content="Foil Tracté Hyères | Voler sur l'Eau en Sécurité" />
+        <meta property="og:description" content="Sessions foil tracté par bateau dès 50€ à Hyères. Découvrez les sensations du vol sur l'eau sans vent ni expérience préalable." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.kitesurfpassion.fr/foil-tracte-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Foil tracté Hyères - Session bateau école KiteSurf Passion" />
+        <meta property="og:site_name" content="KiteSurf Passion" />
+        <meta property="og:locale" content="fr_FR" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Foil Tracté Hyères | Sensations Vol" />
+        <meta name="twitter:description" content="Volez sur l'eau dès 50€ ! Foil tracté par bateau à Hyères." />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta name="twitter:image:alt" content="Foil tracté Hyères bateau" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>
