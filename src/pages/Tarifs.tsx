@@ -3,9 +3,10 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
-import { Check, Gift, Download, AlertCircle } from "lucide-react";
+import { Check, Gift, Download, AlertCircle, Info } from "lucide-react";
 import { Link } from "react-router-dom";
 import { MeetingPointsSection } from "@/components/sections/MeetingPointsSection";
+import { SeasonPricingSection } from "@/components/sections/SeasonPricingSection";
 
 import bonCadeauKitesurf from "@/assets/bon-cadeau-kitesurf.jpg";
 import bonCadeauWingfoil from "@/assets/bon-cadeau-wingfoil.jpg";
@@ -15,27 +16,23 @@ const breadcrumbItems = [
   { label: "Tarifs" }
 ];
 
+// Données structurées par formule avec haute/basse saison
+const kitesurfSeasonPricing = [
+  { name: "Stage 100% Glisse", sessions: "5 jours consécutifs", highSeasonPrice: "499€", lowSeasonPrice: "399€", savings: "100€", popular: true },
+  { name: "Stage Semi-Privé (2 pers.)", sessions: "5 jours", highSeasonPrice: "699€", lowSeasonPrice: "599€", savings: "100€" },
+  { name: "1 Cours Collectif", sessions: "1 séance", highSeasonPrice: "130€", lowSeasonPrice: "120€", savings: "10€" },
+  { name: "3 Cours Collectifs", sessions: "3 séances", highSeasonPrice: "360€", lowSeasonPrice: "330€", savings: "30€" },
+  { name: "5 Cours Collectifs", sessions: "5 séances", highSeasonPrice: "570€", lowSeasonPrice: "500€", savings: "70€" },
+  { name: "Cours Particulier", sessions: "2 heures", highSeasonPrice: "380€", lowSeasonPrice: "230€", savings: "150€" },
+];
+
+const wingfoilSeasonPricing = [
+  { name: "Stage Initiation", sessions: "5 jours", highSeasonPrice: "520€", lowSeasonPrice: "440€", savings: "80€", popular: true },
+  { name: "Cours 2h30", sessions: "1 séance", highSeasonPrice: "110€", lowSeasonPrice: "90€", savings: "20€" },
+];
+
+// Activités sans variation saisonnière
 const pricingData = {
-  kitesurf: [
-    { name: "Stage 100% Glisse", sessions: "5 jours consécutifs", price: "399€", note: "Hors saison", popular: true },
-    { name: "Stage 100% Glisse", sessions: "5 jours consécutifs", price: "499€", note: "Juillet/Août" },
-    { name: "Stage Semi-Privé (2 pers.)", sessions: "5 jours", price: "599€", note: "Hors saison" },
-    { name: "Stage Semi-Privé (2 pers.)", sessions: "5 jours", price: "699€", note: "Juillet/Août" },
-    { name: "1 Cours Collectif", sessions: "1 séance", price: "120€", note: "Hors saison" },
-    { name: "1 Cours Collectif", sessions: "1 séance", price: "130€", note: "Juillet/Août" },
-    { name: "3 Cours Collectifs", sessions: "3 séances", price: "330€", note: "Hors saison" },
-    { name: "3 Cours Collectifs", sessions: "3 séances", price: "360€", note: "Juillet/Août" },
-    { name: "5 Cours Collectifs", sessions: "5 séances", price: "500€", note: "Hors saison" },
-    { name: "5 Cours Collectifs", sessions: "5 séances", price: "570€", note: "Juillet/Août" },
-    { name: "Cours Particulier", sessions: "2 heures", price: "230€", note: "Hors saison" },
-    { name: "Cours Particulier", sessions: "2 heures", price: "380€", note: "Juillet/Août" },
-  ],
-  wingfoil: [
-    { name: "Stage Initiation", sessions: "5 jours", price: "440€", note: "Hors saison", popular: true },
-    { name: "Stage Initiation", sessions: "5 jours", price: "520€", note: "Juillet/Août" },
-    { name: "Cours 2h30", sessions: "1 séance", price: "90€", note: "Hors saison" },
-    { name: "Cours 2h30", sessions: "1 séance", price: "110€", note: "Juillet/Août" },
-  ],
   pumpfoil: [
     { name: "Pump Foil / Dock Start", sessions: "1h30 (3 pers. max)", price: "50€", popular: true },
   ],
@@ -131,7 +128,7 @@ const Tarifs = () => {
         <title>Tarifs Kitesurf Wingfoil Hyères | Prix Almanarre</title>
         <meta
           name="description"
-          content="Découvrez nos tarifs transparents pour cours de kitesurf, wingfoil et pumpfoil à Hyères. Stage dès 350€. Devis gratuit sous 24h."
+          content="Découvrez nos tarifs transparents pour cours de kitesurf, wingfoil et pumpfoil à Hyères. Stage dès 399€ hors saison. Économisez jusqu'à 150€ en basse saison !"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" />
         <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" />
@@ -139,7 +136,7 @@ const Tarifs = () => {
         
         {/* Open Graph */}
         <meta property="og:title" content="Tarifs Kitesurf & Wingfoil Hyères | KiteSurf Passion" />
-        <meta property="og:description" content="Stage kitesurf dès 399€, wingfoil dès 440€. Tout inclus : matériel, bateau, moniteur diplômé. Réservez votre cours à Hyères !" />
+        <meta property="og:description" content="Stage kitesurf dès 399€, wingfoil dès 440€. Économisez jusqu'à 150€ en basse saison ! Tout inclus : matériel, bateau, moniteur diplômé." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" />
         <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
@@ -152,7 +149,7 @@ const Tarifs = () => {
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Tarifs Kitesurf & Wingfoil Hyères" />
-        <meta name="twitter:description" content="Stage kitesurf dès 399€, wingfoil dès 440€. Tout inclus à Hyères !" />
+        <meta name="twitter:description" content="Stage kitesurf dès 399€, wingfoil dès 440€. Économisez en basse saison !" />
         <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta name="twitter:image:alt" content="Tarifs cours kitesurf wingfoil Hyères" />
         
@@ -179,73 +176,39 @@ const Tarifs = () => {
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6">
               Nos Tarifs
             </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-6">
               Transparence totale sur nos prix. Tout le matériel et le bateau d'assistance sont inclus.
             </p>
-          </div>
-        </section>
-
-        {/* Kitesurf */}
-        <section className="py-16 bg-background">
-          <div className="container mx-auto px-4">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">Kitesurf</span>
-            </h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
-              {pricingData.kitesurf.map((item, index) => (
-                <div
-                  key={`${item.name}-${index}`}
-                  className={`bg-card rounded-2xl p-5 border ${
-                    item.popular ? "border-primary shadow-glow" : "border-border/50"
-                  } relative`}
-                >
-                  {item.popular && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs px-3 py-1 rounded-full font-bold">
-                      Populaire
-                    </span>
-                  )}
-                  <h3 className="font-display font-bold text-foreground mb-1 text-sm">{item.name}</h3>
-                  <p className="text-muted-foreground text-xs mb-2">{item.sessions}</p>
-                  {item.note && <p className="text-primary text-xs mb-2">{item.note}</p>}
-                  <p className="font-display text-2xl font-bold text-foreground">{item.price}</p>
-                </div>
-              ))}
+            
+            {/* Bandeau économies */}
+            <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-5 py-2.5">
+              <Info className="w-5 h-5 text-primary" />
+              <span className="text-primary font-medium text-sm">
+                Économisez jusqu'à <strong>150€</strong> en réservant hors saison !
+              </span>
             </div>
           </div>
         </section>
 
-        {/* Wingfoil */}
-        <section className="py-16 bg-secondary/30">
-          <div className="container mx-auto px-4">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunset to-sunset-light">Wing Foil</span>
-            </h2>
+        {/* Kitesurf avec saisons */}
+        <SeasonPricingSection
+          title="Kitesurf"
+          gradientClass="from-primary to-turquoise"
+          items={kitesurfSeasonPricing}
+          colorScheme="ocean"
+        />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
-              {pricingData.wingfoil.map((item, index) => (
-                <div 
-                  key={`${item.name}-${index}`} 
-                  className={`bg-card rounded-2xl p-5 border ${
-                    item.popular ? "border-sunset shadow-lg" : "border-border/50"
-                  } relative`}
-                >
-                  {item.popular && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-sunset text-primary-foreground text-xs px-3 py-1 rounded-full font-bold">
-                      Populaire
-                    </span>
-                  )}
-                  <h3 className="font-display font-bold text-foreground mb-1 text-sm">{item.name}</h3>
-                  <p className="text-muted-foreground text-xs mb-2">{item.sessions}</p>
-                  {item.note && <p className="text-sunset text-xs mb-2">{item.note}</p>}
-                  <p className="font-display text-2xl font-bold text-foreground">{item.price}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* Wingfoil avec saisons */}
+        <section className="bg-secondary/30">
+          <SeasonPricingSection
+            title="Wing Foil"
+            gradientClass="from-sunset to-sunset-light"
+            items={wingfoilSeasonPricing}
+            colorScheme="sunset"
+          />
         </section>
 
-        {/* Pumpfoil */}
+        {/* Pumpfoil - sans variation saisonnière */}
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
@@ -361,7 +324,7 @@ const Tarifs = () => {
         </section>
 
         {/* Déposes en Mer */}
-        <section className="py-16 bg-background">
+        <section className="py-16 bg-secondary/30">
           <div className="container mx-auto px-4">
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-ocean">Déposes en Mer</span>
@@ -390,7 +353,7 @@ const Tarifs = () => {
         </section>
 
         {/* Location Matériel */}
-        <section className="py-16 bg-secondary/30">
+        <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunset to-sunset-light">Location Matériel</span>
