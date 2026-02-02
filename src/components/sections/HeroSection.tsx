@@ -2,6 +2,7 @@ import { memo, useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
 import { Link } from "react-router-dom";
+import { trackCTAClick } from "@/lib/analytics";
 
 // Import hero images with WebP conversion - Desktop (full size)
 import heroKitesurf from "@/assets/kitesurf-hyeres.jpg?webp";
@@ -192,13 +193,23 @@ export const HeroSection = memo(function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-            <Button variant="heroFilled" size="xl" asChild>
+            <Button 
+              variant="heroFilled" 
+              size="xl" 
+              asChild
+              onClick={() => trackCTAClick("reserver_cours", "hero", "/contact-reservation-kitesurf-hyeres")}
+            >
               <Link to="/contact-reservation-kitesurf-hyeres">
                 Réserver un Cours
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </Button>
-            <Button variant="hero" size="xl" asChild>
+            <Button 
+              variant="hero" 
+              size="xl" 
+              asChild
+              onClick={() => trackCTAClick("voir_tarifs", "hero", "/tarifs-cours-kitesurf-wingfoil-hyeres")}
+            >
               <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres">
                 Voir les Tarifs
               </Link>
