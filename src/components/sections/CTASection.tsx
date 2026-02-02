@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Phone, Send } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { trackCTAClick, trackFormSubmit, trackPhoneClick } from "@/lib/analytics";
 import sunsetImage from "@/assets/almanarre-sunset.jpg?webp";
 
 export function CTASection() {
@@ -18,6 +19,9 @@ export function CTASection() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Track form submission
+    trackFormSubmit("cta_reservation", "homepage_cta", { activity: formData.activity });
+
     // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -28,6 +32,10 @@ export function CTASection() {
 
     setFormData({ firstName: "", email: "", phone: "", activity: "kitesurf" });
     setIsSubmitting(false);
+  };
+
+  const handlePhoneClick = () => {
+    trackPhoneClick("homepage_cta");
   };
 
   return (
@@ -139,6 +147,7 @@ export function CTASection() {
             <span>ou appelez-nous directement :</span>
             <a
               href="tel:0672716905"
+              onClick={handlePhoneClick}
               className="inline-flex items-center gap-2 text-sunset hover:text-sunset-light font-bold transition-colors"
             >
               <Phone className="w-5 h-5" />

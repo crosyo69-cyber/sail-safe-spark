@@ -3,6 +3,7 @@ import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
+import { trackPhoneClick } from "@/lib/analytics";
 
 const navigation = [
   { name: "Accueil", href: "/" },
@@ -165,7 +166,11 @@ export function Header() {
 
         {/* CTA Button */}
         <div className="flex items-center gap-3">
-          <a href="tel:0672716905" className="hidden sm:block">
+          <a 
+            href="tel:0672716905" 
+            className="hidden sm:block"
+            onClick={() => trackPhoneClick("header")}
+          >
             <Button variant={isScrolled ? "sunset" : "heroFilled"} size="default">
               <Phone className="w-4 h-4" />
               06 72 71 69 05
@@ -245,7 +250,11 @@ export function Header() {
                 )}
               </div>
             ))}
-            <a href="tel:0672716905" className="mt-2">
+            <a 
+              href="tel:0672716905" 
+              className="mt-2"
+              onClick={() => trackPhoneClick("mobile_menu")}
+            >
               <Button variant="sunset" size="lg" className="w-full">
                 <Phone className="w-4 h-4" />
                 06 72 71 69 05

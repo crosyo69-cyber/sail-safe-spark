@@ -91,6 +91,82 @@ export function trackPageView(path: string, title?: string): void {
 }
 
 /**
+ * Track CTA button clicks
+ */
+export function trackCTAClick(
+  ctaName: string,
+  ctaLocation: string,
+  ctaDestination?: string
+): void {
+  const params = {
+    cta_name: ctaName,
+    cta_location: ctaLocation,
+    ...(ctaDestination && { cta_destination: ctaDestination }),
+  };
+
+  if (isInitialized && typeof window.gtag === 'function') {
+    window.gtag('event', 'cta_click', params);
+  }
+
+  if (import.meta.env.DEV) {
+    console.log(
+      `%c[Analytics] CTA Click: ${ctaName} @ ${ctaLocation}`,
+      'color: #f97316; font-weight: bold',
+      params
+    );
+  }
+}
+
+/**
+ * Track form submissions
+ */
+export function trackFormSubmit(
+  formName: string,
+  formLocation: string,
+  formData?: Record<string, string>
+): void {
+  const params = {
+    form_name: formName,
+    form_location: formLocation,
+    ...(formData && { form_activity: formData.activity }),
+  };
+
+  if (isInitialized && typeof window.gtag === 'function') {
+    window.gtag('event', 'form_submit', params);
+  }
+
+  if (import.meta.env.DEV) {
+    console.log(
+      `%c[Analytics] Form Submit: ${formName}`,
+      'color: #22c55e; font-weight: bold',
+      params
+    );
+  }
+}
+
+/**
+ * Track phone call clicks
+ */
+export function trackPhoneClick(location: string): void {
+  const params = {
+    event_category: 'contact',
+    event_label: location,
+    phone_number: '0672716905',
+  };
+
+  if (isInitialized && typeof window.gtag === 'function') {
+    window.gtag('event', 'phone_click', params);
+  }
+
+  if (import.meta.env.DEV) {
+    console.log(
+      `%c[Analytics] Phone Click @ ${location}`,
+      'color: #06b6d4; font-weight: bold'
+    );
+  }
+}
+
+/**
  * Check if analytics is enabled and initialized
  */
 export function isAnalyticsEnabled(): boolean {
