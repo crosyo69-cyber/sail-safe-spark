@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { WindguruWidget } from "@/components/sections/WindguruWidget";
 import { WeatherAlertSubscription } from "@/components/WeatherAlertSubscription";
 import { MeetingPointsSection } from "@/components/sections/MeetingPointsSection";
+import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 
 import { 
   MapPin, 
@@ -116,6 +117,40 @@ const structuredData = {
     { "@type": "LocationFeatureSpecification", name: "Douches" },
     { "@type": "LocationFeatureSpecification", name: "Restaurants" }
   ]
+};
+
+// FAQ data for the spot page
+const spotFaqs = [
+  {
+    question: "Pourquoi l'Almanarre est-il considéré comme le meilleur spot kitesurf du Var ?",
+    answer: "L'Almanarre bénéficie d'une orientation parfaite pour capter le Mistral et les vents thermiques d'Est, avec une moyenne de 15-25 nœuds. La baie protégée offre des eaux calmes idéales pour l'apprentissage, avec un fond de sable fin et une faible profondeur sur 200m."
+  },
+  {
+    question: "Quelle est la meilleure période pour faire du kitesurf à l'Almanarre ?",
+    answer: "La saison s'étend de mars à novembre. Le printemps (avril-juin) offre un Mistral régulier avec moins de monde. L'été combine chaleur et vent thermique régulier. L'automne propose les meilleures conditions avec un Mistral puissant et une eau encore chaude."
+  },
+  {
+    question: "Y a-t-il des zones dédiées aux débutants sur le spot ?",
+    answer: "Oui, une zone protégée à faible profondeur (1-3m sur 200m) est parfaite pour les débutants. L'espace est dégagé et le fond de sable fin permet de se relever facilement. Les confirmés naviguent plus au large."
+  },
+  {
+    question: "Quelles sont les commodités disponibles sur le spot de l'Almanarre ?",
+    answer: "Le spot dispose d'un parking gratuit, de douches et sanitaires, de restaurants et bars sur place. Notre école propose la location de matériel et des cours avec bateau d'assistance."
+  },
+  {
+    question: "Comment accéder au spot de l'Almanarre depuis Hyères ?",
+    answer: "L'Almanarre est à 10 min de Hyères centre, accès facile depuis l'A570. Coordonnées GPS : 43.0617° N, 6.1455° E. Parking gratuit directement sur la plage."
+  }
+];
+
+const spotFaqStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: spotFaqs.map(faq => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: { "@type": "Answer", text: faq.answer }
+  }))
 };
 
 // SportsActivityLocation schema for enhanced local SEO
@@ -250,6 +285,9 @@ export default function SpotAlmanarre() {
         })}</script>
         <script type="application/ld+json">
           {JSON.stringify(sportsActivityLocationData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(spotFaqStructuredData)}
         </script>
       </Helmet>
 
@@ -536,6 +574,14 @@ export default function SpotAlmanarre() {
             </div>
           </div>
         </section>
+
+        {/* FAQ SEO */}
+        <ActivityFAQ
+          title="Questions Fréquentes"
+          subtitle="Tout savoir sur le spot de l'Almanarre à Hyères"
+          accentColor="primary"
+          faqs={spotFaqs}
+        />
       </main>
 
       <Footer />

@@ -208,6 +208,41 @@ const Contact = () => {
             { "@type": "ListItem", "position": 2, "name": "Contact & Réservation", "item": "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres" }
           ]
         })}</script>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          "@id": "https://www.kitesurfpassion.fr/#contact",
+          "name": "KiteSurf Passion",
+          "description": "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999",
+          "url": "https://www.kitesurfpassion.fr",
+          "telephone": "+33672716905",
+          "email": "crosyo69@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "52 Avenue Général de Gaulle",
+            "addressLocality": "Carqueiranne",
+            "postalCode": "83320",
+            "addressRegion": "Var",
+            "addressCountry": "FR"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "43.0817",
+            "longitude": "6.1366"
+          },
+          "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            "opens": "09:00",
+            "closes": "19:00"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+33672716905",
+            "contactType": "reservations",
+            "availableLanguage": "French"
+          }
+        })}</script>
       </Helmet>
 
       <Header />
