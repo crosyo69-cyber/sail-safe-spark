@@ -22,6 +22,7 @@ import blogKiteDuotone from "@/assets/blog-kite-duotone.jpg?webp";
 import blogPumpfoilDock from "@/assets/blog-pumpfoil-dock.jpg?webp";
 import blogWakeboardHyeres from "@/assets/blog-wakeboard-hyeres.jpg?webp";
 import blogLocationMateriel from "@/assets/blog-location-materiel.jpg?webp";
+import blogFoilTracteHyeres from "@/assets/blog-foil-tracte-hyeres.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -34,6 +35,7 @@ const imageMap: Record<string, string> = {
   "blog-pumpfoil-dock.jpg": blogPumpfoilDock,
   "blog-wakeboard-hyeres.jpg": blogWakeboardHyeres,
   "blog-location-materiel.jpg": blogLocationMateriel,
+  "blog-foil-tracte-hyeres.jpg": blogFoilTracteHyeres,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -240,11 +242,22 @@ export const blogArticles = [
     alt: "Foil tracté bateau Hyères - Initiation vol école KiteSurf Passion Var",
   },
   {
+    slug: "foil-tracte-hyeres-initiation-vol",
+    title: "Foil Tracté à Hyères : Initiez-vous au Vol Sans Vent",
+    excerpt: "Découvrez le foil tracté par bateau à Hyères sur la baie de Giens. Vivez les sensations du vol au-dessus de l'eau sans dépendre du vent, accessible à tous dès 12 ans.",
+    category: "Kitesurf",
+    date: "2026-02-02",
+    readTime: "9 min",
+    image: "blog-foil-tracte-hyeres.jpg",
+    alt: "Foil tracté Hyères Giens - Initiation vol bateau école KiteSurf Passion Var",
+    featured: true,
+  },
+  {
     slug: "wakeboard-hyeres-glisse-nautique",
     title: "Wakeboard à Hyères : La Glisse Nautique Accessible à Tous",
     excerpt: "Découvrez le wakeboard à Hyères sur la baie de Giens. Activité nautique fun et accessible dès 8 ans, encadrée par notre moniteur diplômé.",
     category: "Kitesurf",
-    date: "2026-02-02",
+    date: "2026-02-01",
     readTime: "8 min",
     image: "blog-wakeboard-hyeres.jpg",
     alt: "Wakeboard Hyères Giens - Glisse nautique école KiteSurf Passion Var",
@@ -255,7 +268,7 @@ export const blogArticles = [
     title: "Location Matériel Kitesurf à Hyères : Guide Complet",
     excerpt: "Louez votre matériel de kitesurf à Hyères sur le spot de l'Almanarre. Ailes, planches, combinaisons : équipement premium Duotone pour riders autonomes.",
     category: "Kitesurf",
-    date: "2026-02-01",
+    date: "2026-01-31",
     readTime: "7 min",
     image: "blog-location-materiel.jpg",
     alt: "Location matériel kitesurf Hyères Almanarre - Équipement Duotone école Var",
