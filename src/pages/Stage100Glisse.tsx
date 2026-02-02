@@ -176,6 +176,8 @@ const Stage100Glisse = () => {
           content="Stage kitesurf 100% glisse à Hyères Almanarre : 5 jours consécutifs pour l'autonomie. Bateau d'assistance, moniteur diplômé, petits groupes. Dès 399€."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres" />
         <meta property="og:title" content="Stage Kitesurf 100% Glisse Hyères Almanarre | KiteSurf Passion" />
         <meta property="og:description" content="Stage intensif de 5 jours pour devenir autonome en kitesurf. Progression rapide garantie sur le spot de l'Almanarre." />
         <meta property="og:type" content="website" />

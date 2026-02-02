@@ -329,6 +329,8 @@ const Index = () => {
           content="cours kitesurf hyères, école kitesurf almanarre, stage wingfoil var, école kitesurf bateau assistance, kitesurf débutant hyères"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/" />
         
         {/* Open Graph */}
         <meta property="og:title" content="École Kitesurf Hyères | Cours avec Bateau d'Assistance | KiteSurf Passion" />

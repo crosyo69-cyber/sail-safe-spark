@@ -160,6 +160,8 @@ export default function SpotAlmanarre() {
           content="spot kitesurf almanarre, plage almanarre hyères, kitesurf var, wingfoil hyères, conditions vent almanarre, spot débutant kitesurf"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var" />
         
         {/* Open Graph */}
         <meta property="og:title" content="Spot Kitesurf Almanarre Hyères | Meilleur Spot du Var" />

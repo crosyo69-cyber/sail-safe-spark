@@ -132,6 +132,8 @@ const SessionCarte = () => {
           content="Cours kitesurf à la carte Hyères Almanarre. Flexibilité totale, progression ciblée selon votre niveau. Séances individuelles ou en pack. Dès 120€."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres" />
         <meta property="og:title" content="Cours Kitesurf à la Carte Hyères Almanarre | KiteSurf Passion" />
         <meta property="og:description" content="Cours de kitesurf à la carte à Hyères. Choisissez vos créneaux et progressez selon vos objectifs." />
         <meta property="og:type" content="website" />
