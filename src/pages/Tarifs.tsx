@@ -248,8 +248,11 @@ const Tarifs = () => {
       <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
 
       <main>
-        {/* Hero */}
-        <section className="pt-32 pb-16 bg-gradient-to-b from-primary/10 to-background">
+        {/* Hero - Above fold, no content-visibility */}
+        <section 
+          className="pt-32 pb-16 bg-gradient-to-b from-primary/10 to-background"
+          style={{ contain: 'layout style' }}
+        >
           <div className="container mx-auto px-4 text-center">
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6">
               Tarifs Kitesurf & Wingfoil à Hyères
@@ -286,8 +289,11 @@ const Tarifs = () => {
           />
         </section>
 
-        {/* Pumpfoil - sans variation saisonnière */}
-        <section className="py-16 bg-background">
+        {/* Pumpfoil - sans variation saisonnière - content-visibility for CLS */}
+        <section 
+          className="py-16 bg-background"
+          style={{ contain: 'layout style', contentVisibility: 'auto', containIntrinsicSize: '0 300px' }}
+        >
           <div className="container mx-auto px-4">
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-turquoise to-primary">Pump Foil</span>
@@ -315,8 +321,11 @@ const Tarifs = () => {
           </div>
         </section>
 
-        {/* Foil Tracté */}
-        <section className="py-16 bg-secondary/30">
+        {/* Foil Tracté - content-visibility for CLS */}
+        <section 
+          className="py-16 bg-secondary/30"
+          style={{ contain: 'layout style', contentVisibility: 'auto', containIntrinsicSize: '0 350px' }}
+        >
           <div className="container mx-auto px-4">
             <div className="text-center mb-8">
               <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">
@@ -358,8 +367,11 @@ const Tarifs = () => {
           </div>
         </section>
 
-        {/* Wakeboard */}
-        <section className="py-16 bg-background">
+        {/* Wakeboard - content-visibility for CLS */}
+        <section 
+          className="py-16 bg-background"
+          style={{ contain: 'layout style', contentVisibility: 'auto', containIntrinsicSize: '0 350px' }}
+        >
           <div className="container mx-auto px-4">
             <div className="text-center mb-8">
               <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">
@@ -401,8 +413,11 @@ const Tarifs = () => {
           </div>
         </section>
 
-        {/* Déposes en Mer */}
-        <section className="py-16 bg-secondary/30">
+        {/* Déposes en Mer - content-visibility for CLS */}
+        <section 
+          className="py-16 bg-secondary/30"
+          style={{ contain: 'layout style', contentVisibility: 'auto', containIntrinsicSize: '0 300px' }}
+        >
           <div className="container mx-auto px-4">
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-ocean">Déposes en Mer</span>
@@ -430,8 +445,11 @@ const Tarifs = () => {
           </div>
         </section>
 
-        {/* Location Matériel */}
-        <section className="py-16 bg-background">
+        {/* Location Matériel - content-visibility for CLS */}
+        <section 
+          className="py-16 bg-background"
+          style={{ contain: 'layout style', contentVisibility: 'auto', containIntrinsicSize: '0 280px' }}
+        >
           <div className="container mx-auto px-4">
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunset to-sunset-light">Location Matériel</span>
@@ -448,8 +466,11 @@ const Tarifs = () => {
           </div>
         </section>
 
-        {/* Ce qui est inclus */}
-        <section className="py-16 bg-secondary/30">
+        {/* Ce qui est inclus - content-visibility for CLS */}
+        <section 
+          className="py-16 bg-secondary/30"
+          style={{ contain: 'layout style', contentVisibility: 'auto', containIntrinsicSize: '0 400px' }}
+        >
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-8 text-center">
@@ -470,8 +491,11 @@ const Tarifs = () => {
           </div>
         </section>
 
-        {/* Information Licence FFVL */}
-        <section className="py-12 bg-background">
+        {/* Information Licence FFVL - content-visibility for CLS */}
+        <section 
+          className="py-12 bg-background"
+          style={{ contain: 'layout style', contentVisibility: 'auto', containIntrinsicSize: '0 180px' }}
+        >
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <div className="bg-primary/10 border border-primary/30 rounded-2xl p-6 flex items-start gap-4">
@@ -504,8 +528,11 @@ const Tarifs = () => {
         {/* Points de Rendez-vous */}
         <MeetingPointsSection />
 
-        {/* Bons cadeaux */}
-        <section className="py-16 bg-background">
+        {/* Bons cadeaux - content-visibility for CLS */}
+        <section 
+          className="py-16 bg-background"
+          style={{ contain: 'layout style', contentVisibility: 'auto', containIntrinsicSize: '0 700px' }}
+        >
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-sunset/10 rounded-2xl mb-6">
@@ -520,12 +547,14 @@ const Tarifs = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              {/* Bon Cadeau Kitesurf */}
+              {/* Bon Cadeau Kitesurf - explicit dimensions for CLS */}
               <div className="bg-card rounded-2xl overflow-hidden border border-border/50 shadow-lg hover:shadow-xl transition-shadow">
-                <div className="aspect-[2/1] overflow-hidden">
+                <div className="aspect-[2/1] overflow-hidden" style={{ minHeight: '150px' }}>
                   <img 
                     src={bonCadeauKitesurf} 
                     alt="Bon cadeau Kitesurf Hyères - École KiteSurf Passion Almanarre" 
+                    width={400}
+                    height={200}
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover"
@@ -539,7 +568,7 @@ const Tarifs = () => {
                   <a 
                     href={bonCadeauKitesurf} 
                     download="bon-cadeau-kitesurf-hyeres.jpg"
-                    className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors text-sm"
+                    className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors text-sm touch-target"
                   >
                     <Download className="w-4 h-4" />
                     Télécharger le bon
@@ -547,12 +576,14 @@ const Tarifs = () => {
                 </div>
               </div>
 
-              {/* Bon Cadeau Wingfoil */}
+              {/* Bon Cadeau Wingfoil - explicit dimensions for CLS */}
               <div className="bg-card rounded-2xl overflow-hidden border border-border/50 shadow-lg hover:shadow-xl transition-shadow">
-                <div className="aspect-[2/1] overflow-hidden">
+                <div className="aspect-[2/1] overflow-hidden" style={{ minHeight: '150px' }}>
                   <img 
                     src={bonCadeauWingfoil} 
                     alt="Bon cadeau Wingfoil Hyères - École KiteSurf Passion Almanarre" 
+                    width={400}
+                    height={200}
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover"
@@ -566,7 +597,7 @@ const Tarifs = () => {
                   <a 
                     href={bonCadeauWingfoil} 
                     download="bon-cadeau-wingfoil-hyeres.jpg"
-                    className="inline-flex items-center justify-center gap-2 bg-sunset hover:bg-sunset/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors text-sm"
+                    className="inline-flex items-center justify-center gap-2 bg-sunset hover:bg-sunset/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors text-sm touch-target"
                   >
                     <Download className="w-4 h-4" />
                     Télécharger le bon
@@ -574,12 +605,14 @@ const Tarifs = () => {
                 </div>
               </div>
 
-              {/* Bon Cadeau Foil Tracté */}
+              {/* Bon Cadeau Foil Tracté - explicit dimensions for CLS */}
               <div className="bg-card rounded-2xl overflow-hidden border border-border/50 shadow-lg hover:shadow-xl transition-shadow">
-                <div className="aspect-[2/1] overflow-hidden">
+                <div className="aspect-[2/1] overflow-hidden" style={{ minHeight: '150px' }}>
                   <img 
                     src={bonCadeauFoilTracte} 
                     alt="Bon cadeau Foil Tracté Hyères - École KiteSurf Passion Almanarre" 
+                    width={400}
+                    height={200}
                     loading="lazy"
                     decoding="async"
                     className="w-full h-full object-cover"
@@ -593,7 +626,7 @@ const Tarifs = () => {
                   <a 
                     href={bonCadeauFoilTracte} 
                     download="bon-cadeau-foil-tracte-hyeres.jpg"
-                    className="inline-flex items-center justify-center gap-2 bg-turquoise hover:bg-turquoise/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors text-sm"
+                    className="inline-flex items-center justify-center gap-2 bg-turquoise hover:bg-turquoise/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors text-sm touch-target"
                   >
                     <Download className="w-4 h-4" />
                     Télécharger le bon
@@ -620,8 +653,11 @@ const Tarifs = () => {
           faqs={tarifsFAQItems}
         />
 
-        {/* CTA */}
-        <section className="py-16 bg-primary text-primary-foreground">
+        {/* CTA - content-visibility for CLS */}
+        <section 
+          className="py-16 bg-primary text-primary-foreground"
+          style={{ contain: 'layout style', contentVisibility: 'auto', containIntrinsicSize: '0 250px' }}
+        >
           <div className="container mx-auto px-4 text-center">
             <h2 className="font-display text-2xl sm:text-3xl font-bold mb-4">
               Prêt à Réserver ?
@@ -630,10 +666,10 @@ const Tarifs = () => {
               Contactez-nous pour réserver votre créneau ou obtenir un devis personnalisé.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="heroFilled" size="lg" asChild>
+              <Button variant="heroFilled" size="lg" className="touch-target" asChild>
                 <Link to="/contact-reservation-kitesurf-hyeres">Réserver en Ligne</Link>
               </Button>
-              <Button variant="hero" size="lg" asChild>
+              <Button variant="hero" size="lg" className="touch-target" asChild>
                 <a href="tel:0672716905">Appeler : 06 72 71 69 05</a>
               </Button>
             </div>
