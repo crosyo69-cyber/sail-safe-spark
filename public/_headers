@@ -12,8 +12,13 @@
   # Compression optimization - Signal that responses vary by encoding
   Vary: Accept-Encoding
   
-  # Content Security Policy
+  # Content Security Policy - Optimized for performance
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://cdn.windguru.cz; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://www.windguru.cz; frame-src 'self' https://www.windguru.cz https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self' https://wa.me https://api.whatsapp.com; upgrade-insecure-requests
+
+  # Early Hints for critical resources (HTTP 103)
+  Link: </assets/images/kitesurf-hyeres.webp>; rel=preload; as=image; fetchpriority=high
+  Link: <https://fonts.googleapis.com>; rel=preconnect
+  Link: <https://fonts.gstatic.com>; rel=preconnect; crossorigin
 
 # Text files - Proper MIME types
 /*.txt

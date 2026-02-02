@@ -8,6 +8,7 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   wrapperClassName?: string;
   priority?: boolean;
   placeholder?: "blur" | "empty";
+  aspectRatio?: string;
 }
 
 export const OptimizedImage = memo(function OptimizedImage({
@@ -17,6 +18,9 @@ export const OptimizedImage = memo(function OptimizedImage({
   wrapperClassName,
   priority = false,
   placeholder = "blur",
+  aspectRatio,
+  width,
+  height,
   ...props
 }: OptimizedImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -62,12 +66,17 @@ export const OptimizedImage = memo(function OptimizedImage({
         "relative overflow-hidden",
         wrapperClassName
       )}
+      style={{ 
+        aspectRatio: aspectRatio,
+        contain: 'layout',
+      }}
     >
       {/* Placeholder blur effect */}
       {placeholder === "blur" && !isLoaded && (
         <div 
           className="absolute inset-0 bg-gradient-to-br from-muted to-muted/50 animate-pulse"
           aria-hidden="true"
+          style={{ contain: 'strict' }}
         />
       )}
       
@@ -75,6 +84,8 @@ export const OptimizedImage = memo(function OptimizedImage({
         <img
           src={src}
           alt={alt}
+          width={width}
+          height={height}
           loading={priority ? "eager" : "lazy"}
           decoding="async"
           fetchPriority={priority ? "high" : "auto"}
@@ -84,6 +95,9 @@ export const OptimizedImage = memo(function OptimizedImage({
             isLoaded ? "opacity-100" : "opacity-0",
             className
           )}
+          style={{
+            aspectRatio: aspectRatio,
+          }}
           {...props}
         />
       )}

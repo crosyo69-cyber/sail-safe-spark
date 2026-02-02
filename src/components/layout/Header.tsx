@@ -75,6 +75,10 @@ export function Header() {
           ? "bg-background/95 backdrop-blur-xl shadow-lg py-2"
           : "bg-transparent py-4"
       )}
+      style={{ 
+        contain: 'layout style',
+        minHeight: '72px', // Prevent CLS
+      }}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}

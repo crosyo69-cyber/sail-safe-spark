@@ -68,7 +68,11 @@ const activities = [
 
 export const ActivitiesSection = memo(function ActivitiesSection() {
   return (
-    <section id="activites" className="py-24 bg-background">
+    <section 
+      id="activites" 
+      className="py-24 bg-background"
+      style={{ contain: 'layout style' }}
+    >
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
@@ -94,13 +98,18 @@ export const ActivitiesSection = memo(function ActivitiesSection() {
               className={`group relative rounded-3xl overflow-hidden ${
                 activity.featured ? "md:col-span-2 lg:col-span-1" : ""
               }`}
+              style={{ contain: 'layout' }}
             >
-              <div className="aspect-[4/3] relative">
+              <div 
+                className="relative"
+                style={{ aspectRatio: '4 / 3' }}
+              >
                 {/* Image */}
                 <OptimizedImage
                   src={activity.image}
                   alt={`${activity.title} à Hyères - KiteSurf Passion`}
                   priority={index < 2}
+                  aspectRatio="4 / 3"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   wrapperClassName="w-full h-full"
                 />
