@@ -385,16 +385,28 @@ const Index = () => {
       <Header />
       
       <main>
+        {/* Above-fold content - No content-visibility delay */}
         <HeroSection />
         <WhyUsSection />
+        
+        {/* Below-fold content - Optimized with content-visibility */}
         <ActivitiesSection />
-        <div className="content-visibility-gallery contain-layout">
+        <div 
+          className="content-visibility-gallery contain-layout"
+          style={{ contentVisibility: 'auto', containIntrinsicSize: '0 800px' }}
+        >
           <GallerySection />
         </div>
-        <div className="content-visibility-testimonials contain-layout">
+        <div 
+          className="content-visibility-testimonials contain-layout"
+          style={{ contentVisibility: 'auto', containIntrinsicSize: '0 500px' }}
+        >
           <TestimonialsSection />
         </div>
-        <div className="content-visibility-faq contain-layout">
+        <div 
+          className="content-visibility-faq contain-layout"
+          style={{ contentVisibility: 'auto', containIntrinsicSize: '0 700px' }}
+        >
           <FAQSection />
         </div>
         <MeetingPointsSection />

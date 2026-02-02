@@ -19,7 +19,10 @@ const meetingPoints = [
 
 export function MeetingPointsSection() {
   return (
-    <section className="py-16 bg-muted/30">
+    <section 
+      className="py-16 bg-muted/30"
+      style={{ contain: 'layout style' }}
+    >
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -71,13 +74,16 @@ export function MeetingPointsSection() {
             ))}
           </div>
 
-          {/* Google Maps Embed */}
-          <div className="rounded-2xl overflow-hidden border border-border/50 shadow-lg">
+          {/* Google Maps Embed - Optimized with explicit dimensions */}
+          <div 
+            className="rounded-2xl overflow-hidden border border-border/50 shadow-lg"
+            style={{ aspectRatio: '16 / 9', minHeight: '350px' }}
+          >
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23434.145234567!2d6.13!3d43.08!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m3!3e0!4m0!4m0!5e0!3m2!1sfr!2sfr!4v1699000000000!5m2!1sfr!2sfr&markers=color:red%7C43.0817,6.1366&markers=color:blue%7C43.0779,6.1508"
               width="100%"
               height="350"
-              style={{ border: 0 }}
+              style={{ border: 0, width: '100%', height: '100%' }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

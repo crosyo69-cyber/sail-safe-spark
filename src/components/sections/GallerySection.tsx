@@ -93,19 +93,26 @@ export const GallerySection = memo(function GallerySection() {
           </p>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {/* Gallery Grid - Optimized with explicit aspect ratios */}
+        <div 
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+          style={{ contain: 'layout' }}
+        >
           {galleryImages.map((image, index) => (
             <button
               key={index}
               onClick={() => setSelectedImage(image)}
               className={cn(
-                "group relative overflow-hidden rounded-2xl aspect-square cursor-pointer",
+                "group relative overflow-hidden rounded-2xl cursor-pointer",
                 "transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20",
                 // Make first and fifth images larger on desktop
                 index === 0 && "md:col-span-2 md:row-span-2",
                 index === 5 && "lg:col-span-2"
               )}
+              style={{ 
+                aspectRatio: '1 / 1',
+                contain: 'layout style',
+              }}
             >
               <OptimizedImage
                 src={image.src}

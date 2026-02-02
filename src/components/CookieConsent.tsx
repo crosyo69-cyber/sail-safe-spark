@@ -112,14 +112,26 @@ export const CookieConsent = () => {
 
   return (
     <>
-      {/* Main Cookie Banner */}
+      {/* Main Cookie Banner - Optimized for CLS with transform animation */}
       {showBanner && !showPreferences && (
         <div 
-          className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6 animate-slideUp"
+          className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6"
           role="dialog"
           aria-label="Consentement cookies"
           aria-describedby="cookie-description"
+          style={{
+            transform: 'translateY(0)',
+            animation: 'slideUpBanner 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            willChange: 'transform',
+            contain: 'layout style',
+          }}
         >
+          <style>{`
+            @keyframes slideUpBanner {
+              from { transform: translateY(100%); opacity: 0; }
+              to { transform: translateY(0); opacity: 1; }
+            }
+          `}</style>
           <div className="max-w-4xl mx-auto bg-card border border-border rounded-xl shadow-2xl p-4 md:p-6">
             <div className="flex items-start gap-4">
               <div className="hidden sm:flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 shrink-0">

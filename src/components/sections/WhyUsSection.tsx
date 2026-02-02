@@ -94,6 +94,10 @@ export const WhyUsSection = memo(function WhyUsSection() {
                 <img 
                   src={logoFfvl} 
                   alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
+                  width={80}
+                  height={48}
+                  loading="lazy"
+                  decoding="async"
                   className="h-12 w-auto object-contain"
                 />
               </a>
@@ -107,6 +111,10 @@ export const WhyUsSection = memo(function WhyUsSection() {
                 <img 
                   src={logoEfk} 
                   alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
+                  width={80}
+                  height={48}
+                  loading="lazy"
+                  decoding="async"
                   className="h-12 w-auto object-contain"
                 />
               </a>

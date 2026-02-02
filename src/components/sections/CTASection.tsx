@@ -31,15 +31,22 @@ export function CTASection() {
   };
 
   return (
-    <section id="contact" className="relative py-24 overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
+    <section 
+      id="contact" 
+      className="relative py-24 overflow-hidden"
+      style={{ contain: 'layout style' }}
+    >
+      {/* Background Image - Optimized with explicit dimensions */}
+      <div className="absolute inset-0" style={{ contain: 'strict' }}>
         <img
           src={sunsetImage}
           alt="Coucher de soleil kitesurf Almanarre Hyères - École KiteSurf Passion Var"
+          width={1920}
+          height={1080}
           loading="lazy"
           decoding="async"
           className="w-full h-full object-cover"
+          style={{ aspectRatio: '16 / 9' }}
         />
         <div className="absolute inset-0 bg-navy/80" />
       </div>

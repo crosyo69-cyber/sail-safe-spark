@@ -150,7 +150,10 @@ export const TestimonialsSection = memo(function TestimonialsSection() {
   }, []);
 
   return (
-    <section className="py-24 bg-gradient-to-b from-secondary/30 to-background">
+    <section 
+      className="py-24 bg-gradient-to-b from-secondary/30 to-background"
+      style={{ contain: 'layout style' }}
+    >
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
@@ -181,7 +184,10 @@ export const TestimonialsSection = memo(function TestimonialsSection() {
 
         {/* Testimonials Carousel */}
         <div className="max-w-4xl mx-auto">
-          <div className="relative min-h-[320px]">
+          <div 
+            className="relative"
+            style={{ minHeight: '320px', contain: 'layout' }}
+          >
             {testimonials.slice(0, 5).map((testimonial, index) => (
               <div
                 key={testimonial.id}
@@ -190,6 +196,7 @@ export const TestimonialsSection = memo(function TestimonialsSection() {
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 absolute inset-0 translate-y-4 pointer-events-none"
                 }`}
+                style={{ contain: index === activeIndex ? 'none' : 'strict' }}
               >
                 <div className="bg-card rounded-3xl p-8 sm:p-12 shadow-lg border border-border/50 text-center">
                   {/* Quote Icon */}
