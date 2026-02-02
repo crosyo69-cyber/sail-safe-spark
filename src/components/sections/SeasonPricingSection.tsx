@@ -137,16 +137,16 @@ export const SeasonPricingSection = ({
           </div>
 
           {/* Bloc Basse Saison */}
-          <div className="bg-card rounded-3xl border-2 border-primary/30 overflow-hidden shadow-lg relative transition-all duration-300 hover:shadow-2xl hover:border-primary/50 hover:-translate-y-1 mt-4 lg:mt-0">
-            {/* Badge économies */}
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
-              <span className="bg-primary text-white text-sm px-4 py-1.5 rounded-full font-bold shadow-lg whitespace-nowrap">
-                💰 Meilleur rapport qualité/prix
-              </span>
-            </div>
-
-            {/* Header Basse Saison */}
-            <div className={`bg-gradient-to-r ${gradient} p-5 mt-1`}>
+          <div className="bg-card rounded-3xl border-2 border-primary/30 overflow-hidden shadow-lg relative transition-all duration-300 hover:shadow-2xl hover:border-primary/50 hover:-translate-y-1">
+            {/* Header Basse Saison avec badge intégré */}
+            <div className={`bg-gradient-to-r ${gradient} p-5 pt-8 relative`}>
+              {/* Badge économies - intégré dans le header */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                <span className="bg-white text-primary text-sm px-4 py-1.5 rounded-full font-bold shadow-lg whitespace-nowrap border-2 border-primary/20">
+                  💰 Meilleur rapport qualité/prix
+                </span>
+              </div>
+              
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
