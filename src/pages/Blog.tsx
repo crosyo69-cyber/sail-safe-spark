@@ -256,7 +256,7 @@ export const blogArticles = [
     slug: "wakeboard-hyeres-glisse-nautique",
     title: "Wakeboard à Hyères : La Glisse Nautique Accessible à Tous",
     excerpt: "Découvrez le wakeboard à Hyères sur la baie de Giens. Activité nautique fun et accessible dès 8 ans, encadrée par notre moniteur diplômé.",
-    category: "Kitesurf",
+    category: "Wakeboard",
     date: "2026-02-01",
     readTime: "8 min",
     image: "blog-wakeboard-hyeres.jpg",
@@ -275,13 +275,14 @@ export const blogArticles = [
   },
 ];
 
-const categories = ["Tous", "Kitesurf", "Wing Foil", "Pump Foil", "Le Spot", "Sécurité"];
+const categories = ["Tous", "Kitesurf", "Wing Foil", "Pump Foil", "Wakeboard", "Le Spot", "Sécurité"];
 
 // Map URL-friendly slugs to display names
 const categorySlugMap: Record<string, string> = {
   "kitesurf": "Kitesurf",
   "wingfoil": "Wing Foil", 
   "pumpfoil": "Pump Foil",
+  "wakeboard": "Wakeboard",
   "le-spot": "Le Spot",
   "securite": "Sécurité",
 };
