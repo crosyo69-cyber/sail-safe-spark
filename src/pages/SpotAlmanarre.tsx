@@ -118,6 +118,58 @@ const structuredData = {
   ]
 };
 
+// SportsActivityLocation schema for enhanced local SEO
+const sportsActivityLocationData = {
+  "@context": "https://schema.org",
+  "@type": "SportsActivityLocation",
+  "@id": "https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var#sportslocation",
+  name: "Spot Kitesurf & Wingfoil de l'Almanarre",
+  description: "Spot de sports nautiques emblématique de la Côte d'Azur. Idéal pour kitesurf, wingfoil et pumpfoil avec conditions régulières et sécurisées.",
+  url: "https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var",
+  image: "https://www.kitesurfpassion.fr/assets/almanarre-sunset.jpg",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Plage de l'Almanarre",
+    addressLocality: "Hyères",
+    postalCode: "83400",
+    addressRegion: "Var",
+    addressCountry: "FR"
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 43.0617,
+    longitude: 6.1455
+  },
+  telephone: "+33672716905",
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    opens: "09:00",
+    closes: "19:00",
+    validFrom: "2024-03-01",
+    validThrough: "2024-11-30"
+  },
+  amenityFeature: [
+    { "@type": "LocationFeatureSpecification", name: "Parking gratuit", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Douches publiques", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Restaurants à proximité", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Location matériel", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Bateau d'assistance", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Zone débutants protégée", value: true }
+  ],
+  sport: ["Kitesurf", "Wingfoil", "Pumpfoil", "Windsurf"],
+  publicAccess: true,
+  isAccessibleForFree: true,
+  slogan: "Le meilleur spot de kitesurf du Var",
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.9",
+    reviewCount: "127",
+    bestRating: "5",
+    worstRating: "1"
+  }
+};
+
 const imageStructuredData = {
   "@context": "https://schema.org",
   "@type": "ImageObject",
@@ -196,6 +248,9 @@ export default function SpotAlmanarre() {
             { "@type": "ListItem", "position": 2, "name": "Spot Almanarre", "item": "https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var" }
           ]
         })}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(sportsActivityLocationData)}
+        </script>
       </Helmet>
 
       <Header />

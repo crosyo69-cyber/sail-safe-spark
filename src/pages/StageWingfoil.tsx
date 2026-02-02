@@ -219,6 +219,62 @@ const StageWingfoil = () => {
             { "@type": "ListItem", "position": 2, "name": "Stage Wing Foil", "item": "https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre" }
           ]
         })}</script>
+        
+        {/* HowTo schema for wingfoil learning steps */}
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          "name": "Comment apprendre le wingfoil à Hyères en 5 jours",
+          "description": "Guide complet pour apprendre le wingfoil à l'Almanarre. De la découverte de l'aile aux premiers vols sur le foil.",
+          "image": "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+          "totalTime": "PT12H30M",
+          "estimatedCost": {
+            "@type": "MonetaryAmount",
+            "currency": "EUR",
+            "value": "440"
+          },
+          "supply": [
+            { "@type": "HowToSupply", "name": "Wing (aile de wingfoil)" },
+            { "@type": "HowToSupply", "name": "Planche de wingfoil avec foil" },
+            { "@type": "HowToSupply", "name": "Combinaison néoprène" },
+            { "@type": "HowToSupply", "name": "Casque et gilet de flottaison" }
+          ],
+          "tool": [
+            { "@type": "HowToTool", "name": "Bateau d'assistance" }
+          ],
+          "step": [
+            {
+              "@type": "HowToStep",
+              "position": 1,
+              "name": "Découverte de la wing",
+              "text": "Prise en main de l'aile sur la plage, apprentissage du gonflage, des positions et de la génération de puissance."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 2,
+              "name": "Navigation sur planche sans foil",
+              "text": "Premiers pas dans l'eau avec la wing, apprentissage de la navigation en position debout sur une planche stable."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 3,
+              "name": "Introduction au foil",
+              "text": "Session de foil tracté pour comprendre les sensations de vol et l'équilibre sur le foil sans gérer l'aile."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 4,
+              "name": "Premiers vols en wingfoil",
+              "text": "Combinaison wing + foil, premiers décollages et maintien du vol au-dessus de l'eau."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 5,
+              "name": "Navigation autonome",
+              "text": "Maîtrise des trajectoires, virages et remontée au vent. Vous volez en autonomie sur le spot de l'Almanarre !"
+            }
+          ]
+        })}</script>
       </Helmet>
 
       <Header />

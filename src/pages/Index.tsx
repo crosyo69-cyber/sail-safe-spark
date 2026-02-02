@@ -357,6 +357,29 @@ const Index = () => {
             { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" }
           ]
         })}</script>
+        
+        {/* WebSite with SearchAction for sitelinks search box */}
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://www.kitesurfpassion.fr/#website",
+          "name": "KiteSurf Passion",
+          "alternateName": "École Kitesurf Hyères",
+          "url": "https://www.kitesurfpassion.fr",
+          "description": "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999. Cours avec bateau d'assistance sur le spot de l'Almanarre.",
+          "inLanguage": "fr-FR",
+          "publisher": {
+            "@id": "https://www.kitesurfpassion.fr/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.kitesurfpassion.fr/blog-kitesurf-hyeres?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        })}</script>
       </Helmet>
 
       <Header />

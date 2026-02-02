@@ -229,6 +229,56 @@ export default function CoursPumpfoil() {
             { "@type": "ListItem", "position": 2, "name": "Initiation Pump Foil", "item": "https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres" }
           ]
         })}</script>
+        
+        {/* HowTo schema for pumpfoil dock start learning */}
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          "name": "Comment apprendre le pumpfoil avec la technique dock start",
+          "description": "Guide pour maîtriser le pumpfoil en partant d'un ponton. Apprenez à voler sur l'eau sans vent ni vagues à Hyères.",
+          "image": "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres-cours.jpg",
+          "totalTime": "PT1H30M",
+          "estimatedCost": {
+            "@type": "MonetaryAmount",
+            "currency": "EUR",
+            "value": "50"
+          },
+          "supply": [
+            { "@type": "HowToSupply", "name": "Planche de pumpfoil avec foil" },
+            { "@type": "HowToSupply", "name": "Gilet de sauvetage" },
+            { "@type": "HowToSupply", "name": "Casque de protection" }
+          ],
+          "tool": [
+            { "@type": "HowToTool", "name": "Ponton de départ (dock)" },
+            { "@type": "HowToTool", "name": "Bateau d'assistance" }
+          ],
+          "step": [
+            {
+              "@type": "HowToStep",
+              "position": 1,
+              "name": "Briefing et position de base",
+              "text": "Explication de la technique, position sur la planche, placement des pieds et posture du corps pour le pumping."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 2,
+              "name": "Départ du ponton (dock start)",
+              "text": "Apprentissage du saut depuis le ponton, timing du décollage et génération de la vitesse initiale."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 3,
+              "name": "Technique de pompage",
+              "text": "Maîtrise du mouvement de pompage avec les jambes pour maintenir le vol au-dessus de l'eau."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 4,
+              "name": "Vol et distance",
+              "text": "Augmentation progressive de la distance parcourue en maintenant un rythme de pompage efficace."
+            }
+          ]
+        })}</script>
       </Helmet>
 
       <Header />
