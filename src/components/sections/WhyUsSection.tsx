@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { Ship, MapPin, GraduationCap, Waves, Shield } from "lucide-react";
+import { trackCTAClick } from "@/lib/analytics";
 import logoFfvl from "@/assets/logo-ffvl.png";
 import logoEfk from "@/assets/logo-efk.png";
 
@@ -88,6 +89,7 @@ export const WhyUsSection = memo(function WhyUsSection() {
                 href="https://ffvl.fr" 
                 target="_blank" 
                 rel="noopener noreferrer"
+                onClick={() => trackCTAClick("badge_ffvl", "why_us_section", "https://ffvl.fr")}
                 className="group bg-white rounded-xl p-3 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                 title="Fédération Française de Vol Libre"
               >
@@ -105,6 +107,7 @@ export const WhyUsSection = memo(function WhyUsSection() {
                 href="https://ffvl.fr/ecole-francaise-kite" 
                 target="_blank" 
                 rel="noopener noreferrer"
+                onClick={() => trackCTAClick("badge_efk", "why_us_section", "https://ffvl.fr/ecole-francaise-kite")}
                 className="group bg-white rounded-xl p-3 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                 title="École Française de Kite"
               >
