@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Check, Anchor, Shield, Waves, Heart, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getProductRatingData } from "@/lib/seo-ratings";
-import wakeboardHero from "@/assets/wakeboard-hyeres.jpg";
+import wakeboardHero from "@/assets/wakeboard-hyeres.jpg?webp";
 import { FoilWakeboardTestimonials } from "@/components/sections/FoilWakeboardTestimonials";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 

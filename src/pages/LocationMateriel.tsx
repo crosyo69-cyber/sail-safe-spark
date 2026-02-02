@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Check, Shield, RefreshCw, Users, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getProductRatingData } from "@/lib/seo-ratings";
-import kiteEquipment from "@/assets/kitesurf-hyeres.jpg";
-import kiteWing from "@/assets/aile-kitesurf-hyeres.jpg";
-import kiteBoard from "@/assets/kitesurf-action-hyeres.jpg";
-import kiteGear from "@/assets/kitesurf-cours-hyeres.jpg";
+import kiteEquipment from "@/assets/kitesurf-hyeres.jpg?webp";
+import kiteWing from "@/assets/aile-kitesurf-hyeres.jpg?webp";
+import kiteBoard from "@/assets/kitesurf-action-hyeres.jpg?webp";
+import kiteGear from "@/assets/kitesurf-cours-hyeres.jpg?webp";
 
 const breadcrumbItems = [
   { label: "Location Matériel" }

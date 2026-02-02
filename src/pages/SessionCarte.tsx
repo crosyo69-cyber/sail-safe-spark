@@ -7,8 +7,8 @@ import { Link } from "react-router-dom";
 import { Ship, Users, Award, Clock, CheckCircle, Calendar, Settings, Repeat } from "lucide-react";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 import { getProductRatingData } from "@/lib/seo-ratings";
-import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg";
-import heroSessionCarte from "@/assets/hero-session-carte.jpg";
+import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg?webp";
+import heroSessionCarte from "@/assets/hero-session-carte.jpg?webp";
 
 const coursCarteFaqs = [
   {

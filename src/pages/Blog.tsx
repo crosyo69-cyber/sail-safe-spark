@@ -10,15 +10,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShareButtons } from "@/components/ShareButtons";
-import heroImage from "@/assets/blog-hero.jpg";
-import blogCtaImage from "@/assets/blog-kitesurf-sunset-cta.jpg";
-import blogKitesurfDebut from "@/assets/blog-kitesurf-debut.jpg";
-import blogWingfoil from "@/assets/blog-wingfoil.jpg";
-import blogKitesurfAction from "@/assets/blog-kitesurf-action.jpg";
-import blogBateauGroupe from "@/assets/blog-bateau-groupe.jpg";
-import blogPumpfoil from "@/assets/blog-pumpfoil.jpg";
-import blogKiteDuotone from "@/assets/blog-kite-duotone.jpg";
-import blogPumpfoilDock from "@/assets/blog-pumpfoil-dock.jpg";
+// WebP optimized images for better LCP performance
+import heroImage from "@/assets/blog-hero.jpg?webp";
+import blogCtaImage from "@/assets/blog-kitesurf-sunset-cta.jpg?webp";
+import blogKitesurfDebut from "@/assets/blog-kitesurf-debut.jpg?webp";
+import blogWingfoil from "@/assets/blog-wingfoil.jpg?webp";
+import blogKitesurfAction from "@/assets/blog-kitesurf-action.jpg?webp";
+import blogBateauGroupe from "@/assets/blog-bateau-groupe.jpg?webp";
+import blogPumpfoil from "@/assets/blog-pumpfoil.jpg?webp";
+import blogKiteDuotone from "@/assets/blog-kite-duotone.jpg?webp";
+import blogPumpfoilDock from "@/assets/blog-pumpfoil-dock.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
