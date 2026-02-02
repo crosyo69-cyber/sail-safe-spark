@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Ship, Star, Award, Clock, CheckCircle, Target, Zap, Shield, User } from "lucide-react";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
+import { InternalLinking, disciplineLinks, pillarLinks } from "@/components/sections/InternalLinking";
 import { getProductRatingData } from "@/lib/seo-ratings";
 import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg?webp";
 import heroKitesurf from "@/assets/kitesurf-hyeres.jpg?webp";
@@ -498,6 +499,19 @@ const CoursParticulier = () => {
           title="Questions Fréquentes Kitesurf"
           subtitle="Tout savoir sur nos cours particuliers à Hyères Almanarre"
           faqs={coursParticulierFaqs}
+          accentColor="sunset"
+        />
+
+        {/* Maillage interne - Autres formules */}
+        <InternalLinking
+          title="Autres Formules Kitesurf"
+          subtitle="Découvrez toutes nos offres de cours à Hyères"
+          links={[
+            disciplineLinks.stage100,
+            disciplineLinks.sessionCarte,
+            disciplineLinks.wingfoil,
+            { ...pillarLinks.tarifs, description: "Tous nos tarifs" },
+          ]}
           accentColor="sunset"
         />
 

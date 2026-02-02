@@ -5,6 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, Anchor, Shield, MapPin, Users, Phone } from "lucide-react";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
+import { InternalLinking, disciplineLinks, pillarLinks } from "@/components/sections/InternalLinking";
 import { Link } from "react-router-dom";
 import { getProductRatingData } from "@/lib/seo-ratings";
 import bateauSecurite from "@/assets/bateau-assistance-kitesurf.jpg?webp";

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Ship, Users, Award, Clock, CheckCircle, Calendar, Target, Zap, Shield, Radio } from "lucide-react";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
+import { InternalLinking, disciplineLinks, pillarLinks } from "@/components/sections/InternalLinking";
 import { getProductRatingData } from "@/lib/seo-ratings";
 import kitesurfLesson from "@/assets/stage-100-glisse-action.jpg?webp";
 import hero100Glisse from "@/assets/hero-100-glisse.jpg?webp";
@@ -484,6 +485,19 @@ const Stage100Glisse = () => {
           title="Questions Fréquentes Kitesurf"
           subtitle="Tout savoir sur notre stage 100% Glisse à Hyères Almanarre"
           faqs={stage100GlisseFaqs}
+          accentColor="primary"
+        />
+
+        {/* Maillage interne - Autres disciplines */}
+        <InternalLinking
+          title="Découvrez Nos Autres Activités"
+          subtitle="Complétez votre expérience de glisse à Hyères"
+          links={[
+            disciplineLinks.wingfoil,
+            disciplineLinks.pumpfoil,
+            disciplineLinks.foilTracte,
+            { ...pillarLinks.spot, description: "Le meilleur spot du Var" },
+          ]}
           accentColor="primary"
         />
 

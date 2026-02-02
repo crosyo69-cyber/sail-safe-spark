@@ -5,6 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, Shield, RefreshCw, Users, Phone } from "lucide-react";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
+import { InternalLinking, disciplineLinks, pillarLinks } from "@/components/sections/InternalLinking";
 import { Link } from "react-router-dom";
 import { getProductRatingData } from "@/lib/seo-ratings";
 import kiteEquipment from "@/assets/kitesurf-hyeres.jpg?webp";
