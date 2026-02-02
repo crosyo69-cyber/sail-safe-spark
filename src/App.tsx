@@ -8,6 +8,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { PWAInstallBanner } from "@/components/PWAInstallBanner";
 import { CookieConsent } from "@/components/CookieConsent";
 import { WebVitalsDashboard } from "@/components/WebVitalsDashboard";
+import { PageTracker } from "@/components/PageTracker";
 import { initGA4 } from "@/lib/analytics";
 
 // Critical path - loaded immediately
@@ -68,6 +69,7 @@ const App = () => {
         <CookieConsent />
         <WebVitalsDashboard />
         <BrowserRouter>
+          <PageTracker />
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<Index />} />
