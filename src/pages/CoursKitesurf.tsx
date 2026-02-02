@@ -5,6 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowRight, Ship, Users, Clock, Award } from "lucide-react";
 import { Link } from "react-router-dom";
+import { InternalLinking, disciplineLinks, pillarLinks } from "@/components/sections/InternalLinking";
 import { getProductRatingData } from "@/lib/seo-ratings";
 import kitesurfImage from "@/assets/kitesurf-cours-hyeres.jpg?webp";
 
@@ -485,40 +486,18 @@ const CoursKitesurf = () => {
           </div>
         </section>
 
-        {/* Related Activities */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-10">
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-4">
-                Découvrez Aussi
-              </h2>
-              <p className="text-muted-foreground">Nos autres activités de glisse à Hyères</p>
-            </div>
-            <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <Link 
-                to="/stage-wingfoil-hyeres-almanarre"
-                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
-              >
-                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Stage Wing Foil</h3>
-                <p className="text-muted-foreground text-sm">Volez sur l'eau avec cette discipline tendance</p>
-              </Link>
-              <Link 
-                to="/cours-pumpfoil-dock-start-hyeres"
-                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
-              >
-                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Initiation Pump Foil</h3>
-                <p className="text-muted-foreground text-sm">Sans vent, sans vagues : dock start</p>
-              </Link>
-              <Link 
-                to="/location-materiel-kitesurf-hyeres"
-                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
-              >
-                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Location Matériel</h3>
-                <p className="text-muted-foreground text-sm">Louez votre équipement complet</p>
-              </Link>
-            </div>
-          </div>
-        </section>
+        {/* Maillage interne - Disciplines complémentaires */}
+        <InternalLinking
+          title="Découvrez Nos Autres Activités"
+          subtitle="Complétez votre expérience de glisse à Hyères"
+          links={[
+            disciplineLinks.wingfoil,
+            disciplineLinks.pumpfoil,
+            disciplineLinks.location,
+            { ...pillarLinks.spot, description: "Le meilleur spot du Var" },
+          ]}
+          accentColor="primary"
+        />
       </main>
 
       <Footer />

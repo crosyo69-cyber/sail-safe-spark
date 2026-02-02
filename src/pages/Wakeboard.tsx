@@ -3,6 +3,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
+import { InternalLinking, disciplineLinks, pillarLinks } from "@/components/sections/InternalLinking";
 import { Check, Anchor, Shield, Waves, Heart, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getProductRatingData } from "@/lib/seo-ratings";
@@ -409,42 +410,18 @@ const Wakeboard = () => {
           ]}
         />
 
-        {/* Related Activities */}
-        <section className="py-16 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-10">
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-4">
-                Découvrez Aussi
-              </h2>
-            </div>
-            <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <Link 
-                to="/stage-kitesurf-100-glisse-hyeres"
-                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
-              >
-                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Stage Kitesurf</h3>
-                <p className="text-muted-foreground text-sm mb-3">5 jours pour l'autonomie</p>
-                <span className="text-primary text-sm font-medium">Dès 399€ →</span>
-              </Link>
-              <Link 
-                to="/foil-tracte-hyeres"
-                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
-              >
-                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Foil Tracté</h3>
-                <p className="text-muted-foreground text-sm mb-3">Apprenez à voler</p>
-                <span className="text-primary text-sm font-medium">Dès 50€ →</span>
-              </Link>
-              <Link 
-                to="/stage-wingfoil-hyeres-almanarre"
-                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
-              >
-                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Stage Wing Foil</h3>
-                <p className="text-muted-foreground text-sm mb-3">Volez sur l'eau</p>
-                <span className="text-primary text-sm font-medium">Dès 90€ →</span>
-              </Link>
-            </div>
-          </div>
-        </section>
+        {/* Maillage interne - Vers pages piliers et complémentaires */}
+        <InternalLinking
+          title="Découvrez Nos Autres Activités"
+          subtitle="Continuez l'aventure glisse à Hyères"
+          links={[
+            disciplineLinks.stage100,
+            disciplineLinks.foilTracte,
+            disciplineLinks.wingfoil,
+            { ...pillarLinks.tarifs, description: "Tous nos tarifs" },
+          ]}
+          accentColor="sunset"
+        />
 
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-r from-sunset via-sunset/90 to-primary text-primary-foreground">

@@ -8,6 +8,7 @@ import { WindguruWidget } from "@/components/sections/WindguruWidget";
 import { WeatherAlertSubscription } from "@/components/WeatherAlertSubscription";
 import { MeetingPointsSection } from "@/components/sections/MeetingPointsSection";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
+import { InternalLinking, disciplineLinks, pillarLinks } from "@/components/sections/InternalLinking";
 
 import { 
   MapPin, 
@@ -574,6 +575,19 @@ export default function SpotAlmanarre() {
             </div>
           </div>
         </section>
+
+        {/* Maillage interne - Cours disponibles sur ce spot */}
+        <InternalLinking
+          title="Nos Cours sur le Spot"
+          subtitle="Apprenez à naviguer sur l'Almanarre avec un moniteur diplômé"
+          links={[
+            disciplineLinks.stage100,
+            disciplineLinks.wingfoil,
+            disciplineLinks.pumpfoil,
+            { ...pillarLinks.tarifs, description: "Tous nos tarifs" },
+          ]}
+          accentColor="primary"
+        />
 
         {/* FAQ SEO */}
         <ActivityFAQ

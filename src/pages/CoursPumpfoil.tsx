@@ -5,6 +5,7 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { CTASection } from "@/components/sections/CTASection";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 import { RelatedBlogArticles } from "@/components/sections/RelatedBlogArticles";
+import { InternalLinking, disciplineLinks, pillarLinks } from "@/components/sections/InternalLinking";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Check, ArrowRight, Waves, Zap, Target, Clock } from "lucide-react";
