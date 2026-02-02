@@ -10,9 +10,10 @@ import { SeasonPricingSection } from "@/components/sections/SeasonPricingSection
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 import { getProductRatingData } from "@/lib/seo-ratings";
 
-import bonCadeauKitesurf from "@/assets/bon-cadeau-kitesurf.jpg";
-import bonCadeauWingfoil from "@/assets/bon-cadeau-wingfoil.jpg";
-import bonCadeauFoilTracte from "@/assets/bon-cadeau-foil-tracte.jpg";
+// WebP optimized images for better LCP performance
+import bonCadeauKitesurf from "@/assets/bon-cadeau-kitesurf.jpg?webp";
+import bonCadeauWingfoil from "@/assets/bon-cadeau-wingfoil.jpg?webp";
+import bonCadeauFoilTracte from "@/assets/bon-cadeau-foil-tracte.jpg?webp";
 
 const breadcrumbItems = [
   { label: "Tarifs" }
