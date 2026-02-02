@@ -235,6 +235,27 @@ export const blogArticles = [
     image: "blog-bateau-groupe.jpg",
     alt: "Foil tracté bateau Hyères - Initiation vol école KiteSurf Passion Var",
   },
+  {
+    slug: "wakeboard-hyeres-glisse-nautique",
+    title: "Wakeboard à Hyères : La Glisse Nautique Accessible à Tous",
+    excerpt: "Découvrez le wakeboard à Hyères sur la baie de Giens. Activité nautique fun et accessible dès 8 ans, encadrée par notre moniteur diplômé.",
+    category: "Kitesurf",
+    date: "2026-02-02",
+    readTime: "8 min",
+    image: "blog-bateau-groupe.jpg",
+    alt: "Wakeboard Hyères Giens - Glisse nautique école KiteSurf Passion Var",
+    featured: true,
+  },
+  {
+    slug: "location-kitesurf-hyeres-almanarre-guide",
+    title: "Location Matériel Kitesurf à Hyères : Guide Complet",
+    excerpt: "Louez votre matériel de kitesurf à Hyères sur le spot de l'Almanarre. Ailes, planches, combinaisons : équipement premium Duotone pour riders autonomes.",
+    category: "Kitesurf",
+    date: "2026-02-01",
+    readTime: "7 min",
+    image: "blog-kite-duotone.jpg",
+    alt: "Location matériel kitesurf Hyères Almanarre - Équipement Duotone école Var",
+  },
 ];
 
 const categories = ["Tous", "Kitesurf", "Wing Foil", "Pump Foil", "Le Spot", "Sécurité"];
