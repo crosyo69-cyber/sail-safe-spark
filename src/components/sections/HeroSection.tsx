@@ -3,15 +3,27 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
 import { Link } from "react-router-dom";
 
-// Import hero images with WebP conversion
+// Import hero images with WebP conversion - Desktop (full size)
 import heroKitesurf from "@/assets/kitesurf-hyeres.jpg?webp";
 import heroWingfoil from "@/assets/wingfoil-hyeres.jpg?webp";
 import heroPumpfoil from "@/assets/pumpfoil-hyeres.jpg?webp";
+
+// Import hero images - Mobile optimized (smaller size)
+import heroKitesurfMobile from "@/assets/kitesurf-hyeres.jpg?webp&w=768";
+import heroWingfoilMobile from "@/assets/wingfoil-hyeres.jpg?webp&w=768";
+import heroPumpfoilMobile from "@/assets/pumpfoil-hyeres.jpg?webp&w=768";
+
+// Import hero images - Tablet optimized (medium size)
+import heroKitesurfTablet from "@/assets/kitesurf-hyeres.jpg?webp&w=1280";
+import heroWingfoilTablet from "@/assets/wingfoil-hyeres.jpg?webp&w=1280";
+import heroPumpfoilTablet from "@/assets/pumpfoil-hyeres.jpg?webp&w=1280";
 
 const slides = [
   {
     id: "kitesurf",
     image: heroKitesurf,
+    imageMobile: heroKitesurfMobile,
+    imageTablet: heroKitesurfTablet,
     alt: "Cours de Kitesurf à Hyères - École KiteSurf Passion Almanarre",
     preTitle: "École avec bateau d'assistance",
     titleStart: "Apprenez le Kitesurf en",
@@ -22,6 +34,8 @@ const slides = [
   {
     id: "wingfoil",
     image: heroWingfoil,
+    imageMobile: heroWingfoilMobile,
+    imageTablet: heroWingfoilTablet,
     alt: "Stage Wingfoil Hyères - Cours Wing Foil Almanarre Var",
     preTitle: "Sport tendance 2024",
     titleStart: "Découvrez le Wingfoil en",
@@ -32,6 +46,8 @@ const slides = [
   {
     id: "pumpfoil",
     image: heroPumpfoil,
+    imageMobile: heroPumpfoilMobile,
+    imageTablet: heroPumpfoilTablet,
     alt: "Cours Pumpfoil Hyères Giens - Dock start pump foil école KiteSurf Passion Var",
     preTitle: "Sensations uniques",
     titleStart: "Découvrez le Pump Foil en",
@@ -98,6 +114,8 @@ export const HeroSection = memo(function HeroSection() {
         >
           <img
             src={s.image}
+            srcSet={`${s.imageMobile} 768w, ${s.imageTablet} 1280w, ${s.image} 1920w`}
+            sizes="100vw"
             alt={s.alt}
             width={1920}
             height={1080}
