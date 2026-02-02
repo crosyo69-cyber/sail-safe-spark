@@ -206,6 +206,65 @@ const CoursKitesurf = () => {
     },
   };
 
+  // HowTo schema for learning steps - helps with "How to" rich snippets
+  const howToStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: "Comment apprendre le kitesurf à Hyères en 5 jours",
+    description: "Guide complet pour apprendre le kitesurf avec notre stage 100% Glisse à l'Almanarre. De la découverte à l'autonomie en 5 séances.",
+    image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+    totalTime: "PT15H",
+    estimatedCost: {
+      "@type": "MonetaryAmount",
+      currency: "EUR",
+      value: "399"
+    },
+    supply: [
+      { "@type": "HowToSupply", name: "Aile de kitesurf (fournie)" },
+      { "@type": "HowToSupply", name: "Planche twin-tip (fournie)" },
+      { "@type": "HowToSupply", name: "Harnais (fourni)" },
+      { "@type": "HowToSupply", name: "Combinaison néoprène (fournie)" },
+      { "@type": "HowToSupply", name: "Casque et gilet (fournis)" }
+    ],
+    tool: [
+      { "@type": "HowToTool", name: "Bateau d'assistance" },
+      { "@type": "HowToTool", name: "Radio de communication" }
+    ],
+    step: [
+      {
+        "@type": "HowToStep",
+        position: 1,
+        name: "Découverte & Sécurité",
+        text: "Présentation du matériel, règles de sécurité, fenêtre de vent. Pilotage de l'aile sur la plage pour comprendre les bases.",
+        image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg"
+      },
+      {
+        "@type": "HowToStep",
+        position: 2,
+        name: "Premiers Pas dans l'Eau",
+        text: "Bodydrag, nage tractée par l'aile, gestion de la puissance dans l'eau. Apprentissage du contrôle de l'aile en milieu aquatique."
+      },
+      {
+        "@type": "HowToStep",
+        position: 3,
+        name: "Waterstart",
+        text: "Mise en place de la planche, premiers waterstarts, gestion de l'équilibre. La technique clé pour décoller sur l'eau."
+      },
+      {
+        "@type": "HowToStep",
+        position: 4,
+        name: "Navigation",
+        text: "Premiers bords, maintien de la trajectoire, arrêts contrôlés. Vous commencez à naviguer de manière autonome."
+      },
+      {
+        "@type": "HowToStep",
+        position: 5,
+        name: "Autonomie",
+        text: "Remonter au vent, virages, validation de l'autonomie. Vous êtes prêt à naviguer seul sur le spot de l'Almanarre !"
+      }
+    ]
+  };
+
   return (
     <>
       <Helmet>
@@ -249,6 +308,7 @@ const CoursKitesurf = () => {
             { "@type": "ListItem", "position": 2, "name": "Cours Kitesurf", "item": "https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" }
           ]
         })}</script>
+        <script type="application/ld+json">{JSON.stringify(howToStructuredData)}</script>
       </Helmet>
 
       <Header />
