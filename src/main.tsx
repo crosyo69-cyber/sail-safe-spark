@@ -4,6 +4,12 @@ import "./index.css";
 import { registerServiceWorker } from "./lib/register-sw";
 import { initWebVitals } from "./lib/web-vitals";
 
+// Remove loading skeleton before React mounts to prevent DOM conflicts
+const skeleton = document.getElementById("loading-skeleton");
+if (skeleton) {
+  skeleton.remove();
+}
+
 // Register service worker for offline support and caching
 registerServiceWorker();
 
