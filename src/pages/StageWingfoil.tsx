@@ -8,7 +8,7 @@ import { RelatedBlogArticles } from "@/components/sections/RelatedBlogArticles";
 import { Check, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getProductRatingData } from "@/lib/seo-ratings";
-import wingfoilImage from "@/assets/wingfoil-hyeres.jpg";
+import wingfoilImage from "@/assets/wingfoil-hyeres.jpg?webp";
 
 const wingfoilBlogArticles = [
   {

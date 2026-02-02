@@ -7,7 +7,7 @@ import { RelatedBlogArticles } from "@/components/sections/RelatedBlogArticles";
 import { Check, Anchor, Shield, Zap, Users, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getProductRatingData } from "@/lib/seo-ratings";
-import foilTracteHero from "@/assets/foil-tracte-hyeres.jpg";
+import foilTracteHero from "@/assets/foil-tracte-hyeres.jpg?webp";
 import { FoilWakeboardTestimonials } from "@/components/sections/FoilWakeboardTestimonials";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 

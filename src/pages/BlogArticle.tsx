@@ -9,14 +9,14 @@ import { Button } from "@/components/ui/button";
 import { blogArticles } from "./Blog";
 import DOMPurify from "dompurify";
 
-// Image imports for article pages
-import blogKitesurfDebut from "@/assets/blog-kitesurf-debut.jpg";
-import blogWingfoil from "@/assets/blog-wingfoil.jpg";
-import blogKitesurfAction from "@/assets/blog-kitesurf-action.jpg";
-import blogBateauGroupe from "@/assets/blog-bateau-groupe.jpg";
-import blogPumpfoil from "@/assets/blog-pumpfoil.jpg";
-import blogKiteDuotone from "@/assets/blog-kite-duotone.jpg";
-import blogPumpfoilDock from "@/assets/blog-pumpfoil-dock.jpg";
+// WebP optimized images for better LCP performance
+import blogKitesurfDebut from "@/assets/blog-kitesurf-debut.jpg?webp";
+import blogWingfoil from "@/assets/blog-wingfoil.jpg?webp";
+import blogKitesurfAction from "@/assets/blog-kitesurf-action.jpg?webp";
+import blogBateauGroupe from "@/assets/blog-bateau-groupe.jpg?webp";
+import blogPumpfoil from "@/assets/blog-pumpfoil.jpg?webp";
+import blogKiteDuotone from "@/assets/blog-kite-duotone.jpg?webp";
+import blogPumpfoilDock from "@/assets/blog-pumpfoil-dock.jpg?webp";
 
 const imageMap: Record<string, string> = {
   "blog-kitesurf-debut.jpg": blogKitesurfDebut,

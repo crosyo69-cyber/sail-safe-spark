@@ -22,8 +22,8 @@ import {
   ArrowRight,
   CheckCircle
 } from "lucide-react";
-import almanarre from "@/assets/almanarre-sunset.jpg";
-import spotVueAerienne from "@/assets/spot-almanarre-vue-aerienne.jpg";
+import almanarre from "@/assets/almanarre-sunset.jpg?webp";
+import spotVueAerienne from "@/assets/spot-almanarre-vue-aerienne.jpg?webp";
 
 const breadcrumbItems = [
   { label: "Spot Almanarre" }

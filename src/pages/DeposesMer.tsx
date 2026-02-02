@@ -7,7 +7,7 @@ import { Check, Anchor, Shield, MapPin, Users, Phone } from "lucide-react";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 import { Link } from "react-router-dom";
 import { getProductRatingData } from "@/lib/seo-ratings";
-import bateauSecurite from "@/assets/bateau-assistance-kitesurf.jpg";
+import bateauSecurite from "@/assets/bateau-assistance-kitesurf.jpg?webp";
 
 const breadcrumbItems = [
   { label: "Déposes en Mer" }
