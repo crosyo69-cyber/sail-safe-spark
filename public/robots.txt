@@ -1,5 +1,5 @@
 # Robots.txt pour KiteSurf Passion
-# https://kitesurfpassion.fr
+# https://www.kitesurfpassion.fr
 
 # Googlebot (Google Search)
 User-agent: Googlebot
