@@ -17,6 +17,8 @@ import blogBateauGroupe from "@/assets/blog-bateau-groupe.jpg?webp";
 import blogPumpfoil from "@/assets/blog-pumpfoil.jpg?webp";
 import blogKiteDuotone from "@/assets/blog-kite-duotone.jpg?webp";
 import blogPumpfoilDock from "@/assets/blog-pumpfoil-dock.jpg?webp";
+import blogWakeboardHyeres from "@/assets/blog-wakeboard-hyeres.jpg?webp";
+import blogLocationMateriel from "@/assets/blog-location-materiel.jpg?webp";
 
 const imageMap: Record<string, string> = {
   "blog-kitesurf-debut.jpg": blogKitesurfDebut,
@@ -26,6 +28,8 @@ const imageMap: Record<string, string> = {
   "blog-pumpfoil.jpg": blogPumpfoil,
   "blog-kite-duotone.jpg": blogKiteDuotone,
   "blog-pumpfoil-dock.jpg": blogPumpfoilDock,
+  "blog-wakeboard-hyeres.jpg": blogWakeboardHyeres,
+  "blog-location-materiel.jpg": blogLocationMateriel,
 };
 
 const getArticleImage = (imageName: string): string => {

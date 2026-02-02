@@ -20,6 +20,8 @@ import blogBateauGroupe from "@/assets/blog-bateau-groupe.jpg?webp";
 import blogPumpfoil from "@/assets/blog-pumpfoil.jpg?webp";
 import blogKiteDuotone from "@/assets/blog-kite-duotone.jpg?webp";
 import blogPumpfoilDock from "@/assets/blog-pumpfoil-dock.jpg?webp";
+import blogWakeboardHyeres from "@/assets/blog-wakeboard-hyeres.jpg?webp";
+import blogLocationMateriel from "@/assets/blog-location-materiel.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -30,6 +32,8 @@ const imageMap: Record<string, string> = {
   "blog-pumpfoil.jpg": blogPumpfoil,
   "blog-kite-duotone.jpg": blogKiteDuotone,
   "blog-pumpfoil-dock.jpg": blogPumpfoilDock,
+  "blog-wakeboard-hyeres.jpg": blogWakeboardHyeres,
+  "blog-location-materiel.jpg": blogLocationMateriel,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -242,7 +246,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-02-02",
     readTime: "8 min",
-    image: "blog-bateau-groupe.jpg",
+    image: "blog-wakeboard-hyeres.jpg",
     alt: "Wakeboard Hyères Giens - Glisse nautique école KiteSurf Passion Var",
     featured: true,
   },
@@ -253,7 +257,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-02-01",
     readTime: "7 min",
-    image: "blog-kite-duotone.jpg",
+    image: "blog-location-materiel.jpg",
     alt: "Location matériel kitesurf Hyères Almanarre - Équipement Duotone école Var",
   },
 ];
