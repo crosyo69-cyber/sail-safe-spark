@@ -189,6 +189,8 @@ const CoursParticulier = () => {
           content="Cours particulier kitesurf Hyères Almanarre. Progression 100% individualisée avec moniteur diplômé dédié. Bateau d'assistance, encadrement premium. Dès 230€."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres" />
         <meta property="og:title" content="Cours Particulier Kitesurf Hyères Almanarre | KiteSurf Passion" />
         <meta property="og:description" content="Leçon privée de kitesurf avec moniteur dédié. Progression rapide et sécurisée sur le spot de l'Almanarre." />
         <meta property="og:type" content="website" />

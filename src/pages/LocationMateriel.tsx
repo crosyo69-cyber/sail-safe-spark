@@ -71,6 +71,8 @@ const LocationMateriel = () => {
           content="location matériel kitesurf Hyères, location kitesurf Almanarre, louer matériel kitesurf Giens, location équipement kitesurf Var"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",

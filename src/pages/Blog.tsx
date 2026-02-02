@@ -358,6 +358,8 @@ const Blog = () => {
           content="blog kitesurf hyères, conseils wingfoil, guide débutant kitesurf, conditions almanarre, météo kitesurf var"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/blog-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/blog-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/blog-kitesurf-hyeres" />
         
         {/* Open Graph */}
         <meta property="og:title" content="Blog Kitesurf Hyères | Conseils & Guides d'Experts" />

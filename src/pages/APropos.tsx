@@ -212,6 +212,8 @@ const APropos = () => {
           content="Découvrez l'histoire de KiteSurf Passion, fondée en 1999 par Yohan Cros, moniteur diplômé d'État BPJEPS. 25 ans d'expertise en kitesurf, wingfoil et pumpfoil à Hyères." 
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
         
         {/* Open Graph */}
         <meta property="og:title" content="À Propos - KiteSurf Passion | École depuis 1999 à Hyères" />
