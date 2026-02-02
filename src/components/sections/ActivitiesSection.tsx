@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { trackCTAClick } from "@/lib/analytics";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import kitesurfImage from "@/assets/kitesurf-action-duotone.jpg?webp";
 import wingfoilImage from "@/assets/wingfoil-hyeres.jpg?webp";
@@ -95,6 +96,7 @@ export const ActivitiesSection = memo(function ActivitiesSection() {
             <Link
               key={activity.id}
               to={activity.link}
+              onClick={() => trackCTAClick(`activity_${activity.id}`, "activities_section", activity.link)}
               className={`group relative rounded-3xl overflow-hidden ${
                 activity.featured ? "md:col-span-2 lg:col-span-1" : ""
               }`}
