@@ -19,6 +19,7 @@ import blogKiteDuotone from "@/assets/blog-kite-duotone.jpg?webp";
 import blogPumpfoilDock from "@/assets/blog-pumpfoil-dock.jpg?webp";
 import blogWakeboardHyeres from "@/assets/blog-wakeboard-hyeres.jpg?webp";
 import blogLocationMateriel from "@/assets/blog-location-materiel.jpg?webp";
+import blogFoilTracteHyeres from "@/assets/blog-foil-tracte-hyeres.jpg?webp";
 
 const imageMap: Record<string, string> = {
   "blog-kitesurf-debut.jpg": blogKitesurfDebut,
@@ -30,6 +31,7 @@ const imageMap: Record<string, string> = {
   "blog-pumpfoil-dock.jpg": blogPumpfoilDock,
   "blog-wakeboard-hyeres.jpg": blogWakeboardHyeres,
   "blog-location-materiel.jpg": blogLocationMateriel,
+  "blog-foil-tracte-hyeres.jpg": blogFoilTracteHyeres,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -1953,6 +1955,163 @@ Prêt à naviguer en autonomie sur le plus beau spot du Var ? [Contactez-nous](/
 **Appelez-nous au 06 72 71 69 05** ou consultez notre [page location complète](/location-materiel-kitesurf-hyeres) pour plus de détails.
     `,
     tags: ["Location", "Kitesurf", "Almanarre", "Hyères", "Duotone", "Matériel"],
+  },
+  "foil-tracte-hyeres-initiation-vol": {
+    content: `
+## Foil Tracté à Hyères : Découvrez le Vol Sans Vent
+
+Le foil tracté est la révolution des sports nautiques. Imaginez voler au-dessus de l'eau, porté par un hydrofoil, sans avoir besoin de vent ni de vagues. À Hyères, sur la magnifique baie de Giens, notre école KiteSurf Passion vous propose cette expérience unique et accessible à tous.
+
+### Qu'est-ce que le Foil Tracté ?
+
+Le foil tracté combine la technologie du foil (aile immergée sous une planche) avec la traction d'un bateau :
+
+- **Principe** : Le bateau vous tracte à vitesse contrôlée
+- **Décollage** : À partir de 15 km/h, le foil génère de la portance
+- **Sensation** : Vous volez littéralement 50-80 cm au-dessus de l'eau
+- **Silence** : Une fois en vol, le bruit disparaît
+
+#### Pourquoi le Foil Tracté à Hyères ?
+
+| Avantage | Explication |
+|----------|-------------|
+| **Conditions garanties** | Pas besoin de vent, navigation possible 365 jours/an |
+| **Baie protégée** | Eaux calmes de la baie de Giens |
+| **Moniteur diplômé** | Accompagnement personnalisé |
+| **Bateau adapté** | Pylône de traction spécifique foil |
+
+### Pour Qui est Fait le Foil Tracté ?
+
+Cette activité est accessible à un large public :
+
+#### Profil Idéal
+
+- ✅ **Âge minimum** : 12 ans
+- ✅ **Condition physique** : Savoir nager 25 mètres
+- ✅ **Expérience requise** : Aucune !
+- ✅ **Motivation** : Envie de découvrir le vol
+
+#### Cas Particuliers
+
+Le foil tracté est parfait pour :
+
+- **Futurs kitesurfers** : Découvrir les sensations du foil avant de maîtriser l'aile
+- **Wingfoilers en herbe** : Apprendre l'équilibre sur foil sans la wing
+- **Jours sans vent** : Alternative idéale quand le Mistral fait défaut
+- **Groupes et familles** : Activité partageable entre amis ou en famille
+
+### Le Déroulement d'une Session Foil Tracté
+
+#### Étape 1 : Briefing Théorique (15 min)
+
+Avant de vous mettre à l'eau, notre moniteur vous explique :
+
+- **Fonctionnement du foil** : Aile avant, aile arrière, mât
+- **Position du corps** : Centre de gravité, placement des pieds
+- **Signaux de communication** : Avec le pilote du bateau
+- **Procédures de sécurité** : Chute, récupération
+
+#### Étape 2 : Premiers Essais dans l'Eau (15 min)
+
+Vous commencez par :
+
+1. **Position de départ** : Allongé dans l'eau, planche devant vous
+2. **Montée sur la planche** : Guidé par le moniteur dans le bateau
+3. **Navigation à plat** : Maîtriser l'équilibre avant le décollage
+
+#### Étape 3 : Décollage et Vol (30 min)
+
+La magie opère :
+
+1. **Accélération progressive** : Le bateau augmente doucement la vitesse
+2. **Sensation de portance** : Le foil commence à soulever la planche
+3. **Premier vol** : Vous décollez de l'eau !
+4. **Stabilisation** : Apprentissage du vol stable
+
+### Matériel Utilisé pour le Foil Tracté
+
+Chez KiteSurf Passion, nous utilisons du matériel adapté aux débutants :
+
+#### La Planche Foil
+
+| Caractéristique | Spécification |
+|-----------------|---------------|
+| **Volume** | 120-150 litres (grande stabilité) |
+| **Largeur** | 75-85 cm |
+| **Footstraps** | Réglables et sécurisés |
+
+#### Le Foil
+
+- **Aile avant** : Grande surface (1800-2000 cm²) pour décollage facile
+- **Mât** : Court (60-70 cm) pour limiter la hauteur de vol
+- **Aile arrière** : Stabilisatrice pour équilibre optimal
+
+#### Équipement de Sécurité
+
+- **Gilet d'impact** : Flottabilité et protection
+- **Casque** : Obligatoire pour tous
+- **Combinaison** : Adaptée à la saison
+
+### Tarifs Foil Tracté à Hyères
+
+| Formule | Durée | Tarif |
+|---------|-------|-------|
+| **Découverte** | 15 min | 50€ |
+| **Initiation** | 30 min | 90€ |
+| **Pack duo** | 2x15 min | 80€ |
+
+*Matériel, bateau et moniteur inclus*
+
+Consultez notre [page tarifs complète](/tarifs-cours-kitesurf-wingfoil-hyeres) pour toutes les formules.
+
+### Progression : Du Foil Tracté au Wingfoil
+
+Le foil tracté est la porte d'entrée idéale vers d'autres disciplines :
+
+#### Parcours Recommandé
+
+1. **Foil tracté** : Apprendre l'équilibre et les sensations du vol
+2. **[Stage wingfoil](/stage-wingfoil-hyeres)** : Ajouter la maîtrise de la wing
+3. **Autonomie** : Voler sans bateau, propulsé par le vent
+
+#### Avantages de Cette Progression
+
+- **Apprentissage séparé** : Une compétence à la fois
+- **Gain de temps** : Moins de sessions nécessaires
+- **Confiance** : Vous connaissez déjà le foil
+
+### Sécurité : Notre Priorité
+
+La sécurité est au cœur de notre pédagogie :
+
+- **Bateau homologué** : Équipé VHF, gilets, trousse de secours
+- **Moniteur BPJEPS** : Formation sécurité nautique
+- **Zone de navigation** : Baie protégée, loin des zones de baignade
+- **Matériel vérifié** : Check-up avant chaque session
+
+### FAQ Foil Tracté
+
+**Est-ce dangereux ?**
+Non, le foil tracté est très sécurisé. Le mât court limite la hauteur de vol, et la vitesse est contrôlée par le pilote du bateau. En cas de chute, vous tombez dans l'eau.
+
+**Faut-il savoir faire du wakeboard avant ?**
+Non, aucune expérience préalable n'est requise. Notre pédagogie est adaptée aux débutants complets.
+
+**Peut-on faire du foil tracté toute l'année ?**
+Oui ! C'est l'avantage majeur : pas de dépendance au vent. La baie de Giens offre des conditions praticables 12 mois sur 12.
+
+**Combien de temps pour réussir à voler ?**
+La plupart des élèves décollent dès la première session de 30 minutes. Certains y arrivent en 15 minutes !
+
+### Réservez Votre Session Foil Tracté
+
+Prêt à vivre l'expérience du vol au-dessus de l'eau ? [Contactez-nous](/contact-reservation-kitesurf-hyeres) pour réserver votre session.
+
+**Appelez le 06 72 71 69 05** ou découvrez notre [page foil tracté](/foil-tracte-hyeres) pour plus de détails.
+
+Rejoignez les centaines de personnes qui ont découvert le vol avec KiteSurf Passion depuis 1999 !
+    `,
+    tags: ["Foil Tracté", "Hyères", "Giens", "Vol", "Initiation", "Bateau", "Débutant"],
   },
 };
 

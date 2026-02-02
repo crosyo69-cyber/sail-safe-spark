@@ -277,15 +277,22 @@
   </url>
   
   <url>
-    <loc>https://www.kitesurfpassion.fr/blog/wakeboard-hyeres-glisse-nautique</loc>
+    <loc>https://www.kitesurfpassion.fr/blog/foil-tracte-hyeres-initiation-vol</loc>
     <lastmod>2026-02-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://www.kitesurfpassion.fr/blog/location-kitesurf-hyeres-almanarre-guide</loc>
+    <loc>https://www.kitesurfpassion.fr/blog/wakeboard-hyeres-glisse-nautique</loc>
     <lastmod>2026-02-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.kitesurfpassion.fr/blog/location-kitesurf-hyeres-almanarre-guide</loc>
+    <lastmod>2026-01-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

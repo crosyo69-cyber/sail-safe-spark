@@ -5,7 +5,7 @@
     <link>https://www.kitesurfpassion.fr/blog-kitesurf-hyeres</link>
     <description>Actualités, conseils et guides sur le kitesurf, wingfoil et pumpfoil à Hyères. Découvrez le spot de l'Almanarre avec l'école KiteSurf Passion.</description>
     <language>fr-FR</language>
-    <lastBuildDate>Tue, 28 Jan 2025 10:00:00 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 02 Feb 2026 10:00:00 +0100</lastBuildDate>
     <atom:link href="https://www.kitesurfpassion.fr/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://www.kitesurfpassion.fr/favicon.ico</url>
@@ -14,10 +14,19 @@
     </image>
     
     <item>
+      <title>Foil Tracté à Hyères : Initiez-vous au Vol Sans Vent</title>
+      <link>https://www.kitesurfpassion.fr/blog/foil-tracte-hyeres-initiation-vol</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/foil-tracte-hyeres-initiation-vol</guid>
+      <pubDate>Sun, 02 Feb 2026 10:00:00 +0100</pubDate>
+      <category>Kitesurf</category>
+      <description>Découvrez le foil tracté par bateau à Hyères sur la baie de Giens. Vivez les sensations du vol au-dessus de l'eau sans dépendre du vent, accessible à tous dès 12 ans.</description>
+    </item>
+    
+    <item>
       <title>Wakeboard à Hyères : La Glisse Nautique Accessible à Tous</title>
       <link>https://www.kitesurfpassion.fr/blog/wakeboard-hyeres-glisse-nautique</link>
       <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/wakeboard-hyeres-glisse-nautique</guid>
-      <pubDate>Mon, 02 Feb 2026 10:00:00 +0100</pubDate>
+      <pubDate>Sat, 01 Feb 2026 10:00:00 +0100</pubDate>
       <category>Kitesurf</category>
       <description>Découvrez le wakeboard à Hyères sur la baie de Giens. Activité nautique fun et accessible dès 8 ans, encadrée par notre moniteur diplômé.</description>
     </item>
@@ -26,7 +35,7 @@
       <title>Location Matériel Kitesurf à Hyères : Guide Complet</title>
       <link>https://www.kitesurfpassion.fr/blog/location-kitesurf-hyeres-almanarre-guide</link>
       <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/location-kitesurf-hyeres-almanarre-guide</guid>
-      <pubDate>Sun, 01 Feb 2026 10:00:00 +0100</pubDate>
+      <pubDate>Fri, 31 Jan 2026 10:00:00 +0100</pubDate>
       <category>Kitesurf</category>
       <description>Louez votre matériel de kitesurf à Hyères sur le spot de l'Almanarre. Ailes, planches, combinaisons : équipement premium Duotone pour riders autonomes.</description>
     </item>
