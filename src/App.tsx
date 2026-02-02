@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +8,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { PWAInstallBanner } from "@/components/PWAInstallBanner";
 import { CookieConsent } from "@/components/CookieConsent";
 import { WebVitalsDashboard } from "@/components/WebVitalsDashboard";
+import { initGA4 } from "@/lib/analytics";
 
 // Critical path - loaded immediately
 import Index from "./pages/Index";
@@ -51,8 +52,14 @@ const PageLoader = () => (
   </div>
 );
 
-const App = () => (
-  <HelmetProvider>
+const App = () => {
+  // Initialize GA4 after React has mounted to avoid DOM conflicts
+  useEffect(() => {
+    initGA4();
+  }, []);
+
+  return (
+    <HelmetProvider>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
@@ -93,7 +100,8 @@ const App = () => (
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
-  </HelmetProvider>
-);
+    </HelmetProvider>
+  );
+};
 
 export default App;

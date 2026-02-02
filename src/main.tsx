@@ -2,16 +2,13 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { registerServiceWorker } from "./lib/register-sw";
-import { initGA4 } from "./lib/analytics";
 import { initWebVitals } from "./lib/web-vitals";
 
 // Register service worker for offline support and caching
 registerServiceWorker();
 
-// Initialize Google Analytics 4 (must be before web vitals)
-initGA4();
-
-// Initialize Core Web Vitals monitoring (sends to GA4 if configured)
+// Initialize Core Web Vitals monitoring
+// Note: GA4 is initialized after React mounts (in App.tsx) to avoid DOM conflicts
 initWebVitals();
 
 createRoot(document.getElementById("root")!).render(<App />);

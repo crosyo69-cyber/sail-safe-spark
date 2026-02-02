@@ -13,17 +13,17 @@ let isInitialized = false;
 
 /**
  * Initialize Google Analytics 4
- * Only loads the script if a measurement ID is configured
+ * Uses a deferred approach to avoid React DOM conflicts
  */
 export function initGA4(): void {
   if (isInitialized || !GA_MEASUREMENT_ID) {
-    if (!GA_MEASUREMENT_ID) {
+    if (!GA_MEASUREMENT_ID && import.meta.env.DEV) {
       console.warn('[Analytics] GA_MEASUREMENT_ID not configured - analytics disabled');
     }
     return;
   }
 
-  // Initialize dataLayer
+  // Initialize dataLayer and gtag function
   window.dataLayer = window.dataLayer || [];
   window.gtag = function gtag(...args: unknown[]) {
     window.dataLayer.push(args);
@@ -38,14 +38,28 @@ export function initGA4(): void {
     cookie_flags: 'SameSite=None;Secure',
   });
 
-  // Load gtag script asynchronously
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-  document.head.appendChild(script);
+  // Defer script loading to avoid React DOM conflicts
+  // Use requestIdleCallback to load after React has mounted
+  const loadGAScript = () => {
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+    
+    // Append to body instead of head to avoid hydration conflicts
+    document.body.appendChild(script);
+    
+    isInitialized = true;
+    console.log('%c[Analytics] Google Analytics 4 initialized', 'color: #4285f4; font-weight: bold');
+  };
 
-  isInitialized = true;
-  console.log('%c[Analytics] Google Analytics 4 initialized', 'color: #4285f4; font-weight: bold');
+  // Wait for React to finish initial render, then load GA
+  if ('requestIdleCallback' in window) {
+    (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => void })
+      .requestIdleCallback(loadGAScript, { timeout: 3000 });
+  } else {
+    // Fallback for Safari
+    setTimeout(loadGAScript, 2000);
+  }
 }
 
 /**
