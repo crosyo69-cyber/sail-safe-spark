@@ -1757,6 +1757,8 @@ const BlogArticle = () => {
         <title>{article.title} | Blog KiteSurf Passion</title>
         <meta name="description" content={article.excerpt} />
         <link rel="canonical" href={`https://www.kitesurfpassion.fr/blog/${slug}`} />
+        <link rel="alternate" hrefLang="fr" href={`https://www.kitesurfpassion.fr/blog/${slug}`} />
+        <link rel="alternate" hrefLang="x-default" href={`https://www.kitesurfpassion.fr/blog/${slug}`} />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
