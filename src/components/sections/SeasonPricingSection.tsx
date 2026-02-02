@@ -68,7 +68,7 @@ export const SeasonPricingSection = ({
         </p>
 
         {/* Grille Haute Saison / Basse Saison */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
           {/* Bloc Haute Saison */}
           <div className="bg-card rounded-3xl border-2 border-sunset/30 overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:border-sunset/50 hover:-translate-y-1">
             {/* Header Haute Saison */}
@@ -137,10 +137,10 @@ export const SeasonPricingSection = ({
           </div>
 
           {/* Bloc Basse Saison */}
-          <div className="bg-card rounded-3xl border-2 border-primary/30 overflow-hidden shadow-lg relative transition-all duration-300 hover:shadow-2xl hover:border-primary/50 hover:-translate-y-1">
+          <div className="bg-card rounded-3xl border-2 border-primary/30 overflow-hidden shadow-lg relative transition-all duration-300 hover:shadow-2xl hover:border-primary/50 hover:-translate-y-1 mt-4 lg:mt-0">
             {/* Badge économies */}
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-              <span className="bg-primary text-white text-sm px-4 py-1.5 rounded-full font-bold shadow-glow">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+              <span className="bg-primary text-white text-sm px-4 py-1.5 rounded-full font-bold shadow-lg whitespace-nowrap">
                 💰 Meilleur rapport qualité/prix
               </span>
             </div>
