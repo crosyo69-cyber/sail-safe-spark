@@ -292,6 +292,7 @@ export default function CoursPumpfoil() {
               src={pumpfoilImage}
               alt="Cours Pumpfoil Hyères - Dock Start Pump Foil école KiteSurf Passion Var"
               loading="eager"
+              decoding="sync"
               fetchPriority="high"
               className="w-full h-full object-cover"
             />

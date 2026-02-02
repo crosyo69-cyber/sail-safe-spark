@@ -404,6 +404,8 @@ const Blog = () => {
               alt="Blog kitesurf wingfoil pumpfoil - Presqu'île de Giens"
               className="w-full h-full object-cover"
               loading="eager"
+              decoding="sync"
+              fetchPriority="high"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-navy/70 via-navy/40 to-navy/20" />
           </div>
@@ -503,6 +505,7 @@ const Blog = () => {
                         alt={article.alt || article.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
+                        decoding="async"
                       />
                     </div>
                     <div className="p-6">
@@ -594,6 +597,7 @@ const Blog = () => {
                         alt={article.alt || article.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
+                        decoding="async"
                       />
                       <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
                         <ShareButtons 
@@ -675,6 +679,8 @@ const Blog = () => {
               src={blogCtaImage} 
               alt="Kitesurf au coucher de soleil à Hyères" 
               className="w-full h-full object-cover"
+              loading="lazy"
+              decoding="async"
             />
             <div className="absolute inset-0 bg-navy/60" />
           </div>

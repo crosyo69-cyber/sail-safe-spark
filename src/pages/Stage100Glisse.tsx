@@ -223,6 +223,7 @@ const Stage100Glisse = () => {
               src={hero100Glisse}
               alt="Stage kitesurf 100% Glisse Hyères Almanarre - Formation intensive école KiteSurf Passion Var"
               loading="eager"
+              decoding="sync"
               fetchPriority="high"
               className="w-full h-full object-cover"
             />

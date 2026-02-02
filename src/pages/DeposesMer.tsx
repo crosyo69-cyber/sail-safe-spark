@@ -189,6 +189,7 @@ const DeposesMer = () => {
               src={bateauSecurite}
               alt="Bateau assistance kitesurf Hyères - Déposes en mer école KiteSurf Passion Almanarre Var"
               loading="eager"
+              decoding="sync"
               fetchPriority="high"
               className="w-full h-full object-cover"
             />

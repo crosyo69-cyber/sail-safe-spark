@@ -251,6 +251,7 @@ const FoilTracte = () => {
               src={foilTracteHero}
               alt="Foil tracté Hyères - Session foil remorqué bateau école KiteSurf Passion Almanarre Var"
               loading="eager"
+              decoding="sync"
               fetchPriority="high"
               className="w-full h-full object-cover"
             />

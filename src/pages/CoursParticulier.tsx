@@ -228,6 +228,7 @@ const CoursParticulier = () => {
               src={heroKitesurf}
               alt="Cours particulier kitesurf Hyères - Formation premium moniteur dédié école KiteSurf Passion Var"
               loading="eager"
+              decoding="sync"
               fetchPriority="high"
               className="w-full h-full object-cover"
             />

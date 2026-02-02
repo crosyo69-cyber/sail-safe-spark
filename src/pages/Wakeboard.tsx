@@ -223,6 +223,7 @@ const Wakeboard = () => {
               src={wakeboardHero}
               alt="Wakeboard Hyères baie de Giens - Session glisse tractée école KiteSurf Passion Var"
               loading="eager"
+              decoding="sync"
               fetchPriority="high"
               className="w-full h-full object-cover"
             />

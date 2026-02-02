@@ -179,6 +179,8 @@ const LocationMateriel = () => {
                     alt={item.alt}
                     loading="lazy"
                     decoding="async"
+                    width={400}
+                    height={400}
                     className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent" />

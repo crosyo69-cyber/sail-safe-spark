@@ -288,6 +288,7 @@ const StageWingfoil = () => {
               src={wingfoilImage}
               alt="Stage wingfoil Hyères Almanarre - Cours wing foil école KiteSurf Passion Var"
               loading="eager"
+              decoding="sync"
               fetchPriority="high"
               className="w-full h-full object-cover"
             />
