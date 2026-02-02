@@ -1685,6 +1685,271 @@ Vivez les sensations du vol sur l'eau dès aujourd'hui ! Notre [foil tracté](/f
     `,
     tags: ["Foil Tracté", "Bateau", "Hyères", "Giens", "Débutant"],
   },
+  "wakeboard-hyeres-glisse-nautique": {
+    content: `
+## Wakeboard à Hyères : La Glisse Nautique Accessible à Tous
+
+**Le wakeboard, une activité nautique fun pour toute la famille**
+
+Envie de sensations de glisse sans dépendre du vent ? Le **wakeboard à Hyères** est l'activité idéale ! Notre **école de wakeboard Var** vous propose des sessions encadrées par un moniteur diplômé d'État sur la magnifique **baie de Giens**. Depuis 1999, KiteSurf Passion diversifie son offre pour proposer des activités nautiques accessibles à tous.
+
+### Qu'est-ce que le Wakeboard ?
+
+Le wakeboard consiste à glisser sur l'eau en étant tracté par un bateau. Debout sur une planche, vous évoluez dans le sillage du bateau et profitez de sensations uniques :
+
+- **Glisse fluide** sur une eau plate ou dans les vagues du sillage
+- **Accessibilité immédiate** : pas besoin de vent ni de technique complexe
+- **Progression rapide** dès les premières minutes
+- **Fun garanti** pour petits et grands dès 8 ans
+
+### Pourquoi Choisir le Wakeboard à Hyères ?
+
+La **baie de Hyères** offre des conditions exceptionnelles pour le wakeboard :
+
+| Avantage | Description |
+|----------|-------------|
+| **Eau calme** | Plan d'eau protégé par la presqu'île de Giens |
+| **Eau tempérée** | 20-24°C de mai à octobre |
+| **Cadre naturel** | Vue sur les îles d'Or (Porquerolles, Port-Cros) |
+| **Sécurité** | Zone de navigation dédiée loin des baigneurs |
+
+### Notre Pédagogie Wakeboard
+
+Notre moniteur diplômé d'État vous accompagne pas à pas :
+
+#### Phase 1 : Briefing et Sécurité
+- Présentation du matériel (planche, palonnier, gilet)
+- Position de départ dans l'eau
+- Signaux de communication avec le pilote
+
+#### Phase 2 : Premier Départ
+- Départ dans l'eau en position groupée
+- Montée progressive en vitesse par le bateau
+- Premier lever et équilibre sur la planche
+
+#### Phase 3 : Glisse et Progression
+- Navigation dans le sillage du bateau
+- Découverte des sensations de glisse
+- Premiers virages et changements de direction
+
+#### Phase 4 : Perfectionnement (selon niveau)
+- Passage de la vague du sillage
+- Sauts et figures de base
+- Tricks pour les plus avancés
+
+### Le Wakeboard pour Tous les Niveaux
+
+| Niveau | Ce que vous apprenez |
+|--------|---------------------|
+| **Débutant** | Lever, équilibre, navigation de base |
+| **Intermédiaire** | Virages, passage de vague, sauts |
+| **Confirmé** | Figures, rotations, tricks |
+
+### Wakeboard vs Autres Sports Nautiques
+
+| Critère | Wakeboard | Kitesurf | Wingfoil |
+|---------|-----------|----------|----------|
+| Vent nécessaire | Non | Oui | Oui |
+| Âge minimum | 8 ans | 12 ans | 14 ans |
+| Progression | Très rapide | Progressive | Progressive |
+| Autonomie | Jamais (bateau) | Après stage | Après stage |
+
+### Nos Tarifs Wakeboard à Hyères
+
+| Formule | Durée | Tarif | Idéal pour |
+|---------|-------|-------|------------|
+| Découverte | 15 min | 50€ | Premier essai |
+| Session | 30 min | 90€ | Progression |
+| Pack duo | 2x15 min | 80€ | En couple/amis |
+| Pack famille | 4x15 min | 150€ | Famille complète |
+
+**Tout est inclus** : planche, gilet d'impact, combinaison, bateau et moniteur.
+
+### Équipement Premium
+
+Nous utilisons du matériel haut de gamme adapté à chaque niveau :
+
+- **Planches débutant** : larges et stables pour faciliter le lever
+- **Planches progression** : réactives pour les virages et sauts
+- **Gilets d'impact** : protection et flottabilité
+- **Palonniers ergonomiques** : grip confortable pour toute la session
+
+### Wakeboard et Bateau : La Sécurité Avant Tout
+
+Notre [bateau d'assistance](/blog/pourquoi-bateau-assistance-essentiel) est spécialement équipé pour le wakeboard :
+
+- Pylône de traction adapté
+- Miroir de surveillance du rider
+- Vitesse contrôlée (15-30 km/h selon niveau)
+- Communication directe avec le moniteur
+
+### Combiner Wakeboard et Autres Activités
+
+Le wakeboard s'intègre parfaitement dans une journée multi-activités :
+
+- **Wakeboard + [Foil Tracté](/foil-tracte-hyeres)** : découvrir la glisse et le vol
+- **Wakeboard + [Pumpfoil](/cours-pumpfoil-dock-start-hyeres)** : activités sans vent
+- **Wakeboard pour la famille** pendant que les parents font du [kitesurf](/cours-kitesurf-hyeres-debutant)
+
+### Quand Pratiquer le Wakeboard à Hyères ?
+
+Le wakeboard se pratique toute l'année, mais les meilleures conditions sont :
+
+| Période | Conditions | Recommandation |
+|---------|-----------|----------------|
+| **Mai-Octobre** | Eau 20-24°C, météo clémente | Idéal |
+| **Mars-Avril** | Eau 16-18°C, combinaison 4/3 | Très bien |
+| **Novembre-Février** | Eau 14-16°C, combinaison intégrale | Possible |
+
+### Réservez Votre Session Wakeboard
+
+Prêt pour des sensations de glisse garanties ? Réservez votre session [wakeboard à Hyères](/wakeboard-hyeres) dès maintenant !
+
+**Contactez-nous au 06 72 71 69 05** ou [réservez en ligne](/contact-reservation-kitesurf-hyeres). Consultez nos [tarifs](/tarifs-cours-kitesurf-wingfoil-hyeres) pour toutes les formules.
+    `,
+    tags: ["Wakeboard", "Hyères", "Giens", "Glisse", "Nautisme", "Famille"],
+  },
+  "location-kitesurf-hyeres-almanarre-guide": {
+    content: `
+## Location Matériel Kitesurf à Hyères : Guide Complet
+
+**Louez du matériel premium pour naviguer en autonomie à l'Almanarre**
+
+Vous êtes autonome en kitesurf et souhaitez naviguer sur le mythique **spot de l'Almanarre** ? Notre service de **location kitesurf Hyères** met à votre disposition un équipement complet et haut de gamme. Depuis 1999, KiteSurf Passion accompagne les riders confirmés avec du matériel **Duotone** dernière génération.
+
+### Notre Offre de Location Kitesurf
+
+La **location de matériel kitesurf Almanarre** comprend tout l'équipement nécessaire pour une session réussie :
+
+| Équipement | Marque | Modèles disponibles |
+|------------|--------|---------------------|
+| **Ailes** | Duotone | Rebel, Evo, Juice (7-14m²) |
+| **Planches** | Duotone | Twin-tip Select, Gonzales |
+| **Barres** | Duotone | Trust Bar 4 lignes |
+| **Harnais** | ION | Apex, Riot (culotte/ceinture) |
+| **Combinaisons** | ION | 3/2mm, 4/3mm, 5/4mm |
+
+### Conditions de Location
+
+Pour louer du matériel chez KiteSurf Passion, vous devez :
+
+#### Niveau Requis
+- **Être autonome** en navigation (aller-retour, remontée au vent)
+- **Maîtriser les systèmes de sécurité** (quick release, auto-sauvetage)
+- **Connaître les règles de priorité** et de navigation
+- Présenter un **justificatif de niveau** (carte école ou attestation)
+
+#### Documents Nécessaires
+- Pièce d'identité
+- Attestation d'assurance responsabilité civile
+- Caution (chèque ou empreinte CB)
+
+### Pourquoi Louer à l'Almanarre ?
+
+Le **spot kitesurf Almanarre Hyères** est réputé mondialement pour ses conditions exceptionnelles :
+
+#### Avantages du Spot
+
+| Caractéristique | Description |
+|-----------------|-------------|
+| **Vent régulier** | Mistral (NW) et Levant (E) de mars à novembre |
+| **Eau peu profonde** | Idéal pour la remise en selle |
+| **Grand espace** | 4 km de plage, navigation sans obstacle |
+| **Communauté** | Spot convivial, ambiance familiale |
+
+### Nos Tarifs Location Kitesurf
+
+| Formule | Durée | Tarif | Ce qui est inclus |
+|---------|-------|-------|-------------------|
+| **Demi-journée** | 4h | 80€ | Aile + barre + planche + harnais |
+| **Journée** | 8h | 120€ | Pack complet + combinaison |
+| **Week-end** | 2 jours | 200€ | Pack complet + combinaison |
+| **Semaine** | 7 jours | 500€ | Pack complet + 2 combinaisons |
+
+*Tarifs dégressifs pour locations longue durée. [Voir tous les tarifs](/tarifs-cours-kitesurf-wingfoil-hyeres).*
+
+### Le Matériel Duotone : Notre Choix Premium
+
+Nous avons choisi **Duotone** pour la qualité et la fiabilité de leurs équipements :
+
+#### Pourquoi Duotone ?
+
+- **Performance** : ailes réactives et stables
+- **Sécurité** : systèmes de largage rapide fiables
+- **Durabilité** : matériaux résistants à l'usure
+- **Polyvalence** : gamme adaptée à tous les styles
+
+#### Nos Ailes Disponibles
+
+| Modèle | Tailles | Style | Pour qui ? |
+|--------|---------|-------|------------|
+| **Rebel** | 7-12m² | Freeride/Performance | Riders confirmés |
+| **Evo** | 9-14m² | Polyvalente | Tous niveaux |
+| **Juice** | 10-14m² | Light wind | Conditions légères |
+
+### Comment Réserver Votre Location ?
+
+#### Étape 1 : Contactez-nous
+- Par téléphone : **06 72 71 69 05**
+- Par [formulaire en ligne](/contact-reservation-kitesurf-hyeres)
+
+#### Étape 2 : Validation du Niveau
+- Échange avec notre équipe sur votre expérience
+- Vérification des documents (attestation, assurance)
+
+#### Étape 3 : Récupération du Matériel
+- Rendez-vous sur le spot de l'Almanarre
+- Check-up du matériel ensemble
+- Briefing conditions du jour
+
+### Conseils pour Naviguer à l'Almanarre
+
+#### Orientation du Vent
+
+| Vent | Direction | Caractéristiques |
+|------|-----------|------------------|
+| **Mistral** | Nord-Ouest | Fort, régulier, cross-shore |
+| **Levant** | Est | Plus irrégulier, side-shore |
+
+#### Zones de Navigation
+
+- **Zone Nord** : moins de monde, courant modéré
+- **Zone Centre** : la plus fréquentée, communauté active
+- **Zone Sud** : vers les Salins, vent plus fort
+
+#### Sécurité sur le Spot
+
+- Respectez les **distances avec les baigneurs** (zone balisée)
+- Vérifiez les **prévisions météo** avant chaque session
+- Prévenez quelqu'un de votre navigation
+- Restez à portée du rivage si vous n'êtes pas sûr
+
+### Alternatives à la Location Pure
+
+Si vous n'êtes pas encore totalement autonome, nous proposons :
+
+| Formule | Description | Idéal pour |
+|---------|-------------|------------|
+| **[Cours particulier](/cours-particulier-kitesurf-hyeres)** | Perfectionnement avec moniteur | Renforcer son niveau |
+| **[Session carte](/session-kitesurf-carte-hyeres)** | Cours à l'unité | Progresser ponctuellement |
+| **[Stage 100% Glisse](/stage-kitesurf-100-glisse-hyeres)** | Stage complet | Devenir autonome |
+
+### Notre Service Après-Session
+
+En cas de problème pendant votre location :
+
+- **Assistance téléphonique** pendant les heures d'ouverture
+- **Échange de matériel** si casse ou défaut
+- **Conseils personnalisés** sur les conditions
+
+### Réservez Votre Location Kitesurf
+
+Prêt à naviguer en autonomie sur le plus beau spot du Var ? [Contactez-nous](/contact-reservation-kitesurf-hyeres) pour réserver votre matériel.
+
+**Appelez-nous au 06 72 71 69 05** ou consultez notre [page location complète](/location-materiel-kitesurf-hyeres) pour plus de détails.
+    `,
+    tags: ["Location", "Kitesurf", "Almanarre", "Hyères", "Duotone", "Matériel"],
+  },
 };
 
 const BlogArticle = () => {
