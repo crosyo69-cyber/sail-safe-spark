@@ -7,6 +7,8 @@ import { Check, Gift, Download, AlertCircle, Info } from "lucide-react";
 import { Link } from "react-router-dom";
 import { MeetingPointsSection } from "@/components/sections/MeetingPointsSection";
 import { SeasonPricingSection } from "@/components/sections/SeasonPricingSection";
+import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
+import { getProductRatingData } from "@/lib/seo-ratings";
 
 import bonCadeauKitesurf from "@/assets/bon-cadeau-kitesurf.jpg";
 import bonCadeauWingfoil from "@/assets/bon-cadeau-wingfoil.jpg";
@@ -67,6 +69,34 @@ const included = [
   "Photos de vos sessions (sur demande)",
 ];
 
+// FAQ items for the pricing page
+const tarifsFAQItems = [
+  {
+    question: "Les tarifs incluent-ils tout le matériel ?",
+    answer: "Oui, tous nos tarifs sont tout compris : aile de kitesurf, planche, combinaison néoprène, harnais, casque et gilet de flottaison. Le bateau d'assistance est également inclus pour tous les cours.",
+  },
+  {
+    question: "Quelle est la différence entre haute et basse saison ?",
+    answer: "La haute saison correspond aux mois de juillet et août, période de forte demande avec des conditions météo optimales. La basse saison (hors juillet/août) offre des tarifs préférentiels, plus de disponibilité et un suivi pédagogique plus personnalisé.",
+  },
+  {
+    question: "Comment puis-je économiser sur les cours ?",
+    answer: "Pour économiser jusqu'à 150€, réservez vos cours en basse saison (hors juillet/août). Vous bénéficierez également d'un encadrement plus personnalisé et d'une progression plus rapide grâce à des groupes plus petits.",
+  },
+  {
+    question: "Une licence FFVL est-elle obligatoire ?",
+    answer: "Oui, pour les stages Kitesurf et Wingfoil, une licence FFVL (Fédération Française de Vol Libre) est obligatoire. Elle peut être souscrite directement auprès de notre école ou en ligne sur www.ffvl.fr.",
+  },
+  {
+    question: "Proposez-vous des bons cadeaux ?",
+    answer: "Oui ! Nous proposons des bons cadeaux pour toutes nos activités : kitesurf, wingfoil et foil tracté. Ils sont valables 1 an et personnalisables sur demande. Téléchargez-les directement depuis notre page tarifs ou contactez-nous pour un bon personnalisé.",
+  },
+  {
+    question: "Que se passe-t-il en cas de mauvais temps ?",
+    answer: "Si les conditions météo ne permettent pas la pratique, nous reportons votre séance à une date ultérieure. Pour le stage 100% Glisse, les jours sans vent sont remplacés par des activités tractées (foil tracté, wakeboard) incluses dans le tarif.",
+  },
+];
+
 const imageGalleryStructuredData = {
   "@context": "https://schema.org",
   "@type": "ImageGallery",
@@ -121,14 +151,55 @@ const imageGalleryStructuredData = {
   ],
 };
 
+// Product structured data for rich snippets
+const productStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: "Cours de Kitesurf et Wingfoil à Hyères",
+  description: "Stages et cours de kitesurf, wingfoil, pumpfoil et foil tracté à l'Almanarre, Hyères. Formules adaptées à tous les niveaux avec moniteur diplômé d'État et bateau d'assistance.",
+  image: "https://www.kitesurfpassion.fr/og-image.jpg",
+  brand: {
+    "@type": "Brand",
+    name: "KiteSurf Passion"
+  },
+  offers: {
+    "@type": "AggregateOffer",
+    lowPrice: "40",
+    highPrice: "699",
+    priceCurrency: "EUR",
+    offerCount: 15,
+    availability: "https://schema.org/InStock",
+    seller: {
+      "@type": "Organization",
+      name: "KiteSurf Passion",
+      url: "https://www.kitesurfpassion.fr"
+    }
+  },
+  ...getProductRatingData()
+};
+
+// FAQPage structured data
+const faqStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: tarifsFAQItems.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
+    },
+  })),
+};
+
 const Tarifs = () => {
   return (
     <>
       <Helmet>
-        <title>Tarifs Kitesurf Wingfoil Hyères | Prix Almanarre</title>
+        <title>Tarifs Kitesurf Wingfoil Hyères | Cours dès 40€ | KiteSurf Passion</title>
         <meta
           name="description"
-          content="Découvrez nos tarifs transparents pour cours de kitesurf, wingfoil et pumpfoil à Hyères. Stage dès 399€ hors saison. Économisez jusqu'à 150€ en basse saison !"
+          content="Découvrez nos tarifs cours de kitesurf, wingfoil et pumpfoil à Hyères. Stage kitesurf dès 399€, wingfoil dès 440€. Économisez jusqu'à 150€ en basse saison ! Tout inclus."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" />
         <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" />
@@ -153,8 +224,15 @@ const Tarifs = () => {
         <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta name="twitter:image:alt" content="Tarifs cours kitesurf wingfoil Hyères" />
         
+        {/* Structured Data */}
         <script type="application/ld+json">
           {JSON.stringify(imageGalleryStructuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(productStructuredData)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(faqStructuredData)}
         </script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
@@ -174,10 +252,10 @@ const Tarifs = () => {
         <section className="pt-32 pb-16 bg-gradient-to-b from-primary/10 to-background">
           <div className="container mx-auto px-4 text-center">
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6">
-              Nos Tarifs
+              Tarifs Kitesurf & Wingfoil à Hyères
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-6">
-              Transparence totale sur nos prix. Tout le matériel et le bateau d'assistance sont inclus.
+              Transparence totale sur nos prix. Tout le matériel et le bateau d'assistance sont inclus dans chaque formule.
             </p>
             
             {/* Bandeau économies */}
@@ -534,6 +612,13 @@ const Tarifs = () => {
             </div>
           </div>
         </section>
+
+        {/* FAQ Section */}
+        <ActivityFAQ
+          title="Questions Fréquentes Tarifs"
+          subtitle="Tout ce que vous devez savoir sur nos formules et nos prix"
+          faqs={tarifsFAQItems}
+        />
 
         {/* CTA */}
         <section className="py-16 bg-primary text-primary-foreground">
