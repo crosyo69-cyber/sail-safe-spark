@@ -1,4 +1,5 @@
 import { memo, useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { Star, Quote, MapPin, CheckCircle, MessageSquarePlus } from "lucide-react";
 import { StarRating } from "@/components/ui/star-rating";
 import { ReviewSubmissionForm } from "@/components/ReviewSubmissionForm";
@@ -159,10 +160,15 @@ export const TestimonialsSection = memo(function TestimonialsSection() {
   }, []);
 
   return (
-    <section 
-      className="py-24 bg-gradient-to-b from-secondary/30 to-background"
-      style={{ contain: 'layout style' }}
-    >
+    <>
+      <Helmet>
+        {/* Inject all testimonials as Review structured data for Google */}
+        <script type="application/ld+json">{JSON.stringify(reviewsStructuredData)}</script>
+      </Helmet>
+      <section 
+        className="py-24 bg-gradient-to-b from-secondary/30 to-background"
+        style={{ contain: 'layout style' }}
+      >
       <div className="container mx-auto px-4">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
@@ -317,6 +323,7 @@ export const TestimonialsSection = memo(function TestimonialsSection() {
           )}
         </div>
       </div>
-    </section>
+      </section>
+    </>
   );
 });
