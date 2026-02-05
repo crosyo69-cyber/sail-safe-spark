@@ -99,10 +99,18 @@ const totalRating = testimonials.reduce((sum, t) => sum + t.rating, 0);
 const averageRating = (totalRating / testimonials.length).toFixed(1);
 const reviewCount = testimonials.length;
 
+// Item reviewed reference for all reviews
+const itemReviewed = {
+  "@type": "LocalBusiness",
+  "@id": "https://www.kitesurfpassion.fr/#organization",
+  name: "KiteSurf Passion",
+};
+
 // Schema.org structured data for reviews
 export const reviewsStructuredData = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
+  "@id": "https://www.kitesurfpassion.fr/#organization",
   name: "KiteSurf Passion",
   telephone: "+33672716905",
   priceRange: "€€",
@@ -132,10 +140,11 @@ export const reviewsStructuredData = {
     reviewBody: t.text,
     reviewRating: {
       "@type": "Rating",
-      ratingValue: t.rating,
+      ratingValue: t.rating.toString(),
       bestRating: "5",
       worstRating: "1",
     },
+    itemReviewed: itemReviewed,
   })),
 };
 
