@@ -380,8 +380,14 @@ const Blog = () => {
       "@type": "BlogPosting",
       headline: article.title,
       description: article.excerpt,
-      datePublished: article.date,
+      datePublished: `${article.date}T08:00:00+01:00`,
       url: `https://www.kitesurfpassion.fr/blog/${article.slug}`,
+      image: `https://www.kitesurfpassion.fr/assets/${article.image}`,
+      author: {
+        "@type": "Person",
+        name: "Yoanne Cros",
+        url: "https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres",
+      },
     })),
   };
 
