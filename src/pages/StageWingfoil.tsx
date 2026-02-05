@@ -197,21 +197,11 @@ const StageWingfoil = () => {
         <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta name="twitter:image:alt" content="Stage wingfoil Hyères Almanarre" />
         
+        {/* Single FAQPage with all wingfoil FAQs - removed duplicate to fix GSC error */}
         <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(courseStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(productStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(imageStructuredData)}</script>
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: wingfoilFaqs.map(faq => ({
-              "@type": "Question",
-              name: faq.question,
-              acceptedAnswer: { "@type": "Answer", text: faq.answer }
-            }))
-          })}
-        </script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
