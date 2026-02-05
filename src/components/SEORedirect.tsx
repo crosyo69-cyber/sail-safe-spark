@@ -17,12 +17,8 @@
    const navigate = useNavigate();
  
    useEffect(() => {
-     // Small delay to ensure meta tags are processed by crawlers
-     const timer = setTimeout(() => {
-       navigate(to, { replace: true });
-     }, 0);
-     
-     return () => clearTimeout(timer);
+    // Immediate redirect - meta tags in Helmet are still rendered for crawlers
+    navigate(to, { replace: true });
    }, [to, navigate]);
  
    return (
