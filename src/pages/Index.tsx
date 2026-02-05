@@ -554,7 +554,7 @@ const Index = () => {
           "@type": "WebSite",
           "@id": "https://www.kitesurfpassion.fr/#website",
           "name": "KiteSurf Passion",
-          "alternateName": "École Kitesurf Hyères",
+          "alternateName": ["École Kitesurf Hyères", "Kitesurf Passion Almanarre"],
           "url": "https://www.kitesurfpassion.fr",
           "description": "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999. Cours avec bateau d'assistance sur le spot de l'Almanarre.",
           "inLanguage": "fr-FR",
@@ -569,6 +569,168 @@ const Index = () => {
             },
             "query-input": "required name=search_term_string"
           }
+        })}</script>
+        
+        {/* SiteNavigationElement for sitelinks */}
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "SiteNavigationElement",
+              "@id": "https://www.kitesurfpassion.fr/#navigation",
+              "name": "Navigation principale",
+              "hasPart": [
+                {
+                  "@type": "WebPage",
+                  "name": "Tarifs des cours de kitesurf",
+                  "description": "Tarifs et formules des cours de kitesurf, wingfoil et pumpfoil à Hyères",
+                  "url": "https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres",
+                  "image": "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg"
+                },
+                {
+                  "@type": "WebPage",
+                  "name": "Stage Wingfoil",
+                  "description": "Stage wingfoil 5 jours à l'Almanarre avec foil tracté inclus",
+                  "url": "https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre",
+                  "image": "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg"
+                },
+                {
+                  "@type": "WebPage",
+                  "name": "Stage Kitesurf 100% Glisse",
+                  "description": "5 jours pour devenir autonome en kitesurf avec bateau d'assistance",
+                  "url": "https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres",
+                  "image": "https://www.kitesurfpassion.fr/assets/stage-100-glisse-action.jpg"
+                },
+                {
+                  "@type": "WebPage",
+                  "name": "Pumpfoil & Dock Start",
+                  "description": "Cours de pumpfoil avec technique dock start à Hyères",
+                  "url": "https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres",
+                  "image": "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg"
+                },
+                {
+                  "@type": "WebPage",
+                  "name": "À propos",
+                  "description": "L'histoire de KiteSurf Passion, première école du Var depuis 1999",
+                  "url": "https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres",
+                  "image": "https://www.kitesurfpassion.fr/assets/portrait-yohan-cros.jpg"
+                },
+                {
+                  "@type": "WebPage",
+                  "name": "Contact & Réservation",
+                  "description": "Réservez votre cours de kitesurf, wingfoil ou pumpfoil à Hyères",
+                  "url": "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres"
+                }
+              ]
+            }
+          ]
+        })}</script>
+        
+        {/* ItemList for key pages - helps Google understand site structure */}
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "Pages principales KiteSurf Passion",
+          "description": "Découvrez nos cours et stages de sports nautiques à Hyères",
+          "numberOfItems": 6,
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "item": {
+                "@type": "WebPage",
+                "name": "Tarifs des cours de kitesurf et wingfoil",
+                "description": "Vous souhaitez découvrir le kitesurf ou vous perfectionner ? Consultez nos tarifs et formules adaptées à tous les niveaux.",
+                "url": "https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres",
+                "image": {
+                  "@type": "ImageObject",
+                  "url": "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+                  "width": 1200,
+                  "height": 800
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "item": {
+                "@type": "WebPage",
+                "name": "Wing Foil",
+                "description": "Vous souhaitez découvrir le wingfoil ou vous perfectionner ? Stages de 5 jours avec foil tracté inclus.",
+                "url": "https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre",
+                "image": {
+                  "@type": "ImageObject",
+                  "url": "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+                  "width": 1200,
+                  "height": 800
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "item": {
+                "@type": "WebPage",
+                "name": "Stage Kitesurf 100% Glisse",
+                "description": "Stage d'initiation kitesurf sur 5 jours consécutifs avec bateau d'assistance et foil tracté inclus.",
+                "url": "https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres",
+                "image": {
+                  "@type": "ImageObject",
+                  "url": "https://www.kitesurfpassion.fr/assets/stage-100-glisse-action.jpg",
+                  "width": 1200,
+                  "height": 800
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "item": {
+                "@type": "WebPage",
+                "name": "Activités nautiques",
+                "description": "KiteSurf Passion, école pionnière basée à Carqueiranne depuis 1999. Kitesurf, wingfoil, pumpfoil, foil tracté et wakeboard.",
+                "url": "https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant",
+                "image": {
+                  "@type": "ImageObject",
+                  "url": "https://www.kitesurfpassion.fr/assets/kitesurf-action-hyeres.jpg",
+                  "width": 1200,
+                  "height": 800
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 5,
+              "item": {
+                "@type": "WebPage",
+                "name": "Cours de wingfoil à Hyères",
+                "description": "Nos cours de wingfoil à Hyères sont accessibles à tous. Apprenez le wingfoil sur le spot de l'Almanarre.",
+                "url": "https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre",
+                "image": {
+                  "@type": "ImageObject",
+                  "url": "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+                  "width": 1200,
+                  "height": 800
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 6,
+              "item": {
+                "@type": "WebPage",
+                "name": "Pumpfoil & Dock Start",
+                "description": "Découvrez le pumpfoil avec la technique dock start. Volez sur l'eau sans vent à Hyères.",
+                "url": "https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres",
+                "image": {
+                  "@type": "ImageObject",
+                  "url": "https://www.kitesurfpassion.fr/assets/pumpfoil-dock-start.jpg",
+                  "width": 1200,
+                  "height": 800
+                }
+              }
+            }
+          ]
         })}</script>
       </Helmet>
 
