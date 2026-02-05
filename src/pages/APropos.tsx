@@ -208,9 +208,9 @@ const APropos = () => {
     <>
       <Helmet>
         <title>École Kitesurf Hyères depuis 1999 | À Propos</title>
-        <meta 
+         <meta 
           name="description" 
-          content="Découvrez l'histoire de KiteSurf Passion, fondée en 1999 par Yohan Cros, moniteur diplômé d'État BPJEPS. 25 ans d'expertise en kitesurf, wingfoil et pumpfoil à Hyères." 
+          content="L'histoire de KiteSurf Passion, première école du Var depuis 1999" 
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
