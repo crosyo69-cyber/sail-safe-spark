@@ -122,7 +122,16 @@ const APropos = () => {
     "jobTitle": "Moniteur diplômé d'État BPJEPS",
     "worksFor": {
       "@type": "LocalBusiness",
-      "name": "KiteSurf Passion"
+      "name": "KiteSurf Passion",
+      "url": "https://www.kitesurfpassion.fr",
+      "priceRange": "€€",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "52 Avenue Général de Gaulle",
+        "addressLocality": "Carqueiranne",
+        "postalCode": "83320",
+        "addressCountry": "FR"
+      }
     },
     "description": "Fondateur de KiteSurf Passion, moniteur diplômé d'État et formateur de moniteurs avec plus de 25 ans d'expérience dans l'enseignement du kitesurf, wingfoil et pumpfoil à Hyères.",
     "knowsAbout": ["Kitesurf", "Wing Foil", "Pump Foil", "Sports nautiques", "Sécurité en mer"]
