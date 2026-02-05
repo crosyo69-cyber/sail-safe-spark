@@ -545,7 +545,7 @@ const Index = () => {
         {/* Structured Data */}
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
-        <script type="application/ld+json">{JSON.stringify(reviewsStructuredData)}</script>
+        {/* Note: reviewsStructuredData removed to avoid "multiple aggregate ratings" GSC error - ratings are centralized in structuredData */}
         <script type="application/ld+json">{JSON.stringify(imageGalleryStructuredData)}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
@@ -786,8 +786,7 @@ const Index = () => {
           "sameAs": [
             "https://www.facebook.com/kitesurfpassion",
             "https://www.instagram.com/kitesurfpassion"
-          ],
-          "aggregateRating": productAggregateRating
+          ]
         })}</script>
       </Helmet>
 
