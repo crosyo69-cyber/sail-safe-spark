@@ -160,6 +160,7 @@ const sportsActivityLocationData = {
   "@type": "SportsActivityLocation",
   "@id": "https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var#sportslocation",
   name: "Spot Kitesurf & Wingfoil de l'Almanarre",
+  priceRange: "€€",
   description: "Spot de sports nautiques emblématique de la Côte d'Azur. Idéal pour kitesurf, wingfoil et pumpfoil avec conditions régulières et sécurisées.",
   url: "https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var",
   image: "https://www.kitesurfpassion.fr/assets/almanarre-sunset.jpg",
