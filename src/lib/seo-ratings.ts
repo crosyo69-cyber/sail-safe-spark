@@ -79,6 +79,8 @@ const itemReviewed = {
   "@type": "LocalBusiness",
   "@id": "https://www.kitesurfpassion.fr/#organization",
   name: "KiteSurf Passion",
+  url: "https://www.kitesurfpassion.fr",
+  priceRange: "€€",
 };
 
 /**
