@@ -1,5 +1,6 @@
 import { Star, Quote, MapPin, CheckCircle } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { StarRating } from "@/components/ui/star-rating";
 
 // Témoignages spécifiques au foil tracté et wakeboard
@@ -50,6 +51,13 @@ export const foilWakeboardTestimonials = [
   },
 ];
 
+// Item reviewed reference for all reviews
+const itemReviewed = {
+  "@type": "LocalBusiness",
+  "@id": "https://www.kitesurfpassion.fr/#organization",
+  name: "KiteSurf Passion",
+};
+
 interface FoilWakeboardTestimonialsProps {
   variant?: "foilTracte" | "wakeboard" | "both";
   title?: string;
@@ -81,7 +89,43 @@ export function FoilWakeboardTestimonials({
 
   const accentColor = variant === "wakeboard" ? "sunset" : "primary";
 
+  // Generate structured data for all testimonials
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://www.kitesurfpassion.fr/#organization",
+    name: "KiteSurf Passion",
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: averageRating,
+      reviewCount: foilWakeboardTestimonials.length,
+      bestRating: "5",
+      worstRating: "1",
+    },
+    review: foilWakeboardTestimonials.map((t) => ({
+      "@type": "Review",
+      author: {
+        "@type": "Person",
+        name: t.name,
+      },
+      datePublished: t.date,
+      reviewBody: t.text,
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: t.rating.toString(),
+        bestRating: "5",
+        worstRating: "1",
+      },
+      itemReviewed: itemReviewed,
+    })),
+  };
+
   return (
+    <>
+      <Helmet>
+        {/* Inject foil/wakeboard testimonials as Review structured data for Google */}
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Helmet>
     <section className="py-16 bg-muted/30">
       <div className="container mx-auto px-4">
         {/* Section Header */}
@@ -197,6 +241,7 @@ export function FoilWakeboardTestimonials({
           </div>
         </div>
       </div>
-    </section>
+      </section>
+    </>
   );
 }
