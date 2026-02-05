@@ -154,6 +154,9 @@ const LocationMateriel = () => {
             "provider": {
               "@type": "LocalBusiness",
               "name": "KiteSurf Passion",
+              "url": "https://www.kitesurfpassion.fr",
+              "image": "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+              "priceRange": "€€",
               "telephone": "+33672716905",
               "address": {
                 "@type": "PostalAddress",
