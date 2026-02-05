@@ -3,11 +3,13 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { BlogComments } from "@/components/BlogComments";
-import { Link, useParams, Navigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Calendar, Clock, ArrowLeft, ArrowRight, User, Tag, Facebook, Twitter, Linkedin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { blogArticles } from "./Blog";
 import DOMPurify from "dompurify";
+
+import NotFound from "./NotFound";
 
 // WebP optimized images for better LCP performance
 import blogKitesurfDebut from "@/assets/blog-kitesurf-debut.jpg?webp";
@@ -2122,7 +2124,8 @@ const BlogArticle = () => {
   const content = slug ? articleContent[slug] : null;
   
   if (!article || !content) {
-    return <Navigate to="/blog-kitesurf-hyeres" replace />;
+    // Return proper 404 page instead of redirect to avoid Soft 404 in Google Search Console
+    return <NotFound />;
   }
 
   const breadcrumbItems = [
