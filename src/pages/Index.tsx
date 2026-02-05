@@ -107,6 +107,13 @@ const Index = () => {
       width: 1200,
       height: 630
     },
+    logo: {
+      "@type": "ImageObject",
+      url: "https://www.kitesurfpassion.fr/assets/logo-duotone.png",
+      width: 512,
+      height: 512,
+      caption: "Logo KiteSurf Passion"
+    },
     sameAs: [
       "https://www.facebook.com/kitesurfpassion",
       "https://www.instagram.com/kitesurfpassion",
@@ -731,6 +738,56 @@ const Index = () => {
               }
             }
           ]
+        })}</script>
+        
+        {/* Organization schema with logo for Knowledge Panel */}
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "@id": "https://www.kitesurfpassion.fr/#organization",
+          "name": "KiteSurf Passion",
+          "alternateName": ["Kitesurf Passion", "KiteSurf Passion Hyères", "École Kitesurf Hyères"],
+          "url": "https://www.kitesurfpassion.fr",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.kitesurfpassion.fr/assets/logo-duotone.png",
+            "width": 512,
+            "height": 512,
+            "caption": "Logo officiel KiteSurf Passion"
+          },
+          "image": {
+            "@type": "ImageObject",
+            "url": "https://www.kitesurfpassion.fr/og-image.jpg",
+            "width": 1200,
+            "height": 630
+          },
+          "description": "École de kitesurf, wingfoil, pumpfoil et foil tracté à Hyères Almanarre depuis 1999. Plus de 2 500 élèves formés. Bateau d'assistance, moniteur diplômé d'État BPJEPS.",
+          "foundingDate": "1999",
+          "founder": {
+            "@type": "Person",
+            "name": "Yoanne Cros",
+            "jobTitle": "Moniteur diplômé d'État BPJEPS"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "Customer Service",
+            "telephone": "+33-6-72-71-69-05",
+            "email": "crosyo69@gmail.com",
+            "availableLanguage": ["fr-FR"]
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "52 Avenue Général de Gaulle",
+            "addressLocality": "Carqueiranne",
+            "postalCode": "83320",
+            "addressRegion": "Var",
+            "addressCountry": "FR"
+          },
+          "sameAs": [
+            "https://www.facebook.com/kitesurfpassion",
+            "https://www.instagram.com/kitesurfpassion"
+          ],
+          "aggregateRating": productAggregateRating
         })}</script>
       </Helmet>
 
