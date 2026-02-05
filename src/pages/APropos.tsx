@@ -93,6 +93,9 @@ const APropos = () => {
       "@type": "LocalBusiness",
       "name": "KiteSurf Passion",
       "description": "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999. Fondée par Yoanne Cros, moniteur diplômé d'État BPJEPS et formateur de moniteurs.",
+      "url": "https://www.kitesurfpassion.fr",
+      "image": "https://www.kitesurfpassion.fr/assets/portrait-yohan-cros.jpg",
+      "priceRange": "€€",
       "foundingDate": "1999",
       "founder": {
         "@type": "Person",
