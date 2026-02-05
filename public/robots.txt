@@ -66,5 +66,11 @@ Disallow: /404
 Disallow: /auth
 Disallow: /desabonnement-alertes
 
+# Old URLs that redirect to new pages (avoid "Page with redirect" in GSC)
+Disallow: /foil-tracte-wakeboard-hyeres
+
+# Blog category filters - prevent duplicate content indexing
+Disallow: /blog-kitesurf-hyeres?*
+
 # Sitemap - URL unique HTTPS avec www
 Sitemap: https://www.kitesurfpassion.fr/sitemap.xml

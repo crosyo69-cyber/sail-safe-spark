@@ -10,6 +10,7 @@ import { CookieConsent } from "@/components/CookieConsent";
 import { WebVitalsDashboard } from "@/components/WebVitalsDashboard";
 import { PageTracker } from "@/components/PageTracker";
 import { initGA4 } from "@/lib/analytics";
+import { SEORedirect } from "@/components/SEORedirect";
 
 // Critical path - loaded immediately
 import Index from "./pages/Index";
@@ -84,8 +85,8 @@ const App = () => {
               <Route path="/deposes-mer-kitesurf-hyeres" element={<DeposesMer />} />
               <Route path="/foil-tracte-hyeres" element={<FoilTracte />} />
               <Route path="/wakeboard-hyeres" element={<Wakeboard />} />
-              {/* Redirection de l'ancienne URL vers les nouvelles pages */}
-              <Route path="/foil-tracte-wakeboard-hyeres" element={<Navigate to="/foil-tracte-hyeres" replace />} />
+              {/* SEO-friendly redirections with noindex for Google Search Console */}
+              <Route path="/foil-tracte-wakeboard-hyeres" element={<SEORedirect to="/foil-tracte-hyeres" statusCode={301} />} />
               <Route path="/tarifs-cours-kitesurf-wingfoil-hyeres" element={<Tarifs />} />
               <Route path="/contact-reservation-kitesurf-hyeres" element={<Contact />} />
               <Route path="/a-propos-ecole-kitesurf-hyeres" element={<APropos />} />
