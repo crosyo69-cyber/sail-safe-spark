@@ -215,6 +215,8 @@ const Contact = () => {
           "name": "KiteSurf Passion",
           "description": "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999",
           "url": "https://www.kitesurfpassion.fr",
+          "image": "https://www.kitesurfpassion.fr/og-image.jpg",
+          "priceRange": "€€",
           "telephone": "+33672716905",
           "email": "crosyo69@gmail.com",
           "address": {
