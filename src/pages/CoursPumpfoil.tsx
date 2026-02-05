@@ -148,6 +148,8 @@ export default function CoursPumpfoil() {
             "provider": {
               "@type": "Organization",
               "name": "KiteSurf Passion",
+              "url": "https://www.kitesurfpassion.fr",
+              "priceRange": "€€",
               "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "52 Avenue Général de Gaulle",
