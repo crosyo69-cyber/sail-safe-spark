@@ -161,6 +161,7 @@ const Index = () => {
           itemOffered: {
             "@type": "Course",
             name: "Cours Kitesurf à la Carte",
+            description: "Sessions de kitesurf flexibles adaptées à votre planning et niveau",
             image: "https://www.kitesurfpassion.fr/assets/kitesurf-action-hyeres.jpg",
             provider: sellerInfo,
           },
@@ -180,6 +181,7 @@ const Index = () => {
           itemOffered: {
             "@type": "Course",
             name: "Cours Particulier Kitesurf",
+            description: "Leçon privée avec moniteur dédié pour une progression optimale",
             image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
             provider: sellerInfo,
           },
@@ -199,12 +201,18 @@ const Index = () => {
           itemOffered: {
             "@type": "Course",
             name: "Stage Wingfoil Initiation",
+            description: "Formation wingfoil 5 jours avec foil tracté inclus à l'Almanarre",
             image: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
             provider: sellerInfo,
             hasCourseInstance: {
               "@type": "CourseInstance",
               courseMode: "onsite",
               duration: "P5D",
+              instructor: {
+                "@type": "Person",
+                name: "Yoanne Cros",
+                jobTitle: "Moniteur BPJEPS",
+              },
             },
           },
         },
@@ -223,6 +231,7 @@ const Index = () => {
           itemOffered: {
             "@type": "Course",
             name: "Initiation Pumpfoil Dock Start",
+            description: "Apprenez à voler sur l'eau sans vent avec la technique dock start",
             image: "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg",
             provider: sellerInfo,
           },
@@ -242,6 +251,7 @@ const Index = () => {
           itemOffered: {
             "@type": "Course",
             name: "Initiation Foil Tracté",
+            description: "Découverte du vol sur l'eau en toute sécurité tracté par bateau",
             image: "https://www.kitesurfpassion.fr/assets/foil-tracte-hyeres.jpg",
             provider: sellerInfo,
           },
@@ -261,6 +271,7 @@ const Index = () => {
           itemOffered: {
             "@type": "Course",
             name: "Session Wakeboard",
+            description: "Session wakeboard tractée de 15 minutes sur la baie d'Hyères",
             image: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
             provider: sellerInfo,
           },
