@@ -159,12 +159,10 @@ export const TestimonialsSection = memo(function TestimonialsSection() {
     return () => clearInterval(interval);
   }, []);
 
+  // Note: JSON-LD structured data is now centralized in Index.tsx to avoid
+  // "multiple aggregate ratings" error in Google Search Console
   return (
     <>
-      <Helmet>
-        {/* Inject all testimonials as Review structured data for Google */}
-        <script type="application/ld+json">{JSON.stringify(reviewsStructuredData)}</script>
-      </Helmet>
       <section 
         className="py-24 bg-gradient-to-b from-secondary/30 to-background"
         style={{ contain: 'layout style' }}
