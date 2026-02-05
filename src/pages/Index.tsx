@@ -121,6 +121,7 @@ const Index = () => {
           name: "Stage Kitesurf 100% Glisse",
           description: "5 jours consécutifs pour devenir autonome en kitesurf à l'Almanarre",
           url: "https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres",
+          image: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
           price: "399",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
@@ -131,6 +132,7 @@ const Index = () => {
             "@type": "Course",
             name: "Stage Kitesurf 100% Glisse",
             description: "Formation kitesurf intensive 5 jours avec bateau sécurité",
+            image: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
             provider: sellerInfo,
             hasCourseInstance: {
               "@type": "CourseInstance",
@@ -149,6 +151,7 @@ const Index = () => {
           name: "Session Kitesurf à la Carte",
           description: "Cours kitesurf flexibles selon vos disponibilités",
           url: "https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres",
+          image: "https://www.kitesurfpassion.fr/assets/kitesurf-action-hyeres.jpg",
           price: "120",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
@@ -158,6 +161,7 @@ const Index = () => {
           itemOffered: {
             "@type": "Course",
             name: "Cours Kitesurf à la Carte",
+            image: "https://www.kitesurfpassion.fr/assets/kitesurf-action-hyeres.jpg",
             provider: sellerInfo,
           },
         },
@@ -166,6 +170,7 @@ const Index = () => {
           name: "Cours Particulier Kitesurf",
           description: "Leçon privée 100% individualisée avec moniteur dédié",
           url: "https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres",
+          image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
           price: "230",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
@@ -175,6 +180,7 @@ const Index = () => {
           itemOffered: {
             "@type": "Course",
             name: "Cours Particulier Kitesurf",
+            image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
             provider: sellerInfo,
           },
         },
@@ -183,6 +189,7 @@ const Index = () => {
           name: "Stage Wingfoil Initiation",
           description: "Stage wingfoil 5 jours avec foil tracté inclus à l'Almanarre",
           url: "https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre",
+          image: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
           price: "440",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
@@ -192,6 +199,7 @@ const Index = () => {
           itemOffered: {
             "@type": "Course",
             name: "Stage Wingfoil Initiation",
+            image: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
             provider: sellerInfo,
             hasCourseInstance: {
               "@type": "CourseInstance",
@@ -205,6 +213,7 @@ const Index = () => {
           name: "Cours Pumpfoil & Dock Start",
           description: "Volez sur l'eau sans vent avec la technique dock start",
           url: "https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres",
+          image: "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg",
           price: "50",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
@@ -214,6 +223,7 @@ const Index = () => {
           itemOffered: {
             "@type": "Course",
             name: "Initiation Pumpfoil Dock Start",
+            image: "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg",
             provider: sellerInfo,
           },
         },
@@ -222,6 +232,7 @@ const Index = () => {
           name: "Foil Tracté",
           description: "Découvrez le vol sur l'eau en toute sécurité tracté par bateau",
           url: "https://www.kitesurfpassion.fr/foil-tracte-hyeres",
+          image: "https://www.kitesurfpassion.fr/assets/foil-tracte-hyeres.jpg",
           price: "50",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
@@ -231,6 +242,7 @@ const Index = () => {
           itemOffered: {
             "@type": "Course",
             name: "Initiation Foil Tracté",
+            image: "https://www.kitesurfpassion.fr/assets/foil-tracte-hyeres.jpg",
             provider: sellerInfo,
           },
         },
@@ -239,6 +251,7 @@ const Index = () => {
           name: "Wakeboard",
           description: "Session wakeboard tractée de 15 min sur la baie d'Hyères",
           url: "https://www.kitesurfpassion.fr/wakeboard-hyeres",
+          image: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
           price: "40",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
@@ -248,6 +261,7 @@ const Index = () => {
           itemOffered: {
             "@type": "Course",
             name: "Session Wakeboard",
+            image: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
             provider: sellerInfo,
           },
         },
