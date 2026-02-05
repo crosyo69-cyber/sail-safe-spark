@@ -209,12 +209,12 @@ const FoilTracte = () => {
   return (
     <>
       <Helmet>
-        <title>Foil Tracté Hyères Almanarre | Voler sur l'Eau</title>
+        <title>Foil Tracté – Hyères Almanarre | Volez sur l'Eau en Sécurité</title>
         <meta 
           name="description" 
-          content="Foil tracté Hyères Almanarre : volez sur l'eau en sécurité près de Giens. Sessions 20-40 min avec bateau et moniteur diplômé. Dès 50€ !" 
+          content="Foil tracté à Hyères Almanarre (Var). Volez sur l'eau en toute sécurité près de Giens ! Sessions 20-40 min avec bateau et moniteur diplômé. Dès 50€, idéal débutants." 
         />
-        <meta name="keywords" content="foil tracté Hyères, foil tracté bateau, initiation foil Hyères, apprendre foil bateau, foil débutant Var" />
+        <meta name="keywords" content="foil tracté Hyères, foil tracté bateau, initiation foil Hyères, apprendre foil bateau, foil débutant Var, foil tracté Almanarre" />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/foil-tracte-hyeres" />
         <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/foil-tracte-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/foil-tracte-hyeres" />

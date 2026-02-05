@@ -127,16 +127,16 @@ const SessionCarte = () => {
   return (
     <>
       <Helmet>
-        <title>Cours Kitesurf à la Carte Hyères | Flexibilité Totale</title>
+        <title>Session Kitesurf à la Carte – Hyères Almanarre | Flexibilité Totale</title>
         <meta
           name="description"
-          content="Cours kitesurf à la carte Hyères Almanarre. Flexibilité totale, progression ciblée selon votre niveau. Séances individuelles ou en pack. Dès 120€."
+          content="Session kitesurf à la carte à Hyères Almanarre (Var). Flexibilité totale, progression ciblée, bateau sécurité, moniteur diplômé. Séances individuelles ou en pack dès 120€."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres" />
         <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres" />
-        <meta property="og:title" content="Cours Kitesurf à la Carte Hyères Almanarre | KiteSurf Passion" />
-        <meta property="og:description" content="Cours de kitesurf à la carte à Hyères. Choisissez vos créneaux et progressez selon vos objectifs." />
+        <meta property="og:title" content="Session Kitesurf à la Carte – Hyères Almanarre | KiteSurf Passion" />
+        <meta property="og:description" content="Cours kitesurf à la carte à Hyères. Choisissez vos créneaux, progressez à votre rythme avec bateau sécurité." />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
