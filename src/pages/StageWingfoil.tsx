@@ -172,7 +172,7 @@ const StageWingfoil = () => {
         <title>Stage Wingfoil – Hyères Almanarre | Cours Wing Foil Var</title>
         <meta
           name="description"
-          content="Stage wingfoil à Hyères Almanarre (Var). Sport tendance accessible à tous, bateau sécurité, moniteur diplômé, progression rapide. Stage 5 jours dès 440€ avec foil tracté inclus."
+          content="Stage wingfoil 5 jours à l'Almanarre avec foil tracté inclus"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre" />
         <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre" />
