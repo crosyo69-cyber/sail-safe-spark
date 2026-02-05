@@ -110,6 +110,9 @@ const DeposesMer = () => {
             "provider": {
               "@type": "LocalBusiness",
               "name": "KiteSurf Passion",
+              "url": "https://www.kitesurfpassion.fr",
+              "image": "https://www.kitesurfpassion.fr/assets/bateau-assistance-kitesurf.jpg",
+              "priceRange": "€€",
               "telephone": "+33672716905",
               "address": {
                 "@type": "PostalAddress",
@@ -128,6 +131,32 @@ const DeposesMer = () => {
               "priceCurrency": "EUR",
               "offerCount": 3,
               "availability": "https://schema.org/InStock"
+            }
+          })}
+        </script>
+        {/* Product schema for reviews eligibility */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": "Déposes en Mer Kitesurf - Hyères",
+            "description": "Service de déposes en mer pour kitesurfeurs autonomes avec bateau de sécurité sur la baie d'Hyères, l'Almanarre et Giens.",
+            "image": "https://www.kitesurfpassion.fr/assets/bateau-assistance-kitesurf.jpg",
+            "brand": {
+              "@type": "Brand",
+              "name": "KiteSurf Passion"
+            },
+            "offers": {
+              "@type": "AggregateOffer",
+              "lowPrice": "45",
+              "highPrice": "300",
+              "priceCurrency": "EUR",
+              "offerCount": 3,
+              "availability": "https://schema.org/InStock",
+              "seller": {
+                "@type": "Organization",
+                "name": "KiteSurf Passion"
+              }
             },
             ...getProductRatingData()
           })}
