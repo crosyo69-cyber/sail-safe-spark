@@ -10,7 +10,18 @@ import { FAQSection } from "@/components/sections/FAQSection";
 import { CTASection } from "@/components/sections/CTASection";
 import { GallerySection } from "@/components/sections/GallerySection";
 import { MeetingPointsSection } from "@/components/sections/MeetingPointsSection";
+import { productAggregateRating, productReviews } from "@/lib/seo-ratings";
 
+// Seller/Provider info for structured data
+const sellerInfo = {
+  "@type": "LocalBusiness",
+  "@id": "https://www.kitesurfpassion.fr/#organization",
+  name: "KiteSurf Passion",
+  url: "https://www.kitesurfpassion.fr",
+};
+
+// Price validity date (end of current season)
+const priceValidUntil = "2025-11-30";
 const Index = () => {
   // SportsSchool structured data with extended offers
   const structuredData = {
@@ -69,13 +80,8 @@ const Index = () => {
       },
       geoRadius: "30000",
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.9",
-      reviewCount: "127",
-      bestRating: "5",
-      worstRating: "1",
-    },
+    aggregateRating: productAggregateRating,
+    review: productReviews,
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
@@ -117,11 +123,25 @@ const Index = () => {
           url: "https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres",
           price: "399",
           priceCurrency: "EUR",
+          priceValidUntil: priceValidUntil,
           availability: "https://schema.org/InStock",
+          seller: sellerInfo,
+          sku: "KSP-STAGE-100-GLISSE",
           itemOffered: {
             "@type": "Course",
             name: "Stage Kitesurf 100% Glisse",
             description: "Formation kitesurf intensive 5 jours avec bateau sécurité",
+            provider: sellerInfo,
+            hasCourseInstance: {
+              "@type": "CourseInstance",
+              courseMode: "onsite",
+              duration: "P5D",
+              instructor: {
+                "@type": "Person",
+                name: "Yoanne Cros",
+                jobTitle: "Moniteur BPJEPS",
+              },
+            },
           },
         },
         {
@@ -131,10 +151,14 @@ const Index = () => {
           url: "https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres",
           price: "120",
           priceCurrency: "EUR",
+          priceValidUntil: priceValidUntil,
           availability: "https://schema.org/InStock",
+          seller: sellerInfo,
+          sku: "KSP-SESSION-CARTE",
           itemOffered: {
             "@type": "Course",
             name: "Cours Kitesurf à la Carte",
+            provider: sellerInfo,
           },
         },
         {
@@ -144,10 +168,14 @@ const Index = () => {
           url: "https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres",
           price: "230",
           priceCurrency: "EUR",
+          priceValidUntil: priceValidUntil,
           availability: "https://schema.org/InStock",
+          seller: sellerInfo,
+          sku: "KSP-COURS-PARTICULIER",
           itemOffered: {
             "@type": "Course",
             name: "Cours Particulier Kitesurf",
+            provider: sellerInfo,
           },
         },
         {
@@ -157,10 +185,19 @@ const Index = () => {
           url: "https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre",
           price: "440",
           priceCurrency: "EUR",
+          priceValidUntil: priceValidUntil,
           availability: "https://schema.org/InStock",
+          seller: sellerInfo,
+          sku: "KSP-STAGE-WINGFOIL",
           itemOffered: {
             "@type": "Course",
             name: "Stage Wingfoil Initiation",
+            provider: sellerInfo,
+            hasCourseInstance: {
+              "@type": "CourseInstance",
+              courseMode: "onsite",
+              duration: "P5D",
+            },
           },
         },
         {
@@ -170,10 +207,14 @@ const Index = () => {
           url: "https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres",
           price: "50",
           priceCurrency: "EUR",
+          priceValidUntil: priceValidUntil,
           availability: "https://schema.org/InStock",
+          seller: sellerInfo,
+          sku: "KSP-PUMPFOIL-DOCKSTART",
           itemOffered: {
             "@type": "Course",
             name: "Initiation Pumpfoil Dock Start",
+            provider: sellerInfo,
           },
         },
         {
@@ -183,10 +224,14 @@ const Index = () => {
           url: "https://www.kitesurfpassion.fr/foil-tracte-hyeres",
           price: "50",
           priceCurrency: "EUR",
+          priceValidUntil: priceValidUntil,
           availability: "https://schema.org/InStock",
+          seller: sellerInfo,
+          sku: "KSP-FOIL-TRACTE",
           itemOffered: {
             "@type": "Course",
             name: "Initiation Foil Tracté",
+            provider: sellerInfo,
           },
         },
         {
@@ -196,10 +241,14 @@ const Index = () => {
           url: "https://www.kitesurfpassion.fr/wakeboard-hyeres",
           price: "40",
           priceCurrency: "EUR",
+          priceValidUntil: priceValidUntil,
           availability: "https://schema.org/InStock",
+          seller: sellerInfo,
+          sku: "KSP-WAKEBOARD",
           itemOffered: {
             "@type": "Course",
             name: "Session Wakeboard",
+            provider: sellerInfo,
           },
         },
       ],
