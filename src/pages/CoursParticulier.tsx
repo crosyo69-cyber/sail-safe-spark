@@ -184,16 +184,16 @@ const CoursParticulier = () => {
   return (
     <>
       <Helmet>
-        <title>Cours Particulier Kitesurf Hyères | Leçon Privée</title>
+        <title>Cours Particulier Kitesurf – Hyères Almanarre | Progression Premium</title>
         <meta
           name="description"
-          content="Cours particulier kitesurf Hyères Almanarre. Progression 100% individualisée avec moniteur diplômé dédié. Bateau d'assistance, encadrement premium. Dès 230€."
+          content="Cours particulier kitesurf à Hyères Almanarre (Var). Leçon privée 100% individualisée, moniteur diplômé dédié, bateau sécurité, progression 3x plus rapide. Dès 230€."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres" />
-        <meta property="og:title" content="Cours Particulier Kitesurf Hyères Almanarre | KiteSurf Passion" />
-        <meta property="og:description" content="Leçon privée de kitesurf avec moniteur dédié. Progression rapide et sécurisée sur le spot de l'Almanarre." />
+        <meta property="og:title" content="Cours Particulier Kitesurf – Hyères Almanarre | Progression Premium" />
+        <meta property="og:description" content="Leçon privée kitesurf avec moniteur dédié à l'Almanarre Hyères. Progression rapide, encadrement premium, bateau sécurité." />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}

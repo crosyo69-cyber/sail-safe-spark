@@ -12,12 +12,14 @@ import { GallerySection } from "@/components/sections/GallerySection";
 import { MeetingPointsSection } from "@/components/sections/MeetingPointsSection";
 
 const Index = () => {
+  // SportsSchool structured data with extended offers
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": ["LocalBusiness", "SportsActivityLocation"],
     "@id": "https://www.kitesurfpassion.fr/#organization",
     name: "KiteSurf Passion",
-    description: "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999. Plus de 2 500 élèves formés. Bateau d'assistance, moniteur diplômé d'État, spot de l'Almanarre.",
+    alternateName: "École Kitesurf Hyères",
+    description: "École de kitesurf, wingfoil, pumpfoil et foil tracté à Hyères Almanarre depuis 1999. Plus de 2 500 élèves formés. Bateau d'assistance, moniteur diplômé d'État BPJEPS, matériel Duotone récent.",
     url: "https://www.kitesurfpassion.fr",
     telephone: "+33672716905",
     email: "crosyo69@gmail.com",
@@ -31,13 +33,20 @@ const Index = () => {
       "@type": "QuantitativeValue",
       value: 1,
     },
-    slogan: "Apprenez le kitesurf en toute sécurité à Hyères",
-    knowsAbout: ["Kitesurf", "Wingfoil", "Pumpfoil", "Foil tracté", "Wakeboard"],
-    hasCredential: {
-      "@type": "EducationalOccupationalCredential",
-      credentialCategory: "BPJEPS",
-      name: "Brevet Professionnel de la Jeunesse, de l'Éducation Populaire et du Sport",
-    },
+    slogan: "Apprenez le kitesurf, wingfoil et pumpfoil en toute sécurité à Hyères",
+    knowsAbout: ["Kitesurf", "Wingfoil", "Pumpfoil", "Foil tracté", "Wakeboard", "Dock Start"],
+    hasCredential: [
+      {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "BPJEPS",
+        name: "Brevet Professionnel de la Jeunesse, de l'Éducation Populaire et du Sport",
+      },
+      {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "Formateur FFVL",
+        name: "Formateur de moniteurs kitesurf",
+      }
+    ],
     address: {
       "@type": "PostalAddress",
       streetAddress: "52 Avenue Général de Gaulle",
@@ -67,55 +76,156 @@ const Index = () => {
       bestRating: "5",
       worstRating: "1",
     },
-    openingHoursSpecification: {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      opens: "09:00",
-      closes: "19:00",
-    },
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        opens: "09:00",
+        closes: "19:00",
+        validFrom: "2025-03-01",
+        validThrough: "2025-11-30"
+      }
+    ],
     priceRange: "€€",
-    image: "https://www.kitesurfpassion.fr/og-image.jpg",
+    currenciesAccepted: "EUR",
+    paymentAccepted: "Cash, Credit Card, Bank Transfer",
+    image: [
+      "https://www.kitesurfpassion.fr/og-image.jpg",
+      "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+      "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+      "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg"
+    ],
+    photo: {
+      "@type": "ImageObject",
+      url: "https://www.kitesurfpassion.fr/og-image.jpg",
+      width: 1200,
+      height: 630
+    },
     sameAs: [
       "https://www.facebook.com/kitesurfpassion",
       "https://www.instagram.com/kitesurfpassion",
     ],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: "Cours et stages de sports nautiques",
-      numberOfItems: 3,
+      name: "Cours et stages de sports nautiques à Hyères",
+      numberOfItems: 7,
       itemListElement: [
         {
           "@type": "Offer",
+          name: "Stage Kitesurf 100% Glisse",
+          description: "5 jours consécutifs pour devenir autonome en kitesurf à l'Almanarre",
+          url: "https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres",
+          price: "399",
+          priceCurrency: "EUR",
+          availability: "https://schema.org/InStock",
           itemOffered: {
             "@type": "Course",
             name: "Stage Kitesurf 100% Glisse",
-            description: "5 jours consécutifs pour devenir autonome en kitesurf",
+            description: "Formation kitesurf intensive 5 jours avec bateau sécurité",
           },
-          price: "399",
-          priceCurrency: "EUR",
         },
         {
           "@type": "Offer",
+          name: "Session Kitesurf à la Carte",
+          description: "Cours kitesurf flexibles selon vos disponibilités",
+          url: "https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres",
+          price: "120",
+          priceCurrency: "EUR",
+          availability: "https://schema.org/InStock",
+          itemOffered: {
+            "@type": "Course",
+            name: "Cours Kitesurf à la Carte",
+          },
+        },
+        {
+          "@type": "Offer",
+          name: "Cours Particulier Kitesurf",
+          description: "Leçon privée 100% individualisée avec moniteur dédié",
+          url: "https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres",
+          price: "230",
+          priceCurrency: "EUR",
+          availability: "https://schema.org/InStock",
+          itemOffered: {
+            "@type": "Course",
+            name: "Cours Particulier Kitesurf",
+          },
+        },
+        {
+          "@type": "Offer",
+          name: "Stage Wingfoil Initiation",
+          description: "Stage wingfoil 5 jours avec foil tracté inclus à l'Almanarre",
+          url: "https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre",
+          price: "440",
+          priceCurrency: "EUR",
+          availability: "https://schema.org/InStock",
           itemOffered: {
             "@type": "Course",
             name: "Stage Wingfoil Initiation",
-            description: "Initiation au wingfoil sur 5 jours",
           },
-          price: "440",
-          priceCurrency: "EUR",
         },
         {
           "@type": "Offer",
-          itemOffered: {
-            "@type": "Course",
-            name: "Initiation Pumpfoil",
-            description: "Découverte du pumpfoil et dock start",
-          },
+          name: "Cours Pumpfoil & Dock Start",
+          description: "Volez sur l'eau sans vent avec la technique dock start",
+          url: "https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres",
           price: "50",
           priceCurrency: "EUR",
+          availability: "https://schema.org/InStock",
+          itemOffered: {
+            "@type": "Course",
+            name: "Initiation Pumpfoil Dock Start",
+          },
+        },
+        {
+          "@type": "Offer",
+          name: "Foil Tracté",
+          description: "Découvrez le vol sur l'eau en toute sécurité tracté par bateau",
+          url: "https://www.kitesurfpassion.fr/foil-tracte-hyeres",
+          price: "50",
+          priceCurrency: "EUR",
+          availability: "https://schema.org/InStock",
+          itemOffered: {
+            "@type": "Course",
+            name: "Initiation Foil Tracté",
+          },
+        },
+        {
+          "@type": "Offer",
+          name: "Wakeboard",
+          description: "Session wakeboard tractée de 15 min sur la baie d'Hyères",
+          url: "https://www.kitesurfpassion.fr/wakeboard-hyeres",
+          price: "40",
+          priceCurrency: "EUR",
+          availability: "https://schema.org/InStock",
+          itemOffered: {
+            "@type": "Course",
+            name: "Session Wakeboard",
+          },
         },
       ],
     },
+    amenityFeature: [
+      {
+        "@type": "LocationFeatureSpecification",
+        name: "Bateau d'assistance",
+        value: true
+      },
+      {
+        "@type": "LocationFeatureSpecification",
+        name: "Communication radio",
+        value: true
+      },
+      {
+        "@type": "LocationFeatureSpecification",
+        name: "Matériel Duotone récent",
+        value: true
+      },
+      {
+        "@type": "LocationFeatureSpecification",
+        name: "Petits groupes (4 max)",
+        value: true
+      }
+    ]
   };
 
   const faqStructuredData = {
@@ -319,31 +429,37 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>École Kitesurf Hyères | Cours avec Bateau d'Assistance | KiteSurf Passion</title>
+        <title>Kitesurf Passion – École de kitesurf, wingfoil, pumpfoil & foil tracté à Hyères</title>
         <meta
           name="description"
-          content="École kitesurf, wingfoil et pumpfoil à Hyères Almanarre depuis 1999. Bateau d'assistance, moniteur diplômé, 2500 élèves. ☎ 06 72 71 69 05"
+          content="Découvrez Kitesurf Passion à Hyères (Almanarre). Cours et stages de kitesurf, wingfoil, pumpfoil et foil tracté avec bateau sécurité, petits groupes, radios et Duotone récent. Réservez votre session dès maintenant."
         />
         <meta
           name="keywords"
-          content="cours kitesurf hyères, école kitesurf almanarre, stage wingfoil var, école kitesurf bateau assistance, kitesurf débutant hyères"
+          content="école kitesurf hyères, cours kitesurf almanarre, stage wingfoil var, pumpfoil hyères, foil tracté hyères, école kitesurf bateau assistance, kitesurf débutant hyères"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/" />
         <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="École Kitesurf Hyères | Cours avec Bateau d'Assistance | KiteSurf Passion" />
-        <meta property="og:description" content="Apprenez le kitesurf à Hyères depuis 1999. École itinérante avec bateau d'assistance, moniteur expert." />
+        <meta property="og:title" content="Kitesurf Passion – École de kitesurf, wingfoil, pumpfoil & foil tracté à Hyères" />
+        <meta property="og:description" content="Découvrez Kitesurf Passion à Hyères (Almanarre). Cours et stages de kitesurf, wingfoil, pumpfoil et foil tracté avec bateau sécurité, petits groupes et matériel Duotone récent." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.kitesurfpassion.fr/" />
         <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="École Kitesurf Passion Hyères Almanarre - Cours kitesurf wingfoil pumpfoil foil tracté" />
+        <meta property="og:site_name" content="KiteSurf Passion" />
         <meta property="og:locale" content="fr_FR" />
         
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="École Kitesurf Hyères | KiteSurf Passion" />
-        <meta name="twitter:description" content="Apprenez le kitesurf à Hyères depuis 1999. Bateau d'assistance, moniteur expert." />
+        <meta name="twitter:title" content="Kitesurf Passion – École kitesurf, wingfoil, pumpfoil à Hyères" />
+        <meta name="twitter:description" content="Cours et stages à l'Almanarre avec bateau sécurité, petits groupes et matériel Duotone récent. Réservez maintenant !" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta name="twitter:image:alt" content="École Kitesurf Passion Hyères Almanarre" />
         
         {/* Structured Data */}
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
