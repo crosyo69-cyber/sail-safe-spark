@@ -103,6 +103,8 @@ const StageWingfoil = () => {
     provider: {
       "@type": "Organization",
       name: "KiteSurf Passion",
+      url: "https://www.kitesurfpassion.fr",
+      priceRange: "€€",
       sameAs: "https://www.kitesurfpassion.fr",
     },
     offers: {
