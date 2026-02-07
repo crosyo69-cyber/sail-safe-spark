@@ -50,8 +50,10 @@ const CoursParticulier = () => {
       "name": "KiteSurf Passion",
       "address": {
         "@type": "PostalAddress",
+        "streetAddress": "Port de Carqueiranne",
         "addressLocality": "Hyères",
         "addressRegion": "Var",
+        "postalCode": "83400",
         "addressCountry": "FR"
       }
     },

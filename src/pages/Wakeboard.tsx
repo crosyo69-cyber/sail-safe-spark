@@ -56,6 +56,7 @@ const Wakeboard = () => {
       "telephone": "+33672716905",
       "address": {
         "@type": "PostalAddress",
+        "streetAddress": "Port de Carqueiranne",
         "addressLocality": "Hyères",
         "addressRegion": "Var",
         "postalCode": "83400",
