@@ -124,6 +124,8 @@ const APropos = () => {
       "@type": "LocalBusiness",
       "name": "KiteSurf Passion",
       "url": "https://www.kitesurfpassion.fr",
+      "image": "https://www.kitesurfpassion.fr/og-image.jpg",
+      "telephone": "+33672716905",
       "priceRange": "€€",
       "address": {
         "@type": "PostalAddress",
