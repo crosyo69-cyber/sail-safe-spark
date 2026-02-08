@@ -80,7 +80,9 @@ const itemReviewed = {
   "@id": "https://www.kitesurfpassion.fr/#organization",
   name: "KiteSurf Passion",
   url: "https://www.kitesurfpassion.fr",
+  telephone: "+33672716905",
   priceRange: "€€",
+  image: "https://www.kitesurfpassion.fr/og-image.jpg",
 };
 
 /**
