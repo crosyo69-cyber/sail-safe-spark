@@ -101,11 +101,20 @@ const StageWingfoil = () => {
     name: "Stage Wing Foil Initiation",
     description: "Stage de wingfoil pour débutants à Hyères, sport tendance accessible à tous",
     provider: {
-      "@type": "Organization",
+      "@type": "LocalBusiness",
       name: "KiteSurf Passion",
       url: "https://www.kitesurfpassion.fr",
+      telephone: "+33672716905",
       priceRange: "€€",
-      sameAs: "https://www.kitesurfpassion.fr",
+      image: "https://www.kitesurfpassion.fr/og-image.jpg",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Port de Carqueiranne",
+        addressLocality: "Hyères",
+        addressRegion: "Var",
+        postalCode: "83400",
+        addressCountry: "FR",
+      },
     },
     offers: {
       "@type": "Offer",

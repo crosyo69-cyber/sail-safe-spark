@@ -54,6 +54,8 @@ const Wakeboard = () => {
       "@type": "LocalBusiness",
       "name": "KiteSurf Passion",
       "telephone": "+33672716905",
+      "priceRange": "€€",
+      "image": "https://www.kitesurfpassion.fr/og-image.jpg",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Port de Carqueiranne",
