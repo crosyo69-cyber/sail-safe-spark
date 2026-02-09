@@ -1,0 +1,209 @@
+# ============================================
+# REDIRECTIONS 301 - Migration .com → Nouveau Site
+# ============================================
+# Ce fichier est PRÊT pour activation lors de la migration.
+# Il sera actif lorsque le domaine .com pointera vers ce site Lovable.
+#
+# FORMAT: /ancien-chemin  /nouveau-chemin  301
+# DERNIÈRE LIGNE: Catch-all SPA (obligatoire)
+#
+# Date de préparation: 2026-02-09
+# Migration prévue: 25 février 2026
+# ============================================
+
+# =============================================
+# 1. PAGES PRINCIPALES (.html → nouvelles URLs)
+# =============================================
+
+/nos-activites.html                     /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/activites-w1.html                      /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/activites-kite-surf-w1.html            /cours-kitesurf-hyeres-debutant  301
+/activites-wing-foil-w1.html            /stage-wingfoil-hyeres-almanarre  301
+/pump-foil-dock-start-w1.html           /cours-pumpfoil-dock-start-hyeres  301
+/activites-downwind-foil-w1.html        /cours-pumpfoil-dock-start-hyeres  301
+/bons-cadeaux-w1.html                   /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/guide-local-w1.html                    /a-propos-ecole-kitesurf-hyeres  301
+/tarifs.html                            /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/contact.html                           /contact-reservation-kitesurf-hyeres  301
+/mentions-legales.html                  /mentions-legales  301
+/politique-confidentialite.html         /politique-confidentialite  301
+/plan-du-site.html                      /  301
+/toutes-nos-prestations-1.html          /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/archives-1.html                        /blog-kitesurf-hyeres  301
+/secteurs.html                          /spot-kitesurf-almanarre-hyeres-var  301
+
+# =============================================
+# 2. ARTICLES & PAGES DÉTAIL (details-*.html)
+# =============================================
+
+# --- Kitesurf ---
+/details-apprendre+le+kitesurf+en+ecole+a+hyeres+dans+le+var-147.html                          /cours-kitesurf-hyeres-debutant  301
+/details-les+cours+pour+apprendre+ou+a+se+perfectionner+en+kitesurf+a+hyeres+dans+le+var-35.html  /session-kitesurf-carte-hyeres  301
+/details-stages+et+cours+de+perfectionnement+ou+coaching+en+kitesurf+a+hyeres+a+proximite+de+carqueiranne-152.html  /stage-kitesurf-100-glisse-hyeres  301
+/details-apprenez+le+kitesurf+avec+le+bon+materiel+a+hyeres-250.html                           /blog/guide-equipement-kitesurf-debutant  301
+
+# --- Wingfoil ---
+/details-wingfoil+debutant+a+hyeres+apprenez+a+voler+sur+l+eau+a+l+almanarre-247.html          /stage-wingfoil-hyeres-almanarre  301
+/details-offrir+un+stage+d+initiation+de+wing+foil+sur+5+jours+consecutifs-130.html            /stage-wingfoil-hyeres-almanarre  301
+/details-offrir+une+cours+de+wingfoil+avec+kite+surf+passion-131.html                          /stage-wingfoil-hyeres-almanarre  301
+/details-ecole+de+wing+foil+hyeres+proche+l+almanare-184.html                                  /stage-wingfoil-hyeres-almanarre  301
+/details-pourquoi+se+mettre+au+wing+foil+sur+hyeres+almanare-158.html                          /blog/wingfoil-sport-tendance-2024  301
+
+# --- Foil Tracté ---
+/details-cours+de+foil+pour+le+kitesurf+et+le+wing+foil+et+le+surf+foil+hyeres+83+dans+le+var-22.html  /foil-tracte-hyeres  301
+/details-nouveaute+a+hyeres+decouvrez+notre+simulateur+de+foil+tracte+wingfoil+surf+foil+kite+foil+windsurf+foil-190.html  /foil-tracte-hyeres  301
+
+# --- Tarifs ---
+/details-tarifs+des+cours+de+kitesurf+a+hyeres+formules+claires+et+adaptees-245.html           /tarifs-cours-kitesurf-wingfoil-hyeres  301
+
+# --- Spot & Météo ---
+/details-spot+de+kitesurf+de+la+baie+de+l+almanarre+un+lieu+mythique+a+hyeres-243.html         /spot-kitesurf-almanarre-hyeres-var  301
+/details-la+meteo+du+vent+sur+hyeres+l+almanarre+pour+ne+pas+rater+vos+sessions+de+kitesurf-51.html  /spot-kitesurf-almanarre-hyeres-var  301
+
+# --- Moniteur & À Propos ---
+/details-moniteur+de+kitesurf+diplome+a+hyeres+un+encadrement+professionnel+et+securise-242.html  /a-propos-ecole-kitesurf-hyeres  301
+
+# --- Bons Cadeaux ---
+/details-bon+cadeaux+fete+de+noel+pour+ecole+de+kite+surf+hyeres-165.html                     /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/details-commandez+votre+bon+cadeau+kitesurf+dans+le+var-246.html                              /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/details-commandez+votre+bon+cadeau+kitesurf+des+maintenant-208.html                           /tarifs-cours-kitesurf-wingfoil-hyeres  301
+
+# =============================================
+# 3. SOUS-PAGES ACTIVITÉS (activites-*.html)
+# =============================================
+
+/activites-coaching+wingfoil+hyeres+de+l+almanarre-26.html                                     /stage-wingfoil-hyeres-almanarre  301
+/activites-offrir+un+cadeau+de+noel+pour+une+femme+ou+un+homme+on+un+enfant+le+kitesurf+a+hyeres-24.html  /tarifs-cours-kitesurf-wingfoil-hyeres  301
+
+# =============================================
+# 4. PAGES VILLES (SEO local)
+# =============================================
+
+/hyeres-y1                              /  301
+/presqu+ile+de+giens-y2                 /spot-kitesurf-almanarre-hyeres-var  301
+/toulon-y3                              /  301
+
+# =============================================
+# 5. PAGES SEO LOCALES - TOULON (xxx+toulon-zNN)
+# =============================================
+# Ces ~30 pages redirigent vers les pages équivalentes du nouveau site
+
+# --- Kitesurf Toulon ---
+/ecole+de+kitesurf+tous+niveaux+toulon-z3          /cours-kitesurf-hyeres-debutant  301
+/ou+apprendre+le+kitesurf+toulon-z9                /cours-kitesurf-hyeres-debutant  301
+/tarifs+des+cours+de+kitesurf+toulon-z21            /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/cours+de+kite+surf+pour+debutant+toulon-z30        /cours-kitesurf-hyeres-debutant  301
+/week-end+decouverte+kitesurf+toulon-z33            /cours-kitesurf-hyeres-debutant  301
+/stage+de+kitesurf+a+la+semaine+ou+au+week-end+toulon-z42  /stage-kitesurf-100-glisse-hyeres  301
+/cours+de+perfectionnement+en+kitesurf+toulon-z45   /session-kitesurf-carte-hyeres  301
+/cours+d+initiation+kitesurf+toulon-z48             /cours-kitesurf-hyeres-debutant  301
+/prendre+des+cours+en+ecole+de+kitesurf+toulon-z57  /cours-kitesurf-hyeres-debutant  301
+/ecole+de+kite+surf+pour+cours+individuels+ou+particuliers+toulon-z63  /cours-particulier-kitesurf-hyeres  301
+/stage+de+kitesurf+pour+debutant+toulon-z66         /stage-kitesurf-100-glisse-hyeres  301
+/cours+de+kitesurf+prix+toulon-z69                  /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/cours+de+perfectionnement+en+kite+surf+pour+gagner+en+autonomie+toulon-z75  /session-kitesurf-carte-hyeres  301
+/organiser+un+sejour+kite+surf+toulon-z78           /cours-kitesurf-hyeres-debutant  301
+/ecole+de+voile+pour+voyage+kite+surf+toulon-z81    /cours-kitesurf-hyeres-debutant  301
+
+# --- Wingfoil Toulon ---
+/cours+de+wing+foil+toulon-z51                      /stage-wingfoil-hyeres-almanarre  301
+/ecole+avec+cours+et+stages+pour+apprendre+le+wing+foil+toulon-z54  /stage-wingfoil-hyeres-almanarre  301
+/prix+cours+de+wingfoil+toulon-z72                  /tarifs-cours-kitesurf-wingfoil-hyeres  301
+
+# --- Foil Tracté Toulon ---
+/cours+de+foil+tracte+toulon-z6                     /foil-tracte-hyeres  301
+
+# --- Wakeboard Toulon ---
+/planche+tractee+wakeboard+toulon-z18               /wakeboard-hyeres  301
+/reservation+de+cours+de+wakeboard+toulon-z12       /wakeboard-hyeres  301
+
+# --- Location Toulon ---
+/acheter+du+materiel+de+kite+surf+toulon-z24        /location-materiel-kitesurf-hyeres  301
+/prix+location+de+materiel+de+kite+surf+toulon-z27  /location-materiel-kitesurf-hyeres  301
+/location+de+materiel+de+kitesurf+toulon-z36        /location-materiel-kitesurf-hyeres  301
+/vente+materiel+de+kitesurf+d+occasion+toulon-z15   /location-materiel-kitesurf-hyeres  301
+
+# --- Dépose en Mer Toulon ---
+/depose+en+mer+pour+kitesurf+toulon-z39             /deposes-mer-kitesurf-hyeres  301
+
+# --- Découverte & Séjour Toulon ---
+/journee+decouverte+kite+surf+ou+wing+foil+toulon-z60  /tarifs-cours-kitesurf-wingfoil-hyeres  301
+
+# =============================================
+# 6. PAGES SEO LOCALES - HYÈRES (xxx+hyeres-zNN)
+# =============================================
+# Pattern similaire à Toulon mais pour Hyères
+
+/ecole+de+kitesurf+tous+niveaux+hyeres-z3           /cours-kitesurf-hyeres-debutant  301
+/ou+apprendre+le+kitesurf+hyeres-z9                 /cours-kitesurf-hyeres-debutant  301
+/tarifs+des+cours+de+kitesurf+hyeres-z21             /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/cours+de+kite+surf+pour+debutant+hyeres-z30         /cours-kitesurf-hyeres-debutant  301
+/cours+de+foil+tracte+hyeres-z6                      /foil-tracte-hyeres  301
+/planche+tractee+wakeboard+hyeres-z18                /wakeboard-hyeres  301
+/reservation+de+cours+de+wakeboard+hyeres-z12        /wakeboard-hyeres  301
+/acheter+du+materiel+de+kite+surf+hyeres-z24         /location-materiel-kitesurf-hyeres  301
+/prix+location+de+materiel+de+kite+surf+hyeres-z27   /location-materiel-kitesurf-hyeres  301
+/location+de+materiel+de+kitesurf+hyeres-z36         /location-materiel-kitesurf-hyeres  301
+/depose+en+mer+pour+kitesurf+hyeres-z39              /deposes-mer-kitesurf-hyeres  301
+/stage+de+kitesurf+a+la+semaine+ou+au+week-end+hyeres-z42  /stage-kitesurf-100-glisse-hyeres  301
+/cours+de+perfectionnement+en+kitesurf+hyeres-z45    /session-kitesurf-carte-hyeres  301
+/cours+d+initiation+kitesurf+hyeres-z48              /cours-kitesurf-hyeres-debutant  301
+/cours+de+wing+foil+hyeres-z51                       /stage-wingfoil-hyeres-almanarre  301
+/ecole+avec+cours+et+stages+pour+apprendre+le+wing+foil+hyeres-z54  /stage-wingfoil-hyeres-almanarre  301
+/prendre+des+cours+en+ecole+de+kitesurf+hyeres-z57   /cours-kitesurf-hyeres-debutant  301
+/journee+decouverte+kite+surf+ou+wing+foil+hyeres-z60  /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/ecole+de+kite+surf+pour+cours+individuels+ou+particuliers+hyeres-z63  /cours-particulier-kitesurf-hyeres  301
+/stage+de+kitesurf+pour+debutant+hyeres-z66          /stage-kitesurf-100-glisse-hyeres  301
+/cours+de+kitesurf+prix+hyeres-z69                   /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/prix+cours+de+wingfoil+hyeres-z72                   /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/cours+de+perfectionnement+en+kite+surf+pour+gagner+en+autonomie+hyeres-z75  /session-kitesurf-carte-hyeres  301
+/organiser+un+sejour+kite+surf+hyeres-z78            /cours-kitesurf-hyeres-debutant  301
+/ecole+de+voile+pour+voyage+kite+surf+hyeres-z81     /cours-kitesurf-hyeres-debutant  301
+/vente+materiel+de+kitesurf+d+occasion+hyeres-z15    /location-materiel-kitesurf-hyeres  301
+/week-end+decouverte+kitesurf+hyeres-z33             /cours-kitesurf-hyeres-debutant  301
+
+# =============================================
+# 7. PAGES SEO LOCALES - GIENS (xxx+presqu+ile+de+giens-zNN)
+# =============================================
+
+/ecole+de+kitesurf+tous+niveaux+presqu+ile+de+giens-z3   /cours-kitesurf-hyeres-debutant  301
+/ou+apprendre+le+kitesurf+presqu+ile+de+giens-z9         /cours-kitesurf-hyeres-debutant  301
+/tarifs+des+cours+de+kitesurf+presqu+ile+de+giens-z21    /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/cours+de+kite+surf+pour+debutant+presqu+ile+de+giens-z30  /cours-kitesurf-hyeres-debutant  301
+/cours+de+foil+tracte+presqu+ile+de+giens-z6              /foil-tracte-hyeres  301
+/planche+tractee+wakeboard+presqu+ile+de+giens-z18        /wakeboard-hyeres  301
+/reservation+de+cours+de+wakeboard+presqu+ile+de+giens-z12  /wakeboard-hyeres  301
+/acheter+du+materiel+de+kite+surf+presqu+ile+de+giens-z24  /location-materiel-kitesurf-hyeres  301
+/prix+location+de+materiel+de+kite+surf+presqu+ile+de+giens-z27  /location-materiel-kitesurf-hyeres  301
+/location+de+materiel+de+kitesurf+presqu+ile+de+giens-z36  /location-materiel-kitesurf-hyeres  301
+/depose+en+mer+pour+kitesurf+presqu+ile+de+giens-z39      /deposes-mer-kitesurf-hyeres  301
+/stage+de+kitesurf+a+la+semaine+ou+au+week-end+presqu+ile+de+giens-z42  /stage-kitesurf-100-glisse-hyeres  301
+/cours+de+perfectionnement+en+kitesurf+presqu+ile+de+giens-z45  /session-kitesurf-carte-hyeres  301
+/cours+d+initiation+kitesurf+presqu+ile+de+giens-z48      /cours-kitesurf-hyeres-debutant  301
+/cours+de+wing+foil+presqu+ile+de+giens-z51               /stage-wingfoil-hyeres-almanarre  301
+/ecole+avec+cours+et+stages+pour+apprendre+le+wing+foil+presqu+ile+de+giens-z54  /stage-wingfoil-hyeres-almanarre  301
+/prendre+des+cours+en+ecole+de+kitesurf+presqu+ile+de+giens-z57  /cours-kitesurf-hyeres-debutant  301
+/journee+decouverte+kite+surf+ou+wing+foil+presqu+ile+de+giens-z60  /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/ecole+de+kite+surf+pour+cours+individuels+ou+particuliers+presqu+ile+de+giens-z63  /cours-particulier-kitesurf-hyeres  301
+/stage+de+kitesurf+pour+debutant+presqu+ile+de+giens-z66  /stage-kitesurf-100-glisse-hyeres  301
+/cours+de+kitesurf+prix+presqu+ile+de+giens-z69           /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/prix+cours+de+wingfoil+presqu+ile+de+giens-z72           /tarifs-cours-kitesurf-wingfoil-hyeres  301
+/cours+de+perfectionnement+en+kite+surf+pour+gagner+en+autonomie+presqu+ile+de+giens-z75  /session-kitesurf-carte-hyeres  301
+/organiser+un+sejour+kite+surf+presqu+ile+de+giens-z78    /cours-kitesurf-hyeres-debutant  301
+/ecole+de+voile+pour+voyage+kite+surf+presqu+ile+de+giens-z81  /cours-kitesurf-hyeres-debutant  301
+/vente+materiel+de+kitesurf+d+occasion+presqu+ile+de+giens-z15  /location-materiel-kitesurf-hyeres  301
+/week-end+decouverte+kitesurf+presqu+ile+de+giens-z33     /cours-kitesurf-hyeres-debutant  301
+
+# =============================================
+# 8. REDIRECTIONS INTERNES EXISTANTES
+# =============================================
+
+/foil-tracte-wakeboard-hyeres           /foil-tracte-hyeres  301
+
+# =============================================
+# 9. CATCH-ALL SPA (OBLIGATOIRE - DERNIÈRE LIGNE)
+# =============================================
+# Toutes les routes non matchées servent index.html
+# React Router gère ensuite le rendu (page ou 404)
+
+/*    /index.html   200
