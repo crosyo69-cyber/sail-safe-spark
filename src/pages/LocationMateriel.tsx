@@ -365,6 +365,49 @@ const LocationMateriel = () => {
           </div>
         </section>
 
+        {/* Contenu SEO descriptif */}
+        <section className="py-20 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-8 text-center">
+                Location de Matériel Kitesurf à{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">Hyères et l'Almanarre</span>
+              </h2>
+
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed">
+                <div className="space-y-4">
+                  <h3 className="font-display text-xl font-bold text-foreground">Un service pensé pour les riders autonomes</h3>
+                  <p>
+                    Notre service de <strong>location de matériel kitesurf à Hyères</strong> s'adresse aux pratiquants autonomes qui souhaitent naviguer sur les spots mythiques de l'Almanarre et de la presqu'île de Giens sans avoir à transporter leur propre équipement. Que vous soyez en vacances dans le Var, en déplacement professionnel, ou simplement à la recherche de matériel récent pour compléter votre quiver, nous avons la solution.
+                  </p>
+                  <p>
+                    Notre flotte est composée exclusivement de matériel <strong>Duotone</strong>, l'une des marques leaders du marché. Les ailes sont disponibles en tailles de 7 à 14 m² pour couvrir toutes les conditions de vent sur l'Almanarre — du Mistral soutenu au Levant plus léger. Chaque équipement est vérifié avant et après chaque location : état des coutures, intégrité des lignes, fonctionnement des systèmes de sécurité (quick release, chicken loop).
+                  </p>
+                  <p>
+                    Nous proposons également la location de <strong>foils complets</strong> (mât + ailes) pour les pratiquants de kitefoil, ainsi que des planches twin-tip de différentes tailles. Combinaisons néoprène, harnais et casques sont disponibles en complément pour un équipement complet.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="font-display text-xl font-bold text-foreground">Conditions et accompagnement</h3>
+                  <p>
+                    Pour des raisons de sécurité, la location est réservée aux kitesurfeurs maîtrisant le waterstart et la navigation autonome. Un justificatif de niveau (carte IKO, attestation d'école, ou évaluation sur place) peut vous être demandé lors de votre première location. Cette exigence garantit que chaque rider qui prend la mer avec notre matériel dispose des compétences nécessaires.
+                  </p>
+                  <p>
+                    Notre équipe vous accueille directement sur le <strong>spot de l'Almanarre</strong> ou sur la <strong>presqu'île de Giens</strong> selon les conditions du jour. Nous vous conseillons sur le choix de la taille d'aile en fonction de la force et de la direction du vent, de votre poids et de votre style de navigation. Avec plus de <strong>25 ans d'expérience</strong> sur les spots d'Hyères, nous connaissons chaque recoin de la baie.
+                  </p>
+                  <p>
+                    Les tarifs sont à la journée et restent parmi les plus compétitifs de la région : <strong>30€ pour une aile</strong>, 20€ pour un foil, 10€ pour une planche. Vous pouvez combiner la location avec notre service de <Link to="/deposes-mer-kitesurf-hyeres" className="text-primary hover:underline">déposes en mer</Link> pour accéder aux meilleurs spots offshore de la baie d'Hyères.
+                  </p>
+                  <p>
+                    Si vous n'êtes pas encore autonome, nous vous invitons à découvrir nos <Link to="/cours-kitesurf-hyeres-debutant" className="text-primary hover:underline">cours de kitesurf</Link> ou notre <Link to="/stage-kitesurf-100-glisse-hyeres" className="text-primary hover:underline">stage 100% Glisse</Link> pour atteindre le niveau requis.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Related Services */}
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4">

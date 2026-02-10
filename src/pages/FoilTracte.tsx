@@ -383,6 +383,49 @@ const FoilTracte = () => {
           </div>
         </section>
 
+        {/* Contenu SEO descriptif */}
+        <section className="py-20 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-8 text-center">
+                Le Foil Tracté : Votre Porte d'Entrée vers le{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">Vol sur l'Eau</span>
+              </h2>
+
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed">
+                <div className="space-y-4">
+                  <h3 className="font-display text-xl font-bold text-foreground">Qu'est-ce que le foil tracté ?</h3>
+                  <p>
+                    Le <strong>foil tracté</strong> est une méthode d'initiation révolutionnaire qui vous permet de découvrir les sensations uniques du vol au-dessus de l'eau, sans aucune dépendance au vent. Tracté par notre bateau professionnel sur la <strong>baie d'Hyères</strong>, vous montez sur une planche équipée d'un hydrofoil — une aile immergée qui génère une portance hydrodynamique vous soulevant progressivement hors de l'eau.
+                  </p>
+                  <p>
+                    Cette discipline est née du constat que l'apprentissage du foil dans le cadre du wingfoil ou du kitefoil est complexe : il faut à la fois gérer l'aile, le vent, l'équilibre et la planche. Le foil tracté supprime toutes ces variables pour ne garder que l'essentiel : <strong>apprendre l'équilibre et la position sur un foil</strong>. C'est la méthode la plus rapide et la plus sûre pour ressentir vos premières sensations de vol.
+                  </p>
+                  <p>
+                    Accessible <strong>dès 12 ans</strong>, le foil tracté ne nécessite aucune expérience préalable en sports de glisse. Notre moniteur diplômé d'État contrôle la vitesse du bateau en temps réel et communique avec vous pour ajuster votre posture. La majorité des participants parviennent à décoller dès leur première session de 20 minutes.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="font-display text-xl font-bold text-foreground">Le tremplin idéal vers le wingfoil</h3>
+                  <p>
+                    Le foil tracté est reconnu comme le <strong>meilleur tremplin vers le wingfoil</strong>. En maîtrisant d'abord l'équilibre sur le foil sans avoir à gérer une aile, vous développez les réflexes essentiels : gestion de l'altitude, appuis sur les pieds, transfert de poids, et contrôle de la trajectoire. Ces compétences se transfèrent directement lorsque vous passez au <Link to="/stage-wingfoil-hyeres-almanarre" className="text-primary hover:underline">stage wingfoil</Link>.
+                  </p>
+                  <p>
+                    Nos sessions se déroulent sur la <strong>baie d'Hyères</strong>, un plan d'eau protégé offrant des conditions optimales : eau calme, faible courant et profondeur adaptée. Le cadre naturel exceptionnel — avec vue sur la presqu'île de Giens et les îles d'Or — rend chaque session mémorable.
+                  </p>
+                  <p>
+                    Nous proposons deux formats : la <strong>session découverte de 20 minutes</strong> à 50€, idéale pour une première expérience, et la <strong>session apprentissage de 40 minutes</strong> à 80€, recommandée pour stabiliser votre vol et progresser réellement. Le matériel complet (planche foil, gilet, casque) est fourni.
+                  </p>
+                  <p>
+                    Depuis 1999, notre école <Link to="/a-propos-ecole-kitesurf-hyeres" className="text-primary hover:underline">KiteSurf Passion</Link> est pionnière dans l'enseignement des sports de glisse à Hyères. Le foil tracté s'inscrit dans notre philosophie : rendre le foil accessible à tous grâce à une pédagogie progressive et sécurisée, avec un <Link to="/blog/pourquoi-bateau-assistance-essentiel" className="text-primary hover:underline">bateau d'assistance</Link> permanent sur zone.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Témoignages Foil Tracté */}
         <FoilWakeboardTestimonials 
           variant="foilTracte" 

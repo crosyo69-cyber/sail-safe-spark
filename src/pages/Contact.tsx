@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -258,8 +259,46 @@ const Contact = () => {
               Contact & Réservation
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Réservez votre cours de kitesurf, wingfoil ou pumpfoil. Réponse garantie sous 24h.
+              Réservez votre cours de kitesurf, wingfoil ou pumpfoil à Hyères. Réponse garantie sous 24h.
             </p>
+          </div>
+        </section>
+
+        {/* Contenu SEO descriptif */}
+        <section className="py-16 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed">
+                <div className="space-y-4">
+                  <h2 className="font-display text-2xl font-bold text-foreground">Réservez votre stage de kitesurf à Hyères</h2>
+                  <p>
+                    Vous souhaitez <strong>apprendre le kitesurf à Hyères</strong> sur le spot mythique de l'Almanarre ? Notre école KiteSurf Passion vous propose des formules adaptées à tous les niveaux et à tous les budgets. Du <Link to="/stage-kitesurf-100-glisse-hyeres" className="text-primary hover:underline">stage 100% Glisse</Link> sur 5 jours consécutifs aux <Link to="/session-kitesurf-carte-hyeres" className="text-primary hover:underline">sessions à la carte</Link> pour les emplois du temps flexibles, nous avons la formule qu'il vous faut.
+                  </p>
+                  <p>
+                    Notre moniteur <strong>Yoanne Cros</strong>, diplômé d'État (BPJEPS) et fort de plus de 25 ans d'expérience sur les spots d'Hyères, vous accompagne dans votre progression. Avec un ratio élève/moniteur limité et un <Link to="/blog/pourquoi-bateau-assistance-essentiel" className="text-primary hover:underline">bateau d'assistance</Link> permanent sur zone, nous garantissons un apprentissage en toute sécurité.
+                  </p>
+                  <p>
+                    Nous proposons également des stages de <Link to="/stage-wingfoil-hyeres-almanarre" className="text-primary hover:underline">wingfoil</Link>, des initiations au <Link to="/cours-pumpfoil-dock-start-hyeres" className="text-primary hover:underline">pumpfoil</Link>, des sessions de <Link to="/foil-tracte-hyeres" className="text-primary hover:underline">foil tracté</Link> et du <Link to="/wakeboard-hyeres" className="text-primary hover:underline">wakeboard</Link>. Consultez nos <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres" className="text-primary hover:underline">tarifs</Link> ou remplissez le formulaire ci-dessous pour une réponse personnalisée.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <h2 className="font-display text-2xl font-bold text-foreground">Comment réserver ?</h2>
+                  <p>
+                    La réservation est simple et rapide. Remplissez le formulaire avec vos dates souhaitées, le nombre de participants et l'activité qui vous intéresse. Nous vous recontactons <strong>sous 24 heures</strong> pour confirmer votre créneau en fonction des conditions météo prévues.
+                  </p>
+                  <p>
+                    Vous pouvez également nous joindre directement par téléphone au <strong>06 72 71 69 05</strong> pour un échange plus rapide. C'est souvent le moyen le plus efficace pour réserver en dernière minute ou obtenir des conseils sur le choix de la formule adaptée à votre niveau.
+                  </p>
+                  <p>
+                    Les cours se déroulent principalement sur le <Link to="/spot-kitesurf-almanarre-hyeres-var" className="text-primary hover:underline">spot de l'Almanarre</Link>, reconnu comme l'un des meilleurs spots de kitesurf de Méditerranée. La saison s'étend de <strong>mars à novembre</strong>, avec des créneaux disponibles tous les jours de 9h à 19h, conditions météo permises. Les mois de juin, juillet et août sont les plus demandés — réservez à l'avance pour être sûr d'avoir votre place !
+                  </p>
+                  <p>
+                    Offrez une expérience inoubliable à vos proches : nos activités font de parfaits cadeaux d'anniversaire, de Noël ou pour toute occasion spéciale. Contactez-nous pour en savoir plus sur nos options de bons cadeaux.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 

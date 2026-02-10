@@ -404,6 +404,49 @@ const DeposesMer = () => {
           </div>
         </section>
 
+        {/* Contenu SEO descriptif */}
+        <section className="py-20 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-8 text-center">
+                Les Déposes en Mer à Hyères : Naviguez sur les{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-ocean to-turquoise">Meilleurs Spots</span>
+              </h2>
+
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed">
+                <div className="space-y-4">
+                  <h3 className="font-display text-xl font-bold text-foreground">Un service unique sur la côte varoise</h3>
+                  <p>
+                    Le service de <strong>déposes en mer pour kitesurf à Hyères</strong> est conçu pour les riders autonomes qui souhaitent accéder aux meilleures zones de navigation sans les contraintes d'un départ depuis la plage. Notre bateau vous dépose directement au large, sur des zones où le vent est plus régulier, le plan d'eau plus dégagé et les conditions optimales pour naviguer en toute liberté.
+                  </p>
+                  <p>
+                    Ce service est particulièrement apprécié des kitesurfeurs confirmés habitués aux <strong>downwinds</strong> — ces navigations vent arrière qui permettent de couvrir de longues distances le long de la côte. Avec notre bateau, vous pouvez être déposé en amont pour profiter d'un parcours descendant jusqu'à la plage de l'Almanarre ou la presqu'île de Giens, avec la garantie d'un bateau de sécurité sur zone pendant toute la durée de votre session.
+                  </p>
+                  <p>
+                    La <strong>baie d'Hyères</strong> offre une diversité de configurations unique en Méditerranée. Selon les conditions de vent (Mistral d'ouest/nord-ouest ou Levant d'est/sud-est), nous adaptons le point de dépose pour vous placer sur la zone la plus favorable. Notre connaissance approfondie du plan d'eau depuis <strong>1999</strong> nous permet d'optimiser chaque sortie.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="font-display text-xl font-bold text-foreground">Sécurité et flexibilité</h3>
+                  <p>
+                    La sécurité est au cœur de notre service. Notre bateau d'assistance reste sur zone pendant toute la durée de votre navigation. Un professionnel expérimenté surveille votre progression et peut intervenir en moins de 2 minutes en cas de besoin — panne de matériel, fatigue, changement de conditions météo.
+                  </p>
+                  <p>
+                    Nous proposons plusieurs formules adaptées à votre pratique : la <strong>dépose simple à 45€</strong> pour les riders équipés, la <strong>formule Location + Dépose à 80€</strong> qui inclut tout le matériel (aile, planche, harnais, combinaison) pour les visiteurs, et le <strong>carnet de 10 déposes à 300€</strong> pour les pratiquants réguliers — soit seulement 30€ la dépose, une économie de 150€ sur la saison.
+                  </p>
+                  <p>
+                    Le carnet de 10 déposes est partageable entre plusieurs personnes (famille, groupe d'amis) et valable un an. C'est la solution idéale pour les kitesurfeurs locaux de Hyères, Toulon, Carqueiranne ou La Londe-les-Maures qui veulent profiter régulièrement des meilleurs spots de la baie.
+                  </p>
+                  <p>
+                    Pour utiliser ce service, vous devez être un <strong>kitesurfeur autonome</strong> : maîtrise du waterstart, navigation indépendante, gestion du matériel et connaissance des règles de priorité. En cas de doute sur votre niveau, <Link to="/contact-reservation-kitesurf-hyeres" className="text-primary hover:underline">contactez-nous</Link> — nous évaluerons ensemble si le service est adapté à votre pratique.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* FAQ SEO */}
         <ActivityFAQ
           title="Questions Fréquentes"

@@ -345,6 +345,49 @@ const Wakeboard = () => {
           </div>
         </section>
 
+        {/* Contenu SEO descriptif */}
+        <section className="py-20 bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto prose prose-lg">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-8 text-center">
+                Le Wakeboard à Hyères : Une Expérience de Glisse{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunset to-sunset-light">Inoubliable</span>
+              </h2>
+
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed">
+                <div className="space-y-4">
+                  <h3 className="font-display text-xl font-bold text-foreground">Pourquoi choisir le wakeboard à Hyères ?</h3>
+                  <p>
+                    Le wakeboard est l'une des activités nautiques les plus accessibles et les plus fun de la côte varoise. Pratiqué sur la <strong>baie d'Hyères</strong>, entre la presqu'île de Giens et les célèbres îles d'Or (Porquerolles, Port-Cros, Le Levant), le wakeboard offre un cadre exceptionnel pour découvrir les sensations de la glisse tractée.
+                  </p>
+                  <p>
+                    Contrairement au kitesurf ou au wingfoil, le wakeboard ne nécessite aucune connaissance du vent ni de pilotage d'aile. Vous êtes simplement tracté par notre bateau, ce qui rend l'activité <strong>accessible dès 8 ans</strong> et à tous les niveaux de condition physique. C'est l'activité idéale pour une sortie en famille, entre amis, ou pour les vacanciers qui souhaitent s'initier aux sports de glisse sans engagement.
+                  </p>
+                  <p>
+                    Notre moniteur diplômé d'État (BPJEPS) ajuste la vitesse du bateau en temps réel selon votre niveau. Les débutants commencent à vitesse réduite pour maîtriser la position de base, tandis que les riders confirmés peuvent monter en puissance pour travailler leurs figures et sauts.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="font-display text-xl font-bold text-foreground">Un spot privilégié dans le Var</h3>
+                  <p>
+                    La <strong>baie d'Hyères</strong> est un plan d'eau naturellement protégé, offrant des conditions idéales pour le wakeboard : eau calme, faible houle et températures agréables de mars à novembre. Vous naviguez dans un cadre naturel préservé, loin des zones de baignade, avec une vue imprenable sur les îles d'Hyères.
+                  </p>
+                  <p>
+                    Chaque session de <strong>15 minutes de wakeboard</strong> est suffisante pour ressentir les premières sensations de glisse. C'est un format court mais intense, parfait pour découvrir l'activité ou se faire plaisir entre deux cours de <Link to="/cours-kitesurf-hyeres-debutant" className="text-primary hover:underline">kitesurf</Link> ou de <Link to="/stage-wingfoil-hyeres-almanarre" className="text-primary hover:underline">wingfoil</Link>.
+                  </p>
+                  <p>
+                    Le matériel est entièrement fourni : planche de wakeboard adaptée à votre gabarit, gilet de flottaison homologué, et combinaison néoprène si les conditions le nécessitent. Vous n'avez rien à apporter, si ce n'est votre envie de glisser !
+                  </p>
+                  <p>
+                    Depuis <strong>1999</strong>, notre école <Link to="/a-propos-ecole-kitesurf-hyeres" className="text-primary hover:underline">KiteSurf Passion</Link> accompagne les amateurs de sports nautiques sur les spots d'Hyères et de l'Almanarre. Le wakeboard s'intègre naturellement dans notre offre d'activités tractées, aux côtés du <Link to="/foil-tracte-hyeres" className="text-primary hover:underline">foil tracté</Link>, pour vous offrir un panel complet de sensations sur l'eau.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Témoignages Wakeboard */}
         <FoilWakeboardTestimonials 
           variant="wakeboard" 
