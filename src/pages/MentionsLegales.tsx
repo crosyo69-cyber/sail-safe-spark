@@ -285,6 +285,31 @@ const MentionsLegales = () => {
         {/* Main Content */}
         <section className="py-16">
           <div className="container mx-auto px-4 max-w-4xl">
+            {/* SEO Introduction Section */}
+            <div className="bg-muted/30 rounded-lg p-8 mb-12 border-l-4 border-primary">
+              <h2 className="font-display text-2xl font-bold mb-4 text-foreground">
+                Transparence et conformité légale pour Kitesurf Passion
+              </h2>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Les mentions légales du site Kitesurf Passion à Hyères et Carqueiranne sont établies conformément à la 
+                Loi pour la Confiance dans l'Économie Numérique (LCEN) du 21 juin 2004 et à la directive européenne 2000/31/CE. 
+                En tant qu'école de kitesurf, de wingfoil, de pumpfoil et de wakeboard basée dans le Var, nous nous engageons 
+                à respecter les obligations légales et à vous fournir l'intégralité des informations requises concernant 
+                l'exploitation de kitesurfpassion.fr.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Ces mentions légales régissent votre accès au site, vos droits en tant qu'utilisateur, et définissent les conditions 
+                dans lesquelles Kitesurf Passion opère ses services d'enseignement de disciplines nautiques et de location de matériel. 
+                Vous y trouverez également les informations essentielles sur notre hébergeur, nos partenaires techniques, et nos 
+                responsabilités légales vis-à-vis de nos stagiaires et utilisateurs du site.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                Pour toute question ou demande concernant la réglementation, le RGPD, ou l'exploitation de notre site web, 
+                contactez-nous directement. Ces mentions légales constituent un document vivant, mis à jour régulièrement 
+                pour assurer notre conformité totale avec la législation française et européenne.
+              </p>
+            </div>
+
             {/* Main Sections with Icons */}
             <div className="space-y-8">
               {sections.map((section, index) => (

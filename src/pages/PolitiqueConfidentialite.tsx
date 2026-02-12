@@ -105,6 +105,36 @@ const PolitiqueConfidentialite = () => {
         <section className="py-16">
           <div className="container mx-auto px-4 max-w-4xl">
             
+            {/* SEO Introduction Section */}
+            <div className="bg-muted/30 rounded-lg p-8 mb-12 border-l-4 border-primary">
+              <h2 className="font-display text-2xl font-bold mb-4 text-foreground">
+                Votre confidentialité est notre priorité
+              </h2>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Chez Kitesurf Passion, école de kitesurf, wingfoil, pumpfoil et wakeboard basée à Hyères dans le Var, 
+                nous traitons vos données personnelles avec le plus grand sérieux. Cette politique de confidentialité explique 
+                comment nous collectons, utilisons, protégeons et gérons les informations que vous nous confiez lors de votre 
+                inscription à nos cours, de vos réservations, ou de votre navigation sur notre plateforme.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Nous respectons strictement le Règlement Général sur la Protection des Données (RGPD) et la législation 
+                française sur la protection des données. Chaque donnée collectée via notre site kitesurfpassion.fr est traitée 
+                de manière transparente, sécurisée et légale. Que vous nous contactiez pour réserver un cours de kitesurf à Hyères, 
+                vous inscrire à nos alertes météo Almanarre, ou commander un bon cadeau, vos informations sont protégées par 
+                des mesures techniques et organisationnelles robustes.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Cette politique définit également vos droits inaliénables : accès, rectification, suppression, portabilité et opposition. 
+                Nous restons votre interlocuteur privilégié pour l'exercice de ces droits, et nous mettons à votre disposition 
+                un contact dédié pour répondre à vos questions ou demandes RGPD.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                <strong>Besoin d'aide ?</strong> Consultez nos <Link to="/mentions-legales" className="text-primary hover:underline">mentions légales</Link> pour 
+                l'identification complète de notre structure, ou contactez-nous directement pour toute préoccupation relative 
+                à vos données.
+              </p>
+            </div>
+            
             {/* Introduction */}
             <Card className="mb-8">
               <CardHeader>
