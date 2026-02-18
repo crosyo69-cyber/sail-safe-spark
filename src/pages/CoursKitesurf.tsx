@@ -144,7 +144,7 @@ const CoursKitesurf = () => {
     provider: {
       "@type": "Organization",
       name: "KiteSurf Passion",
-      sameAs: "https://www.kitesurfpassion.fr",
+      sameAs: "https://www.kitesurfpassion.com",
     },
     offers: {
       "@type": "Offer",
@@ -159,7 +159,7 @@ const CoursKitesurf = () => {
     "@type": "Product",
     name: "Stage Kitesurf 100% Glisse - Hyères",
     description: "Stage de kitesurf 5 jours pour débutants avec bateau d'assistance à l'Almanarre, Hyères. Devenez autonome en kitesurf avec un moniteur diplômé d'État.",
-    image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+    image: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
@@ -184,17 +184,17 @@ const CoursKitesurf = () => {
     "@type": "ImageObject",
     name: "Stage kitesurf Hyères Almanarre",
     description: "Formation kitesurf avec élèves et moniteur diplômé sur le spot de l'Almanarre à Hyères - école KiteSurf Passion",
-    contentUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+    contentUrl: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {
       "@type": "Organization",
       name: "KiteSurf Passion",
-      url: "https://www.kitesurfpassion.fr",
+      url: "https://www.kitesurfpassion.com",
     },
-    license: "https://www.kitesurfpassion.fr/mentions-legales",
-    acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
+    license: "https://www.kitesurfpassion.com/mentions-legales",
+    acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
     contentLocation: {
       "@type": "Place",
       name: "Plage de l'Almanarre, Hyères",
@@ -213,7 +213,7 @@ const CoursKitesurf = () => {
     "@type": "HowTo",
     name: "Comment apprendre le kitesurf à Hyères en 5 jours",
     description: "Guide complet pour apprendre le kitesurf avec notre stage 100% Glisse à l'Almanarre. De la découverte à l'autonomie en 5 séances.",
-    image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+    image: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
     totalTime: "PT15H",
     estimatedCost: {
       "@type": "MonetaryAmount",
@@ -237,7 +237,7 @@ const CoursKitesurf = () => {
         position: 1,
         name: "Découverte & Sécurité",
         text: "Présentation du matériel, règles de sécurité, fenêtre de vent. Pilotage de l'aile sur la plage pour comprendre les bases.",
-        image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg"
+        image: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg"
       },
       {
         "@type": "HowToStep",
@@ -274,16 +274,16 @@ const CoursKitesurf = () => {
           name="description"
           content="Apprenez le kitesurf à Hyères avec notre stage débutant 5 séances. Bateau d'assistance, moniteur expert, spot Almanarre idéal. Autonomie garantie !"
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" />
+        <link rel="canonical" href="https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" />
         
         {/* Open Graph */}
         <meta property="og:title" content="Cours Kitesurf Débutant Hyères | Stage avec Bateau d'Assistance" />
         <meta property="og:description" content="Stage kitesurf 5 jours dès 399€ à Hyères. Bateau d'assistance, moniteur diplômé, spot Almanarre. Devenez autonome !" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" />
-        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta property="og:url" content="https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" />
+        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Cours de kitesurf débutant à Hyères - École KiteSurf Passion Almanarre" />
@@ -294,7 +294,7 @@ const CoursKitesurf = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Cours Kitesurf Débutant Hyères" />
         <meta name="twitter:description" content="Stage kitesurf 5 jours avec bateau d'assistance à Hyères Almanarre." />
-        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
         <meta name="twitter:image:alt" content="Cours kitesurf Hyères Almanarre" />
         
         <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
@@ -305,8 +305,8 @@ const CoursKitesurf = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
-            { "@type": "ListItem", "position": 2, "name": "Cours Kitesurf", "item": "https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Cours Kitesurf", "item": "https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" }
           ]
         })}</script>
         <script type="application/ld+json">{JSON.stringify(howToStructuredData)}</script>

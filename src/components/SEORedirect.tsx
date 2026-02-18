@@ -27,7 +27,7 @@
        <meta name="robots" content="noindex, follow" />
        <meta name="prerender-status-code" content={String(statusCode)} />
        <meta httpEquiv="refresh" content={`0;url=${to}`} />
-       <link rel="canonical" href={`https://www.kitesurfpassion.fr${to}`} />
+       <link rel="canonical" href={`https://www.kitesurfpassion.com${to}`} />
      </Helmet>
    );
  };

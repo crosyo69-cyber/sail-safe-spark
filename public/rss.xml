@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>KiteSurf Passion - Blog Kitesurf Hyères</title>
-    <link>https://www.kitesurfpassion.fr/blog-kitesurf-hyeres</link>
+    <link>https://www.kitesurfpassion.com/blog-kitesurf-hyeres</link>
     <description>Actualités, conseils et guides sur le kitesurf, wingfoil et pumpfoil à Hyères. Découvrez le spot de l'Almanarre avec l'école KiteSurf Passion.</description>
     <language>fr-FR</language>
     <lastBuildDate>Sun, 02 Feb 2026 10:00:00 +0100</lastBuildDate>
-    <atom:link href="https://www.kitesurfpassion.fr/rss.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="https://www.kitesurfpassion.com/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
-      <url>https://www.kitesurfpassion.fr/favicon.ico</url>
+      <url>https://www.kitesurfpassion.com/favicon.ico</url>
       <title>KiteSurf Passion</title>
-      <link>https://www.kitesurfpassion.fr</link>
+      <link>https://www.kitesurfpassion.com</link>
     </image>
     
     <item>
       <title>Foil Tracté à Hyères : Initiez-vous au Vol Sans Vent</title>
-      <link>https://www.kitesurfpassion.fr/blog/foil-tracte-hyeres-initiation-vol</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/foil-tracte-hyeres-initiation-vol</guid>
+      <link>https://www.kitesurfpassion.com/blog/foil-tracte-hyeres-initiation-vol</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/foil-tracte-hyeres-initiation-vol</guid>
       <pubDate>Sun, 02 Feb 2026 10:00:00 +0100</pubDate>
       <category>Kitesurf</category>
       <description>Découvrez le foil tracté par bateau à Hyères sur la baie de Giens. Vivez les sensations du vol au-dessus de l'eau sans dépendre du vent, accessible à tous dès 12 ans.</description>
@@ -24,8 +24,8 @@
     
     <item>
       <title>Wakeboard à Hyères : La Glisse Nautique Accessible à Tous</title>
-      <link>https://www.kitesurfpassion.fr/blog/wakeboard-hyeres-glisse-nautique</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/wakeboard-hyeres-glisse-nautique</guid>
+      <link>https://www.kitesurfpassion.com/blog/wakeboard-hyeres-glisse-nautique</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/wakeboard-hyeres-glisse-nautique</guid>
       <pubDate>Sat, 01 Feb 2026 10:00:00 +0100</pubDate>
       <category>Wakeboard</category>
       <description>Découvrez le wakeboard à Hyères sur la baie de Giens. Activité nautique fun et accessible dès 8 ans, encadrée par notre moniteur diplômé.</description>
@@ -33,8 +33,8 @@
     
     <item>
       <title>Location Matériel Kitesurf à Hyères : Guide Complet</title>
-      <link>https://www.kitesurfpassion.fr/blog/location-kitesurf-hyeres-almanarre-guide</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/location-kitesurf-hyeres-almanarre-guide</guid>
+      <link>https://www.kitesurfpassion.com/blog/location-kitesurf-hyeres-almanarre-guide</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/location-kitesurf-hyeres-almanarre-guide</guid>
       <pubDate>Fri, 31 Jan 2026 10:00:00 +0100</pubDate>
       <category>Kitesurf</category>
       <description>Louez votre matériel de kitesurf à Hyères sur le spot de l'Almanarre. Ailes, planches, combinaisons : équipement premium Duotone pour riders autonomes.</description>
@@ -42,8 +42,8 @@
     
     <item>
       <title>École de Kitesurf à Hyères : Découvrez l'Almanarre</title>
-      <link>https://www.kitesurfpassion.fr/blog/ecole-kitesurf-hyeres-almanarre-cours</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/ecole-kitesurf-hyeres-almanarre-cours</guid>
+      <link>https://www.kitesurfpassion.com/blog/ecole-kitesurf-hyeres-almanarre-cours</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/ecole-kitesurf-hyeres-almanarre-cours</guid>
       <pubDate>Tue, 28 Jan 2025 10:00:00 +0100</pubDate>
       <category>Kitesurf</category>
       <description>Cours de kitesurf débutant, location de matériel et spot mythique de l'Almanarre. Découvrez pourquoi Hyères est la destination kitesurf du Var.</description>
@@ -51,8 +51,8 @@
     
     <item>
       <title>Stage Wingfoil à Hyères : Apprenez à Voler sur l'Eau</title>
-      <link>https://www.kitesurfpassion.fr/blog/stage-wingfoil-hyeres-apprendre-voler</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/stage-wingfoil-hyeres-apprendre-voler</guid>
+      <link>https://www.kitesurfpassion.com/blog/stage-wingfoil-hyeres-apprendre-voler</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/stage-wingfoil-hyeres-apprendre-voler</guid>
       <pubDate>Mon, 27 Jan 2025 10:00:00 +0100</pubDate>
       <category>Wing Foil</category>
       <description>Cours de wingfoil débutant à Hyères avec moniteur diplômé. Découvrez le sport tendance sur le spot de l'Almanarre dans le Var.</description>
@@ -60,8 +60,8 @@
     
     <item>
       <title>Pumpfoil à Hyères : Initiez-vous au Dock Start</title>
-      <link>https://www.kitesurfpassion.fr/blog/pumpfoil-hyeres-dock-start-initiation</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/pumpfoil-hyeres-dock-start-initiation</guid>
+      <link>https://www.kitesurfpassion.com/blog/pumpfoil-hyeres-dock-start-initiation</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/pumpfoil-hyeres-dock-start-initiation</guid>
       <pubDate>Sun, 26 Jan 2025 10:00:00 +0100</pubDate>
       <category>Pump Foil</category>
       <description>Cours de pumpfoil et dock start à Hyères. Sport sans vent accessible à tous sur la presqu'île de Giens dans le Var.</description>
@@ -69,8 +69,8 @@
     
     <item>
       <title>Foil Tracté à Hyères : Vivez les Sensations du Vol</title>
-      <link>https://www.kitesurfpassion.fr/blog/foil-tracte-hyeres-sensations-vol</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/foil-tracte-hyeres-sensations-vol</guid>
+      <link>https://www.kitesurfpassion.com/blog/foil-tracte-hyeres-sensations-vol</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/foil-tracte-hyeres-sensations-vol</guid>
       <pubDate>Sat, 25 Jan 2025 10:00:00 +0100</pubDate>
       <category>Kitesurf</category>
       <description>Découvrez le foil tracté par bateau à Hyères. Idéal pour s'initier au vol sans vent sur la baie de Giens dans le Var.</description>
@@ -78,8 +78,8 @@
     
     <item>
       <title>10 Erreurs de Débutant en Kitesurf et Comment les Éviter</title>
-      <link>https://www.kitesurfpassion.fr/blog/erreurs-debutant-kitesurf-eviter</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/erreurs-debutant-kitesurf-eviter</guid>
+      <link>https://www.kitesurfpassion.com/blog/erreurs-debutant-kitesurf-eviter</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/erreurs-debutant-kitesurf-eviter</guid>
       <pubDate>Sun, 12 Jan 2025 10:00:00 +0100</pubDate>
       <category>Kitesurf</category>
       <description>Découvrez les erreurs les plus fréquentes des débutants en kitesurf et nos conseils d'experts pour les éviter. Progressez plus vite et en toute sécurité.</description>
@@ -87,8 +87,8 @@
     
     <item>
       <title>Règles de Sécurité en Kitesurf et Wingfoil : Le Guide Complet</title>
-      <link>https://www.kitesurfpassion.fr/blog/regles-securite-kitesurf-wingfoil</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/regles-securite-kitesurf-wingfoil</guid>
+      <link>https://www.kitesurfpassion.com/blog/regles-securite-kitesurf-wingfoil</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/regles-securite-kitesurf-wingfoil</guid>
       <pubDate>Wed, 08 Jan 2025 10:00:00 +0100</pubDate>
       <category>Sécurité</category>
       <description>La sécurité est notre priorité. Découvrez toutes les règles essentielles pour pratiquer le kitesurf et le wingfoil en toute sérénité à Hyères.</description>
@@ -96,8 +96,8 @@
     
     <item>
       <title>Guide Équipement Kitesurf : Ailes, Planches et Harnais pour Débuter</title>
-      <link>https://www.kitesurfpassion.fr/blog/guide-equipement-kitesurf-debutant</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/guide-equipement-kitesurf-debutant</guid>
+      <link>https://www.kitesurfpassion.com/blog/guide-equipement-kitesurf-debutant</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/guide-equipement-kitesurf-debutant</guid>
       <pubDate>Sun, 05 Jan 2025 10:00:00 +0100</pubDate>
       <category>Kitesurf</category>
       <description>Tout savoir sur le matériel de kitesurf : comment choisir son aile, sa planche et son harnais. Conseils d'experts pour bien s'équiper.</description>
@@ -105,8 +105,8 @@
     
     <item>
       <title>Progression Pumpfoil : Du Débutant à l'Expert en 8 Semaines</title>
-      <link>https://www.kitesurfpassion.fr/blog/progression-pumpfoil-debutant-expert</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/progression-pumpfoil-debutant-expert</guid>
+      <link>https://www.kitesurfpassion.com/blog/progression-pumpfoil-debutant-expert</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/progression-pumpfoil-debutant-expert</guid>
       <pubDate>Thu, 02 Jan 2025 10:00:00 +0100</pubDate>
       <category>Pump Foil</category>
       <description>Programme complet pour progresser en pumpfoil. Du dock start aux longues distances, suivez notre méthode éprouvée pour maîtriser le pumping.</description>
@@ -114,8 +114,8 @@
     
     <item>
       <title>Débuter le Kitesurf à Hyères : Guide Complet 2024</title>
-      <link>https://www.kitesurfpassion.fr/blog/debuter-kitesurf-hyeres-guide-complet</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/debuter-kitesurf-hyeres-guide-complet</guid>
+      <link>https://www.kitesurfpassion.com/blog/debuter-kitesurf-hyeres-guide-complet</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/debuter-kitesurf-hyeres-guide-complet</guid>
       <pubDate>Sun, 15 Dec 2024 10:00:00 +0100</pubDate>
       <category>Kitesurf</category>
       <description>Tout ce que vous devez savoir pour commencer le kitesurf à Hyères. Quel matériel choisir, comment se préparer, et pourquoi l'Almanarre est le spot idéal pour les débutants.</description>
@@ -123,8 +123,8 @@
     
     <item>
       <title>Wing Foil : Le Sport de Glisse Tendance en 2024</title>
-      <link>https://www.kitesurfpassion.fr/blog/wingfoil-sport-tendance-2024</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/wingfoil-sport-tendance-2024</guid>
+      <link>https://www.kitesurfpassion.com/blog/wingfoil-sport-tendance-2024</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/wingfoil-sport-tendance-2024</guid>
       <pubDate>Tue, 10 Dec 2024 10:00:00 +0100</pubDate>
       <category>Wing Foil</category>
       <description>Découvrez pourquoi le wingfoil conquiert la Méditerranée. Plus accessible que le kitesurf, le wingfoil offre des sensations uniques de vol sur l'eau.</description>
@@ -132,8 +132,8 @@
     
     <item>
       <title>Comprendre les Conditions Météo à l'Almanarre</title>
-      <link>https://www.kitesurfpassion.fr/blog/conditions-meteo-almanarre-guide</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/conditions-meteo-almanarre-guide</guid>
+      <link>https://www.kitesurfpassion.com/blog/conditions-meteo-almanarre-guide</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/conditions-meteo-almanarre-guide</guid>
       <pubDate>Thu, 05 Dec 2024 10:00:00 +0100</pubDate>
       <category>Le Spot</category>
       <description>Mistral ou Levant ? Apprenez à décrypter les conditions météo du spot de l'Almanarre pour naviguer dans les meilleures conditions possibles.</description>
@@ -141,8 +141,8 @@
     
     <item>
       <title>Pourquoi un Bateau d'Assistance est Essentiel pour Apprendre</title>
-      <link>https://www.kitesurfpassion.fr/blog/pourquoi-bateau-assistance-essentiel</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/pourquoi-bateau-assistance-essentiel</guid>
+      <link>https://www.kitesurfpassion.com/blog/pourquoi-bateau-assistance-essentiel</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/pourquoi-bateau-assistance-essentiel</guid>
       <pubDate>Thu, 28 Nov 2024 10:00:00 +0100</pubDate>
       <category>Sécurité</category>
       <description>L'importance du bateau d'assistance dans l'apprentissage du kitesurf. Sécurité, progression rapide et gain de temps : découvrez tous les avantages.</description>
@@ -150,8 +150,8 @@
     
     <item>
       <title>Pumpfoil et Dock Start : L'Initiation au Foil Sans Vent</title>
-      <link>https://www.kitesurfpassion.fr/blog/pumpfoil-dock-start-initiation</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/pumpfoil-dock-start-initiation</guid>
+      <link>https://www.kitesurfpassion.com/blog/pumpfoil-dock-start-initiation</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/pumpfoil-dock-start-initiation</guid>
       <pubDate>Wed, 20 Nov 2024 10:00:00 +0100</pubDate>
       <category>Pump Foil</category>
       <description>Pas de vent ? Pas de problème ! Le pumpfoil permet de voler sur l'eau par tous les temps. Découvrez cette discipline accessible à tous.</description>
@@ -159,8 +159,8 @@
     
     <item>
       <title>Quelle est la Meilleure Période pour le Kitesurf dans le Var ?</title>
-      <link>https://www.kitesurfpassion.fr/blog/meilleure-periode-kitesurf-var</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/meilleure-periode-kitesurf-var</guid>
+      <link>https://www.kitesurfpassion.com/blog/meilleure-periode-kitesurf-var</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/meilleure-periode-kitesurf-var</guid>
       <pubDate>Fri, 15 Nov 2024 10:00:00 +0100</pubDate>
       <category>Le Spot</category>
       <description>De mars à novembre, le Var offre des conditions exceptionnelles. Analyse mois par mois des meilleures périodes pour pratiquer le kitesurf et le wingfoil.</description>
@@ -168,8 +168,8 @@
     
     <item>
       <title>Comment Choisir son Aile de Wingfoil : Guide Débutant</title>
-      <link>https://www.kitesurfpassion.fr/blog/choisir-aile-wingfoil-debutant</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/choisir-aile-wingfoil-debutant</guid>
+      <link>https://www.kitesurfpassion.com/blog/choisir-aile-wingfoil-debutant</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/choisir-aile-wingfoil-debutant</guid>
       <pubDate>Fri, 08 Nov 2024 10:00:00 +0100</pubDate>
       <category>Wing Foil</category>
       <description>Guide complet pour choisir votre première wing : taille, volume, marques recommandées. Conseils d'experts pour bien débuter en wingfoil.</description>
@@ -177,8 +177,8 @@
     
     <item>
       <title>Wingfoil vs Kitesurf : Quelles Différences et Lequel Choisir ?</title>
-      <link>https://www.kitesurfpassion.fr/blog/wingfoil-vs-kitesurf-differences</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/wingfoil-vs-kitesurf-differences</guid>
+      <link>https://www.kitesurfpassion.com/blog/wingfoil-vs-kitesurf-differences</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/wingfoil-vs-kitesurf-differences</guid>
       <pubDate>Mon, 04 Nov 2024 10:00:00 +0100</pubDate>
       <category>Général</category>
       <description>Comparatif détaillé entre wingfoil et kitesurf. Découvrez les avantages de chaque discipline pour choisir celle qui vous correspond.</description>
@@ -186,8 +186,8 @@
     
     <item>
       <title>Maîtriser la Technique du Pumping en Foil</title>
-      <link>https://www.kitesurfpassion.fr/blog/technique-pumping-foil-progresser</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/technique-pumping-foil-progresser</guid>
+      <link>https://www.kitesurfpassion.com/blog/technique-pumping-foil-progresser</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/technique-pumping-foil-progresser</guid>
       <pubDate>Mon, 28 Oct 2024 10:00:00 +0100</pubDate>
       <category>Pump Foil</category>
       <description>Apprenez les secrets du pumping efficace. Technique, timing, positionnement : tous nos conseils pour progresser rapidement en pumpfoil.</description>
@@ -195,8 +195,8 @@
     
     <item>
       <title>Vos Premiers Vols en Wingfoil : 5 Conseils Essentiels</title>
-      <link>https://www.kitesurfpassion.fr/blog/premiers-vols-wingfoil-conseils</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/premiers-vols-wingfoil-conseils</guid>
+      <link>https://www.kitesurfpassion.com/blog/premiers-vols-wingfoil-conseils</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/premiers-vols-wingfoil-conseils</guid>
       <pubDate>Mon, 21 Oct 2024 10:00:00 +0100</pubDate>
       <category>Wing Foil</category>
       <description>Prêt à décoller ? Découvrez nos 5 conseils essentiels pour réussir vos premiers vols en wingfoil et progresser en toute sécurité.</description>
@@ -204,8 +204,8 @@
     
     <item>
       <title>Pumpfoil : L'Entraînement Idéal les Jours Sans Vent</title>
-      <link>https://www.kitesurfpassion.fr/blog/pumpfoil-entrainement-sans-vent</link>
-      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/pumpfoil-entrainement-sans-vent</guid>
+      <link>https://www.kitesurfpassion.com/blog/pumpfoil-entrainement-sans-vent</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.com/blog/pumpfoil-entrainement-sans-vent</guid>
       <pubDate>Mon, 14 Oct 2024 10:00:00 +0100</pubDate>
       <category>Pump Foil</category>
       <description>Transformez les jours sans vent en opportunité d'entraînement. Le pumpfoil développe votre équilibre et votre cardio pour mieux performer en kite ou wing.</description>

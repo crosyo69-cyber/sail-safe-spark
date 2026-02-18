@@ -105,16 +105,16 @@ const LocationMateriel = () => {
           name="keywords"
           content="location matériel kitesurf Hyères, location kitesurf Almanarre, louer matériel kitesurf Giens, location équipement kitesurf Var"
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.com/location-materiel-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.com/location-materiel-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/location-materiel-kitesurf-hyeres" />
         
         {/* Open Graph */}
         <meta property="og:title" content="Location Matériel Kitesurf Hyères | Almanarre & Giens" />
         <meta property="og:description" content="Louez ailes, planches et équipements kitesurf à Hyères. Matériel récent et vérifié. Dès 10€/jour." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" />
-        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta property="og:url" content="https://www.kitesurfpassion.com/location-materiel-kitesurf-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Location matériel kitesurf Hyères - École KiteSurf Passion" />
@@ -125,7 +125,7 @@ const LocationMateriel = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Location Kitesurf Hyères | Matériel Almanarre" />
         <meta name="twitter:description" content="Ailes, planches, foils à louer dès 10€/jour à Hyères." />
-        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
         <meta name="twitter:image:alt" content="Location kitesurf Hyères" />
         
         <script type="application/ld+json">
@@ -134,7 +134,7 @@ const LocationMateriel = () => {
             "@type": "Product",
             "name": "Location Matériel Kitesurf",
             "description": "Location de matériel de kitesurf à Hyères - Ailes, planches, harnais et équipements complets",
-            "image": "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+            "image": "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
             "brand": {
               "@type": "Brand",
               "name": "KiteSurf Passion"
@@ -154,8 +154,8 @@ const LocationMateriel = () => {
             "provider": {
               "@type": "LocalBusiness",
               "name": "KiteSurf Passion",
-              "url": "https://www.kitesurfpassion.fr",
-              "image": "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+              "url": "https://www.kitesurfpassion.com",
+              "image": "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
               "priceRange": "€€",
               "telephone": "+33672716905",
               "address": {
@@ -175,8 +175,8 @@ const LocationMateriel = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
-            { "@type": "ListItem", "position": 2, "name": "Location Matériel", "item": "https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Location Matériel", "item": "https://www.kitesurfpassion.com/location-materiel-kitesurf-hyeres" }
           ]
         })}</script>
       </Helmet>
