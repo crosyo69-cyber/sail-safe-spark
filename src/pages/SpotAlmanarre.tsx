@@ -158,12 +158,12 @@ const spotFaqStructuredData = {
 const sportsActivityLocationData = {
   "@context": "https://schema.org",
   "@type": "SportsActivityLocation",
-  "@id": "https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var#sportslocation",
+  "@id": "https://www.kitesurfpassion.com/spot-kitesurf-almanarre-hyeres-var#sportslocation",
   name: "Spot Kitesurf & Wingfoil de l'Almanarre",
   priceRange: "€€",
   description: "Spot de sports nautiques emblématique de la Côte d'Azur. Idéal pour kitesurf, wingfoil et pumpfoil avec conditions régulières et sécurisées.",
-  url: "https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var",
-  image: "https://www.kitesurfpassion.fr/assets/almanarre-sunset.jpg",
+  url: "https://www.kitesurfpassion.com/spot-kitesurf-almanarre-hyeres-var",
+  image: "https://www.kitesurfpassion.com/assets/almanarre-sunset.jpg",
   address: {
     "@type": "PostalAddress",
     streetAddress: "Plage de l'Almanarre",
@@ -212,17 +212,17 @@ const imageStructuredData = {
   "@type": "ImageObject",
   name: "Spot kitesurf Almanarre Hyères coucher de soleil",
   description: "Plage de l'Almanarre à Hyères au coucher de soleil - meilleur spot kitesurf du Var",
-  contentUrl: "https://www.kitesurfpassion.fr/assets/almanarre-sunset.jpg",
-  thumbnailUrl: "https://www.kitesurfpassion.fr/assets/almanarre-sunset.jpg",
+  contentUrl: "https://www.kitesurfpassion.com/assets/almanarre-sunset.jpg",
+  thumbnailUrl: "https://www.kitesurfpassion.com/assets/almanarre-sunset.jpg",
   creditText: "KiteSurf Passion",
   copyrightNotice: "© KiteSurf Passion",
   creator: {
     "@type": "Organization",
     name: "KiteSurf Passion",
-    url: "https://www.kitesurfpassion.fr",
+    url: "https://www.kitesurfpassion.com",
   },
-  license: "https://www.kitesurfpassion.fr/mentions-legales",
-  acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
+  license: "https://www.kitesurfpassion.com/mentions-legales",
+  acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
   contentLocation: {
     "@type": "Place",
     name: "Plage de l'Almanarre, Hyères",
@@ -248,16 +248,16 @@ export default function SpotAlmanarre() {
           name="keywords"
           content="spot kitesurf almanarre, plage almanarre hyères, kitesurf var, wingfoil hyères, conditions vent almanarre, spot débutant kitesurf"
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var" />
+        <link rel="canonical" href="https://www.kitesurfpassion.com/spot-kitesurf-almanarre-hyeres-var" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.com/spot-kitesurf-almanarre-hyeres-var" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/spot-kitesurf-almanarre-hyeres-var" />
         
         {/* Open Graph */}
         <meta property="og:title" content="Spot Kitesurf Almanarre Hyères | Meilleur Spot du Var" />
         <meta property="og:description" content="L'Almanarre : le meilleur spot kitesurf du Var. Vent régulier, eaux plates, 300 jours de soleil. Conditions idéales pour apprendre !" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var" />
-        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta property="og:url" content="https://www.kitesurfpassion.com/spot-kitesurf-almanarre-hyeres-var" />
+        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Spot kitesurf Almanarre Hyères - Vue de la plage" />
@@ -268,7 +268,7 @@ export default function SpotAlmanarre() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Spot Kitesurf Almanarre Hyères" />
         <meta name="twitter:description" content="Le meilleur spot kitesurf du Var : vent régulier, eaux plates, conditions idéales." />
-        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
         <meta name="twitter:image:alt" content="Spot Almanarre Hyères kitesurf" />
         
         <script type="application/ld+json">
@@ -281,8 +281,8 @@ export default function SpotAlmanarre() {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
-            { "@type": "ListItem", "position": 2, "name": "Spot Almanarre", "item": "https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Spot Almanarre", "item": "https://www.kitesurfpassion.com/spot-kitesurf-almanarre-hyeres-var" }
           ]
         })}</script>
         <script type="application/ld+json">

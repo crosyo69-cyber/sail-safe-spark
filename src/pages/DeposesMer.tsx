@@ -79,16 +79,16 @@ const DeposesMer = () => {
           name="keywords"
           content="déposes en mer kitesurf Hyères, bateau sécurité kitesurf Almanarre, dépose en mer kitesurf Giens, downwind kitesurf var"
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" />
         
         {/* Open Graph */}
         <meta property="og:title" content="Déposes en Mer Kitesurf Hyères | Bateau Almanarre & Giens" />
         <meta property="og:description" content="Accédez aux meilleurs spots kitesurf de Hyères par bateau. Dépose en mer sécurisée dès 45€. Almanarre, Giens, baie d'Hyères." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
-        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta property="og:url" content="https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Dépose en mer kitesurf Hyères - Bateau école KiteSurf Passion" />
@@ -99,9 +99,9 @@ const DeposesMer = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Déposes Mer Kitesurf Hyères | Bateau Almanarre" />
         <meta name="twitter:description" content="Bateau sécurité pour kitesurf dès 45€ à Hyères." />
-        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
         <meta name="twitter:image:alt" content="Dépose mer kitesurf Hyères" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -110,8 +110,8 @@ const DeposesMer = () => {
             "provider": {
               "@type": "LocalBusiness",
               "name": "KiteSurf Passion",
-              "url": "https://www.kitesurfpassion.fr",
-              "image": "https://www.kitesurfpassion.fr/assets/bateau-assistance-kitesurf.jpg",
+              "url": "https://www.kitesurfpassion.com",
+              "image": "https://www.kitesurfpassion.com/assets/bateau-assistance-kitesurf.jpg",
               "priceRange": "€€",
               "telephone": "+33672716905",
               "address": {
@@ -142,7 +142,7 @@ const DeposesMer = () => {
             "@type": "Product",
             "name": "Déposes en Mer Kitesurf - Hyères",
             "description": "Service de déposes en mer pour kitesurfeurs autonomes avec bateau de sécurité sur la baie d'Hyères, l'Almanarre et Giens.",
-            "image": "https://www.kitesurfpassion.fr/assets/bateau-assistance-kitesurf.jpg",
+            "image": "https://www.kitesurfpassion.com/assets/bateau-assistance-kitesurf.jpg",
             "brand": {
               "@type": "Brand",
               "name": "KiteSurf Passion"
@@ -222,8 +222,8 @@ const DeposesMer = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
-            { "@type": "ListItem", "position": 2, "name": "Déposes en Mer", "item": "https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Déposes en Mer", "item": "https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" }
           ]
         })}</script>
       </Helmet>

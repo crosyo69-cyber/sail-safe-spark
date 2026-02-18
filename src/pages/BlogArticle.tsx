@@ -118,7 +118,7 @@ Naviguer dans des conditions trop fortes ou instables :
 - Rafales imprévisibles
 - Courants forts
 
-**Notre conseil** : Écoutez les conseils de votre moniteur et apprenez à lire les conditions. Le spot de [l'Almanarre](/spot-kitesurf-almanarre-hyeres-var) offre des conditions idéales pour débuter.
+    **Notre conseil** : Écoutez les conseils de votre moniteur et apprenez à lire les conditions. Le spot de [l'Almanarre](/spot-kitesurf-almanarre-hyeres-var) offre des conditions idéales pour débuter.
 
 ### Erreur 8 : Oublier les Règles de Priorité
 
@@ -149,7 +149,7 @@ L'apprentissage autodidacte est risqué :
 - Progression plus lente
 - Danger pour les autres usagers
 
-**Notre conseil** : Investissez dans un [stage encadré](/cours-kitesurf-hyeres-debutant) avec des professionnels. C'est le meilleur investissement pour votre progression et votre sécurité.
+    **Notre conseil** : Investissez dans un [stage encadré](/cours-kitesurf-hyeres-debutant) avec des professionnels. C'est le meilleur investissement pour votre progression et votre sécurité.
 
 ### En Résumé
 
@@ -166,7 +166,7 @@ L'apprentissage autodidacte est risqué :
 | Pas d'échauffement | 10 min avant chaque session |
 | Apprendre seul | Prendre des cours |
 
-Chez KiteSurf Passion, notre [bateau d'assistance](/blog/pourquoi-bateau-assistance-essentiel) et nos 25 ans d'expérience vous garantissent une progression en toute sécurité.
+    Chez KiteSurf Passion, notre [bateau d'assistance](/blog/pourquoi-bateau-assistance-essentiel) et nos 25 ans d'expérience vous garantissent une progression en toute sécurité.
     `,
     tags: ["Débutant", "Erreurs", "Conseils", "Progression", "Sécurité"],
   },
@@ -273,7 +273,7 @@ Le wingfoil présente des risques particuliers :
 
 ### L'Importance du Bateau d'Assistance
 
-Notre [bateau d'assistance](/blog/pourquoi-bateau-assistance-essentiel) fait la différence :
+    Notre [bateau d'assistance](/blog/pourquoi-bateau-assistance-essentiel) fait la différence :
 
 | Sans Bateau | Avec Bateau |
 |------------|-------------|
@@ -330,7 +330,7 @@ Chez KiteSurf Passion, la sécurité n'est pas négociable :
 - Matériel vérifié quotidiennement
 - 25 ans d'expérience sans accident grave
 
-Découvrez nos [stages encadrés](/cours-kitesurf-hyeres-debutant) pour apprendre en toute sécurité.
+    Découvrez nos [stages encadrés](/cours-kitesurf-hyeres-debutant) pour apprendre en toute sécurité.
     `,
     tags: ["Sécurité", "Règles", "Navigation", "Kitesurf", "Wingfoil"],
   },

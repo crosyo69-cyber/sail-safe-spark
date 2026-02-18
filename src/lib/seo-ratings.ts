@@ -77,12 +77,12 @@ export const productAggregateRating = {
 // Item reviewed reference for all reviews
 const itemReviewed = {
   "@type": "LocalBusiness",
-  "@id": "https://www.kitesurfpassion.fr/#organization",
+  "@id": "https://www.kitesurfpassion.com/#organization",
   name: "KiteSurf Passion",
-  url: "https://www.kitesurfpassion.fr",
+  url: "https://www.kitesurfpassion.com",
   telephone: "+33672716905",
   priceRange: "€€",
-  image: "https://www.kitesurfpassion.fr/og-image.jpg",
+  image: "https://www.kitesurfpassion.com/og-image.jpg",
 };
 
 /**

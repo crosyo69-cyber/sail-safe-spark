@@ -41,7 +41,7 @@ const MentionsLegales = () => {
       title: "2. Hébergement",
       content: (
         <div className="space-y-3">
-          <p>Le site kitesurfpassion.fr est hébergé par :</p>
+          <p>Le site kitesurfpassion.com est hébergé par :</p>
           <p><strong>Lovable (GPT Engineer Inc.)</strong></p>
           <p>2261 Market Street #4010</p>
           <p>San Francisco, CA 94114</p>
@@ -252,9 +252,9 @@ const MentionsLegales = () => {
           content="Mentions légales du site Kitesurf Passion : informations sur l'éditeur, l'hébergeur, la propriété intellectuelle et la protection des données personnelles." 
         />
         <meta name="robots" content="noindex, follow" />
-        <link rel="canonical" href="https://www.kitesurfpassion.fr/mentions-legales" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/mentions-legales" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/mentions-legales" />
+        <link rel="canonical" href="https://www.kitesurfpassion.com/mentions-legales" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.com/mentions-legales" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/mentions-legales" />
       </Helmet>
 
       <Header />
@@ -295,7 +295,7 @@ const MentionsLegales = () => {
                 Loi pour la Confiance dans l'Économie Numérique (LCEN) du 21 juin 2004 et à la directive européenne 2000/31/CE. 
                 En tant qu'école de kitesurf, de wingfoil, de pumpfoil et de wakeboard basée dans le Var, nous nous engageons 
                 à respecter les obligations légales et à vous fournir l'intégralité des informations requises concernant 
-                l'exploitation de kitesurfpassion.fr.
+                l'exploitation de kitesurfpassion.com.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Ces mentions légales régissent votre accès au site, vos droits en tant qu'utilisateur, et définissent les conditions 

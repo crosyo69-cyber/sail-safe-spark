@@ -358,22 +358,22 @@ const Blog = () => {
     "@type": "Blog",
     name: "Blog KiteSurf Passion",
     description: "Actualités, conseils et guides sur le kitesurf, wingfoil et sports de glisse à Hyères",
-    url: "https://www.kitesurfpassion.fr/blog-kitesurf-hyeres",
+    url: "https://www.kitesurfpassion.com/blog-kitesurf-hyeres",
     publisher: {
       "@type": "Organization",
       name: "KiteSurf Passion",
       logo: {
         "@type": "ImageObject",
-        url: "https://www.kitesurfpassion.fr/logo.png",
+        url: "https://www.kitesurfpassion.com/logo.png",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
         creator: {
           "@type": "Organization",
           name: "KiteSurf Passion",
-          url: "https://www.kitesurfpassion.fr",
+          url: "https://www.kitesurfpassion.com",
         },
-        license: "https://www.kitesurfpassion.fr/mentions-legales",
-        acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
+        license: "https://www.kitesurfpassion.com/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
       },
     },
     blogPost: blogArticles.map((article) => ({
@@ -386,7 +386,7 @@ const Blog = () => {
       author: {
         "@type": "Person",
         name: "Yoanne Cros",
-        url: "https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres",
+        url: "https://www.kitesurfpassion.com/a-propos-ecole-kitesurf-hyeres",
       },
     })),
   };
@@ -403,7 +403,7 @@ const Blog = () => {
           name="keywords"
           content="blog kitesurf hyères, conseils wingfoil, guide débutant kitesurf, conditions almanarre, météo kitesurf var"
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.fr/blog-kitesurf-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.com/blog-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/blog-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/blog-kitesurf-hyeres" />
         
