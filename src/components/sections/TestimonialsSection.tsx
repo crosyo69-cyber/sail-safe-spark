@@ -103,7 +103,7 @@ const reviewCount = testimonials.length;
 // Item reviewed reference for all reviews
 const itemReviewed = {
   "@type": "LocalBusiness",
-  "@id": "https://www.kitesurfpassion.com/#organization",
+  "@id": "https://www.kitesurfpassion.fr/#organization",
   name: "KiteSurf Passion",
 };
 
@@ -111,11 +111,11 @@ const itemReviewed = {
 export const reviewsStructuredData = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "@id": "https://www.kitesurfpassion.com/#organization",
+  "@id": "https://www.kitesurfpassion.fr/#organization",
   name: "KiteSurf Passion",
   telephone: "+33672716905",
   priceRange: "€€",
-  image: "https://www.kitesurfpassion.com/og-image.jpg",
+  image: "https://www.kitesurfpassion.fr/og-image.jpg",
   address: {
     "@type": "PostalAddress",
     streetAddress: "52 Avenue Général de Gaulle",

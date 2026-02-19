@@ -1,5 +1,5 @@
 # Robots.txt pour KiteSurf Passion
-# https://www.kitesurfpassion.com
+# https://www.kitesurfpassion.fr
 
 # Googlebot (Google Search)
 User-agent: Googlebot
@@ -73,4 +73,4 @@ Disallow: /foil-tracte-wakeboard-hyeres
 Disallow: /blog-kitesurf-hyeres?*
 
 # Sitemap - URL unique HTTPS avec www
-Sitemap: https://www.kitesurfpassion.com/sitemap.xml
+Sitemap: https://www.kitesurfpassion.fr/sitemap.xml

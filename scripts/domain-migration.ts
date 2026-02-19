@@ -35,8 +35,8 @@ import * as path from 'path';
 // ============================================
 // CONFIGURATION - MODIFIER CES VALEURS
 // ============================================
-const OLD_DOMAIN = 'kitesurfpassion.fr';
-const NEW_DOMAIN = 'kitesurfpassion.com';
+const OLD_DOMAIN = 'kitesurfpassion.com';
+const NEW_DOMAIN = 'kitesurfpassion.fr';
 
 // Patterns de remplacement (du plus spécifique au moins spécifique)
 const REPLACEMENTS = [
