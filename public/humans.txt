@@ -9,7 +9,7 @@ LinkedIn: https://www.linkedin.com/company/kitesurf-passion
 /* SITE */
 
 Nom: Kitesurf Passion
-URL: https://kitesurfpassion.com
+URL: https://kitesurfpassion.fr
 Description: École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999
 Langues: Français, English
 Dernière mise à jour: 2026-01-12
@@ -50,8 +50,8 @@ Merci à la communauté kitesurf de l'Almanarre.
 
 /* STANDARDS */
 
-robots.txt: https://kitesurfpassion.com/robots.txt
-sitemap.xml: https://kitesurfpassion.com/sitemap.xml
-llms.txt: https://kitesurfpassion.com/llms.txt
-security.txt: https://kitesurfpassion.com/.well-known/security.txt
-rss.xml: https://kitesurfpassion.com/rss.xml
+robots.txt: https://kitesurfpassion.fr/robots.txt
+sitemap.xml: https://kitesurfpassion.fr/sitemap.xml
+llms.txt: https://kitesurfpassion.fr/llms.txt
+security.txt: https://kitesurfpassion.fr/.well-known/security.txt
+rss.xml: https://kitesurfpassion.fr/rss.xml

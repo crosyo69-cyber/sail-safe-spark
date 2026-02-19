@@ -1,22 +1,22 @@
 # Security.txt - Kitesurf Passion
-# https://kitesurfpassion.com/.well-known/security.txt
+# https://kitesurfpassion.fr/.well-known/security.txt
 # Standard: https://securitytxt.org/
 
 # Contact pour signaler une vulnérabilité
 Contact: mailto:crosyo69@gmail.com
-Contact: https://kitesurfpassion.com/contact-reservation-kitesurf-hyeres
+Contact: https://kitesurfpassion.fr/contact-reservation-kitesurf-hyeres
 
 # Langue préférée pour les rapports
 Preferred-Languages: fr, en
 
 # Politique de divulgation
-Policy: https://kitesurfpassion.com/mentions-legales
+Policy: https://kitesurfpassion.fr/mentions-legales
 
 # Date d'expiration de ce fichier (1 an)
 Expires: 2027-01-12T23:59:59.000Z
 
 # Informations sur le site
-Canonical: https://kitesurfpassion.com/.well-known/security.txt
+Canonical: https://kitesurfpassion.fr/.well-known/security.txt
 
 # Remerciements
 # Nous remercions les chercheurs en sécurité qui nous aident à protéger nos utilisateurs.
