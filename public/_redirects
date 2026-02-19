@@ -289,13 +289,21 @@
 /lien-simulateur+de+chute+libre+hyrese+air+vertical-44.html          /a-propos-ecole-kitesurf-hyeres  301
 
 # =============================================
-# 9. REDIRECTIONS INTERNES EXISTANTES
+# 9. ANCIENNES IMAGES CMS (dossier_cite/)
+# =============================================
+# Les ~135 images de l'ancien CMS e-monsite ne sont plus hébergées.
+# Redirection catch-all vers le placeholder pour éviter les 404.
+
+/dossier_cite/*                         /placeholder.svg  301
+
+# =============================================
+# 10. REDIRECTIONS INTERNES EXISTANTES
 # =============================================
 
 /foil-tracte-wakeboard-hyeres           /foil-tracte-hyeres  301
 
 # =============================================
-# 10. CATCH-ALL SPA (OBLIGATOIRE - DERNIÈRE LIGNE)
+# 11. CATCH-ALL SPA (OBLIGATOIRE - DERNIÈRE LIGNE)
 # =============================================
 # Toutes les routes non matchées servent index.html
 # React Router gère ensuite le rendu (page ou 404)
