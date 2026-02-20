@@ -144,7 +144,7 @@ const CoursKitesurf = () => {
     provider: {
       "@type": "Organization",
       name: "KiteSurf Passion",
-      sameAs: "https://www.kitesurfpassion.com",
+      sameAs: "https://www.kitesurfpassion.fr",
     },
     offers: {
       "@type": "Offer",
@@ -159,7 +159,7 @@ const CoursKitesurf = () => {
     "@type": "Product",
     name: "Stage Kitesurf 100% Glisse - Hyères",
     description: "Stage de kitesurf 5 jours pour débutants avec bateau d'assistance à l'Almanarre, Hyères. Devenez autonome en kitesurf avec un moniteur diplômé d'État.",
-    image: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
@@ -184,17 +184,17 @@ const CoursKitesurf = () => {
     "@type": "ImageObject",
     name: "Stage kitesurf Hyères Almanarre",
     description: "Formation kitesurf avec élèves et moniteur diplômé sur le spot de l'Almanarre à Hyères - école KiteSurf Passion",
-    contentUrl: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {
       "@type": "Organization",
       name: "KiteSurf Passion",
-      url: "https://www.kitesurfpassion.com",
+      url: "https://www.kitesurfpassion.fr",
     },
-    license: "https://www.kitesurfpassion.com/mentions-legales",
-    acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+    license: "https://www.kitesurfpassion.fr/mentions-legales",
+    acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
     contentLocation: {
       "@type": "Place",
       name: "Plage de l'Almanarre, Hyères",
@@ -213,7 +213,7 @@ const CoursKitesurf = () => {
     "@type": "HowTo",
     name: "Comment apprendre le kitesurf à Hyères en 5 jours",
     description: "Guide complet pour apprendre le kitesurf avec notre stage 100% Glisse à l'Almanarre. De la découverte à l'autonomie en 5 séances.",
-    image: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
     totalTime: "PT15H",
     estimatedCost: {
       "@type": "MonetaryAmount",
@@ -237,7 +237,7 @@ const CoursKitesurf = () => {
         position: 1,
         name: "Découverte & Sécurité",
         text: "Présentation du matériel, règles de sécurité, fenêtre de vent. Pilotage de l'aile sur la plage pour comprendre les bases.",
-        image: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg"
+        image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg"
       },
       {
         "@type": "HowToStep",
@@ -274,16 +274,16 @@ const CoursKitesurf = () => {
           name="description"
           content="Apprenez le kitesurf à Hyères avec notre stage débutant 5 séances. Bateau d'assistance, moniteur expert, spot Almanarre idéal. Autonomie garantie !"
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" />
         
         {/* Open Graph */}
         <meta property="og:title" content="Cours Kitesurf Débutant Hyères | Stage avec Bateau d'Assistance" />
         <meta property="og:description" content="Stage kitesurf 5 jours dès 399€ à Hyères. Bateau d'assistance, moniteur diplômé, spot Almanarre. Devenez autonome !" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" />
-        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:url" content="https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Cours de kitesurf débutant à Hyères - École KiteSurf Passion Almanarre" />
@@ -294,7 +294,7 @@ const CoursKitesurf = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Cours Kitesurf Débutant Hyères" />
         <meta name="twitter:description" content="Stage kitesurf 5 jours avec bateau d'assistance à Hyères Almanarre." />
-        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta name="twitter:image:alt" content="Cours kitesurf Hyères Almanarre" />
         
         <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
@@ -305,8 +305,8 @@ const CoursKitesurf = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Cours Kitesurf", "item": "https://www.kitesurfpassion.com/cours-kitesurf-hyeres-debutant" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "Cours Kitesurf", "item": "https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" }
           ]
         })}</script>
         <script type="application/ld+json">{JSON.stringify(howToStructuredData)}</script>
@@ -417,46 +417,37 @@ const CoursKitesurf = () => {
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-6">
-                Tarifs Stage Kitesurf
+                Nos Formules Kitesurf
               </h2>
-              <p className="text-muted-foreground text-lg">
-                Choisissez la formule adaptée à vos objectifs
-              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {stages.map((stage) => (
                 <div
                   key={stage.name}
-                  className={`relative bg-card rounded-3xl p-8 border ${
-                    stage.popular
-                      ? "border-primary shadow-glow"
-                      : "border-border/50"
-                  }`}
+                  className={`bg-card rounded-3xl p-8 border ${
+                    stage.popular ? "border-primary shadow-glow" : "border-border/50"
+                  } relative`}
                 >
                   {stage.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-bold">
-                      Populaire
-                    </div>
+                    <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-sm px-4 py-1 rounded-full font-bold">
+                      Le Plus Populaire
+                    </span>
                   )}
-
-                  <h3 className="font-display font-bold text-xl text-foreground mb-2">{stage.name}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">{stage.description}</p>
-
-                  <div className="mb-6">
-                    <span className="font-display text-4xl font-bold text-foreground">{stage.price}</span>
-                    <span className="text-muted-foreground"> / {stage.sessions}</span>
-                  </div>
-
+                  <h3 className="font-display font-bold text-foreground text-xl mb-2">{stage.name}</h3>
+                  <p className="text-muted-foreground text-sm mb-1">{stage.sessions}</p>
+                  <p className="text-muted-foreground text-sm mb-4">{stage.duration}</p>
+                  <p className="font-display text-4xl font-bold text-foreground mb-1">{stage.price}</p>
+                  <p className="text-primary text-sm mb-4">{stage.priceNote}</p>
+                  <p className="text-muted-foreground text-sm mb-6">{stage.description}</p>
                   <ul className="space-y-3 mb-8">
                     {stage.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-3 text-foreground">
+                      <li key={feature} className="flex items-center gap-3 text-sm">
                         <Check className="w-5 h-5 text-primary flex-shrink-0" />
-                        <span className="text-sm">{feature}</span>
+                        <span className="text-foreground">{feature}</span>
                       </li>
                     ))}
                   </ul>
-
                   <Button
                     variant={stage.popular ? "sunset" : "outline"}
                     className="w-full"
@@ -467,36 +458,16 @@ const CoursKitesurf = () => {
                 </div>
               ))}
             </div>
-
-            {/* Links to dedicated pages */}
-            <div className="mt-12 text-center">
-              <p className="text-muted-foreground mb-6">Découvrez nos formules en détail :</p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button variant="outline" asChild>
-                  <Link to="/stage-kitesurf-100-glisse-hyeres">Stage 100% Glisse</Link>
-                </Button>
-                <Button variant="outline" asChild>
-                  <Link to="/session-kitesurf-carte-hyeres">Cours à la Carte</Link>
-                </Button>
-                <Button variant="outline" asChild>
-                  <Link to="/cours-particulier-kitesurf-hyeres">Cours Particulier</Link>
-                </Button>
-              </div>
-            </div>
           </div>
         </section>
 
-        {/* Maillage interne - Disciplines complémentaires */}
         <InternalLinking
-          title="Découvrez Nos Autres Activités"
-          subtitle="Complétez votre expérience de glisse à Hyères"
-          links={[
-            disciplineLinks.wingfoil,
-            disciplineLinks.pumpfoil,
-            disciplineLinks.location,
-            { ...pillarLinks.spot, description: "Le meilleur spot du Var" },
-          ]}
-          accentColor="primary"
+          title="Disciplines Complémentaires"
+          links={Object.values(disciplineLinks).filter(l => l.href !== "/cours-kitesurf-hyeres-debutant")}
+        />
+        <InternalLinking
+          title="Informations Pratiques"
+          links={Object.values(pillarLinks)}
         />
       </main>
 

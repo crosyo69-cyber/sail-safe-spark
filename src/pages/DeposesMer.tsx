@@ -79,16 +79,16 @@ const DeposesMer = () => {
           name="keywords"
           content="déposes en mer kitesurf Hyères, bateau sécurité kitesurf Almanarre, dépose en mer kitesurf Giens, downwind kitesurf var"
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
         
         {/* Open Graph */}
         <meta property="og:title" content="Déposes en Mer Kitesurf Hyères | Bateau Almanarre & Giens" />
         <meta property="og:description" content="Accédez aux meilleurs spots kitesurf de Hyères par bateau. Dépose en mer sécurisée dès 45€. Almanarre, Giens, baie d'Hyères." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" />
-        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:url" content="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Dépose en mer kitesurf Hyères - Bateau école KiteSurf Passion" />
@@ -99,9 +99,9 @@ const DeposesMer = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Déposes Mer Kitesurf Hyères | Bateau Almanarre" />
         <meta name="twitter:description" content="Bateau sécurité pour kitesurf dès 45€ à Hyères." />
-        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta name="twitter:image:alt" content="Dépose mer kitesurf Hyères" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -110,8 +110,8 @@ const DeposesMer = () => {
             "provider": {
               "@type": "LocalBusiness",
               "name": "KiteSurf Passion",
-              "url": "https://www.kitesurfpassion.com",
-              "image": "https://www.kitesurfpassion.com/assets/bateau-assistance-kitesurf.jpg",
+              "url": "https://www.kitesurfpassion.fr",
+              "image": "https://www.kitesurfpassion.fr/assets/bateau-assistance-kitesurf.jpg",
               "priceRange": "€€",
               "telephone": "+33672716905",
               "address": {
@@ -135,14 +135,13 @@ const DeposesMer = () => {
             }
           })}
         </script>
-        {/* Product schema for reviews eligibility */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Product",
             "name": "Déposes en Mer Kitesurf - Hyères",
             "description": "Service de déposes en mer pour kitesurfeurs autonomes avec bateau de sécurité sur la baie d'Hyères, l'Almanarre et Giens.",
-            "image": "https://www.kitesurfpassion.com/assets/bateau-assistance-kitesurf.jpg",
+            "image": "https://www.kitesurfpassion.fr/assets/bateau-assistance-kitesurf.jpg",
             "brand": {
               "@type": "Brand",
               "name": "KiteSurf Passion"
@@ -222,8 +221,8 @@ const DeposesMer = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Déposes en Mer", "item": "https://www.kitesurfpassion.com/deposes-mer-kitesurf-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "Déposes en Mer", "item": "https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" }
           ]
         })}</script>
       </Helmet>
@@ -382,161 +381,35 @@ const DeposesMer = () => {
               <div className="bg-card rounded-2xl p-6 border border-border/50 text-center">
                 <MapPin className="w-8 h-8 text-primary mx-auto mb-4" />
                 <h3 className="font-display font-bold text-foreground mb-2">L'Almanarre</h3>
-                <p className="text-muted-foreground text-sm">
-                  Spot mythique de la presqu'île de Giens. Conditions idéales pour le kitesurf.
-                </p>
+                <p className="text-muted-foreground text-sm">Spot emblématique idéal pour le kitesurf avec vents réguliers.</p>
               </div>
               <div className="bg-card rounded-2xl p-6 border border-border/50 text-center">
-                <MapPin className="w-8 h-8 text-turquoise mx-auto mb-4" />
+                <MapPin className="w-8 h-8 text-primary mx-auto mb-4" />
                 <h3 className="font-display font-bold text-foreground mb-2">Presqu'île de Giens</h3>
-                <p className="text-muted-foreground text-sm">
-                  Différentes zones selon les conditions météo. Navigation variée.
-                </p>
+                <p className="text-muted-foreground text-sm">Zone protégée avec d'excellentes conditions de navigation.</p>
               </div>
               <div className="bg-card rounded-2xl p-6 border border-border/50 text-center">
-                <MapPin className="w-8 h-8 text-sunset mx-auto mb-4" />
+                <MapPin className="w-8 h-8 text-primary mx-auto mb-4" />
                 <h3 className="font-display font-bold text-foreground mb-2">Baie d'Hyères</h3>
-                <p className="text-muted-foreground text-sm">
-                  Large plan d'eau protégé. Parfait pour les downwinds.
-                </p>
+                <p className="text-muted-foreground text-sm">Grand espace nautique avec vue sur les îles d'Or.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Contenu SEO descriptif */}
-        <section className="py-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-8 text-center">
-                Les Déposes en Mer à Hyères : Naviguez sur les{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-ocean to-turquoise">Meilleurs Spots</span>
-              </h2>
-
-              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed">
-                <div className="space-y-4">
-                  <h3 className="font-display text-xl font-bold text-foreground">Un service unique sur la côte varoise</h3>
-                  <p>
-                    Le service de <strong>déposes en mer pour kitesurf à Hyères</strong> est conçu pour les riders autonomes qui souhaitent accéder aux meilleures zones de navigation sans les contraintes d'un départ depuis la plage. Notre bateau vous dépose directement au large, sur des zones où le vent est plus régulier, le plan d'eau plus dégagé et les conditions optimales pour naviguer en toute liberté.
-                  </p>
-                  <p>
-                    Ce service est particulièrement apprécié des kitesurfeurs confirmés habitués aux <strong>downwinds</strong> — ces navigations vent arrière qui permettent de couvrir de longues distances le long de la côte. Avec notre bateau, vous pouvez être déposé en amont pour profiter d'un parcours descendant jusqu'à la plage de l'Almanarre ou la presqu'île de Giens, avec la garantie d'un bateau de sécurité sur zone pendant toute la durée de votre session.
-                  </p>
-                  <p>
-                    La <strong>baie d'Hyères</strong> offre une diversité de configurations unique en Méditerranée. Selon les conditions de vent (Mistral d'ouest/nord-ouest ou Levant d'est/sud-est), nous adaptons le point de dépose pour vous placer sur la zone la plus favorable. Notre connaissance approfondie du plan d'eau depuis <strong>1999</strong> nous permet d'optimiser chaque sortie.
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  <h3 className="font-display text-xl font-bold text-foreground">Sécurité et flexibilité</h3>
-                  <p>
-                    La sécurité est au cœur de notre service. Notre bateau d'assistance reste sur zone pendant toute la durée de votre navigation. Un professionnel expérimenté surveille votre progression et peut intervenir en moins de 2 minutes en cas de besoin — panne de matériel, fatigue, changement de conditions météo.
-                  </p>
-                  <p>
-                    Nous proposons plusieurs formules adaptées à votre pratique : la <strong>dépose simple à 45€</strong> pour les riders équipés, la <strong>formule Location + Dépose à 80€</strong> qui inclut tout le matériel (aile, planche, harnais, combinaison) pour les visiteurs, et le <strong>carnet de 10 déposes à 300€</strong> pour les pratiquants réguliers — soit seulement 30€ la dépose, une économie de 150€ sur la saison.
-                  </p>
-                  <p>
-                    Le carnet de 10 déposes est partageable entre plusieurs personnes (famille, groupe d'amis) et valable un an. C'est la solution idéale pour les kitesurfeurs locaux de Hyères, Toulon, Carqueiranne ou La Londe-les-Maures qui veulent profiter régulièrement des meilleurs spots de la baie.
-                  </p>
-                  <p>
-                    Pour utiliser ce service, vous devez être un <strong>kitesurfeur autonome</strong> : maîtrise du waterstart, navigation indépendante, gestion du matériel et connaissance des règles de priorité. En cas de doute sur votre niveau, <Link to="/contact-reservation-kitesurf-hyeres" className="text-primary hover:underline">contactez-nous</Link> — nous évaluerons ensemble si le service est adapté à votre pratique.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ SEO */}
         <ActivityFAQ
-          title="Questions Fréquentes"
-          subtitle="Tout savoir sur les déposes en mer pour kitesurf à Hyères"
-          accentColor="ocean"
+          title="Questions sur les Déposes en Mer"
+          subtitle="Tout ce que vous devez savoir sur nos déposes en mer"
           faqs={[
-            {
-              question: "Qu'est-ce qu'une dépose en mer pour le kitesurf ?",
-              answer: "Une dépose en mer est un service de transport en bateau qui vous emmène directement sur les meilleurs spots de navigation. Vous évitez le départ depuis la plage et accédez à des zones de kitesurf optimales sur la baie d'Hyères, l'Almanarre ou la presqu'île de Giens."
-            },
-            {
-              question: "Quel niveau de kitesurf faut-il pour les déposes en mer ?",
-              answer: "Le service est réservé aux kitesurfeurs autonomes. Vous devez maîtriser le waterstart, naviguer de manière indépendante, gérer votre matériel en toutes situations et connaître les règles de priorité. En cas de doute, contactez-nous pour évaluer votre niveau."
-            },
-            {
-              question: "Le bateau de sécurité reste-t-il sur zone pendant ma session ?",
-              answer: "Oui, notre bateau d'assistance reste sur zone pendant toute la durée de votre session. Un professionnel veille à votre sécurité et peut intervenir rapidement en cas de besoin. C'est la garantie de naviguer sereinement sur les spots de Hyères."
-            },
-            {
-              question: "Puis-je combiner location de matériel et dépose en mer ?",
-              answer: "Absolument ! Notre formule Location + Dépose à 80€ inclut le matériel complet (aile, planche, harnais) et la dépose en mer. C'est la solution idéale pour les riders autonomes en voyage qui n'ont pas apporté leur équipement."
-            },
-            {
-              question: "Sur quels spots les déposes en mer sont-elles possibles ?",
-              answer: "Nous proposons des déposes sur l'Almanarre, la presqu'île de Giens et la baie d'Hyères. Le choix du spot dépend des conditions météo du jour. Notre connaissance locale nous permet de vous placer sur la meilleure zone pour votre session."
-            },
-            {
-              question: "Le carnet de 10 déposes est-il nominatif ?",
-              answer: "Le carnet de 10 déposes peut être partagé entre plusieurs personnes (famille, groupe d'amis). À 30€ la dépose au lieu de 45€, c'est l'offre idéale pour les pratiquants réguliers sur les spots de Hyères. Validité d'un an."
-            }
+            { question: "Quel niveau faut-il pour les déposes en mer ?", answer: "Le service est réservé aux kitesurfeurs autonomes maîtrisant le waterstart et la navigation." },
+            { question: "Le bateau reste-t-il sur zone ?", answer: "Oui, notre bateau d'assistance reste sur zone pendant toute la durée de votre session." },
           ]}
         />
 
-        {/* Related Services */}
-        <section className="py-16 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-10">
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-4">
-                Services Complémentaires
-              </h2>
-            </div>
-            <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <Link 
-                to="/location-materiel-kitesurf-hyeres"
-                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
-              >
-                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Location Matériel</h3>
-                <p className="text-muted-foreground text-sm mb-3">Équipement complet à la journée</p>
-                <span className="text-primary text-sm font-medium">Dès 30€ →</span>
-              </Link>
-              <Link 
-                to="/stage-kitesurf-100-glisse-hyeres"
-                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
-              >
-                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Stage Kitesurf</h3>
-                <p className="text-muted-foreground text-sm mb-3">Devenez autonome en 5 jours</p>
-                <span className="text-primary text-sm font-medium">Dès 399€ →</span>
-              </Link>
-              <Link 
-                to="/spot-kitesurf-almanarre-hyeres-var"
-                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/50 transition-colors text-center group"
-              >
-                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Le Spot</h3>
-                <p className="text-muted-foreground text-sm mb-3">Découvrez l'Almanarre</p>
-                <span className="text-primary text-sm font-medium">En savoir plus →</span>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="py-16 bg-primary text-primary-foreground">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold mb-4">
-              Prêt pour Votre Dépose en Mer ?
-            </h2>
-            <p className="mb-8 text-primary-foreground/80">
-              Réservez dès maintenant votre créneau. Nous nous adaptons à la météo pour vous offrir 
-              les meilleures conditions.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="heroFilled" size="lg" asChild>
-                <Link to="/contact-reservation-kitesurf-hyeres">Réserver une Dépose en Mer</Link>
-              </Button>
-              <Button variant="hero" size="lg" asChild>
-                <a href="tel:0672716905">Appeler : 06 72 71 69 05</a>
-              </Button>
-            </div>
-          </div>
-        </section>
+        <InternalLinking
+          title="Autres Services"
+          links={Object.values(disciplineLinks).filter(l => l.href !== "/deposes-mer-kitesurf-hyeres")}
+        />
       </main>
 
       <Footer />

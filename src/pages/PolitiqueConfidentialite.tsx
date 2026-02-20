@@ -69,9 +69,9 @@ const PolitiqueConfidentialite = () => {
           content="Politique de confidentialité de Kitesurf Passion : traitement des données personnelles, droits RGPD, cookies et sécurité des informations." 
         />
         <meta name="robots" content="noindex, follow" />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/politique-confidentialite" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.com/politique-confidentialite" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/politique-confidentialite" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/politique-confidentialite" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/politique-confidentialite" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/politique-confidentialite" />
       </Helmet>
 
       <Header />
@@ -118,7 +118,7 @@ const PolitiqueConfidentialite = () => {
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Nous respectons strictement le Règlement Général sur la Protection des Données (RGPD) et la législation 
-                française sur la protection des données. Chaque donnée collectée via notre site kitesurfpassion.com est traitée 
+                française sur la protection des données. Chaque donnée collectée via notre site kitesurfpassion.fr est traitée 
                 de manière transparente, sécurisée et légale. Que vous nous contactiez pour réserver un cours de kitesurf à Hyères, 
                 vous inscrire à nos alertes météo Almanarre, ou commander un bon cadeau, vos informations sont protégées par 
                 des mesures techniques et organisationnelles robustes.
