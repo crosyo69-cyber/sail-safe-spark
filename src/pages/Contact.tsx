@@ -178,16 +178,16 @@ const Contact = () => {
           name="description"
           content="Réservez votre cours de kitesurf, wingfoil ou pumpfoil à Hyères"
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres" />
         
         {/* Open Graph */}
         <meta property="og:title" content="Contact & Réservation Kitesurf Hyères | KiteSurf Passion" />
         <meta property="og:description" content="Réservez votre cours de kitesurf, wingfoil ou pumpfoil à Hyères. Réponse garantie sous 24h. ☎ 06 72 71 69 05" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres" />
-        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:url" content="https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Réservation cours kitesurf Hyères - École KiteSurf Passion" />
@@ -198,25 +198,25 @@ const Contact = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Réservation Kitesurf Hyères" />
         <meta name="twitter:description" content="Réservez votre cours de kitesurf à Hyères. Réponse sous 24h !" />
-        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta name="twitter:image:alt" content="Contact kitesurf Hyères" />
         
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Contact & Réservation", "item": "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "Contact & Réservation", "item": "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres" }
           ]
         })}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
-          "@id": "https://www.kitesurfpassion.com/#contact",
+          "@id": "https://www.kitesurfpassion.fr/#contact",
           "name": "KiteSurf Passion",
           "description": "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999",
-          "url": "https://www.kitesurfpassion.com",
-          "image": "https://www.kitesurfpassion.com/og-image.jpg",
+          "url": "https://www.kitesurfpassion.fr",
+          "image": "https://www.kitesurfpassion.fr/og-image.jpg",
           "priceRange": "€€",
           "telephone": "+33672716905",
           "email": "crosyo69@gmail.com",

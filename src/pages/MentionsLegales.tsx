@@ -41,7 +41,7 @@ const MentionsLegales = () => {
       title: "2. Hébergement",
       content: (
         <div className="space-y-3">
-          <p>Le site kitesurfpassion.com est hébergé par :</p>
+          <p>Le site kitesurfpassion.fr est hébergé par :</p>
           <p><strong>Lovable (GPT Engineer Inc.)</strong></p>
           <p>2261 Market Street #4010</p>
           <p>San Francisco, CA 94114</p>
@@ -252,9 +252,9 @@ const MentionsLegales = () => {
           content="Mentions légales du site Kitesurf Passion : informations sur l'éditeur, l'hébergeur, la propriété intellectuelle et la protection des données personnelles." 
         />
         <meta name="robots" content="noindex, follow" />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/mentions-legales" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.com/mentions-legales" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/mentions-legales" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/mentions-legales" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/mentions-legales" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/mentions-legales" />
       </Helmet>
 
       <Header />

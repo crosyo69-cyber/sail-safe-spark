@@ -117,16 +117,16 @@ export default function CoursPumpfoil() {
         <title>Cours Pumpfoil & Dock Start – Hyères Almanarre | Volez Sans Vent</title>
         <meta name="description" content="Cours de pumpfoil avec technique dock start à Hyères" />
         <meta name="keywords" content="pumpfoil hyères, cours pumpfoil almanarre, dock start hyères, foil sans vent, école pumpfoil var" />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/cours-pumpfoil-dock-start-hyeres" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.com/cours-pumpfoil-dock-start-hyeres" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/cours-pumpfoil-dock-start-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres" />
         
         {/* Open Graph */}
         <meta property="og:title" content="Cours Pumpfoil Hyères | Dock Start à l'Almanarre" />
         <meta property="og:description" content="Volez sur l'eau sans vent ! Cours pumpfoil dès 50€ à Hyères. Dock start, progression rapide, moniteur diplômé." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.kitesurfpassion.com/cours-pumpfoil-dock-start-hyeres" />
-        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:url" content="https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Cours pumpfoil dock start Hyères - École KiteSurf Passion" />
@@ -137,7 +137,7 @@ export default function CoursPumpfoil() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Cours Pumpfoil Hyères | Dock Start" />
         <meta name="twitter:description" content="Volez sur l'eau sans vent ! Pumpfoil dès 50€ à Hyères." />
-        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta name="twitter:image:alt" content="Pumpfoil dock start Hyères" />
         <script type="application/ld+json">
           {JSON.stringify({
@@ -148,7 +148,7 @@ export default function CoursPumpfoil() {
             "provider": {
               "@type": "Organization",
               "name": "KiteSurf Passion",
-              "url": "https://www.kitesurfpassion.com",
+              "url": "https://www.kitesurfpassion.fr",
               "priceRange": "€€",
               "address": {
                 "@type": "PostalAddress",
@@ -172,7 +172,7 @@ export default function CoursPumpfoil() {
             "@type": "Product",
             "name": "Initiation Pumpfoil Dock Start - Hyères",
             "description": "Cours de pumpfoil à Hyères - Apprenez à voler sur l'eau sans vent avec la technique dock start. Séance de 1h30, 3 personnes maximum.",
-            "image": "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres-cours.jpg",
+            "image": "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres-cours.jpg",
             "brand": {
               "@type": "Brand",
               "name": "KiteSurf Passion"
@@ -198,17 +198,17 @@ export default function CoursPumpfoil() {
             "@type": "ImageObject",
             "name": "Cours pumpfoil dock start Hyères",
             "description": "Initiation au pumpfoil avec technique dock start sur la presqu'île de Giens à Hyères - école KiteSurf Passion",
-            "contentUrl": "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres-cours.jpg",
-            "thumbnailUrl": "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres-cours.jpg",
+            "contentUrl": "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres-cours.jpg",
+            "thumbnailUrl": "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres-cours.jpg",
             "creditText": "KiteSurf Passion",
             "copyrightNotice": "© KiteSurf Passion",
             "creator": {
               "@type": "Organization",
               "name": "KiteSurf Passion",
-              "url": "https://www.kitesurfpassion.com"
+              "url": "https://www.kitesurfpassion.fr"
             },
             "license": "https://www.kitesurfpassion.com/mentions-legales",
-            "acquireLicensePage": "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+            "acquireLicensePage": "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
             "contentLocation": {
               "@type": "Place",
               "name": "Presqu'île de Giens, Hyères",
@@ -228,8 +228,8 @@ export default function CoursPumpfoil() {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "Initiation Pump Foil", "item": "https://www.kitesurfpassion.com/cours-pumpfoil-dock-start-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "Initiation Pump Foil", "item": "https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres" }
           ]
         })}</script>
         
@@ -239,7 +239,7 @@ export default function CoursPumpfoil() {
           "@type": "HowTo",
           "name": "Comment apprendre le pumpfoil avec la technique dock start",
           "description": "Guide pour maîtriser le pumpfoil en partant d'un ponton. Apprenez à voler sur l'eau sans vent ni vagues à Hyères.",
-          "image": "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres-cours.jpg",
+          "image": "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres-cours.jpg",
           "totalTime": "PT1H30M",
           "estimatedCost": {
             "@type": "MonetaryAmount",

@@ -93,8 +93,8 @@ const APropos = () => {
       "@type": "LocalBusiness",
       "name": "KiteSurf Passion",
       "description": "École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999. Fondée par Yoanne Cros, moniteur diplômé d'État BPJEPS et formateur de moniteurs.",
-      "url": "https://www.kitesurfpassion.com",
-      "image": "https://www.kitesurfpassion.com/assets/portrait-yohan-cros.jpg",
+      "url": "https://www.kitesurfpassion.fr",
+      "image": "https://www.kitesurfpassion.fr/assets/portrait-yohan-cros.jpg",
       "priceRange": "€€",
       "foundingDate": "1999",
       "founder": {
@@ -123,8 +123,8 @@ const APropos = () => {
     "worksFor": {
       "@type": "LocalBusiness",
       "name": "KiteSurf Passion",
-      "url": "https://www.kitesurfpassion.com",
-      "image": "https://www.kitesurfpassion.com/og-image.jpg",
+      "url": "https://www.kitesurfpassion.fr",
+      "image": "https://www.kitesurfpassion.fr/og-image.jpg",
       "telephone": "+33672716905",
       "priceRange": "€€",
       "address": {
@@ -144,17 +144,17 @@ const APropos = () => {
     "@type": "ImageObject",
     name: "Portrait Yoanne Cros moniteur kitesurf Hyères",
     description: "Yoanne Cros, fondateur et moniteur diplômé d'État de l'école KiteSurf Passion à Hyères depuis 1999",
-    contentUrl: "https://www.kitesurfpassion.com/assets/portrait-yohan-cros.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.com/assets/portrait-yohan-cros.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/assets/portrait-yohan-cros.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/portrait-yohan-cros.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {
       "@type": "Organization",
       name: "KiteSurf Passion",
-      url: "https://www.kitesurfpassion.com",
+      url: "https://www.kitesurfpassion.fr",
     },
     license: "https://www.kitesurfpassion.com/mentions-legales",
-    acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+    acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
     contentLocation: {
       "@type": "Place",
       name: "Plage de l'Almanarre, Hyères",
@@ -226,16 +226,16 @@ const APropos = () => {
           name="description" 
           content="L'histoire de KiteSurf Passion, première école du Var depuis 1999" 
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/a-propos-ecole-kitesurf-hyeres" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.com/a-propos-ecole-kitesurf-hyeres" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/a-propos-ecole-kitesurf-hyeres" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
         
         {/* Open Graph */}
         <meta property="og:title" content="À Propos - KiteSurf Passion | École depuis 1999 à Hyères" />
         <meta property="og:description" content="25 ans d'expérience dans l'enseignement du kitesurf à Hyères. Yohan Cros, moniteur diplômé BPJEPS, formateur de moniteurs." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.kitesurfpassion.com/a-propos-ecole-kitesurf-hyeres" />
-        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:url" content="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="École KiteSurf Passion Hyères - Depuis 1999" />
@@ -246,7 +246,7 @@ const APropos = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="À Propos - KiteSurf Passion Hyères" />
         <meta name="twitter:description" content="25 ans d'expérience en kitesurf à Hyères. Découvrez notre histoire." />
-        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta name="twitter:image:alt" content="École KiteSurf Passion Hyères depuis 1999" />
         
         <script type="application/ld+json">
@@ -262,8 +262,8 @@ const APropos = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" },
-            { "@type": "ListItem", "position": 2, "name": "À Propos", "item": "https://www.kitesurfpassion.com/a-propos-ecole-kitesurf-hyeres" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" },
+            { "@type": "ListItem", "position": 2, "name": "À Propos", "item": "https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" }
           ]
         })}</script>
       </Helmet>
