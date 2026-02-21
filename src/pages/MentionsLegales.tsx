@@ -295,7 +295,7 @@ const MentionsLegales = () => {
                 Loi pour la Confiance dans l'Économie Numérique (LCEN) du 21 juin 2004 et à la directive européenne 2000/31/CE. 
                 En tant qu'école de kitesurf, de wingfoil, de pumpfoil et de wakeboard basée dans le Var, nous nous engageons 
                 à respecter les obligations légales et à vous fournir l'intégralité des informations requises concernant 
-                l'exploitation de kitesurfpassion.com.
+                l'exploitation de kitesurfpassion.fr.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Ces mentions légales régissent votre accès au site, vos droits en tant qu'utilisateur, et définissent les conditions 
