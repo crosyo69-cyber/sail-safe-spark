@@ -15,9 +15,9 @@ import { productAggregateRating, productReviews } from "@/lib/seo-ratings";
 // Seller/Provider info for structured data
 const sellerInfo = {
   "@type": "LocalBusiness",
-  "@id": "https://www.kitesurfpassion.com/#organization",
+  "@id": "https://www.kitesurfpassion.fr/#organization",
   name: "KiteSurf Passion",
-  url: "https://www.kitesurfpassion.com",
+  url: "https://www.kitesurfpassion.fr",
 };
 
 // Price validity date (end of current season)
@@ -27,11 +27,11 @@ const Index = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": ["LocalBusiness", "SportsActivityLocation"],
-    "@id": "https://www.kitesurfpassion.com/#organization",
+    "@id": "https://www.kitesurfpassion.fr/#organization",
     name: "KiteSurf Passion",
     alternateName: "École Kitesurf Hyères",
     description: "École de kitesurf, wingfoil, pumpfoil et foil tracté à Hyères Almanarre depuis 1999. Plus de 2 500 élèves formés. Bateau d'assistance, moniteur diplômé d'État BPJEPS, matériel Duotone récent.",
-    url: "https://www.kitesurfpassion.com",
+    url: "https://www.kitesurfpassion.fr",
     telephone: "+33672716905",
     email: "crosyo69@gmail.com",
     foundingDate: "1999",
@@ -96,20 +96,20 @@ const Index = () => {
     currenciesAccepted: "EUR",
     paymentAccepted: "Cash, Credit Card, Bank Transfer",
     image: [
-      "https://www.kitesurfpassion.com/og-image.jpg",
-      "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
-      "https://www.kitesurfpassion.com/assets/wingfoil-hyeres.jpg",
-      "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres.jpg"
+      "https://www.kitesurfpassion.fr/og-image.jpg",
+      "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+      "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+      "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg"
     ],
     photo: {
       "@type": "ImageObject",
-      url: "https://www.kitesurfpassion.com/og-image.jpg",
+      url: "https://www.kitesurfpassion.fr/og-image.jpg",
       width: 1200,
       height: 630
     },
     logo: {
       "@type": "ImageObject",
-      url: "https://www.kitesurfpassion.com/assets/logo-duotone.png",
+      url: "https://www.kitesurfpassion.fr/assets/logo-duotone.png",
       width: 512,
       height: 512,
       caption: "Logo KiteSurf Passion"
@@ -127,8 +127,8 @@ const Index = () => {
           "@type": "Offer",
           name: "Stage Kitesurf 100% Glisse",
           description: "5 jours consécutifs pour devenir autonome en kitesurf à l'Almanarre",
-          url: "https://www.kitesurfpassion.com/stage-kitesurf-100-glisse-hyeres",
-          image: "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
+          url: "https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres",
+          image: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
           price: "399",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
@@ -139,7 +139,7 @@ const Index = () => {
             "@type": "Course",
             name: "Stage Kitesurf 100% Glisse",
             description: "Formation kitesurf intensive 5 jours avec bateau sécurité",
-            image: "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
+            image: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
             provider: sellerInfo,
             hasCourseInstance: {
               "@type": "CourseInstance",
@@ -157,8 +157,8 @@ const Index = () => {
           "@type": "Offer",
           name: "Session Kitesurf à la Carte",
           description: "Cours kitesurf flexibles selon vos disponibilités",
-          url: "https://www.kitesurfpassion.com/session-kitesurf-carte-hyeres",
-          image: "https://www.kitesurfpassion.com/assets/kitesurf-action-hyeres.jpg",
+          url: "https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres",
+          image: "https://www.kitesurfpassion.fr/assets/kitesurf-action-hyeres.jpg",
           price: "120",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
@@ -169,7 +169,7 @@ const Index = () => {
             "@type": "Course",
             name: "Cours Kitesurf à la Carte",
             description: "Sessions de kitesurf flexibles adaptées à votre planning et niveau",
-            image: "https://www.kitesurfpassion.com/assets/kitesurf-action-hyeres.jpg",
+            image: "https://www.kitesurfpassion.fr/assets/kitesurf-action-hyeres.jpg",
             provider: sellerInfo,
           },
         },
@@ -177,8 +177,8 @@ const Index = () => {
           "@type": "Offer",
           name: "Cours Particulier Kitesurf",
           description: "Leçon privée 100% individualisée avec moniteur dédié",
-          url: "https://www.kitesurfpassion.com/cours-particulier-kitesurf-hyeres",
-          image: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
+          url: "https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres",
+          image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
           price: "230",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
@@ -189,7 +189,7 @@ const Index = () => {
             "@type": "Course",
             name: "Cours Particulier Kitesurf",
             description: "Leçon privée avec moniteur dédié pour une progression optimale",
-            image: "https://www.kitesurfpassion.com/assets/kitesurf-cours-hyeres.jpg",
+            image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
             provider: sellerInfo,
           },
         },
@@ -197,8 +197,8 @@ const Index = () => {
           "@type": "Offer",
           name: "Stage Wingfoil Initiation",
           description: "Stage wingfoil 5 jours avec foil tracté inclus à l'Almanarre",
-          url: "https://www.kitesurfpassion.com/stage-wingfoil-hyeres-almanarre",
-          image: "https://www.kitesurfpassion.com/assets/wingfoil-hyeres.jpg",
+          url: "https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre",
+          image: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
           price: "440",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
@@ -209,7 +209,7 @@ const Index = () => {
             "@type": "Course",
             name: "Stage Wingfoil Initiation",
             description: "Formation wingfoil 5 jours avec foil tracté inclus à l'Almanarre",
-            image: "https://www.kitesurfpassion.com/assets/wingfoil-hyeres.jpg",
+            image: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
             provider: sellerInfo,
             hasCourseInstance: {
               "@type": "CourseInstance",
@@ -227,8 +227,8 @@ const Index = () => {
           "@type": "Offer",
           name: "Cours Pumpfoil & Dock Start",
           description: "Volez sur l'eau sans vent avec la technique dock start",
-          url: "https://www.kitesurfpassion.com/cours-pumpfoil-dock-start-hyeres",
-          image: "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres.jpg",
+          url: "https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres",
+          image: "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg",
           price: "50",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
@@ -239,7 +239,7 @@ const Index = () => {
             "@type": "Course",
             name: "Initiation Pumpfoil Dock Start",
             description: "Apprenez à voler sur l'eau sans vent avec la technique dock start",
-            image: "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres.jpg",
+            image: "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg",
             provider: sellerInfo,
           },
         },
@@ -247,8 +247,8 @@ const Index = () => {
           "@type": "Offer",
           name: "Foil Tracté",
           description: "Découvrez le vol sur l'eau en toute sécurité tracté par bateau",
-          url: "https://www.kitesurfpassion.com/foil-tracte-hyeres",
-          image: "https://www.kitesurfpassion.com/assets/foil-tracte-hyeres.jpg",
+          url: "https://www.kitesurfpassion.fr/foil-tracte-hyeres",
+          image: "https://www.kitesurfpassion.fr/assets/foil-tracte-hyeres.jpg",
           price: "50",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
@@ -259,7 +259,7 @@ const Index = () => {
             "@type": "Course",
             name: "Initiation Foil Tracté",
             description: "Découverte du vol sur l'eau en toute sécurité tracté par bateau",
-            image: "https://www.kitesurfpassion.com/assets/foil-tracte-hyeres.jpg",
+            image: "https://www.kitesurfpassion.fr/assets/foil-tracte-hyeres.jpg",
             provider: sellerInfo,
           },
         },
@@ -267,8 +267,8 @@ const Index = () => {
           "@type": "Offer",
           name: "Wakeboard",
           description: "Session wakeboard tractée de 15 min sur la baie d'Hyères",
-          url: "https://www.kitesurfpassion.com/wakeboard-hyeres",
-          image: "https://www.kitesurfpassion.com/assets/wakeboard-hyeres.jpg",
+          url: "https://www.kitesurfpassion.fr/wakeboard-hyeres",
+          image: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
           price: "40",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
@@ -279,7 +279,7 @@ const Index = () => {
             "@type": "Course",
             name: "Session Wakeboard",
             description: "Session wakeboard tractée de 15 minutes sur la baie d'Hyères",
-            image: "https://www.kitesurfpassion.com/assets/wakeboard-hyeres.jpg",
+            image: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
             provider: sellerInfo,
           },
         },
@@ -406,17 +406,17 @@ const Index = () => {
         "@type": "ImageObject",
         name: "Cours kitesurf Hyères Almanarre",
         description: "Session de kitesurf sur le spot de l'Almanarre à Hyères avec l'école KiteSurf Passion",
-        contentUrl: "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
-        thumbnailUrl: "https://www.kitesurfpassion.com/assets/kitesurf-hyeres.jpg",
+        contentUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
         creator: {
           "@type": "Organization",
           name: "KiteSurf Passion",
-          url: "https://www.kitesurfpassion.com",
+          url: "https://www.kitesurfpassion.fr",
         },
-        license: "https://www.kitesurfpassion.com/mentions-legales",
-        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+        license: "https://www.kitesurfpassion.fr/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
         contentLocation: {
           "@type": "Place",
           name: "Plage de l'Almanarre, Hyères",
@@ -432,17 +432,17 @@ const Index = () => {
         "@type": "ImageObject",
         name: "Stage wingfoil Hyères Var",
         description: "Cours de wingfoil sur la plage de l'Almanarre à Hyères - école KiteSurf Passion",
-        contentUrl: "https://www.kitesurfpassion.com/assets/wingfoil-hyeres.jpg",
-        thumbnailUrl: "https://www.kitesurfpassion.com/assets/wingfoil-hyeres.jpg",
+        contentUrl: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
         creator: {
           "@type": "Organization",
           name: "KiteSurf Passion",
-          url: "https://www.kitesurfpassion.com",
+          url: "https://www.kitesurfpassion.fr",
         },
-        license: "https://www.kitesurfpassion.com/mentions-legales",
-        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+        license: "https://www.kitesurfpassion.fr/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
         contentLocation: {
           "@type": "Place",
           name: "Plage de l'Almanarre, Hyères",
@@ -452,17 +452,17 @@ const Index = () => {
         "@type": "ImageObject",
         name: "Pumpfoil dock start Hyères",
         description: "Initiation au pumpfoil avec dock start à Hyères - école KiteSurf Passion",
-        contentUrl: "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres.jpg",
-        thumbnailUrl: "https://www.kitesurfpassion.com/assets/pumpfoil-hyeres.jpg",
+        contentUrl: "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
         creator: {
           "@type": "Organization",
           name: "KiteSurf Passion",
-          url: "https://www.kitesurfpassion.com",
+          url: "https://www.kitesurfpassion.fr",
         },
-        license: "https://www.kitesurfpassion.com/mentions-legales",
-        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+        license: "https://www.kitesurfpassion.fr/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
         contentLocation: {
           "@type": "Place",
           name: "Presqu'île de Giens, Hyères",
@@ -479,10 +479,10 @@ const Index = () => {
         creator: {
           "@type": "Organization",
           name: "KiteSurf Passion",
-          url: "https://www.kitesurfpassion.com",
+          url: "https://www.kitesurfpassion.fr",
         },
-        license: "https://www.kitesurfpassion.com/mentions-legales",
-        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+        license: "https://www.kitesurfpassion.fr/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
       },
       {
         "@type": "ImageObject",
@@ -495,10 +495,10 @@ const Index = () => {
         creator: {
           "@type": "Organization",
           name: "KiteSurf Passion",
-          url: "https://www.kitesurfpassion.com",
+          url: "https://www.kitesurfpassion.fr",
         },
-        license: "https://www.kitesurfpassion.com/mentions-legales",
-        acquireLicensePage: "https://www.kitesurfpassion.com/contact-reservation-kitesurf-hyeres",
+        license: "https://www.kitesurfpassion.fr/mentions-legales",
+        acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
         contentLocation: {
           "@type": "Place",
           name: "Plage de l'Almanarre, Hyères",
@@ -519,16 +519,16 @@ const Index = () => {
           name="keywords"
           content="école kitesurf hyères, cours kitesurf almanarre, stage wingfoil var, pumpfoil hyères, foil tracté hyères, école kitesurf bateau assistance, kitesurf débutant hyères"
         />
-        <link rel="canonical" href="https://www.kitesurfpassion.com/" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.com/" />
-        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.com/" />
+        <link rel="canonical" href="https://www.kitesurfpassion.fr/" />
+        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/" />
+        <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/" />
         
         {/* Open Graph */}
         <meta property="og:title" content="Kitesurf Passion – École de kitesurf, wingfoil, pumpfoil & foil tracté à Hyères" />
         <meta property="og:description" content="Découvrez Kitesurf Passion à Hyères (Almanarre). Cours et stages de kitesurf, wingfoil, pumpfoil et foil tracté avec bateau sécurité, petits groupes et matériel Duotone récent." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.kitesurfpassion.com/" />
-        <meta property="og:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta property="og:url" content="https://www.kitesurfpassion.fr/" />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="École Kitesurf Passion Hyères Almanarre - Cours kitesurf wingfoil pumpfoil foil tracté" />
@@ -539,7 +539,7 @@ const Index = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Kitesurf Passion – École kitesurf, wingfoil, pumpfoil à Hyères" />
         <meta name="twitter:description" content="Cours et stages à l'Almanarre avec bateau sécurité, petits groupes et matériel Duotone récent. Réservez maintenant !" />
-        <meta name="twitter:image" content="https://www.kitesurfpassion.com/og-image.jpg" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta name="twitter:image:alt" content="École Kitesurf Passion Hyères Almanarre" />
         
         {/* Structured Data */}
@@ -551,7 +551,7 @@ const Index = () => {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.com/" }
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://www.kitesurfpassion.fr/" }
           ]
         })}</script>
         

@@ -153,7 +153,7 @@ const APropos = () => {
       name: "KiteSurf Passion",
       url: "https://www.kitesurfpassion.fr",
     },
-    license: "https://www.kitesurfpassion.com/mentions-legales",
+    license: "https://www.kitesurfpassion.fr/mentions-legales",
     acquireLicensePage: "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
     contentLocation: {
       "@type": "Place",
