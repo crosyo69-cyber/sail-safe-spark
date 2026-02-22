@@ -246,7 +246,7 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "KiteSurf Passion <noreply@kitesurfpassion.com>",
+        from: "KiteSurf Passion <noreply@kitesurfpassion.fr>",
         to: ["crosyo69@gmail.com"],
         subject: `Nouvelle réservation: ${escapeHtml(sanitized.activity)} - ${escapeHtml(sanitized.name)}`,
         html: ownerEmailHtml,
@@ -271,7 +271,7 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "KiteSurf Passion <noreply@kitesurfpassion.com>",
+        from: "KiteSurf Passion <noreply@kitesurfpassion.fr>",
         to: [sanitized.email],
         subject: "Confirmation de votre demande - KiteSurf Passion",
         html: customerEmailHtml,
