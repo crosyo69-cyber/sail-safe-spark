@@ -11,6 +11,7 @@ import { WebVitalsDashboard } from "@/components/WebVitalsDashboard";
 import { PageTracker } from "@/components/PageTracker";
 import { initGA4 } from "@/lib/analytics";
 import { SEORedirect } from "@/components/SEORedirect";
+import { LegacyRedirectHandler } from "@/components/LegacyRedirectHandler";
 
 // Critical path - loaded immediately
 import Index from "./pages/Index";
@@ -36,7 +37,7 @@ const Auth = lazy(() => import("./pages/Auth"));
 const UnsubscribeAlerts = lazy(() => import("./pages/UnsubscribeAlerts"));
 const MentionsLegales = lazy(() => import("./pages/MentionsLegales"));
 const PolitiqueConfidentialite = lazy(() => import("./pages/PolitiqueConfidentialite"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+// NotFound is now handled inside LegacyRedirectHandler
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -96,8 +97,8 @@ const App = () => {
               <Route path="/desabonnement-alertes" element={<UnsubscribeAlerts />} />
               <Route path="/mentions-legales" element={<MentionsLegales />} />
               <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
+              {/* Legacy URL redirections (old .com site → new .fr routes) */}
+              <Route path="*" element={<LegacyRedirectHandler />} />
             </Routes>
           </Suspense>
         </BrowserRouter>
