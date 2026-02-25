@@ -4,52 +4,48 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   
-  <url><loc>https://www.kitesurfpassion.fr/</loc><lastmod>2026-01-25</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant</loc><lastmod>2026-01-25</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres</loc><lastmod>2026-01-25</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres</loc><lastmod>2026-01-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres</loc><lastmod>2026-01-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre</loc><lastmod>2026-01-25</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres</loc><lastmod>2026-01-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres</loc><lastmod>2026-01-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres</loc><lastmod>2026-01-25</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/foil-tracte-hyeres</loc><lastmod>2026-01-25</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/wakeboard-hyeres</loc><lastmod>2026-01-25</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres</loc><lastmod>2026-01-25</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog-kitesurf-hyeres</loc><lastmod>2026-01-28</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/mentions-legales</loc><lastmod>2026-01-25</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/politique-confidentialite</loc><lastmod>2026-01-25</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <!-- Pages principales -->
+  <url><loc>https://www.kitesurfpassion.fr/</loc><lastmod>2026-02-25</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant</loc><lastmod>2026-02-25</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres</loc><lastmod>2026-02-25</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres</loc><lastmod>2026-02-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres</loc><lastmod>2026-02-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre</loc><lastmod>2026-02-25</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres</loc><lastmod>2026-02-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres</loc><lastmod>2026-02-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres</loc><lastmod>2026-02-25</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/foil-tracte-hyeres</loc><lastmod>2026-02-25</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/wakeboard-hyeres</loc><lastmod>2026-02-25</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres</loc><lastmod>2026-02-25</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog-kitesurf-hyeres</loc><lastmod>2026-02-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/mentions-legales</loc><lastmod>2026-02-25</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/politique-confidentialite</loc><lastmod>2026-02-25</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
   
   <!-- Articles Blog -->
-  <url><loc>https://www.kitesurfpassion.fr/blog/ecole-kitesurf-hyeres-almanarre-cours</loc><lastmod>2026-01-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/stage-wingfoil-hyeres-apprendre-voler</loc><lastmod>2026-01-27</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/pumpfoil-hyeres-dock-start-initiation</loc><lastmod>2026-01-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/foil-tracte-hyeres-sensations-vol</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/erreurs-debutant-kitesurf-eviter</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/regles-securite-kitesurf-wingfoil</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/guide-equipement-kitesurf-debutant</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/progression-pumpfoil-debutant-expert</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/debuter-kitesurf-hyeres-guide-complet</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/wingfoil-sport-tendance-2024</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/conditions-meteo-almanarre-guide</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/pourquoi-bateau-assistance-essentiel</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/pumpfoil-dock-start-initiation</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/meilleure-periode-kitesurf-var</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/choisir-aile-wingfoil-debutant</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/wingfoil-vs-kitesurf-differences</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/technique-pumping-foil-progresser</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/premiers-vols-wingfoil-conseils</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/foil-tracte-hyeres-initiation-vol</loc><lastmod>2026-02-02</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/wakeboard-hyeres-glisse-nautique</loc><lastmod>2026-02-01</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/location-kitesurf-hyeres-almanarre-guide</loc><lastmod>2026-01-31</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/blog/pumpfoil-entrainement-sans-vent</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  
-  <!-- Fichiers Metadata -->
-  <url><loc>https://www.kitesurfpassion.fr/llms.txt</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/.well-known/security.txt</loc><lastmod>2026-01-25</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://www.kitesurfpassion.fr/humans.txt</loc><lastmod>2026-01-25</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/ecole-kitesurf-hyeres-almanarre-cours</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/stage-wingfoil-hyeres-apprendre-voler</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/pumpfoil-hyeres-dock-start-initiation</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/foil-tracte-hyeres-sensations-vol</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/erreurs-debutant-kitesurf-eviter</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/regles-securite-kitesurf-wingfoil</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/guide-equipement-kitesurf-debutant</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/progression-pumpfoil-debutant-expert</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/debuter-kitesurf-hyeres-guide-complet</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/wingfoil-sport-tendance-2024</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/conditions-meteo-almanarre-guide</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/pourquoi-bateau-assistance-essentiel</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/pumpfoil-dock-start-initiation</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/meilleure-periode-kitesurf-var</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/choisir-aile-wingfoil-debutant</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/wingfoil-vs-kitesurf-differences</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/technique-pumping-foil-progresser</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/premiers-vols-wingfoil-conseils</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/foil-tracte-hyeres-initiation-vol</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/wakeboard-hyeres-glisse-nautique</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/location-kitesurf-hyeres-almanarre-guide</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.kitesurfpassion.fr/blog/pumpfoil-entrainement-sans-vent</loc><lastmod>2026-02-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   
 </urlset>
