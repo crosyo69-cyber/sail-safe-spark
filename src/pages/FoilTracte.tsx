@@ -383,16 +383,16 @@ const FoilTracte = () => {
           </div>
         </section>
 
-        {/* Contenu SEO descriptif */}
+        {/* Contenu SEO descriptif enrichi */}
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-5xl mx-auto">
               <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-8 text-center">
                 Le Foil Tracté : Votre Porte d'Entrée vers le{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">Vol sur l'Eau</span>
               </h2>
 
-              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed">
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed mb-12">
                 <div className="space-y-4">
                   <h3 className="font-display text-xl font-bold text-foreground">Qu'est-ce que le foil tracté ?</h3>
                   <p>
@@ -417,8 +417,33 @@ const FoilTracte = () => {
                   <p>
                     Nous proposons deux formats : la <strong>session découverte de 20 minutes</strong> à 50€, idéale pour une première expérience, et la <strong>session apprentissage de 40 minutes</strong> à 80€, recommandée pour stabiliser votre vol et progresser réellement. Le matériel complet (planche foil, gilet, casque) est fourni.
                   </p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed">
+                <div className="space-y-4">
+                  <h3 className="font-display text-xl font-bold text-foreground">Comment se déroule une session ?</h3>
+                  <p>
+                    Chaque session de foil tracté commence par un <strong>briefing complet au sol</strong>. Votre moniteur vous explique le fonctionnement du foil, la position à adopter sur la planche (pieds, genoux, regard), et les signaux de communication avec le pilote du bateau. Cette préparation est essentielle pour maximiser votre temps sur l'eau.
+                  </p>
+                  <p>
+                    Une fois dans l'eau, le bateau vous tracte progressivement. La vitesse augmente graduellement jusqu'au seuil de décollage du foil — environ <strong>12 km/h</strong>. À ce moment, vous sentez la planche se soulever sous vos pieds. C'est la sensation « magique » que tous nos pratiquants décrivent : <strong>voler au-dessus de l'eau dans un silence total</strong>.
+                  </p>
+                  <p>
+                    Le moniteur ajuste en permanence la vitesse pour maintenir le vol et vous permettre de trouver votre équilibre. Les chutes sont fréquentes au début — et font partie de l'apprentissage — mais grâce au <strong>gilet de flottaison</strong> et à la faible vitesse, elles sont sans danger.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="font-display text-xl font-bold text-foreground">L'expertise KiteSurf Passion</h3>
                   <p>
                     Depuis 1999, notre école <Link to="/a-propos-ecole-kitesurf-hyeres" className="text-primary hover:underline">KiteSurf Passion</Link> est pionnière dans l'enseignement des sports de glisse à Hyères. Le foil tracté s'inscrit dans notre philosophie : rendre le foil accessible à tous grâce à une pédagogie progressive et sécurisée, avec un <Link to="/blog/pourquoi-bateau-assistance-essentiel" className="text-primary hover:underline">bateau d'assistance</Link> permanent sur zone.
+                  </p>
+                  <p>
+                    Le foil tracté est également un <strong>excellent cadeau</strong>. En 20 ou 40 minutes, vos proches peuvent vivre une expérience inoubliable sans aucun prérequis technique. Nous proposons des <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres" className="text-primary hover:underline">bons cadeaux</Link> dédiés au foil tracté, valables un an.
+                  </p>
+                  <p>
+                    Le foil tracté se combine idéalement avec nos autres activités : une session de foil tracté le matin pour apprivoiser le foil, puis un cours de <Link to="/stage-wingfoil-hyeres-almanarre" className="text-primary hover:underline">wingfoil</Link> l'après-midi pour mettre vos acquis en pratique. C'est notre recommandation pour une <strong>progression optimale</strong>. Découvrez aussi le <Link to="/cours-pumpfoil-dock-start-hyeres" className="text-primary hover:underline">pumpfoil</Link> et le <Link to="/wakeboard-hyeres" className="text-primary hover:underline">wakeboard</Link> pour varier les plaisirs.
                   </p>
                 </div>
               </div>
