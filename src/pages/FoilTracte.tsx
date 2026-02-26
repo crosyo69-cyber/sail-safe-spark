@@ -220,7 +220,7 @@ const FoilTracte = () => {
         />
         <meta name="keywords" content="foil tracté Hyères, foil tracté bateau, initiation foil Hyères, apprendre foil bateau, foil débutant Var, foil tracté Almanarre" />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/foil-tracte-hyeres" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/foil-tracte-hyeres" />
+        <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/foil-tracte-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/foil-tracte-hyeres" />
         
         {/* Open Graph */}

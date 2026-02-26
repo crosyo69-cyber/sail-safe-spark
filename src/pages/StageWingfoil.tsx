@@ -186,7 +186,7 @@ const StageWingfoil = () => {
           content="Stage wingfoil 5 jours à l'Almanarre avec foil tracté inclus"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre" />
+        <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre" />
         
         {/* Open Graph */}

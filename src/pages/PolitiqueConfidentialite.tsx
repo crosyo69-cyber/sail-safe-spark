@@ -70,7 +70,7 @@ const PolitiqueConfidentialite = () => {
         />
         <meta name="robots" content="noindex, follow" />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/politique-confidentialite" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/politique-confidentialite" />
+        <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/politique-confidentialite" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/politique-confidentialite" />
       </Helmet>
 

@@ -179,7 +179,7 @@ const Contact = () => {
           content="Réservez votre cours de kitesurf, wingfoil ou pumpfoil à Hyères"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres" />
         
         {/* Open Graph */}

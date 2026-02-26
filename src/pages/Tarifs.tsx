@@ -203,7 +203,7 @@ const Tarifs = () => {
           content="Tarifs et formules des cours de kitesurf, wingfoil et pumpfoil à Hyères"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" />
+        <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" />
         
         {/* Open Graph */}

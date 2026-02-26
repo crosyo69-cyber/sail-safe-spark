@@ -227,7 +227,7 @@ const APropos = () => {
           content="L'histoire de KiteSurf Passion, première école du Var depuis 1999" 
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
+        <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
         
         {/* Open Graph */}

@@ -182,7 +182,7 @@ const Stage100Glisse = () => {
           content="5 jours pour devenir autonome en kitesurf avec bateau d'assistance"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres" />
+        <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres" />
         <meta property="og:title" content="Stage Kitesurf 100% Glisse – Hyères Almanarre | 5 Jours Autonomie" />
         <meta property="og:description" content="Stage intensif 5 jours pour devenir autonome en kitesurf à l'Almanarre Hyères. Bateau sécurité, moniteur diplômé, petits groupes." />
