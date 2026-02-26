@@ -138,7 +138,7 @@ const SessionCarte = () => {
           content="Session kitesurf à la carte à Hyères Almanarre (Var). Flexibilité totale, progression ciblée, bateau sécurité, moniteur diplômé. Séances individuelles ou en pack dès 120€."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres" />
+        <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres" />
         <meta property="og:title" content="Session Kitesurf à la Carte – Hyères Almanarre | KiteSurf Passion" />
         <meta property="og:description" content="Cours kitesurf à la carte à Hyères. Choisissez vos créneaux, progressez à votre rythme avec bateau sécurité." />

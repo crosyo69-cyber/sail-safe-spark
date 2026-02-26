@@ -275,7 +275,7 @@ const CoursKitesurf = () => {
           content="Apprenez le kitesurf à Hyères avec notre stage débutant 5 séances. Bateau d'assistance, moniteur expert, spot Almanarre idéal. Autonomie garantie !"
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" />
-        <link rel="alternate" hrefLang="fr" href="https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" />
+        <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" />
         
         {/* Open Graph */}
