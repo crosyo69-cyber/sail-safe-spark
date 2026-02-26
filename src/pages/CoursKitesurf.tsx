@@ -412,8 +412,112 @@ const CoursKitesurf = () => {
           </div>
         </section>
 
+        {/* Expert Content Section - SEO 1500+ mots */}
+        <section className="py-20 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-6">
+                  Tout Savoir sur l'Apprentissage du{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">Kitesurf à Hyères</span>
+                </h2>
+                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+                  Un guide complet pour comprendre notre méthode, choisir la bonne formule et maximiser votre progression sur le spot de l'Almanarre.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed mb-16">
+                <div className="space-y-5">
+                  <h3 className="font-display text-2xl font-bold text-foreground">Notre méthode pédagogique unique</h3>
+                  <p>
+                    Chez <strong>KiteSurf Passion</strong>, l'apprentissage du kitesurf ne se résume pas à vous mettre une aile dans les mains et vous pousser dans l'eau. Notre pédagogie, affinée pendant plus de <strong>25 ans d'enseignement</strong> et plus de 2 500 élèves formés, suit une progression rigoureuse et éprouvée qui garantit votre autonomie.
+                  </p>
+                  <p>
+                    La première journée est entièrement consacrée à la <strong>sécurité et au pilotage de l'aile sur la plage</strong>. C'est une étape cruciale que beaucoup d'écoles raccourcissent pour gagner du temps, mais qui est fondamentale pour votre sécurité future. Vous apprenez la fenêtre de vent, les systèmes de sécurité de l'aile (largages), et le pilotage précis qui vous permettra de contrôler la puissance.
+                  </p>
+                  <p>
+                    Dès le deuxième jour, vous entrez dans l'eau pour le <strong>bodydrag</strong> — la nage tractée par l'aile. Cette technique vous apprend à vous déplacer dans l'eau en utilisant la puissance de l'aile, à récupérer votre planche après une chute, et à remonter au vent sans planche. C'est une compétence de sécurité indispensable que tout kitesurfeur doit maîtriser.
+                  </p>
+                  <p>
+                    Les jours 3 à 5 sont dédiés au <strong>waterstart</strong> et à la <strong>navigation</strong>. Le waterstart — le fait de se lever sur la planche grâce à la traction de l'aile — est le moment déclic que tous nos élèves attendent. Grâce à notre <Link to="/blog/pourquoi-bateau-assistance-essentiel" className="text-primary hover:underline">bateau d'assistance</Link> et aux radios de communication, votre moniteur vous guide en temps réel pour corriger votre posture et optimiser chaque tentative.
+                  </p>
+                </div>
+
+                <div className="space-y-5">
+                  <h3 className="font-display text-2xl font-bold text-foreground">Pourquoi choisir une école certifiée FFVL ?</h3>
+                  <p>
+                    Le kitesurf est un sport qui peut présenter des risques si l'encadrement n'est pas professionnel. Choisir une <strong>école labellisée FFVL (Fédération Française de Vol Libre)</strong> et <strong>EFK (École Française de Kite)</strong>, c'est l'assurance d'un cadre réglementé, d'un matériel aux normes et d'un moniteur diplômé.
+                  </p>
+                  <p>
+                    Notre moniteur <strong>Yoanne Cros</strong> détient le <strong>BPJEPS</strong> (Brevet Professionnel de la Jeunesse, de l'Éducation Populaire et du Sport), seul diplôme autorisant l'enseignement du kitesurf contre rémunération en France. Mais il va bien au-delà : en tant que <strong>formateur de moniteurs pour la FFVL</strong>, il forme lui-même les futurs enseignants de kitesurf. C'est une garantie de compétence pédagogique rare dans la profession.
+                  </p>
+                  <p>
+                    La certification FFVL implique également un <strong>contrôle régulier du matériel</strong>, un ratio élèves/moniteur encadré, et une assurance responsabilité civile professionnelle. Pour les stages de kitesurf et de <Link to="/stage-wingfoil-hyeres-almanarre" className="text-primary hover:underline">wingfoil</Link>, une licence FFVL est obligatoire pour couvrir l'élève pendant la pratique.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed mb-16">
+                <div className="space-y-5">
+                  <h3 className="font-display text-2xl font-bold text-foreground">Stage vs cours particulier : quelle formule choisir ?</h3>
+                  <p>
+                    Le choix entre le <Link to="/stage-kitesurf-100-glisse-hyeres" className="text-primary hover:underline"><strong>stage 100% Glisse</strong></Link> sur 5 jours et le <Link to="/cours-particulier-kitesurf-hyeres" className="text-primary hover:underline"><strong>cours particulier</strong></Link> dépend de votre profil, de vos disponibilités et de votre budget.
+                  </p>
+                  <p>
+                    Le <strong>stage intensif</strong> est notre formule la plus populaire et offre le meilleur rapport qualité-prix. Sur 5 jours consécutifs, vous bénéficiez d'une immersion totale qui favorise la mémorisation musculaire. En groupe de 3-4 personnes, l'émulation collective stimule la progression et rend l'apprentissage plus ludique. C'est la formule idéale si vous disposez d'une semaine de vacances à Hyères.
+                  </p>
+                  <p>
+                    Le <strong>cours particulier</strong> (2 heures en tête-à-tête avec le moniteur) convient aux personnes souhaitant une <strong>progression accélérée</strong> ou ayant des contraintes de planning. Le ratio 1:1 permet un encadrement premium : chaque seconde est optimisée, les corrections sont immédiates, et le programme est 100% adapté à vos points forts et axes de progression.
+                  </p>
+                  <p>
+                    Les <Link to="/session-kitesurf-carte-hyeres" className="text-primary hover:underline"><strong>sessions à la carte</strong></Link> offrent une troisième option, parfaite pour les résidents locaux ou les vacanciers qui souhaitent pratiquer à leur rythme sans s'engager sur un stage complet.
+                  </p>
+                </div>
+
+                <div className="space-y-5">
+                  <h3 className="font-display text-2xl font-bold text-foreground">Les conditions idéales sur le spot de l'Almanarre</h3>
+                  <p>
+                    Le <Link to="/spot-kitesurf-almanarre-hyeres-var" className="text-primary hover:underline"><strong>spot de l'Almanarre</strong></Link> à Hyères est notre terrain de jeu quotidien. Situé sur la presqu'île de Giens, il offre des conditions d'apprentissage exceptionnelles reconnues par les kitesurfeurs du monde entier.
+                  </p>
+                  <p>
+                    <strong>Le Mistral</strong> (nord-ouest, 300+ jours/an dans le Var) génère un vent latéral parfait pour l'apprentissage côté lagune. L'eau y est plate, peu profonde et le fond sablonneux — des conditions rêvées pour un débutant. <strong>Le Levant</strong> (est) offre des sessions plus engagées côté pleine mer, idéales pour les riders intermédiaires et confirmés.
+                  </p>
+                  <p>
+                    Notre école est <strong>itinérante</strong> : selon la direction du vent du jour, nous nous déplaçons des deux côtés de la presqu'île pour toujours trouver les meilleures conditions. Cette flexibilité, combinée à notre connaissance intime du spot acquise en 25 ans, vous garantit des sessions productives quelle que soit la météo.
+                  </p>
+                  <p>
+                    La <strong>saison de navigation</strong> s'étend de mars à novembre, avec un pic d'activité en été. Les mois de juin et septembre offrent souvent le meilleur compromis : vent régulier, eau chaude, et moins de monde sur le spot. Consultez nos <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres" className="text-primary hover:underline">tarifs basse/haute saison</Link> pour optimiser votre budget.
+                  </p>
+                </div>
+              </div>
+
+              {/* Chiffres clés */}
+              <div className="bg-gradient-to-r from-primary/5 to-turquoise/5 rounded-3xl p-8 md:p-12 border border-primary/10">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                  <div>
+                    <p className="font-display text-3xl font-bold text-primary mb-2">5 jours</p>
+                    <p className="text-muted-foreground text-sm">Pour devenir autonome</p>
+                  </div>
+                  <div>
+                    <p className="font-display text-3xl font-bold text-primary mb-2">3-4 max</p>
+                    <p className="text-muted-foreground text-sm">Élèves par moniteur</p>
+                  </div>
+                  <div>
+                    <p className="font-display text-3xl font-bold text-primary mb-2">200+</p>
+                    <p className="text-muted-foreground text-sm">Jours de vent/an</p>
+                  </div>
+                  <div>
+                    <p className="font-display text-3xl font-bold text-primary mb-2">100%</p>
+                    <p className="text-muted-foreground text-sm">Matériel inclus</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Tarifs */}
-        <section id="tarifs" className="py-20 bg-background">
+        <section id="tarifs" className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-6">

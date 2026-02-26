@@ -486,6 +486,85 @@ export default function CoursPumpfoil() {
           </div>
         </section>
 
+        {/* Expert Content Section - SEO 1500+ mots */}
+        <section className="py-20 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-6">
+                  Le Guide Complet du{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-ocean to-turquoise">Pumpfoil à Hyères</span>
+                </h2>
+                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+                  Découvrez cette discipline révolutionnaire qui vous permet de voler sur l'eau sans vent, et pourquoi Hyères est l'endroit idéal pour l'apprendre.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed mb-16">
+                <div className="space-y-5">
+                  <h3 className="font-display text-2xl font-bold text-foreground">Qu'est-ce que le pumpfoil ?</h3>
+                  <p>
+                    Le <strong>pumpfoil</strong> est un sport nautique innovant qui consiste à se propulser au-dessus de l'eau en effectuant un <strong>mouvement de pompage avec les jambes</strong>, sans aucune aide extérieure — pas de vent, pas de vagues, pas de moteur. La planche est équipée d'un hydrofoil (une aile immergée) qui génère une portance hydrodynamique grâce au mouvement.
+                  </p>
+                  <p>
+                    C'est l'une des sensations les plus pures et addictives des sports nautiques : <strong>voler sur l'eau par sa seule énergie musculaire</strong>. Le pumpfoil combine le plaisir de la glisse avec un workout physique complet qui sollicite les jambes, le core et l'équilibre. C'est à la fois un sport, un entraînement et une méditation en mouvement.
+                  </p>
+                  <p>
+                    Le pumpfoil est né de la communauté du foil (wingfoil, kitefoil, surf foil) comme une discipline complémentaire permettant de s'entraîner <strong>les jours sans vent</strong>. Rapidement, il est devenu un sport à part entière, pratiqué pour le plaisir pur de voler et pour ses bienfaits physiques remarquables.
+                  </p>
+                </div>
+
+                <div className="space-y-5">
+                  <h3 className="font-display text-2xl font-bold text-foreground">La technique du dock start expliquée</h3>
+                  <p>
+                    Le <strong>dock start</strong> (départ du ponton) est la méthode la plus efficace pour débuter en pumpfoil. Plutôt que de devoir générer de la vitesse dans l'eau (ce qui est très difficile pour un débutant), vous partez directement depuis un ponton ou une structure surélevée.
+                  </p>
+                  <p>
+                    <strong>La technique :</strong> debout sur votre planche posée au bord du ponton, vous sautez dans l'eau avec un mouvement contrôlé. L'élan de la chute génère la <strong>vitesse initiale</strong> nécessaire pour que le foil commence à porter. À ce moment, vous enchaînez immédiatement avec le mouvement de pompage pour maintenir et augmenter votre vitesse.
+                  </p>
+                  <p>
+                    Le pompage est un mouvement de <strong>flexion-extension coordonné</strong> des genoux et des hanches, comparable au mouvement d'une balançoire. Chaque pompage génère de la portance sur le foil, vous maintenant en vol. Avec de la pratique, certains riders parviennent à parcourir des distances considérables — jusqu'à plusieurs centaines de mètres — en enchaînant les pompages.
+                  </p>
+                  <p>
+                    Notre moniteur diplômé vous accompagne dans chaque étape : placement des pieds, timing du saut, rythme de pompage, et gestion de l'altitude du foil. En général, nos élèves réussissent leurs <strong>premiers vols dès la première séance</strong>.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed mb-16">
+                <div className="space-y-5">
+                  <h3 className="font-display text-2xl font-bold text-foreground">Le pumpfoil comme complément au wingfoil</h3>
+                  <p>
+                    Le pumpfoil est le <strong>complément parfait du wingfoil</strong>. En pratiquant le pumpfoil, vous développez des compétences directement transférables : l'équilibre sur le foil, la gestion de l'altitude, le placement des pieds, et la sensation de vol. Tout cela sans avoir à gérer la wing en même temps.
+                  </p>
+                  <p>
+                    De nombreux pratiquants de <Link to="/stage-wingfoil-hyeres-almanarre" className="text-primary hover:underline">wingfoil</Link> utilisent le pumpfoil comme <strong>outil d'entraînement</strong> les jours sans vent. Le pompage renforce les muscles stabilisateurs des jambes et du tronc, améliorant significativement votre endurance et votre contrôle sur le foil.
+                  </p>
+                  <p>
+                    Chez KiteSurf Passion, nous recommandons souvent d'intégrer une séance de pumpfoil dans un stage de wingfoil pour <strong>accélérer la progression</strong>. L'expérience du foil acquise en pumpfoil se traduit directement en confiance et en aisance lorsque vous repassez au wingfoil.
+                  </p>
+                </div>
+
+                <div className="space-y-5">
+                  <h3 className="font-display text-2xl font-bold text-foreground">Conditions et lieu de pratique à Hyères</h3>
+                  <p>
+                    L'avantage majeur du pumpfoil est qu'il ne dépend <strong>d'aucune condition météo</strong>. Pas besoin de vent, pas besoin de vagues. Un plan d'eau calme suffit. C'est l'activité idéale les jours où le kitesurf et le wingfoil ne sont pas possibles.
+                  </p>
+                  <p>
+                    À Hyères, nos sessions de pumpfoil se déroulent sur des <strong>plans d'eau protégés</strong> de la presqu'île de Giens, offrant des conditions d'eau plate parfaites pour le dock start. La faible profondeur et l'absence de courant garantissent un environnement sécurisé pour l'apprentissage.
+                  </p>
+                  <p>
+                    Nos séances durent <strong>1h30</strong> en petit groupe de <strong>3 personnes maximum</strong>, ce qui assure un encadrement personnalisé et un temps de pratique optimal pour chaque participant. Le matériel complet est fourni : planche de pumpfoil adaptée, gilet de sauvetage et casque. Un <Link to="/blog/pourquoi-bateau-assistance-essentiel" className="text-primary hover:underline">bateau d'assistance</Link> reste à proximité pour votre sécurité.
+                  </p>
+                  <p>
+                    Le pumpfoil est accessible <strong>dès 14 ans</strong> et ne nécessite aucune expérience préalable en sports de glisse. Une condition physique correcte est suffisante — le sport est intense mais progressif. Consultez nos <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres" className="text-primary hover:underline">tarifs</Link> ou <Link to="/contact-reservation-kitesurf-hyeres" className="text-primary hover:underline">contactez-nous</Link> pour réserver votre séance.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* FAQ Section */}
         <ActivityFAQ
           title="Questions Fréquentes Pumpfoil"

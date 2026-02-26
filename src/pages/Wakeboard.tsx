@@ -345,16 +345,16 @@ const Wakeboard = () => {
           </div>
         </section>
 
-        {/* Contenu SEO descriptif */}
+        {/* Contenu SEO descriptif enrichi */}
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto prose prose-lg">
+            <div className="max-w-5xl mx-auto">
               <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-8 text-center">
                 Le Wakeboard à Hyères : Une Expérience de Glisse{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunset to-sunset-light">Inoubliable</span>
               </h2>
 
-              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed">
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed mb-12">
                 <div className="space-y-4">
                   <h3 className="font-display text-xl font-bold text-foreground">Pourquoi choisir le wakeboard à Hyères ?</h3>
                   <p>
@@ -379,8 +379,33 @@ const Wakeboard = () => {
                   <p>
                     Le matériel est entièrement fourni : planche de wakeboard adaptée à votre gabarit, gilet de flottaison homologué, et combinaison néoprène si les conditions le nécessitent. Vous n'avez rien à apporter, si ce n'est votre envie de glisser !
                   </p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed">
+                <div className="space-y-4">
+                  <h3 className="font-display text-xl font-bold text-foreground">Le wakeboard : une porte d'entrée vers la glisse</h3>
                   <p>
-                    Depuis <strong>1999</strong>, notre école <Link to="/a-propos-ecole-kitesurf-hyeres" className="text-primary hover:underline">KiteSurf Passion</Link> accompagne les amateurs de sports nautiques sur les spots d'Hyères et de l'Almanarre. Le wakeboard s'intègre naturellement dans notre offre d'activités tractées, aux côtés du <Link to="/foil-tracte-hyeres" className="text-primary hover:underline">foil tracté</Link>, pour vous offrir un panel complet de sensations sur l'eau.
+                    Le wakeboard est souvent le <strong>premier contact avec les sports nautiques</strong> pour de nombreuses familles en vacances à Hyères. Sa simplicité d'accès — il suffit de se lever sur la planche et de se laisser tracter — en fait l'activité parfaite pour tester son appétit pour la glisse avant de se lancer dans des disciplines plus techniques.
+                  </p>
+                  <p>
+                    Beaucoup de nos élèves en kitesurf ont commencé par une session de wakeboard qui leur a donné le goût de la glisse. Le wakeboard développe l'<strong>équilibre latéral</strong> (position sideways), le gainage et la confiance dans l'eau — des compétences directement transférables au kitesurf et au wingfoil.
+                  </p>
+                  <p>
+                    Pour les enfants de 8 à 12 ans qui ne peuvent pas encore pratiquer le kitesurf (poids minimum 35 kg), le wakeboard est l'<strong>alternative idéale</strong>. Ils découvrent les sensations de glisse en toute sécurité, encadrés par notre moniteur expérimenté et équipés de matériel adapté à leur morphologie.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="font-display text-xl font-bold text-foreground">Combiner wakeboard et autres activités</h3>
+                  <p>
+                    Le wakeboard s'intègre naturellement dans notre offre multi-activités. En complément d'un <Link to="/stage-kitesurf-100-glisse-hyeres" className="text-primary hover:underline">stage de kitesurf</Link>, une session de wakeboard permet de varier les plaisirs et de profiter des jours où les conditions de vent ne sont pas optimales pour le kite.
+                  </p>
+                  <p>
+                    Nous proposons également le <Link to="/foil-tracte-hyeres" className="text-primary hover:underline">foil tracté</Link>, une activité tractée similaire mais avec un foil sous la planche qui vous fait décoller au-dessus de l'eau. Pour ceux qui veulent des sensations plus intenses, c'est l'étape suivante après le wakeboard.
+                  </p>
+                  <p>
+                    Depuis <strong>1999</strong>, notre école <Link to="/a-propos-ecole-kitesurf-hyeres" className="text-primary hover:underline">KiteSurf Passion</Link> accompagne les amateurs de sports nautiques sur les spots d'Hyères. Le wakeboard, le <Link to="/cours-pumpfoil-dock-start-hyeres" className="text-primary hover:underline">pumpfoil</Link> et le foil tracté complètent notre offre pour une expérience de glisse complète. Consultez nos <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres" className="text-primary hover:underline">tarifs</Link> ou <Link to="/contact-reservation-kitesurf-hyeres" className="text-primary hover:underline">réservez directement</Link>.
                   </p>
                 </div>
               </div>

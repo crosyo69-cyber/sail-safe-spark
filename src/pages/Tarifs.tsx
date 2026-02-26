@@ -647,6 +647,48 @@ const Tarifs = () => {
           </div>
         </section>
 
+        {/* Expert Content Section - SEO enrichi */}
+        <section className="py-20 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-6">
+                  Guide des Tarifs :{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">Choisir la Bonne Formule</span>
+                </h2>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed mb-16">
+                <div className="space-y-5">
+                  <h3 className="font-display text-2xl font-bold text-foreground">Comprendre nos formules kitesurf</h3>
+                  <p>
+                    Nos tarifs sont conçus pour offrir la <strong>meilleure valeur possible</strong> à chaque profil d'élève. Le <Link to="/stage-kitesurf-100-glisse-hyeres" className="text-primary hover:underline">stage 100% Glisse</Link> à 399€ (hors saison) reste notre formule phare : 5 jours consécutifs pour devenir autonome, avec <strong>foil tracté et wakeboard inclus</strong> les jours sans vent. C'est le meilleur investissement pour un débutant.
+                  </p>
+                  <p>
+                    Le <Link to="/cours-particulier-kitesurf-hyeres" className="text-primary hover:underline">cours particulier</Link> à 230€ (2h, hors saison) est idéal pour une <strong>progression accélérée</strong> ou pour travailler des points techniques spécifiques. Le ratio 1:1 avec le moniteur garantit que chaque minute est optimisée pour votre apprentissage.
+                  </p>
+                  <p>
+                    Les <Link to="/session-kitesurf-carte-hyeres" className="text-primary hover:underline">sessions à la carte</Link> (dès 120€ la séance) conviennent aux <strong>résidents locaux</strong> et aux vacanciers avec des emplois du temps variables. Les packs de 3 ou 5 séances offrent des réductions progressives allant jusqu'à 70€ d'économie.
+                  </p>
+                </div>
+
+                <div className="space-y-5">
+                  <h3 className="font-display text-2xl font-bold text-foreground">Maximiser votre budget</h3>
+                  <p>
+                    La distinction <strong>haute saison / basse saison</strong> vous permet d'économiser jusqu'à <strong>150€</strong> en réservant hors juillet-août. Au-delà de l'aspect financier, la basse saison offre des avantages concrets : <strong>groupes plus petits</strong>, plus de disponibilité de créneaux, et des conditions de vent souvent excellentes (mars-juin et septembre-novembre).
+                  </p>
+                  <p>
+                    Tous nos tarifs sont <strong>tout compris</strong> : matériel (aile, planche, combinaison, casque, gilet), bateau d'assistance permanent, assurance responsabilité civile, et encadrement par notre moniteur diplômé d'État. Il n'y a aucun frais caché. La seule obligation supplémentaire est la <strong>licence FFVL</strong> pour les stages kitesurf et wingfoil.
+                  </p>
+                  <p>
+                    Nos <strong>bons cadeaux</strong> sont valables 1 an et disponibles pour toutes nos activités. C'est une idée de cadeau originale pour un anniversaire, Noël, ou toute occasion spéciale. <Link to="/contact-reservation-kitesurf-hyeres" className="text-primary hover:underline">Contactez-nous</Link> pour personnaliser votre bon.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* FAQ Section */}
         <ActivityFAQ
           title="Questions Fréquentes Tarifs"

@@ -400,6 +400,110 @@ const StageWingfoil = () => {
           </div>
         </section>
 
+        {/* Expert Content Section - SEO 1500+ mots */}
+        <section className="py-20 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-16">
+                <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-6">
+                  Le Guide Expert du{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">Wingfoil à Hyères</span>
+                </h2>
+                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+                  Tout ce que vous devez savoir pour apprendre le wingfoil sur le spot de l'Almanarre avec notre école certifiée FFVL.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed mb-16">
+                <div className="space-y-5">
+                  <h3 className="font-display text-2xl font-bold text-foreground">Le wingfoil : la révolution des sports de glisse</h3>
+                  <p>
+                    Le <strong>wingfoil</strong> (ou wing foil) est la discipline qui connaît la plus forte croissance dans l'univers des sports nautiques. Né en 2019, il combine une <strong>aile tenue à la main</strong> (la wing) et une planche équipée d'un <strong>hydrofoil</strong> — un appendice immergé qui soulève la planche hors de l'eau à partir d'une certaine vitesse.
+                  </p>
+                  <p>
+                    Le résultat ? Une <strong>sensation de vol silencieuse et écologique</strong> au-dessus de l'eau, sans moteur, sans bruit, uniquement propulsé par le vent. C'est cette expérience unique qui séduit un nombre croissant de pratiquants chaque année, des adolescents aux retraités sportifs.
+                  </p>
+                  <p>
+                    Contrairement au kitesurf qui nécessite la gestion de lignes de 20-25 mètres, le wingfoil se pratique en <strong>contact direct avec l'aile</strong>. Il n'y a pas de systèmes de lignes complexes à apprendre, pas de bar à régler, et la zone de sécurité autour de vous est bien plus réduite. C'est pourquoi le wingfoil est souvent considéré comme <strong>plus accessible que le kitesurf</strong> pour les débutants complets.
+                  </p>
+                </div>
+
+                <div className="space-y-5">
+                  <h3 className="font-display text-2xl font-bold text-foreground">Notre méthode d'apprentissage progressive</h3>
+                  <p>
+                    Notre <strong>stage wingfoil 5 jours</strong> à l'Almanarre suit une progression scientifiquement optimisée qui découple les difficultés pour accélérer votre apprentissage.
+                  </p>
+                  <p>
+                    <strong>Phase 1 — Prise en main de la wing :</strong> vous apprenez à gonfler, tenir et orienter la wing sur la plage, puis dans l'eau peu profonde. L'objectif est de maîtriser la génération de puissance et les transitions bâbord/tribord avant de monter sur la planche.
+                  </p>
+                  <p>
+                    <strong>Phase 2 — Navigation sur planche large :</strong> vous naviguez debout sur une planche volumineuse et stable, propulsé par la wing, mais sans foil. Cette étape développe l'équilibre, la gestion de la puissance et les trajectoires.
+                  </p>
+                  <p>
+                    <strong>Phase 3 — Découverte du foil via le foil tracté :</strong> grâce à une session de <Link to="/foil-tracte-hyeres" className="text-primary hover:underline">foil tracté</Link> incluse dans le stage, vous apprenez les sensations de vol et l'équilibre sur le foil <strong>sans avoir à gérer la wing</strong>. C'est la clé de notre méthode : isoler chaque compétence.
+                  </p>
+                  <p>
+                    <strong>Phase 4 — Vol en wingfoil :</strong> une fois la wing et le foil maîtrisés séparément, vous combinez les deux pour vos premiers vols. La transition est naturelle et rapide grâce à notre méthode progressive.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed mb-16">
+                <div className="space-y-5">
+                  <h3 className="font-display text-2xl font-bold text-foreground">L'Almanarre : le spot idéal pour le wingfoil</h3>
+                  <p>
+                    Le <Link to="/spot-kitesurf-almanarre-hyeres-var" className="text-primary hover:underline">spot de l'Almanarre</Link> offre des conditions particulièrement adaptées au wingfoil. La <strong>lagune protégée</strong> côté ouest offre une eau plate et peu profonde, parfaite pour les premières navigations sans foil et les premiers décollages en foil.
+                  </p>
+                  <p>
+                    Le wingfoil se pratique dès <strong>12 nœuds de vent</strong>, soit bien moins que les 15-20 nœuds nécessaires pour le kitesurf. Cela signifie que les sessions sont possibles plus souvent et dans un éventail de conditions plus large. À l'Almanarre, les régimes de Mistral et de Levant offrent régulièrement ce seuil de vent.
+                  </p>
+                  <p>
+                    Notre école étant <strong>itinérante</strong>, nous adaptons le lieu de pratique en fonction de la direction du vent. Que ce soit côté lagune (Mistral) ou côté mer (Levant), nous trouvons toujours les conditions optimales pour votre apprentissage du wingfoil à Hyères.
+                  </p>
+                </div>
+
+                <div className="space-y-5">
+                  <h3 className="font-display text-2xl font-bold text-foreground">Wingfoil vs kitesurf : les différences clés</h3>
+                  <p>
+                    Le choix entre wingfoil et <Link to="/cours-kitesurf-hyeres-debutant" className="text-primary hover:underline">kitesurf</Link> dépend de vos préférences personnelles. Le <strong>kitesurf</strong> offre plus de puissance, de sauts spectaculaires et une sensation de vitesse grisante. Le <strong>wingfoil</strong> privilégie le vol silencieux, l'élégance et l'harmonie avec les éléments.
+                  </p>
+                  <p>
+                    En termes de <strong>facilité d'apprentissage</strong>, le wingfoil a l'avantage : pas de lignes à gérer, setup plus rapide, et zone de sécurité réduite. Cependant, le foil ajoute une dimension d'équilibre supplémentaire qui demande de la pratique. Notre méthode avec <Link to="/foil-tracte-hyeres" className="text-primary hover:underline">foil tracté</Link> résout ce problème en isolant l'apprentissage du foil.
+                  </p>
+                  <p>
+                    Le wingfoil nécessite <strong>moins de vent</strong> (12 vs 15+ nœuds) et <strong>moins d'espace</strong> que le kitesurf, ce qui en fait un sport praticable sur davantage de spots et dans des conditions plus variées. C'est un avantage décisif pour les pratiquants qui veulent naviguer le plus souvent possible.
+                  </p>
+                  <p>
+                    Beaucoup de nos élèves finissent par pratiquer les deux disciplines, profitant des jours de vent fort pour le kitesurf et des jours de vent modéré pour le wingfoil. C'est l'avantage d'apprendre dans une école multi-disciplines comme <strong>KiteSurf Passion</strong>. Découvrez aussi le <Link to="/cours-pumpfoil-dock-start-hyeres" className="text-primary hover:underline">pumpfoil</Link> pour les jours sans vent !
+                  </p>
+                </div>
+              </div>
+
+              {/* Trust badges wingfoil */}
+              <div className="bg-gradient-to-r from-primary/5 to-turquoise/5 rounded-3xl p-8 md:p-12 border border-primary/10">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                  <div>
+                    <p className="font-display text-3xl font-bold text-primary mb-2">12 nœuds</p>
+                    <p className="text-muted-foreground text-sm">Vent minimum</p>
+                  </div>
+                  <div>
+                    <p className="font-display text-3xl font-bold text-primary mb-2">5 jours</p>
+                    <p className="text-muted-foreground text-sm">Pour voler</p>
+                  </div>
+                  <div>
+                    <p className="font-display text-3xl font-bold text-primary mb-2">440€</p>
+                    <p className="text-muted-foreground text-sm">Stage complet</p>
+                  </div>
+                  <div>
+                    <p className="font-display text-3xl font-bold text-primary mb-2">Foil tracté</p>
+                    <p className="text-muted-foreground text-sm">Inclus dans le stage</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* FAQ Section */}
         <ActivityFAQ
           title="Questions Fréquentes Wingfoil"
