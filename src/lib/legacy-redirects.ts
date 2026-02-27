@@ -84,6 +84,8 @@ export const exactRedirects: Record<string, string> = {
   "/activites-offrir+un+cadeau+de+noel+pour+une+femme+ou+un+homme+on+un+enfant+le+kitesurf+a+hyeres+-24.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
   "/activites-stage+et+cours+d+initiation+et+perfectionnement+au+kitesurf-hyeres+carqueiranne+giens-16.html": "/cours-kitesurf-hyeres-debutant",
   "/activites-stage+et+cours+d+initiation+et+perfectionnement+au+kitesurf+hyeres+carqueiranne+giens-16.html": "/cours-kitesurf-hyeres-debutant",
+  "/activites-ecole+de+kitesurf+pour+des+cours+debutant+et+perfectionnement+hyeres+carqueiranne-3.html": "/cours-kitesurf-hyeres-debutant",
+  "/cours-et-stages-2.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
 
   // 10. Redirections internes
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
@@ -145,6 +147,7 @@ const seoLocalPatterns: PatternRedirect[] = [
   // Autres sports / anciennes pages
   { keyword: "cours+de+sky+surf+et+fly+surf", target: "/cours-kitesurf-hyeres-debutant" },
   { keyword: "faire+une+balade+en+paddle", target: "/tarifs-cours-kitesurf-wingfoil-hyeres" },
+  { keyword: "vente+materiel+de+kitesurf+d+occasion", target: "/location-materiel-kitesurf-hyeres" },
 ];
 
 /**
