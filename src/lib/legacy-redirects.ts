@@ -82,6 +82,8 @@ export const exactRedirects: Record<string, string> = {
   "/activites-cours+de+pump+foil+et+dock+start+a+hyeres+plage+de+l+almanare+var-37.html": "/cours-pumpfoil-dock-start-hyeres",
   "/details-ailes+d+occasion+de+kitesurf+a+vendre+duotone+a+hyeres+l+amanarre-151.html": "/location-materiel-kitesurf-hyeres",
   "/activites-offrir+un+cadeau+de+noel+pour+une+femme+ou+un+homme+on+un+enfant+le+kitesurf+a+hyeres+-24.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/activites-stage+et+cours+d+initiation+et+perfectionnement+au+kitesurf-hyeres+carqueiranne+giens-16.html": "/cours-kitesurf-hyeres-debutant",
+  "/activites-stage+et+cours+d+initiation+et+perfectionnement+au+kitesurf+hyeres+carqueiranne+giens-16.html": "/cours-kitesurf-hyeres-debutant",
 
   // 10. Redirections internes
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
@@ -139,6 +141,10 @@ const seoLocalPatterns: PatternRedirect[] = [
 
   // Découverte
   { keyword: "journee+decouverte+kite+surf+ou+wing+foil", target: "/tarifs-cours-kitesurf-wingfoil-hyeres" },
+
+  // Autres sports / anciennes pages
+  { keyword: "cours+de+sky+surf+et+fly+surf", target: "/cours-kitesurf-hyeres-debutant" },
+  { keyword: "faire+une+balade+en+paddle", target: "/tarifs-cours-kitesurf-wingfoil-hyeres" },
 ];
 
 /**
