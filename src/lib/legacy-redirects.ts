@@ -76,6 +76,13 @@ export const exactRedirects: Record<string, string> = {
   "/lien-tilou+location+specialiste+de+la+location+d+appartements+et+chambre+d+hote+a+giens+hyeres+giens+tiloulocation-54.html": "/a-propos-ecole-kitesurf-hyeres",
   "/lien-simulateur+de+chute+libre+hyrese+air+vertical-44.html": "/a-propos-ecole-kitesurf-hyeres",
 
+  // 9. URLs 404 détectées dans GSC (février 2026)
+  "/details-venez+apprendre+le+wing+foil+en+stage+et+cours+d+initiation+hyeres+l+almanarre-70.html": "/stage-wingfoil-hyeres-almanarre",
+  "/details-venez+apprendre+le+wing+foil+en+stage+et+cours+d+initiation+a+hyeres+l+almanarre-70.html": "/stage-wingfoil-hyeres-almanarre",
+  "/activites-cours+de+pump+foil+et+dock+start+a+hyeres+plage+de+l+almanare+var-37.html": "/cours-pumpfoil-dock-start-hyeres",
+  "/details-ailes+d+occasion+de+kitesurf+a+vendre+duotone+a+hyeres+l+amanarre-151.html": "/location-materiel-kitesurf-hyeres",
+  "/activites-offrir+un+cadeau+de+noel+pour+une+femme+ou+un+homme+on+un+enfant+le+kitesurf+a+hyeres+-24.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+
   // 10. Redirections internes
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
 };
