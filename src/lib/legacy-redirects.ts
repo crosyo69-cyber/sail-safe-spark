@@ -86,6 +86,15 @@ export const exactRedirects: Record<string, string> = {
   "/activites-stage+et+cours+d+initiation+et+perfectionnement+au+kitesurf+hyeres+carqueiranne+giens-16.html": "/cours-kitesurf-hyeres-debutant",
   "/activites-ecole+de+kitesurf+pour+des+cours+debutant+et+perfectionnement+hyeres+carqueiranne-3.html": "/cours-kitesurf-hyeres-debutant",
   "/cours-et-stages-2.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/activites-offrir+un+cadeau+de+noel+pour+une+femme+ou+un+homme+on+un+enfant+le+kitesurf+a+hyeres--24.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/details-offrir+un+cadeau+de+noel+pour+une+femme+ou+un+homme+ou+un+enfant+de+plus+35+kilos+un+bon+cadeaux+pour+le+kitesurf+a+hyeres+dans+le+83-63.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/details-la+m+t+o+du+vent+sur+hyeres+l+almanarre+pour+ne+pas+rater+vos+sessions+de+kitesurf-51.html": "/spot-kitesurf-almanarre-hyeres-var",
+  "/bons-cadeaux-w0.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/details-kitesurf+passion+price+list+2019+introduction+progression+courses+at+hyeres-69.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/lien-sophrologue+toulon+veronique+barreault-50.html": "/a-propos-ecole-kitesurf-hyeres",
+  "/details-est-il+dangereux+d+apprendre+le+kitesurf+a+hyeres+dans+le+var-179.html": "/cours-kitesurf-hyeres-debutant",
+  "/details-l+ecole+kitesurf+passion+vous+propose+2+formules+d+apprentissage+soit+en+stage+d+initiation+ou+cours+de+perfectionnement+en+kite+sur+5+jours+consecutifs+soit+en+discontinue+a+hyeres+l+almanarre-59.html": "/cours-kitesurf-hyeres-debutant",
+  "/activites-comment+apprendre+le+kitesurf+hyeres+carqueiranne-23.html": "/cours-kitesurf-hyeres-debutant",
 
   // 10. Redirections internes
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
