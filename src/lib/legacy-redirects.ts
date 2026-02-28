@@ -95,6 +95,13 @@ export const exactRedirects: Record<string, string> = {
   "/details-est-il+dangereux+d+apprendre+le+kitesurf+a+hyeres+dans+le+var-179.html": "/cours-kitesurf-hyeres-debutant",
   "/details-l+ecole+kitesurf+passion+vous+propose+2+formules+d+apprentissage+soit+en+stage+d+initiation+ou+cours+de+perfectionnement+en+kite+sur+5+jours+consecutifs+soit+en+discontinue+a+hyeres+l+almanarre-59.html": "/cours-kitesurf-hyeres-debutant",
   "/activites-comment+apprendre+le+kitesurf+hyeres+carqueiranne-23.html": "/cours-kitesurf-hyeres-debutant",
+  "/details-les+cours+de+kitesurf+a+hyeres+carqueiranne-35.html": "/cours-kitesurf-hyeres-debutant",
+  "/details-les+cours+pour+apprendre+ou+se+perfectionner+kitesurf+hyeres+carqueiranne-35.html": "/session-kitesurf-carte-hyeres",
+  "/details-les+forfaits+de+kitesurf+passion+hyeres+carqueiranne-35.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/details-offrir+un+cours+particulier+kitesurf+avec+kitesurf+passion+une+ecole+proche+de+vous-128.html": "/cours-particulier-kitesurf-hyeres",
+  "/details-les+stages+d+initiation+au+kitesurf+pour+les+debutants+a+hyeres+83+dans+le+var-41.html": "/cours-kitesurf-hyeres-debutant",
+  "/activites-prendre+des+cours+de+kitesurf+a+hyeres+l+almanarre+-29.html": "/cours-kitesurf-hyeres-debutant",
+  "/activites-trouver+une+ecole+de+kitesurf-hyeres+carqueiranne-22.html": "/cours-kitesurf-hyeres-debutant",
 
   // 10. Redirections internes
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
