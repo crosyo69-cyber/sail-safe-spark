@@ -144,6 +144,7 @@ export const exactRedirects: Record<string, string> = {
   "/activites-offrir+un+cadeau+de+noel+pour+une+femme+ou+un+homme+on+un+enfant+le+kitesurf+a+hyeres\u201324.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
   "/guide-local-w2.html": "/a-propos-ecole-kitesurf-hyeres",
   "/details-les+spot+de+kitesurf+de+hyeres+et+la+baie+de+l+almanarre+et+de+giens-23.html": "/spot-kitesurf-almanarre-hyeres-var",
+  "/archives-0.html": "/blog-kitesurf-hyeres",
 
   // 12. Redirections internes
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
