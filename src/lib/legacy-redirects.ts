@@ -160,6 +160,7 @@ export const exactRedirects: Record<string, string> = {
   "/cours-pumpfoil": "/cours-pumpfoil-dock-start-hyeres",
   "/blog": "/blog-kitesurf-hyeres",
   "/cours-kitesurf": "/cours-kitesurf-hyeres-debutant",
+  "/wakeboard": "/wakeboard-hyeres",
 };
 
 /**
