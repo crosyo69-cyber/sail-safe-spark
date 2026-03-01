@@ -148,8 +148,18 @@ export const exactRedirects: Record<string, string> = {
   "/activites-w0.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
   "/guide-local-w0.html": "/a-propos-ecole-kitesurf-hyeres",
 
-  // 12. Redirections internes
+  // 12. Redirections internes + anciennes URLs courtes crawlées par Google
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
+  "/tarifs": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/foil-tracte": "/foil-tracte-hyeres",
+  "/deposes-mer": "/deposes-mer-kitesurf-hyeres",
+  "/spot-almanarre": "/spot-kitesurf-almanarre-hyeres-var",
+  "/a-propos": "/a-propos-ecole-kitesurf-hyeres",
+  "/contact": "/contact-reservation-kitesurf-hyeres",
+  "/stage-wingfoil": "/stage-wingfoil-hyeres-almanarre",
+  "/cours-pumpfoil": "/cours-pumpfoil-dock-start-hyeres",
+  "/blog": "/blog-kitesurf-hyeres",
+  "/cours-kitesurf": "/cours-kitesurf-hyeres-debutant",
 };
 
 /**
