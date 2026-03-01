@@ -140,6 +140,9 @@ export const exactRedirects: Record<string, string> = {
   "/details-wingfoil+debutant+a+hyeres+apprenez+en+toute+securite+a+l+almanarre-209.html": "/stage-wingfoil-hyeres-almanarre",
   "/lien-annuaire+generaliste+d+entreprises+et+de+services+marseille+provence+jalis-2.html": "/a-propos-ecole-kitesurf-hyeres",
   "/pump-foil-dock-start-w0.html": "/cours-pumpfoil-dock-start-hyeres",
+  "/activites-apprendre+le+kitesurf+rapidement+quand+on+est+debutant+hyeres+de+l+almanarre-11.html": "/cours-kitesurf-hyeres-debutant",
+  "/activites-offrir+un+cadeau+de+noel+pour+une+femme+ou+un+homme+on+un+enfant+le+kitesurf+a+hyeres\u201324.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/guide-local-w2.html": "/a-propos-ecole-kitesurf-hyeres",
 
   // 12. Redirections internes
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
