@@ -145,6 +145,8 @@ export const exactRedirects: Record<string, string> = {
   "/guide-local-w2.html": "/a-propos-ecole-kitesurf-hyeres",
   "/details-les+spot+de+kitesurf+de+hyeres+et+la+baie+de+l+almanarre+et+de+giens-23.html": "/spot-kitesurf-almanarre-hyeres-var",
   "/archives-0.html": "/blog-kitesurf-hyeres",
+  "/activites-w0.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/guide-local-w0.html": "/a-propos-ecole-kitesurf-hyeres",
 
   // 12. Redirections internes
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
