@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Phone, Send } from "lucide-react";
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { trackCTAClick, trackFormSubmit, trackPhoneClick } from "@/lib/analytics";
 import sunsetImage from "@/assets/almanarre-sunset.jpg?webp";
 
-export function CTASection() {
+export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_, ref) {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     firstName: "",
@@ -40,6 +40,7 @@ export function CTASection() {
 
   return (
     <section 
+      ref={ref}
       id="contact" 
       className="relative py-24 overflow-hidden"
       style={{ contain: 'layout style' }}
@@ -158,4 +159,4 @@ export function CTASection() {
       </div>
     </section>
   );
-}
+});
