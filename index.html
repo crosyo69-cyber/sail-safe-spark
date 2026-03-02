@@ -221,6 +221,10 @@
       <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
     </div>
     <div id="root"></div>
+    <script>
+      // Fallback: remove skeleton after 8s even if React fails to mount
+      setTimeout(function(){var s=document.getElementById('loading-skeleton');if(s)s.remove();},8000);
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
