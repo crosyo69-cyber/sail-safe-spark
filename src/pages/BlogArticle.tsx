@@ -2202,6 +2202,13 @@ const BlogArticle = () => {
         <meta property="og:locale" content="fr_FR" />
         <meta property="article:published_time" content={`${article.date}T08:00:00+01:00`} />
         <meta property="article:author" content="Yoanne Cros" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${article.title} | KiteSurf Passion`} />
+        <meta name="twitter:description" content={article.excerpt} />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta name="twitter:image:alt" content={article.title} />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
