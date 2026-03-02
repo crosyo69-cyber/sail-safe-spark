@@ -140,10 +140,10 @@ async function sendEmailAlert(
       `,
     });
 
-    console.log("Email sent to:", email, emailResponse);
+    console.log("Weather alert email sent successfully", { status: emailResponse?.id ? "ok" : "unknown" });
     return true;
   } catch (error) {
-    console.error("Error sending email to:", email, error);
+    console.error("Error sending weather alert email", error);
     return false;
   }
 }
