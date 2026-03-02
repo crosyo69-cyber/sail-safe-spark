@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from "react";
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,31 +13,29 @@ import { initGA4 } from "@/lib/analytics";
 import { SEORedirect } from "@/components/SEORedirect";
 import { LegacyRedirectHandler } from "@/components/LegacyRedirectHandler";
 
-// Critical path - loaded immediately
+// All pages loaded eagerly for SEO — ensures Googlebot sees content immediately
 import Index from "./pages/Index";
-
-// Lazy loaded pages for better initial load performance
-const CoursKitesurf = lazy(() => import("./pages/CoursKitesurf"));
-const Stage100Glisse = lazy(() => import("./pages/Stage100Glisse"));
-const SessionCarte = lazy(() => import("./pages/SessionCarte"));
-const CoursParticulier = lazy(() => import("./pages/CoursParticulier"));
-const StageWingfoil = lazy(() => import("./pages/StageWingfoil"));
-const CoursPumpfoil = lazy(() => import("./pages/CoursPumpfoil"));
-const SpotAlmanarre = lazy(() => import("./pages/SpotAlmanarre"));
-const LocationMateriel = lazy(() => import("./pages/LocationMateriel"));
-const DeposesMer = lazy(() => import("./pages/DeposesMer"));
-const FoilTracte = lazy(() => import("./pages/FoilTracte"));
-const Wakeboard = lazy(() => import("./pages/Wakeboard"));
-const Tarifs = lazy(() => import("./pages/Tarifs"));
-const Contact = lazy(() => import("./pages/Contact"));
-const APropos = lazy(() => import("./pages/APropos"));
-const Blog = lazy(() => import("./pages/Blog"));
-const BlogArticle = lazy(() => import("./pages/BlogArticle"));
-const Auth = lazy(() => import("./pages/Auth"));
-const UnsubscribeAlerts = lazy(() => import("./pages/UnsubscribeAlerts"));
-const MentionsLegales = lazy(() => import("./pages/MentionsLegales"));
-const PolitiqueConfidentialite = lazy(() => import("./pages/PolitiqueConfidentialite"));
-// NotFound is now handled inside LegacyRedirectHandler
+import CoursKitesurf from "./pages/CoursKitesurf";
+import Stage100Glisse from "./pages/Stage100Glisse";
+import SessionCarte from "./pages/SessionCarte";
+import CoursParticulier from "./pages/CoursParticulier";
+import StageWingfoil from "./pages/StageWingfoil";
+import CoursPumpfoil from "./pages/CoursPumpfoil";
+import SpotAlmanarre from "./pages/SpotAlmanarre";
+import LocationMateriel from "./pages/LocationMateriel";
+import DeposesMer from "./pages/DeposesMer";
+import FoilTracte from "./pages/FoilTracte";
+import Wakeboard from "./pages/Wakeboard";
+import Tarifs from "./pages/Tarifs";
+import Contact from "./pages/Contact";
+import APropos from "./pages/APropos";
+import Blog from "./pages/Blog";
+import BlogArticle from "./pages/BlogArticle";
+import Auth from "./pages/Auth";
+import UnsubscribeAlerts from "./pages/UnsubscribeAlerts";
+import MentionsLegales from "./pages/MentionsLegales";
+import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite";
+// NotFound is handled inside LegacyRedirectHandler
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,12 +46,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// Minimal loading fallback for route transitions
-const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center bg-background">
-    <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-  </div>
-);
 
 const App = () => {
   // Initialize GA4 after React has mounted to avoid DOM conflicts
@@ -72,7 +64,7 @@ const App = () => {
         <WebVitalsDashboard />
         <BrowserRouter>
           <PageTracker />
-          <Suspense fallback={<PageLoader />}>
+          <>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/cours-kitesurf-hyeres-debutant" element={<CoursKitesurf />} />
@@ -100,7 +92,7 @@ const App = () => {
               {/* Legacy URL redirections (old .com site → new .fr routes) */}
               <Route path="*" element={<LegacyRedirectHandler />} />
             </Routes>
-          </Suspense>
+          </>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
