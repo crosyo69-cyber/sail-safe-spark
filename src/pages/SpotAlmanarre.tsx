@@ -183,8 +183,8 @@ const sportsActivityLocationData = {
     dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
     opens: "09:00",
     closes: "19:00",
-    validFrom: "2024-03-01",
-    validThrough: "2024-11-30"
+    validFrom: "2026-03-01",
+    validThrough: "2026-11-30"
   },
   amenityFeature: [
     { "@type": "LocationFeatureSpecification", name: "Parking gratuit", value: true },
