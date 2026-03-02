@@ -8,6 +8,7 @@ import { Calendar, Clock, ArrowLeft, ArrowRight, User, Tag, Facebook, Twitter, L
 import { Button } from "@/components/ui/button";
 import { blogArticles } from "./Blog";
 import DOMPurify from "dompurify";
+import { marked } from "marked";
 
 import NotFound from "./NotFound";
 
@@ -3128,8 +3129,8 @@ const BlogArticle = () => {
           </div>
 
           {/* Article Content */}
-          <div className="max-w-3xl mx-auto prose prose-lg prose-headings:font-display prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-a:text-primary prose-strong:text-foreground">
-            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content.content.replace(/\n/g, '<br />')) }} />
+          <div className="max-w-3xl mx-auto prose prose-lg prose-headings:font-display prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-a:text-primary prose-strong:text-foreground prose-table:border-collapse prose-th:border prose-th:border-border prose-th:p-2 prose-th:bg-muted prose-td:border prose-td:border-border prose-td:p-2">
+            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(content.content, { async: false }) as string) }} />
           </div>
 
           {/* Tags */}
