@@ -143,6 +143,13 @@ const SessionCarte = () => {
         <meta property="og:title" content="Session Kitesurf à la Carte – Hyères Almanarre | KiteSurf Passion" />
         <meta property="og:description" content="Cours kitesurf à la carte à Hyères. Choisissez vos créneaux, progressez à votre rythme avec bateau sécurité." />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres" />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Session kitesurf à la carte Hyères - École KiteSurf Passion Almanarre" />
+        <meta property="og:site_name" content="KiteSurf Passion" />
+        <meta property="og:locale" content="fr_FR" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>

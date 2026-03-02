@@ -2190,6 +2190,18 @@ const BlogArticle = () => {
         <link rel="canonical" href={`https://www.kitesurfpassion.fr/blog/${slug}`} />
         <link rel="alternate" hrefLang="fr-FR" href={`https://www.kitesurfpassion.fr/blog/${slug}`} />
         <link rel="alternate" hrefLang="x-default" href={`https://www.kitesurfpassion.fr/blog/${slug}`} />
+        <meta property="og:title" content={`${article.title} | Blog KiteSurf Passion`} />
+        <meta property="og:description" content={article.excerpt} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://www.kitesurfpassion.fr/blog/${slug}`} />
+        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={article.title} />
+        <meta property="og:site_name" content="KiteSurf Passion" />
+        <meta property="og:locale" content="fr_FR" />
+        <meta property="article:published_time" content={`${article.date}T08:00:00+01:00`} />
+        <meta property="article:author" content="Yoanne Cros" />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
