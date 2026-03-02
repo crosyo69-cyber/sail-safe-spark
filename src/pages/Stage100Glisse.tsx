@@ -194,6 +194,13 @@ const Stage100Glisse = () => {
         <meta property="og:image:alt" content="Stage kitesurf 100% Glisse Hyères - École KiteSurf Passion Almanarre" />
         <meta property="og:site_name" content="KiteSurf Passion" />
         <meta property="og:locale" content="fr_FR" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Stage Kitesurf 100% Glisse Hyères | 5 Jours" />
+        <meta name="twitter:description" content="5 jours pour devenir autonome en kitesurf à l'Almanarre Hyères !" />
+        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta name="twitter:image:alt" content="Stage kitesurf 100% Glisse Hyères Almanarre" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>

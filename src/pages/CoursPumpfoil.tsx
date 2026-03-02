@@ -115,7 +115,7 @@ export default function CoursPumpfoil() {
     <>
       <Helmet>
         <title>Cours Pumpfoil & Dock Start – Hyères Almanarre | Volez Sans Vent</title>
-        <meta name="description" content="Cours de pumpfoil avec technique dock start à Hyères" />
+        <meta name="description" content="Cours de pumpfoil et dock start à Hyères Almanarre. Apprenez à voler sur l'eau sans vent avec moniteur diplômé. Progression rapide, accessible à tous dès 50€." />
         <meta name="keywords" content="pumpfoil hyères, cours pumpfoil almanarre, dock start hyères, foil sans vent, école pumpfoil var" />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres" />
         <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres" />

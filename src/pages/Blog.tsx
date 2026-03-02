@@ -381,6 +381,7 @@ const Blog = () => {
       headline: article.title,
       description: article.excerpt,
       datePublished: `${article.date}T08:00:00+01:00`,
+      dateModified: `${article.date}T08:00:00+01:00`,
       url: `https://www.kitesurfpassion.fr/blog/${article.slug}`,
       image: `https://www.kitesurfpassion.fr/assets/${article.image}`,
       author: {
