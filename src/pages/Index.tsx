@@ -22,7 +22,7 @@ const sellerInfo = {
 };
 
 // Price validity date (end of current season)
-const priceValidUntil = "2025-11-30";
+const priceValidUntil = "2026-11-30";
 const Index = () => {
   // SportsSchool structured data with extended offers
   const structuredData = {
@@ -89,8 +89,8 @@ const Index = () => {
         dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
         opens: "09:00",
         closes: "19:00",
-        validFrom: "2025-03-01",
-        validThrough: "2025-11-30"
+        validFrom: "2026-03-01",
+        validThrough: "2026-11-30"
       }
     ],
     priceRange: "€€",
