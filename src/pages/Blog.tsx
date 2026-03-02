@@ -273,6 +273,37 @@ export const blogArticles = [
     image: "blog-location-materiel.jpg",
     alt: "Location matériel kitesurf Hyères Almanarre - Équipement Duotone école Var",
   },
+  {
+    slug: "kitesurf-autonome-combien-seances",
+    title: "Kitesurf : Combien de Séances pour Devenir Autonome ?",
+    excerpt: "De la première leçon au waterstart, découvrez les étapes clés et le nombre de séances nécessaires pour naviguer seul en kitesurf à Hyères.",
+    category: "Kitesurf",
+    date: "2026-03-01",
+    readTime: "8 min",
+    image: "blog-kitesurf-debut.jpg",
+    alt: "Progression kitesurf autonomie Hyères - Nombre séances cours école KiteSurf Passion",
+    featured: true,
+  },
+  {
+    slug: "kitesurf-enfant-hyeres-age-ideal",
+    title: "Kitesurf Enfant à Hyères : À Quel Âge Commencer ?",
+    excerpt: "Votre enfant rêve de kitesurf ? Découvrez l'âge idéal, les conditions de sécurité et nos formules adaptées aux juniors à l'Almanarre.",
+    category: "Kitesurf",
+    date: "2026-02-28",
+    readTime: "7 min",
+    image: "blog-kitesurf-action.jpg",
+    alt: "Kitesurf enfant Hyères Almanarre - Cours junior école KiteSurf Passion Var",
+  },
+  {
+    slug: "almanarre-meilleur-spot-kitesurf-france",
+    title: "L'Almanarre : Pourquoi C'est le Meilleur Spot de Kitesurf en France",
+    excerpt: "Vent régulier, eau plate, cadre exceptionnel : découvrez pourquoi le spot de l'Almanarre à Hyères est considéré comme le meilleur de France.",
+    category: "Kitesurf",
+    date: "2026-02-25",
+    readTime: "9 min",
+    image: "blog-kite-duotone.jpg",
+    alt: "Almanarre meilleur spot kitesurf France - École Hyères KiteSurf Passion Var",
+  },
 ];
 
 const categories = ["Tous", "Kitesurf", "Wing Foil", "Pump Foil", "Wakeboard", "Le Spot", "Sécurité"];
