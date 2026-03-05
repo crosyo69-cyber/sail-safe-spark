@@ -1,4 +1,4 @@
-import { memo, useState, useEffect, useCallback } from "react";
+import { memo, useState, useEffect, useCallback, useLayoutEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -68,6 +68,20 @@ const trustBadges = [
 export const HeroSection = memo(function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  // Dynamically inject preload for hero LCP image (matches Vite-hashed path)
+  useLayoutEffect(() => {
+    const existing = document.querySelector('link[data-hero-preload]');
+    if (existing) return;
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.type = 'image/webp';
+    link.href = heroKitesurf;
+    link.setAttribute('fetchpriority', 'high');
+    link.setAttribute('data-hero-preload', 'true');
+    document.head.appendChild(link);
+  }, []);
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
