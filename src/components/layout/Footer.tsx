@@ -20,6 +20,7 @@ import logoWanderlog from "@/assets/logo-wanderlog.png";
 import logoBiereIlesDor from "@/assets/logo-biere-iles-dor.png";
 import logoCitoofrance from "@/assets/logo-citoofrance.png";
 import logoCotedazurfrance from "@/assets/logo-cotedazurfrance.svg";
+import logoLoisirsfr from "@/assets/logo-loisirsfr.png";
 
 const footerLinks = {
   activities: [
@@ -470,6 +471,19 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
               <img 
                 src={logoCotedazurfrance} 
                 alt="Côte d'Azur France - Fiche Kitesurf Passion" 
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+            <a 
+              href="https://www.loisirs.fr/kite-surf-passion-carqueiranne.html" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="Loisirs.fr - Annuaire loisirs"
+            >
+              <img 
+                src={logoLoisirsfr} 
+                alt="Loisirs.fr - Fiche Kitesurf Passion" 
                 className="h-10 w-auto object-contain"
               />
             </a>
