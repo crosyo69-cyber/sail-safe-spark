@@ -7,21 +7,33 @@
 // Exact path matches: old path → new path
 export const exactRedirects: Record<string, string> = {
   // 1. Pages principales (.html)
+  "/nos-activites": "/tarifs-cours-kitesurf-wingfoil-hyeres",
   "/nos-activites.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/activites-w1": "/tarifs-cours-kitesurf-wingfoil-hyeres",
   "/activites-w1.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/activites-kite-surf-w1": "/cours-kitesurf-hyeres-debutant",
   "/activites-kite-surf-w1.html": "/cours-kitesurf-hyeres-debutant",
+  "/activites-wing-foil-w1": "/stage-wingfoil-hyeres-almanarre",
   "/activites-wing-foil-w1.html": "/stage-wingfoil-hyeres-almanarre",
+  "/pump-foil-dock-start-w1": "/cours-pumpfoil-dock-start-hyeres",
   "/pump-foil-dock-start-w1.html": "/cours-pumpfoil-dock-start-hyeres",
+  "/activites-downwind-foil-w1": "/cours-pumpfoil-dock-start-hyeres",
   "/activites-downwind-foil-w1.html": "/cours-pumpfoil-dock-start-hyeres",
+  "/bons-cadeaux-w1": "/tarifs-cours-kitesurf-wingfoil-hyeres",
   "/bons-cadeaux-w1.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/guide-local-w1": "/a-propos-ecole-kitesurf-hyeres",
   "/guide-local-w1.html": "/a-propos-ecole-kitesurf-hyeres",
   "/tarifs.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
   "/contact.html": "/contact-reservation-kitesurf-hyeres",
   "/mentions-legales.html": "/mentions-legales",
   "/politique-confidentialite.html": "/politique-confidentialite",
+  "/plan-du-site": "/",
   "/plan-du-site.html": "/",
+  "/toutes-nos-prestations-1": "/tarifs-cours-kitesurf-wingfoil-hyeres",
   "/toutes-nos-prestations-1.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/archives-1": "/blog-kitesurf-hyeres",
   "/archives-1.html": "/blog-kitesurf-hyeres",
+  "/secteurs": "/spot-kitesurf-almanarre-hyeres-var",
   "/secteurs.html": "/spot-kitesurf-almanarre-hyeres-var",
 
   // 2. Articles & Pages détail (details-*.html)
