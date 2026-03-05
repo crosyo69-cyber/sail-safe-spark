@@ -100,14 +100,8 @@ const totalRating = testimonials.reduce((sum, t) => sum + t.rating, 0);
 const averageRating = (totalRating / testimonials.length).toFixed(1);
 const reviewCount = testimonials.length;
 
-// Item reviewed reference for all reviews
-const itemReviewed = {
-  "@type": "LocalBusiness",
-  "@id": "https://www.kitesurfpassion.fr/#organization",
-  name: "KiteSurf Passion",
-};
-
 // Schema.org structured data for reviews
+// Note: itemReviewed omitted from nested reviews to avoid Google warning
 export const reviewsStructuredData = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
@@ -145,7 +139,6 @@ export const reviewsStructuredData = {
       bestRating: "5",
       worstRating: "1",
     },
-    itemReviewed: itemReviewed,
   })),
 };
 

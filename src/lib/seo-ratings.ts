@@ -74,21 +74,10 @@ export const productAggregateRating = {
   worstRating: "1",
 };
 
-// Item reviewed reference for all reviews
-const itemReviewed = {
-  "@type": "LocalBusiness",
-  "@id": "https://www.kitesurfpassion.fr/#organization",
-  name: "KiteSurf Passion",
-  url: "https://www.kitesurfpassion.fr",
-  telephone: "+33672716905",
-  priceRange: "€€",
-  image: "https://www.kitesurfpassion.fr/og-image.jpg",
-};
-
 /**
  * Schema.org Review array for Product structured data
  * Contains actual customer reviews (limited to 3 most recent for SEO)
- * Each review includes itemReviewed to satisfy Google validation
+ * Note: itemReviewed is omitted because these reviews are nested inside a parent entity
  */
 export const productReviews = REAL_TESTIMONIALS.slice(0, 3).map((t) => ({
   "@type": "Review",
@@ -104,7 +93,6 @@ export const productReviews = REAL_TESTIMONIALS.slice(0, 3).map((t) => ({
     bestRating: "5",
     worstRating: "1",
   },
-  itemReviewed: itemReviewed,
 }));
 
 /**
