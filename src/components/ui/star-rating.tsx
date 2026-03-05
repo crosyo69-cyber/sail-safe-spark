@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Star, StarHalf } from "lucide-react";
 
 interface StarRatingProps {
@@ -8,13 +9,13 @@ interface StarRatingProps {
   className?: string;
 }
 
-export function StarRating({
+export const StarRating = forwardRef<HTMLDivElement, StarRatingProps>(function StarRating({
   rating,
   maxRating = 5,
   size = "md",
   showValue = false,
   className = "",
-}: StarRatingProps) {
+}, ref) {
   const sizeClasses = {
     sm: "w-4 h-4",
     md: "w-5 h-5",
@@ -26,7 +27,7 @@ export function StarRating({
   const emptyStars = maxRating - fullStars - (hasHalfStar ? 1 : 0);
 
   return (
-    <div className={`flex items-center gap-1 ${className}`}>
+    <div ref={ref} className={`flex items-center gap-1 ${className}`}>
       {/* Full stars */}
       {[...Array(fullStars)].map((_, i) => (
         <Star
@@ -61,4 +62,4 @@ export function StarRating({
       )}
     </div>
   );
-}
+});
