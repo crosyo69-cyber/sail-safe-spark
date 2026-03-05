@@ -118,6 +118,10 @@ const Index = () => {
     sameAs: [
       "https://www.facebook.com/kitesurfpassion",
       "https://www.instagram.com/kitesurfpassion",
+      "https://cotedazurfrance.fr/offres/kite-surf-passion-hyeres-fr-3020793/",
+      "https://www.tripadvisor.fr/Attraction_Review-g1080042-d9464816-Reviews-Kitesurf_Passion-Carqueiranne_Var_Provence_Alpes_Cote_d_Azur.html",
+      "https://www.visitvar.fr/fiche/kite-surf-passion-4627343",
+      "https://www.pagesjaunes.fr/pros/51934489"
     ],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
@@ -786,7 +790,11 @@ const Index = () => {
           },
           "sameAs": [
             "https://www.facebook.com/kitesurfpassion",
-            "https://www.instagram.com/kitesurfpassion"
+            "https://www.instagram.com/kitesurfpassion",
+            "https://cotedazurfrance.fr/offres/kite-surf-passion-hyeres-fr-3020793/",
+            "https://www.tripadvisor.fr/Attraction_Review-g1080042-d9464816-Reviews-Kitesurf_Passion-Carqueiranne_Var_Provence_Alpes_Cote_d_Azur.html",
+            "https://www.visitvar.fr/fiche/kite-surf-passion-4627343",
+            "https://www.pagesjaunes.fr/pros/51934489"
           ]
         })}</script>
       </Helmet>
