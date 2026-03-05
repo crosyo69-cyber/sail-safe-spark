@@ -19,6 +19,7 @@ import logoPagesjaunes from "@/assets/logo-pagesjaunes.png";
 import logoWanderlog from "@/assets/logo-wanderlog.png";
 import logoBiereIlesDor from "@/assets/logo-biere-iles-dor.png";
 import logoCitoofrance from "@/assets/logo-citoofrance.png";
+import logoCotedazurfrance from "@/assets/logo-cotedazurfrance.svg";
 
 const footerLinks = {
   activities: [
@@ -456,6 +457,19 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
               <img 
                 src={logoCitoofrance} 
                 alt="Citoo France - Annuaire des écoles de kitesurf" 
+                className="h-10 w-auto object-contain"
+              />
+            </a>
+            <a 
+              href="https://cotedazurfrance.fr/offres/kite-surf-passion-hyeres-fr-3020793/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-white/90 rounded-lg p-3 hover:bg-white transition-colors grayscale hover:grayscale-0"
+              title="Côte d'Azur France - Office de Tourisme régional"
+            >
+              <img 
+                src={logoCotedazurfrance} 
+                alt="Côte d'Azur France - Fiche Kitesurf Passion" 
                 className="h-10 w-auto object-contain"
               />
             </a>
