@@ -328,6 +328,7 @@ const seoLocalPatterns: PatternRedirect[] = [
   { keyword: "cours+individuel+kitesurf+prix", target: "/cours-particulier-kitesurf-hyeres" },
   { keyword: "cours+particulier+de+kitesurf", target: "/cours-particulier-kitesurf-hyeres" },
   { keyword: "journee+decouverte+du+kitesurf", target: "/tarifs-cours-kitesurf-wingfoil-hyeres" },
+  { keyword: "journee+decouverte+en+paddle", target: "/tarifs-cours-kitesurf-wingfoil-hyeres" },
 ];
 
 /**
