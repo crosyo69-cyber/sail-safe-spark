@@ -166,6 +166,21 @@ export const exactRedirects: Record<string, string> = {
   "/activites-w0.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
   "/guide-local-w0.html": "/a-propos-ecole-kitesurf-hyeres",
 
+  // 14. URLs 404 GSC mars 2026 (batch 2)
+  "/activites-w2.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/guide-local-2.html": "/a-propos-ecole-kitesurf-hyeres",
+  "/nos-activites-activites.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/details-stages+et+cours+de+kitesurf+pour+les+familles+et+adolescents+a+hyeres+et+carqueiranne-168.html": "/cours-kitesurf-hyeres-debutant",
+  "/activites-apprendre+les+bases+du+kitesurf+quand+on+est+debutant+hyeres-17.html": "/cours-kitesurf-hyeres-debutant",
+  "/lien-locations+bateaux+hyeres+route+du+sud-43.html": "/a-propos-ecole-kitesurf-hyeres",
+  "/details-locations+bateaux+hyeres+route+du+sud-43.html": "/a-propos-ecole-kitesurf-hyeres",
+  "/details-chloe+susanj+professeur+de+yoga+et+de+fitness+vous+propose+des+cours+pour+votre+bien-etre-52.html": "/a-propos-ecole-kitesurf-hyeres",
+  "/details-gaspard+chr-155.html": "/a-propos-ecole-kitesurf-hyeres",
+  "/details-raids+en+kitesurf+a+porquerolles+dans+le+var-21.html": "/cours-kitesurf-hyeres-debutant",
+  "/activites-les+tarifs+de+cours+et+de+stage+ou+cours+particulier+de+kitesurf+hyeres+carqueiranne-12.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/activites-comment+demarrer+la+wingfoil-32.html": "/stage-wingfoil-hyeres-almanarre",
+  "/activites-apprendre+le+wing+foil+en+stage+ou+cours+d+initiation+toulon+proche+de+hyeres-25.html": "/stage-wingfoil-hyeres-almanarre",
+
   // 12. Redirections internes + anciennes URLs courtes crawlées par Google
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
   "/tarifs": "/tarifs-cours-kitesurf-wingfoil-hyeres",
