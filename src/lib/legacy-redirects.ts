@@ -168,7 +168,6 @@ export const exactRedirects: Record<string, string> = {
 
   // 14. URLs 404 GSC mars 2026 (batch 2)
   "/activites-w2.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
-  "/activites-kite-surf-w1.html": "/cours-kitesurf-hyeres-debutant",
   "/guide-local-2.html": "/a-propos-ecole-kitesurf-hyeres",
   "/nos-activites-activites.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
   "/details-stages+et+cours+de+kitesurf+pour+les+familles+et+adolescents+a+hyeres+et+carqueiranne-168.html": "/cours-kitesurf-hyeres-debutant",
