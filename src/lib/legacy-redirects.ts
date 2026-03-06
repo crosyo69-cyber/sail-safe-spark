@@ -244,8 +244,9 @@ const seoLocalPatterns: PatternRedirect[] = [
  * Returns the new path or null if no redirect matches.
  */
 export function resolveLegacyRedirect(pathname: string): string | null {
-  // Normalize: Google may crawl with spaces (%20) or + signs — unify to +
-  const normalized = pathname.replace(/ /g, "+");
+  // Normalize: Google may crawl with %20, spaces, or + signs — decode then unify to +
+  const decoded = decodeURIComponent(pathname);
+  const normalized = decoded.replace(/ /g, "+");
 
   // 1. Check exact matches first (try both original and normalized)
   if (exactRedirects[pathname]) {
