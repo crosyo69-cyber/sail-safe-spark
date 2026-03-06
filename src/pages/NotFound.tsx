@@ -5,13 +5,28 @@ import { Home, Search, Phone, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { supabase } from "@/integrations/supabase/client";
 
 const NotFound = () => {
   const location = useLocation();
 
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
-  }, [location.pathname]);
+
+    // Log 404 hit to database for monitoring
+    const log404 = async () => {
+      try {
+        await supabase.from("page_404_logs" as any).insert({
+          path: location.pathname + location.search,
+          referrer: document.referrer || null,
+          user_agent: navigator.userAgent || null,
+        });
+      } catch (e) {
+        // Silent fail — monitoring should never break UX
+      }
+    };
+    log404();
+  }, [location.pathname, location.search]);
 
   // Liste des pages populaires pour aider l'utilisateur
   const popularPages = [
