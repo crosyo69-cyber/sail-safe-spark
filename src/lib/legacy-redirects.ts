@@ -195,6 +195,7 @@ export const exactRedirects: Record<string, string> = {
   "/activites-ecole+de+kitesurf+pour+des+cours+debutant+et+perfectionnement-hyeres+carqueiranne-3.html": "/cours-kitesurf-hyeres-debutant",
   "/activites-coaching+pour+2+personnes+en+wing+foil-hyeres-27.html": "/stage-wingfoil-hyeres-almanarre",
   "/activites-coaching+pour+2+personnes+en+wing+foil+hyeres-27.html": "/stage-wingfoil-hyeres-almanarre",
+  "/activites-coaching+pour+2+personnes+en+wing+foil-27.html": "/stage-wingfoil-hyeres-almanarre",
   "/activites-ou+faire+du+kitesurf+dans+le+var-hyeres-18.html": "/spot-kitesurf-almanarre-hyeres-var",
   "/activites-comment+demarrer+la+wingfoil--32.html": "/stage-wingfoil-hyeres-almanarre",
   "/activites-comment+demarrer+la+wingfoil+-32.html": "/stage-wingfoil-hyeres-almanarre",
