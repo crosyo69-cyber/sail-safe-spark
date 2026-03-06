@@ -87,6 +87,11 @@ export const exactRedirects: Record<string, string> = {
   "/lien-salle+de+sports+hyeres+synergy+fit-170.html": "/a-propos-ecole-kitesurf-hyeres",
   "/lien-tilou+location+specialiste+de+la+location+d+appartements+et+chambre+d+hote+a+giens+hyeres+giens+tiloulocation-54.html": "/a-propos-ecole-kitesurf-hyeres",
   "/lien-simulateur+de+chute+libre+hyrese+air+vertical-44.html": "/a-propos-ecole-kitesurf-hyeres",
+  "/lien-location+de+villa+et+maison+hyeres+giens+s-lux-37.html": "/a-propos-ecole-kitesurf-hyeres",
+
+  // 13. URLs GSC mars 2026 - variantes avec espaces (normalisées en +)
+  "/details-les+spots+de+kitesurf+de+la+baie+de+l+almanarre+et+de+hyeres-23.html": "/spot-kitesurf-almanarre-hyeres-var",
+  "/details-le+stage+d+initiation+kitesurf+100+glisse+a+hyeres+dans+le+var+83-36.html": "/stage-kitesurf-100-glisse-hyeres",
 
   // 9. URLs 404 détectées dans GSC (février 2026)
   "/details-venez+apprendre+le+wing+foil+en+stage+et+cours+d+initiation+hyeres+l+almanarre-70.html": "/stage-wingfoil-hyeres-almanarre",
@@ -239,9 +244,15 @@ const seoLocalPatterns: PatternRedirect[] = [
  * Returns the new path or null if no redirect matches.
  */
 export function resolveLegacyRedirect(pathname: string): string | null {
-  // 1. Check exact matches first
+  // Normalize: Google may crawl with spaces (%20) or + signs — unify to +
+  const normalized = pathname.replace(/ /g, "+");
+
+  // 1. Check exact matches first (try both original and normalized)
   if (exactRedirects[pathname]) {
     return exactRedirects[pathname];
+  }
+  if (normalized !== pathname && exactRedirects[normalized]) {
+    return exactRedirects[normalized];
   }
 
   // 2. Check dossier_cite/* (old CMS images)
@@ -250,10 +261,9 @@ export function resolveLegacyRedirect(pathname: string): string | null {
   }
 
   // 3. Check SEO local patterns (keyword+city-zNN)
-  // Pattern: /keyword+city-zN where city is toulon, hyeres, or presqu+ile+de+giens
-  const zSuffixMatch = pathname.match(/-z\d+$/);
+  const zSuffixMatch = normalized.match(/-z\d+$/);
   if (zSuffixMatch) {
-    const pathWithoutSuffix = pathname.slice(0, zSuffixMatch.index);
+    const pathWithoutSuffix = normalized.slice(0, zSuffixMatch.index);
     for (const pattern of seoLocalPatterns) {
       if (pathWithoutSuffix.startsWith("/" + pattern.keyword)) {
         return pattern.target;
