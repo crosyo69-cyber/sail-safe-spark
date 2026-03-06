@@ -224,6 +224,8 @@ export const exactRedirects: Record<string, string> = {
   "/details-foot+en+salle+carnoux+le+temple+du+soccer-47.html": "/a-propos-ecole-kitesurf-hyeres",
   "/details-prendre+une+lecon+pour+apprendre+le+kitesurf+dans+une+ecole+a+hyeres+carqueiranne-49.html": "/cours-kitesurf-hyeres-debutant",
   "/details-le+kitesurf+un+sport+de+l+extreme+ou+un+sport+facile+a+apprendre+a+hyeres+carqueiranne-48.html": "/cours-kitesurf-hyeres-debutant",
+  "/details-yoga+fitness+hyeres+chloe+susanj-fit+n+yoga-67.html": "/a-propos-ecole-kitesurf-hyeres",
+  "/lien-communication+hyeres+ourson-42.html": "/a-propos-ecole-kitesurf-hyeres",
 
   // 12. Redirections internes + anciennes URLs courtes crawlées par Google
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
@@ -308,6 +310,9 @@ const seoLocalPatterns: PatternRedirect[] = [
   { keyword: "faire+un+stage+de+kitesurf+a+l+almanarre", target: "/stage-kitesurf-100-glisse-hyeres" },
   { keyword: "cours+pour+apprendre+le+kite+surf", target: "/cours-kitesurf-hyeres-debutant" },
   { keyword: "cours+de+kitesurf+en+groupe", target: "/cours-kitesurf-hyeres-debutant" },
+  { keyword: "ou+prendre+des+cours+de+strapless", target: "/cours-kitesurf-hyeres-debutant" },
+  { keyword: "prix+stage+d+initiation+kite+surf", target: "/tarifs-cours-kitesurf-wingfoil-hyeres" },
+  { keyword: "prix+d+un+stage+de+kite+surf", target: "/tarifs-cours-kitesurf-wingfoil-hyeres" },
   { keyword: "cours+individuel+kitesurf+prix", target: "/cours-particulier-kitesurf-hyeres" },
   { keyword: "cours+particulier+de+kitesurf", target: "/cours-particulier-kitesurf-hyeres" },
   { keyword: "journee+decouverte+du+kitesurf", target: "/tarifs-cours-kitesurf-wingfoil-hyeres" },
