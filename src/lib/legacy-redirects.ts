@@ -147,6 +147,7 @@ export const exactRedirects: Record<string, string> = {
   "/details-location+de+materiel+de+kitesurf+a+carqueiranne+materiel+recent+et+performant-200.html": "/location-materiel-kitesurf-hyeres",
   "/details-materiel+de+kitesurf+debutant+le+guide+complet+pour+bien+commencer-212.html": "/blog/guide-equipement-kitesurf-debutant",
   "/details-offrir+un+stage+100+glisse+kite+surf-127.html": "/stage-kitesurf-100-glisse-hyeres",
+  "/details-le+stage+100+glisse+kitesurf+a+l+almanarre-143.html": "/stage-kitesurf-100-glisse-hyeres",
   "/details-reservez+votre+cours+de+pumpfoil+a+hyeres-240.html": "/cours-pumpfoil-dock-start-hyeres",
   "/details-reservez+votre+location+de+materiel+de+kitesurf+a+carqueiranne-230.html": "/location-materiel-kitesurf-hyeres",
   "/details-rogression+en+kitesurf+combien+de+seances+pour+devenir+autonome-213.html": "/cours-kitesurf-hyeres-debutant",
