@@ -239,9 +239,15 @@ const seoLocalPatterns: PatternRedirect[] = [
  * Returns the new path or null if no redirect matches.
  */
 export function resolveLegacyRedirect(pathname: string): string | null {
-  // 1. Check exact matches first
+  // Normalize: Google may crawl with spaces (%20) or + signs — unify to +
+  const normalized = pathname.replace(/ /g, "+");
+
+  // 1. Check exact matches first (try both original and normalized)
   if (exactRedirects[pathname]) {
     return exactRedirects[pathname];
+  }
+  if (normalized !== pathname && exactRedirects[normalized]) {
+    return exactRedirects[normalized];
   }
 
   // 2. Check dossier_cite/* (old CMS images)
@@ -250,10 +256,9 @@ export function resolveLegacyRedirect(pathname: string): string | null {
   }
 
   // 3. Check SEO local patterns (keyword+city-zNN)
-  // Pattern: /keyword+city-zN where city is toulon, hyeres, or presqu+ile+de+giens
-  const zSuffixMatch = pathname.match(/-z\d+$/);
+  const zSuffixMatch = normalized.match(/-z\d+$/);
   if (zSuffixMatch) {
-    const pathWithoutSuffix = pathname.slice(0, zSuffixMatch.index);
+    const pathWithoutSuffix = normalized.slice(0, zSuffixMatch.index);
     for (const pattern of seoLocalPatterns) {
       if (pathWithoutSuffix.startsWith("/" + pattern.keyword)) {
         return pattern.target;
