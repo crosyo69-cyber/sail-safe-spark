@@ -228,6 +228,17 @@ export const exactRedirects: Record<string, string> = {
   "/details-yoga+fitness+hyeres+chloe+susanj-fit+n+yoga-67.html": "/a-propos-ecole-kitesurf-hyeres",
   "/lien-communication+hyeres+ourson-42.html": "/a-propos-ecole-kitesurf-hyeres",
 
+  // 16. URLs GSC mars 2026 - nouvelles captures
+  "/six-fours-les-plages-y4": "/",
+  "/activites-downwind-foil-w0.html": "/cours-pumpfoil-dock-start-hyeres",
+  "/details-la+m+t+o+du+vent+sur+hy+res+l+almanarre+pour+ne+pas+rater+vos+sessions+de+kitesurf-51.html": "/spot-kitesurf-almanarre-hyeres-var",
+  "/details-acheter+une+aile+de+kitesurf+d+occasion+avec+l+ecole+de+kitesurf+a+hyeres+carqueiranne-55.html": "/location-materiel-kitesurf-hyeres",
+  "/activites-acheter+une+aile+d+occasion+de+kitesurf+hyeres+carqueiranne-19.html": "/location-materiel-kitesurf-hyeres",
+  "/activites-acheter+une+aile+d+occasion+de+kitesurf+hyeres+carqueiranne-19.htm": "/location-materiel-kitesurf-hyeres",
+  "/details-speed+cart+hyeres+speed+cart-30.html": "/a-propos-ecole-kitesurf-hyeres",
+  "/activites-apprendre+le+wing+foil+en+stage+d+initiation-25.html": "/stage-wingfoil-hyeres-almanarre",
+  "/activites-apprendre+le+wing+foil+en+stage+d+initiation-toulon-25.html": "/stage-wingfoil-hyeres-almanarre",
+
   // 12. Redirections internes + anciennes URLs courtes crawlées par Google
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
   "/tarifs": "/tarifs-cours-kitesurf-wingfoil-hyeres",
