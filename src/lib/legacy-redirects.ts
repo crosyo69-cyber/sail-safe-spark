@@ -240,6 +240,10 @@ export const exactRedirects: Record<string, string> = {
   "/activites-apprendre+le+wing+foil+en+stage+d+initiation-25.html": "/stage-wingfoil-hyeres-almanarre",
   "/activites-apprendre+le+wing+foil+en+stage+d+initiation-toulon-25.html": "/stage-wingfoil-hyeres-almanarre",
 
+  // 17. Logs 404 mars 2026 - vague 2
+  "/details-cours+de+pump+foil+et+dock+start+a+hyeres+les+palmiers-192.html": "/cours-pumpfoil-dock-start-hyeres",
+  "/location-materiel": "/location-materiel-kitesurf-hyeres",
+
   // 12. Redirections internes + anciennes URLs courtes crawlées par Google
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
   "/tarifs": "/tarifs-cours-kitesurf-wingfoil-hyeres",
