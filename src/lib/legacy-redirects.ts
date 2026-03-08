@@ -242,6 +242,7 @@ export const exactRedirects: Record<string, string> = {
 
   // 17. Logs 404 mars 2026 - vague 2
   "/details-cours+de+pump+foil+et+dock+start+a+hyeres+les+palmiers-192.html": "/cours-pumpfoil-dock-start-hyeres",
+  "/details-stage+initiation+de+pump+foil+a+hyeres+les+palmiers+plage+l+almanarre-194.html": "/cours-pumpfoil-dock-start-hyeres",
   "/location-materiel": "/location-materiel-kitesurf-hyeres",
 
   // 12. Redirections internes + anciennes URLs courtes crawlées par Google
