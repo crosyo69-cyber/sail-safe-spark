@@ -8,6 +8,7 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chatbot`;
 
 const QUICK_QUESTIONS = [
   "Quels cours proposez-vous ?",
+  "Comment fonctionnent les cours à la carte ?",
   "Quels sont vos tarifs ?",
   "Comment réserver ?",
 ];
@@ -115,7 +116,7 @@ export function ChatBot() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary/50"
+          className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-ocean to-ocean-light text-primary-foreground shadow-lg transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ocean/50"
           aria-label="Ouvrir l'assistant"
         >
           <MessageCircle className="h-6 w-6" />
@@ -128,12 +129,12 @@ export function ChatBot() {
           style={{ height: "min(520px, calc(100vh - 6rem))" }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between bg-primary px-4 py-3 text-primary-foreground">
+          <div className="flex items-center justify-between bg-gradient-to-r from-ocean to-ocean-light px-4 py-3 text-primary-foreground">
             <div className="flex items-center gap-2">
               <MessageCircle className="h-5 w-5" />
               <div>
-                <p className="text-sm font-semibold">Kitesurf Passion</p>
-                <p className="text-xs opacity-80">Assistant en ligne</p>
+                <p className="text-sm font-semibold">🪁 Kitesurf Passion</p>
+                <p className="text-xs opacity-80">Votre assistant glisse</p>
               </div>
             </div>
             <button onClick={() => setOpen(false)} className="rounded-full p-1 hover:bg-white/20" aria-label="Fermer">
@@ -146,14 +147,14 @@ export function ChatBot() {
             {messages.length === 0 && (
               <div className="space-y-3">
                 <div className="rounded-xl bg-muted px-3 py-2 text-sm text-foreground max-w-[85%]">
-                  Bonjour ! 🪁 Comment puis-je vous aider ? Activités, tarifs, réservation... je suis là pour vous renseigner !
+                  Bienvenue chez Kitesurf Passion ! 🪁🌊 Cours, tarifs, sessions à la carte, réservation… posez-moi votre question, je suis là pour vous guider !
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {QUICK_QUESTIONS.map(q => (
                     <button
                       key={q}
                       onClick={() => sendMessage(q)}
-                      className="rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs text-primary hover:bg-primary/10 transition-colors"
+                      className="rounded-full border border-ocean/30 bg-ocean/5 px-3 py-1.5 text-xs text-ocean hover:bg-ocean/10 transition-colors"
                     >
                       {q}
                     </button>
@@ -167,7 +168,7 @@ export function ChatBot() {
                 <div
                   className={`max-w-[85%] rounded-xl px-3 py-2 text-sm whitespace-pre-wrap ${
                     msg.role === "user"
-                      ? "bg-primary text-primary-foreground"
+                      ? "bg-gradient-to-br from-ocean to-ocean-light text-primary-foreground"
                       : "bg-muted text-foreground"
                   }`}
                 >
@@ -194,7 +195,7 @@ export function ChatBot() {
               value={input}
               onChange={e => setInput(e.target.value)}
               placeholder="Posez votre question..."
-              className="flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+              className="flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ocean"
               disabled={isLoading}
             />
             <Button type="submit" size="icon" disabled={!input.trim() || isLoading} className="h-9 w-9 shrink-0">
