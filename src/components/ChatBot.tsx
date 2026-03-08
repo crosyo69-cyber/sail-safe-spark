@@ -1,6 +1,8 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
 
 type Message = { role: "user" | "assistant"; content: string };
 
