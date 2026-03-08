@@ -168,7 +168,7 @@ export function ChatBot() {
                 <div
                   className={`max-w-[85%] rounded-xl px-3 py-2 text-sm whitespace-pre-wrap ${
                     msg.role === "user"
-                      ? "bg-primary text-primary-foreground"
+                      ? "bg-gradient-to-br from-ocean to-ocean-light text-primary-foreground"
                       : "bg-muted text-foreground"
                   }`}
                 >
