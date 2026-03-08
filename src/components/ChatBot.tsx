@@ -167,15 +167,16 @@ export function ChatBot() {
 
             {messages.map((msg, i) => (
               <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div
-                  className={`max-w-[85%] rounded-xl px-3 py-2 text-sm whitespace-pre-wrap ${
-                    msg.role === "user"
-                      ? "bg-gradient-to-br from-ocean to-ocean-light text-primary-foreground"
-                      : "bg-muted text-foreground"
-                  }`}
-                >
-                  {msg.content}
-                </div>
+                {msg.role === "user" ? (
+                  <div className="max-w-[85%] rounded-xl px-3 py-2 text-sm whitespace-pre-wrap bg-gradient-to-br from-ocean to-ocean-light text-primary-foreground">
+                    {msg.content}
+                  </div>
+                ) : (
+                  <div
+                    className="max-w-[85%] rounded-xl px-3 py-2 text-sm bg-muted text-foreground prose prose-sm prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5 prose-headings:my-1 prose-a:text-ocean"
+                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(msg.content, { async: false }) as string) }}
+                  />
+                )}
               </div>
             ))}
 
