@@ -8,6 +8,7 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chatbot`;
 
 const QUICK_QUESTIONS = [
   "Quels cours proposez-vous ?",
+  "Comment fonctionnent les cours à la carte ?",
   "Quels sont vos tarifs ?",
   "Comment réserver ?",
 ];
