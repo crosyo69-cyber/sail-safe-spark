@@ -64,6 +64,7 @@ const App = () => {
         <Sonner />
         <PWAInstallBanner />
         <CookieConsent />
+        <ChatBot />
         <WebVitalsDashboard />
         <BrowserRouter>
           <PageTracker />
