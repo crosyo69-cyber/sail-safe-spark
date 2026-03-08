@@ -129,12 +129,12 @@ export function ChatBot() {
           style={{ height: "min(520px, calc(100vh - 6rem))" }}
         >
           {/* Header */}
-          <div className="flex items-center justify-between bg-primary px-4 py-3 text-primary-foreground">
+          <div className="flex items-center justify-between bg-gradient-to-r from-ocean to-ocean-light px-4 py-3 text-primary-foreground">
             <div className="flex items-center gap-2">
               <MessageCircle className="h-5 w-5" />
               <div>
-                <p className="text-sm font-semibold">Kitesurf Passion</p>
-                <p className="text-xs opacity-80">Assistant en ligne</p>
+                <p className="text-sm font-semibold">🪁 Kitesurf Passion</p>
+                <p className="text-xs opacity-80">Votre assistant glisse</p>
               </div>
             </div>
             <button onClick={() => setOpen(false)} className="rounded-full p-1 hover:bg-white/20" aria-label="Fermer">
