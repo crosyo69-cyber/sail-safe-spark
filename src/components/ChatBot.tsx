@@ -195,7 +195,7 @@ export function ChatBot() {
               value={input}
               onChange={e => setInput(e.target.value)}
               placeholder="Posez votre question..."
-              className="flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+              className="flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ocean"
               disabled={isLoading}
             />
             <Button type="submit" size="icon" disabled={!input.trim() || isLoading} className="h-9 w-9 shrink-0">
