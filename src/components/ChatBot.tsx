@@ -147,7 +147,7 @@ export function ChatBot() {
             {messages.length === 0 && (
               <div className="space-y-3">
                 <div className="rounded-xl bg-muted px-3 py-2 text-sm text-foreground max-w-[85%]">
-                  Bonjour ! 🪁 Comment puis-je vous aider ? Activités, tarifs, réservation... je suis là pour vous renseigner !
+                  Bienvenue chez Kitesurf Passion ! 🪁🌊 Cours, tarifs, sessions à la carte, réservation… posez-moi votre question, je suis là pour vous guider !
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {QUICK_QUESTIONS.map(q => (
