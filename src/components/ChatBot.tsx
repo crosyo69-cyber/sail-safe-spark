@@ -154,7 +154,7 @@ export function ChatBot() {
                     <button
                       key={q}
                       onClick={() => sendMessage(q)}
-                      className="rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs text-primary hover:bg-primary/10 transition-colors"
+                      className="rounded-full border border-ocean/30 bg-ocean/5 px-3 py-1.5 text-xs text-ocean hover:bg-ocean/10 transition-colors"
                     >
                       {q}
                     </button>
