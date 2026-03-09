@@ -82,8 +82,21 @@ const App = () => {
                <Route path="/deposes-mer-kitesurf-hyeres" element={<DeposesMer />} />
                <Route path="/foil-tracte-hyeres" element={<FoilTracte />} />
                <Route path="/wakeboard-hyeres" element={<Wakeboard />} />
-               {/* SEO-friendly redirections with noindex for Google Search Console */}
-               <Route path="/foil-tracte-wakeboard-hyeres" element={<SEORedirect to="/foil-tracte-hyeres" statusCode={301} />} />
+                {/* SEO-friendly redirections with noindex for Google Search Console */}
+                <Route path="/foil-tracte-wakeboard-hyeres" element={<SEORedirect to="/foil-tracte-hyeres" statusCode={301} />} />
+                {/* Short URL redirections to prevent Soft 404 in GSC */}
+                <Route path="/foil-tracte" element={<SEORedirect to="/foil-tracte-hyeres" statusCode={301} />} />
+                <Route path="/deposes-mer" element={<SEORedirect to="/deposes-mer-kitesurf-hyeres" statusCode={301} />} />
+                <Route path="/spot-almanarre" element={<SEORedirect to="/spot-kitesurf-almanarre-hyeres-var" statusCode={301} />} />
+                <Route path="/a-propos" element={<SEORedirect to="/a-propos-ecole-kitesurf-hyeres" statusCode={301} />} />
+                <Route path="/stage-wingfoil" element={<SEORedirect to="/stage-wingfoil-hyeres-almanarre" statusCode={301} />} />
+                <Route path="/cours-pumpfoil" element={<SEORedirect to="/cours-pumpfoil-dock-start-hyeres" statusCode={301} />} />
+                <Route path="/blog" element={<SEORedirect to="/blog-kitesurf-hyeres" statusCode={301} />} />
+                <Route path="/cours-kitesurf" element={<SEORedirect to="/cours-kitesurf-hyeres-debutant" statusCode={301} />} />
+                <Route path="/location-materiel" element={<SEORedirect to="/location-materiel-kitesurf-hyeres" statusCode={301} />} />
+                <Route path="/tarifs" element={<SEORedirect to="/tarifs-cours-kitesurf-wingfoil-hyeres" statusCode={301} />} />
+                <Route path="/contact" element={<SEORedirect to="/contact-reservation-kitesurf-hyeres" statusCode={301} />} />
+                <Route path="/wakeboard" element={<SEORedirect to="/wakeboard-hyeres" statusCode={301} />} />
                <Route path="/tarifs-cours-kitesurf-wingfoil-hyeres" element={<Tarifs />} />
                <Route path="/contact-reservation-kitesurf-hyeres" element={<Contact />} />
                <Route path="/a-propos-ecole-kitesurf-hyeres" element={<APropos />} />
