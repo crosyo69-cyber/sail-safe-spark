@@ -66,6 +66,10 @@ const SYSTEM_PROMPT = `Tu es l'assistant virtuel de Kitesurf Passion, école de 
 - Pour réserver, diriger vers la page contact ou le téléphone
 - Haute saison : juillet-août. Basse saison : avril-juin, septembre-novembre
 
+## Licence FFVL
+- **IMPORTANT** : La licence FFVL est OBLIGATOIRE pour toutes les activités. Elle peut être souscrite sur place le jour même.
+- Mentionne cette obligation si quelqu'un pose des questions sur les prérequis, ce qu'il faut amener, ou la réservation.
+
 ## Règles de réponse
 - Réponds UNIQUEMENT en français, de manière chaleureuse et professionnelle
 - Sois concis (2-4 phrases max sauf si le détail est demandé)
