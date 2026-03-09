@@ -61,6 +61,7 @@ Crawl-delay: 5
 # Bloquer les chemins inutiles
 Disallow: /api/
 Disallow: /*.json$
+Disallow: /llms.txt
 Disallow: /*?*
 Disallow: /404
 Disallow: /auth
