@@ -151,6 +151,9 @@ export function ChatBot() {
                 <div className="rounded-xl bg-muted px-3 py-2 text-sm text-foreground max-w-[85%]">
                   Bienvenue chez Kitesurf Passion ! 🪁🌊 Cours, tarifs, sessions à la carte, réservation… posez-moi votre question, je suis là pour vous guider !
                 </div>
+                <div className="rounded-xl border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive max-w-[85%] font-medium">
+                  ⚠️ La licence FFVL est obligatoire pour toutes nos activités. Elle peut être souscrite sur place.
+                </div>
                 <div className="flex flex-wrap gap-2">
                   {QUICK_QUESTIONS.map(q => (
                     <button
