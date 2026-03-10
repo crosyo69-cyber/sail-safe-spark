@@ -5,9 +5,11 @@ import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+
+const DepositPaymentSection = lazy(() => import("@/components/sections/DepositPaymentSection"));
 
 const breadcrumbItems = [
   { label: "Contact & Réservation" }
@@ -301,6 +303,11 @@ const Contact = () => {
             </div>
           </div>
         </section>
+
+        {/* Deposit Payment Section */}
+        <Suspense fallback={null}>
+          <DepositPaymentSection />
+        </Suspense>
 
         {/* Contact Section */}
         <section className="py-16 bg-background">
