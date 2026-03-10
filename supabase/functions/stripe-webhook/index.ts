@@ -1,5 +1,6 @@
 import Stripe from "https://esm.sh/stripe@14.21.0";
-import { sendLovableEmail } from 'npm:@lovable.dev/email-js';
+
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
 
@@ -10,8 +11,8 @@ const corsHeaders = {
 };
 
 const SITE_NAME = "KiteSurf Passion";
-const SENDER_DOMAIN = "notify.www.kitesurfpassion.fr";
-const FROM_DOMAIN = "notify.www.kitesurfpassion.fr";
+const SENDER_DOMAIN = "kitesurfpassion.fr";
+const FROM_DOMAIN = "kitesurfpassion.fr";
 const OWNER_EMAIL = "crosyo69@gmail.com";
 const LOGO_URL = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png';
 
@@ -110,14 +111,35 @@ function buildOwnerPaymentEmail(activityName: string, customerEmail: string, ses
 </html>`;
 }
 
+const FROM_ADDRESS = `${SITE_NAME} <noreply@${FROM_DOMAIN}>`;
+
+async function sendEmail(to: string, subject: string, html: string, replyTo?: string) {
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${RESEND_API_KEY}`,
+    },
+    body: JSON.stringify({
+      from: FROM_ADDRESS,
+      to: [to],
+      subject,
+      html,
+      ...(replyTo ? { reply_to: replyTo } : {}),
+    }),
+  });
+  const result = await res.json();
+  if (!res.ok) throw new Error(JSON.stringify(result));
+  return result;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
-  const apiKey = Deno.env.get('LOVABLE_API_KEY');
-  if (!apiKey) {
-    console.error('LOVABLE_API_KEY not configured');
+  if (!RESEND_API_KEY) {
+    console.error('RESEND_API_KEY not configured');
     return new Response(JSON.stringify({ error: 'Server configuration error' }), { status: 500 });
   }
 
@@ -158,17 +180,10 @@ Deno.serve(async (req) => {
       if (customerEmail) {
         // Send confirmation to customer
         try {
-          await sendLovableEmail(
-            {
-              to: customerEmail,
-              from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
-              sender_domain: SENDER_DOMAIN,
-              subject: `Confirmation de réservation – ${cleanActivityName}`,
-              html: buildCustomerPaymentEmail(cleanActivityName),
-              text: `Votre réservation est confirmée ! Acompte de 50€ reçu pour ${cleanActivityName}. Contactez-nous la veille au 06 72 71 69 05.`,
-              purpose: 'transactional',
-            },
-            { apiKey }
+          await sendEmail(
+            customerEmail,
+            `Confirmation de réservation – ${cleanActivityName}`,
+            buildCustomerPaymentEmail(cleanActivityName)
           );
           console.log("Customer confirmation email sent");
         } catch (error) {
@@ -177,18 +192,11 @@ Deno.serve(async (req) => {
 
         // Send notification to owner
         try {
-          await sendLovableEmail(
-            {
-              to: OWNER_EMAIL,
-              from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
-              sender_domain: SENDER_DOMAIN,
-              subject: `💰 Acompte reçu – ${cleanActivityName} (${customerEmail})`,
-              html: buildOwnerPaymentEmail(cleanActivityName, customerEmail, session.id),
-              text: `Nouvel acompte de 50€ reçu de ${customerEmail} pour ${cleanActivityName}. ID: ${session.id}`,
-              purpose: 'transactional',
-              reply_to: customerEmail,
-            },
-            { apiKey }
+          await sendEmail(
+            OWNER_EMAIL,
+            `💰 Acompte reçu – ${cleanActivityName} (${customerEmail})`,
+            buildOwnerPaymentEmail(cleanActivityName, customerEmail, session.id),
+            customerEmail
           );
           console.log("Owner notification email sent");
         } catch (error) {

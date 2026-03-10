@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { sendLovableEmail } from 'npm:@lovable.dev/email-js';
+
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -8,8 +9,8 @@ const corsHeaders = {
 };
 
 const SITE_NAME = "KiteSurf Passion";
-const SENDER_DOMAIN = "notify.www.kitesurfpassion.fr";
-const FROM_DOMAIN = "notify.www.kitesurfpassion.fr";
+const SENDER_DOMAIN = "kitesurfpassion.fr";
+const FROM_DOMAIN = "kitesurfpassion.fr";
 const OWNER_EMAIL = "crosyo69@gmail.com";
 const LOGO_URL = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png';
 
@@ -197,6 +198,28 @@ function buildOwnerEmailHtml(sanitized: NonNullable<ReturnType<typeof validateAn
 </html>`;
 }
 
+const FROM_ADDRESS = `${SITE_NAME} <noreply@${FROM_DOMAIN}>`;
+
+async function sendEmail(to: string, subject: string, html: string, replyTo?: string) {
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${RESEND_API_KEY}`,
+    },
+    body: JSON.stringify({
+      from: FROM_ADDRESS,
+      to: [to],
+      subject,
+      html,
+      ...(replyTo ? { reply_to: replyTo } : {}),
+    }),
+  });
+  const result = await res.json();
+  if (!res.ok) throw new Error(JSON.stringify(result));
+  return result;
+}
+
 const handler = async (req: Request): Promise<Response> => {
   console.log("Received contact form request");
 
@@ -204,9 +227,8 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  const apiKey = Deno.env.get('LOVABLE_API_KEY');
-  if (!apiKey) {
-    console.error('LOVABLE_API_KEY not configured');
+  if (!RESEND_API_KEY) {
+    console.error('RESEND_API_KEY not configured');
     return new Response(
       JSON.stringify({ error: 'Server configuration error' }),
       { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
@@ -229,49 +251,30 @@ const handler = async (req: Request): Promise<Response> => {
     const sanitized = validation.sanitized;
 
     // 1. Send confirmation email to customer
-    const customerHtml = buildCustomerEmailHtml(sanitized);
     console.log("Sending confirmation email to customer...");
     try {
-      await sendLovableEmail(
-        {
-          to: sanitized.email,
-          from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
-          sender_domain: SENDER_DOMAIN,
-          subject: "Confirmation de votre demande – KiteSurf Passion",
-          html: customerHtml,
-          text: `Bonjour ${sanitized.name}, nous avons bien reçu votre demande de réservation pour ${sanitized.activity}. Nous vous recontacterons sous 24h. Appelez-nous au 06 72 71 69 05 pour toute question urgente.`,
-          purpose: 'transactional',
-        },
-        { apiKey }
+      await sendEmail(
+        sanitized.email,
+        "Confirmation de votre demande – KiteSurf Passion",
+        buildCustomerEmailHtml(sanitized)
       );
       console.log("Customer confirmation email sent");
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to send customer email';
-      console.error('Customer email error:', message);
-      // Continue to send owner notification even if customer email fails
+      console.error('Customer email error:', error instanceof Error ? error.message : error);
     }
 
     // 2. Send notification email to owner
-    const ownerHtml = buildOwnerEmailHtml(sanitized);
     console.log("Sending notification email to owner...");
     try {
-      await sendLovableEmail(
-        {
-          to: OWNER_EMAIL,
-          from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
-          sender_domain: SENDER_DOMAIN,
-          subject: `Nouvelle réservation: ${sanitized.activity} – ${sanitized.name}`,
-          html: ownerHtml,
-          text: `Nouvelle demande de ${sanitized.name} (${sanitized.email}) pour ${sanitized.activity}`,
-          purpose: 'transactional',
-          reply_to: sanitized.email,
-        },
-        { apiKey }
+      await sendEmail(
+        OWNER_EMAIL,
+        `Nouvelle réservation: ${sanitized.activity} – ${sanitized.name}`,
+        buildOwnerEmailHtml(sanitized),
+        sanitized.email
       );
       console.log("Owner notification email sent");
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to send owner email';
-      console.error('Owner email error:', message);
+      console.error('Owner email error:', error instanceof Error ? error.message : error);
       throw new Error('Failed to send notification email');
     }
 
