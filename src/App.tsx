@@ -38,6 +38,7 @@ const Auth = lazy(() => import("./pages/Auth"));
 const UnsubscribeAlerts = lazy(() => import("./pages/UnsubscribeAlerts"));
 const MentionsLegales = lazy(() => import("./pages/MentionsLegales"));
 const PolitiqueConfidentialite = lazy(() => import("./pages/PolitiqueConfidentialite"));
+const ReservationConfirmee = lazy(() => import("./pages/ReservationConfirmee"));
 // NotFound is handled inside LegacyRedirectHandler
 
 const queryClient = new QueryClient({
