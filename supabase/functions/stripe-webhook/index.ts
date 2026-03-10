@@ -1,6 +1,6 @@
 import Stripe from "https://esm.sh/stripe@14.21.0";
+import { sendLovableEmail } from 'npm:@lovable.dev/email-js';
 
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
 
 const corsHeaders = {
@@ -8,6 +8,12 @@ const corsHeaders = {
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
+
+const SITE_NAME = "KiteSurf Passion";
+const SENDER_DOMAIN = "notify.www.kitesurfpassion.fr";
+const FROM_DOMAIN = "notify.www.kitesurfpassion.fr";
+const OWNER_EMAIL = "crosyo69@gmail.com";
+const LOGO_URL = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png';
 
 function escapeHtml(text: string): string {
   return String(text)
@@ -18,9 +24,101 @@ function escapeHtml(text: string): string {
     .replace(/'/g, "&#039;");
 }
 
+function buildCustomerPaymentEmail(activityName: string): string {
+  return `<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#ffffff;font-family:Montserrat,Inter,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;">
+    <tr><td style="background-color:#0F172A;padding:24px 25px;text-align:center;">
+      <img src="${LOGO_URL}" alt="KiteSurf Passion" width="180" style="display:block;margin:0 auto;" />
+    </td></tr>
+
+    <tr><td style="padding:32px 25px 0;">
+      <h1 style="font-size:22px;font-weight:bold;color:#0F172A;margin:0 0 16px;">Votre réservation est confirmée ! ✅</h1>
+      <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 20px;">
+        Nous avons bien reçu votre acompte de <strong>50€</strong> pour <strong>${escapeHtml(activityName)}</strong>.
+      </p>
+    </td></tr>
+
+    <tr><td style="padding:0 25px 24px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F1F5F9;border-radius:12px;overflow:hidden;">
+        <tr><td style="padding:16px;font-size:15px;font-weight:bold;color:#0F172A;border-bottom:1px solid #E2E8F0;">
+          📋 Récapitulatif
+        </td></tr>
+        <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Prestation</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${escapeHtml(activityName)}</td></tr>
+        <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Acompte versé</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">50€</td></tr>
+        <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Solde</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">À régler le jour J</td></tr>
+      </table>
+    </td></tr>
+
+    <tr><td style="padding:0 25px 24px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#FFFBEB;border-radius:12px;border-left:4px solid #F59E0B;overflow:hidden;">
+        <tr><td style="padding:16px;">
+          <p style="margin:0 0 8px;font-weight:bold;color:#92400E;font-size:14px;">📞 Important</p>
+          <p style="margin:0;color:#92400E;font-size:14px;line-height:1.5;">
+            Contactez-nous <strong>la veille de votre venue</strong> pour confirmer votre créneau horaire en fonction des conditions météo.
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+
+    <tr><td style="padding:0 25px 24px;text-align:center;">
+      <a href="tel:0672716905" style="display:inline-block;background-color:#F97316;color:#ffffff;font-size:15px;font-weight:bold;border-radius:12px;padding:14px 28px;text-decoration:none;">
+        📞 06 72 71 69 05
+      </a>
+    </td></tr>
+
+    <tr><td style="padding:0 25px 24px;">
+      <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0;">
+        À très bientôt sur l'eau ! 🪁<br><br>
+        <strong>L'équipe KiteSurf Passion</strong><br>
+        <span style="font-size:13px;color:#94a3b8;">Première école de kitesurf du Var depuis 1999</span>
+      </p>
+    </td></tr>
+
+    <tr><td style="background-color:#0F172A;padding:16px 25px;text-align:center;">
+      <p style="font-size:12px;color:#94a3b8;margin:0;">
+        📍 Spot de l'Almanarre, Hyères (Var) · Première école de kitesurf du Var depuis 1999
+      </p>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
+function buildOwnerPaymentEmail(activityName: string, customerEmail: string, sessionId: string): string {
+  return `<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background-color:#ffffff;font-family:Montserrat,Inter,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;">
+    <tr><td style="background-color:#0F172A;padding:24px 25px;text-align:center;">
+      <img src="${LOGO_URL}" alt="KiteSurf Passion" width="180" style="display:block;margin:0 auto;" />
+    </td></tr>
+    <tr><td style="padding:24px 25px;">
+      <h1 style="font-size:20px;font-weight:bold;color:#0F172A;margin:0 0 16px;">💰 Nouvel acompte reçu</h1>
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+        <tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Prestation</td><td style="padding:10px;border:1px solid #E2E8F0;color:#0F172A;">${escapeHtml(activityName)}</td></tr>
+        <tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Email client</td><td style="padding:10px;border:1px solid #E2E8F0;"><a href="mailto:${escapeHtml(customerEmail)}" style="color:#0891B2;">${escapeHtml(customerEmail)}</a></td></tr>
+        <tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Montant</td><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">50€</td></tr>
+        <tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">ID Stripe</td><td style="padding:10px;border:1px solid #E2E8F0;color:#64748B;font-size:12px;">${escapeHtml(sessionId)}</td></tr>
+      </table>
+      <p style="font-size:13px;color:#94a3b8;margin:20px 0 0;">Le client a été invité à vous contacter la veille pour confirmer son créneau.</p>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
+  }
+
+  const apiKey = Deno.env.get('LOVABLE_API_KEY');
+  if (!apiKey) {
+    console.error('LOVABLE_API_KEY not configured');
+    return new Response(JSON.stringify({ error: 'Server configuration error' }), { status: 500 });
   }
 
   try {
@@ -36,14 +134,9 @@ Deno.serve(async (req) => {
       return new Response("Missing signature", { status: 400 });
     }
 
-    // Verify webhook signature
     let event: Stripe.Event;
     try {
-      event = await stripe.webhooks.constructEventAsync(
-        body,
-        signature,
-        STRIPE_WEBHOOK_SECRET
-      );
+      event = await stripe.webhooks.constructEventAsync(body, signature, STRIPE_WEBHOOK_SECRET);
     } catch (err) {
       console.error("Webhook signature verification failed:", err.message);
       return new Response(`Webhook Error: ${err.message}`, { status: 400 });
@@ -53,148 +146,53 @@ Deno.serve(async (req) => {
 
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
-
       const customerEmail = session.customer_details?.email;
-      const activityName =
-        session.line_items?.data?.[0]?.description ||
-        session.metadata?.activity_name ||
-        "votre activité";
+      const activityName = session.line_items?.data?.[0]?.description || session.metadata?.activity_name || "votre activité";
 
-      // Retrieve line items to get product description
-      const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
-        limit: 1,
-      });
+      const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 1 });
       const description = lineItems.data?.[0]?.description || activityName;
-
-      // Extract the activity name from "Acompte – Cours Particulier Kitesurf"
       const cleanActivityName = description.replace(/^Acompte\s*[–-]\s*/, "");
 
       console.log(`Payment completed for: ${customerEmail}, activity: ${cleanActivityName}`);
 
       if (customerEmail) {
-        // Send confirmation email to customer
-        const emailHtml = `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <div style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); padding: 30px; text-align: center;">
-              <h1 style="color: white; margin: 0;">KiteSurf Passion</h1>
-              <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0;">Hyères - L'Almanarre</p>
-            </div>
-            
-            <div style="padding: 30px; background: #ffffff;">
-              <h2 style="color: #0284c7;">Votre réservation est confirmée !</h2>
-              
-              <p>Bonjour,</p>
-              
-              <p>Nous avons bien reçu votre acompte de <strong>50€</strong> pour <strong>${escapeHtml(cleanActivityName)}</strong>.</p>
-              
-              <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <h3 style="color: #0284c7; margin-top: 0;">Récapitulatif</h3>
-                <ul style="padding-left: 20px; line-height: 1.8;">
-                  <li><strong>Prestation :</strong> ${escapeHtml(cleanActivityName)}</li>
-                  <li><strong>Acompte versé :</strong> 50€</li>
-                  <li><strong>Solde :</strong> à régler le jour de votre cours</li>
-                </ul>
-              </div>
-
-              <div style="background: #fffbeb; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b;">
-                <p style="margin: 0; font-weight: bold; color: #92400e;">📞 Important</p>
-                <p style="margin: 10px 0 0 0; color: #92400e;">
-                  Contactez-nous <strong>la veille de votre venue</strong> pour confirmer votre créneau horaire en fonction des conditions météo.
-                </p>
-              </div>
-              
-              <p>
-                <strong>Téléphone :</strong> 
-                <a href="tel:0672716905" style="color: #0284c7; font-size: 18px; font-weight: bold;">06 72 71 69 05</a>
-              </p>
-              
-              <p style="margin-top: 30px;">À très bientôt sur l'eau ! 🪁</p>
-              
-              <p>
-                <strong>L'équipe KiteSurf Passion</strong><br>
-                <span style="color: #666;">Première école de kitesurf du Var depuis 1999</span>
-              </p>
-            </div>
-            
-            <div style="background: #1e3a5f; padding: 20px; text-align: center; color: white;">
-              <p style="margin: 0 0 10px 0;">📍 Spot de l'Almanarre, Hyères (Var)</p>
-              <p style="margin: 0;">
-                📞 <a href="tel:0672716905" style="color: #60a5fa;">06 72 71 69 05</a> | 
-                ✉️ <a href="mailto:crosyo69@gmail.com" style="color: #60a5fa;">crosyo69@gmail.com</a>
-              </p>
-              <p style="margin: 10px 0 0 0;">
-                <a href="https://www.kitesurfpassion.fr" style="color: #60a5fa;">www.kitesurfpassion.fr</a>
-              </p>
-            </div>
-          </div>
-        `;
-
-        // Send to customer
-        const customerRes = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${RESEND_API_KEY}`,
-          },
-          body: JSON.stringify({
-            from: "KiteSurf Passion <noreply@kitesurfpassion.fr>",
-            to: [customerEmail],
-            subject: `Confirmation de réservation – ${escapeHtml(cleanActivityName)}`,
-            html: emailHtml,
-          }),
-        });
-
-        const customerResult = await customerRes.json();
-        if (!customerRes.ok) {
-          console.error("Failed to send customer email:", customerResult);
-        } else {
-          console.log("Customer confirmation email sent successfully");
+        // Send confirmation to customer
+        try {
+          await sendLovableEmail(
+            {
+              to: customerEmail,
+              from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
+              sender_domain: SENDER_DOMAIN,
+              subject: `Confirmation de réservation – ${cleanActivityName}`,
+              html: buildCustomerPaymentEmail(cleanActivityName),
+              text: `Votre réservation est confirmée ! Acompte de 50€ reçu pour ${cleanActivityName}. Contactez-nous la veille au 06 72 71 69 05.`,
+              purpose: 'transactional',
+            },
+            { apiKey }
+          );
+          console.log("Customer confirmation email sent");
+        } catch (error) {
+          console.error("Customer email error:", error instanceof Error ? error.message : error);
         }
 
         // Send notification to owner
-        const ownerRes = await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${RESEND_API_KEY}`,
-          },
-          body: JSON.stringify({
-            from: "KiteSurf Passion <noreply@kitesurfpassion.fr>",
-            to: ["crosyo69@gmail.com"],
-            subject: `💰 Acompte reçu – ${escapeHtml(cleanActivityName)} (${customerEmail})`,
-            html: `
-              <h2>Nouvel acompte reçu !</h2>
-              <table style="border-collapse: collapse; width: 100%; max-width: 500px;">
-                <tr style="background: #f5f5f5;">
-                  <td style="padding: 10px; border: 1px solid #ddd;"><strong>Prestation</strong></td>
-                  <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(cleanActivityName)}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 10px; border: 1px solid #ddd;"><strong>Email client</strong></td>
-                  <td style="padding: 10px; border: 1px solid #ddd;"><a href="mailto:${escapeHtml(customerEmail)}">${escapeHtml(customerEmail)}</a></td>
-                </tr>
-                <tr style="background: #f5f5f5;">
-                  <td style="padding: 10px; border: 1px solid #ddd;"><strong>Montant</strong></td>
-                  <td style="padding: 10px; border: 1px solid #ddd;"><strong>50€</strong></td>
-                </tr>
-                <tr>
-                  <td style="padding: 10px; border: 1px solid #ddd;"><strong>ID Stripe</strong></td>
-                  <td style="padding: 10px; border: 1px solid #ddd;">${session.id}</td>
-                </tr>
-              </table>
-              <p style="margin-top: 15px; color: #666;">
-                Le client a été invité à vous contacter la veille pour confirmer son créneau.
-              </p>
-            `,
-            reply_to: customerEmail,
-          }),
-        });
-
-        const ownerResult = await ownerRes.json();
-        if (!ownerRes.ok) {
-          console.error("Failed to send owner notification:", ownerResult);
-        } else {
-          console.log("Owner notification email sent successfully");
+        try {
+          await sendLovableEmail(
+            {
+              to: OWNER_EMAIL,
+              from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
+              sender_domain: SENDER_DOMAIN,
+              subject: `💰 Acompte reçu – ${cleanActivityName} (${customerEmail})`,
+              html: buildOwnerPaymentEmail(cleanActivityName, customerEmail, session.id),
+              text: `Nouvel acompte de 50€ reçu de ${customerEmail} pour ${cleanActivityName}. ID: ${session.id}`,
+              purpose: 'transactional',
+              reply_to: customerEmail,
+            },
+            { apiKey }
+          );
+          console.log("Owner notification email sent");
+        } catch (error) {
+          console.error("Owner email error:", error instanceof Error ? error.message : error);
         }
       }
     }
