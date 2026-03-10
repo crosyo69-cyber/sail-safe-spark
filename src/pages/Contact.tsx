@@ -304,6 +304,11 @@ const Contact = () => {
           </div>
         </section>
 
+        {/* Deposit Payment Section */}
+        <Suspense fallback={null}>
+          <DepositPaymentSection />
+        </Suspense>
+
         {/* Contact Section */}
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
