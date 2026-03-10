@@ -1,5 +1,6 @@
 import Stripe from "https://esm.sh/stripe@14.21.0";
-import { sendLovableEmail } from 'npm:@lovable.dev/email-js';
+
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
 
