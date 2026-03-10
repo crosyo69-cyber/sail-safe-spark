@@ -9,8 +9,8 @@ const corsHeaders = {
 };
 
 const SITE_NAME = "KiteSurf Passion";
-const SENDER_DOMAIN = "notify.www.kitesurfpassion.fr";
-const FROM_DOMAIN = "notify.www.kitesurfpassion.fr";
+const SENDER_DOMAIN = "kitesurfpassion.fr";
+const FROM_DOMAIN = "kitesurfpassion.fr";
 const OWNER_EMAIL = "crosyo69@gmail.com";
 const LOGO_URL = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png';
 
