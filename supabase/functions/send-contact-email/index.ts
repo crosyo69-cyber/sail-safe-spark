@@ -1,12 +1,17 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+import { sendLovableEmail } from 'npm:@lovable.dev/email-js';
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
+
+const SITE_NAME = "KiteSurf Passion";
+const SENDER_DOMAIN = "notify.www.kitesurfpassion.fr";
+const FROM_DOMAIN = "notify.www.kitesurfpassion.fr";
+const OWNER_EMAIL = "crosyo69@gmail.com";
+const LOGO_URL = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png';
 
 interface ContactFormRequest {
   name: string;
@@ -21,7 +26,6 @@ interface ContactFormRequest {
   formTimestamp?: number;
 }
 
-// HTML entity encoding to prevent XSS in email content
 function escapeHtml(text: string | undefined): string {
   if (!text) return '';
   return String(text)
@@ -32,7 +36,6 @@ function escapeHtml(text: string | undefined): string {
     .replace(/'/g, '&#039;');
 }
 
-// Input validation and sanitization
 function validateAndSanitizeInput(data: ContactFormRequest): {
   isValid: boolean;
   error?: string;
@@ -47,49 +50,41 @@ function validateAndSanitizeInput(data: ContactFormRequest): {
     message?: string;
   };
 } {
-  // Check honeypot - if filled, it's a bot
   if (data.honeypot) {
     console.log("Bot detected via honeypot");
     return { isValid: false, error: "Invalid submission" };
   }
 
-  // Check form timestamp - form should take at least 3 seconds to fill
   if (data.formTimestamp && Date.now() - data.formTimestamp < 3000) {
     console.log("Form submitted too quickly, likely a bot");
     return { isValid: false, error: "Veuillez remplir le formulaire correctement" };
   }
 
-  // Validate required fields
   if (!data.name || !data.email || !data.activity) {
     return { isValid: false, error: "Nom, email et activité sont requis" };
   }
 
-  // Validate and sanitize name
   const name = String(data.name).trim();
   if (name.length < 2 || name.length > 100) {
     return { isValid: false, error: "Le nom doit contenir entre 2 et 100 caractères" };
   }
 
-  // Validate email format
   const email = String(data.email).trim().toLowerCase();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email) || email.length > 255) {
     return { isValid: false, error: "Adresse email invalide" };
   }
 
-  // Validate phone if provided
   const phone = data.phone ? String(data.phone).trim().slice(0, 20) : undefined;
   if (phone && !/^[\d\s\+\-\(\)\.]+$/.test(phone)) {
     return { isValid: false, error: "Numéro de téléphone invalide" };
   }
 
-  // Validate activity
   const activity = String(data.activity).trim().slice(0, 100);
   if (activity.length < 1) {
     return { isValid: false, error: "Activité requise" };
   }
 
-  // Sanitize optional fields
   const startDate = data.startDate ? String(data.startDate).trim().slice(0, 100) : undefined;
   const endDate = data.endDate ? String(data.endDate).trim().slice(0, 100) : undefined;
   const participants = data.participants ? String(data.participants).trim().slice(0, 20) : undefined;
@@ -97,213 +92,198 @@ function validateAndSanitizeInput(data: ContactFormRequest): {
 
   return {
     isValid: true,
-    sanitized: {
-      name,
-      email,
-      phone,
-      activity,
-      startDate,
-      endDate,
-      participants,
-      message,
-    },
+    sanitized: { name, email, phone, activity, startDate, endDate, participants, message },
   };
+}
+
+function buildCustomerEmailHtml(sanitized: NonNullable<ReturnType<typeof validateAndSanitizeInput>['sanitized']>): string {
+  const detailRows = [
+    `<tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Activité</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${escapeHtml(sanitized.activity)}</td></tr>`,
+    sanitized.startDate ? `<tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Date souhaitée</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${escapeHtml(sanitized.startDate)}</td></tr>` : '',
+    sanitized.endDate ? `<tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Date de fin</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${escapeHtml(sanitized.endDate)}</td></tr>` : '',
+    sanitized.participants ? `<tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Participants</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${escapeHtml(sanitized.participants)}</td></tr>` : '',
+  ].filter(Boolean).join('');
+
+  return `<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#ffffff;font-family:Montserrat,Inter,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;">
+    <!-- Header -->
+    <tr><td style="background-color:#0F172A;padding:24px 25px;text-align:center;">
+      <img src="${LOGO_URL}" alt="KiteSurf Passion" width="180" style="display:block;margin:0 auto;" />
+    </td></tr>
+    
+    <!-- Body -->
+    <tr><td style="padding:32px 25px 0;">
+      <h1 style="font-size:22px;font-weight:bold;color:#0F172A;margin:0 0 16px;">Demande bien reçue !</h1>
+      <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 20px;">
+        Bonjour ${escapeHtml(sanitized.name)},<br><br>
+        Nous avons bien reçu votre demande de réservation. Notre équipe vous recontactera <strong>sous 24 heures</strong> pour confirmer votre créneau.
+      </p>
+    </td></tr>
+
+    <!-- Recap card -->
+    <tr><td style="padding:0 25px 24px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F1F5F9;border-radius:12px;overflow:hidden;">
+        <tr><td style="padding:16px;font-size:15px;font-weight:bold;color:#0F172A;border-bottom:1px solid #E2E8F0;">
+          📋 Récapitulatif de votre demande
+        </td></tr>
+        ${detailRows}
+        ${sanitized.message ? `<tr><td colspan="2" style="padding:10px 16px;color:#64748B;font-size:14px;border-top:1px solid #E2E8F0;">
+          <strong>Message :</strong><br>${escapeHtml(sanitized.message)}
+        </td></tr>` : ''}
+      </table>
+    </td></tr>
+
+    <!-- CTA -->
+    <tr><td style="padding:0 25px 24px;text-align:center;">
+      <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 16px;">
+        Pour toute question urgente, appelez-nous directement :
+      </p>
+      <a href="tel:0672716905" style="display:inline-block;background-color:#F97316;color:#ffffff;font-size:15px;font-weight:bold;border-radius:12px;padding:14px 28px;text-decoration:none;">
+        📞 06 72 71 69 05
+      </a>
+    </td></tr>
+
+    <!-- Sign-off -->
+    <tr><td style="padding:0 25px 24px;">
+      <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0;">
+        À très bientôt sur l'eau ! 🪁<br><br>
+        <strong>L'équipe KiteSurf Passion</strong><br>
+        <span style="font-size:13px;color:#94a3b8;">Première école de kitesurf du Var depuis 1999</span>
+      </p>
+    </td></tr>
+
+    <!-- Footer -->
+    <tr><td style="background-color:#0F172A;padding:16px 25px;text-align:center;">
+      <p style="font-size:12px;color:#94a3b8;margin:0;">
+        📍 Spot de l'Almanarre, Hyères (Var) · Première école de kitesurf du Var depuis 1999
+      </p>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
+function buildOwnerEmailHtml(sanitized: NonNullable<ReturnType<typeof validateAndSanitizeInput>['sanitized']>): string {
+  const rows = [
+    `<tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Nom</td><td style="padding:10px;border:1px solid #E2E8F0;color:#0F172A;">${escapeHtml(sanitized.name)}</td></tr>`,
+    `<tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Email</td><td style="padding:10px;border:1px solid #E2E8F0;"><a href="mailto:${escapeHtml(sanitized.email)}" style="color:#0891B2;">${escapeHtml(sanitized.email)}</a></td></tr>`,
+    sanitized.phone ? `<tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Téléphone</td><td style="padding:10px;border:1px solid #E2E8F0;"><a href="tel:${escapeHtml(sanitized.phone)}" style="color:#0891B2;">${escapeHtml(sanitized.phone)}</a></td></tr>` : '',
+    `<tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Activité</td><td style="padding:10px;border:1px solid #E2E8F0;color:#0F172A;">${escapeHtml(sanitized.activity)}</td></tr>`,
+    sanitized.startDate ? `<tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Date début</td><td style="padding:10px;border:1px solid #E2E8F0;color:#0F172A;">${escapeHtml(sanitized.startDate)}</td></tr>` : '',
+    sanitized.endDate ? `<tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Date fin</td><td style="padding:10px;border:1px solid #E2E8F0;color:#0F172A;">${escapeHtml(sanitized.endDate)}</td></tr>` : '',
+    sanitized.participants ? `<tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Participants</td><td style="padding:10px;border:1px solid #E2E8F0;color:#0F172A;">${escapeHtml(sanitized.participants)}</td></tr>` : '',
+    sanitized.message ? `<tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Message</td><td style="padding:10px;border:1px solid #E2E8F0;color:#0F172A;">${escapeHtml(sanitized.message)}</td></tr>` : '',
+  ].filter(Boolean).join('');
+
+  return `<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background-color:#ffffff;font-family:Montserrat,Inter,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;">
+    <tr><td style="background-color:#0F172A;padding:24px 25px;text-align:center;">
+      <img src="${LOGO_URL}" alt="KiteSurf Passion" width="180" style="display:block;margin:0 auto;" />
+    </td></tr>
+    <tr><td style="padding:24px 25px;">
+      <h1 style="font-size:20px;font-weight:bold;color:#0F172A;margin:0 0 16px;">🆕 Nouvelle demande de réservation</h1>
+      <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+        ${rows}
+      </table>
+      <p style="font-size:12px;color:#94a3b8;margin:24px 0 0;">Envoyé depuis le formulaire de contact · kitesurfpassion.fr</p>
+    </td></tr>
+  </table>
+</body>
+</html>`;
 }
 
 const handler = async (req: Request): Promise<Response> => {
   console.log("Received contact form request");
 
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
+  const apiKey = Deno.env.get('LOVABLE_API_KEY');
+  if (!apiKey) {
+    console.error('LOVABLE_API_KEY not configured');
+    return new Response(
+      JSON.stringify({ error: 'Server configuration error' }),
+      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+    );
+  }
+
   try {
     const data: ContactFormRequest = await req.json();
-    console.log("Form data received (sanitized log)");
+    console.log("Form data received");
 
-    // Validate and sanitize input
     const validation = validateAndSanitizeInput(data);
     if (!validation.isValid || !validation.sanitized) {
       console.error("Validation failed:", validation.error);
       return new Response(
         JSON.stringify({ error: validation.error }),
-        {
-          status: 400,
-          headers: { "Content-Type": "application/json", ...corsHeaders },
-        }
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
 
     const sanitized = validation.sanitized;
 
-    // Email to the business owner - all user data is HTML-escaped
-    const ownerEmailHtml = `
-      <h2>Nouvelle demande de réservation</h2>
-      <table style="border-collapse: collapse; width: 100%; max-width: 600px;">
-        <tr style="background-color: #f5f5f5;">
-          <td style="padding: 10px; border: 1px solid #ddd;"><strong>Nom</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(sanitized.name)}</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px; border: 1px solid #ddd;"><strong>Email</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;"><a href="mailto:${escapeHtml(sanitized.email)}">${escapeHtml(sanitized.email)}</a></td>
-        </tr>
-        ${sanitized.phone ? `
-        <tr style="background-color: #f5f5f5;">
-          <td style="padding: 10px; border: 1px solid #ddd;"><strong>Téléphone</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;"><a href="tel:${escapeHtml(sanitized.phone)}">${escapeHtml(sanitized.phone)}</a></td>
-        </tr>
-        ` : ''}
-        <tr>
-          <td style="padding: 10px; border: 1px solid #ddd;"><strong>Activité</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(sanitized.activity)}</td>
-        </tr>
-        ${sanitized.startDate ? `
-        <tr style="background-color: #f5f5f5;">
-          <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date de début</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(sanitized.startDate)}</td>
-        </tr>
-        ` : ''}
-        ${sanitized.endDate ? `
-        <tr>
-          <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date de fin</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(sanitized.endDate)}</td>
-        </tr>
-        ` : ''}
-        ${sanitized.participants ? `
-        <tr style="background-color: #f5f5f5;">
-          <td style="padding: 10px; border: 1px solid #ddd;"><strong>Nombre de participants</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(sanitized.participants)}</td>
-        </tr>
-        ` : ''}
-        ${sanitized.message ? `
-        <tr>
-          <td style="padding: 10px; border: 1px solid #ddd;"><strong>Message</strong></td>
-          <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(sanitized.message)}</td>
-        </tr>
-        ` : ''}
-      </table>
-      <p style="margin-top: 20px; color: #666;">
-        Envoyé depuis le formulaire de contact du site KiteSurf Passion
-      </p>
-    `;
-
-    // Email confirmation to the customer - all user data is HTML-escaped
-    const customerEmailHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <div style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); padding: 30px; text-align: center;">
-          <h1 style="color: white; margin: 0;">KiteSurf Passion</h1>
-          <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0;">Hyères - L'Almanarre</p>
-        </div>
-        
-        <div style="padding: 30px; background: #ffffff;">
-          <h2 style="color: #0284c7;">Bonjour ${escapeHtml(sanitized.name)},</h2>
-          
-          <p>Nous avons bien reçu votre demande de réservation pour <strong>${escapeHtml(sanitized.activity)}</strong>.</p>
-          
-          <p>Notre équipe vous contactera dans les plus brefs délais pour confirmer votre réservation.</p>
-          
-          <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #0284c7; margin-top: 0;">Récapitulatif de votre demande</h3>
-            <ul style="padding-left: 20px;">
-              <li><strong>Activité :</strong> ${escapeHtml(sanitized.activity)}</li>
-              ${sanitized.startDate ? `<li><strong>Date de début :</strong> ${escapeHtml(sanitized.startDate)}</li>` : ''}
-              ${sanitized.endDate ? `<li><strong>Date de fin :</strong> ${escapeHtml(sanitized.endDate)}</li>` : ''}
-              ${sanitized.participants ? `<li><strong>Participants :</strong> ${escapeHtml(sanitized.participants)}</li>` : ''}
-            </ul>
-          </div>
-          
-          <p>Pour toute question urgente, n'hésitez pas à nous appeler au <a href="tel:0672716905" style="color: #0284c7;">06 72 71 69 05</a>.</p>
-          
-          <p>À très bientôt sur l'eau !</p>
-          
-          <p style="margin-top: 30px;">
-            <strong>L'équipe KiteSurf Passion</strong><br>
-            <span style="color: #666;">Première école de kitesurf du Var depuis 1999</span>
-          </p>
-        </div>
-        
-        <div style="background: #1e3a5f; padding: 20px; text-align: center; color: white;">
-          <p style="margin: 0 0 10px 0;">
-            📍 52 Avenue Général de Gaulle, 83320 Carqueiranne
-          </p>
-          <p style="margin: 0;">
-            📞 <a href="tel:0672716905" style="color: #60a5fa;">06 72 71 69 05</a> | 
-            ✉️ <a href="mailto:crosyo69@gmail.com" style="color: #60a5fa;">crosyo69@gmail.com</a>
-          </p>
-        </div>
-      </div>
-    `;
-
-    console.log("Sending email to owner...");
-    
-    // Send email to business owner using Resend API directly
-    const ownerEmailResponse = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${RESEND_API_KEY}`,
-      },
-      body: JSON.stringify({
-        from: "KiteSurf Passion <noreply@kitesurfpassion.fr>",
-        to: ["crosyo69@gmail.com"],
-        subject: `Nouvelle réservation: ${escapeHtml(sanitized.activity)} - ${escapeHtml(sanitized.name)}`,
-        html: ownerEmailHtml,
-        reply_to: sanitized.email,
-      }),
-    });
-
-    const ownerResult = await ownerEmailResponse.json();
-    console.log("Owner email sent successfully");
-
-    if (!ownerEmailResponse.ok) {
-      throw new Error(ownerResult.message || "Failed to send owner email");
+    // 1. Send confirmation email to customer
+    const customerHtml = buildCustomerEmailHtml(sanitized);
+    console.log("Sending confirmation email to customer...");
+    try {
+      await sendLovableEmail(
+        {
+          to: sanitized.email,
+          from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
+          sender_domain: SENDER_DOMAIN,
+          subject: "Confirmation de votre demande – KiteSurf Passion",
+          html: customerHtml,
+          text: `Bonjour ${sanitized.name}, nous avons bien reçu votre demande de réservation pour ${sanitized.activity}. Nous vous recontacterons sous 24h. Appelez-nous au 06 72 71 69 05 pour toute question urgente.`,
+          purpose: 'transactional',
+        },
+        { apiKey }
+      );
+      console.log("Customer confirmation email sent");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to send customer email';
+      console.error('Customer email error:', message);
+      // Continue to send owner notification even if customer email fails
     }
 
-    console.log("Sending confirmation email to customer...");
-    
-    // Send confirmation email to customer
-    const customerEmailResponse = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${RESEND_API_KEY}`,
-      },
-      body: JSON.stringify({
-        from: "KiteSurf Passion <noreply@kitesurfpassion.fr>",
-        to: [sanitized.email],
-        subject: "Confirmation de votre demande - KiteSurf Passion",
-        html: customerEmailHtml,
-      }),
-    });
-
-    const customerResult = await customerEmailResponse.json();
-    console.log("Customer email sent successfully");
-
-    if (!customerEmailResponse.ok) {
-      console.error("Failed to send customer email:", customerResult);
-      // Don't throw error here, owner email was already sent
+    // 2. Send notification email to owner
+    const ownerHtml = buildOwnerEmailHtml(sanitized);
+    console.log("Sending notification email to owner...");
+    try {
+      await sendLovableEmail(
+        {
+          to: OWNER_EMAIL,
+          from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
+          sender_domain: SENDER_DOMAIN,
+          subject: `Nouvelle réservation: ${sanitized.activity} – ${sanitized.name}`,
+          html: ownerHtml,
+          text: `Nouvelle demande de ${sanitized.name} (${sanitized.email}) pour ${sanitized.activity}`,
+          purpose: 'transactional',
+          reply_to: sanitized.email,
+        },
+        { apiKey }
+      );
+      console.log("Owner notification email sent");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to send owner email';
+      console.error('Owner email error:', message);
+      throw new Error('Failed to send notification email');
     }
 
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        message: "Emails envoyés avec succès" 
-      }),
-      {
-        status: 200,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      }
+      JSON.stringify({ success: true, message: "Emails envoyés avec succès" }),
+      { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
   } catch (error: any) {
     console.error("Error in send-contact-email function:", error);
     return new Response(
       JSON.stringify({ error: "Une erreur est survenue. Veuillez réessayer." }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      }
+      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
   }
 };
