@@ -103,6 +103,122 @@ export type Database = {
         }
         Relationships: []
       }
+      reservations: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          notes: string | null
+          participants: number
+          phone: string
+          session_id: string
+          skill_level: Database["public"]["Enums"]["skill_level"]
+          status: Database["public"]["Enums"]["reservation_status"]
+          stripe_session_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          last_name: string
+          notes?: string | null
+          participants?: number
+          phone: string
+          session_id: string
+          skill_level?: Database["public"]["Enums"]["skill_level"]
+          status?: Database["public"]["Enums"]["reservation_status"]
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          notes?: string | null
+          participants?: number
+          phone?: string
+          session_id?: string
+          skill_level?: Database["public"]["Enums"]["skill_level"]
+          status?: Database["public"]["Enums"]["reservation_status"]
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sessions: {
+        Row: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          created_at: string
+          date: string
+          id: string
+          max_participants: number
+          notes: string | null
+          status: string
+          time_slot: Database["public"]["Enums"]["time_slot"]
+          updated_at: string
+          weather_condition: string | null
+        }
+        Insert: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          created_at?: string
+          date: string
+          id?: string
+          max_participants?: number
+          notes?: string | null
+          status?: string
+          time_slot: Database["public"]["Enums"]["time_slot"]
+          updated_at?: string
+          weather_condition?: string | null
+        }
+        Update: {
+          activity?: Database["public"]["Enums"]["activity_type"]
+          created_at?: string
+          date?: string
+          id?: string
+          max_participants?: number
+          notes?: string | null
+          status?: string
+          time_slot?: Database["public"]["Enums"]["time_slot"]
+          updated_at?: string
+          weather_condition?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       weather_alert_subscriptions: {
         Row: {
           created_at: string
@@ -145,10 +261,21 @@ export type Database = {
         Args: { p_token: string }
         Returns: boolean
       }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       unsubscribe_weather_alert: { Args: { p_token: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      activity_type: "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte"
+      app_role: "admin" | "moderator" | "user"
+      reservation_status: "pending" | "confirmed" | "cancelled"
+      skill_level: "debutant" | "intermediaire" | "confirme"
+      time_slot: "morning" | "early_afternoon" | "late_afternoon"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -275,6 +402,12 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      activity_type: ["kitesurf", "wingfoil", "pumpfoil", "foil_tracte"],
+      app_role: ["admin", "moderator", "user"],
+      reservation_status: ["pending", "confirmed", "cancelled"],
+      skill_level: ["debutant", "intermediaire", "confirme"],
+      time_slot: ["morning", "early_afternoon", "late_afternoon"],
+    },
   },
 } as const
