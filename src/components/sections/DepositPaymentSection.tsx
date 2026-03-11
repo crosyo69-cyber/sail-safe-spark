@@ -50,11 +50,7 @@ const DepositPaymentSection = () => {
 
       if (error) throw error;
       if (data?.url) {
-        const newWindow = window.open(data.url, "_blank");
-        if (!newWindow || newWindow.closed) {
-          // Popup blocked — redirect in same tab
-          window.location.href = data.url;
-        }
+        window.location.href = data.url;
       } else {
         throw new Error("Aucune URL de paiement reçue");
       }
