@@ -43,6 +43,8 @@ const DepositPaymentSection = () => {
 
   const handleCheckout = async (activityName: string, activityId: string) => {
     setLoadingId(activityId);
+    // Open window immediately on user click so the browser allows it
+    const stripeWindow = window.open("about:blank", "_blank");
     try {
       const { data, error } = await supabase.functions.invoke("create-checkout", {
         body: { activityName },
@@ -50,8 +52,14 @@ const DepositPaymentSection = () => {
 
       if (error) throw error;
       if (data?.url) {
-        window.location.href = data.url;
+        if (stripeWindow && !stripeWindow.closed) {
+          stripeWindow.location.href = data.url;
+        } else {
+          // Fallback if window was closed or blocked
+          window.location.href = data.url;
+        }
       } else {
+        stripeWindow?.close();
         throw new Error("Aucune URL de paiement reçue");
       }
     } catch (err: any) {
