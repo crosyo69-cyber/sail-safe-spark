@@ -618,7 +618,7 @@ const Index = () => {
                   "name": "Pumpfoil & Dock Start",
                   "description": "Cours de pumpfoil avec technique dock start à Hyères",
                   "url": "https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres",
-                  "image": "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg"
+                  "image": "https://www.kitesurfpassion.fr/images/pumpfoil-hyeres.jpg"
                 },
                 {
                   "@type": "WebPage",
