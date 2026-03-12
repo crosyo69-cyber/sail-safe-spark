@@ -98,9 +98,9 @@ const Index = () => {
     paymentAccepted: "Cash, Credit Card, Bank Transfer",
     image: [
       "https://www.kitesurfpassion.fr/og-image.jpg",
-      "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
-      "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
-      "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg"
+      "https://www.kitesurfpassion.fr/images/kitesurf-hyeres.jpg",
+      "https://www.kitesurfpassion.fr/images/wingfoil-hyeres.jpg",
+      "https://www.kitesurfpassion.fr/images/pumpfoil-hyeres.jpg"
     ],
     photo: {
       "@type": "ImageObject",
