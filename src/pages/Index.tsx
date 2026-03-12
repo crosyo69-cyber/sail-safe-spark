@@ -411,8 +411,8 @@ const Index = () => {
         "@type": "ImageObject",
         name: "Cours kitesurf Hyères Almanarre",
         description: "Session de kitesurf sur le spot de l'Almanarre à Hyères avec l'école KiteSurf Passion",
-        contentUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
-        thumbnailUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+        contentUrl: "https://www.kitesurfpassion.fr/images/kitesurf-hyeres.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.fr/images/kitesurf-hyeres.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
         creator: {
