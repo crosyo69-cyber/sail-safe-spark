@@ -239,7 +239,7 @@ export default function CoursPumpfoil() {
           "@type": "HowTo",
           "name": "Comment apprendre le pumpfoil avec la technique dock start",
           "description": "Guide pour maîtriser le pumpfoil en partant d'un ponton. Apprenez à voler sur l'eau sans vent ni vagues à Hyères.",
-          "image": "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres-cours.jpg",
+          "image": "https://www.kitesurfpassion.fr/images/pumpfoil-hyeres-cours.jpg",
           "totalTime": "PT1H30M",
           "estimatedCost": {
             "@type": "MonetaryAmount",

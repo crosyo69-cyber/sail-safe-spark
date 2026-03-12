@@ -228,7 +228,7 @@ const StageWingfoil = () => {
           "@type": "HowTo",
           "name": "Comment apprendre le wingfoil à Hyères en 5 jours",
           "description": "Guide complet pour apprendre le wingfoil à l'Almanarre. De la découverte de l'aile aux premiers vols sur le foil.",
-          "image": "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+          "image": "https://www.kitesurfpassion.fr/images/wingfoil-hyeres.jpg",
           "totalTime": "PT12H30M",
           "estimatedCost": {
             "@type": "MonetaryAmount",
