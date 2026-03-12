@@ -240,6 +240,12 @@ export const exactRedirects: Record<string, string> = {
   "/activites-apprendre+le+wing+foil+en+stage+d+initiation-25.html": "/stage-wingfoil-hyeres-almanarre",
   "/activites-apprendre+le+wing+foil+en+stage+d+initiation-toulon-25.html": "/stage-wingfoil-hyeres-almanarre",
 
+  // 18. URLs 404 GSC mars 2026 - batch .com
+  "/details-spot+de+kitesurf+de+la+baie+de+l+almanarre+le+joyau+de+hyeres-205.html": "/spot-kitesurf-almanarre-hyeres-var",
+  "/details-faut+l+une+experience+prealable+pour+apprendre+le+kitesurf+a+hyeres-177.html": "/cours-kitesurf-hyeres-debutant",
+  "/details-les+balades+en+paddle+autour+de+la+presqu+ile+de+giens+et+de+porquerolles-19.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/lien-office+du+tourisme+de+carqueiranne+carqueiranne+office+du+tourime-29.html": "/a-propos-ecole-kitesurf-hyeres",
+
   // 17. Logs 404 mars 2026 - vague 2
   "/details-cours+de+pump+foil+et+dock+start+a+hyeres+les+palmiers-192.html": "/cours-pumpfoil-dock-start-hyeres",
   "/details-stage+initiation+de+pump+foil+a+hyeres+les+palmiers+plage+l+almanarre-194.html": "/cours-pumpfoil-dock-start-hyeres",
