@@ -174,7 +174,7 @@ const Index = () => {
             "@type": "Course",
             name: "Cours Kitesurf à la Carte",
             description: "Sessions de kitesurf flexibles adaptées à votre planning et niveau",
-            image: "https://www.kitesurfpassion.fr/assets/kitesurf-action-hyeres.jpg",
+            image: "https://www.kitesurfpassion.fr/images/kitesurf-action-hyeres.jpg",
             provider: sellerInfo,
           },
         },
