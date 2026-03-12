@@ -75,7 +75,6 @@ export const exactRedirects: Record<string, string> = {
   "/activites-coaching+wingfoil+hyeres+de+l+almanarre-26.html": "/stage-wingfoil-hyeres-almanarre",
   "/activites-offrir+un+cadeau+de+noel+pour+une+femme+ou+un+homme+on+un+enfant+le+kitesurf+a+hyeres-24.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
   "/actualit-s-w1.html": "/blog-kitesurf-hyeres",
-  "/tarifs-w1.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
   "/archives-2.html": "/blog-kitesurf-hyeres",
   "/archives-3.html": "/blog-kitesurf-hyeres",
   "/archives-4.html": "/blog-kitesurf-hyeres",
