@@ -493,8 +493,8 @@ const Index = () => {
         "@type": "ImageObject",
         name: "Coucher de soleil Almanarre Hyères",
         description: "Vue du spot de kitesurf de l'Almanarre au coucher du soleil à Hyères",
-        contentUrl: "https://www.kitesurfpassion.fr/assets/almanarre-sunset.jpg",
-        thumbnailUrl: "https://www.kitesurfpassion.fr/assets/almanarre-sunset.jpg",
+        contentUrl: "https://www.kitesurfpassion.fr/images/almanarre-sunset.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.fr/images/almanarre-sunset.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
         creator: {
