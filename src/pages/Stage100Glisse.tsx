@@ -83,7 +83,7 @@ const Stage100Glisse = () => {
     "@type": "Product",
     name: "Stage Kitesurf 100% Glisse - Hyères",
     description: "Stage kitesurf intensif 5 jours consécutifs à Hyères. Atteignez l'autonomie avec bateau d'assistance, petits groupes et moniteur diplômé.",
-    image: "https://www.kitesurfpassion.fr/assets/hero-100-glisse.jpg",
+    image: "https://www.kitesurfpassion.fr/images/hero-100-glisse.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
