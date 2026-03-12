@@ -163,7 +163,7 @@ const Index = () => {
           name: "Session Kitesurf à la Carte",
           description: "Cours kitesurf flexibles selon vos disponibilités",
           url: "https://www.kitesurfpassion.fr/session-kitesurf-carte-hyeres",
-          image: "https://www.kitesurfpassion.fr/assets/kitesurf-action-hyeres.jpg",
+           image: "https://www.kitesurfpassion.fr/images/kitesurf-action-hyeres.jpg",
           price: "120",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
