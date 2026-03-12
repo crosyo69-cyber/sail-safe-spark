@@ -264,7 +264,7 @@ const Index = () => {
             "@type": "Course",
             name: "Initiation Foil Tracté",
             description: "Découverte du vol sur l'eau en toute sécurité tracté par bateau",
-            image: "https://www.kitesurfpassion.fr/assets/foil-tracte-hyeres.jpg",
+            image: "https://www.kitesurfpassion.fr/images/foil-tracte-hyeres.jpg",
             provider: sellerInfo,
           },
         },
