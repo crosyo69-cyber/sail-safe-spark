@@ -183,7 +183,7 @@ const Index = () => {
           name: "Cours Particulier Kitesurf",
           description: "Leçon privée 100% individualisée avec moniteur dédié",
           url: "https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres",
-          image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+           image: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg",
           price: "230",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
