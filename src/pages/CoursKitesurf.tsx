@@ -184,8 +184,8 @@ const CoursKitesurf = () => {
     "@type": "ImageObject",
     name: "Stage kitesurf Hyères Almanarre",
     description: "Formation kitesurf avec élèves et moniteur diplômé sur le spot de l'Almanarre à Hyères - école KiteSurf Passion",
-    contentUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {
