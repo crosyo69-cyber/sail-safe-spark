@@ -2925,6 +2925,480 @@ Envie de vous lancer ? [Réservez votre cours de kitesurf à Hyères](/contact-r
     `,
     tags: ["Météo", "Vent", "Kitesurf", "Hyères", "Almanarre", "Mistral", "Saisons"],
   },
+  "activites-nautiques-hyeres-famille": {
+    content: `
+## Activités Nautiques à Hyères en Famille : Le Guide Complet
+
+Vous cherchez des **activités nautiques à Hyères** adaptées à toute la famille ? Entre la baie de Giens, la presqu'île et le spot mythique de l'Almanarre, Hyères offre un terrain de jeu exceptionnel pour les familles qui veulent découvrir les sports de glisse ensemble.
+
+### Pourquoi Hyères est la Destination Famille Idéale
+
+Hyères cumule des atouts uniques pour les familles :
+
+- **Eau peu profonde** sur des centaines de mètres à l'Almanarre, idéale pour les enfants
+- **Température agréable** de mai à octobre (eau entre 18°C et 25°C)
+- **Cadre sécurisé** avec un spot protégé des courants
+- **Moniteur diplômé d'État** avec 25 ans d'expérience auprès des jeunes
+
+### Le Wakeboard : Accessible Dès 8 Ans
+
+Le [wakeboard à Hyères](/wakeboard-hyeres) est l'activité parfaite pour initier les plus jeunes :
+
+- **Pas besoin de vent** : le bateau fournit la traction
+- **Apprentissage rapide** : la plupart des enfants se lèvent dès la première session
+- **Sessions de 15 à 30 min** adaptées à la concentration des enfants
+- **Vitesse ajustable** selon l'âge et le niveau
+
+**Tarif famille** : profitez de sessions groupées pour réduire le coût par personne.
+
+### Le Foil Tracté : Des Sensations de Vol Pour Tous
+
+Le [foil tracté](/foil-tracte-hyeres) permet de voler au-dessus de l'eau dès 12 ans :
+
+- **Aucune expérience requise** : le bateau gère la vitesse
+- **Sensation unique** de lévitation à 30 cm au-dessus de l'eau
+- **Sécurité optimale** : moniteur à bord, gilet obligatoire
+- **Idéal les jours sans vent** : pas de dépendance météo
+
+### Le Kitesurf Junior : Dès 12 Ans
+
+Les [cours de kitesurf](/cours-kitesurf-hyeres-debutant) sont accessibles aux adolescents motivés :
+
+- **Poids minimum** : environ 40 kg pour contrôler l'aile
+- **Matériel adapté** : ailes de petite taille spéciales junior
+- **Encadrement renforcé** : ratio moniteur/élève réduit
+- **Bateau d'assistance** systématique pour la sécurité
+
+### Le Wingfoil : Le Sport Tendance Accessible
+
+Le [stage wingfoil](/stage-wingfoil-hyeres-almanarre) séduit les familles sportives :
+
+- **Plus facile** que le kitesurf pour les premiers cours
+- **Pas de lignes** : sécurité accrue pour les débutants
+- **Progression rapide** : sensations de glisse dès la première session
+- **Adaptable** au niveau de chacun
+
+### Organiser Votre Journée Famille à Hyères
+
+**Le matin (9h-12h)** : session nautique pendant les meilleures conditions
+**Le midi** : pique-nique sur la plage de l'Almanarre ou restaurant à Giens
+**L'après-midi** : baignade, snorkeling vers l'île de Porquerolles, ou visite du centre-ville
+
+**Conseils pratiques** :
+- Réservez à l'avance en haute saison (juillet-août)
+- Prévoyez crème solaire, casquettes et eau
+- Les combinaisons sont fournies par l'école
+
+### Tarifs et Formules Famille
+
+Consultez nos [tarifs](/tarifs-cours-kitesurf-wingfoil-hyeres) pour les formules groupe et famille. Nous proposons des réductions pour les réservations de plusieurs activités.
+
+**Contactez-nous** au [06 14 86 39 15](tel:+33614863915) pour composer un programme sur mesure adapté à l'âge et aux envies de chaque membre de la famille.
+
+> 📌 **Bon à savoir** : nous proposons également des [bons cadeaux](/blog/bon-cadeau-kitesurf-wingfoil-hyeres) pour offrir une expérience nautique en famille.
+`,
+    tags: ["Famille", "Activités nautiques", "Hyères", "Enfants", "Wakeboard", "Kitesurf", "Wingfoil"],
+  },
+  "bon-cadeau-kitesurf-wingfoil-hyeres": {
+    content: `
+## Bon Cadeau Kitesurf et Wingfoil à Hyères : Offrez des Sensations Uniques
+
+Vous cherchez une **idée cadeau originale** ? Offrez un bon cadeau kitesurf, wingfoil ou foil tracté à Hyères. Une expérience inoubliable sur le spot de l'Almanarre, encadrée par un moniteur diplômé d'État avec plus de 25 ans d'expérience.
+
+### Pourquoi Offrir un Bon Cadeau Nautique ?
+
+Un bon cadeau KiteSurf Passion, c'est bien plus qu'un simple présent :
+
+- **Expérience unique** : des sensations impossibles à vivre ailleurs
+- **Souvenir mémorable** : un moment fort qui reste gravé
+- **Cadeau polyvalent** : convient pour un anniversaire, Noël, la fête des pères/mères, un EVJF/EVG
+- **Aucune expérience requise** : accessible aux débutants complets
+
+### Les Formules Disponibles en Bon Cadeau
+
+#### 🪁 Initiation Kitesurf (2h30)
+
+Découvrez les bases du kitesurf avec un [cours débutant](/cours-kitesurf-hyeres-debutant) :
+
+- Briefing sécurité et théorie
+- Pilotage de l'aile sur la plage
+- Premiers exercices dans l'eau
+- Bateau d'assistance inclus
+
+**Idéal pour** : les aventuriers qui rêvent de glisse.
+
+#### 🦅 Stage Wingfoil (2h)
+
+Un [stage wingfoil](/stage-wingfoil-hyeres-almanarre) pour découvrir le sport tendance :
+
+- Découverte du matériel et de l'équilibre
+- Navigation au vent avec la wing
+- Premiers décollages sur le foil
+- Progression encadrée et sécurisée
+
+**Idéal pour** : les curieux attirés par les nouvelles sensations.
+
+#### 🚤 Foil Tracté (30 min)
+
+Le [foil tracté](/foil-tracte-hyeres) offre les sensations du vol sans aucun prérequis :
+
+- Vol au-dessus de l'eau dès la première minute
+- Accessible dès 12 ans (40 kg minimum)
+- Aucune condition de vent nécessaire
+- Sensations de lévitation garanties
+
+**Idéal pour** : ceux qui veulent un maximum de sensations en peu de temps.
+
+#### 🏄 Wakeboard (30 min)
+
+Le [wakeboard](/wakeboard-hyeres) pour une glisse fun et accessible :
+
+- Session tractée par bateau
+- Accessible dès 8 ans
+- Apprentissage rapide et ludique
+- Ambiance conviviale garantie
+
+**Idéal pour** : les familles et groupes d'amis.
+
+### Comment Commander Votre Bon Cadeau ?
+
+1. **Contactez-nous** au [06 14 86 39 15](tel:+33614863915) ou via notre [formulaire de contact](/contact-reservation-kitesurf-hyeres)
+2. **Choisissez la formule** adaptée à la personne
+3. **Recevez le bon** par email ou en version imprimable
+4. **Validité** : le bon est valable 12 mois à compter de la date d'achat
+
+### Un Cadeau Valable Toute la Saison
+
+La saison de navigation à Hyères s'étend de **mars à novembre**, offrant une large fenêtre pour profiter du cadeau :
+
+- **Printemps** (mars-mai) : conditions idéales, spots peu fréquentés
+- **Été** (juin-août) : thermiques réguliers, eau chaude
+- **Automne** (sept-nov) : Mistral puissant, sessions mémorables
+
+Consultez notre guide des [meilleures périodes](/blog/meilleure-periode-kitesurf-var) pour planifier la session idéale.
+
+> 🎁 **Astuce** : combinez plusieurs formules pour offrir un package complet et permettre à l'heureux bénéficiaire de découvrir plusieurs disciplines !
+`,
+    tags: ["Bon cadeau", "Kitesurf", "Wingfoil", "Hyères", "Idée cadeau", "Foil tracté"],
+  },
+  "preparation-physique-kitesurf-exercices": {
+    content: `
+## Préparation Physique pour le Kitesurf : 10 Exercices Essentiels
+
+Une bonne **préparation physique** fait toute la différence en kitesurf. Que vous prépariez votre premier [cours de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant) ou que vous souhaitiez améliorer vos performances, ces 10 exercices ciblés vous aideront à progresser plus vite et à limiter les risques de blessures.
+
+### Pourquoi Se Préparer Physiquement ?
+
+Le kitesurf sollicite l'ensemble du corps :
+
+- **Le dos et les lombaires** : traction du harnais
+- **Les jambes** : appui sur la planche, absorption des clapots
+- **Les bras et épaules** : pilotage de l'aile
+- **Le gainage** : stabilité et équilibre général
+- **Le cardio** : sessions de 1h à 2h30 intenses
+
+### Les 5 Exercices de Gainage Essentiels
+
+#### 1. Planche frontale (30s à 2 min)
+
+Position de gainage classique sur les avant-bras :
+- Corps aligné de la tête aux pieds
+- Abdominaux contractés, fessiers serrés
+- **Objectif** : 3 séries de 1 minute
+
+#### 2. Planche latérale (30s par côté)
+
+Renforce les obliques, essentiels pour la rotation du buste :
+- Sur un avant-bras, corps aligné
+- Hanche haute, pas de rotation
+- **Objectif** : 3 séries de 45 secondes par côté
+
+#### 3. Superman au sol (15 répétitions)
+
+Renforce le dos et prévient les douleurs de harnais :
+- Allongé face au sol, bras et jambes tendus
+- Lever simultanément bras et jambes
+- **Objectif** : 3 séries de 15 répétitions
+
+#### 4. Dead Bug (10 répétitions par côté)
+
+Coordination et gainage profond :
+- Allongé sur le dos, bras et jambes en l'air
+- Étendre le bras droit et la jambe gauche simultanément
+- **Objectif** : 3 séries de 10 par côté
+
+#### 5. Russian Twist (20 répétitions)
+
+Rotation du tronc, utile pour les transitions :
+- Assis, pieds décollés du sol
+- Rotation du buste de gauche à droite avec un poids
+- **Objectif** : 3 séries de 20 rotations
+
+### Les 3 Exercices de Renforcement Musculaire
+
+#### 6. Squats (20 répétitions)
+
+Les jambes sont votre fondation sur la planche :
+- Pieds écartés largeur d'épaules
+- Descendre cuisses parallèles au sol
+- **Objectif** : 3 séries de 20
+
+#### 7. Rowing avec élastique (15 répétitions)
+
+Simule la traction du harnais :
+- Élastique fixé devant vous
+- Tirer vers le nombril, coudes le long du corps
+- **Objectif** : 3 séries de 15
+
+#### 8. Pompes (15 répétitions)
+
+Renforcement des épaules et des bras :
+- Mains largeur d'épaules
+- Descendre poitrine près du sol
+- **Objectif** : 3 séries de 15
+
+### Les 2 Exercices de Souplesse et Mobilité
+
+#### 9. Étirements de la chaîne postérieure
+
+Prévention des douleurs de dos :
+- Toucher les orteils, jambes tendues (30s)
+- Étirement du psoas en fente basse (30s par côté)
+- Rotation thoracique au sol (10 par côté)
+
+#### 10. Mobilité des hanches
+
+Indispensable pour les transitions et l'équilibre :
+- Cercles de hanches debout (10 dans chaque sens)
+- Fente latérale dynamique (10 par côté)
+- Squat profond maintenu 30 secondes
+
+### Programme d'Entraînement Type
+
+**4 semaines avant votre stage** :
+- **Semaines 1-2** : 3 séances/semaine de 30 min (gainage + renforcement)
+- **Semaines 3-4** : 4 séances/semaine de 40 min (ajout cardio : course, natation, vélo)
+
+**Le jour J** : un échauffement léger de 10 minutes suffit avant votre session.
+
+### L'Importance du Cardio
+
+Le kitesurf demande une bonne endurance. Préparez votre cardio avec :
+
+- **Natation** : idéale car elle sollicite les mêmes groupes musculaires
+- **Course à pied** : 30 min 3 fois par semaine
+- **Vélo** : renforce les jambes tout en travaillant le cardio
+
+> 💪 **Conseil d'expert** : la meilleure préparation reste la pratique régulière. Réservez un [stage 100% Glisse](/stage-kitesurf-100-glisse-hyeres) de 5 jours pour une immersion complète qui développera votre condition physique en situation réelle.
+`,
+    tags: ["Préparation physique", "Kitesurf", "Exercices", "Entraînement", "Gainage", "Musculation"],
+  },
+  "evg-evjf-activite-nautique-hyeres": {
+    content: `
+## EVG et EVJF à Hyères : Activités Nautiques pour un Enterrement de Vie Mémorable
+
+Vous organisez un **EVG (enterrement de vie de garçon)** ou un **EVJF (enterrement de vie de jeune fille)** dans le Var ? Hyères et la presqu'île de Giens offrent le cadre parfait pour une journée d'activités nautiques inoubliable. Fous rires, sensations fortes et souvenirs garantis !
+
+### Pourquoi Choisir Hyères pour Votre EVG/EVJF ?
+
+- **Cadre exceptionnel** : la baie de Giens, les îles d'Or en toile de fond
+- **Soleil garanti** : plus de 300 jours de soleil par an
+- **Activités variées** : du fun léger aux sensations extrêmes
+- **Proximité** : à 15 min de l'aéroport de Toulon-Hyères
+- **Ambiance festive** : restaurants et bars à proximité du port
+
+### Les Activités Nautiques Pour Votre Groupe
+
+#### 🏄 Wakeboard : Le Must Pour les Groupes
+
+Le [wakeboard à Hyères](/wakeboard-hyeres) est l'activité EVG/EVJF par excellence :
+
+- **Accessible à tous** : pas besoin d'expérience
+- **Sessions courtes et intenses** : 15-30 min par personne
+- **Effet spectaculaire** : photos et vidéos mémorables
+- **Fous rires garantis** : les premières chutes font partie du show !
+
+**Format idéal** : sessions tournantes pendant que le groupe encourage depuis le bateau.
+
+#### 🚤 Foil Tracté : Les Sensations Fortes
+
+Le [foil tracté](/foil-tracte-hyeres) pour un maximum d'adrénaline :
+
+- **Vol au-dessus de l'eau** : la sensation la plus spectaculaire
+- **Aucun prérequis** : le bateau gère tout
+- **Vidéos épiques** : les réactions des participants sont impayables
+- **Défi entre amis** : qui tiendra le plus longtemps ?
+
+#### 🪁 Initiation Kitesurf : Pour les Groupes Sportifs
+
+Un [cours de kitesurf](/cours-kitesurf-hyeres-debutant) pour les groupes motivés :
+
+- **Expérience complète** : théorie + pratique
+- **Teambuilding naturel** : entraide et encouragements
+- **Souvenir unique** : une vraie initiation, pas un simple baptême
+- **Photos action** incluses
+
+### Formules EVG/EVJF Sur Mesure
+
+Nous composons des **packages personnalisés** selon vos envies :
+
+**Package "Sensations"** (2h) :
+- 1h de wakeboard en groupe
+- 30 min de foil tracté par personne
+- Photos et vidéos offertes
+
+**Package "Full Day"** (4h) :
+- Initiation kitesurf (2h30)
+- Session wakeboard
+- Foil tracté pour tous
+- Pause pique-nique sur la plage
+
+**Package "Découverte"** (1h30) :
+- Wakeboard pour tout le groupe
+- Ambiance musicale sur le bateau
+- Idéal pour les budgets serrés
+
+### Infos Pratiques
+
+**Groupe** : de 4 à 12 personnes
+**Durée** : de 1h30 à la journée complète
+**Tarif** : dégressif selon la taille du groupe — [consultez nos tarifs](/tarifs-cours-kitesurf-wingfoil-hyeres)
+**Réservation** : minimum 2 semaines à l'avance en haute saison
+
+**Ce qui est fourni** :
+- Tout le matériel (combinaisons, gilets, équipements)
+- Moniteur diplômé d'État
+- Bateau d'assistance
+- Eau et en-cas
+
+**Ce qu'il faut apporter** :
+- Maillot de bain et serviette
+- Crème solaire waterproof
+- Bonne humeur et esprit de compétition !
+
+### Réservez Votre EVG/EVJF
+
+Contactez-nous dès maintenant pour organiser votre événement :
+
+📞 [06 14 86 39 15](tel:+33614863915)
+📧 Via notre [formulaire de contact](/contact-reservation-kitesurf-hyeres)
+
+> 🎉 **Astuce** : pensez à offrir l'activité au futur marié/à la future mariée grâce à nos [bons cadeaux](/blog/bon-cadeau-kitesurf-wingfoil-hyeres). Le reste du groupe paie sa part, et le héros du jour profite gratuitement !
+`,
+    tags: ["EVG", "EVJF", "Activités nautiques", "Hyères", "Groupe", "Wakeboard", "Enterrement de vie"],
+  },
+  "hebergement-kitesurf-hyeres-ou-dormir": {
+    content: `
+## Où Dormir pour un Séjour Kitesurf à Hyères ? Guide Hébergement
+
+Vous planifiez un **séjour kitesurf à Hyères** et vous cherchez le meilleur hébergement près du spot de l'Almanarre ? Ce guide vous présente les meilleures options pour dormir à proximité, que vous veniez pour un week-end ou un stage complet.
+
+### Les Quartiers Stratégiques pour un Kiter
+
+#### L'Almanarre : Au Pied du Spot
+
+L'idéal pour les kiteurs :
+
+- **Distance du spot** : 0 à 500 m
+- **Avantage** : vous êtes sur place, pas de trajet
+- **Types d'hébergement** : campings, locations saisonnières, quelques hôtels
+- **Ambiance** : nature, tranquillité, communauté de riders
+
+#### Giens / La Capte : Proche et Pratique
+
+Alternative intéressante à 5-10 min en voiture :
+
+- **Plus de choix** d'hébergements
+- **Commerces et restaurants** à proximité
+- **Vue sur la presqu'île** depuis certains logements
+- **Accès facile** au port pour les activités bateau (foil tracté, wakeboard)
+
+#### Hyères Centre : La Ville Médiévale
+
+Pour combiner kitesurf et tourisme :
+
+- **Centre historique** charmant avec restaurants et vie nocturne
+- **15 min en voiture** du spot de l'Almanarre
+- **Idéal** pour les couples qui veulent varier les plaisirs
+- **Budget** : rapport qualité-prix souvent meilleur qu'en bord de mer
+
+### Les Types d'Hébergement
+
+#### 🏕️ Campings (Budget)
+
+Hyères et ses environs comptent plusieurs campings de qualité :
+
+- **Camping de l'Almanarre** : directement sur le spot, emplacements simples
+- **Campings de Giens** : mobil-homes et emplacements avec vue mer
+- **Budget** : 15 à 80 €/nuit selon la formule
+
+**Avantage kitesurf** : stockage matériel facile, accès direct à la plage.
+
+#### 🏠 Locations Saisonnières (Confort)
+
+La solution préférée des groupes de riders :
+
+- **Appartements** et **maisons** sur Airbnb, Booking, Abritel
+- **Budget** : 60 à 200 €/nuit
+- **Avantage** : espace pour stocker et sécher le matériel
+- **Conseil** : réservez tôt pour l'été, les biens proches du spot partent vite
+
+#### 🏨 Hôtels (Premium)
+
+Pour le confort et la tranquillité :
+
+- **Hôtels 2-3 étoiles** à Hyères centre ou Giens
+- **Budget** : 80 à 250 €/nuit
+- **Avantage** : petit-déjeuner inclus, ménage quotidien
+- **Inconvénient** : stockage matériel parfois limité
+
+### Organiser Votre Séjour Kitesurf
+
+#### Week-end Kitesurf (2-3 jours)
+
+- **Hébergement** : location Airbnb à l'Almanarre ou Giens
+- **Programme** : 2 sessions de [cours](/cours-kitesurf-hyeres-debutant) + exploration du spot
+- **Budget total** (hors cours) : 150 à 400 € selon la saison
+
+#### Stage Kitesurf (5 jours)
+
+Le [stage 100% Glisse](/stage-kitesurf-100-glisse-hyeres) est idéal pour un séjour dédié :
+
+- **Hébergement** : location à la semaine à l'Almanarre
+- **Programme** : 5 jours de stage intensif + soirées libres
+- **Budget hébergement** : 300 à 800 € la semaine
+
+#### Vacances Kitesurf en Famille (1-2 semaines)
+
+- **Hébergement** : maison ou grand appartement avec jardin
+- **Programme** : alternance [activités nautiques](/blog/activites-nautiques-hyeres-famille) et tourisme
+- **À faire aussi** : Porquerolles en bateau, marché provençal, vignobles
+
+### Conseils Pratiques
+
+**Saison haute (juillet-août)** :
+- Réservez 3 à 6 mois à l'avance
+- Prix 2 à 3 fois plus élevés qu'en basse saison
+- Spot plus fréquenté mais conditions thermiques régulières
+
+**Saison intermédiaire (mai-juin, sept-oct)** :
+- Meilleur rapport qualité-prix
+- Conditions de vent souvent meilleures (Mistral)
+- Plus de disponibilités
+
+**Transport** : une voiture est recommandée pour rejoindre le spot depuis Hyères centre. Parking gratuit à l'Almanarre en dehors de l'été.
+
+### Besoin d'Aide pour Organiser Votre Séjour ?
+
+Nous connaissons le coin par cœur depuis plus de 25 ans. Contactez-nous pour des recommandations personnalisées :
+
+📞 [06 14 86 39 15](tel:+33614863915)
+📧 Via notre [formulaire de contact](/contact-reservation-kitesurf-hyeres)
+
+> 🏠 **Bon plan** : certains de nos partenaires hébergeurs proposent des réductions pour les élèves de l'école. Demandez-nous !
+`,
+    tags: ["Hébergement", "Kitesurf", "Hyères", "Almanarre", "Séjour", "Où dormir", "Vacances"],
+  },
 };
 
 const BlogArticle = () => {
