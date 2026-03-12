@@ -672,7 +672,7 @@ const Index = () => {
                 "url": "https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre",
                 "image": {
                   "@type": "ImageObject",
-                  "url": "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+                   "url": "https://www.kitesurfpassion.fr/images/wingfoil-hyeres.jpg",
                   "width": 1200,
                   "height": 800
                 }
