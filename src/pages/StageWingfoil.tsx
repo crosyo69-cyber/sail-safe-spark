@@ -129,7 +129,7 @@ const StageWingfoil = () => {
     "@type": "Product",
     name: "Stage Wingfoil Initiation - Hyères",
     description: "Stage de wingfoil 5 jours pour débutants à l'Almanarre, Hyères. Sport tendance accessible à tous avec foil tracté inclus.",
-    image: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/images/wingfoil-hyeres.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
