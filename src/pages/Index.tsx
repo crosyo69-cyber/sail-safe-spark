@@ -284,7 +284,7 @@ const Index = () => {
             "@type": "Course",
             name: "Session Wakeboard",
             description: "Session wakeboard tractée de 15 minutes sur la baie d'Hyères",
-            image: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
+            image: "https://www.kitesurfpassion.fr/images/wakeboard-hyeres.jpg",
             provider: sellerInfo,
           },
         },

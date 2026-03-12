@@ -141,7 +141,7 @@ const DeposesMer = () => {
             "@type": "Product",
             "name": "Déposes en Mer Kitesurf - Hyères",
             "description": "Service de déposes en mer pour kitesurfeurs autonomes avec bateau de sécurité sur la baie d'Hyères, l'Almanarre et Giens.",
-            "image": "https://www.kitesurfpassion.fr/assets/bateau-assistance-kitesurf.jpg",
+            "image": "https://www.kitesurfpassion.fr/images/bateau-assistance-kitesurf.jpg",
             "brand": {
               "@type": "Brand",
               "name": "KiteSurf Passion"
