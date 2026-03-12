@@ -214,7 +214,7 @@ const Index = () => {
             "@type": "Course",
             name: "Stage Wingfoil Initiation",
             description: "Formation wingfoil 5 jours avec foil tracté inclus à l'Almanarre",
-            image: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+            image: "https://www.kitesurfpassion.fr/images/wingfoil-hyeres.jpg",
             provider: sellerInfo,
             hasCourseInstance: {
               "@type": "CourseInstance",
