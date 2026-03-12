@@ -755,7 +755,7 @@ const Index = () => {
           "url": "https://www.kitesurfpassion.fr",
           "logo": {
             "@type": "ImageObject",
-            "url": "https://www.kitesurfpassion.fr/assets/logo-duotone.png",
+            "url": "https://www.kitesurfpassion.fr/images/logo-duotone.png",
             "width": 512,
             "height": 512,
             "caption": "Logo officiel KiteSurf Passion"
