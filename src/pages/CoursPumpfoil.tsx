@@ -172,7 +172,7 @@ export default function CoursPumpfoil() {
             "@type": "Product",
             "name": "Initiation Pumpfoil Dock Start - Hyères",
             "description": "Cours de pumpfoil à Hyères - Apprenez à voler sur l'eau sans vent avec la technique dock start. Séance de 1h30, 3 personnes maximum.",
-            "image": "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres-cours.jpg",
+             "image": "https://www.kitesurfpassion.fr/images/pumpfoil-hyeres-cours.jpg",
             "brand": {
               "@type": "Brand",
               "name": "KiteSurf Passion"
