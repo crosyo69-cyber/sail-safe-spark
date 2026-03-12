@@ -213,7 +213,7 @@ const CoursKitesurf = () => {
     "@type": "HowTo",
     name: "Comment apprendre le kitesurf à Hyères en 5 jours",
     description: "Guide complet pour apprendre le kitesurf avec notre stage 100% Glisse à l'Almanarre. De la découverte à l'autonomie en 5 séances.",
-    image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg",
     totalTime: "PT15H",
     estimatedCost: {
       "@type": "MonetaryAmount",
