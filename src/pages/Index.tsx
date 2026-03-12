@@ -625,7 +625,7 @@ const Index = () => {
                   "name": "À propos",
                   "description": "L'histoire de KiteSurf Passion, première école du Var depuis 1999",
                   "url": "https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres",
-                  "image": "https://www.kitesurfpassion.fr/assets/portrait-yohan-cros.jpg"
+                  "image": "https://www.kitesurfpassion.fr/images/portrait-yohan-cros.jpg"
                 },
                 {
                   "@type": "WebPage",
