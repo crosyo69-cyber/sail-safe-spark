@@ -656,7 +656,7 @@ const Index = () => {
                 "url": "https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres",
                 "image": {
                   "@type": "ImageObject",
-                  "url": "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+                  "url": "https://www.kitesurfpassion.fr/images/kitesurf-hyeres.jpg",
                   "width": 1200,
                   "height": 800
                 }
