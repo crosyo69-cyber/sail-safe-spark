@@ -597,7 +597,7 @@ const Index = () => {
                   "name": "Tarifs des cours de kitesurf",
                   "description": "Tarifs et formules des cours de kitesurf, wingfoil et pumpfoil à Hyères",
                   "url": "https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres",
-                  "image": "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg"
+                  "image": "https://www.kitesurfpassion.fr/images/kitesurf-hyeres.jpg"
                 },
                 {
                   "@type": "WebPage",
