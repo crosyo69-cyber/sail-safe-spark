@@ -611,7 +611,7 @@ const Index = () => {
                   "name": "Stage Kitesurf 100% Glisse",
                   "description": "5 jours pour devenir autonome en kitesurf avec bateau d'assistance",
                   "url": "https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres",
-                  "image": "https://www.kitesurfpassion.fr/assets/stage-100-glisse-action.jpg"
+                  "image": "https://www.kitesurfpassion.fr/images/stage-100-glisse-action.jpg"
                 },
                 {
                   "@type": "WebPage",
