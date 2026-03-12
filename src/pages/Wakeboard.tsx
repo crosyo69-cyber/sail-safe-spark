@@ -78,7 +78,7 @@ const Wakeboard = () => {
     "@type": "Product",
     name: "Wakeboard Session Tractée - Hyères",
     description: "Session de wakeboard de 15 min sur la baie d'Hyères. Activité fun et accessible à tous les âges dès 8 ans, encadrée par moniteur diplômé.",
-    image: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/images/wakeboard-hyeres.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
@@ -103,8 +103,8 @@ const Wakeboard = () => {
     "@type": "ImageObject",
     name: "Wakeboard Hyères baie de Giens",
     description: "Session de wakeboard tractée par bateau sur la baie d'Hyères - école KiteSurf Passion Var",
-    contentUrl: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/images/wakeboard-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/images/wakeboard-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {

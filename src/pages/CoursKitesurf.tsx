@@ -159,7 +159,7 @@ const CoursKitesurf = () => {
     "@type": "Product",
     name: "Stage Kitesurf 100% Glisse - Hyères",
     description: "Stage de kitesurf 5 jours pour débutants avec bateau d'assistance à l'Almanarre, Hyères. Devenez autonome en kitesurf avec un moniteur diplômé d'État.",
-    image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
@@ -184,8 +184,8 @@ const CoursKitesurf = () => {
     "@type": "ImageObject",
     name: "Stage kitesurf Hyères Almanarre",
     description: "Formation kitesurf avec élèves et moniteur diplômé sur le spot de l'Almanarre à Hyères - école KiteSurf Passion",
-    contentUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {
@@ -213,7 +213,7 @@ const CoursKitesurf = () => {
     "@type": "HowTo",
     name: "Comment apprendre le kitesurf à Hyères en 5 jours",
     description: "Guide complet pour apprendre le kitesurf avec notre stage 100% Glisse à l'Almanarre. De la découverte à l'autonomie en 5 séances.",
-    image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg",
     totalTime: "PT15H",
     estimatedCost: {
       "@type": "MonetaryAmount",
@@ -237,7 +237,7 @@ const CoursKitesurf = () => {
         position: 1,
         name: "Découverte & Sécurité",
         text: "Présentation du matériel, règles de sécurité, fenêtre de vent. Pilotage de l'aile sur la plage pour comprendre les bases.",
-        image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg"
+        image: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg"
       },
       {
         "@type": "HowToStep",

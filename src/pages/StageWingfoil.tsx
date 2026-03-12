@@ -129,7 +129,7 @@ const StageWingfoil = () => {
     "@type": "Product",
     name: "Stage Wingfoil Initiation - Hyères",
     description: "Stage de wingfoil 5 jours pour débutants à l'Almanarre, Hyères. Sport tendance accessible à tous avec foil tracté inclus.",
-    image: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/images/wingfoil-hyeres.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
@@ -154,8 +154,8 @@ const StageWingfoil = () => {
     "@type": "ImageObject",
     name: "Stage wingfoil Hyères Almanarre",
     description: "Cours de wingfoil sur le spot de l'Almanarre à Hyères - école KiteSurf Passion Var",
-    contentUrl: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/images/wingfoil-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/images/wingfoil-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {
@@ -228,7 +228,7 @@ const StageWingfoil = () => {
           "@type": "HowTo",
           "name": "Comment apprendre le wingfoil à Hyères en 5 jours",
           "description": "Guide complet pour apprendre le wingfoil à l'Almanarre. De la découverte de l'aile aux premiers vols sur le foil.",
-          "image": "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+          "image": "https://www.kitesurfpassion.fr/images/wingfoil-hyeres.jpg",
           "totalTime": "PT12H30M",
           "estimatedCost": {
             "@type": "MonetaryAmount",

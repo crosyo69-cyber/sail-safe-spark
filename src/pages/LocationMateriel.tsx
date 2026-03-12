@@ -134,7 +134,7 @@ const LocationMateriel = () => {
             "@type": "Product",
             "name": "Location Matériel Kitesurf",
             "description": "Location de matériel de kitesurf à Hyères - Ailes, planches, harnais et équipements complets",
-            "image": "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+            "image": "https://www.kitesurfpassion.fr/images/kitesurf-hyeres.jpg",
             "brand": {
               "@type": "Brand",
               "name": "KiteSurf Passion"
@@ -155,7 +155,7 @@ const LocationMateriel = () => {
               "@type": "LocalBusiness",
               "name": "KiteSurf Passion",
               "url": "https://www.kitesurfpassion.fr",
-              "image": "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+              "image": "https://www.kitesurfpassion.fr/images/kitesurf-hyeres.jpg",
               "priceRange": "€€",
               "telephone": "+33672716905",
               "address": {

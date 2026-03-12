@@ -465,7 +465,7 @@ const Blog = () => {
       datePublished: `${article.date}T08:00:00+01:00`,
       dateModified: `${article.date}T08:00:00+01:00`,
       url: `https://www.kitesurfpassion.fr/blog/${article.slug}`,
-      image: `https://www.kitesurfpassion.fr/assets/${article.image}`,
+      image: `https://www.kitesurfpassion.fr/images/${article.image}`,
       author: {
         "@type": "Person",
         name: "Yoanne Cros",

@@ -83,7 +83,7 @@ const Stage100Glisse = () => {
     "@type": "Product",
     name: "Stage Kitesurf 100% Glisse - Hyères",
     description: "Stage kitesurf intensif 5 jours consécutifs à Hyères. Atteignez l'autonomie avec bateau d'assistance, petits groupes et moniteur diplômé.",
-    image: "https://www.kitesurfpassion.fr/assets/hero-100-glisse.jpg",
+    image: "https://www.kitesurfpassion.fr/images/hero-100-glisse.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
@@ -108,8 +108,8 @@ const Stage100Glisse = () => {
     "@type": "ImageObject",
     name: "Stage kitesurf 100% Glisse Hyères",
     description: "Stage intensif kitesurf 5 jours sur le spot de l'Almanarre à Hyères - école KiteSurf Passion Var",
-    contentUrl: "https://www.kitesurfpassion.fr/assets/hero-100-glisse.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/hero-100-glisse.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/images/hero-100-glisse.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/images/hero-100-glisse.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {

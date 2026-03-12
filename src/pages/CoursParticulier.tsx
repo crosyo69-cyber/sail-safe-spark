@@ -83,7 +83,7 @@ const CoursParticulier = () => {
     "@type": "Product",
     name: "Cours Particulier Kitesurf - Hyères",
     description: "Cours de kitesurf 100% individualisé de 2h à Hyères. Progression rapide et sécurisée avec moniteur diplômé dédié et bateau d'assistance.",
-    image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
@@ -108,8 +108,8 @@ const CoursParticulier = () => {
     "@type": "ImageObject",
     name: "Cours particulier kitesurf Hyères",
     description: "Cours particulier de kitesurf avec moniteur dédié sur le spot de l'Almanarre à Hyères - école KiteSurf Passion Var",
-    contentUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/images/kitesurf-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/images/kitesurf-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {
