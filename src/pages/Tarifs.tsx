@@ -123,7 +123,7 @@ const imageGalleryStructuredData = {
       "@type": "ImageObject",
       name: "Bon cadeau Wingfoil Hyères",
       description: "Bon cadeau pour offrir des cours de wingfoil à l'école KiteSurf Passion Hyères",
-      contentUrl: "https://www.kitesurfpassion.fr/assets/bon-cadeau-wingfoil.jpg",
+      contentUrl: "https://www.kitesurfpassion.fr/images/bon-cadeau-wingfoil.jpg",
       creditText: "KiteSurf Passion",
       copyrightNotice: "© KiteSurf Passion",
       creator: {
