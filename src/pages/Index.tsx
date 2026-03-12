@@ -736,7 +736,7 @@ const Index = () => {
                 "url": "https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres",
                 "image": {
                   "@type": "ImageObject",
-                  "url": "https://www.kitesurfpassion.fr/assets/pumpfoil-dock-start.jpg",
+                  "url": "https://www.kitesurfpassion.fr/images/pumpfoil-dock-start.jpg",
                   "width": 1200,
                   "height": 800
                 }
