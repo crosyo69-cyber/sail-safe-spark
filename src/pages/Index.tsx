@@ -144,7 +144,7 @@ const Index = () => {
             "@type": "Course",
             name: "Stage Kitesurf 100% Glisse",
             description: "Formation kitesurf intensive 5 jours avec bateau sécurité",
-            image: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+            image: "https://www.kitesurfpassion.fr/images/kitesurf-hyeres.jpg",
             provider: sellerInfo,
             hasCourseInstance: {
               "@type": "CourseInstance",
