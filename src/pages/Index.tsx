@@ -133,7 +133,7 @@ const Index = () => {
           name: "Stage Kitesurf 100% Glisse",
           description: "5 jours consécutifs pour devenir autonome en kitesurf à l'Almanarre",
           url: "https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres",
-          image: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+           image: "https://www.kitesurfpassion.fr/images/kitesurf-hyeres.jpg",
           price: "399",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
