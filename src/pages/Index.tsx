@@ -203,7 +203,7 @@ const Index = () => {
           name: "Stage Wingfoil Initiation",
           description: "Stage wingfoil 5 jours avec foil tracté inclus à l'Almanarre",
           url: "https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre",
-          image: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+           image: "https://www.kitesurfpassion.fr/images/wingfoil-hyeres.jpg",
           price: "440",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
