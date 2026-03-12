@@ -477,8 +477,8 @@ const Index = () => {
         "@type": "ImageObject",
         name: "Bateau assistance kitesurf Hyères",
         description: "Bateau d'assistance pour les cours de kitesurf à Hyères - sécurité maximale",
-        contentUrl: "https://www.kitesurfpassion.fr/assets/bateau-assistance-kitesurf.jpg",
-        thumbnailUrl: "https://www.kitesurfpassion.fr/assets/bateau-assistance-kitesurf.jpg",
+        contentUrl: "https://www.kitesurfpassion.fr/images/bateau-assistance-kitesurf.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.fr/images/bateau-assistance-kitesurf.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
         creator: {
