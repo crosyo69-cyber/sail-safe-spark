@@ -108,7 +108,7 @@ const imageGalleryStructuredData = {
       "@type": "ImageObject",
       name: "Bon cadeau Kitesurf Hyères",
       description: "Bon cadeau pour offrir un stage ou des cours de kitesurf à l'école KiteSurf Passion Hyères",
-      contentUrl: "https://www.kitesurfpassion.fr/assets/bon-cadeau-kitesurf.jpg",
+      contentUrl: "https://www.kitesurfpassion.fr/images/bon-cadeau-kitesurf.jpg",
       creditText: "KiteSurf Passion",
       copyrightNotice: "© KiteSurf Passion",
       creator: {
