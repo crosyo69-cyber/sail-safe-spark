@@ -253,7 +253,7 @@ const Index = () => {
           name: "Foil Tracté",
           description: "Découvrez le vol sur l'eau en toute sécurité tracté par bateau",
           url: "https://www.kitesurfpassion.fr/foil-tracte-hyeres",
-          image: "https://www.kitesurfpassion.fr/assets/foil-tracte-hyeres.jpg",
+           image: "https://www.kitesurfpassion.fr/images/foil-tracte-hyeres.jpg",
           price: "50",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
