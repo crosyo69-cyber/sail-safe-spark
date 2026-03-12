@@ -233,7 +233,7 @@ const Index = () => {
           name: "Cours Pumpfoil & Dock Start",
           description: "Volez sur l'eau sans vent avec la technique dock start",
           url: "https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres",
-          image: "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg",
+           image: "https://www.kitesurfpassion.fr/images/pumpfoil-hyeres.jpg",
           price: "50",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
