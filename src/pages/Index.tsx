@@ -244,7 +244,7 @@ const Index = () => {
             "@type": "Course",
             name: "Initiation Pumpfoil Dock Start",
             description: "Apprenez à voler sur l'eau sans vent avec la technique dock start",
-            image: "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg",
+            image: "https://www.kitesurfpassion.fr/images/pumpfoil-hyeres.jpg",
             provider: sellerInfo,
           },
         },
