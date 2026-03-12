@@ -457,8 +457,8 @@ const Index = () => {
         "@type": "ImageObject",
         name: "Pumpfoil dock start Hyères",
         description: "Initiation au pumpfoil avec dock start à Hyères - école KiteSurf Passion",
-        contentUrl: "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg",
-        thumbnailUrl: "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres.jpg",
+        contentUrl: "https://www.kitesurfpassion.fr/images/pumpfoil-hyeres.jpg",
+        thumbnailUrl: "https://www.kitesurfpassion.fr/images/pumpfoil-hyeres.jpg",
         creditText: "KiteSurf Passion",
         copyrightNotice: "© KiteSurf Passion",
         creator: {
