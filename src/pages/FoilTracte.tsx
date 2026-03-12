@@ -107,7 +107,7 @@ const FoilTracte = () => {
     "@type": "Product",
     name: "Foil Tracté Initiation - Hyères",
     description: "Sessions de foil tracté de 20 à 40 min sur la baie d'Hyères. Découvrez les sensations du vol sur l'eau en toute sécurité avec moniteur diplômé.",
-    image: "https://www.kitesurfpassion.fr/assets/foil-tracte-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/images/foil-tracte-hyeres.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
