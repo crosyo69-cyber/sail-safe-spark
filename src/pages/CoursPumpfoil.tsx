@@ -198,8 +198,8 @@ export default function CoursPumpfoil() {
             "@type": "ImageObject",
             "name": "Cours pumpfoil dock start Hyères",
             "description": "Initiation au pumpfoil avec technique dock start sur la presqu'île de Giens à Hyères - école KiteSurf Passion",
-            "contentUrl": "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres-cours.jpg",
-            "thumbnailUrl": "https://www.kitesurfpassion.fr/assets/pumpfoil-hyeres-cours.jpg",
+             "contentUrl": "https://www.kitesurfpassion.fr/images/pumpfoil-hyeres-cours.jpg",
+             "thumbnailUrl": "https://www.kitesurfpassion.fr/images/pumpfoil-hyeres-cours.jpg",
             "creditText": "KiteSurf Passion",
             "copyrightNotice": "© KiteSurf Passion",
             "creator": {
