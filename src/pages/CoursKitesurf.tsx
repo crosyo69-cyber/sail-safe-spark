@@ -159,7 +159,7 @@ const CoursKitesurf = () => {
     "@type": "Product",
     name: "Stage Kitesurf 100% Glisse - Hyères",
     description: "Stage de kitesurf 5 jours pour débutants avec bateau d'assistance à l'Almanarre, Hyères. Devenez autonome en kitesurf avec un moniteur diplômé d'État.",
-    image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
