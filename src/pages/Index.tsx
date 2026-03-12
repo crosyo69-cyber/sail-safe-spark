@@ -704,7 +704,7 @@ const Index = () => {
                 "url": "https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant",
                 "image": {
                   "@type": "ImageObject",
-                  "url": "https://www.kitesurfpassion.fr/assets/kitesurf-action-hyeres.jpg",
+                  "url": "https://www.kitesurfpassion.fr/images/kitesurf-action-hyeres.jpg",
                   "width": 1200,
                   "height": 800
                 }
