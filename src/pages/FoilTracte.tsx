@@ -132,8 +132,8 @@ const FoilTracte = () => {
     "@type": "ImageObject",
     name: "Foil tracté Hyères bateau",
     description: "Session de foil tracté par bateau sur la baie d'Hyères - école KiteSurf Passion initiation au vol",
-    contentUrl: "https://www.kitesurfpassion.fr/assets/foil-tracte-hyeres.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/foil-tracte-hyeres.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/images/foil-tracte-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/images/foil-tracte-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {

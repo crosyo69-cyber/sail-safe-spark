@@ -212,8 +212,8 @@ const imageStructuredData = {
   "@type": "ImageObject",
   name: "Spot kitesurf Almanarre Hyères coucher de soleil",
   description: "Plage de l'Almanarre à Hyères au coucher de soleil - meilleur spot kitesurf du Var",
-  contentUrl: "https://www.kitesurfpassion.fr/assets/almanarre-sunset.jpg",
-  thumbnailUrl: "https://www.kitesurfpassion.fr/assets/almanarre-sunset.jpg",
+  contentUrl: "https://www.kitesurfpassion.fr/images/almanarre-sunset.jpg",
+  thumbnailUrl: "https://www.kitesurfpassion.fr/images/almanarre-sunset.jpg",
   creditText: "KiteSurf Passion",
   copyrightNotice: "© KiteSurf Passion",
   creator: {

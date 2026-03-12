@@ -152,8 +152,8 @@ const APropos = () => {
     "@type": "ImageObject",
     name: "Portrait Yoanne Cros moniteur kitesurf Hyères",
     description: "Yoanne Cros, fondateur et moniteur diplômé d'État de l'école KiteSurf Passion à Hyères depuis 1999",
-    contentUrl: "https://www.kitesurfpassion.fr/assets/portrait-yohan-cros.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/portrait-yohan-cros.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/images/portrait-yohan-cros.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/images/portrait-yohan-cros.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {

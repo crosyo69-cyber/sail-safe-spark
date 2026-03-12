@@ -108,8 +108,8 @@ const Stage100Glisse = () => {
     "@type": "ImageObject",
     name: "Stage kitesurf 100% Glisse Hyères",
     description: "Stage intensif kitesurf 5 jours sur le spot de l'Almanarre à Hyères - école KiteSurf Passion Var",
-    contentUrl: "https://www.kitesurfpassion.fr/assets/hero-100-glisse.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/hero-100-glisse.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/images/hero-100-glisse.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/images/hero-100-glisse.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {

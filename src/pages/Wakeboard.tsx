@@ -103,8 +103,8 @@ const Wakeboard = () => {
     "@type": "ImageObject",
     name: "Wakeboard Hyères baie de Giens",
     description: "Session de wakeboard tractée par bateau sur la baie d'Hyères - école KiteSurf Passion Var",
-    contentUrl: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/images/wakeboard-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/images/wakeboard-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {

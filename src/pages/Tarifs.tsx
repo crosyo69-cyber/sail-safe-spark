@@ -138,7 +138,7 @@ const imageGalleryStructuredData = {
       "@type": "ImageObject",
       name: "Bon cadeau Foil Tracté Hyères",
       description: "Bon cadeau pour offrir une session de foil tracté à l'école KiteSurf Passion Hyères",
-      contentUrl: "https://www.kitesurfpassion.fr/assets/bon-cadeau-foil-tracte.jpg",
+      contentUrl: "https://www.kitesurfpassion.fr/images/bon-cadeau-foil-tracte.jpg",
       creditText: "KiteSurf Passion",
       copyrightNotice: "© KiteSurf Passion",
       creator: {

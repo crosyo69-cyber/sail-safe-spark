@@ -111,7 +111,7 @@ const DeposesMer = () => {
               "@type": "LocalBusiness",
               "name": "KiteSurf Passion",
               "url": "https://www.kitesurfpassion.fr",
-              "image": "https://www.kitesurfpassion.fr/assets/bateau-assistance-kitesurf.jpg",
+              "image": "https://www.kitesurfpassion.fr/images/bateau-assistance-kitesurf.jpg",
               "priceRange": "€€",
               "telephone": "+33672716905",
               "address": {

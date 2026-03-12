@@ -154,8 +154,8 @@ const StageWingfoil = () => {
     "@type": "ImageObject",
     name: "Stage wingfoil Hyères Almanarre",
     description: "Cours de wingfoil sur le spot de l'Almanarre à Hyères - école KiteSurf Passion Var",
-    contentUrl: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/wingfoil-hyeres.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/images/wingfoil-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/images/wingfoil-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {

@@ -108,8 +108,8 @@ const CoursParticulier = () => {
     "@type": "ImageObject",
     name: "Cours particulier kitesurf Hyères",
     description: "Cours particulier de kitesurf avec moniteur dédié sur le spot de l'Almanarre à Hyères - école KiteSurf Passion Var",
-    contentUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
-    thumbnailUrl: "https://www.kitesurfpassion.fr/assets/kitesurf-hyeres.jpg",
+    contentUrl: "https://www.kitesurfpassion.fr/images/kitesurf-hyeres.jpg",
+    thumbnailUrl: "https://www.kitesurfpassion.fr/images/kitesurf-hyeres.jpg",
     creditText: "KiteSurf Passion",
     copyrightNotice: "© KiteSurf Passion",
     creator: {

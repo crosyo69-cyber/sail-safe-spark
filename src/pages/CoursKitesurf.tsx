@@ -237,7 +237,7 @@ const CoursKitesurf = () => {
         position: 1,
         name: "Découverte & Sécurité",
         text: "Présentation du matériel, règles de sécurité, fenêtre de vent. Pilotage de l'aile sur la plage pour comprendre les bases.",
-        image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg"
+        image: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg"
       },
       {
         "@type": "HowToStep",
