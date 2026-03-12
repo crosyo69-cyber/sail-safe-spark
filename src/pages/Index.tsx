@@ -273,7 +273,7 @@ const Index = () => {
           name: "Wakeboard",
           description: "Session wakeboard tractée de 15 min sur la baie d'Hyères",
           url: "https://www.kitesurfpassion.fr/wakeboard-hyeres",
-          image: "https://www.kitesurfpassion.fr/assets/wakeboard-hyeres.jpg",
+           image: "https://www.kitesurfpassion.fr/images/wakeboard-hyeres.jpg",
           price: "40",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
