@@ -194,7 +194,7 @@ const Index = () => {
             "@type": "Course",
             name: "Cours Particulier Kitesurf",
             description: "Leçon privée avec moniteur dédié pour une progression optimale",
-            image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+            image: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg",
             provider: sellerInfo,
           },
         },
