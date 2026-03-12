@@ -83,7 +83,7 @@ const CoursParticulier = () => {
     "@type": "Product",
     name: "Cours Particulier Kitesurf - Hyères",
     description: "Cours de kitesurf 100% individualisé de 2h à Hyères. Progression rapide et sécurisée avec moniteur diplômé dédié et bateau d'assistance.",
-    image: "https://www.kitesurfpassion.fr/assets/kitesurf-cours-hyeres.jpg",
+    image: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg",
     brand: {
       "@type": "Brand",
       name: "KiteSurf Passion"
