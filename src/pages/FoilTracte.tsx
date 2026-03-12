@@ -80,7 +80,7 @@ const FoilTracte = () => {
       "@type": "LocalBusiness",
       "name": "KiteSurf Passion",
       "url": "https://www.kitesurfpassion.fr",
-      "image": "https://www.kitesurfpassion.fr/assets/foil-tracte-hyeres.jpg",
+      "image": "https://www.kitesurfpassion.fr/images/foil-tracte-hyeres.jpg",
       "priceRange": "€€",
       "telephone": "+33672716905",
       "address": {
