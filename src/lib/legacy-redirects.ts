@@ -35,6 +35,12 @@ export const exactRedirects: Record<string, string> = {
   "/archives-1.html": "/blog-kitesurf-hyeres",
   "/secteurs": "/spot-kitesurf-almanarre-hyeres-var",
   "/secteurs.html": "/spot-kitesurf-almanarre-hyeres-var",
+  "/contact-w1": "/contact-reservation-kitesurf-hyeres",
+  "/contact-w1.html": "/contact-reservation-kitesurf-hyeres",
+  "/spot-almanarre-w1": "/spot-kitesurf-almanarre-hyeres-var",
+  "/spot-almanarre-w1.html": "/spot-kitesurf-almanarre-hyeres-var",
+  "/tarifs-w1": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/tarifs-w1.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
 
   // 2. Articles & Pages détail (details-*.html)
   "/details-apprendre+le+kitesurf+en+ecole+a+hyeres+dans+le+var-147.html": "/cours-kitesurf-hyeres-debutant",
