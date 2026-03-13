@@ -33,7 +33,7 @@ export const EmailChangeEmail = ({
 }: EmailChangeEmailProps) => (
   <Html lang="fr" dir="ltr">
     <Head />
-    <Preview>Confirmez le changement d'email – KiteSurf Passion</Preview>
+    <Preview>Confirmez votre nouvel email – KiteSurf Passion</Preview>
     <Body style={main}>
       <Container style={container}>
         <Section style={header}>
@@ -42,17 +42,12 @@ export const EmailChangeEmail = ({
         <Heading style={h1}>Changement d'adresse email</Heading>
         <Text style={text}>
           Vous avez demandé à changer votre adresse email de{' '}
-          <Link href={`mailto:${email}`} style={link}>
-            {email}
-          </Link>{' '}
+          <Link href={`mailto:${email}`} style={link}>{email}</Link>{' '}
           vers{' '}
-          <Link href={`mailto:${newEmail}`} style={link}>
-            {newEmail}
-          </Link>
-          .
+          <Link href={`mailto:${newEmail}`} style={link}>{newEmail}</Link>.
         </Text>
         <Text style={text}>
-          Cliquez ci-dessous pour confirmer ce changement :
+          Cliquez sur le bouton ci-dessous pour confirmer ce changement :
         </Text>
         <Button style={button} href={confirmationUrl}>
           Confirmer le changement

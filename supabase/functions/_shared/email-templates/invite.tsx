@@ -31,19 +31,19 @@ export const InviteEmail = ({
 }: InviteEmailProps) => (
   <Html lang="fr" dir="ltr">
     <Head />
-    <Preview>Vous êtes invité(e) à rejoindre KiteSurf Passion</Preview>
+    <Preview>Vous êtes invité(e) – KiteSurf Passion</Preview>
     <Body style={main}>
       <Container style={container}>
         <Section style={header}>
           <Img src={logoUrl} alt="KiteSurf Passion" width="180" style={logo} />
         </Section>
-        <Heading style={h1}>Vous êtes invité(e) ! 🪁</Heading>
+        <Heading style={h1}>Vous êtes invité(e) 🪁</Heading>
         <Text style={text}>
           Vous avez été invité(e) à rejoindre{' '}
           <Link href={siteUrl} style={link}>
             <strong>KiteSurf Passion</strong>
           </Link>
-          . Cliquez ci-dessous pour accepter l'invitation et créer votre compte.
+          . Cliquez sur le bouton ci-dessous pour accepter l'invitation et créer votre compte.
         </Text>
         <Button style={button} href={confirmationUrl}>
           Accepter l'invitation
