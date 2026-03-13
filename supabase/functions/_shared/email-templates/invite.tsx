@@ -9,10 +9,8 @@ import {
   Head,
   Heading,
   Html,
-  Img,
   Link,
   Preview,
-  Section,
   Text,
 } from 'npm:@react-email/components@0.0.22'
 
@@ -22,40 +20,32 @@ interface InviteEmailProps {
   confirmationUrl: string
 }
 
-const logoUrl = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png'
-
 export const InviteEmail = ({
   siteName,
   siteUrl,
   confirmationUrl,
 }: InviteEmailProps) => (
-  <Html lang="fr" dir="ltr">
+  <Html lang="en" dir="ltr">
     <Head />
-    <Preview>Vous êtes invité(e) à rejoindre KiteSurf Passion</Preview>
+    <Preview>You've been invited to join {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Section style={header}>
-          <Img src={logoUrl} alt="KiteSurf Passion" width="180" style={logo} />
-        </Section>
-        <Heading style={h1}>Vous êtes invité(e) ! 🪁</Heading>
+        <Heading style={h1}>You've been invited</Heading>
         <Text style={text}>
-          Vous avez été invité(e) à rejoindre{' '}
+          You've been invited to join{' '}
           <Link href={siteUrl} style={link}>
-            <strong>KiteSurf Passion</strong>
+            <strong>{siteName}</strong>
           </Link>
-          . Cliquez ci-dessous pour accepter l'invitation et créer votre compte.
+          . Click the button below to accept the invitation and create your
+          account.
         </Text>
         <Button style={button} href={confirmationUrl}>
-          Accepter l'invitation
+          Accept Invitation
         </Button>
-        <Text style={footerNote}>
-          Si vous n'attendiez pas cette invitation, ignorez simplement cet email.
+        <Text style={footer}>
+          If you weren't expecting this invitation, you can safely ignore this
+          email.
         </Text>
-        <Section style={footerBrand}>
-          <Text style={footerText}>
-            📍 Spot de l'Almanarre, Hyères (Var) · Première école de kitesurf du Var depuis 1999
-          </Text>
-        </Section>
       </Container>
     </Body>
   </Html>
@@ -63,14 +53,27 @@ export const InviteEmail = ({
 
 export default InviteEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Montserrat, Inter, Arial, sans-serif' }
-const container = { padding: '0', maxWidth: '600px', margin: '0 auto' }
-const header = { backgroundColor: '#0F172A', padding: '24px 25px', textAlign: 'center' as const }
-const logo = { margin: '0 auto' }
-const h1 = { fontSize: '22px', fontWeight: 'bold' as const, color: '#0F172A', margin: '24px 25px 16px' }
-const text = { fontSize: '15px', color: '#64748B', lineHeight: '1.6', margin: '0 25px 20px' }
-const link = { color: '#0891B2', textDecoration: 'underline' }
-const button = { backgroundColor: '#F97316', color: '#ffffff', fontSize: '15px', fontWeight: 'bold' as const, borderRadius: '12px', padding: '14px 28px', textDecoration: 'none', display: 'block' as const, textAlign: 'center' as const, margin: '8px 25px 24px' }
-const footerNote = { fontSize: '12px', color: '#94a3b8', margin: '0 25px 24px' }
-const footerBrand = { backgroundColor: '#0F172A', padding: '16px 25px', textAlign: 'center' as const }
-const footerText = { fontSize: '12px', color: '#94a3b8', margin: '0' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
+const container = { padding: '20px 25px' }
+const h1 = {
+  fontSize: '22px',
+  fontWeight: 'bold' as const,
+  color: '#000000',
+  margin: '0 0 20px',
+}
+const text = {
+  fontSize: '14px',
+  color: '#55575d',
+  lineHeight: '1.5',
+  margin: '0 0 25px',
+}
+const link = { color: 'inherit', textDecoration: 'underline' }
+const button = {
+  backgroundColor: '#000000',
+  color: '#ffffff',
+  fontSize: '14px',
+  borderRadius: '8px',
+  padding: '12px 20px',
+  textDecoration: 'none',
+}
+const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
