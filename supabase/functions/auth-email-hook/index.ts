@@ -36,7 +36,7 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "sail-safe-spark"
+const SITE_NAME = "KiteSurf Passion"
 const SENDER_DOMAIN = "notify.notify.kitesurfpassion.fr"
 const ROOT_DOMAIN = "notify.kitesurfpassion.fr"
 const FROM_DOMAIN = "notify.notify.kitesurfpassion.fr" // Domain shown in From address (may be root or sender subdomain)

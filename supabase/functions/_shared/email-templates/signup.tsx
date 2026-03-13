@@ -9,8 +9,10 @@ import {
   Head,
   Heading,
   Html,
+  Img,
   Link,
   Preview,
+  Section,
   Text,
 } from 'npm:@react-email/components@0.0.22'
 
@@ -21,38 +23,48 @@ interface SignupEmailProps {
   confirmationUrl: string
 }
 
+const logoUrl = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png'
+
 export const SignupEmail = ({
   siteName,
   siteUrl,
   recipient,
   confirmationUrl,
 }: SignupEmailProps) => (
-  <Html lang="en" dir="ltr">
+  <Html lang="fr" dir="ltr">
     <Head />
-    <Preview>Confirm your email for {siteName}</Preview>
+    <Preview>Confirmez votre email – KiteSurf Passion</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Confirm your email</Heading>
+        <Section style={header}>
+          <Img src={logoUrl} alt="KiteSurf Passion" width="180" style={logo} />
+        </Section>
+        <Heading style={h1}>Bienvenue chez KiteSurf Passion 🪁</Heading>
         <Text style={text}>
-          Thanks for signing up for{' '}
+          Merci de vous être inscrit sur{' '}
           <Link href={siteUrl} style={link}>
-            <strong>{siteName}</strong>
-          </Link>
+            <strong>KiteSurf Passion</strong>
+          </Link>{' '}
           !
         </Text>
         <Text style={text}>
-          Please confirm your email address (
+          Confirmez votre adresse email (
           <Link href={`mailto:${recipient}`} style={link}>
             {recipient}
           </Link>
-          ) by clicking the button below:
+          ) en cliquant sur le bouton ci-dessous :
         </Text>
         <Button style={button} href={confirmationUrl}>
-          Verify Email
+          Confirmer mon email
         </Button>
-        <Text style={footer}>
-          If you didn't create an account, you can safely ignore this email.
+        <Text style={footerNote}>
+          Si vous n'avez pas créé de compte, ignorez simplement cet email.
         </Text>
+        <Section style={footerBrand}>
+          <Text style={footerText}>
+            📍 Spot de l'Almanarre, Hyères (Var) · Première école de kitesurf du Var depuis 1999
+          </Text>
+        </Section>
       </Container>
     </Body>
   </Html>
@@ -60,27 +72,14 @@ export const SignupEmail = ({
 
 export default SignupEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
-const h1 = {
-  fontSize: '22px',
-  fontWeight: 'bold' as const,
-  color: '#000000',
-  margin: '0 0 20px',
-}
-const text = {
-  fontSize: '14px',
-  color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
-}
-const link = { color: 'inherit', textDecoration: 'underline' }
-const button = {
-  backgroundColor: '#000000',
-  color: '#ffffff',
-  fontSize: '14px',
-  borderRadius: '8px',
-  padding: '12px 20px',
-  textDecoration: 'none',
-}
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Montserrat, Inter, Arial, sans-serif' }
+const container = { padding: '0', maxWidth: '600px', margin: '0 auto' }
+const header = { backgroundColor: '#0F172A', padding: '24px 25px', textAlign: 'center' as const }
+const logo = { margin: '0 auto' }
+const h1 = { fontSize: '22px', fontWeight: 'bold' as const, color: '#0F172A', margin: '24px 25px 16px' }
+const text = { fontSize: '15px', color: '#64748B', lineHeight: '1.6', margin: '0 25px 20px' }
+const link = { color: '#0891B2', textDecoration: 'underline' }
+const button = { backgroundColor: '#F97316', color: '#ffffff', fontSize: '15px', fontWeight: 'bold' as const, borderRadius: '12px', padding: '14px 28px', textDecoration: 'none', display: 'block' as const, textAlign: 'center' as const, margin: '8px 25px 24px' }
+const footerNote = { fontSize: '12px', color: '#94a3b8', margin: '0 25px 24px' }
+const footerBrand = { backgroundColor: '#0F172A', padding: '16px 25px', textAlign: 'center' as const }
+const footerText = { fontSize: '12px', color: '#94a3b8', margin: '0' }
