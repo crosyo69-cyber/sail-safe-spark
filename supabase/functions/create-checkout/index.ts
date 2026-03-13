@@ -29,22 +29,20 @@ Deno.serve(async (req) => {
     const origin =
       req.headers.get("origin") || "https://www.kitesurfpassion.fr";
 
+    const PRICE_ID = "price_1TAXYhJTWAAnYv4Vnnoy6jIP";
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
       line_items: [
         {
-          price_data: {
-            currency: "eur",
-            product_data: {
-              name: `Acompte – ${activityName}`,
-              description: `Acompte de réservation pour ${activityName}. Solde à régler le jour J.`,
-            },
-            unit_amount: 5000, // 50€ in cents
-          },
+          price: PRICE_ID,
           quantity: 1,
         },
       ],
+      metadata: {
+        activity_name: activityName,
+      },
       success_url: `${origin}/reservation-confirmee?activity=${encodeURIComponent(activityName)}`,
       cancel_url: `${origin}/contact-reservation-kitesurf-hyeres`,
     });
