@@ -169,11 +169,9 @@ Deno.serve(async (req) => {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
       const customerEmail = session.customer_details?.email;
-      const activityName = session.line_items?.data?.[0]?.description || session.metadata?.activity_name || "votre activité";
+      const activityName = session.metadata?.activity_name || "votre activité";
 
-      const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 1 });
-      const description = lineItems.data?.[0]?.description || activityName;
-      const cleanActivityName = description.replace(/^Acompte\s*[–-]\s*/, "");
+      const cleanActivityName = activityName;
 
       console.log(`Payment completed for: ${customerEmail}, activity: ${cleanActivityName}`);
 
