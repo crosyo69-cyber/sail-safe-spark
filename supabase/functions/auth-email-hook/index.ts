@@ -17,12 +17,12 @@ const corsHeaders = {
 }
 
 const EMAIL_SUBJECTS: Record<string, string> = {
-  signup: 'Confirm your email',
-  invite: "You've been invited",
-  magiclink: 'Your login link',
-  recovery: 'Reset your password',
-  email_change: 'Confirm your new email',
-  reauthentication: 'Your verification code',
+  signup: 'Confirmez votre email – KiteSurf Passion',
+  invite: 'Vous êtes invité(e) – KiteSurf Passion',
+  magiclink: 'Votre lien de connexion – KiteSurf Passion',
+  recovery: 'Réinitialisation du mot de passe – KiteSurf Passion',
+  email_change: 'Confirmez votre nouvel email – KiteSurf Passion',
+  reauthentication: 'Votre code de vérification – KiteSurf Passion',
 }
 
 // Template mapping
