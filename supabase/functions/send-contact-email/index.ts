@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 const SITE_NAME = "KiteSurf Passion";
-const FROM_DOMAIN = "notify.notify.kitesurfpassion.fr";
+const FROM_DOMAIN = "kitesurfpassion.fr";
 const OWNER_EMAIL = "crosyo69@gmail.com";
 const LOGO_URL = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png';
 
@@ -174,6 +174,10 @@ function buildOwnerEmailHtml(sanitized: NonNullable<ReturnType<typeof validateAn
 </html>`;
 }
 
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+}
+
 async function enqueueEmail(
   supabase: any,
   to: string,
@@ -183,6 +187,7 @@ async function enqueueEmail(
   replyTo?: string,
 ) {
   const messageId = crypto.randomUUID();
+  const runId = crypto.randomUUID();
 
   await supabase.from('email_send_log').insert({
     message_id: messageId,
@@ -194,12 +199,14 @@ async function enqueueEmail(
   const { error } = await supabase.rpc('enqueue_email', {
     queue_name: 'transactional_emails',
     payload: {
+      run_id: runId,
       message_id: messageId,
       to,
       from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
       sender_domain: FROM_DOMAIN,
       subject,
       html,
+      text: stripHtml(html),
       purpose: 'transactional',
       label: templateName,
       queued_at: new Date().toISOString(),
