@@ -1,6 +1,4 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -9,8 +7,7 @@ const corsHeaders = {
 };
 
 const SITE_NAME = "KiteSurf Passion";
-const SENDER_DOMAIN = "kitesurfpassion.fr";
-const FROM_DOMAIN = "kitesurfpassion.fr";
+const FROM_DOMAIN = "notify.notify.kitesurfpassion.fr";
 const OWNER_EMAIL = "crosyo69@gmail.com";
 const LOGO_URL = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png';
 
@@ -110,12 +107,9 @@ function buildCustomerEmailHtml(sanitized: NonNullable<ReturnType<typeof validat
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
 <body style="margin:0;padding:0;background-color:#ffffff;font-family:Montserrat,Inter,Arial,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;">
-    <!-- Header -->
     <tr><td style="background-color:#0F172A;padding:24px 25px;text-align:center;">
       <img src="${LOGO_URL}" alt="KiteSurf Passion" width="180" style="display:block;margin:0 auto;" />
     </td></tr>
-    
-    <!-- Body -->
     <tr><td style="padding:32px 25px 0;">
       <h1 style="font-size:22px;font-weight:bold;color:#0F172A;margin:0 0 16px;">Demande bien reçue !</h1>
       <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 20px;">
@@ -123,31 +117,17 @@ function buildCustomerEmailHtml(sanitized: NonNullable<ReturnType<typeof validat
         Nous avons bien reçu votre demande de réservation. Notre équipe vous recontactera <strong>sous 24 heures</strong> pour confirmer votre créneau.
       </p>
     </td></tr>
-
-    <!-- Recap card -->
     <tr><td style="padding:0 25px 24px;">
       <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F1F5F9;border-radius:12px;overflow:hidden;">
-        <tr><td style="padding:16px;font-size:15px;font-weight:bold;color:#0F172A;border-bottom:1px solid #E2E8F0;">
-          📋 Récapitulatif de votre demande
-        </td></tr>
+        <tr><td style="padding:16px;font-size:15px;font-weight:bold;color:#0F172A;border-bottom:1px solid #E2E8F0;">📋 Récapitulatif de votre demande</td></tr>
         ${detailRows}
-        ${sanitized.message ? `<tr><td colspan="2" style="padding:10px 16px;color:#64748B;font-size:14px;border-top:1px solid #E2E8F0;">
-          <strong>Message :</strong><br>${escapeHtml(sanitized.message)}
-        </td></tr>` : ''}
+        ${sanitized.message ? `<tr><td colspan="2" style="padding:10px 16px;color:#64748B;font-size:14px;border-top:1px solid #E2E8F0;"><strong>Message :</strong><br>${escapeHtml(sanitized.message)}</td></tr>` : ''}
       </table>
     </td></tr>
-
-    <!-- CTA -->
     <tr><td style="padding:0 25px 24px;text-align:center;">
-      <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 16px;">
-        Pour toute question urgente, appelez-nous directement :
-      </p>
-      <a href="tel:0672716905" style="display:inline-block;background-color:#F97316;color:#ffffff;font-size:15px;font-weight:bold;border-radius:12px;padding:14px 28px;text-decoration:none;">
-        📞 06 72 71 69 05
-      </a>
+      <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 16px;">Pour toute question urgente, appelez-nous directement :</p>
+      <a href="tel:0672716905" style="display:inline-block;background-color:#F97316;color:#ffffff;font-size:15px;font-weight:bold;border-radius:12px;padding:14px 28px;text-decoration:none;">📞 06 72 71 69 05</a>
     </td></tr>
-
-    <!-- Sign-off -->
     <tr><td style="padding:0 25px 24px;">
       <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0;">
         À très bientôt sur l'eau ! 🪁<br><br>
@@ -155,12 +135,8 @@ function buildCustomerEmailHtml(sanitized: NonNullable<ReturnType<typeof validat
         <span style="font-size:13px;color:#94a3b8;">Première école de kitesurf du Var depuis 1999</span>
       </p>
     </td></tr>
-
-    <!-- Footer -->
     <tr><td style="background-color:#0F172A;padding:16px 25px;text-align:center;">
-      <p style="font-size:12px;color:#94a3b8;margin:0;">
-        📍 Spot de l'Almanarre, Hyères (Var) · Première école de kitesurf du Var depuis 1999
-      </p>
+      <p style="font-size:12px;color:#94a3b8;margin:0;">📍 Spot de l'Almanarre, Hyères (Var) · Première école de kitesurf du Var depuis 1999</p>
     </td></tr>
   </table>
 </body>
@@ -198,44 +174,68 @@ function buildOwnerEmailHtml(sanitized: NonNullable<ReturnType<typeof validateAn
 </html>`;
 }
 
-const FROM_ADDRESS = `${SITE_NAME} <noreply@${FROM_DOMAIN}>`;
+async function enqueueEmail(
+  supabase: any,
+  to: string,
+  subject: string,
+  html: string,
+  templateName: string,
+  replyTo?: string,
+) {
+  const messageId = crypto.randomUUID();
 
-async function sendEmail(to: string, subject: string, html: string, replyTo?: string) {
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${RESEND_API_KEY}`,
-    },
-    body: JSON.stringify({
-      from: FROM_ADDRESS,
-      to: [to],
+  await supabase.from('email_send_log').insert({
+    message_id: messageId,
+    template_name: templateName,
+    recipient_email: to,
+    status: 'pending',
+  });
+
+  const { error } = await supabase.rpc('enqueue_email', {
+    queue_name: 'transactional_emails',
+    payload: {
+      message_id: messageId,
+      to,
+      from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
+      sender_domain: FROM_DOMAIN,
       subject,
       html,
+      purpose: 'transactional',
+      label: templateName,
+      queued_at: new Date().toISOString(),
       ...(replyTo ? { reply_to: replyTo } : {}),
-    }),
+    },
   });
-  const result = await res.json();
-  if (!res.ok) throw new Error(JSON.stringify(result));
-  return result;
+
+  if (error) {
+    console.error(`Failed to enqueue ${templateName} email:`, error);
+    await supabase.from('email_send_log').insert({
+      message_id: messageId,
+      template_name: templateName,
+      recipient_email: to,
+      status: 'failed',
+      error_message: 'Failed to enqueue email',
+    });
+    throw new Error(`Failed to enqueue ${templateName} email`);
+  }
+
+  console.log(`${templateName} email enqueued for ${to}`);
+  return messageId;
 }
 
-const handler = async (req: Request): Promise<Response> => {
+Deno.serve(async (req) => {
   console.log("Received contact form request");
 
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
-  if (!RESEND_API_KEY) {
-    console.error('RESEND_API_KEY not configured');
-    return new Response(
-      JSON.stringify({ error: 'Server configuration error' }),
-      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
-    );
-  }
-
   try {
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
+
     const data: ContactFormRequest = await req.json();
     console.log("Form data received");
 
@@ -250,36 +250,36 @@ const handler = async (req: Request): Promise<Response> => {
 
     const sanitized = validation.sanitized;
 
-    // 1. Send confirmation email to customer
-    console.log("Sending confirmation email to customer...");
+    // Enqueue confirmation email to customer
     try {
-      await sendEmail(
+      await enqueueEmail(
+        supabase,
         sanitized.email,
         "Confirmation de votre demande – KiteSurf Passion",
-        buildCustomerEmailHtml(sanitized)
+        buildCustomerEmailHtml(sanitized),
+        'contact_confirmation',
       );
-      console.log("Customer confirmation email sent");
     } catch (error) {
-      console.error('Customer email error:', error instanceof Error ? error.message : error);
+      console.error('Customer email enqueue error:', error instanceof Error ? error.message : error);
     }
 
-    // 2. Send notification email to owner
-    console.log("Sending notification email to owner...");
+    // Enqueue notification email to owner
     try {
-      await sendEmail(
+      await enqueueEmail(
+        supabase,
         OWNER_EMAIL,
         `Nouvelle réservation: ${sanitized.activity} – ${sanitized.name}`,
         buildOwnerEmailHtml(sanitized),
-        sanitized.email
+        'contact_owner_notification',
+        sanitized.email,
       );
-      console.log("Owner notification email sent");
     } catch (error) {
-      console.error('Owner email error:', error instanceof Error ? error.message : error);
-      throw new Error('Failed to send notification email');
+      console.error('Owner email enqueue error:', error instanceof Error ? error.message : error);
+      throw new Error('Failed to enqueue notification email');
     }
 
     return new Response(
-      JSON.stringify({ success: true, message: "Emails envoyés avec succès" }),
+      JSON.stringify({ success: true, message: "Emails mis en file d'attente avec succès" }),
       { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
   } catch (error: any) {
@@ -289,6 +289,4 @@ const handler = async (req: Request): Promise<Response> => {
       { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
   }
-};
-
-serve(handler);
+});
