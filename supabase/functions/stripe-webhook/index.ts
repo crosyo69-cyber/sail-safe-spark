@@ -1,6 +1,5 @@
 import Stripe from "https://esm.sh/stripe@14.21.0";
-
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
 
@@ -11,8 +10,7 @@ const corsHeaders = {
 };
 
 const SITE_NAME = "KiteSurf Passion";
-const SENDER_DOMAIN = "kitesurfpassion.fr";
-const FROM_DOMAIN = "kitesurfpassion.fr";
+const FROM_DOMAIN = "notify.notify.kitesurfpassion.fr";
 const OWNER_EMAIL = "crosyo69@gmail.com";
 const LOGO_URL = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png';
 
@@ -34,25 +32,20 @@ function buildCustomerPaymentEmail(activityName: string): string {
     <tr><td style="background-color:#0F172A;padding:24px 25px;text-align:center;">
       <img src="${LOGO_URL}" alt="KiteSurf Passion" width="180" style="display:block;margin:0 auto;" />
     </td></tr>
-
     <tr><td style="padding:32px 25px 0;">
       <h1 style="font-size:22px;font-weight:bold;color:#0F172A;margin:0 0 16px;">Votre réservation est confirmée ! ✅</h1>
       <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 20px;">
         Nous avons bien reçu votre acompte de <strong>50€</strong> pour <strong>${escapeHtml(activityName)}</strong>.
       </p>
     </td></tr>
-
     <tr><td style="padding:0 25px 24px;">
       <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F1F5F9;border-radius:12px;overflow:hidden;">
-        <tr><td style="padding:16px;font-size:15px;font-weight:bold;color:#0F172A;border-bottom:1px solid #E2E8F0;">
-          📋 Récapitulatif
-        </td></tr>
+        <tr><td style="padding:16px;font-size:15px;font-weight:bold;color:#0F172A;border-bottom:1px solid #E2E8F0;">📋 Récapitulatif</td></tr>
         <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Prestation</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${escapeHtml(activityName)}</td></tr>
         <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Acompte versé</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">50€</td></tr>
         <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Solde</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">À régler le jour J</td></tr>
       </table>
     </td></tr>
-
     <tr><td style="padding:0 25px 24px;">
       <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#FFFBEB;border-radius:12px;border-left:4px solid #F59E0B;overflow:hidden;">
         <tr><td style="padding:16px;">
@@ -63,13 +56,9 @@ function buildCustomerPaymentEmail(activityName: string): string {
         </td></tr>
       </table>
     </td></tr>
-
     <tr><td style="padding:0 25px 24px;text-align:center;">
-      <a href="tel:0672716905" style="display:inline-block;background-color:#F97316;color:#ffffff;font-size:15px;font-weight:bold;border-radius:12px;padding:14px 28px;text-decoration:none;">
-        📞 06 72 71 69 05
-      </a>
+      <a href="tel:0672716905" style="display:inline-block;background-color:#F97316;color:#ffffff;font-size:15px;font-weight:bold;border-radius:12px;padding:14px 28px;text-decoration:none;">📞 06 72 71 69 05</a>
     </td></tr>
-
     <tr><td style="padding:0 25px 24px;">
       <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0;">
         À très bientôt sur l'eau ! 🪁<br><br>
@@ -77,11 +66,8 @@ function buildCustomerPaymentEmail(activityName: string): string {
         <span style="font-size:13px;color:#94a3b8;">Première école de kitesurf du Var depuis 1999</span>
       </p>
     </td></tr>
-
     <tr><td style="background-color:#0F172A;padding:16px 25px;text-align:center;">
-      <p style="font-size:12px;color:#94a3b8;margin:0;">
-        📍 Spot de l'Almanarre, Hyères (Var) · Première école de kitesurf du Var depuis 1999
-      </p>
+      <p style="font-size:12px;color:#94a3b8;margin:0;">📍 Spot de l'Almanarre, Hyères (Var) · Première école de kitesurf du Var depuis 1999</p>
     </td></tr>
   </table>
 </body>
@@ -111,26 +97,53 @@ function buildOwnerPaymentEmail(activityName: string, customerEmail: string, ses
 </html>`;
 }
 
-const FROM_ADDRESS = `${SITE_NAME} <noreply@${FROM_DOMAIN}>`;
+async function enqueueEmail(
+  supabase: any,
+  to: string,
+  subject: string,
+  html: string,
+  templateName: string,
+  replyTo?: string,
+) {
+  const messageId = crypto.randomUUID();
 
-async function sendEmail(to: string, subject: string, html: string, replyTo?: string) {
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${RESEND_API_KEY}`,
-    },
-    body: JSON.stringify({
-      from: FROM_ADDRESS,
-      to: [to],
+  await supabase.from('email_send_log').insert({
+    message_id: messageId,
+    template_name: templateName,
+    recipient_email: to,
+    status: 'pending',
+  });
+
+  const { error } = await supabase.rpc('enqueue_email', {
+    queue_name: 'transactional_emails',
+    payload: {
+      message_id: messageId,
+      to,
+      from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
+      sender_domain: FROM_DOMAIN,
       subject,
       html,
+      purpose: 'transactional',
+      label: templateName,
+      queued_at: new Date().toISOString(),
       ...(replyTo ? { reply_to: replyTo } : {}),
-    }),
+    },
   });
-  const result = await res.json();
-  if (!res.ok) throw new Error(JSON.stringify(result));
-  return result;
+
+  if (error) {
+    console.error(`Failed to enqueue ${templateName} email:`, error);
+    await supabase.from('email_send_log').insert({
+      message_id: messageId,
+      template_name: templateName,
+      recipient_email: to,
+      status: 'failed',
+      error_message: 'Failed to enqueue email',
+    });
+    throw new Error(`Failed to enqueue ${templateName} email`);
+  }
+
+  console.log(`${templateName} email enqueued for ${to}`);
+  return messageId;
 }
 
 Deno.serve(async (req) => {
@@ -138,15 +151,15 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  if (!RESEND_API_KEY) {
-    console.error('RESEND_API_KEY not configured');
-    return new Response(JSON.stringify({ error: 'Server configuration error' }), { status: 500 });
-  }
-
   try {
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
       apiVersion: "2023-10-16",
     });
+
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
 
     const body = await req.text();
     const signature = req.headers.get("stripe-signature");
@@ -171,34 +184,32 @@ Deno.serve(async (req) => {
       const customerEmail = session.customer_details?.email;
       const activityName = session.metadata?.activity_name || "votre activité";
 
-      const cleanActivityName = activityName;
-
-      console.log(`Payment completed for: ${customerEmail}, activity: ${cleanActivityName}`);
+      console.log(`Payment completed for: ${customerEmail}, activity: ${activityName}`);
 
       if (customerEmail) {
-        // Send confirmation to customer
         try {
-          await sendEmail(
+          await enqueueEmail(
+            supabase,
             customerEmail,
-            `Confirmation de réservation – ${cleanActivityName}`,
-            buildCustomerPaymentEmail(cleanActivityName)
+            `Confirmation de réservation – ${activityName}`,
+            buildCustomerPaymentEmail(activityName),
+            'booking_confirmation',
           );
-          console.log("Customer confirmation email sent");
         } catch (error) {
-          console.error("Customer email error:", error instanceof Error ? error.message : error);
+          console.error("Customer email enqueue error:", error instanceof Error ? error.message : error);
         }
 
-        // Send notification to owner
         try {
-          await sendEmail(
+          await enqueueEmail(
+            supabase,
             OWNER_EMAIL,
-            `💰 Acompte reçu – ${cleanActivityName} (${customerEmail})`,
-            buildOwnerPaymentEmail(cleanActivityName, customerEmail, session.id),
-            customerEmail
+            `💰 Acompte reçu – ${activityName} (${customerEmail})`,
+            buildOwnerPaymentEmail(activityName, customerEmail, session.id),
+            'booking_owner_notification',
+            customerEmail,
           );
-          console.log("Owner notification email sent");
         } catch (error) {
-          console.error("Owner email error:", error instanceof Error ? error.message : error);
+          console.error("Owner email enqueue error:", error instanceof Error ? error.message : error);
         }
       }
     }
