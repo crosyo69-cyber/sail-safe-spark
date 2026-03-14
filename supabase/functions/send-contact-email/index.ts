@@ -183,6 +183,7 @@ async function enqueueEmail(
   replyTo?: string,
 ) {
   const messageId = crypto.randomUUID();
+  const runId = crypto.randomUUID();
 
   await supabase.from('email_send_log').insert({
     message_id: messageId,
