@@ -97,6 +97,10 @@ function buildOwnerPaymentEmail(activityName: string, customerEmail: string, ses
 </html>`;
 }
 
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+}
+
 async function enqueueEmail(
   supabase: any,
   to: string,
@@ -125,6 +129,7 @@ async function enqueueEmail(
       sender_domain: FROM_DOMAIN,
       subject,
       html,
+      text: stripHtml(html),
       purpose: 'transactional',
       label: templateName,
       queued_at: new Date().toISOString(),
