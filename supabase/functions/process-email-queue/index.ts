@@ -1,6 +1,40 @@
 import { sendLovableEmail } from 'npm:@lovable.dev/email-js'
 import { createClient } from 'npm:@supabase/supabase-js@2'
 
+const RESEND_API_KEY_ENV = 'RESEND_API_KEY'
+
+// Send email via Resend API (for transactional emails)
+async function sendViaResend(payload: any): Promise<void> {
+  const resendKey = Deno.env.get(RESEND_API_KEY_ENV)
+  if (!resendKey) throw new Error('RESEND_API_KEY not configured')
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${resendKey}`,
+    },
+    body: JSON.stringify({
+      from: payload.from,
+      to: [payload.to],
+      subject: payload.subject,
+      html: payload.html,
+      ...(payload.text ? { text: payload.text } : {}),
+      ...(payload.reply_to ? { reply_to: payload.reply_to } : {}),
+    }),
+  })
+  const result = await res.json()
+  if (!res.ok) {
+    if (res.status === 429) {
+      const err: any = new Error(`Resend rate limit: ${JSON.stringify(result)}`)
+      err.status = 429
+      err.retryAfterSeconds = parseInt(res.headers.get('Retry-After') || '60', 10)
+      throw err
+    }
+    throw new Error(`Resend error ${res.status}: ${JSON.stringify(result)}`)
+  }
+}
+
 const MAX_RETRIES = 5
 const DEFAULT_BATCH_SIZE = 10
 const DEFAULT_SEND_DELAY_MS = 200
