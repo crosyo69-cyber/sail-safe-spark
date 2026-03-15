@@ -44,7 +44,7 @@ const Admin = () => {
         </h1>
 
         <Tabs defaultValue="sessions" className="space-y-6">
-          <TabsList className="grid w-full max-w-md grid-cols-2">
+          <TabsList className="grid w-full max-w-lg grid-cols-3">
             <TabsTrigger value="sessions" className="gap-2">
               <CalendarDays className="w-4 h-4" />
               Sessions
@@ -52,6 +52,10 @@ const Admin = () => {
             <TabsTrigger value="reservations" className="gap-2">
               <ClipboardList className="w-4 h-4" />
               Réservations
+            </TabsTrigger>
+            <TabsTrigger value="emails" className="gap-2">
+              <Mail className="w-4 h-4" />
+              Emails
             </TabsTrigger>
           </TabsList>
 
@@ -61,6 +65,10 @@ const Admin = () => {
 
           <TabsContent value="reservations">
             <AdminReservationList />
+          </TabsContent>
+
+          <TabsContent value="emails">
+            <AdminEmailDashboard />
           </TabsContent>
         </Tabs>
       </main>
