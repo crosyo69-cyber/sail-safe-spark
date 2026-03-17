@@ -153,6 +153,85 @@ async function enqueueEmail(
   return messageId;
 }
 
+// Map activity names from metadata to a session for auto-reservation
+async function createReservationFromCheckout(
+  supabase: any,
+  session: Stripe.Checkout.Session,
+) {
+  const customerEmail = session.customer_details?.email;
+  const customerName = session.customer_details?.name || '';
+  const activityName = session.metadata?.activity_name || 'votre activité';
+
+  if (!customerEmail) {
+    console.error('No customer email found in checkout session');
+    return;
+  }
+
+  // Parse name into first/last
+  const nameParts = customerName.trim().split(/\s+/);
+  const firstName = nameParts[0] || 'Client';
+  const lastName = nameParts.slice(1).join(' ') || 'Stripe';
+
+  // Find or create a session to attach the reservation to
+  // First, try to find an open session for today or future
+  const today = new Date().toISOString().split('T')[0];
+  const { data: openSessions } = await supabase
+    .from('sessions')
+    .select('id')
+    .gte('date', today)
+    .eq('status', 'open')
+    .order('date', { ascending: true })
+    .limit(1);
+
+  let sessionId: string;
+
+  if (openSessions && openSessions.length > 0) {
+    sessionId = openSessions[0].id;
+  } else {
+    // Create a placeholder session for the admin to adjust later
+    const { data: newSession, error: sessionError } = await supabase
+      .from('sessions')
+      .insert({
+        date: today,
+        time_slot: 'morning',
+        activity: 'kitesurf', // default, admin can change
+        max_participants: 4,
+        status: 'open',
+        notes: `Session auto-créée pour paiement Stripe (${activityName})`,
+      })
+      .select('id')
+      .single();
+
+    if (sessionError) {
+      console.error('Failed to create session:', sessionError);
+      return;
+    }
+    sessionId = newSession.id;
+  }
+
+  // Insert the reservation
+  const { error: reservationError } = await supabase
+    .from('reservations')
+    .insert({
+      session_id: sessionId,
+      first_name: firstName,
+      last_name: lastName,
+      email: customerEmail,
+      phone: session.customer_details?.phone || 'Non renseigné',
+      skill_level: 'debutant',
+      participants: 1,
+      status: 'confirmed',
+      stripe_session_id: session.id,
+      notes: `Acompte 50€ payé via Stripe – ${activityName}`,
+    });
+
+  if (reservationError) {
+    console.error('Failed to create reservation:', reservationError);
+  } else {
+    console.log(`Reservation created for ${customerEmail} (${activityName})`);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -193,6 +272,14 @@ Deno.serve(async (req) => {
 
       console.log(`Payment completed for: ${customerEmail}, activity: ${activityName}`);
 
+      // Create reservation in database
+      try {
+        await createReservationFromCheckout(supabase, session);
+      } catch (error) {
+        console.error("Reservation creation error:", error instanceof Error ? error.message : error);
+      }
+
+      // Send confirmation emails
       if (customerEmail) {
         try {
           await enqueueEmail(
