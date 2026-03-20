@@ -47,6 +47,7 @@ interface Reservation {
   status: ReservationStatus;
   created_at: string;
   notes: string | null;
+  stripe_session_id: string | null;
   sessions: {
     date: string;
     time_slot: string;
