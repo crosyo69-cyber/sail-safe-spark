@@ -166,6 +166,13 @@ const AdminReservationList = () => {
                     </p>
                   )}
 
+                  {r.stripe_session_id && (
+                    <p className="text-xs text-muted-foreground font-mono">
+                      <CreditCard className="w-3 h-3 inline mr-1" />
+                      {r.stripe_session_id}
+                    </p>
+                  )}
+
                   <p className="text-xs text-muted-foreground">
                     <Clock className="w-3 h-3 inline mr-1" />
                     Réservé le {format(new Date(r.created_at), "d MMM yyyy à HH:mm", { locale: fr })}
