@@ -169,7 +169,14 @@ const AdminReservationList = () => {
                   {r.stripe_session_id && (
                     <p className="text-xs text-muted-foreground font-mono">
                       <CreditCard className="w-3 h-3 inline mr-1" />
-                      {r.stripe_session_id}
+                      <a
+                        href={`https://dashboard.stripe.com/checkout/sessions/${r.stripe_session_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline hover:text-primary transition-colors"
+                      >
+                        {r.stripe_session_id}
+                      </a>
                     </p>
                   )}
 
