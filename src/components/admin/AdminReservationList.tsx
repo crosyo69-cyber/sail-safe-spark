@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Check, X, Clock, User, Phone, Mail } from "lucide-react";
+import { Check, X, Clock, User, Phone, Mail, CreditCard } from "lucide-react";
 
 type ReservationStatus = "pending" | "confirmed" | "cancelled";
 
