@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Check, X, Clock, User, Phone, Mail } from "lucide-react";
+import { Check, X, Clock, User, Phone, Mail, CreditCard } from "lucide-react";
 
 type ReservationStatus = "pending" | "confirmed" | "cancelled";
 
@@ -47,6 +47,7 @@ interface Reservation {
   status: ReservationStatus;
   created_at: string;
   notes: string | null;
+  stripe_session_id: string | null;
   sessions: {
     date: string;
     time_slot: string;
@@ -162,6 +163,13 @@ const AdminReservationList = () => {
                       {format(new Date(r.sessions.date), "d MMMM yyyy", { locale: fr })}
                       {" • "}
                       {SLOT_LABELS[r.sessions.time_slot] || r.sessions.time_slot}
+                    </p>
+                  )}
+
+                  {r.stripe_session_id && (
+                    <p className="text-xs text-muted-foreground font-mono">
+                      <CreditCard className="w-3 h-3 inline mr-1" />
+                      {r.stripe_session_id}
                     </p>
                   )}
 
