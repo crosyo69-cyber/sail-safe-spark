@@ -274,8 +274,9 @@ Deno.serve(async (req) => {
       const session = event.data.object as Stripe.Checkout.Session;
       const customerEmail = session.customer_details?.email;
       const activityName = session.metadata?.activity_name || "votre activité";
+      const participants = Math.max(1, parseInt(session.metadata?.participants || '1', 10));
 
-      console.log(`Payment completed for: ${customerEmail}, activity: ${activityName}`);
+      console.log(`Payment completed for: ${customerEmail}, activity: ${activityName}, participants: ${participants}`);
 
       // Create reservation in database
       try {
@@ -291,7 +292,7 @@ Deno.serve(async (req) => {
             supabase,
             customerEmail,
             `Confirmation de réservation – ${activityName}`,
-            buildCustomerPaymentEmail(activityName),
+            buildCustomerPaymentEmail(activityName, participants),
             'booking_confirmation',
           );
         } catch (error) {
@@ -303,7 +304,7 @@ Deno.serve(async (req) => {
             supabase,
             OWNER_EMAIL,
             `💰 Acompte reçu – ${activityName} (${customerEmail})`,
-            buildOwnerPaymentEmail(activityName, customerEmail, session.id),
+            buildOwnerPaymentEmail(activityName, customerEmail, session.id, participants),
             'booking_owner_notification',
             customerEmail,
           );
