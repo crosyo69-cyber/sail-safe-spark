@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CreditCard, Ship, Award, Settings, Repeat, MapPin } from "lucide-react";
+import { CreditCard, Ship, Award, Settings, Repeat, MapPin, Minus, Plus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -40,14 +40,25 @@ const activities = [
 const DepositPaymentSection = () => {
   const { toast } = useToast();
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [participants, setParticipants] = useState<Record<string, number>>({});
+
+  const getCount = (id: string) => participants[id] || 1;
+
+  const updateCount = (id: string, delta: number) => {
+    setParticipants((prev) => {
+      const current = prev[id] || 1;
+      const next = Math.max(1, Math.min(6, current + delta));
+      return { ...prev, [id]: next };
+    });
+  };
 
   const handleCheckout = async (activityName: string, activityId: string) => {
     setLoadingId(activityId);
-    // Open window immediately on user click so the browser allows it
+    const count = getCount(activityId);
     const stripeWindow = window.open("about:blank", "_blank");
     try {
       const { data, error } = await supabase.functions.invoke("create-checkout", {
-        body: { activityName },
+        body: { activityName, participants: count },
       });
 
       if (error) throw error;
@@ -55,7 +66,6 @@ const DepositPaymentSection = () => {
         if (stripeWindow && !stripeWindow.closed) {
           stripeWindow.location.href = data.url;
         } else {
-          // Fallback if window was closed or blocked
           window.location.href = data.url;
         }
       } else {
@@ -87,41 +97,72 @@ const DepositPaymentSection = () => {
               Réservez en Ligne
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Versez un acompte de 50€ pour confirmer votre réservation. Le solde sera à régler le jour de votre cours.
+              Versez un acompte de 50€ par personne pour confirmer votre réservation. Le solde sera à régler le jour de votre cours.
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {activities.map((activity) => (
-              <div
-                key={activity.id}
-                className="bg-card border border-border rounded-2xl p-6 flex flex-col hover:border-primary/50 transition-colors"
-              >
-                <div className="w-12 h-12 mb-4 bg-gradient-to-br from-primary/20 to-turquoise/20 rounded-xl flex items-center justify-center">
-                  <activity.icon className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="font-bold text-foreground mb-1">{activity.name}</h3>
-                <p className="text-muted-foreground text-sm mb-4 flex-1">
-                  {activity.description}
-                </p>
-                <div className="bg-muted/50 rounded-lg p-3 mb-4 text-center">
-                  <p className="text-sm font-semibold text-foreground">
-                    Acompte de réservation : 50€
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    (solde à régler le jour J)
-                  </p>
-                </div>
-                <Button
-                  variant="sunset"
-                  className="w-full"
-                  disabled={loadingId === activity.id}
-                  onClick={() => handleCheckout(activity.name, activity.id)}
+            {activities.map((activity) => {
+              const count = getCount(activity.id);
+              const total = count * 50;
+              return (
+                <div
+                  key={activity.id}
+                  className="bg-card border border-border rounded-2xl p-6 flex flex-col hover:border-primary/50 transition-colors"
                 >
-                  {loadingId === activity.id ? "Redirection…" : "Payer l'acompte"}
-                </Button>
-              </div>
-            ))}
+                  <div className="w-12 h-12 mb-4 bg-gradient-to-br from-primary/20 to-turquoise/20 rounded-xl flex items-center justify-center">
+                    <activity.icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-bold text-foreground mb-1">{activity.name}</h3>
+                  <p className="text-muted-foreground text-sm mb-4 flex-1">
+                    {activity.description}
+                  </p>
+
+                  {/* Participant selector */}
+                  <div className="flex items-center justify-between bg-muted/50 rounded-lg px-3 py-2 mb-3">
+                    <span className="text-sm text-muted-foreground">Participants</span>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => updateCount(activity.id, -1)}
+                        disabled={count <= 1}
+                        className="w-7 h-7 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:bg-muted disabled:opacity-30 transition-colors"
+                      >
+                        <Minus className="w-3 h-3" />
+                      </button>
+                      <span className="w-6 text-center font-semibold text-foreground text-sm">
+                        {count}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => updateCount(activity.id, 1)}
+                        disabled={count >= 6}
+                        className="w-7 h-7 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:bg-muted disabled:opacity-30 transition-colors"
+                      >
+                        <Plus className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="bg-muted/50 rounded-lg p-3 mb-4 text-center">
+                    <p className="text-sm font-semibold text-foreground">
+                      Acompte : {total}€ {count > 1 && <span className="font-normal text-muted-foreground">({count} × 50€)</span>}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      (solde à régler le jour J)
+                    </p>
+                  </div>
+                  <Button
+                    variant="sunset"
+                    className="w-full"
+                    disabled={loadingId === activity.id}
+                    onClick={() => handleCheckout(activity.name, activity.id)}
+                  >
+                    {loadingId === activity.id ? "Redirection…" : "Payer l'acompte"}
+                  </Button>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

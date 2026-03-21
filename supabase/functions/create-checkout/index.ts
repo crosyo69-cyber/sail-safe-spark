@@ -12,7 +12,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { activityName } = await req.json();
+    const { activityName, participants } = await req.json();
 
     if (!activityName || typeof activityName !== "string") {
       return new Response(JSON.stringify({ error: "activityName is required" }), {
@@ -21,11 +21,12 @@ Deno.serve(async (req) => {
       });
     }
 
+    const count = Math.max(1, Math.min(6, Math.floor(Number(participants) || 1)));
+
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
       apiVersion: "2023-10-16",
     });
 
-    // Get origin from request or use production URL
     const origin =
       req.headers.get("origin") || "https://www.kitesurfpassion.fr";
 
@@ -37,11 +38,12 @@ Deno.serve(async (req) => {
       line_items: [
         {
           price: PRICE_ID,
-          quantity: 1,
+          quantity: count,
         },
       ],
       metadata: {
         activity_name: activityName,
+        participants: String(count),
       },
       success_url: `${origin}/reservation-confirmee?activity=${encodeURIComponent(activityName)}`,
       cancel_url: `${origin}/contact-reservation-kitesurf-hyeres`,

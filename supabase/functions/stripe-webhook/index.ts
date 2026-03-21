@@ -23,7 +23,9 @@ function escapeHtml(text: string): string {
     .replace(/'/g, "&#039;");
 }
 
-function buildCustomerPaymentEmail(activityName: string): string {
+function buildCustomerPaymentEmail(activityName: string, participants: number): string {
+  const amount = participants * 50;
+  const participantsLabel = participants > 1 ? `${participants} personnes` : '1 personne';
   return `<!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
@@ -35,14 +37,15 @@ function buildCustomerPaymentEmail(activityName: string): string {
     <tr><td style="padding:32px 25px 0;">
       <h1 style="font-size:22px;font-weight:bold;color:#0F172A;margin:0 0 16px;">Votre réservation est confirmée ! ✅</h1>
       <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 20px;">
-        Nous avons bien reçu votre acompte de <strong>50€</strong> pour <strong>${escapeHtml(activityName)}</strong>.
+        Nous avons bien reçu votre acompte de <strong>${amount}€</strong> pour <strong>${escapeHtml(activityName)}</strong> (${participantsLabel}).
       </p>
     </td></tr>
     <tr><td style="padding:0 25px 24px;">
       <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F1F5F9;border-radius:12px;overflow:hidden;">
         <tr><td style="padding:16px;font-size:15px;font-weight:bold;color:#0F172A;border-bottom:1px solid #E2E8F0;">📋 Récapitulatif</td></tr>
         <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Prestation</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${escapeHtml(activityName)}</td></tr>
-        <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Acompte versé</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">50€</td></tr>
+        <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Participants</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${participantsLabel}</td></tr>
+        <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Acompte versé</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${amount}€</td></tr>
         <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Solde</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">À régler le jour J</td></tr>
       </table>
     </td></tr>
@@ -74,7 +77,8 @@ function buildCustomerPaymentEmail(activityName: string): string {
 </html>`;
 }
 
-function buildOwnerPaymentEmail(activityName: string, customerEmail: string, sessionId: string): string {
+function buildOwnerPaymentEmail(activityName: string, customerEmail: string, sessionId: string, participants: number): string {
+  const amount = participants * 50;
   return `<!DOCTYPE html>
 <html lang="fr"><head><meta charset="utf-8"></head>
 <body style="margin:0;padding:0;background-color:#ffffff;font-family:Montserrat,Inter,Arial,sans-serif;">
@@ -87,8 +91,9 @@ function buildOwnerPaymentEmail(activityName: string, customerEmail: string, ses
       <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
         <tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Prestation</td><td style="padding:10px;border:1px solid #E2E8F0;color:#0F172A;">${escapeHtml(activityName)}</td></tr>
         <tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Email client</td><td style="padding:10px;border:1px solid #E2E8F0;"><a href="mailto:${escapeHtml(customerEmail)}" style="color:#0891B2;">${escapeHtml(customerEmail)}</a></td></tr>
-        <tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Montant</td><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">50€</td></tr>
-        <tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">ID Stripe</td><td style="padding:10px;border:1px solid #E2E8F0;color:#64748B;font-size:12px;">${escapeHtml(sessionId)}</td></tr>
+        <tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Participants</td><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">${participants}</td></tr>
+        <tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Montant</td><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">${amount}€</td></tr>
+        <tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">ID Stripe</td><td style="padding:10px;border:1px solid #E2E8F0;color:#64748B;font-size:12px;">${escapeHtml(sessionId)}</td></tr>
       </table>
       <p style="font-size:13px;color:#94a3b8;margin:20px 0 0;">Le client a été invité à vous contacter la veille pour confirmer son créneau.</p>
     </td></tr>
@@ -219,10 +224,10 @@ async function createReservationFromCheckout(
       email: customerEmail,
       phone: session.customer_details?.phone || 'Non renseigné',
       skill_level: 'debutant',
-      participants: 1,
+      participants: Math.max(1, parseInt(session.metadata?.participants || '1', 10)),
       status: 'confirmed',
       stripe_session_id: session.id,
-      notes: `Acompte 50€ payé via Stripe – ${activityName}`,
+      notes: `Acompte ${Math.max(1, parseInt(session.metadata?.participants || '1', 10)) * 50}€ payé via Stripe – ${activityName}`,
     });
 
   if (reservationError) {
@@ -269,8 +274,9 @@ Deno.serve(async (req) => {
       const session = event.data.object as Stripe.Checkout.Session;
       const customerEmail = session.customer_details?.email;
       const activityName = session.metadata?.activity_name || "votre activité";
+      const participants = Math.max(1, parseInt(session.metadata?.participants || '1', 10));
 
-      console.log(`Payment completed for: ${customerEmail}, activity: ${activityName}`);
+      console.log(`Payment completed for: ${customerEmail}, activity: ${activityName}, participants: ${participants}`);
 
       // Create reservation in database
       try {
@@ -286,7 +292,7 @@ Deno.serve(async (req) => {
             supabase,
             customerEmail,
             `Confirmation de réservation – ${activityName}`,
-            buildCustomerPaymentEmail(activityName),
+            buildCustomerPaymentEmail(activityName, participants),
             'booking_confirmation',
           );
         } catch (error) {
@@ -298,7 +304,7 @@ Deno.serve(async (req) => {
             supabase,
             OWNER_EMAIL,
             `💰 Acompte reçu – ${activityName} (${customerEmail})`,
-            buildOwnerPaymentEmail(activityName, customerEmail, session.id),
+            buildOwnerPaymentEmail(activityName, customerEmail, session.id, participants),
             'booking_owner_notification',
             customerEmail,
           );
