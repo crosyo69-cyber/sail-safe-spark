@@ -77,7 +77,8 @@ function buildCustomerPaymentEmail(activityName: string, participants: number): 
 </html>`;
 }
 
-function buildOwnerPaymentEmail(activityName: string, customerEmail: string, sessionId: string): string {
+function buildOwnerPaymentEmail(activityName: string, customerEmail: string, sessionId: string, participants: number): string {
+  const amount = participants * 50;
   return `<!DOCTYPE html>
 <html lang="fr"><head><meta charset="utf-8"></head>
 <body style="margin:0;padding:0;background-color:#ffffff;font-family:Montserrat,Inter,Arial,sans-serif;">
@@ -90,8 +91,9 @@ function buildOwnerPaymentEmail(activityName: string, customerEmail: string, ses
       <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
         <tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Prestation</td><td style="padding:10px;border:1px solid #E2E8F0;color:#0F172A;">${escapeHtml(activityName)}</td></tr>
         <tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Email client</td><td style="padding:10px;border:1px solid #E2E8F0;"><a href="mailto:${escapeHtml(customerEmail)}" style="color:#0891B2;">${escapeHtml(customerEmail)}</a></td></tr>
-        <tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Montant</td><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">50€</td></tr>
-        <tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">ID Stripe</td><td style="padding:10px;border:1px solid #E2E8F0;color:#64748B;font-size:12px;">${escapeHtml(sessionId)}</td></tr>
+        <tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Participants</td><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">${participants}</td></tr>
+        <tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Montant</td><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">${amount}€</td></tr>
+        <tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">ID Stripe</td><td style="padding:10px;border:1px solid #E2E8F0;color:#64748B;font-size:12px;">${escapeHtml(sessionId)}</td></tr>
       </table>
       <p style="font-size:13px;color:#94a3b8;margin:20px 0 0;">Le client a été invité à vous contacter la veille pour confirmer son créneau.</p>
     </td></tr>
