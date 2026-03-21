@@ -224,10 +224,10 @@ async function createReservationFromCheckout(
       email: customerEmail,
       phone: session.customer_details?.phone || 'Non renseigné',
       skill_level: 'debutant',
-      participants: 1,
+      participants: Math.max(1, parseInt(session.metadata?.participants || '1', 10)),
       status: 'confirmed',
       stripe_session_id: session.id,
-      notes: `Acompte 50€ payé via Stripe – ${activityName}`,
+      notes: `Acompte ${Math.max(1, parseInt(session.metadata?.participants || '1', 10)) * 50}€ payé via Stripe – ${activityName}`,
     });
 
   if (reservationError) {
