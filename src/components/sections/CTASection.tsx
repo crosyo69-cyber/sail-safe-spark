@@ -56,6 +56,8 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
           email: formData.email,
           phone: formData.phone,
           activity: activityLabels[formData.activity] || formData.activity,
+          honeypot,
+          formTimestamp,
         },
       });
 
