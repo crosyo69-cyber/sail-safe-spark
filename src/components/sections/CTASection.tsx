@@ -25,13 +25,9 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
     // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    toast({
-      title: "Demande envoyée !",
-      description: "Nous vous recontacterons sous 24h.",
-    });
-
     setFormData({ firstName: "", email: "", phone: "", activity: "kitesurf" });
     setIsSubmitting(false);
+    navigate("/merci");
   };
 
   const handlePhoneClick = () => {
