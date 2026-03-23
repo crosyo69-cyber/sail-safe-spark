@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Phone, Send } from "lucide-react";
 import { forwardRef, useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 import { trackCTAClick, trackFormSubmit, trackPhoneClick } from "@/lib/analytics";
 import sunsetImage from "@/assets/almanarre-sunset.jpg?webp";
 
 export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_, ref) {
-  const { toast } = useToast();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     email: "",
@@ -25,13 +25,9 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
     // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    toast({
-      title: "Demande envoyée !",
-      description: "Nous vous recontacterons sous 24h.",
-    });
-
     setFormData({ firstName: "", email: "", phone: "", activity: "kitesurf" });
     setIsSubmitting(false);
+    navigate("/merci");
   };
 
   const handlePhoneClick = () => {
