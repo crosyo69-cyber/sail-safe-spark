@@ -2,11 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Phone, Send } from "lucide-react";
 import { forwardRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { trackCTAClick, trackFormSubmit, trackPhoneClick } from "@/lib/analytics";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { trackFormSubmit, trackPhoneClick } from "@/lib/analytics";
 import sunsetImage from "@/assets/almanarre-sunset.jpg?webp";
 
 export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_, ref) {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     firstName: "",
     email: "",
@@ -15,19 +18,43 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const activityLabels: Record<string, string> = {
+    kitesurf: "Kitesurf débutant",
+    wingfoil: "Wing Foil",
+    pumpfoil: "Pump Foil",
+    perfectionnement: "Perfectionnement",
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Track form submission
     trackFormSubmit("cta_reservation", "homepage_cta", { activity: formData.activity });
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const { data, error } = await supabase.functions.invoke("send-contact-email", {
+        body: {
+          name: formData.firstName,
+          email: formData.email,
+          phone: formData.phone,
+          activity: activityLabels[formData.activity] || formData.activity,
+        },
+      });
 
-    setFormData({ firstName: "", email: "", phone: "", activity: "kitesurf" });
-    setIsSubmitting(false);
-    navigate("/merci");
+      if (error) throw error;
+
+      setFormData({ firstName: "", email: "", phone: "", activity: "kitesurf" });
+      navigate("/merci");
+    } catch (error) {
+      console.error("CTA form error:", error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue. Veuillez réessayer ou nous appeler directement.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handlePhoneClick = () => {
