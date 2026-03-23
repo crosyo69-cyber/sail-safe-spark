@@ -110,6 +110,7 @@ const App = () => {
                <Route path="/mentions-legales" element={<MentionsLegales />} />
                 <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
                 <Route path="/reservation-confirmee" element={<ReservationConfirmee />} />
+                <Route path="/merci" element={<Merci />} />
                 <Route path="/admin" element={<Admin />} />
                 {/* Legacy URL redirections (old .com site → new .fr routes) */}
                <Route path="*" element={<LegacyRedirectHandler />} />
