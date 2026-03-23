@@ -2,7 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Phone, Send } from "lucide-react";
 import { forwardRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { trackCTAClick, trackFormSubmit, trackPhoneClick } from "@/lib/analytics";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { trackFormSubmit, trackPhoneClick } from "@/lib/analytics";
 import sunsetImage from "@/assets/almanarre-sunset.jpg?webp";
 
 export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_, ref) {
