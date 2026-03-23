@@ -6,7 +6,7 @@ import { trackCTAClick, trackFormSubmit, trackPhoneClick } from "@/lib/analytics
 import sunsetImage from "@/assets/almanarre-sunset.jpg?webp";
 
 export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_, ref) {
-  const { toast } = useToast();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     email: "",
