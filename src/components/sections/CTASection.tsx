@@ -123,6 +123,17 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
             onSubmit={handleSubmit}
             className="bg-primary-foreground/10 backdrop-blur-xl rounded-3xl p-6 sm:p-10 border border-primary-foreground/20 max-w-2xl mx-auto mb-8"
           >
+            {/* Honeypot - hidden from humans */}
+            <input
+              type="text"
+              name="website"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              className="absolute -left-[9999px] opacity-0 h-0 w-0"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+            />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <div>
                 <input
