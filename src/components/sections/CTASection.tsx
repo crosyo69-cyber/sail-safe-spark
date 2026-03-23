@@ -17,6 +17,8 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
     activity: "kitesurf",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const [formTimestamp] = useState(Date.now());
 
   const activityLabels: Record<string, string> = {
     kitesurf: "Kitesurf débutant",
