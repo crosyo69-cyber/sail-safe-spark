@@ -17,6 +17,8 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
     activity: "kitesurf",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const [formTimestamp] = useState(Date.now());
 
   const activityLabels: Record<string, string> = {
     kitesurf: "Kitesurf débutant",
@@ -27,8 +29,24 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
 
+    // Honeypot check
+    if (honeypot) {
+      navigate("/merci");
+      return;
+    }
+
+    // Time-based check — form should take at least 3 seconds
+    if (Date.now() - formTimestamp < 3000) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez prendre le temps de remplir le formulaire.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
     trackFormSubmit("cta_reservation", "homepage_cta", { activity: formData.activity });
 
     try {
@@ -38,6 +56,8 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
           email: formData.email,
           phone: formData.phone,
           activity: activityLabels[formData.activity] || formData.activity,
+          honeypot,
+          formTimestamp,
         },
       });
 
@@ -103,6 +123,17 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
             onSubmit={handleSubmit}
             className="bg-primary-foreground/10 backdrop-blur-xl rounded-3xl p-6 sm:p-10 border border-primary-foreground/20 max-w-2xl mx-auto mb-8"
           >
+            {/* Honeypot - hidden from humans */}
+            <input
+              type="text"
+              name="website"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              className="absolute -left-[9999px] opacity-0 h-0 w-0"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+            />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <div>
                 <input
