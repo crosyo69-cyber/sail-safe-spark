@@ -29,8 +29,24 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
 
+    // Honeypot check
+    if (honeypot) {
+      navigate("/merci");
+      return;
+    }
+
+    // Time-based check — form should take at least 3 seconds
+    if (Date.now() - formTimestamp < 3000) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez prendre le temps de remplir le formulaire.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
     trackFormSubmit("cta_reservation", "homepage_cta", { activity: formData.activity });
 
     try {
