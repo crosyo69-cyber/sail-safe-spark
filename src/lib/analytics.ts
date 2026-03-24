@@ -8,6 +8,7 @@ declare global {
 }
 
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
+const GOOGLE_ADS_ID = 'AW-974052357';
 
 let isInitialized = false;
 
