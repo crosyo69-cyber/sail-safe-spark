@@ -173,8 +173,32 @@ export function trackPhoneClick(location: string): void {
 }
 
 /**
+ * Track Google Ads conversion (called on /merci page)
+ */
+export function trackGoogleAdsConversion(conversionLabel?: string): void {
+  if (!isInitialized || typeof window.gtag !== 'function' || !GOOGLE_ADS_ID) {
+    return;
+  }
+
+  const conversionId = conversionLabel
+    ? `${GOOGLE_ADS_ID}/${conversionLabel}`
+    : GOOGLE_ADS_ID;
+
+  window.gtag('event', 'conversion', {
+    send_to: conversionId,
+  });
+
+  if (import.meta.env.DEV) {
+    console.log(
+      `%c[Analytics] Google Ads Conversion tracked: ${conversionId}`,
+      'color: #ea4335; font-weight: bold'
+    );
+  }
+}
+
+/**
  * Check if analytics is enabled and initialized
  */
 export function isAnalyticsEnabled(): boolean {
-  return isInitialized && !!GA_MEASUREMENT_ID;
+  return isInitialized && !!(GA_MEASUREMENT_ID || GOOGLE_ADS_ID);
 }
