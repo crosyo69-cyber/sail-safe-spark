@@ -17,9 +17,11 @@ let isInitialized = false;
  * Uses a deferred approach to avoid React DOM conflicts
  */
 export function initGA4(): void {
-  if (isInitialized || !GA_MEASUREMENT_ID) {
-    if (!GA_MEASUREMENT_ID && import.meta.env.DEV) {
-      console.warn('[Analytics] GA_MEASUREMENT_ID not configured - analytics disabled');
+  if (isInitialized) return;
+
+  if (!GA_MEASUREMENT_ID && !GOOGLE_ADS_ID) {
+    if (import.meta.env.DEV) {
+      console.warn('[Analytics] No tracking IDs configured - analytics disabled');
     }
     return;
   }
@@ -34,31 +36,34 @@ export function initGA4(): void {
   window.gtag('js', new Date());
 
   // Configure GA4
-  window.gtag('config', GA_MEASUREMENT_ID, {
-    send_page_view: true,
-    cookie_flags: 'SameSite=None;Secure',
-  });
+  if (GA_MEASUREMENT_ID) {
+    window.gtag('config', GA_MEASUREMENT_ID, {
+      send_page_view: true,
+      cookie_flags: 'SameSite=None;Secure',
+    });
+  }
+
+  // Configure Google Ads
+  if (GOOGLE_ADS_ID) {
+    window.gtag('config', GOOGLE_ADS_ID);
+  }
 
   // Defer script loading to avoid React DOM conflicts
-  // Use requestIdleCallback to load after React has mounted
   const loadGAScript = () => {
+    const trackingId = GA_MEASUREMENT_ID || GOOGLE_ADS_ID;
     const script = document.createElement('script');
     script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-    
-    // Append to body instead of head to avoid hydration conflicts
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
     document.body.appendChild(script);
     
     isInitialized = true;
-    console.log('%c[Analytics] Google Analytics 4 initialized', 'color: #4285f4; font-weight: bold');
+    console.log('%c[Analytics] Google Analytics & Ads initialized', 'color: #4285f4; font-weight: bold');
   };
 
-  // Wait for React to finish initial render, then load GA
   if ('requestIdleCallback' in window) {
     (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => void })
       .requestIdleCallback(loadGAScript, { timeout: 3000 });
   } else {
-    // Fallback for Safari
     setTimeout(loadGAScript, 2000);
   }
 }
