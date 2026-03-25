@@ -9,7 +9,7 @@ import { trackGoogleAdsConversion } from "@/lib/analytics";
 
 const Merci = () => {
   useEffect(() => {
-    trackGoogleAdsConversion();
+    trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
   }, []);
   return (
     <>
