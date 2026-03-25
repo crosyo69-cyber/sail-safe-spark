@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { trackGoogleAdsConversion } from "@/lib/analytics";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
