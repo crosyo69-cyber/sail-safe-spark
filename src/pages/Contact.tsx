@@ -146,6 +146,9 @@ const Contact = () => {
       // Record submission time for rate limiting
       localStorage.setItem('lastContactSubmit', Date.now().toString());
 
+      // Track Google Ads conversion
+      trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
+
       toast({
         title: "Demande envoyée !",
         description: "Nous vous recontacterons sous 24h pour confirmer votre réservation.",
