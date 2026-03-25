@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { trackGoogleAdsConversion } from "@/lib/analytics";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
@@ -144,6 +145,9 @@ const Contact = () => {
 
       // Record submission time for rate limiting
       localStorage.setItem('lastContactSubmit', Date.now().toString());
+
+      // Track Google Ads conversion
+      trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
 
       toast({
         title: "Demande envoyée !",
