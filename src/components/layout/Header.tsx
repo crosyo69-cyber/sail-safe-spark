@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 import { trackPhoneClick } from "@/lib/analytics";
+import { trackMetaContact } from "@/lib/meta-pixel";
 
 const navigation = [
   { name: "Accueil", href: "/" },
@@ -169,7 +170,7 @@ export function Header() {
           <a 
             href="tel:0672716905" 
             className="hidden sm:block"
-            onClick={() => trackPhoneClick("header")}
+            onClick={() => { trackPhoneClick("header"); trackMetaContact({ content_name: "phone_click", content_category: "header" }); }}
           >
             <Button variant={isScrolled ? "sunset" : "heroFilled"} size="default">
               <Phone className="w-4 h-4" />
@@ -253,7 +254,7 @@ export function Header() {
             <a 
               href="tel:0672716905" 
               className="mt-2"
-              onClick={() => trackPhoneClick("mobile_menu")}
+              onClick={() => { trackPhoneClick("mobile_menu"); trackMetaContact({ content_name: "phone_click", content_category: "mobile_menu" }); }}
             >
               <Button variant="sunset" size="lg" className="w-full">
                 <Phone className="w-4 h-4" />

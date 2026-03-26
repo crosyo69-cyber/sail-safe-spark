@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { trackFormSubmit, trackPhoneClick } from "@/lib/analytics";
+import { trackMetaLead, trackMetaContact } from "@/lib/meta-pixel";
 import sunsetImage from "@/assets/almanarre-sunset.jpg?webp";
 
 export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_, ref) {
@@ -48,6 +49,7 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
 
     setIsSubmitting(true);
     trackFormSubmit("cta_reservation", "homepage_cta", { activity: formData.activity });
+    trackMetaLead({ content_name: "cta_reservation", content_category: formData.activity });
 
     try {
       const { data, error } = await supabase.functions.invoke("send-contact-email", {
@@ -79,6 +81,7 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
 
   const handlePhoneClick = () => {
     trackPhoneClick("homepage_cta");
+    trackMetaContact({ content_name: "phone_click", content_category: "homepage_cta" });
   };
 
   return (

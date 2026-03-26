@@ -11,6 +11,7 @@ import { ChatBot } from "@/components/ChatBot";
 import { WebVitalsDashboard } from "@/components/WebVitalsDashboard";
 import { PageTracker } from "@/components/PageTracker";
 import { initGA4 } from "@/lib/analytics";
+import { initMetaPixel } from "@/lib/meta-pixel";
 import { SEORedirect } from "@/components/SEORedirect";
 import { LegacyRedirectHandler } from "@/components/LegacyRedirectHandler";
 
@@ -57,6 +58,7 @@ const App = () => {
   // Initialize GA4 after React has mounted to avoid DOM conflicts
   useEffect(() => {
     initGA4();
+    initMetaPixel();
   }, []);
 
   return (
