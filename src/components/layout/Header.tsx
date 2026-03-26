@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "react-router-dom";
 import { trackPhoneClick } from "@/lib/analytics";
+import { trackMetaContact } from "@/lib/meta-pixel";
 
 const navigation = [
   { name: "Accueil", href: "/" },
