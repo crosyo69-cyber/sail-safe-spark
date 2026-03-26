@@ -164,6 +164,9 @@ export function trackPhoneClick(location: string): void {
     window.gtag('event', 'phone_click', params);
   }
 
+  // Track Google Ads conversion for phone clicks
+  trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
+
   if (import.meta.env.DEV) {
     console.log(
       `%c[Analytics] Phone Click @ ${location}`,
