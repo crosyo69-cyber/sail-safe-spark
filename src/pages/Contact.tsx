@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { trackGoogleAdsConversion } from "@/lib/analytics";
+import { trackMetaLead } from "@/lib/meta-pixel";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
@@ -148,6 +149,7 @@ const Contact = () => {
 
       // Track Google Ads conversion
       trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
+      trackMetaLead({ content_name: "contact_form", content_category: "contact_page" });
 
       toast({
         title: "Demande envoyée !",
