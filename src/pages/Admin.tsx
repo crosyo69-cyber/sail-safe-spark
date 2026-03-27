@@ -43,8 +43,12 @@ const Admin = () => {
           Administration
         </h1>
 
-        <Tabs defaultValue="sessions" className="space-y-6">
-          <TabsList className="grid w-full max-w-lg grid-cols-3">
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full max-w-2xl grid-cols-4">
+            <TabsTrigger value="overview" className="gap-2">
+              <LayoutDashboard className="w-4 h-4" />
+              Vue d'ensemble
+            </TabsTrigger>
             <TabsTrigger value="sessions" className="gap-2">
               <CalendarDays className="w-4 h-4" />
               Sessions
@@ -58,6 +62,10 @@ const Admin = () => {
               Emails
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="overview">
+            <AdminOverview />
+          </TabsContent>
 
           <TabsContent value="sessions">
             <AdminSessionManager />
