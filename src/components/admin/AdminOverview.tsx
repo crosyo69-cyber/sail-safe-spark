@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Users, CalendarDays, ChevronDown, ChevronUp, Mail, Phone, CreditCard, RefreshCw } from "lucide-react";
+import { Users, CalendarDays, ChevronDown, ChevronUp, Mail, Phone, CreditCard, RefreshCw, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
