@@ -1,13 +1,13 @@
-import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import AdminOverview from "@/components/admin/AdminOverview";
 import AdminSessionManager from "@/components/admin/AdminSessionManager";
 import AdminReservationList from "@/components/admin/AdminReservationList";
 import AdminEmailDashboard from "@/components/admin/AdminEmailDashboard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDays, ClipboardList, Mail, Loader2 } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2 } from "lucide-react";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
