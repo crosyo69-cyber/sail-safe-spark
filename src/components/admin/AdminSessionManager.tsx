@@ -208,7 +208,7 @@ const AdminSessionManager = () => {
               mode="single"
               selected={selectedDate}
               onSelect={(d) => d && setSelectedDate(d)}
-              disabled={(date) => date < addDays(new Date(), -1)}
+              disabled={() => false}
               className="pointer-events-auto"
               locale={fr}
             />
