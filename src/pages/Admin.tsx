@@ -1,13 +1,13 @@
-import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import AdminOverview from "@/components/admin/AdminOverview";
 import AdminSessionManager from "@/components/admin/AdminSessionManager";
 import AdminReservationList from "@/components/admin/AdminReservationList";
 import AdminEmailDashboard from "@/components/admin/AdminEmailDashboard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDays, ClipboardList, Mail, Loader2 } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2 } from "lucide-react";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -43,8 +43,12 @@ const Admin = () => {
           Administration
         </h1>
 
-        <Tabs defaultValue="sessions" className="space-y-6">
-          <TabsList className="grid w-full max-w-lg grid-cols-3">
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full max-w-2xl grid-cols-4">
+            <TabsTrigger value="overview" className="gap-2">
+              <LayoutDashboard className="w-4 h-4" />
+              Vue d'ensemble
+            </TabsTrigger>
             <TabsTrigger value="sessions" className="gap-2">
               <CalendarDays className="w-4 h-4" />
               Sessions
@@ -58,6 +62,10 @@ const Admin = () => {
               Emails
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="overview">
+            <AdminOverview />
+          </TabsContent>
 
           <TabsContent value="sessions">
             <AdminSessionManager />
