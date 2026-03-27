@@ -133,6 +133,38 @@ const AdminOverview = () => {
     0
   );
 
+  const exportCSV = () => {
+    const rows: string[][] = [
+      ["Date", "Créneau", "Activité", "Prénom", "Nom", "Email", "Téléphone", "Niveau", "Participants", "Statut", "Stripe ID"],
+    ];
+    sessions.forEach((s) => {
+      if (!s.reservations?.length) return;
+      s.reservations.forEach((r) => {
+        rows.push([
+          format(new Date(s.date), "dd/MM/yyyy"),
+          SLOT_LABELS[s.time_slot],
+          ACTIVITY_LABELS[s.activity],
+          r.first_name,
+          r.last_name,
+          r.email,
+          r.phone || "",
+          LEVEL_LABELS[r.skill_level] || r.skill_level,
+          String(r.participants),
+          STATUS_LABELS[r.status] || r.status,
+          r.stripe_session_id || "",
+        ]);
+      });
+    });
+    const csv = rows.map((r) => r.map((c) => `"${c.replace(/"/g, '""')}"`).join(",")).join("\n");
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `reservations_${format(new Date(), "yyyy-MM-dd")}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-6">
       {/* Stats bar */}
@@ -156,7 +188,7 @@ const AdminOverview = () => {
       </div>
 
       {/* Controls */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 flex-wrap">
         <Button size="sm" variant="outline" onClick={fetchAll} className="gap-1">
           <RefreshCw className="w-3 h-3" /> Actualiser
         </Button>
@@ -167,6 +199,11 @@ const AdminOverview = () => {
         >
           {showPast ? "Masquer l'historique" : "Voir l'historique"}
         </Button>
+        {totalReservations > 0 && (
+          <Button size="sm" variant="outline" onClick={exportCSV} className="gap-1">
+            <Download className="w-3 h-3" /> Exporter CSV
+          </Button>
+        )}
       </div>
 
       {/* Sessions grouped by date */}
