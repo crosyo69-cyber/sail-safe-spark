@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { format, addDays } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
-  CalendarIcon, Plus, Trash2, Wind, CloudRain, Sun, Edit2, Users, X,
+  CalendarIcon, Plus, Trash2, Wind, CloudRain, Sun, Edit2, Users, X, Mail, Phone,
 } from "lucide-react";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
