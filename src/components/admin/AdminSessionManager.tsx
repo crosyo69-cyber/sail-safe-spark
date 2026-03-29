@@ -18,6 +18,17 @@ import {
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
 
+interface Reservation {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  skill_level: string;
+  participants: number;
+  status: string;
+}
+
 interface Session {
   id: string;
   date: string;
@@ -28,7 +39,26 @@ interface Session {
   notes: string | null;
   weather_condition: string | null;
   reservation_count?: number;
+  reservations?: Reservation[];
 }
+
+const STATUS_COLORS: Record<string, string> = {
+  pending: "bg-yellow-100 text-yellow-800 border-yellow-300",
+  confirmed: "bg-green-100 text-green-800 border-green-300",
+  cancelled: "bg-red-100 text-red-800 border-red-300",
+};
+
+const STATUS_LABELS: Record<string, string> = {
+  pending: "En attente",
+  confirmed: "Confirmée",
+  cancelled: "Annulée",
+};
+
+const LEVEL_LABELS: Record<string, string> = {
+  debutant: "Débutant",
+  intermediaire: "Intermédiaire",
+  confirme: "Confirmé",
+};
 
 const ACTIVITY_LABELS: Record<Activity, string> = {
   kitesurf: "Kitesurf",
@@ -84,7 +114,7 @@ const AdminSessionManager = () => {
 
     const { data, error } = await supabase
       .from("sessions")
-      .select("*, reservations(id)")
+      .select("*, reservations(id, first_name, last_name, email, phone, skill_level, participants, status)")
       .eq("date", dateStr)
       .order("time_slot");
 
@@ -282,6 +312,26 @@ const AdminSessionManager = () => {
                           <p className="text-xs text-muted-foreground mb-2">
                             🌤 {WEATHER_OPTIONS.find(w => w.value === session.weather_condition)?.label}
                           </p>
+                        )}
+
+                        {/* Reservations list */}
+                        {session.reservations && session.reservations.length > 0 && (
+                          <div className="mt-3 border-t border-border pt-2 space-y-1">
+                            {session.reservations.map((r) => (
+                              <div key={r.id} className="flex items-center gap-2 text-xs">
+                                <Badge variant="outline" className={cn("text-[10px] px-1.5 py-0", STATUS_COLORS[r.status])}>
+                                  {STATUS_LABELS[r.status] || r.status}
+                                </Badge>
+                                <span className="font-medium text-foreground">
+                                  {r.first_name} {r.last_name}
+                                </span>
+                                {r.participants > 1 && (
+                                  <span className="text-muted-foreground">({r.participants} pers.)</span>
+                                )}
+                                <span className="text-muted-foreground">{LEVEL_LABELS[r.skill_level] || r.skill_level}</span>
+                              </div>
+                            ))}
+                          </div>
                         )}
 
                         <div className="flex gap-1 mt-3">
