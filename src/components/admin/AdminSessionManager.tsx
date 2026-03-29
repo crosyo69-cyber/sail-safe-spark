@@ -314,6 +314,26 @@ const AdminSessionManager = () => {
                           </p>
                         )}
 
+                        {/* Reservations list */}
+                        {session.reservations && session.reservations.length > 0 && (
+                          <div className="mt-3 border-t border-border pt-2 space-y-1">
+                            {session.reservations.map((r) => (
+                              <div key={r.id} className="flex items-center gap-2 text-xs">
+                                <Badge variant="outline" className={cn("text-[10px] px-1.5 py-0", STATUS_COLORS[r.status])}>
+                                  {STATUS_LABELS[r.status] || r.status}
+                                </Badge>
+                                <span className="font-medium text-foreground">
+                                  {r.first_name} {r.last_name}
+                                </span>
+                                {r.participants > 1 && (
+                                  <span className="text-muted-foreground">({r.participants} pers.)</span>
+                                )}
+                                <span className="text-muted-foreground">{LEVEL_LABELS[r.skill_level] || r.skill_level}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
                         <div className="flex gap-1 mt-3">
                           <Select
                             value={session.activity}
