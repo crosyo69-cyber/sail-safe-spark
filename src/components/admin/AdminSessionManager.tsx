@@ -18,6 +18,17 @@ import {
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
 
+interface Reservation {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  skill_level: string;
+  participants: number;
+  status: string;
+}
+
 interface Session {
   id: string;
   date: string;
@@ -28,7 +39,26 @@ interface Session {
   notes: string | null;
   weather_condition: string | null;
   reservation_count?: number;
+  reservations?: Reservation[];
 }
+
+const STATUS_COLORS: Record<string, string> = {
+  pending: "bg-yellow-100 text-yellow-800 border-yellow-300",
+  confirmed: "bg-green-100 text-green-800 border-green-300",
+  cancelled: "bg-red-100 text-red-800 border-red-300",
+};
+
+const STATUS_LABELS: Record<string, string> = {
+  pending: "En attente",
+  confirmed: "Confirmée",
+  cancelled: "Annulée",
+};
+
+const LEVEL_LABELS: Record<string, string> = {
+  debutant: "Débutant",
+  intermediaire: "Intermédiaire",
+  confirme: "Confirmé",
+};
 
 const ACTIVITY_LABELS: Record<Activity, string> = {
   kitesurf: "Kitesurf",
