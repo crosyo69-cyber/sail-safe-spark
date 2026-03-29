@@ -318,18 +318,46 @@ const AdminSessionManager = () => {
                         {session.reservations && session.reservations.length > 0 && (
                           <div className="mt-3 border-t border-border pt-2 space-y-1">
                             {session.reservations.map((r) => (
-                              <div key={r.id} className="flex items-center gap-2 text-xs">
-                                <Badge variant="outline" className={cn("text-[10px] px-1.5 py-0", STATUS_COLORS[r.status])}>
-                                  {STATUS_LABELS[r.status] || r.status}
-                                </Badge>
-                                <span className="font-medium text-foreground">
-                                  {r.first_name} {r.last_name}
-                                </span>
-                                {r.participants > 1 && (
-                                  <span className="text-muted-foreground">({r.participants} pers.)</span>
-                                )}
-                                <span className="text-muted-foreground">{LEVEL_LABELS[r.skill_level] || r.skill_level}</span>
-                              </div>
+                              <Popover key={r.id}>
+                                <PopoverTrigger asChild>
+                                  <button className="flex items-center gap-2 text-xs w-full text-left hover:bg-muted/50 rounded px-1 py-0.5 transition-colors cursor-pointer">
+                                    <Badge variant="outline" className={cn("text-[10px] px-1.5 py-0", STATUS_COLORS[r.status])}>
+                                      {STATUS_LABELS[r.status] || r.status}
+                                    </Badge>
+                                    <span className="font-medium text-foreground">
+                                      {r.first_name} {r.last_name}
+                                    </span>
+                                    {r.participants > 1 && (
+                                      <span className="text-muted-foreground">({r.participants} pers.)</span>
+                                    )}
+                                    <span className="text-muted-foreground">{LEVEL_LABELS[r.skill_level] || r.skill_level}</span>
+                                  </button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-72 p-4" align="start">
+                                  <div className="space-y-3">
+                                    <div>
+                                      <p className="font-semibold text-foreground">{r.first_name} {r.last_name}</p>
+                                      <Badge variant="outline" className={cn("text-xs mt-1", STATUS_COLORS[r.status])}>
+                                        {STATUS_LABELS[r.status] || r.status}
+                                      </Badge>
+                                    </div>
+                                    <div className="space-y-1.5 text-sm">
+                                      <a href={`mailto:${r.email}`} className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+                                        <Mail className="w-3.5 h-3.5" /> {r.email}
+                                      </a>
+                                      {r.phone && r.phone !== "Non renseigné" && (
+                                        <a href={`tel:${r.phone}`} className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+                                          <Phone className="w-3.5 h-3.5" /> {r.phone}
+                                        </a>
+                                      )}
+                                    </div>
+                                    <div className="flex gap-3 text-xs text-muted-foreground">
+                                      <span><strong>Niveau :</strong> {LEVEL_LABELS[r.skill_level] || r.skill_level}</span>
+                                      <span><strong>Participants :</strong> {r.participants}</span>
+                                    </div>
+                                  </div>
+                                </PopoverContent>
+                              </Popover>
                             ))}
                           </div>
                         )}
