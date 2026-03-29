@@ -114,7 +114,7 @@ const AdminSessionManager = () => {
 
     const { data, error } = await supabase
       .from("sessions")
-      .select("*, reservations(id)")
+      .select("*, reservations(id, first_name, last_name, email, phone, skill_level, participants, status)")
       .eq("date", dateStr)
       .order("time_slot");
 
