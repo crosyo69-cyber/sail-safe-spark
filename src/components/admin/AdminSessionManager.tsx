@@ -333,7 +333,7 @@ const AdminSessionManager = () => {
                                     <span className="text-muted-foreground">{LEVEL_LABELS[r.skill_level] || r.skill_level}</span>
                                   </button>
                                 </PopoverTrigger>
-                                <PopoverContent className="w-72 p-4" align="start">
+                                <PopoverContent className="w-72 p-4 z-50" align="start" sideOffset={5}>
                                   <div className="space-y-3">
                                     <div>
                                       <p className="font-semibold text-foreground">{r.first_name} {r.last_name}</p>
