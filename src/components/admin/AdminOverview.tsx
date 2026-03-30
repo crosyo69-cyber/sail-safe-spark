@@ -5,8 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Users, CalendarDays, ChevronDown, ChevronUp, Mail, Phone, CreditCard, RefreshCw, Download } from "lucide-react";
+import { Users, CalendarDays, ChevronDown, ChevronUp, Mail, Phone, CreditCard, RefreshCw, Download, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
