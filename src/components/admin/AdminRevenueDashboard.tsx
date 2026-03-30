@@ -91,6 +91,7 @@ const AdminRevenueDashboard = () => {
   const [sessions, setSessions] = useState<SessionInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState<Period>("month");
+  const [activityFilter, setActivityFilter] = useState<string>("all");
 
   const fetchData = async () => {
     setLoading(true);
