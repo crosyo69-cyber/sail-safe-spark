@@ -12,8 +12,9 @@ import { cn } from "@/lib/utils";
 import { format, addDays } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
-  CalendarIcon, Plus, Trash2, Wind, CloudRain, Sun, Edit2, Users, X, Mail, Phone,
+  CalendarIcon, Plus, Trash2, Wind, CloudRain, Sun, Edit2, Users, X, Mail, Phone, Sparkles,
 } from "lucide-react";
+import BulkSessionGenerator from "./BulkSessionGenerator";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
@@ -102,6 +103,7 @@ const AdminSessionManager = () => {
 
   // New session form
   const [showForm, setShowForm] = useState(false);
+  const [showBulk, setShowBulk] = useState(false);
   const [newActivity, setNewActivity] = useState<Activity>("kitesurf");
   const [newSlot, setNewSlot] = useState<TimeSlot>("morning");
   const [newWeather, setNewWeather] = useState<string>("");
@@ -266,11 +268,16 @@ const AdminSessionManager = () => {
         {loading ? (
           <p className="text-muted-foreground text-sm">Chargement…</p>
         ) : sessions.length === 0 ? (
-          <Card className="p-8 text-center">
+          <Card className="p-8 text-center space-y-3">
             <p className="text-muted-foreground mb-4">Aucune session pour cette date.</p>
-            <Button onClick={() => setShowForm(true)} className="gap-2">
-              <Plus className="w-4 h-4" /> Ajouter une session
-            </Button>
+            <div className="flex gap-2 justify-center">
+              <Button onClick={() => setShowForm(true)} className="gap-2">
+                <Plus className="w-4 h-4" /> Ajouter une session
+              </Button>
+              <Button onClick={() => setShowBulk(true)} variant="outline" className="gap-2">
+                <Sparkles className="w-4 h-4" /> Générer en lot
+              </Button>
+            </div>
           </Card>
         ) : (
           <>
@@ -406,10 +413,15 @@ const AdminSessionManager = () => {
       </div>
 
       {/* Add session button */}
-      {sessions.length > 0 && !showForm && (
-        <Button onClick={() => setShowForm(true)} variant="outline" className="gap-2">
-          <Plus className="w-4 h-4" /> Ajouter une session
-        </Button>
+      {sessions.length > 0 && !showForm && !showBulk && (
+        <div className="flex gap-2">
+          <Button onClick={() => setShowForm(true)} variant="outline" className="gap-2">
+            <Plus className="w-4 h-4" /> Ajouter une session
+          </Button>
+          <Button onClick={() => setShowBulk(true)} variant="outline" className="gap-2">
+            <Sparkles className="w-4 h-4" /> Générer en lot
+          </Button>
+        </div>
       )}
 
       {/* Add session form */}
@@ -482,6 +494,9 @@ const AdminSessionManager = () => {
             </Button>
           </div>
         </Card>
+      )}
+      {showBulk && (
+        <BulkSessionGenerator onComplete={() => { setShowBulk(false); fetchSessions(); }} />
       )}
     </div>
   );
