@@ -8,8 +8,9 @@ import AdminSessionManager from "@/components/admin/AdminSessionManager";
 import AdminReservationList from "@/components/admin/AdminReservationList";
 import AdminEmailDashboard from "@/components/admin/AdminEmailDashboard";
 import AdminMonthlyCalendar from "@/components/admin/AdminMonthlyCalendar";
+import AdminRevenueDashboard from "@/components/admin/AdminRevenueDashboard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2 } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro } from "lucide-react";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -53,7 +54,7 @@ const Admin = () => {
         </h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-3xl grid-cols-5">
+          <TabsList className="grid w-full max-w-4xl grid-cols-6">
             <TabsTrigger value="overview" className="gap-2">
               <LayoutDashboard className="w-4 h-4" />
               <span className="hidden sm:inline">Vue d'ensemble</span>
@@ -69,6 +70,10 @@ const Admin = () => {
             <TabsTrigger value="reservations" className="gap-2">
               <ClipboardList className="w-4 h-4" />
               <span className="hidden sm:inline">Réservations</span>
+            </TabsTrigger>
+            <TabsTrigger value="revenue" className="gap-2">
+              <Euro className="w-4 h-4" />
+              <span className="hidden sm:inline">Revenus</span>
             </TabsTrigger>
             <TabsTrigger value="emails" className="gap-2">
               <Mail className="w-4 h-4" />
@@ -90,6 +95,10 @@ const Admin = () => {
 
           <TabsContent value="reservations">
             <AdminReservationList />
+          </TabsContent>
+
+          <TabsContent value="revenue">
+            <AdminRevenueDashboard />
           </TabsContent>
 
           <TabsContent value="emails">
