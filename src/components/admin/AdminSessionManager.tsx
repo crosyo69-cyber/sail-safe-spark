@@ -234,6 +234,31 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
     }
   };
 
+  const handleBulkDelete = async () => {
+    if (!deleteFrom || !deleteTo) return;
+    setDeleting(true);
+    const fromStr = format(deleteFrom, "yyyy-MM-dd");
+    const toStr = format(deleteTo, "yyyy-MM-dd");
+
+    const { data, error } = await supabase
+      .from("sessions")
+      .delete()
+      .gte("date", fromStr)
+      .lte("date", toStr)
+      .select("id");
+
+    if (error) {
+      toast({ title: "Erreur", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: `${data?.length || 0} session(s) supprimée(s) ✓` });
+      setShowBulkDelete(false);
+      setDeleteFrom(undefined);
+      setDeleteTo(undefined);
+      fetchSessions();
+    }
+    setDeleting(false);
+  };
+
   const dateStr = selectedDate ? format(selectedDate, "EEEE d MMMM yyyy", { locale: fr }) : "";
 
   return (
