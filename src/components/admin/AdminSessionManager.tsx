@@ -103,6 +103,7 @@ const AdminSessionManager = () => {
 
   // New session form
   const [showForm, setShowForm] = useState(false);
+  const [showBulk, setShowBulk] = useState(false);
   const [newActivity, setNewActivity] = useState<Activity>("kitesurf");
   const [newSlot, setNewSlot] = useState<TimeSlot>("morning");
   const [newWeather, setNewWeather] = useState<string>("");
