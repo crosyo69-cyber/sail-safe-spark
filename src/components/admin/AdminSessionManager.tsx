@@ -138,6 +138,10 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
   };
 
   useEffect(() => {
+    if (initialDate) setSelectedDate(initialDate);
+  }, [initialDate]);
+
+  useEffect(() => {
     fetchSessions();
   }, [selectedDate]);
 
