@@ -219,6 +219,16 @@ const AdminOverview = () => {
             <Download className="w-3 h-3" /> Exporter CSV
           </Button>
         )}
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={sendWeeklySummary}
+          disabled={sendingSummary}
+          className="gap-1"
+        >
+          <Send className="w-3 h-3" />
+          {sendingSummary ? "Envoi…" : "Résumé hebdo"}
+        </Button>
       </div>
 
       {/* Sessions grouped by date */}
