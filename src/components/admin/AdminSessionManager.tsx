@@ -108,6 +108,10 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
   // New session form
   const [showForm, setShowForm] = useState(false);
   const [showBulk, setShowBulk] = useState(false);
+  const [showBulkDelete, setShowBulkDelete] = useState(false);
+  const [deleteFrom, setDeleteFrom] = useState<Date | undefined>();
+  const [deleteTo, setDeleteTo] = useState<Date | undefined>();
+  const [deleting, setDeleting] = useState(false);
   const [newActivity, setNewActivity] = useState<Activity>("kitesurf");
   const [newSlot, setNewSlot] = useState<TimeSlot>("morning");
   const [newWeather, setNewWeather] = useState<string>("");
