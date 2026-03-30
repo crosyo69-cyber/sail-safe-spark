@@ -336,26 +336,29 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
                       <div className="border-t border-border px-3 pb-3 pt-2 space-y-1.5">
                         <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Inscrits</p>
                         {activeReservations.map((r, j) => (
-                          <div key={j} className="flex items-center justify-between text-xs bg-muted/40 rounded-md px-2.5 py-1.5">
-                            <div className="flex items-center gap-2 min-w-0">
-                              <span className={cn(
-                                "inline-block w-1.5 h-1.5 rounded-full",
-                                r.status === 'confirmed' ? "bg-green-500" : "bg-yellow-400"
-                              )} />
-                              <span className="font-medium text-foreground truncate">
-                                {r.first_name} {r.last_name}
-                              </span>
-                              {r.participants > 1 && (
-                                <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
-                                  ×{r.participants}
+                          <div key={r.id || j}>
+                            <div className="flex items-center justify-between text-xs bg-muted/40 rounded-md px-2.5 py-1.5">
+                              <div className="flex items-center gap-2 min-w-0">
+                                <span className={cn(
+                                  "inline-block w-1.5 h-1.5 rounded-full",
+                                  r.status === 'confirmed' ? "bg-green-500" : "bg-yellow-400"
+                                )} />
+                                <span className="font-medium text-foreground truncate">
+                                  {r.first_name} {r.last_name}
+                                </span>
+                                {r.participants > 1 && (
+                                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                                    ×{r.participants}
+                                  </Badge>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-2 text-muted-foreground shrink-0 ml-2">
+                                <span>{r.phone}</span>
+                                <Badge variant={r.status === 'confirmed' ? 'default' : 'secondary'} className="text-[10px] px-1.5 py-0">
+                                  {r.status === 'confirmed' ? 'Confirmé' : 'En attente'}
                                 </Badge>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2 text-muted-foreground shrink-0 ml-2">
-                              <span>{r.phone}</span>
-                              <Badge variant={r.status === 'confirmed' ? 'default' : 'secondary'} className="text-[10px] px-1.5 py-0">
-                                {r.status === 'confirmed' ? 'Confirmé' : 'En attente'}
-                              </Badge>
+                                <CalendarReservationActions reservation={r} onUpdated={refreshSessions} />
+                              </div>
                             </div>
                           </div>
                         ))}
