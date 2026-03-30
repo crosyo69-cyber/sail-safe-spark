@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAdmin } from "@/hooks/useAdmin";
 import { Header } from "@/components/layout/Header";
@@ -12,6 +13,13 @@ import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2 }
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
+  const [activeTab, setActiveTab] = useState("overview");
+  const [sessionDate, setSessionDate] = useState<Date>(new Date());
+
+  const handleNavigateToSession = (date: Date) => {
+    setSessionDate(date);
+    setActiveTab("sessions");
+  };
 
   if (isLoading) {
     return (
@@ -44,7 +52,7 @@ const Admin = () => {
           Administration
         </h1>
 
-        <Tabs defaultValue="overview" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full max-w-3xl grid-cols-5">
             <TabsTrigger value="overview" className="gap-2">
               <LayoutDashboard className="w-4 h-4" />
@@ -73,11 +81,11 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="calendar">
-            <AdminMonthlyCalendar />
+            <AdminMonthlyCalendar onNavigateToSession={handleNavigateToSession} />
           </TabsContent>
 
           <TabsContent value="sessions">
-            <AdminSessionManager />
+            <AdminSessionManager initialDate={sessionDate} />
           </TabsContent>
 
           <TabsContent value="reservations">
