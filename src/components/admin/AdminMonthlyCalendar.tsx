@@ -127,6 +127,12 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
     setCurrentMonth(prev => new Date(prev));
   }, []);
 
+  const toggleSessionStatus = useCallback(async (sessionId: string, currentStatus: string) => {
+    const newStatus = currentStatus === "open" ? "closed" : "open";
+    await supabase.from("sessions").update({ status: newStatus }).eq("id", sessionId);
+    refreshSessions();
+  }, [refreshSessions]);
+
   const filteredSessions = useMemo(() => {
     if (activityFilter === "all") return sessions;
     return sessions.filter((s) => s.activity === activityFilter);
