@@ -78,6 +78,20 @@ const AdminOverview = () => {
   const [loading, setLoading] = useState(true);
   const [expandedSessions, setExpandedSessions] = useState<Set<string>>(new Set());
   const [showPast, setShowPast] = useState(false);
+  const [sendingSummary, setSendingSummary] = useState(false);
+
+  const sendWeeklySummary = async () => {
+    setSendingSummary(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("weekly-summary", { body: {} });
+      if (error) throw error;
+      toast({ title: "Résumé envoyé !", description: `${data.sessions} sessions incluses (${data.week})` });
+    } catch (e: any) {
+      toast({ title: "Erreur", description: e.message || "Impossible d'envoyer le résumé", variant: "destructive" });
+    } finally {
+      setSendingSummary(false);
+    }
+  };
 
   const fetchAll = async () => {
     setLoading(true);
