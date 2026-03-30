@@ -16,6 +16,9 @@ import { Loader2, X } from "lucide-react";
 interface CalendarAddReservationProps {
   sessionId: string;
   activityLabel: string;
+  activity: string;
+  timeSlot: string;
+  sessionDate: string;
   slotLabel: string;
   dateLabel: string;
   onClose: () => void;
