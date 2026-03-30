@@ -24,6 +24,7 @@ import CalendarReservationActions from "./CalendarReservationActions";
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 
 interface ReservationInfo {
+  id: string;
   first_name: string;
   last_name: string;
   email: string;
