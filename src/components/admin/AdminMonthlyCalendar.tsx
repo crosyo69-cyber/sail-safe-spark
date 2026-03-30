@@ -362,6 +362,18 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
                       <Button
                         variant="ghost"
                         size="sm"
+                        className={cn(
+                          "h-7 w-7 p-0",
+                          s.status === "open" ? "text-green-600 hover:bg-green-500/10" : "text-destructive hover:bg-destructive/10"
+                        )}
+                        onClick={() => toggleSessionStatus(s.id, s.status)}
+                        title={s.status === "open" ? "Fermer la session" : "Ouvrir la session"}
+                      >
+                        {s.status === "open" ? <LockOpen className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         className="h-7 w-7 p-0 text-primary hover:bg-primary/10"
                         onClick={() => setAddingToSession(addingToSession === s.id ? null : s.id)}
                         title="Inscrire un stagiaire"
