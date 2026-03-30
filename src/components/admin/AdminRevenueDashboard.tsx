@@ -10,7 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, TrendingUp, Euro, Users, CalendarDays, RefreshCw } from "lucide-react";
+import { Loader2, TrendingUp, Euro, Users, CalendarDays, RefreshCw, FileDown } from "lucide-react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import {
   BarChart,
   Bar,
