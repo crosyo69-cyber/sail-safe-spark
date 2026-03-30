@@ -538,6 +538,72 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
       {showBulk && (
         <BulkSessionGenerator onComplete={() => { setShowBulk(false); fetchSessions(); }} />
       )}
+      {showBulkDelete && (
+        <Card className="p-6 space-y-4 border-destructive/30">
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold text-destructive">Supprimer des sessions en lot</h3>
+            <Button size="sm" variant="ghost" onClick={() => setShowBulkDelete(false)}>
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Sélectionnez une période pour supprimer toutes les sessions (sans réservations confirmées).
+          </p>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium text-foreground mb-1 block">Du</label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="w-full justify-start gap-2">
+                    <CalendarIcon className="w-4 h-4" />
+                    {deleteFrom ? format(deleteFrom, "d MMM yyyy", { locale: fr }) : "Date de début"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={deleteFrom}
+                    onSelect={setDeleteFrom}
+                    locale={fr}
+                    className="pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-foreground mb-1 block">Au</label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="w-full justify-start gap-2">
+                    <CalendarIcon className="w-4 h-4" />
+                    {deleteTo ? format(deleteTo, "d MMM yyyy", { locale: fr }) : "Date de fin"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={deleteTo}
+                    onSelect={setDeleteTo}
+                    locale={fr}
+                    className="pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+          <div className="flex gap-2 justify-end">
+            <Button variant="outline" onClick={() => setShowBulkDelete(false)}>Annuler</Button>
+            <Button
+              variant="destructive"
+              onClick={handleBulkDelete}
+              disabled={!deleteFrom || !deleteTo || deleting}
+              className="gap-2"
+            >
+              <Trash2 className="w-4 h-4" />
+              {deleting ? "Suppression…" : "Supprimer les sessions"}
+            </Button>
+          </div>
+        </Card>
     </div>
   );
 };
