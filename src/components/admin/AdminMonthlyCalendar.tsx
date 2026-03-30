@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,8 @@ import {
   subMonths,
 } from "date-fns";
 import { fr } from "date-fns/locale";
-import { ChevronLeft, ChevronRight, Users, CalendarDays } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus } from "lucide-react";
+import CalendarAddReservation from "./CalendarAddReservation";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 
@@ -32,6 +33,7 @@ interface ReservationInfo {
 }
 
 interface SessionSummary {
+  id: string;
   date: string;
   activity: Activity;
   time_slot: string;
@@ -71,6 +73,8 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
   const [loading, setLoading] = useState(false);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
 
+  const [addingToSession, setAddingToSession] = useState<string | null>(null);
+
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
   const calStart = startOfWeek(monthStart, { weekStartsOn: 1 });
@@ -85,13 +89,14 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
 
       const { data, error } = await supabase
         .from("sessions")
-        .select("date, activity, time_slot, max_participants, status, reservations(id, first_name, last_name, email, phone, participants, skill_level, status)")
+        .select("id, date, activity, time_slot, max_participants, status, reservations(id, first_name, last_name, email, phone, participants, skill_level, status)")
         .gte("date", from)
         .lte("date", to);
 
       if (!error && data) {
         setSessions(
           data.map((s: any) => ({
+            id: s.id,
             date: s.date,
             activity: s.activity,
             time_slot: s.time_slot,
@@ -114,6 +119,10 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
     };
     fetchMonth();
   }, [currentMonth]);
+
+  const refreshSessions = useCallback(() => {
+    setCurrentMonth(prev => new Date(prev));
+  }, []);
 
   const sessionsByDate = useMemo(() => {
     const map: Record<string, SessionSummary[]> = {};
@@ -282,6 +291,15 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
                           {SLOT_SHORT[s.time_slot]}
                         </p>
                       </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-7 w-7 p-0 text-primary hover:bg-primary/10"
+                        onClick={() => setAddingToSession(addingToSession === s.id ? null : s.id)}
+                        title="Inscrire un stagiaire"
+                      >
+                        <UserPlus className="w-4 h-4" />
+                      </Button>
                       <div className="text-right">
                         <div className="flex items-center gap-1">
                           <Users className="w-3 h-3 text-muted-foreground" />
@@ -300,6 +318,18 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
                         </div>
                       </div>
                     </div>
+                    {addingToSession === s.id && (
+                      <div className="px-3 pb-3">
+                        <CalendarAddReservation
+                          sessionId={s.id}
+                          activityLabel={ACTIVITY_LABELS[s.activity]}
+                          slotLabel={SLOT_SHORT[s.time_slot] || s.time_slot}
+                          dateLabel={format(new Date(selectedDay + "T12:00:00"), "d MMMM", { locale: fr })}
+                          onClose={() => setAddingToSession(null)}
+                          onAdded={refreshSessions}
+                        />
+                      </div>
+                    )}
                     {activeReservations.length > 0 && (
                       <div className="border-t border-border px-3 pb-3 pt-2 space-y-1.5">
                         <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Inscrits</p>
