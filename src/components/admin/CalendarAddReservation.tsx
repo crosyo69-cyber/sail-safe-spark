@@ -34,6 +34,9 @@ const SKILL_LABELS: Record<string, string> = {
 const CalendarAddReservation = ({
   sessionId,
   activityLabel,
+  activity,
+  timeSlot,
+  sessionDate,
   slotLabel,
   dateLabel,
   onClose,
