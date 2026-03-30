@@ -72,6 +72,10 @@ const Admin = () => {
             <AdminOverview />
           </TabsContent>
 
+          <TabsContent value="calendar">
+            <AdminMonthlyCalendar />
+          </TabsContent>
+
           <TabsContent value="sessions">
             <AdminSessionManager />
           </TabsContent>
