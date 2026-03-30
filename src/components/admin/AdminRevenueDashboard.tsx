@@ -139,11 +139,38 @@ const AdminRevenueDashboard = () => {
     });
   }, [reservations, dateRange]);
 
+  // Previous period for comparison
+  const prevDateRange = useMemo(() => {
+    const duration = dateRange.end.getTime() - dateRange.start.getTime();
+    return {
+      start: new Date(dateRange.start.getTime() - duration),
+      end: new Date(dateRange.start.getTime() - 1),
+    };
+  }, [dateRange]);
+
+  const prevReservations = useMemo(() => {
+    return reservations.filter((r) => {
+      const date = parseISO(r.created_at);
+      return isWithinInterval(date, prevDateRange);
+    });
+  }, [reservations, prevDateRange]);
+
   // Stats
   const totalRevenue = filteredReservations.reduce((a, r) => a + r.participants * DEPOSIT_PER_PERSON, 0);
   const totalParticipants = filteredReservations.reduce((a, r) => a + r.participants, 0);
   const totalTransactions = filteredReservations.length;
   const avgPerTransaction = totalTransactions > 0 ? Math.round(totalRevenue / totalTransactions) : 0;
+
+  // Previous period stats
+  const prevRevenue = prevReservations.reduce((a, r) => a + r.participants * DEPOSIT_PER_PERSON, 0);
+  const prevParticipants = prevReservations.reduce((a, r) => a + r.participants, 0);
+  const prevTransactions = prevReservations.length;
+  const prevAvg = prevTransactions > 0 ? Math.round(prevRevenue / prevTransactions) : 0;
+
+  const calcTrend = (current: number, previous: number) => {
+    if (previous === 0) return current > 0 ? 100 : 0;
+    return Math.round(((current - previous) / previous) * 100);
+  };
 
   // Revenue by activity
   const revenueByActivity = useMemo(() => {
