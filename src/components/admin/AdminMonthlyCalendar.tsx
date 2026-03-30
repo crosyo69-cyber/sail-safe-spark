@@ -73,6 +73,8 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
   const [loading, setLoading] = useState(false);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
 
+  const [addingToSession, setAddingToSession] = useState<string | null>(null);
+
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
   const calStart = startOfWeek(monthStart, { weekStartsOn: 1 });
@@ -87,13 +89,14 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
 
       const { data, error } = await supabase
         .from("sessions")
-        .select("date, activity, time_slot, max_participants, status, reservations(id, first_name, last_name, email, phone, participants, skill_level, status)")
+        .select("id, date, activity, time_slot, max_participants, status, reservations(id, first_name, last_name, email, phone, participants, skill_level, status)")
         .gte("date", from)
         .lte("date", to);
 
       if (!error && data) {
         setSessions(
           data.map((s: any) => ({
+            id: s.id,
             date: s.date,
             activity: s.activity,
             time_slot: s.time_slot,
