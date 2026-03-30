@@ -279,8 +279,6 @@ const AdminSessionManager = () => {
               </Button>
             </div>
           </Card>
-            </Button>
-          </Card>
         ) : (
           <>
             {(["morning", "early_afternoon", "late_afternoon"] as TimeSlot[]).map((slot) => {
