@@ -196,9 +196,14 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
         <h2 className="text-lg font-semibold text-foreground capitalize">
           {format(currentMonth, "MMMM yyyy", { locale: fr })}
         </h2>
-        <Button variant="ghost" size="sm" onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
-          <ChevronRight className="w-4 h-4" />
-        </Button>
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" size="sm" onClick={exportCSV} title="Exporter les inscriptions en CSV">
+            <Download className="w-4 h-4" />
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
+            <ChevronRight className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
 
       {/* Activity filter */}
