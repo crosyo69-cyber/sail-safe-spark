@@ -127,6 +127,11 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
     setCurrentMonth(prev => new Date(prev));
   }, []);
 
+  const filteredSessions = useMemo(() => {
+    if (activityFilter === "all") return sessions;
+    return sessions.filter((s) => s.activity === activityFilter);
+  }, [sessions, activityFilter]);
+
   const exportCSV = useCallback(() => {
     const allReservations = filteredSessions.flatMap((s) =>
       s.reservations
@@ -155,11 +160,6 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
     a.click();
     URL.revokeObjectURL(url);
   }, [filteredSessions, currentMonth]);
-
-  const filteredSessions = useMemo(() => {
-    if (activityFilter === "all") return sessions;
-    return sessions.filter((s) => s.activity === activityFilter);
-  }, [sessions, activityFilter]);
 
   const sessionsByDate = useMemo(() => {
     const map: Record<string, SessionSummary[]> = {};
