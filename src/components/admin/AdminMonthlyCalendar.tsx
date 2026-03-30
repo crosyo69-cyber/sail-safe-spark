@@ -403,6 +403,9 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
                         <CalendarAddReservation
                           sessionId={s.id}
                           activityLabel={ACTIVITY_LABELS[s.activity]}
+                          activity={s.activity}
+                          timeSlot={s.time_slot}
+                          sessionDate={selectedDay}
                           slotLabel={SLOT_SHORT[s.time_slot] || s.time_slot}
                           dateLabel={format(new Date(selectedDay + "T12:00:00"), "d MMMM", { locale: fr })}
                           onClose={() => setAddingToSession(null)}
