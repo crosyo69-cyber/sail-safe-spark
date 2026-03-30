@@ -21,6 +21,16 @@ import { ChevronLeft, ChevronRight, Users, CalendarDays } from "lucide-react";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 
+interface ReservationInfo {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  participants: number;
+  skill_level: string;
+  status: string;
+}
+
 interface SessionSummary {
   date: string;
   activity: Activity;
@@ -28,6 +38,7 @@ interface SessionSummary {
   max_participants: number;
   reservation_count: number;
   status: string;
+  reservations: ReservationInfo[];
 }
 
 const ACTIVITY_DOT_COLORS: Record<Activity, string> = {
@@ -74,7 +85,7 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
 
       const { data, error } = await supabase
         .from("sessions")
-        .select("date, activity, time_slot, max_participants, status, reservations(id)")
+        .select("date, activity, time_slot, max_participants, status, reservations(id, first_name, last_name, email, phone, participants, skill_level, status)")
         .gte("date", from)
         .lte("date", to);
 
@@ -85,8 +96,17 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
             activity: s.activity,
             time_slot: s.time_slot,
             max_participants: s.max_participants,
-            reservation_count: s.reservations?.length || 0,
+            reservation_count: s.reservations?.filter((r: any) => r.status === 'confirmed' || r.status === 'pending').length || 0,
             status: s.status,
+            reservations: (s.reservations || []).map((r: any) => ({
+              first_name: r.first_name,
+              last_name: r.last_name,
+              email: r.email,
+              phone: r.phone,
+              participants: r.participants,
+              skill_level: r.skill_level,
+              status: r.status,
+            })),
           }))
         );
       }
