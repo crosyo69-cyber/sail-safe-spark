@@ -268,10 +268,17 @@ const AdminSessionManager = () => {
         {loading ? (
           <p className="text-muted-foreground text-sm">Chargement…</p>
         ) : sessions.length === 0 ? (
-          <Card className="p-8 text-center">
+          <Card className="p-8 text-center space-y-3">
             <p className="text-muted-foreground mb-4">Aucune session pour cette date.</p>
-            <Button onClick={() => setShowForm(true)} className="gap-2">
-              <Plus className="w-4 h-4" /> Ajouter une session
+            <div className="flex gap-2 justify-center">
+              <Button onClick={() => setShowForm(true)} className="gap-2">
+                <Plus className="w-4 h-4" /> Ajouter une session
+              </Button>
+              <Button onClick={() => setShowBulk(true)} variant="outline" className="gap-2">
+                <Sparkles className="w-4 h-4" /> Générer en lot
+              </Button>
+            </div>
+          </Card>
             </Button>
           </Card>
         ) : (
