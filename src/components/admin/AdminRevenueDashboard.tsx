@@ -393,6 +393,9 @@ const AdminRevenueDashboard = () => {
               ))}
             </SelectContent>
           </Select>
+          <Button variant="outline" size="sm" onClick={handleExportPDF} title="Exporter PDF">
+            <FileDown className="w-4 h-4" />
+          </Button>
           <Button variant="outline" size="sm" onClick={() => { fetchData(); toast.success("Données actualisées"); }}>
             <RefreshCw className="w-4 h-4" />
           </Button>
