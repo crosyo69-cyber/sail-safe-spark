@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, TrendingUp, Euro, Users, CalendarDays, RefreshCw, FileDown } from "lucide-react";
+import { Loader2, TrendingUp, TrendingDown, Minus, Euro, Users, CalendarDays, RefreshCw, FileDown } from "lucide-react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import {
@@ -139,11 +139,38 @@ const AdminRevenueDashboard = () => {
     });
   }, [reservations, dateRange]);
 
+  // Previous period for comparison
+  const prevDateRange = useMemo(() => {
+    const duration = dateRange.end.getTime() - dateRange.start.getTime();
+    return {
+      start: new Date(dateRange.start.getTime() - duration),
+      end: new Date(dateRange.start.getTime() - 1),
+    };
+  }, [dateRange]);
+
+  const prevReservations = useMemo(() => {
+    return reservations.filter((r) => {
+      const date = parseISO(r.created_at);
+      return isWithinInterval(date, prevDateRange);
+    });
+  }, [reservations, prevDateRange]);
+
   // Stats
   const totalRevenue = filteredReservations.reduce((a, r) => a + r.participants * DEPOSIT_PER_PERSON, 0);
   const totalParticipants = filteredReservations.reduce((a, r) => a + r.participants, 0);
   const totalTransactions = filteredReservations.length;
   const avgPerTransaction = totalTransactions > 0 ? Math.round(totalRevenue / totalTransactions) : 0;
+
+  // Previous period stats
+  const prevRevenue = prevReservations.reduce((a, r) => a + r.participants * DEPOSIT_PER_PERSON, 0);
+  const prevParticipants = prevReservations.reduce((a, r) => a + r.participants, 0);
+  const prevTransactions = prevReservations.length;
+  const prevAvg = prevTransactions > 0 ? Math.round(prevRevenue / prevTransactions) : 0;
+
+  const calcTrend = (current: number, previous: number) => {
+    if (previous === 0) return current > 0 ? 100 : 0;
+    return Math.round(((current - previous) / previous) * 100);
+  };
 
   // Revenue by activity
   const revenueByActivity = useMemo(() => {
@@ -404,34 +431,31 @@ const AdminRevenueDashboard = () => {
 
       {/* Stats cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1">
-            <Euro className="w-4 h-4" />
-            <span className="text-xs font-medium">Revenu total</span>
-          </div>
-          <p className="text-2xl font-bold text-foreground">{totalRevenue.toLocaleString("fr-FR")} €</p>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1">
-            <TrendingUp className="w-4 h-4" />
-            <span className="text-xs font-medium">Transactions</span>
-          </div>
-          <p className="text-2xl font-bold text-foreground">{totalTransactions}</p>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1">
-            <Users className="w-4 h-4" />
-            <span className="text-xs font-medium">Participants</span>
-          </div>
-          <p className="text-2xl font-bold text-foreground">{totalParticipants}</p>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1">
-            <CalendarDays className="w-4 h-4" />
-            <span className="text-xs font-medium">Panier moyen</span>
-          </div>
-          <p className="text-2xl font-bold text-foreground">{avgPerTransaction} €</p>
-        </Card>
+        {[
+          { icon: Euro, label: "Revenu total", value: `${totalRevenue.toLocaleString("fr-FR")} €`, trend: calcTrend(totalRevenue, prevRevenue) },
+          { icon: TrendingUp, label: "Transactions", value: `${totalTransactions}`, trend: calcTrend(totalTransactions, prevTransactions) },
+          { icon: Users, label: "Participants", value: `${totalParticipants}`, trend: calcTrend(totalParticipants, prevParticipants) },
+          { icon: CalendarDays, label: "Panier moyen", value: `${avgPerTransaction} €`, trend: calcTrend(avgPerTransaction, prevAvg) },
+        ].map((stat, i) => {
+          const TrendIcon = stat.trend > 0 ? TrendingUp : stat.trend < 0 ? TrendingDown : Minus;
+          const trendColor = stat.trend > 0 ? "text-green-600" : stat.trend < 0 ? "text-destructive" : "text-muted-foreground";
+          return (
+            <Card key={i} className="p-4">
+              <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                <stat.icon className="w-4 h-4" />
+                <span className="text-xs font-medium">{stat.label}</span>
+              </div>
+              <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+              {period !== "all" && (
+                <div className={`flex items-center gap-1 mt-1 text-xs font-medium ${trendColor}`}>
+                  <TrendIcon className="w-3 h-3" />
+                  <span>{stat.trend > 0 ? "+" : ""}{stat.trend}%</span>
+                  <span className="text-muted-foreground font-normal">vs précédent</span>
+                </div>
+              )}
+            </Card>
+          );
+        })}
       </div>
 
       {/* Charts row */}
