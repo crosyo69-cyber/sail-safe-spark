@@ -127,14 +127,19 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
     setCurrentMonth(prev => new Date(prev));
   }, []);
 
+  const filteredSessions = useMemo(() => {
+    if (activityFilter === "all") return sessions;
+    return sessions.filter((s) => s.activity === activityFilter);
+  }, [sessions, activityFilter]);
+
   const sessionsByDate = useMemo(() => {
     const map: Record<string, SessionSummary[]> = {};
-    sessions.forEach((s) => {
+    filteredSessions.forEach((s) => {
       if (!map[s.date]) map[s.date] = [];
       map[s.date].push(s);
     });
     return map;
-  }, [sessions]);
+  }, [filteredSessions]);
 
   const getFillRate = (daySessions: SessionSummary[]) => {
     const total = daySessions.reduce((a, s) => a + s.max_participants, 0);
