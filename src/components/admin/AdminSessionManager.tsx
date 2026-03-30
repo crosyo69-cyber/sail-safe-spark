@@ -490,6 +490,9 @@ const AdminSessionManager = () => {
           </div>
         </Card>
       )}
+      {showBulk && (
+        <BulkSessionGenerator onComplete={() => { setShowBulk(false); fetchSessions(); }} />
+      )}
     </div>
   );
 };
