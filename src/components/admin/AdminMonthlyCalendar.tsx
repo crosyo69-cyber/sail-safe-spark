@@ -127,6 +127,35 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
     setCurrentMonth(prev => new Date(prev));
   }, []);
 
+  const exportCSV = useCallback(() => {
+    const allReservations = filteredSessions.flatMap((s) =>
+      s.reservations
+        .filter((r) => r.status === "confirmed" || r.status === "pending")
+        .map((r) => ({
+          date: s.date,
+          activite: ACTIVITY_LABELS[s.activity],
+          creneau: SLOT_SHORT[s.time_slot] || s.time_slot,
+          prenom: r.first_name,
+          nom: r.last_name,
+          email: r.email,
+          telephone: r.phone,
+          participants: r.participants,
+          niveau: r.skill_level,
+          statut: r.status === "confirmed" ? "Confirmé" : "En attente",
+        }))
+    );
+    if (allReservations.length === 0) return;
+    const headers = Object.keys(allReservations[0]);
+    const csv = "\uFEFF" + [headers.join(";"), ...allReservations.map((r) => headers.map((h) => `"${(r as any)[h]}"`).join(";"))].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `inscriptions-${format(currentMonth, "yyyy-MM")}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [filteredSessions, currentMonth]);
+
   const filteredSessions = useMemo(() => {
     if (activityFilter === "all") return sessions;
     return sessions.filter((s) => s.activity === activityFilter);
