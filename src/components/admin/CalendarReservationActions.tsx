@@ -38,6 +38,9 @@ interface ReservationData {
 interface CalendarReservationActionsProps {
   reservation: ReservationData;
   onUpdated: () => void;
+  sessionActivity?: string;
+  sessionTimeSlot?: string;
+  sessionDate?: string;
 }
 
 const SKILL_LABELS: Record<string, string> = {
@@ -55,6 +58,9 @@ const STATUS_LABELS: Record<string, string> = {
 const CalendarReservationActions = ({
   reservation,
   onUpdated,
+  sessionActivity,
+  sessionTimeSlot,
+  sessionDate,
 }: CalendarReservationActionsProps) => {
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
