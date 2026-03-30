@@ -1,0 +1,1 @@
+DELETE FROM reservations WHERE id = '4cb89da9-ec1c-4bc5-ad49-26b271396dbc';
