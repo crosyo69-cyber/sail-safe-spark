@@ -12,8 +12,9 @@ import { cn } from "@/lib/utils";
 import { format, addDays } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
-  CalendarIcon, Plus, Trash2, Wind, CloudRain, Sun, Edit2, Users, X, Mail, Phone,
+  CalendarIcon, Plus, Trash2, Wind, CloudRain, Sun, Edit2, Users, X, Mail, Phone, Sparkles,
 } from "lucide-react";
+import BulkSessionGenerator from "./BulkSessionGenerator";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
