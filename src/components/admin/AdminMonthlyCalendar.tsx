@@ -17,7 +17,7 @@ import {
   subMonths,
 } from "date-fns";
 import { fr } from "date-fns/locale";
-import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus, Download } from "lucide-react";
 import CalendarAddReservation from "./CalendarAddReservation";
 import CalendarReservationActions from "./CalendarReservationActions";
 
@@ -132,6 +132,35 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
     return sessions.filter((s) => s.activity === activityFilter);
   }, [sessions, activityFilter]);
 
+  const exportCSV = useCallback(() => {
+    const allReservations = filteredSessions.flatMap((s) =>
+      s.reservations
+        .filter((r) => r.status === "confirmed" || r.status === "pending")
+        .map((r) => ({
+          date: s.date,
+          activite: ACTIVITY_LABELS[s.activity],
+          creneau: SLOT_SHORT[s.time_slot] || s.time_slot,
+          prenom: r.first_name,
+          nom: r.last_name,
+          email: r.email,
+          telephone: r.phone,
+          participants: r.participants,
+          niveau: r.skill_level,
+          statut: r.status === "confirmed" ? "Confirmé" : "En attente",
+        }))
+    );
+    if (allReservations.length === 0) return;
+    const headers = Object.keys(allReservations[0]);
+    const csv = "\uFEFF" + [headers.join(";"), ...allReservations.map((r) => headers.map((h) => `"${(r as any)[h]}"`).join(";"))].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `inscriptions-${format(currentMonth, "yyyy-MM")}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [filteredSessions, currentMonth]);
+
   const sessionsByDate = useMemo(() => {
     const map: Record<string, SessionSummary[]> = {};
     filteredSessions.forEach((s) => {
@@ -167,9 +196,14 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
         <h2 className="text-lg font-semibold text-foreground capitalize">
           {format(currentMonth, "MMMM yyyy", { locale: fr })}
         </h2>
-        <Button variant="ghost" size="sm" onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
-          <ChevronRight className="w-4 h-4" />
-        </Button>
+        <div className="flex items-center gap-1">
+          <Button variant="ghost" size="sm" onClick={exportCSV} title="Exporter les inscriptions en CSV">
+            <Download className="w-4 h-4" />
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}>
+            <ChevronRight className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
 
       {/* Activity filter */}
