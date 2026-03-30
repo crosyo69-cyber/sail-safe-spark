@@ -136,9 +136,14 @@ const AdminRevenueDashboard = () => {
   const filteredReservations = useMemo(() => {
     return reservations.filter((r) => {
       const date = parseISO(r.created_at);
-      return isWithinInterval(date, dateRange);
+      if (!isWithinInterval(date, dateRange)) return false;
+      if (activityFilter !== "all") {
+        const session = sessionMap[r.session_id];
+        if (session?.activity !== activityFilter) return false;
+      }
+      return true;
     });
-  }, [reservations, dateRange]);
+  }, [reservations, dateRange, activityFilter, sessionMap]);
 
   // Previous period for comparison
   const prevDateRange = useMemo(() => {
@@ -152,9 +157,14 @@ const AdminRevenueDashboard = () => {
   const prevReservations = useMemo(() => {
     return reservations.filter((r) => {
       const date = parseISO(r.created_at);
-      return isWithinInterval(date, prevDateRange);
+      if (!isWithinInterval(date, prevDateRange)) return false;
+      if (activityFilter !== "all") {
+        const session = sessionMap[r.session_id];
+        if (session?.activity !== activityFilter) return false;
+      }
+      return true;
     });
-  }, [reservations, prevDateRange]);
+  }, [reservations, prevDateRange, activityFilter, sessionMap]);
 
   // Stats
   const totalRevenue = filteredReservations.reduce((a, r) => a + r.participants * DEPOSIT_PER_PERSON, 0);
