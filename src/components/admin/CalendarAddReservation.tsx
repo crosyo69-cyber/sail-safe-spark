@@ -83,6 +83,21 @@ const CalendarAddReservation = ({
       toast.error("Erreur lors de l'inscription : " + error.message);
     } else {
       toast.success(`${form.first_name} ${form.last_name} inscrit(e) avec succès`);
+      // Send email notification (fire and forget)
+      supabase.functions.invoke("notify-reservation", {
+        body: {
+          first_name: form.first_name,
+          last_name: form.last_name,
+          email: form.email,
+          phone: form.phone,
+          participants: form.participants,
+          skill_level: form.skill_level,
+          activity,
+          time_slot: timeSlot,
+          date: sessionDate,
+          source: "admin",
+        },
+      }).catch(() => {});
       onAdded();
       onClose();
     }
