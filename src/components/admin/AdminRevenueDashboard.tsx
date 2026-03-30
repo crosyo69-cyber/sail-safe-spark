@@ -431,34 +431,31 @@ const AdminRevenueDashboard = () => {
 
       {/* Stats cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1">
-            <Euro className="w-4 h-4" />
-            <span className="text-xs font-medium">Revenu total</span>
-          </div>
-          <p className="text-2xl font-bold text-foreground">{totalRevenue.toLocaleString("fr-FR")} €</p>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1">
-            <TrendingUp className="w-4 h-4" />
-            <span className="text-xs font-medium">Transactions</span>
-          </div>
-          <p className="text-2xl font-bold text-foreground">{totalTransactions}</p>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1">
-            <Users className="w-4 h-4" />
-            <span className="text-xs font-medium">Participants</span>
-          </div>
-          <p className="text-2xl font-bold text-foreground">{totalParticipants}</p>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center gap-2 text-muted-foreground mb-1">
-            <CalendarDays className="w-4 h-4" />
-            <span className="text-xs font-medium">Panier moyen</span>
-          </div>
-          <p className="text-2xl font-bold text-foreground">{avgPerTransaction} €</p>
-        </Card>
+        {[
+          { icon: Euro, label: "Revenu total", value: `${totalRevenue.toLocaleString("fr-FR")} €`, trend: calcTrend(totalRevenue, prevRevenue) },
+          { icon: TrendingUp, label: "Transactions", value: `${totalTransactions}`, trend: calcTrend(totalTransactions, prevTransactions) },
+          { icon: Users, label: "Participants", value: `${totalParticipants}`, trend: calcTrend(totalParticipants, prevParticipants) },
+          { icon: CalendarDays, label: "Panier moyen", value: `${avgPerTransaction} €`, trend: calcTrend(avgPerTransaction, prevAvg) },
+        ].map((stat, i) => {
+          const TrendIcon = stat.trend > 0 ? TrendingUp : stat.trend < 0 ? TrendingDown : Minus;
+          const trendColor = stat.trend > 0 ? "text-green-600" : stat.trend < 0 ? "text-destructive" : "text-muted-foreground";
+          return (
+            <Card key={i} className="p-4">
+              <div className="flex items-center gap-2 text-muted-foreground mb-1">
+                <stat.icon className="w-4 h-4" />
+                <span className="text-xs font-medium">{stat.label}</span>
+              </div>
+              <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+              {period !== "all" && (
+                <div className={`flex items-center gap-1 mt-1 text-xs font-medium ${trendColor}`}>
+                  <TrendIcon className="w-3 h-3" />
+                  <span>{stat.trend > 0 ? "+" : ""}{stat.trend}%</span>
+                  <span className="text-muted-foreground font-normal">vs précédent</span>
+                </div>
+              )}
+            </Card>
+          );
+        })}
       </div>
 
       {/* Charts row */}
