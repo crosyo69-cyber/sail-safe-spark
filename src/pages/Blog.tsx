@@ -472,6 +472,17 @@ export const blogArticles = [
     alt: "Stage kitesurf Hyères formule choisir - Cours particulier semi-privé école KiteSurf Passion",
     featured: true,
   },
+  {
+    slug: "prix-stage-kitesurf-hyeres",
+    title: "Prix d'un stage de kitesurf à Hyères : quel budget prévoir pour débuter ?",
+    excerpt: "Quel budget prévoir pour apprendre le kitesurf à Hyères ? Tarifs, options, hébergement et conseils pour choisir la bonne formule.",
+    category: "Kitesurf",
+    date: "2026-03-30",
+    readTime: "9 min",
+    image: "blog-kitesurf-debut.jpg",
+    alt: "Prix stage kitesurf Hyères budget - Tarifs cours école KiteSurf Passion Almanarre",
+    featured: true,
+  },
 ];
 
 const categories = ["Tous", "Kitesurf", "Wing Foil", "Pump Foil", "Wakeboard", "Le Spot", "Sécurité"];
