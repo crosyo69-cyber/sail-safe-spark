@@ -50,7 +50,11 @@ const SLOT_SHORT: Record<string, string> = {
   late_afternoon: "PM",
 };
 
-const AdminMonthlyCalendar = () => {
+interface AdminMonthlyCalendarProps {
+  onNavigateToSession?: (date: Date) => void;
+}
+
+const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps = {}) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [sessions, setSessions] = useState<SessionSummary[]>([]);
   const [loading, setLoading] = useState(false);

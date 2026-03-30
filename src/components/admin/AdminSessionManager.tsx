@@ -95,9 +95,13 @@ const MAX_PARTICIPANTS: Record<Activity, number> = {
   foil_tracte: 6,
 };
 
-const AdminSessionManager = () => {
+interface AdminSessionManagerProps {
+  initialDate?: Date;
+}
+
+const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => {
   const { toast } = useToast();
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(initialDate || new Date());
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(false);
 
