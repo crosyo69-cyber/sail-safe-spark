@@ -6,8 +6,9 @@ import AdminOverview from "@/components/admin/AdminOverview";
 import AdminSessionManager from "@/components/admin/AdminSessionManager";
 import AdminReservationList from "@/components/admin/AdminReservationList";
 import AdminEmailDashboard from "@/components/admin/AdminEmailDashboard";
+import AdminMonthlyCalendar from "@/components/admin/AdminMonthlyCalendar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2 } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2 } from "lucide-react";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -44,27 +45,35 @@ const Admin = () => {
         </h1>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-4">
+          <TabsList className="grid w-full max-w-3xl grid-cols-5">
             <TabsTrigger value="overview" className="gap-2">
               <LayoutDashboard className="w-4 h-4" />
-              Vue d'ensemble
+              <span className="hidden sm:inline">Vue d'ensemble</span>
+            </TabsTrigger>
+            <TabsTrigger value="calendar" className="gap-2">
+              <Calendar className="w-4 h-4" />
+              <span className="hidden sm:inline">Calendrier</span>
             </TabsTrigger>
             <TabsTrigger value="sessions" className="gap-2">
               <CalendarDays className="w-4 h-4" />
-              Sessions
+              <span className="hidden sm:inline">Sessions</span>
             </TabsTrigger>
             <TabsTrigger value="reservations" className="gap-2">
               <ClipboardList className="w-4 h-4" />
-              Réservations
+              <span className="hidden sm:inline">Réservations</span>
             </TabsTrigger>
             <TabsTrigger value="emails" className="gap-2">
               <Mail className="w-4 h-4" />
-              Emails
+              <span className="hidden sm:inline">Emails</span>
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
             <AdminOverview />
+          </TabsContent>
+
+          <TabsContent value="calendar">
+            <AdminMonthlyCalendar />
           </TabsContent>
 
           <TabsContent value="sessions">
