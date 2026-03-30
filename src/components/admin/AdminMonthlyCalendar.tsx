@@ -172,13 +172,33 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
         </Button>
       </div>
 
-      {/* Legend */}
-      <div className="flex flex-wrap gap-3 mb-4 text-xs">
+      {/* Activity filter */}
+      <div className="flex flex-wrap gap-2 mb-4 text-xs">
+        <button
+          onClick={() => setActivityFilter("all")}
+          className={cn(
+            "flex items-center gap-1.5 px-2.5 py-1 rounded-full border transition-colors",
+            activityFilter === "all"
+              ? "border-primary bg-primary/10 text-primary font-semibold"
+              : "border-border text-muted-foreground hover:bg-muted/50"
+          )}
+        >
+          Toutes
+        </button>
         {(Object.keys(ACTIVITY_LABELS) as Activity[]).map((a) => (
-          <div key={a} className="flex items-center gap-1.5">
-            <div className={cn("w-2.5 h-2.5 rounded-full", ACTIVITY_DOT_COLORS[a])} />
-            <span className="text-muted-foreground">{ACTIVITY_LABELS[a]}</span>
-          </div>
+          <button
+            key={a}
+            onClick={() => setActivityFilter(activityFilter === a ? "all" : a)}
+            className={cn(
+              "flex items-center gap-1.5 px-2.5 py-1 rounded-full border transition-colors",
+              activityFilter === a
+                ? "border-primary bg-primary/10 text-primary font-semibold"
+                : "border-border text-muted-foreground hover:bg-muted/50"
+            )}
+          >
+            <div className={cn("w-2 h-2 rounded-full", ACTIVITY_DOT_COLORS[a])} />
+            {ACTIVITY_LABELS[a]}
+          </button>
         ))}
       </div>
 
