@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,8 @@ import {
   subMonths,
 } from "date-fns";
 import { fr } from "date-fns/locale";
-import { ChevronLeft, ChevronRight, Users, CalendarDays } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus } from "lucide-react";
+import CalendarAddReservation from "./CalendarAddReservation";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 
@@ -32,6 +33,7 @@ interface ReservationInfo {
 }
 
 interface SessionSummary {
+  id: string;
   date: string;
   activity: Activity;
   time_slot: string;
