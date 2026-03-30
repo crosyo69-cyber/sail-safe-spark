@@ -120,6 +120,10 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
     fetchMonth();
   }, [currentMonth]);
 
+  const refreshSessions = useCallback(() => {
+    setCurrentMonth(prev => new Date(prev));
+  }, []);
+
   const sessionsByDate = useMemo(() => {
     const map: Record<string, SessionSummary[]> = {};
     sessions.forEach((s) => {
@@ -287,6 +291,15 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
                           {SLOT_SHORT[s.time_slot]}
                         </p>
                       </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-7 w-7 p-0 text-primary hover:bg-primary/10"
+                        onClick={() => setAddingToSession(addingToSession === s.id ? null : s.id)}
+                        title="Inscrire un stagiaire"
+                      >
+                        <UserPlus className="w-4 h-4" />
+                      </Button>
                       <div className="text-right">
                         <div className="flex items-center gap-1">
                           <Users className="w-3 h-3 text-muted-foreground" />
@@ -305,6 +318,18 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
                         </div>
                       </div>
                     </div>
+                    {addingToSession === s.id && (
+                      <div className="px-3 pb-3">
+                        <CalendarAddReservation
+                          sessionId={s.id}
+                          activityLabel={ACTIVITY_LABELS[s.activity]}
+                          slotLabel={SLOT_SHORT[s.time_slot] || s.time_slot}
+                          dateLabel={format(new Date(selectedDay + "T12:00:00"), "d MMMM", { locale: fr })}
+                          onClose={() => setAddingToSession(null)}
+                          onAdded={refreshSessions}
+                        />
+                      </div>
+                    )}
                     {activeReservations.length > 0 && (
                       <div className="border-t border-border px-3 pb-3 pt-2 space-y-1.5">
                         <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Inscrits</p>
