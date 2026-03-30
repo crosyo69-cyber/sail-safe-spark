@@ -4103,7 +4103,6 @@ Vous savez maintenant quelle formule correspond le mieux à votre profil. [Rése
   },
   "prix-stage-kitesurf-hyeres": {
     content: `
-## Prix d'un stage de kitesurf à Hyères : quel budget prévoir pour débuter ?
 
 Vous préparez vos premières vacances glisse dans le Var et vous voulez savoir combien coûte vraiment un stage de kitesurf à Hyères ? Voici un guide clair pour estimer votre budget total et choisir la formule la plus rentable selon votre objectif.
 
