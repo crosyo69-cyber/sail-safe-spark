@@ -21,6 +21,16 @@ import { ChevronLeft, ChevronRight, Users, CalendarDays } from "lucide-react";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 
+interface ReservationInfo {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  participants: number;
+  skill_level: string;
+  status: string;
+}
+
 interface SessionSummary {
   date: string;
   activity: Activity;
@@ -28,6 +38,7 @@ interface SessionSummary {
   max_participants: number;
   reservation_count: number;
   status: string;
+  reservations: ReservationInfo[];
 }
 
 const ACTIVITY_DOT_COLORS: Record<Activity, string> = {
@@ -74,7 +85,7 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
 
       const { data, error } = await supabase
         .from("sessions")
-        .select("date, activity, time_slot, max_participants, status, reservations(id)")
+        .select("date, activity, time_slot, max_participants, status, reservations(id, first_name, last_name, email, phone, participants, skill_level, status)")
         .gte("date", from)
         .lte("date", to);
 
@@ -85,8 +96,17 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
             activity: s.activity,
             time_slot: s.time_slot,
             max_participants: s.max_participants,
-            reservation_count: s.reservations?.length || 0,
+            reservation_count: s.reservations?.filter((r: any) => r.status === 'confirmed' || r.status === 'pending').length || 0,
             status: s.status,
+            reservations: (s.reservations || []).map((r: any) => ({
+              first_name: r.first_name,
+              last_name: r.last_name,
+              email: r.email,
+              phone: r.phone,
+              participants: r.participants,
+              skill_level: r.skill_level,
+              status: r.status,
+            })),
           }))
         );
       }
@@ -242,47 +262,73 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
               </Button>
             )}
           </div>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-4">
             {sessionsByDate[selectedDay]
               .sort((a, b) => a.time_slot.localeCompare(b.time_slot))
               .map((s, i) => {
                 const rate = s.max_participants > 0
                   ? Math.round((s.reservation_count / s.max_participants) * 100)
                   : 0;
+                const activeReservations = s.reservations.filter(r => r.status === 'confirmed' || r.status === 'pending');
                 return (
-                  <div
-                    key={i}
-                    className={cn(
-                      "flex items-center gap-3 p-3 rounded-lg bg-card border",
-                      s.status === "closed" && "opacity-50"
+                  <div key={i} className={cn("rounded-lg bg-card border", s.status === "closed" && "opacity-50")}>
+                    <div className="flex items-center gap-3 p-3">
+                      <div className={cn("w-3 h-8 rounded-full", ACTIVITY_DOT_COLORS[s.activity])} />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-foreground">
+                          {ACTIVITY_LABELS[s.activity]}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {SLOT_SHORT[s.time_slot]}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <div className="flex items-center gap-1">
+                          <Users className="w-3 h-3 text-muted-foreground" />
+                          <span className={cn("text-sm font-semibold", getFillColor(rate))}>
+                            {s.reservation_count}/{s.max_participants}
+                          </span>
+                        </div>
+                        <div className="w-16 h-1.5 bg-muted rounded-full mt-1">
+                          <div
+                            className={cn(
+                              "h-full rounded-full",
+                              rate < 50 ? "bg-yellow-400" : rate < 80 ? "bg-primary" : "bg-green-500"
+                            )}
+                            style={{ width: `${rate}%` }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    {activeReservations.length > 0 && (
+                      <div className="border-t border-border px-3 pb-3 pt-2 space-y-1.5">
+                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Inscrits</p>
+                        {activeReservations.map((r, j) => (
+                          <div key={j} className="flex items-center justify-between text-xs bg-muted/40 rounded-md px-2.5 py-1.5">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className={cn(
+                                "inline-block w-1.5 h-1.5 rounded-full",
+                                r.status === 'confirmed' ? "bg-green-500" : "bg-yellow-400"
+                              )} />
+                              <span className="font-medium text-foreground truncate">
+                                {r.first_name} {r.last_name}
+                              </span>
+                              {r.participants > 1 && (
+                                <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                                  ×{r.participants}
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2 text-muted-foreground shrink-0 ml-2">
+                              <span>{r.phone}</span>
+                              <Badge variant={r.status === 'confirmed' ? 'default' : 'secondary'} className="text-[10px] px-1.5 py-0">
+                                {r.status === 'confirmed' ? 'Confirmé' : 'En attente'}
+                              </Badge>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     )}
-                  >
-                    <div className={cn("w-3 h-8 rounded-full", ACTIVITY_DOT_COLORS[s.activity])} />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground">
-                        {ACTIVITY_LABELS[s.activity]}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {SLOT_SHORT[s.time_slot]}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <div className="flex items-center gap-1">
-                        <Users className="w-3 h-3 text-muted-foreground" />
-                        <span className={cn("text-sm font-semibold", getFillColor(rate))}>
-                          {s.reservation_count}/{s.max_participants}
-                        </span>
-                      </div>
-                      <div className="w-16 h-1.5 bg-muted rounded-full mt-1">
-                        <div
-                          className={cn(
-                            "h-full rounded-full",
-                            rate < 50 ? "bg-yellow-400" : rate < 80 ? "bg-primary" : "bg-green-500"
-                          )}
-                          style={{ width: `${rate}%` }}
-                        />
-                      </div>
-                    </div>
                   </div>
                 );
               })}
