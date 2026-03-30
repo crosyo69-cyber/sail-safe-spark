@@ -5,8 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Users, CalendarDays, ChevronDown, ChevronUp, Mail, Phone, CreditCard, RefreshCw, Download } from "lucide-react";
+import { Users, CalendarDays, ChevronDown, ChevronUp, Mail, Phone, CreditCard, RefreshCw, Download, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
@@ -77,6 +78,20 @@ const AdminOverview = () => {
   const [loading, setLoading] = useState(true);
   const [expandedSessions, setExpandedSessions] = useState<Set<string>>(new Set());
   const [showPast, setShowPast] = useState(false);
+  const [sendingSummary, setSendingSummary] = useState(false);
+
+  const sendWeeklySummary = async () => {
+    setSendingSummary(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("weekly-summary", { body: {} });
+      if (error) throw error;
+      toast({ title: "Résumé envoyé !", description: `${data.sessions} sessions incluses (${data.week})` });
+    } catch (e: any) {
+      toast({ title: "Erreur", description: e.message || "Impossible d'envoyer le résumé", variant: "destructive" });
+    } finally {
+      setSendingSummary(false);
+    }
+  };
 
   const fetchAll = async () => {
     setLoading(true);
@@ -204,6 +219,16 @@ const AdminOverview = () => {
             <Download className="w-3 h-3" /> Exporter CSV
           </Button>
         )}
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={sendWeeklySummary}
+          disabled={sendingSummary}
+          className="gap-1"
+        >
+          <Send className="w-3 h-3" />
+          {sendingSummary ? "Envoi…" : "Résumé hebdo"}
+        </Button>
       </div>
 
       {/* Sessions grouped by date */}
