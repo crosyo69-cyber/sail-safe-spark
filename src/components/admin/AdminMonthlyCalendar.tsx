@@ -17,7 +17,7 @@ import {
   subMonths,
 } from "date-fns";
 import { fr } from "date-fns/locale";
-import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus, Download } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus, Download, LockOpen, Lock } from "lucide-react";
 import CalendarAddReservation from "./CalendarAddReservation";
 import CalendarReservationActions from "./CalendarReservationActions";
 
@@ -126,6 +126,12 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
   const refreshSessions = useCallback(() => {
     setCurrentMonth(prev => new Date(prev));
   }, []);
+
+  const toggleSessionStatus = useCallback(async (sessionId: string, currentStatus: string) => {
+    const newStatus = currentStatus === "open" ? "closed" : "open";
+    await supabase.from("sessions").update({ status: newStatus }).eq("id", sessionId);
+    refreshSessions();
+  }, [refreshSessions]);
 
   const filteredSessions = useMemo(() => {
     if (activityFilter === "all") return sessions;
@@ -353,6 +359,18 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
                           {SLOT_SHORT[s.time_slot]}
                         </p>
                       </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className={cn(
+                          "h-7 w-7 p-0",
+                          s.status === "open" ? "text-green-600 hover:bg-green-500/10" : "text-destructive hover:bg-destructive/10"
+                        )}
+                        onClick={() => toggleSessionStatus(s.id, s.status)}
+                        title={s.status === "open" ? "Fermer la session" : "Ouvrir la session"}
+                      >
+                        {s.status === "open" ? <LockOpen className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                      </Button>
                       <Button
                         variant="ghost"
                         size="sm"
