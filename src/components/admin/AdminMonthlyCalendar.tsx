@@ -74,7 +74,7 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
   const [sessions, setSessions] = useState<SessionSummary[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
-
+  const [activityFilter, setActivityFilter] = useState<Activity | "all">("all");
   const [addingToSession, setAddingToSession] = useState<string | null>(null);
 
   const monthStart = startOfMonth(currentMonth);
@@ -127,14 +127,19 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
     setCurrentMonth(prev => new Date(prev));
   }, []);
 
+  const filteredSessions = useMemo(() => {
+    if (activityFilter === "all") return sessions;
+    return sessions.filter((s) => s.activity === activityFilter);
+  }, [sessions, activityFilter]);
+
   const sessionsByDate = useMemo(() => {
     const map: Record<string, SessionSummary[]> = {};
-    sessions.forEach((s) => {
+    filteredSessions.forEach((s) => {
       if (!map[s.date]) map[s.date] = [];
       map[s.date].push(s);
     });
     return map;
-  }, [sessions]);
+  }, [filteredSessions]);
 
   const getFillRate = (daySessions: SessionSummary[]) => {
     const total = daySessions.reduce((a, s) => a + s.max_participants, 0);
@@ -167,13 +172,33 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
         </Button>
       </div>
 
-      {/* Legend */}
-      <div className="flex flex-wrap gap-3 mb-4 text-xs">
+      {/* Activity filter */}
+      <div className="flex flex-wrap gap-2 mb-4 text-xs">
+        <button
+          onClick={() => setActivityFilter("all")}
+          className={cn(
+            "flex items-center gap-1.5 px-2.5 py-1 rounded-full border transition-colors",
+            activityFilter === "all"
+              ? "border-primary bg-primary/10 text-primary font-semibold"
+              : "border-border text-muted-foreground hover:bg-muted/50"
+          )}
+        >
+          Toutes
+        </button>
         {(Object.keys(ACTIVITY_LABELS) as Activity[]).map((a) => (
-          <div key={a} className="flex items-center gap-1.5">
-            <div className={cn("w-2.5 h-2.5 rounded-full", ACTIVITY_DOT_COLORS[a])} />
-            <span className="text-muted-foreground">{ACTIVITY_LABELS[a]}</span>
-          </div>
+          <button
+            key={a}
+            onClick={() => setActivityFilter(activityFilter === a ? "all" : a)}
+            className={cn(
+              "flex items-center gap-1.5 px-2.5 py-1 rounded-full border transition-colors",
+              activityFilter === a
+                ? "border-primary bg-primary/10 text-primary font-semibold"
+                : "border-border text-muted-foreground hover:bg-muted/50"
+            )}
+          >
+            <div className={cn("w-2 h-2 rounded-full", ACTIVITY_DOT_COLORS[a])} />
+            {ACTIVITY_LABELS[a]}
+          </button>
         ))}
       </div>
 
