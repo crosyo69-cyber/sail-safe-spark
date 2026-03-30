@@ -10,7 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Loader2, TrendingUp, Euro, Users, CalendarDays, RefreshCw } from "lucide-react";
+import { Loader2, TrendingUp, Euro, Users, CalendarDays, RefreshCw, FileDown } from "lucide-react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import {
   BarChart,
   Bar,
@@ -226,6 +228,137 @@ const AdminRevenueDashboard = () => {
     all: "Tout",
   };
 
+  const handleExportPDF = () => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    // Header
+    doc.setFillColor(15, 23, 42);
+    doc.rect(0, 0, pageWidth, 28, "F");
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("KiteSurf Passion — Rapport de revenus", 14, 18);
+
+    // Period
+    doc.setTextColor(100, 116, 139);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Période : ${periodLabels[period]}`, 14, 38);
+    doc.text(`Généré le ${format(new Date(), "d MMMM yyyy à HH:mm", { locale: fr })}`, 14, 44);
+
+    // Stats summary
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(15, 23, 42);
+    doc.text("Résumé", 14, 56);
+
+    autoTable(doc, {
+      startY: 60,
+      head: [["Revenu total", "Transactions", "Participants", "Panier moyen"]],
+      body: [[
+        `${totalRevenue.toLocaleString("fr-FR")} €`,
+        `${totalTransactions}`,
+        `${totalParticipants}`,
+        `${avgPerTransaction} €`,
+      ]],
+      theme: "grid",
+      headStyles: { fillColor: [8, 145, 178], fontSize: 9 },
+      bodyStyles: { fontSize: 10, fontStyle: "bold", halign: "center" },
+      styles: { halign: "center" },
+    });
+
+    // Revenue by activity
+    const actTableY = (doc as any).lastAutoTable?.finalY + 12 || 90;
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(15, 23, 42);
+    doc.text("Revenus par activité", 14, actTableY);
+
+    if (revenueByActivity.length > 0) {
+      autoTable(doc, {
+        startY: actTableY + 4,
+        head: [["Activité", "Revenu", "Part"]],
+        body: revenueByActivity.map((a) => [
+          a.name,
+          `${a.value.toLocaleString("fr-FR")} €`,
+          totalRevenue > 0 ? `${Math.round((a.value / totalRevenue) * 100)}%` : "0%",
+        ]),
+        theme: "striped",
+        headStyles: { fillColor: [8, 145, 178], fontSize: 9 },
+        bodyStyles: { fontSize: 9 },
+      });
+    }
+
+    // Revenue over time
+    const timeTableY = (doc as any).lastAutoTable?.finalY + 12 || 140;
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.text("Évolution du revenu", 14, timeTableY);
+
+    if (revenueOverTime.length > 0) {
+      autoTable(doc, {
+        startY: timeTableY + 4,
+        head: [["Période", "Revenu"]],
+        body: revenueOverTime.map((r) => [
+          r.label,
+          `${r.revenue.toLocaleString("fr-FR")} €`,
+        ]),
+        theme: "striped",
+        headStyles: { fillColor: [8, 145, 178], fontSize: 9 },
+        bodyStyles: { fontSize: 9 },
+      });
+    }
+
+    // Recent transactions
+    const txTableY = (doc as any).lastAutoTable?.finalY + 12 || 200;
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.text("Dernières transactions", 14, txTableY);
+
+    // Get all filtered transactions (not just 10)
+    const allTransactions = [...filteredReservations]
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      .map((r) => {
+        const session = sessionMap[r.session_id];
+        return {
+          date: format(parseISO(r.created_at), "dd/MM/yyyy HH:mm", { locale: fr }),
+          activity: ACTIVITY_LABELS[session?.activity || ""] || session?.activity || "—",
+          participants: `${r.participants}`,
+          amount: `${(r.participants * DEPOSIT_PER_PERSON).toLocaleString("fr-FR")} €`,
+        };
+      });
+
+    if (allTransactions.length > 0) {
+      autoTable(doc, {
+        startY: txTableY + 4,
+        head: [["Date", "Activité", "Participants", "Montant"]],
+        body: allTransactions.map((t) => [t.date, t.activity, t.participants, t.amount]),
+        theme: "striped",
+        headStyles: { fillColor: [8, 145, 178], fontSize: 9 },
+        bodyStyles: { fontSize: 8 },
+        columnStyles: { 3: { halign: "right", fontStyle: "bold" } },
+      });
+    }
+
+    // Footer
+    const pageCount = doc.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(8);
+      doc.setTextColor(148, 163, 184);
+      doc.text(
+        `KiteSurf Passion · Spot de l'Almanarre, Hyères — Page ${i}/${pageCount}`,
+        pageWidth / 2,
+        doc.internal.pageSize.getHeight() - 8,
+        { align: "center" }
+      );
+    }
+
+    doc.save(`revenus-${period}-${format(new Date(), "yyyy-MM-dd")}.pdf`);
+    toast.success("Rapport PDF téléchargé");
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -260,6 +393,9 @@ const AdminRevenueDashboard = () => {
               ))}
             </SelectContent>
           </Select>
+          <Button variant="outline" size="sm" onClick={handleExportPDF} title="Exporter PDF">
+            <FileDown className="w-4 h-4" />
+          </Button>
           <Button variant="outline" size="sm" onClick={() => { fetchData(); toast.success("Données actualisées"); }}>
             <RefreshCw className="w-4 h-4" />
           </Button>
