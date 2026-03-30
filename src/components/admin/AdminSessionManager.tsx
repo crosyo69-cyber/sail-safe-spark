@@ -408,10 +408,15 @@ const AdminSessionManager = () => {
       </div>
 
       {/* Add session button */}
-      {sessions.length > 0 && !showForm && (
-        <Button onClick={() => setShowForm(true)} variant="outline" className="gap-2">
-          <Plus className="w-4 h-4" /> Ajouter une session
-        </Button>
+      {sessions.length > 0 && !showForm && !showBulk && (
+        <div className="flex gap-2">
+          <Button onClick={() => setShowForm(true)} variant="outline" className="gap-2">
+            <Plus className="w-4 h-4" /> Ajouter une session
+          </Button>
+          <Button onClick={() => setShowBulk(true)} variant="outline" className="gap-2">
+            <Sparkles className="w-4 h-4" /> Générer en lot
+          </Button>
+        </div>
       )}
 
       {/* Add session form */}
