@@ -604,6 +604,7 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
             </Button>
           </div>
         </Card>
+      )}
     </div>
   );
 };
