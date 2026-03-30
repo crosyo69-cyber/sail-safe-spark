@@ -17,7 +17,7 @@ import {
   subMonths,
 } from "date-fns";
 import { fr } from "date-fns/locale";
-import { ChevronLeft, ChevronRight, Users } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, CalendarDays } from "lucide-react";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 
@@ -226,9 +226,22 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
       {/* Selected day detail */}
       {selectedDay && sessionsByDate[selectedDay] && (
         <div className="mt-4 p-4 bg-muted/30 rounded-lg border border-border">
-          <h3 className="font-semibold text-foreground mb-3 capitalize">
-            {format(new Date(selectedDay + "T12:00:00"), "EEEE d MMMM", { locale: fr })}
-          </h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-foreground capitalize">
+              {format(new Date(selectedDay + "T12:00:00"), "EEEE d MMMM", { locale: fr })}
+            </h3>
+            {onNavigateToSession && (
+              <Button
+                size="sm"
+                variant="outline"
+                className="gap-1.5 text-xs"
+                onClick={() => onNavigateToSession(new Date(selectedDay + "T12:00:00"))}
+              >
+                <CalendarDays className="w-3.5 h-3.5" />
+                Gérer les sessions
+              </Button>
+            )}
+          </div>
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {sessionsByDate[selectedDay]
               .sort((a, b) => a.time_slot.localeCompare(b.time_slot))
