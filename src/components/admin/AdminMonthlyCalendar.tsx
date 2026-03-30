@@ -106,6 +106,7 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
             reservation_count: s.reservations?.filter((r: any) => r.status === 'confirmed' || r.status === 'pending').length || 0,
             status: s.status,
             reservations: (s.reservations || []).map((r: any) => ({
+              id: r.id,
               first_name: r.first_name,
               last_name: r.last_name,
               email: r.email,
