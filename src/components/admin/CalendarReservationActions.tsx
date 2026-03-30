@@ -38,6 +38,9 @@ interface ReservationData {
 interface CalendarReservationActionsProps {
   reservation: ReservationData;
   onUpdated: () => void;
+  sessionActivity?: string;
+  sessionTimeSlot?: string;
+  sessionDate?: string;
 }
 
 const SKILL_LABELS: Record<string, string> = {
@@ -55,6 +58,9 @@ const STATUS_LABELS: Record<string, string> = {
 const CalendarReservationActions = ({
   reservation,
   onUpdated,
+  sessionActivity,
+  sessionTimeSlot,
+  sessionDate,
 }: CalendarReservationActionsProps) => {
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -96,6 +102,24 @@ const CalendarReservationActions = ({
     if (error) {
       toast.error("Erreur : " + error.message);
     } else {
+      // Send cancellation notification if status changed to cancelled
+      if (form.status === "cancelled" && reservation.status !== "cancelled" && sessionActivity && sessionDate) {
+        supabase.functions.invoke("notify-reservation", {
+          body: {
+            first_name: form.first_name,
+            last_name: form.last_name,
+            email: form.email,
+            phone: form.phone,
+            participants: form.participants,
+            skill_level: form.skill_level,
+            activity: sessionActivity,
+            time_slot: sessionTimeSlot || "",
+            date: sessionDate,
+            source: "admin",
+            type: "cancelled",
+          },
+        }).catch((err) => console.error("Cancellation notification error:", err));
+      }
       toast.success(`${form.first_name} ${form.last_name} mis(e) à jour`);
       setEditing(false);
       onUpdated();

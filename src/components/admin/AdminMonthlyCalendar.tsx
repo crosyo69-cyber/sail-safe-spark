@@ -438,7 +438,7 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
                                 <Badge variant={r.status === 'confirmed' ? 'default' : 'secondary'} className="text-[10px] px-1.5 py-0">
                                   {r.status === 'confirmed' ? 'Confirmé' : 'En attente'}
                                 </Badge>
-                                <CalendarReservationActions reservation={r} onUpdated={refreshSessions} />
+                                <CalendarReservationActions reservation={r} onUpdated={refreshSessions} sessionActivity={s.activity} sessionTimeSlot={s.time_slot} sessionDate={selectedDay} />
                               </div>
                             </div>
                           </div>

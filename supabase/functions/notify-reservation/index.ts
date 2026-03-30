@@ -54,9 +54,12 @@ interface ReservationNotification {
   time_slot: string;
   date: string;
   source: string;
+  type?: "new" | "cancelled";
 }
 
 function buildNotificationHtml(data: ReservationNotification): string {
+  const isCancellation = data.type === "cancelled";
+
   const formattedDate = new Date(data.date + "T12:00:00").toLocaleDateString("fr-FR", {
     weekday: "long",
     day: "numeric",
@@ -77,10 +80,10 @@ function buildNotificationHtml(data: ReservationNotification): string {
     </td></tr>
     <tr><td style="padding:28px 25px 0;">
       <h1 style="font-size:20px;font-weight:bold;color:#0F172A;margin:0 0 8px;">
-        🆕 Nouvelle inscription ${sourceBadge}
+        ${isCancellation ? "❌ Annulation d'inscription" : "🆕 Nouvelle inscription"} ${sourceBadge}
       </h1>
       <p style="font-size:14px;color:#64748B;margin:0 0 20px;">
-        Un stagiaire vient de s'inscrire à une session.
+        ${isCancellation ? "Une inscription vient d'être annulée." : "Un stagiaire vient de s'inscrire à une session."}
       </p>
     </td></tr>
     <tr><td style="padding:0 25px 24px;">
@@ -170,7 +173,9 @@ Deno.serve(async (req) => {
         to: OWNER_EMAIL,
         from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
         sender_domain: FROM_DOMAIN,
-        subject: `🆕 Nouvelle inscription: ${data.first_name} ${data.last_name} — ${activityLabel}`,
+        subject: data.type === "cancelled"
+          ? `❌ Annulation: ${data.first_name} ${data.last_name} — ${activityLabel}`
+          : `🆕 Nouvelle inscription: ${data.first_name} ${data.last_name} — ${activityLabel}`,
         html,
         text: stripHtml(html),
         purpose: "transactional",
