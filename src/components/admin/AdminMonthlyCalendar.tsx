@@ -19,6 +19,7 @@ import {
 import { fr } from "date-fns/locale";
 import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus } from "lucide-react";
 import CalendarAddReservation from "./CalendarAddReservation";
+import CalendarReservationActions from "./CalendarReservationActions";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 
