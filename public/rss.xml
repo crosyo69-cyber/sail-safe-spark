@@ -5,13 +5,40 @@
     <link>https://www.kitesurfpassion.fr/blog-kitesurf-hyeres</link>
     <description>Actualités, conseils et guides sur le kitesurf, wingfoil et pumpfoil à Hyères. Découvrez le spot de l'Almanarre avec l'école KiteSurf Passion.</description>
     <language>fr-FR</language>
-    <lastBuildDate>Wed, 12 Mar 2026 10:00:00 +0100</lastBuildDate>
+    <lastBuildDate>Sat, 28 Mar 2026 10:00:00 +0100</lastBuildDate>
     <atom:link href="https://www.kitesurfpassion.fr/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://www.kitesurfpassion.fr/favicon.ico</url>
       <title>KiteSurf Passion</title>
       <link>https://www.kitesurfpassion.fr</link>
     </image>
+    
+    <item>
+      <title>Quand Partir Faire du Kitesurf à Hyères ? Guide Saison par Saison</title>
+      <link>https://www.kitesurfpassion.fr/blog/quand-faire-kitesurf-hyeres-saisons</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/quand-faire-kitesurf-hyeres-saisons</guid>
+      <pubDate>Sat, 28 Mar 2026 10:00:00 +0100</pubDate>
+      <category>Le Spot</category>
+      <description>Printemps, été, automne : quelle est la meilleure période pour faire du kitesurf à Hyères ? Analyse des vents, températures et conditions mois par mois sur l'Almanarre.</description>
+    </item>
+    
+    <item>
+      <title>Mistral ou Vent d'Est à l'Almanarre : Quelles Conditions Selon Votre Niveau ?</title>
+      <link>https://www.kitesurfpassion.fr/blog/mistral-vent-est-almanarre-conditions-niveau</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/mistral-vent-est-almanarre-conditions-niveau</guid>
+      <pubDate>Wed, 25 Mar 2026 10:00:00 +0100</pubDate>
+      <category>Le Spot</category>
+      <description>Mistral side-shore ou vent d'Est on-shore : découvrez quel vent choisir à l'Almanarre selon votre niveau de kitesurf. Analyse experte du spot de Hyères.</description>
+    </item>
+    
+    <item>
+      <title>Stage Kitesurf à Hyères : 5 Jours, Semi-Privé ou Cours Particulier ?</title>
+      <link>https://www.kitesurfpassion.fr/blog/stage-kitesurf-hyeres-formule-choisir</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/stage-kitesurf-hyeres-formule-choisir</guid>
+      <pubDate>Sun, 22 Mar 2026 10:00:00 +0100</pubDate>
+      <category>Kitesurf</category>
+      <description>Stage 5 jours, cours semi-privé ou leçon particulière : quelle formule de kitesurf choisir à Hyères ? Comparatif complet pour trouver l'option idéale.</description>
+    </item>
     
     <item>
       <title>Activités Nautiques à Hyères en Famille : Le Guide Complet</title>
