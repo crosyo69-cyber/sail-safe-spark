@@ -6,39 +6,39 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Windguru station ID for Almanarre
-const WINDGURU_STATION_ID = "1061";
+// Almanarre coordinates
+const ALMANARRE_LAT = 43.0667;
+const ALMANARRE_LON = 6.1333;
 
-interface WindguruData {
-  wind_avg?: number;
-  wind_max?: number;
-  temperature?: number;
-  wind_direction?: number;
+interface WindData {
+  wind_avg: number;
+  wind_max: number;
+  temperature: number;
+  wind_direction: number;
 }
 
-async function fetchWindguruData(): Promise<WindguruData | null> {
+async function fetchWindData(): Promise<WindData | null> {
   try {
-    // Windguru API for station data
     const response = await fetch(
-      `https://www.windguru.cz/int/iapi.php?q=station_data_current&id_station=${WINDGURU_STATION_ID}`
+      `https://api.open-meteo.com/v1/forecast?latitude=${ALMANARRE_LAT}&longitude=${ALMANARRE_LON}&current=wind_speed_10m,wind_gusts_10m,temperature_2m,wind_direction_10m&wind_speed_unit=kn`
     );
-    
+
     if (!response.ok) {
-      console.error("Windguru API error:", response.status);
+      console.error("Open-Meteo API error:", response.status);
       return null;
     }
-    
+
     const data = await response.json();
-    console.log("Windguru data:", JSON.stringify(data));
-    
+    console.log("Open-Meteo data:", JSON.stringify(data.current));
+
     return {
-      wind_avg: data.wind_avg,
-      wind_max: data.wind_max,
-      temperature: data.temperature,
-      wind_direction: data.wind_direction,
+      wind_avg: data.current.wind_speed_10m,
+      wind_max: data.current.wind_gusts_10m,
+      temperature: data.current.temperature_2m,
+      wind_direction: data.current.wind_direction_10m,
     };
   } catch (error) {
-    console.error("Error fetching Windguru data:", error);
+    console.error("Error fetching wind data:", error);
     return null;
   }
 }
@@ -51,17 +51,13 @@ function getWindDirection(degrees: number): string {
 
 async function sendEmailAlert(
   email: string,
-  windData: WindguruData,
+  windData: WindData,
   unsubscribeToken: string,
   resendApiKey: string
 ): Promise<boolean> {
   try {
     const resend = new Resend(resendApiKey);
-
-    const windDirection = windData.wind_direction 
-      ? getWindDirection(windData.wind_direction) 
-      : "N/A";
-
+    const windDirection = getWindDirection(windData.wind_direction);
     const unsubscribeUrl = `https://kitesurfpassion.fr/desabonnement-alertes?token=${unsubscribeToken}`;
 
     const emailResponse = await resend.emails.send({
@@ -103,13 +99,13 @@ async function sendEmailAlert(
               <p>Les conditions météo à l'Almanarre sont actuellement <strong>idéales pour le kitesurf</strong> !</p>
               
               <div class="wind-card">
-                <div class="wind-value">${Math.round(windData.wind_avg || 0)} nœuds</div>
+                <div class="wind-value">${Math.round(windData.wind_avg)} nœuds</div>
                 <div class="wind-label">Vent moyen</div>
               </div>
               
               <div class="stats">
                 <div class="stat">
-                  <div class="stat-value">${Math.round(windData.wind_max || 0)}</div>
+                  <div class="stat-value">${Math.round(windData.wind_max)}</div>
                   <div class="stat-label">Rafales (nœuds)</div>
                 </div>
                 <div class="stat">
@@ -117,7 +113,7 @@ async function sendEmailAlert(
                   <div class="stat-label">Direction</div>
                 </div>
                 <div class="stat">
-                  <div class="stat-value">${Math.round(windData.temperature || 0)}°C</div>
+                  <div class="stat-value">${Math.round(windData.temperature)}°C</div>
                   <div class="stat-label">Température</div>
                 </div>
               </div>
@@ -167,9 +163,9 @@ const handler = async (req: Request): Promise<Response> => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // Fetch current wind data
-    const windData = await fetchWindguruData();
-    
+    // Fetch current wind data from Open-Meteo
+    const windData = await fetchWindData();
+
     if (!windData || windData.wind_avg === undefined) {
       console.log("No wind data available");
       return new Response(
@@ -199,8 +195,8 @@ const handler = async (req: Request): Promise<Response> => {
     let sentCount = 0;
     for (const subscription of subscriptions || []) {
       const success = await sendEmailAlert(
-        subscription.email, 
-        windData, 
+        subscription.email,
+        windData,
         subscription.unsubscribe_token,
         resendApiKey
       );
@@ -208,18 +204,22 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         message: "Weather alerts processed",
         windSpeed: windData.wind_avg,
+        windGusts: windData.wind_max,
+        temperature: windData.temperature,
+        windDirection: getWindDirection(windData.wind_direction),
         sent: sentCount,
-        total: subscriptions?.length || 0
+        total: subscriptions?.length || 0,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
-  } catch (error: any) {
-    console.error("Error in weather-alerts function:", error);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error("Error in weather-alerts function:", message);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: message }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
