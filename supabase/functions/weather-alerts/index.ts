@@ -174,15 +174,16 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    console.log("Current wind:", windData.wind_avg, "knots");
+    const windSpeed = Math.round(windData.wind_avg);
+    console.log("Current wind:", windSpeed, "knots (rounded from", windData.wind_avg, ")");
 
     // Fetch all enabled subscriptions where current wind is in range
     const { data: subscriptions, error } = await supabase
       .from("weather_alert_subscriptions")
       .select("email, unsubscribe_token")
       .eq("enabled", true)
-      .lte("min_wind", windData.wind_avg)
-      .gte("max_wind", windData.wind_avg);
+      .lte("min_wind", windSpeed)
+      .gte("max_wind", windSpeed);
 
     if (error) {
       console.error("Error fetching subscriptions:", error);
