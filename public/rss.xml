@@ -5,13 +5,22 @@
     <link>https://www.kitesurfpassion.fr/blog-kitesurf-hyeres</link>
     <description>Actualités, conseils et guides sur le kitesurf, wingfoil et pumpfoil à Hyères. Découvrez le spot de l'Almanarre avec l'école KiteSurf Passion.</description>
     <language>fr-FR</language>
-    <lastBuildDate>Mon, 30 Mar 2026 10:00:00 +0200</lastBuildDate>
+    <lastBuildDate>Wed, 01 Apr 2026 10:00:00 +0200</lastBuildDate>
     <atom:link href="https://www.kitesurfpassion.fr/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://www.kitesurfpassion.fr/favicon.ico</url>
       <title>KiteSurf Passion</title>
       <link>https://www.kitesurfpassion.fr</link>
     </image>
+    
+    <item>
+      <title>Cours particulier ou collectif kitesurf Hyères : que choisir ?</title>
+      <link>https://www.kitesurfpassion.fr/blog/cours-particulier-ou-collectif-kitesurf-hyeres</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/cours-particulier-ou-collectif-kitesurf-hyeres</guid>
+      <pubDate>Wed, 01 Apr 2026 10:00:00 +0200</pubDate>
+      <category>Kitesurf</category>
+      <description>Hésitez-vous entre un cours particulier et un stage collectif de kitesurf à Hyères ? Découvrez les avantages de chaque formule pour apprendre à l'Almanarre.</description>
+    </item>
     
     <item>
       <title>Prix d'un stage de kitesurf à Hyères : quel budget prévoir pour débuter ?</title>
