@@ -483,6 +483,17 @@ export const blogArticles = [
     alt: "Prix stage kitesurf Hyères budget - Tarifs cours école KiteSurf Passion Almanarre",
     featured: true,
   },
+  {
+    slug: "cours-particulier-ou-collectif-kitesurf-hyeres",
+    title: "Cours particulier ou collectif kitesurf Hyères : que choisir ?",
+    excerpt: "Hésitez-vous entre un cours particulier et un stage collectif de kitesurf à Hyères ? Découvrez les avantages de chaque formule pour apprendre à l'Almanarre.",
+    category: "Kitesurf",
+    date: "2026-04-01",
+    readTime: "10 min",
+    image: "blog-bateau-groupe.jpg",
+    alt: "Cours particulier ou collectif kitesurf Hyères - Comparatif formules école KiteSurf Passion Almanarre",
+    featured: true,
+  },
 ];
 
 const categories = ["Tous", "Kitesurf", "Wing Foil", "Pump Foil", "Wakeboard", "Le Spot", "Sécurité"];
