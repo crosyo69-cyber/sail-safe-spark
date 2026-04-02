@@ -16,6 +16,7 @@ import timeline1999 from "@/assets/timeline-1999-creation.jpg?webp";
 import timeline2001 from "@/assets/timeline-2001-bpjeps.jpg?webp";
 import timeline2006 from "@/assets/timeline-2006-students.jpg?webp";
 import timeline2010 from "@/assets/timeline-2010-formateur.jpg?webp";
+import timeline2015 from "@/assets/pump-foil-festival-affiche.jpg?webp";
 import timeline2018 from "@/assets/timeline-2018-wingfoil.jpg?webp";
 import timeline2024 from "@/assets/timeline-2024-pumpfoil.jpg?webp";
 import { useEffect, useRef, useState } from "react";
