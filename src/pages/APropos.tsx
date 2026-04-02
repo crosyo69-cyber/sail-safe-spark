@@ -16,6 +16,7 @@ import timeline1999 from "@/assets/timeline-1999-creation.jpg?webp";
 import timeline2001 from "@/assets/timeline-2001-bpjeps.jpg?webp";
 import timeline2006 from "@/assets/timeline-2006-students.jpg?webp";
 import timeline2010 from "@/assets/timeline-2010-formateur.jpg?webp";
+import timeline2015 from "@/assets/pump-foil-festival-affiche.jpg?webp";
 import timeline2018 from "@/assets/timeline-2018-wingfoil.jpg?webp";
 import timeline2024 from "@/assets/timeline-2024-pumpfoil.jpg?webp";
 import { useEffect, useRef, useState } from "react";
@@ -204,7 +205,7 @@ const APropos = () => {
     { year: "2001", title: "Reconnaissance professionnelle", description: "Obtention du BPJEPS et développement de l'école avec une clientèle fidèle.", image: timeline2001, alt: "Diplôme BPJEPS moniteur kitesurf 2001 - École KiteSurf Passion Hyères" },
     { year: "2006", title: "1 000 élèves formés", description: "Cap symbolique franchi, témoignant de la confiance accordée par les passionnés de glisse.", image: timeline2006, alt: "1000 élèves kitesurf formés 2006 - École KiteSurf Passion Almanarre" },
     { year: "2010", title: "Formateur de moniteurs", description: "Yoanne devient formateur officiel pour les futurs moniteurs.", image: timeline2010, alt: "Formation moniteurs kitesurf 2010 - Yoanne Cros formateur FFVL Var" },
-    { year: "2015", title: "Pumpfoil Hyères Festival", description: "Yoanne crée le Pump Hyères Festival, premier événement dédié au pumpfoil à Hyères, posant les bases d'une discipline en devenir.", image: timeline2018, alt: "Pumpfoil Hyères Festival 2015 - Événement créé par Yoanne Cros" },
+    { year: "2015", title: "Pumpfoil Hyères Festival", description: "Yoanne crée le Pump Hyères Festival, premier événement dédié au pumpfoil à Hyères, posant les bases d'une discipline en devenir.", image: timeline2015, alt: "Affiche Pump Foil Festival Hyères 2015 - Événement créé par Yoanne Cros" },
     { year: "2018", title: "Wingfoil", description: "Introduction du wingfoil, nouvelle discipline en plein essor.", image: timeline2018, alt: "Wingfoil Hyères 2018 - Nouvelle discipline école KiteSurf Passion Var" },
     { year: "2024", title: "Pumpfoil & 25 ans", description: "Arrivée du pumpfoil et célébration d'un quart de siècle dédié à la passion des sports de glisse. Plus de 2 500 élèves formés.", image: timeline2024, alt: "25 ans école kitesurf Hyères 2024 - Pumpfoil KiteSurf Passion Almanarre" }
   ];
