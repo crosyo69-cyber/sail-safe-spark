@@ -202,7 +202,7 @@ const APropos = () => {
 
   const milestones = [
     { year: "1999", title: "Création de l'école", description: "Yoanne Cros fonde KiteSurf Passion sur le spot de l'Almanarre et acquiert son premier bateau d'assistance.", image: timeline1999, alt: "Création école kitesurf Hyères 1999 - Yoanne Cros fondateur KiteSurf Passion" },
-    { year: "2000", title: "Cofondateur du projet HKA", description: "Membre d'honneur à l'origine du projet Hyères Kitesurf Association (HKA), contribuant à structurer la pratique du kitesurf sur le littoral hyérois.", image: timeline1999, alt: "Projet HKA Hyères Kitesurf Association 2000 - Yoanne Cros membre fondateur" },
+    { year: "2000", title: "Cofondateur du projet HKA", description: "Membre d'honneur à l'origine du projet Hyères Kitesurf Association (HKA), contribuant à structurer la pratique du kitesurf sur le littoral hyérois.", image: logoHka, alt: "Logo HKA Hyères Kitesurf Association 2000 - Cofondé par Yoanne Cros" },
     { year: "2001", title: "Reconnaissance professionnelle", description: "Obtention du BPJEPS et développement de l'école avec une clientèle fidèle.", image: timeline2001, alt: "Diplôme BPJEPS moniteur kitesurf 2001 - École KiteSurf Passion Hyères" },
     { year: "2006", title: "1 000 élèves formés", description: "Cap symbolique franchi, témoignant de la confiance accordée par les passionnés de glisse.", image: timeline2006, alt: "1000 élèves kitesurf formés 2006 - École KiteSurf Passion Almanarre" },
     { year: "2010", title: "Formateur de moniteurs", description: "Yoanne devient formateur officiel pour les futurs moniteurs.", image: timeline2010, alt: "Formation moniteurs kitesurf 2010 - Yoanne Cros formateur FFVL Var" },
