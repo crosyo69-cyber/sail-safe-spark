@@ -39,6 +39,7 @@ const imageMap: Record<string, string> = {
   "blog-location-materiel.jpg": blogLocationMateriel,
   "blog-foil-tracte-hyeres.jpg": blogFoilTracteHyeres,
   "blog-cours-particulier-kitesurf.jpg": blogCoursParticulierKitesurf,
+  "blog-kitesurf-almanarre-action.jpg": blogKitesurfAlmanarreAction,
 };
 
 const getArticleImage = (imageName: string): string => {

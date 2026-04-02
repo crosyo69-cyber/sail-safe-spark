@@ -446,7 +446,7 @@ export const blogArticles = [
     category: "Le Spot",
     date: "2026-03-28",
     readTime: "12 min",
-    image: "blog-kitesurf-action.jpg",
+    image: "blog-kitesurf-almanarre-action.jpg",
     alt: "Quand faire kitesurf Hyères saisons - Guide périodes vent Almanarre école KiteSurf Passion",
     featured: true,
   },
