@@ -12,6 +12,7 @@ import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg?webp";
 import portraitYohan from "@/assets/portrait-yohan-cros.jpg?webp";
 import bateauSecurite from "@/assets/bateau-assistance-kitesurf.jpg?webp";
 import almanarreSunset from "@/assets/almanarre-sunset.jpg?webp";
+import logoHka from "@/assets/logo-hka.png";
 import timeline1999 from "@/assets/timeline-1999-creation.jpg?webp";
 import timeline2001 from "@/assets/timeline-2001-bpjeps.jpg?webp";
 import timeline2006 from "@/assets/timeline-2006-students.jpg?webp";
