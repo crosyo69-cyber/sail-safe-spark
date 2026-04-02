@@ -11,6 +11,7 @@ import DOMPurify from "dompurify";
 import { marked } from "marked";
 
 import NotFound from "./NotFound";
+import avatarYoanne from "@/assets/avatar-yoanne-cros.jpg?webp";
 
 // WebP optimized images for better LCP performance
 import blogKitesurfDebut from "@/assets/blog-kitesurf-debut.jpg?webp";
