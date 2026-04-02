@@ -11,6 +11,7 @@ import DOMPurify from "dompurify";
 import { marked } from "marked";
 
 import NotFound from "./NotFound";
+import avatarYoanne from "@/assets/avatar-yoanne-cros.jpg?webp";
 
 // WebP optimized images for better LCP performance
 import blogKitesurfDebut from "@/assets/blog-kitesurf-debut.jpg?webp";
@@ -4460,9 +4461,11 @@ const BlogArticle = () => {
 
             <div className="flex items-center justify-between border-t border-b border-border py-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-primary" />
-                </div>
+                <img
+                  src={avatarYoanne}
+                  alt="Yoanne Cros, moniteur diplômé d'État - KiteSurf Passion Hyères"
+                  className="w-10 h-10 rounded-full object-cover object-top"
+                />
                 <div>
                   <span className="block font-medium text-foreground">Yoanne Cros</span>
                   <span className="text-sm text-muted-foreground">Moniteur Diplômé d'État</span>
