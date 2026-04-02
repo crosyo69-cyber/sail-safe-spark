@@ -490,7 +490,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-04-01",
     readTime: "10 min",
-    image: "blog-bateau-groupe.jpg",
+    image: "blog-cours-particulier-kitesurf.jpg",
     alt: "Cours particulier ou collectif kitesurf Hyères - Comparatif formules école KiteSurf Passion Almanarre",
     featured: true,
   },
