@@ -582,6 +582,54 @@ export default function CoursPumpfoil() {
           accentColor="ocean"
         />
 
+        {/* Pump Foil Festival Banner */}
+        <section className="py-20 bg-gradient-to-br from-ocean/10 via-background to-turquoise/10">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-ocean/20">
+                <img
+                  src={festivalAffiche}
+                  alt="Affiche Pump Foil Festival Hyères - 4 octobre 2025 - Village exposants, épreuves, challenges et musique live"
+                  className="w-full h-auto"
+                  loading="lazy"
+                />
+              </div>
+              <div>
+                <span className="inline-flex items-center gap-2 px-4 py-2 bg-sunset/10 text-sunset rounded-full text-sm font-bold mb-4">
+                  <Calendar className="w-4 h-4" />
+                  Événement 2025
+                </span>
+                <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
+                  Pump Foil{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-ocean to-turquoise">
+                    Festival
+                  </span>
+                </h2>
+                <p className="text-muted-foreground text-lg mb-6">
+                  Rendez-vous le <strong className="text-foreground">samedi 4 octobre 2025</strong> à Hyères pour le Pump Foil Festival ! 
+                  Village exposants, tests matériel, épreuves &amp; challenges, DJ et musique live.
+                </p>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3 text-foreground">
+                    <Calendar className="w-5 h-5 text-ocean" />
+                    <span>Samedi 4 octobre 2025</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-foreground">
+                    <MapPin className="w-5 h-5 text-ocean" />
+                    <span>Hyères Kite Association – Almanarre</span>
+                  </div>
+                </div>
+                <Button asChild size="lg" variant="sunset">
+                  <Link to="/contact-reservation-kitesurf-hyeres">
+                    En savoir plus
+                    <ArrowRight className="ml-2 w-5 h-5" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <CTASection />
       </main>
 
