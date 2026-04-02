@@ -321,6 +321,9 @@ const APropos = () => {
                     Passionné de sports nautiques depuis son plus jeune âge, <strong className="text-foreground">Yoanne Cros</strong> a découvert le kitesurf dès ses débuts en France à la fin des années 90. Convaincu du potentiel de cette discipline révolutionnaire, il fonde <strong className="text-foreground">KiteSurf Passion</strong> en 1999 sur le spot de l'Almanarre.
                   </p>
                   <p>
+                    Dès mai 2000, il s'engage dans la structuration de la discipline en tant que <strong className="text-foreground">membre d'honneur et cofondateur du projet HKA</strong> (Hyères Kitesurf Association), contribuant à organiser la pratique du kitesurf sur le littoral hyérois.
+                  </p>
+                  <p>
                     Titulaire du <strong className="text-foreground">BPJEPS</strong> (Brevet Professionnel de la Jeunesse, de l'Éducation Populaire et du Sport), Yoanne est également <strong className="text-foreground">formateur de moniteurs</strong>. Cette double casquette lui confère une expertise pédagogique unique, qu'il met au service de tous ses élèves.
                   </p>
                   <p>
