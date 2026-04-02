@@ -8,7 +8,7 @@ import { RelatedBlogArticles } from "@/components/sections/RelatedBlogArticles";
 import { InternalLinking, disciplineLinks, pillarLinks } from "@/components/sections/InternalLinking";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Check, ArrowRight, Waves, Zap, Target, Clock } from "lucide-react";
+import { Check, ArrowRight, Waves, Zap, Target, Clock, Calendar, MapPin } from "lucide-react";
 import { getProductRatingData } from "@/lib/seo-ratings";
 import pumpfoilImage from "@/assets/pumpfoil-hyeres-cours.jpg?webp";
 import pumpfoilInitiation from "@/assets/pumpfoil-initiation.jpg?webp";
