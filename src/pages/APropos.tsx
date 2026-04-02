@@ -199,10 +199,11 @@ const APropos = () => {
   ];
 
   const milestones = [
-    { year: "1999", title: "Création de l'école", description: "Yohan Cros fonde KiteSurf Passion sur le spot de l'Almanarre et acquiert son premier bateau d'assistance.", image: timeline1999, alt: "Création école kitesurf Hyères 1999 - Yohan Cros fondateur KiteSurf Passion" },
+    { year: "1999", title: "Création de l'école", description: "Yoanne Cros fonde KiteSurf Passion sur le spot de l'Almanarre et acquiert son premier bateau d'assistance.", image: timeline1999, alt: "Création école kitesurf Hyères 1999 - Yoanne Cros fondateur KiteSurf Passion" },
+    { year: "2000", title: "Cofondateur du projet HKA", description: "Membre d'honneur à l'origine du projet Hyères Kitesurf Association (HKA), contribuant à structurer la pratique du kitesurf sur le littoral hyérois.", image: timeline1999, alt: "Projet HKA Hyères Kitesurf Association 2000 - Yoanne Cros membre fondateur" },
     { year: "2001", title: "Reconnaissance professionnelle", description: "Obtention du BPJEPS et développement de l'école avec une clientèle fidèle.", image: timeline2001, alt: "Diplôme BPJEPS moniteur kitesurf 2001 - École KiteSurf Passion Hyères" },
     { year: "2006", title: "1 000 élèves formés", description: "Cap symbolique franchi, témoignant de la confiance accordée par les passionnés de glisse.", image: timeline2006, alt: "1000 élèves kitesurf formés 2006 - École KiteSurf Passion Almanarre" },
-    { year: "2010", title: "Formateur de moniteurs", description: "Yohan devient formateur officiel pour les futurs moniteurs.", image: timeline2010, alt: "Formation moniteurs kitesurf 2010 - Yohan Cros formateur FFVL Var" },
+    { year: "2010", title: "Formateur de moniteurs", description: "Yoanne devient formateur officiel pour les futurs moniteurs.", image: timeline2010, alt: "Formation moniteurs kitesurf 2010 - Yoanne Cros formateur FFVL Var" },
     { year: "2018", title: "Wingfoil", description: "Introduction du wingfoil, nouvelle discipline en plein essor.", image: timeline2018, alt: "Wingfoil Hyères 2018 - Nouvelle discipline école KiteSurf Passion Var" },
     { year: "2024", title: "Pumpfoil & 25 ans", description: "Arrivée du pumpfoil et célébration d'un quart de siècle dédié à la passion des sports de glisse. Plus de 2 500 élèves formés.", image: timeline2024, alt: "25 ans école kitesurf Hyères 2024 - Pumpfoil KiteSurf Passion Almanarre" }
   ];
@@ -318,6 +319,9 @@ const APropos = () => {
                 <div className="space-y-4 text-muted-foreground">
                   <p>
                     Passionné de sports nautiques depuis son plus jeune âge, <strong className="text-foreground">Yoanne Cros</strong> a découvert le kitesurf dès ses débuts en France à la fin des années 90. Convaincu du potentiel de cette discipline révolutionnaire, il fonde <strong className="text-foreground">KiteSurf Passion</strong> en 1999 sur le spot de l'Almanarre.
+                  </p>
+                  <p>
+                    Dès mai 2000, il s'engage dans la structuration de la discipline en tant que <strong className="text-foreground">membre d'honneur et cofondateur du projet HKA</strong> (Hyères Kitesurf Association), contribuant à organiser la pratique du kitesurf sur le littoral hyérois.
                   </p>
                   <p>
                     Titulaire du <strong className="text-foreground">BPJEPS</strong> (Brevet Professionnel de la Jeunesse, de l'Éducation Populaire et du Sport), Yoanne est également <strong className="text-foreground">formateur de moniteurs</strong>. Cette double casquette lui confère une expertise pédagogique unique, qu'il met au service de tous ses élèves.
