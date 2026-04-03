@@ -4427,6 +4427,17 @@ Prêt à réserver votre premier stage ? Appelez Kitesurf Passion au **06 72 71 
   },
 };
 
+// FAQ structured data for articles with FAQ sections (FAQPage schema for Google rich snippets)
+const articleFAQData: Record<string, Array<{ question: string; answer: string }>> = {
+  "stage-kitesurf-debutant-hyeres": [
+    { question: "Quel est le meilleur stage de kitesurf pour débuter à Hyères ?", answer: "Un stage progressif sur plusieurs jours est souvent le meilleur choix pour un débutant. Kitesurf Passion propose un stage 5 jours avec progression structurée, petits groupes et bateau d'assistance." },
+    { question: "Peut-on apprendre le kitesurf à l'Almanarre quand on n'a jamais essayé ?", answer: "Oui, le spot de l'Almanarre est adapté à l'apprentissage grâce à sa baie protégée, ses eaux plus plates et sa zone débutants." },
+    { question: "Combien de jours faut-il pour commencer le kitesurf ?", answer: "Le programme présenté par l'école s'étend sur 5 jours, avec une progression allant de la découverte du matériel jusqu'aux premiers éléments d'autonomie." },
+    { question: "Quel est le prix d'un stage de kitesurf débutant à Hyères ?", answer: "Le stage 5 jours est affiché à 399 €, avec un tarif indiqué à 499 € en juillet et août. D'autres formules existent en semi-privé ou en cours particulier." },
+    { question: "Pourquoi choisir une école labellisée pour apprendre ?", answer: "Une école labellisée FFVL et EFK, encadrée par un moniteur diplômé, apporte un cadre plus rassurant sur le plan pédagogique, réglementaire et sécuritaire." },
+  ],
+};
+
 const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
   
@@ -4442,6 +4453,20 @@ const BlogArticle = () => {
     { label: "Blog", href: "/blog-kitesurf-hyeres" },
     { label: article.title }
   ];
+
+  const faqData = slug ? articleFAQData[slug] : null;
+  const faqStructuredData = faqData ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqData.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer,
+      },
+    })),
+  } : null;
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -4529,6 +4554,9 @@ const BlogArticle = () => {
             { "@type": "ListItem", "position": 3, "name": article.title, "item": `https://www.kitesurfpassion.fr/blog/${slug}` }
           ]
         })}</script>
+        {faqStructuredData && (
+          <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
+        )}
       </Helmet>
 
       <Header />
