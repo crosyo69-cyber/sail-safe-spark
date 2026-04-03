@@ -377,15 +377,17 @@ export function resolveLegacyRedirect(pathname: string): string | null {
     return "/placeholder.svg";
   }
 
-  // 3. Check SEO local patterns (keyword+city-zNN)
-  const zSuffixMatch = normalized.match(/-z\d+$/);
-  if (zSuffixMatch) {
-    const pathWithoutSuffix = normalized.slice(0, zSuffixMatch.index);
+  // 3. Check SEO local patterns (keyword+city-zNN or -yNN)
+  const localSuffixMatch = normalized.match(/-[zy]\d+$/);
+  if (localSuffixMatch) {
+    const pathWithoutSuffix = normalized.slice(0, localSuffixMatch.index);
     for (const pattern of seoLocalPatterns) {
       if (pathWithoutSuffix.startsWith("/" + pattern.keyword)) {
         return pattern.target;
       }
     }
+    // Fallback: unrecognized keyword with local suffix → homepage
+    return "/";
   }
 
   return null;
