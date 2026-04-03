@@ -17,7 +17,7 @@ import {
   subMonths,
 } from "date-fns";
 import { fr } from "date-fns/locale";
-import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus, Download, LockOpen, Lock } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus, Download, LockOpen, Lock, Plus } from "lucide-react";
 import CalendarAddReservation from "./CalendarAddReservation";
 import CalendarReservationActions from "./CalendarReservationActions";
 import CalendarQuickSession from "./CalendarQuickSession";
