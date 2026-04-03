@@ -29,6 +29,7 @@ export const exactRedirects: Record<string, string> = {
   "/politique-confidentialite.html": "/politique-confidentialite",
   "/plan-du-site": "/",
   "/plan-du-site.html": "/",
+  "/index.html": "/",
   "/toutes-nos-prestations-1": "/tarifs-cours-kitesurf-wingfoil-hyeres",
   "/toutes-nos-prestations-1.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
   "/archives-1": "/blog-kitesurf-hyeres",
