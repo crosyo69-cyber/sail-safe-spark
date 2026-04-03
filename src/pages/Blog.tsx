@@ -494,6 +494,17 @@ export const blogArticles = [
     alt: "Cours particulier ou collectif kitesurf Hyères - Comparatif formules école KiteSurf Passion Almanarre",
     featured: true,
   },
+  {
+    slug: "stage-kitesurf-debutant-hyeres",
+    title: "Stage kitesurf débutant à Hyères : le guide pour bien commencer",
+    excerpt: "Vous cherchez un stage de kitesurf débutant à Hyères ? Découvrez le programme, le déroulé sur 5 jours, les conditions à l'Almanarre et comment progresser en sécurité.",
+    category: "Kitesurf",
+    date: "2026-04-03",
+    readTime: "10 min",
+    image: "blog-kitesurf-debut.jpg",
+    alt: "Stage kitesurf débutant Hyères Almanarre - Programme 5 jours école KiteSurf Passion Var",
+    featured: true,
+  },
 ];
 
 const categories = ["Tous", "Kitesurf", "Wing Foil", "Pump Foil", "Wakeboard", "Le Spot", "Sécurité"];
