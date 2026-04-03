@@ -12,10 +12,31 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { activityName, participants } = await req.json();
+    const { activityName, participants, preferredDate, phone, customerName } = await req.json();
 
     if (!activityName || typeof activityName !== "string") {
       return new Response(JSON.stringify({ error: "activityName is required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (!preferredDate || typeof preferredDate !== "string") {
+      return new Response(JSON.stringify({ error: "preferredDate is required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (!phone || typeof phone !== "string") {
+      return new Response(JSON.stringify({ error: "phone is required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (!customerName || typeof customerName !== "string") {
+      return new Response(JSON.stringify({ error: "customerName is required" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -44,6 +65,9 @@ Deno.serve(async (req) => {
       metadata: {
         activity_name: activityName,
         participants: String(count),
+        preferred_date: preferredDate,
+        phone: phone.trim(),
+        customer_name: customerName.trim(),
       },
       success_url: `${origin}/reservation-confirmee?activity=${encodeURIComponent(activityName)}`,
       cancel_url: `${origin}/contact-reservation-kitesurf-hyeres`,

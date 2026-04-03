@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CreditCard, Ship, Award, Settings, Repeat, MapPin, Minus, Plus } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { CreditCard, Ship, Award, Settings, Repeat, MapPin, Minus, Plus, CalendarIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 
 const activities = [
   {
@@ -41,6 +48,9 @@ const DepositPaymentSection = () => {
   const { toast } = useToast();
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [participants, setParticipants] = useState<Record<string, number>>({});
+  const [selectedDates, setSelectedDates] = useState<Record<string, Date | undefined>>({});
+  const [phones, setPhones] = useState<Record<string, string>>({});
+  const [names, setNames] = useState<Record<string, string>>({});
 
   const getCount = (id: string) => participants[id] || 1;
 
@@ -53,12 +63,35 @@ const DepositPaymentSection = () => {
   };
 
   const handleCheckout = async (activityName: string, activityId: string) => {
+    const date = selectedDates[activityId];
+    const phone = phones[activityId]?.trim();
+    const name = names[activityId]?.trim();
+
+    if (!date) {
+      toast({ title: "Date requise", description: "Veuillez choisir une date souhaitée.", variant: "destructive" });
+      return;
+    }
+    if (!phone) {
+      toast({ title: "Téléphone requis", description: "Veuillez indiquer votre numéro de téléphone.", variant: "destructive" });
+      return;
+    }
+    if (!name) {
+      toast({ title: "Nom requis", description: "Veuillez indiquer votre nom et prénom.", variant: "destructive" });
+      return;
+    }
+
     setLoadingId(activityId);
     const count = getCount(activityId);
     const stripeWindow = window.open("about:blank", "_blank");
     try {
       const { data, error } = await supabase.functions.invoke("create-checkout", {
-        body: { activityName, participants: count },
+        body: {
+          activityName,
+          participants: count,
+          preferredDate: format(date, "yyyy-MM-dd"),
+          phone,
+          customerName: name,
+        },
       });
 
       if (error) throw error;
@@ -84,6 +117,9 @@ const DepositPaymentSection = () => {
     }
   };
 
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
   return (
     <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
@@ -105,6 +141,7 @@ const DepositPaymentSection = () => {
             {activities.map((activity) => {
               const count = getCount(activity.id);
               const total = count * 50;
+              const date = selectedDates[activity.id];
               return (
                 <div
                   key={activity.id}
@@ -117,6 +154,58 @@ const DepositPaymentSection = () => {
                   <p className="text-muted-foreground text-sm mb-4 flex-1">
                     {activity.description}
                   </p>
+
+                  {/* Name field */}
+                  <div className="mb-3">
+                    <Label className="text-xs text-muted-foreground">Nom et prénom *</Label>
+                    <Input
+                      value={names[activity.id] || ""}
+                      onChange={(e) => setNames((prev) => ({ ...prev, [activity.id]: e.target.value }))}
+                      placeholder="Jean Dupont"
+                      className="h-8 text-sm mt-1"
+                    />
+                  </div>
+
+                  {/* Phone field */}
+                  <div className="mb-3">
+                    <Label className="text-xs text-muted-foreground">Téléphone *</Label>
+                    <Input
+                      value={phones[activity.id] || ""}
+                      onChange={(e) => setPhones((prev) => ({ ...prev, [activity.id]: e.target.value }))}
+                      placeholder="06 12 34 56 78"
+                      className="h-8 text-sm mt-1"
+                    />
+                  </div>
+
+                  {/* Date picker */}
+                  <div className="mb-3">
+                    <Label className="text-xs text-muted-foreground">Date souhaitée *</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full h-8 justify-start text-left font-normal text-sm mt-1",
+                            !date && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-3.5 w-3.5" />
+                          {date ? format(date, "d MMMM yyyy", { locale: fr }) : "Choisir une date"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={date}
+                          onSelect={(d) => setSelectedDates((prev) => ({ ...prev, [activity.id]: d }))}
+                          disabled={(d) => d < tomorrow}
+                          initialFocus
+                          locale={fr}
+                          className={cn("p-3 pointer-events-auto")}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
 
                   {/* Participant selector */}
                   <div className="flex items-center justify-between bg-muted/50 rounded-lg px-3 py-2 mb-3">
