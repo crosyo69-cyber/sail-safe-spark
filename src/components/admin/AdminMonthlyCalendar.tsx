@@ -77,6 +77,7 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [activityFilter, setActivityFilter] = useState<Activity | "all">("all");
   const [addingToSession, setAddingToSession] = useState<string | null>(null);
+  const [creatingSession, setCreatingSession] = useState(false);
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
