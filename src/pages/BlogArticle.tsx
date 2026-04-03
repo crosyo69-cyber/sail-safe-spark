@@ -4436,6 +4436,48 @@ const articleFAQData: Record<string, Array<{ question: string; answer: string }>
     { question: "Quel est le prix d'un stage de kitesurf débutant à Hyères ?", answer: "Le stage 5 jours est affiché à 399 €, avec un tarif indiqué à 499 € en juillet et août. D'autres formules existent en semi-privé ou en cours particulier." },
     { question: "Pourquoi choisir une école labellisée pour apprendre ?", answer: "Une école labellisée FFVL et EFK, encadrée par un moniteur diplômé, apporte un cadre plus rassurant sur le plan pédagogique, réglementaire et sécuritaire." },
   ],
+  "quand-faire-kitesurf-hyeres-saisons": [
+    { question: "Quelle est la meilleure période pour un stage de kitesurf débutant à Hyères ?", answer: "Mai, juin et septembre sont les mois idéaux. Le vent est régulier (15-22 nœuds), l'eau est agréable (18-23°C) et le spot est peu fréquenté. Notre stage 5 jours commence à 399€ hors saison." },
+    { question: "Peut-on faire du kitesurf à Hyères en hiver ?", answer: "Oui, mais c'est réservé aux riders expérimentés. L'eau descend à 12-14°C et le vent est épisodique. Quand le Mistral souffle, les sessions sont intenses et le spot est désert." },
+    { question: "Combien de jours de vent y a-t-il par semaine à l'Almanarre ?", answer: "En moyenne, 4 à 5 jours de vent navigable par semaine entre mars et novembre. Le printemps et l'automne offrent les statistiques les plus fiables avec le Mistral." },
+    { question: "Quelle est la température de l'eau à l'Almanarre ?", answer: "L'eau varie de 12°C en hiver à 26°C en août. La meilleure fenêtre eau chaude + vent fiable se situe de mai à octobre (18-24°C)." },
+    { question: "Le Mistral est-il dangereux pour les débutants ?", answer: "Le Mistral peut souffler fort (25-35 nœuds), mais sur l'Almanarre, il crée un plan d'eau plat et gérable. Avec notre bateau d'assistance et un encadrement adapté, les débutants naviguent en toute sécurité même par Mistral modéré (15-20 nœuds)." },
+    { question: "Y a-t-il des activités alternatives les jours sans vent ?", answer: "Oui ! Nous proposons le foil tracté par bateau, le pumpfoil et le wakeboard. Notre stage 100% Glisse garantit une activité chaque jour, vent ou pas." },
+  ],
+  "mistral-vent-est-almanarre-conditions-niveau": [
+    { question: "Quel vent est le plus fréquent à l'Almanarre ?", answer: "Le Mistral (nord-ouest) est le vent dominant sur l'année, avec une fréquence élevée au printemps et en automne. En été, le vent d'Est (Levant) et la brise thermique prennent le relais." },
+    { question: "Peut-on apprendre le kitesurf en vent d'Est à l'Almanarre ?", answer: "Oui, avec un encadrement professionnel et un bateau d'assistance. Le vent d'Est est plus technique mais reste praticable pour les débutants avec le bon accompagnement." },
+    { question: "Quelle force de vent faut-il pour faire du kitesurf ?", answer: "Un minimum de 12 nœuds est nécessaire pour naviguer avec un kite classique. Pour un débutant, les conditions idéales se situent entre 15 et 20 nœuds, en Mistral de préférence." },
+    { question: "Le Mistral est-il dangereux pour un débutant ?", answer: "Le Mistral peut atteindre 30-35 nœuds, mais sur l'Almanarre il crée un plan d'eau plat et gérable. Avec un moniteur diplômé et un bateau d'assistance, les débutants naviguent en sécurité en Mistral modéré (15-20 nœuds)." },
+    { question: "À quelle heure le vent est-il le plus fort à l'Almanarre ?", answer: "Le Mistral est souvent le plus fort en milieu de journée (11h-16h). Le vent d'Est thermique se lève généralement en début d'après-midi (13h-14h) et forcit jusqu'en fin de journée." },
+  ],
+  "stage-kitesurf-hyeres-formule-choisir": [
+    { question: "Combien de séances faut-il pour devenir autonome en kitesurf ?", answer: "En moyenne, 5 séances de 3 heures (soit un stage 5 jours) suffisent pour atteindre le waterstart et les premières navigations. L'autonomie complète demande généralement 2 à 3 sessions supplémentaires de perfectionnement." },
+    { question: "Le matériel est-il inclus dans toutes les formules ?", answer: "Oui, toutes nos formules incluent l'intégralité du matériel : aile, planche, harnais, combinaison, casque et gilet de flottaison. Nous utilisons du matériel Duotone récent adapté à chaque niveau." },
+    { question: "Peut-on combiner cours particulier et stage 5 jours ?", answer: "Absolument ! Certains élèves commencent par un cours particulier pour prendre confiance, puis enchaînent avec le stage 5 jours. C'est une excellente approche pour les personnes qui ont besoin d'un premier contact rassurant." },
+    { question: "Le bateau d'assistance est-il inclus dans le cours particulier ?", answer: "Oui, le bateau d'assistance est inclus dans toutes nos formules sans exception. C'est un engagement fondamental de notre école pour votre sécurité et votre progression." },
+    { question: "Quelle formule choisir pour un enfant de 10-12 ans ?", answer: "Nous recommandons le cours particulier ou semi-privé pour les enfants. L'attention personnalisée permet d'adapter le rythme et les exercices à leur poids et leur capacité de concentration. L'enfant doit peser minimum 35 kg." },
+    { question: "Peut-on réserver une seule séance pour essayer ?", answer: "Oui ! Le cours particulier est disponible à la séance. C'est la formule idéale pour une première découverte du kitesurf sans engagement sur 5 jours." },
+  ],
+  "prix-stage-kitesurf-hyeres": [
+    { question: "Quel est le prix moyen d'un stage de kitesurf à Hyères ?", answer: "Le stage 5 jours (formule la plus populaire) coûte entre 399 € et 499 € selon la saison chez KiteSurf Passion. C'est la formule la plus rentable pour un débutant souhaitant acquérir les bases complètes." },
+    { question: "Le matériel est-il inclus dans le prix du stage ?", answer: "Oui, toutes nos formules incluent l'intégralité du matériel : aile, planche, harnais, combinaison, casque et gilet de flottaison. Aucun supplément matériel à prévoir." },
+    { question: "Est-ce moins cher d'apprendre le kitesurf hors saison ?", answer: "Oui, les tarifs basse saison (octobre à mars) permettent d'économiser jusqu'à 150 € sur un stage 5 jours. Les conditions de vent sont souvent excellentes au printemps et en automne." },
+    { question: "Peut-on payer le stage en plusieurs fois ?", answer: "Contactez-nous directement pour discuter des modalités de paiement. Un acompte est demandé à la réservation pour confirmer votre place." },
+    { question: "Y a-t-il des frais cachés ?", answer: "Non. Le prix affiché comprend le stage, le moniteur diplômé, le matériel complet et le bateau d'assistance. Seuls le logement, les repas et le transport restent à votre charge." },
+  ],
+  "cours-particulier-ou-collectif-kitesurf-hyeres": [
+    { question: "Combien d'élèves y a-t-il dans un cours collectif ?", answer: "Chez Kitesurf Passion, nous limitons les groupes à 3 ou 4 élèves par moniteur. C'est bien en dessous de la moyenne des écoles de kitesurf, qui acceptent souvent 6 à 8 élèves par session." },
+    { question: "Le cours particulier fatigue-t-il plus vite ?", answer: "Oui, l'absence de pause (contrairement au roulement du collectif) rend la séance plus intense physiquement. C'est pourquoi nos cours particuliers durent 2 heures — un format optimisé pour maintenir concentration et énergie du début à la fin." },
+    { question: "Peut-on faire un cours semi-privé en couple ?", answer: "Absolument, c'est la formule idéale si vous avez des poids et des niveaux similaires. C'est d'ailleurs l'une de nos formules les plus demandées par les couples en vacances à Hyères." },
+    { question: "Le cours particulier inclut-il le bateau ?", answer: "Oui, le suivi sécurisé en bateau est assuré pour toutes nos formules, sans exception. C'est un engagement fondamental de Kitesurf Passion pour votre sécurité et votre progression." },
+  ],
+  "foil-tracte-hyeres-initiation-vol": [
+    { question: "Est-ce dangereux ?", answer: "Non, le foil tracté est très sécurisé. Le mât court limite la hauteur de vol, et la vitesse est contrôlée par le pilote du bateau. En cas de chute, vous tombez dans l'eau." },
+    { question: "Faut-il savoir faire du wakeboard avant ?", answer: "Non, aucune expérience préalable n'est requise. Notre pédagogie est adaptée aux débutants complets." },
+    { question: "Peut-on faire du foil tracté toute l'année ?", answer: "Oui ! C'est l'avantage majeur : pas de dépendance au vent. La baie de Giens offre des conditions praticables 12 mois sur 12." },
+    { question: "Combien de temps pour réussir à voler ?", answer: "La plupart des élèves décollent dès la première session de 30 minutes. Certains y arrivent en 15 minutes !" },
+  ],
 };
 
 const BlogArticle = () => {
