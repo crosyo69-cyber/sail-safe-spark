@@ -42,6 +42,18 @@ const activities = [
     icon: MapPin,
     description: "Kite, planche, harnais — tout l'équipement",
   },
+  {
+    id: "foil-tracte",
+    name: "Foil Tracté",
+    icon: Ship,
+    description: "Initiation au foil tracté par bateau",
+  },
+  {
+    id: "deposes-mer",
+    name: "Déposes en Mer",
+    icon: MapPin,
+    description: "Navette bateau vers les spots de glisse",
+  },
 ];
 
 const DepositPaymentSection = () => {
