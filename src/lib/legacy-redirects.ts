@@ -257,6 +257,12 @@ export const exactRedirects: Record<string, string> = {
   "/details-stage+initiation+de+pump+foil+a+hyeres+les+palmiers+plage+l+almanarre-194.html": "/cours-pumpfoil-dock-start-hyeres",
   "/location-materiel": "/location-materiel-kitesurf-hyeres",
 
+  // 18. Logs 404 avril 2026 - vague 3
+  "/details-les+tarifs+pour+les+stages+et+les+cours+d+initiation+du+kitesurf+a+hyeres-24.html": "/tarifs-cours-kitesurf-wingfoil-hyeres",
+  "/details-apprendre+la+wingfoil+a+hyeres+carqueiranne-164.html": "/stage-wingfoil-hyeres-almanarre",
+  "/details-depose+en+mer+sur+le+spot+de+l+almanarre+et+le+spot+de+hyeres-34.html": "/deposes-mer-kitesurf-hyeres",
+  "/lien-agence+web+marseille+-+creation+site+internet+-+referencement+marseille+jalis-1.html": "/a-propos-ecole-kitesurf-hyeres",
+
   // 12. Redirections internes + anciennes URLs courtes crawlées par Google
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
   "/tarifs": "/tarifs-cours-kitesurf-wingfoil-hyeres",
