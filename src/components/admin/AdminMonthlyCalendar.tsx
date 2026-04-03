@@ -17,9 +17,10 @@ import {
   subMonths,
 } from "date-fns";
 import { fr } from "date-fns/locale";
-import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus, Download, LockOpen, Lock } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus, Download, LockOpen, Lock, Plus } from "lucide-react";
 import CalendarAddReservation from "./CalendarAddReservation";
 import CalendarReservationActions from "./CalendarReservationActions";
+import CalendarQuickSession from "./CalendarQuickSession";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 
@@ -76,6 +77,7 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [activityFilter, setActivityFilter] = useState<Activity | "all">("all");
   const [addingToSession, setAddingToSession] = useState<string | null>(null);
+  const [creatingSession, setCreatingSession] = useState(false);
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
@@ -263,7 +265,7 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
           return (
             <button
               key={dateStr}
-              onClick={() => setSelectedDay(isSelected ? null : dateStr)}
+              onClick={() => { setSelectedDay(isSelected ? null : dateStr); setCreatingSession(false); setAddingToSession(null); }}
               className={cn(
                 "bg-card p-1.5 min-h-[70px] md:min-h-[90px] text-left transition-colors hover:bg-muted/30 relative",
                 !isCurrentMonth && "opacity-40",
@@ -321,134 +323,164 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
       </div>
 
       {/* Selected day detail */}
-      {selectedDay && sessionsByDate[selectedDay] && (
+      {selectedDay && (
         <div className="mt-4 p-4 bg-muted/30 rounded-lg border border-border">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-foreground capitalize">
               {format(new Date(selectedDay + "T12:00:00"), "EEEE d MMMM", { locale: fr })}
             </h3>
-            {onNavigateToSession && (
-              <Button
-                size="sm"
-                variant="outline"
-                className="gap-1.5 text-xs"
-                onClick={() => onNavigateToSession(new Date(selectedDay + "T12:00:00"))}
-              >
-                <CalendarDays className="w-3.5 h-3.5" />
-                Gérer les sessions
-              </Button>
-            )}
+            <div className="flex items-center gap-2">
+              {!creatingSession && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-1.5 text-xs"
+                  onClick={() => setCreatingSession(true)}
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Nouvelle session
+                </Button>
+              )}
+              {onNavigateToSession && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-1.5 text-xs"
+                  onClick={() => onNavigateToSession(new Date(selectedDay + "T12:00:00"))}
+                >
+                  <CalendarDays className="w-3.5 h-3.5" />
+                  Gérer les sessions
+                </Button>
+              )}
+            </div>
           </div>
-          <div className="space-y-4">
-            {sessionsByDate[selectedDay]
-              .sort((a, b) => a.time_slot.localeCompare(b.time_slot))
-              .map((s, i) => {
-                const rate = s.max_participants > 0
-                  ? Math.round((s.reservation_count / s.max_participants) * 100)
-                  : 0;
-                const activeReservations = s.reservations.filter(r => r.status === 'confirmed' || r.status === 'pending');
-                return (
-                  <div key={i} className={cn("rounded-lg bg-card border", s.status === "closed" && "opacity-50")}>
-                    <div className="flex items-center gap-3 p-3">
-                      <div className={cn("w-3 h-8 rounded-full", ACTIVITY_DOT_COLORS[s.activity])} />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-foreground">
-                          {ACTIVITY_LABELS[s.activity]}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {SLOT_SHORT[s.time_slot]}
-                        </p>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className={cn(
-                          "h-7 w-7 p-0",
-                          s.status === "open" ? "text-green-600 hover:bg-green-500/10" : "text-destructive hover:bg-destructive/10"
-                        )}
-                        onClick={() => toggleSessionStatus(s.id, s.status)}
-                        title={s.status === "open" ? "Fermer la session" : "Ouvrir la session"}
-                      >
-                        {s.status === "open" ? <LockOpen className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-7 w-7 p-0 text-primary hover:bg-primary/10"
-                        onClick={() => setAddingToSession(addingToSession === s.id ? null : s.id)}
-                        title="Inscrire un stagiaire"
-                      >
-                        <UserPlus className="w-4 h-4" />
-                      </Button>
-                      <div className="text-right">
-                        <div className="flex items-center gap-1">
-                          <Users className="w-3 h-3 text-muted-foreground" />
-                          <span className={cn("text-sm font-semibold", getFillColor(rate))}>
-                            {s.reservation_count}/{s.max_participants}
-                          </span>
+
+          {/* Quick session creator */}
+          {creatingSession && (
+            <CalendarQuickSession
+              date={selectedDay}
+              onClose={() => setCreatingSession(false)}
+              onCreated={refreshSessions}
+            />
+          )}
+
+          {/* Existing sessions */}
+          {sessionsByDate[selectedDay] && sessionsByDate[selectedDay].length > 0 ? (
+            <div className="space-y-4">
+              {sessionsByDate[selectedDay]
+                .sort((a, b) => a.time_slot.localeCompare(b.time_slot))
+                .map((s, i) => {
+                  const rate = s.max_participants > 0
+                    ? Math.round((s.reservation_count / s.max_participants) * 100)
+                    : 0;
+                  const activeReservations = s.reservations.filter(r => r.status === 'confirmed' || r.status === 'pending');
+                  return (
+                    <div key={i} className={cn("rounded-lg bg-card border", s.status === "closed" && "opacity-50")}>
+                      <div className="flex items-center gap-3 p-3">
+                        <div className={cn("w-3 h-8 rounded-full", ACTIVITY_DOT_COLORS[s.activity])} />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-foreground">
+                            {ACTIVITY_LABELS[s.activity]}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {SLOT_SHORT[s.time_slot]}
+                          </p>
                         </div>
-                        <div className="w-16 h-1.5 bg-muted rounded-full mt-1">
-                          <div
-                            className={cn(
-                              "h-full rounded-full",
-                              rate < 50 ? "bg-yellow-400" : rate < 80 ? "bg-primary" : "bg-green-500"
-                            )}
-                            style={{ width: `${rate}%` }}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className={cn(
+                            "h-7 w-7 p-0",
+                            s.status === "open" ? "text-green-600 hover:bg-green-500/10" : "text-destructive hover:bg-destructive/10"
+                          )}
+                          onClick={() => toggleSessionStatus(s.id, s.status)}
+                          title={s.status === "open" ? "Fermer la session" : "Ouvrir la session"}
+                        >
+                          {s.status === "open" ? <LockOpen className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-7 w-7 p-0 text-primary hover:bg-primary/10"
+                          onClick={() => setAddingToSession(addingToSession === s.id ? null : s.id)}
+                          title="Inscrire un stagiaire"
+                        >
+                          <UserPlus className="w-4 h-4" />
+                        </Button>
+                        <div className="text-right">
+                          <div className="flex items-center gap-1">
+                            <Users className="w-3 h-3 text-muted-foreground" />
+                            <span className={cn("text-sm font-semibold", getFillColor(rate))}>
+                              {s.reservation_count}/{s.max_participants}
+                            </span>
+                          </div>
+                          <div className="w-16 h-1.5 bg-muted rounded-full mt-1">
+                            <div
+                              className={cn(
+                                "h-full rounded-full",
+                                rate < 50 ? "bg-yellow-400" : rate < 80 ? "bg-primary" : "bg-green-500"
+                              )}
+                              style={{ width: `${rate}%` }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      {addingToSession === s.id && (
+                        <div className="px-3 pb-3">
+                          <CalendarAddReservation
+                            sessionId={s.id}
+                            activityLabel={ACTIVITY_LABELS[s.activity]}
+                            activity={s.activity}
+                            timeSlot={s.time_slot}
+                            sessionDate={selectedDay}
+                            slotLabel={SLOT_SHORT[s.time_slot] || s.time_slot}
+                            dateLabel={format(new Date(selectedDay + "T12:00:00"), "d MMMM", { locale: fr })}
+                            onClose={() => setAddingToSession(null)}
+                            onAdded={refreshSessions}
                           />
                         </div>
-                      </div>
-                    </div>
-                    {addingToSession === s.id && (
-                      <div className="px-3 pb-3">
-                        <CalendarAddReservation
-                          sessionId={s.id}
-                          activityLabel={ACTIVITY_LABELS[s.activity]}
-                          activity={s.activity}
-                          timeSlot={s.time_slot}
-                          sessionDate={selectedDay}
-                          slotLabel={SLOT_SHORT[s.time_slot] || s.time_slot}
-                          dateLabel={format(new Date(selectedDay + "T12:00:00"), "d MMMM", { locale: fr })}
-                          onClose={() => setAddingToSession(null)}
-                          onAdded={refreshSessions}
-                        />
-                      </div>
-                    )}
-                    {activeReservations.length > 0 && (
-                      <div className="border-t border-border px-3 pb-3 pt-2 space-y-1.5">
-                        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Inscrits</p>
-                        {activeReservations.map((r, j) => (
-                          <div key={r.id || j}>
-                            <div className="flex items-center justify-between text-xs bg-muted/40 rounded-md px-2.5 py-1.5">
-                              <div className="flex items-center gap-2 min-w-0">
-                                <span className={cn(
-                                  "inline-block w-1.5 h-1.5 rounded-full",
-                                  r.status === 'confirmed' ? "bg-green-500" : "bg-yellow-400"
-                                )} />
-                                <span className="font-medium text-foreground truncate">
-                                  {r.first_name} {r.last_name}
-                                </span>
-                                {r.participants > 1 && (
-                                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
-                                    ×{r.participants}
+                      )}
+                      {activeReservations.length > 0 && (
+                        <div className="border-t border-border px-3 pb-3 pt-2 space-y-1.5">
+                          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Inscrits</p>
+                          {activeReservations.map((r, j) => (
+                            <div key={r.id || j}>
+                              <div className="flex items-center justify-between text-xs bg-muted/40 rounded-md px-2.5 py-1.5">
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <span className={cn(
+                                    "inline-block w-1.5 h-1.5 rounded-full",
+                                    r.status === 'confirmed' ? "bg-green-500" : "bg-yellow-400"
+                                  )} />
+                                  <span className="font-medium text-foreground truncate">
+                                    {r.first_name} {r.last_name}
+                                  </span>
+                                  {r.participants > 1 && (
+                                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                                      ×{r.participants}
+                                    </Badge>
+                                  )}
+                                </div>
+                                <div className="flex items-center gap-2 text-muted-foreground shrink-0 ml-2">
+                                  <span>{r.phone}</span>
+                                  <Badge variant={r.status === 'confirmed' ? 'default' : 'secondary'} className="text-[10px] px-1.5 py-0">
+                                    {r.status === 'confirmed' ? 'Confirmé' : 'En attente'}
                                   </Badge>
-                                )}
-                              </div>
-                              <div className="flex items-center gap-2 text-muted-foreground shrink-0 ml-2">
-                                <span>{r.phone}</span>
-                                <Badge variant={r.status === 'confirmed' ? 'default' : 'secondary'} className="text-[10px] px-1.5 py-0">
-                                  {r.status === 'confirmed' ? 'Confirmé' : 'En attente'}
-                                </Badge>
-                                <CalendarReservationActions reservation={r} onUpdated={refreshSessions} sessionActivity={s.activity} sessionTimeSlot={s.time_slot} sessionDate={selectedDay} />
+                                  <CalendarReservationActions reservation={r} onUpdated={refreshSessions} sessionActivity={s.activity} sessionTimeSlot={s.time_slot} sessionDate={selectedDay} />
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-          </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+            </div>
+          ) : !creatingSession && (
+            <p className="text-sm text-muted-foreground text-center py-4">
+              Aucune session ce jour. Cliquez sur « Nouvelle session » pour en créer une.
+            </p>
+          )}
         </div>
       )}
 
