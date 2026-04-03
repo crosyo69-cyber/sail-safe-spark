@@ -265,7 +265,7 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
           return (
             <button
               key={dateStr}
-              onClick={() => setSelectedDay(isSelected ? null : dateStr)}
+              onClick={() => { setSelectedDay(isSelected ? null : dateStr); setCreatingSession(false); setAddingToSession(null); }}
               className={cn(
                 "bg-card p-1.5 min-h-[70px] md:min-h-[90px] text-left transition-colors hover:bg-muted/30 relative",
                 !isCurrentMonth && "opacity-40",
