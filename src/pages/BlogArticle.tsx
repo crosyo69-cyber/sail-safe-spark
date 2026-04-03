@@ -4454,6 +4454,20 @@ const BlogArticle = () => {
     { label: article.title }
   ];
 
+  const faqData = slug ? articleFAQData[slug] : null;
+  const faqStructuredData = faqData ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqData.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer,
+      },
+    })),
+  } : null;
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
