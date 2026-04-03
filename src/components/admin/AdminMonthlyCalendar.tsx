@@ -20,6 +20,7 @@ import { fr } from "date-fns/locale";
 import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus, Download, LockOpen, Lock } from "lucide-react";
 import CalendarAddReservation from "./CalendarAddReservation";
 import CalendarReservationActions from "./CalendarReservationActions";
+import CalendarQuickSession from "./CalendarQuickSession";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 
