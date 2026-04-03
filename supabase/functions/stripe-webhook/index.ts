@@ -14,6 +14,37 @@ const FROM_DOMAIN = "kitesurfpassion.fr";
 const OWNER_EMAIL = "crosyo69@gmail.com";
 const LOGO_URL = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png';
 
+// Map activity display names to database enum values
+const ACTIVITY_NAME_MAP: Record<string, string> = {
+  "cours particulier kitesurf": "kitesurf",
+  "stage 100% glisse": "kitesurf",
+  "cours à la carte": "kitesurf",
+  "cours wingfoil": "wingfoil",
+  "location matériel": "kitesurf",
+};
+
+const MAX_BY_ACTIVITY: Record<string, number> = {
+  kitesurf: 4,
+  wingfoil: 3,
+  pumpfoil: 4,
+  foil_tracte: 4,
+};
+
+function mapActivityToEnum(activityName: string): string {
+  const normalized = activityName.toLowerCase().trim();
+  for (const [key, value] of Object.entries(ACTIVITY_NAME_MAP)) {
+    if (normalized.includes(key) || key.includes(normalized)) {
+      return value;
+    }
+  }
+  // Fuzzy match
+  if (normalized.includes("kite")) return "kitesurf";
+  if (normalized.includes("wing")) return "wingfoil";
+  if (normalized.includes("pump")) return "pumpfoil";
+  if (normalized.includes("foil trac") || normalized.includes("tracté")) return "foil_tracte";
+  return "kitesurf";
+}
+
 function escapeHtml(text: string): string {
   return String(text)
     .replace(/&/g, "&amp;")
@@ -23,9 +54,10 @@ function escapeHtml(text: string): string {
     .replace(/'/g, "&#039;");
 }
 
-function buildCustomerPaymentEmail(activityName: string, participants: number): string {
+function buildCustomerPaymentEmail(activityName: string, participants: number, preferredDate?: string): string {
   const amount = participants * 50;
   const participantsLabel = participants > 1 ? `${participants} personnes` : '1 personne';
+  const dateRow = preferredDate ? `<tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Date souhaitée</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${escapeHtml(preferredDate)}</td></tr>` : '';
   return `<!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
@@ -44,6 +76,7 @@ function buildCustomerPaymentEmail(activityName: string, participants: number): 
       <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F1F5F9;border-radius:12px;overflow:hidden;">
         <tr><td style="padding:16px;font-size:15px;font-weight:bold;color:#0F172A;border-bottom:1px solid #E2E8F0;">📋 Récapitulatif</td></tr>
         <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Prestation</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${escapeHtml(activityName)}</td></tr>
+        ${dateRow}
         <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Participants</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${participantsLabel}</td></tr>
         <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Acompte versé</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${amount}€</td></tr>
         <tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Solde</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">À régler le jour J</td></tr>
@@ -77,8 +110,11 @@ function buildCustomerPaymentEmail(activityName: string, participants: number): 
 </html>`;
 }
 
-function buildOwnerPaymentEmail(activityName: string, customerEmail: string, sessionId: string, participants: number): string {
+function buildOwnerPaymentEmail(activityName: string, customerEmail: string, sessionId: string, participants: number, customerName?: string, phone?: string, preferredDate?: string): string {
   const amount = participants * 50;
+  const nameRow = customerName ? `<tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Client</td><td style="padding:10px;border:1px solid #E2E8F0;color:#0F172A;">${escapeHtml(customerName)}</td></tr>` : '';
+  const phoneRow = phone ? `<tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Téléphone</td><td style="padding:10px;border:1px solid #E2E8F0;"><a href="tel:${escapeHtml(phone)}" style="color:#0891B2;">${escapeHtml(phone)}</a></td></tr>` : '';
+  const dateRow = preferredDate ? `<tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Date souhaitée</td><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">${escapeHtml(preferredDate)}</td></tr>` : '';
   return `<!DOCTYPE html>
 <html lang="fr"><head><meta charset="utf-8"></head>
 <body style="margin:0;padding:0;background-color:#ffffff;font-family:Montserrat,Inter,Arial,sans-serif;">
@@ -90,12 +126,15 @@ function buildOwnerPaymentEmail(activityName: string, customerEmail: string, ses
       <h1 style="font-size:20px;font-weight:bold;color:#0F172A;margin:0 0 16px;">💰 Nouvel acompte reçu</h1>
       <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
         <tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Prestation</td><td style="padding:10px;border:1px solid #E2E8F0;color:#0F172A;">${escapeHtml(activityName)}</td></tr>
+        ${nameRow}
         <tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Email client</td><td style="padding:10px;border:1px solid #E2E8F0;"><a href="mailto:${escapeHtml(customerEmail)}" style="color:#0891B2;">${escapeHtml(customerEmail)}</a></td></tr>
+        ${phoneRow}
+        ${dateRow}
         <tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Participants</td><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">${participants}</td></tr>
         <tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Montant</td><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">${amount}€</td></tr>
         <tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">ID Stripe</td><td style="padding:10px;border:1px solid #E2E8F0;color:#64748B;font-size:12px;">${escapeHtml(sessionId)}</td></tr>
       </table>
-      <p style="font-size:13px;color:#94a3b8;margin:20px 0 0;">Le client a été invité à vous contacter la veille pour confirmer son créneau.</p>
+      <p style="font-size:13px;color:#94a3b8;margin:20px 0 0;">Le client a été invité à vous contacter la veille pour confirmer son créneau. L'inscription a été ajoutée automatiquement au calendrier.</p>
     </td></tr>
   </table>
 </body>
@@ -158,14 +197,17 @@ async function enqueueEmail(
   return messageId;
 }
 
-// Map activity names from metadata to a session for auto-reservation
+// Create reservation from Stripe checkout, using preferred date and activity mapping
 async function createReservationFromCheckout(
   supabase: any,
   session: Stripe.Checkout.Session,
 ) {
   const customerEmail = session.customer_details?.email;
-  const customerName = session.customer_details?.name || '';
+  const customerName = session.metadata?.customer_name || session.customer_details?.name || '';
   const activityName = session.metadata?.activity_name || 'votre activité';
+  const preferredDate = session.metadata?.preferred_date;
+  const phone = session.metadata?.phone || session.customer_details?.phone || 'Non renseigné';
+  const participants = Math.max(1, parseInt(session.metadata?.participants || '1', 10));
 
   if (!customerEmail) {
     console.error('No customer email found in checkout session');
@@ -177,32 +219,37 @@ async function createReservationFromCheckout(
   const firstName = nameParts[0] || 'Client';
   const lastName = nameParts.slice(1).join(' ') || 'Stripe';
 
-  // Find or create a session to attach the reservation to
-  // First, try to find an open session for today or future
-  const today = new Date().toISOString().split('T')[0];
-  const { data: openSessions } = await supabase
+  // Map activity name to enum
+  const activityEnum = mapActivityToEnum(activityName);
+  const maxParticipants = MAX_BY_ACTIVITY[activityEnum] || 4;
+
+  // Determine the date for the session
+  const sessionDate = preferredDate || new Date().toISOString().split('T')[0];
+
+  // Try to find an existing open session for this date + activity
+  const { data: existingSessions } = await supabase
     .from('sessions')
-    .select('id')
-    .gte('date', today)
+    .select('id, reservation_count:reservations(count)')
+    .eq('date', sessionDate)
+    .eq('activity', activityEnum)
     .eq('status', 'open')
-    .order('date', { ascending: true })
     .limit(1);
 
   let sessionId: string;
 
-  if (openSessions && openSessions.length > 0) {
-    sessionId = openSessions[0].id;
+  if (existingSessions && existingSessions.length > 0) {
+    sessionId = existingSessions[0].id;
   } else {
-    // Create a placeholder session for the admin to adjust later
+    // Create a session for the preferred date with the correct activity
     const { data: newSession, error: sessionError } = await supabase
       .from('sessions')
       .insert({
-        date: today,
+        date: sessionDate,
         time_slot: 'morning',
-        activity: 'kitesurf', // default, admin can change
-        max_participants: 4,
+        activity: activityEnum,
+        max_participants: maxParticipants,
         status: 'open',
-        notes: `Session auto-créée pour paiement Stripe (${activityName})`,
+        notes: `Session auto-créée via réservation Stripe – ${activityName}`,
       })
       .select('id')
       .single();
@@ -222,18 +269,18 @@ async function createReservationFromCheckout(
       first_name: firstName,
       last_name: lastName,
       email: customerEmail,
-      phone: session.customer_details?.phone || 'Non renseigné',
+      phone,
       skill_level: 'debutant',
-      participants: Math.max(1, parseInt(session.metadata?.participants || '1', 10)),
+      participants,
       status: 'confirmed',
       stripe_session_id: session.id,
-      notes: `Acompte ${Math.max(1, parseInt(session.metadata?.participants || '1', 10)) * 50}€ payé via Stripe – ${activityName}`,
+      notes: `Acompte ${participants * 50}€ payé via Stripe – ${activityName}`,
     });
 
   if (reservationError) {
     console.error('Failed to create reservation:', reservationError);
   } else {
-    console.log(`Reservation created for ${customerEmail} (${activityName})`);
+    console.log(`Reservation created for ${customerEmail} on ${sessionDate} (${activityName} → ${activityEnum})`);
   }
 }
 
@@ -275,8 +322,11 @@ Deno.serve(async (req) => {
       const customerEmail = session.customer_details?.email;
       const activityName = session.metadata?.activity_name || "votre activité";
       const participants = Math.max(1, parseInt(session.metadata?.participants || '1', 10));
+      const preferredDate = session.metadata?.preferred_date;
+      const customerName = session.metadata?.customer_name;
+      const phone = session.metadata?.phone;
 
-      console.log(`Payment completed for: ${customerEmail}, activity: ${activityName}, participants: ${participants}`);
+      console.log(`Payment completed for: ${customerEmail}, activity: ${activityName}, date: ${preferredDate}, participants: ${participants}`);
 
       // Create reservation in database
       try {
@@ -292,7 +342,7 @@ Deno.serve(async (req) => {
             supabase,
             customerEmail,
             `Confirmation de réservation – ${activityName}`,
-            buildCustomerPaymentEmail(activityName, participants),
+            buildCustomerPaymentEmail(activityName, participants, preferredDate),
             'booking_confirmation',
           );
         } catch (error) {
@@ -304,7 +354,7 @@ Deno.serve(async (req) => {
             supabase,
             OWNER_EMAIL,
             `💰 Acompte reçu – ${activityName} (${customerEmail})`,
-            buildOwnerPaymentEmail(activityName, customerEmail, session.id, participants),
+            buildOwnerPaymentEmail(activityName, customerEmail, session.id, participants, customerName, phone, preferredDate),
             'booking_owner_notification',
             customerEmail,
           );
