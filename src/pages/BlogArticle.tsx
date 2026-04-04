@@ -4472,6 +4472,100 @@ const articleFAQData: Record<string, Array<{ question: string; answer: string }>
     { question: "Peut-on faire un cours semi-privé en couple ?", answer: "Absolument, c'est la formule idéale si vous avez des poids et des niveaux similaires. C'est d'ailleurs l'une de nos formules les plus demandées par les couples en vacances à Hyères." },
     { question: "Le cours particulier inclut-il le bateau ?", answer: "Oui, le suivi sécurisé en bateau est assuré pour toutes nos formules, sans exception. C'est un engagement fondamental de Kitesurf Passion pour votre sécurité et votre progression." },
   ],
+  "stage-kitesurf-hyeres-3-jours-ou-5-jours": {
+    content: `
+## Stage kitesurf à Hyères : 3 jours ou 5 jours ?
+
+Vous voulez apprendre le kitesurf à Hyères, mais vous hésitez entre un format court sur 3 jours et un vrai stage de 5 jours ? Voici un comparatif clair pour choisir la durée la plus adaptée à votre niveau, votre emploi du temps et votre objectif de progression sur le spot de l'Almanarre.
+
+## Pourquoi la durée du stage change vraiment vos résultats
+
+En kitesurf, tout se joue rarement en une seule séance. Il faut comprendre le vent, manipuler le matériel, assimiler les consignes de sécurité, coordonner l'aile et la planche, puis répéter les bons gestes jusqu'à ce qu'ils deviennent plus naturels. C'est pour cette raison que la durée du stage influence directement votre progression.
+
+Chez Kitesurf Passion, la formule phare est un stage 100 % glisse sur 5 jours consécutifs, pensé pour amener progressivement le débutant vers l'autonomie. Le site met en avant une progression structurée, de la sécurité au pilotage, puis du bodydrag au waterstart, jusqu'aux premiers bords et à l'autonomie progressive.
+
+## La réponse courte : 3 jours pour découvrir, 5 jours pour progresser vraiment
+
+Si vous cherchez une réponse simple, elle est la suivante : 3 jours peuvent suffire pour découvrir le kitesurf, comprendre les bases et vivre vos premières sensations. En revanche, 5 jours sont nettement plus adaptés si vous visez une vraie progression et un début d'autonomie.
+
+Un format court est utile quand on manque de temps ou quand on veut tester la discipline avant de s'engager davantage. Mais dès qu'on parle d'apprentissage sérieux, de continuité pédagogique et de mémorisation, le stage intensif sur 5 jours devient bien plus pertinent.
+
+## Ce qu'un stage kitesurf de 3 jours peut vous apporter
+
+Un stage de 3 jours peut être une bonne solution si vous souhaitez faire une première immersion dans la discipline. Sur une courte durée, vous pouvez déjà découvrir le matériel, comprendre la fenêtre de vent, apprendre les règles de sécurité, commencer le pilotage de l'aile et éventuellement entrer dans l'eau pour les premiers exercices.
+
+Ce format est intéressant pour ceux qui veulent vérifier si le kitesurf leur plaît vraiment, ou pour des pratiquants déjà initiés qui veulent reprendre contact avec la discipline après une pause. C'est aussi une option logique si votre séjour à Hyères est très court.
+
+En revanche, il faut rester lucide : en 3 jours, il est souvent difficile de consolider suffisamment les automatismes pour parler d'autonomie. Vous pouvez repartir avec une très bonne découverte, parfois avec des premiers déclics, mais pas forcément avec la régularité nécessaire pour naviguer seul en sécurité.
+
+## Pourquoi 5 jours restent le meilleur format pour un débutant
+
+Le grand avantage d'un stage de 5 jours, c'est la continuité. Chez Kitesurf Passion, le programme est organisé de manière progressive sur 5 séances : découverte et sécurité, bodydrag, waterstart, navigation, puis autonomie progressive. Cette logique pédagogique est particulièrement adaptée au kitesurf, où chaque étape prépare la suivante.
+
+Le site précise aussi que l'apprentissage est pensé pour vous amener à devenir autonome, avec un cadre rassurant : petits groupes de 3 à 4 élèves, bateau d'assistance permanent, moniteur diplômé et plus de 25 ans d'expérience. Ce type de progression sur plusieurs jours permet de mieux mémoriser les gestes, de corriger les erreurs plus tôt et d'installer davantage de confiance sur l'eau.
+
+## Ce que permet concrètement un vrai stage de 5 jours
+
+### Jours 1 et 2 : sécurité, pilotage et premiers exercices
+
+Les deux premières journées posent les bases. Vous découvrez le matériel, les systèmes de sécurité, la fenêtre de vent, puis vous entrez dans l'eau avec le bodydrag. Ces étapes sont essentielles, même si elles paraissent moins spectaculaires que la glisse sur la planche.
+
+### Jour 3 : premiers waterstarts
+
+Le troisième jour correspond souvent au moment où les premières sensations de glisse apparaissent vraiment. Vous travaillez le départ dans l'eau, le placement de la planche et la gestion de la puissance.
+
+### Jour 4 : navigation
+
+Une fois les premiers départs acquis, vous commencez à stabiliser vos bords, à gérer davantage votre direction et à naviguer avec plus de contrôle.
+
+### Jour 5 : autonomie progressive
+
+Le cinquième jour permet de consolider l'ensemble : remonter au vent, mieux gérer ses trajectoires, travailler les virages et se rapprocher d'un vrai niveau d'autonomie. C'est précisément ce qu'un format plus court peine à offrir.
+
+## 3 jours ou 5 jours : quel choix selon votre profil ?
+
+**Vous voulez découvrir le kitesurf sans pression** — Si votre objectif est surtout de tester la discipline, un format court peut suffire. Il vous permettra de vivre une première expérience, de comprendre les bases et de voir si vous avez envie d'aller plus loin.
+
+**Vous voulez apprendre sérieusement pendant vos vacances** — Dans ce cas, 5 jours sont nettement plus cohérents. Vous profitez d'une vraie immersion, de séances rapprochées et d'une progression plus complète vers l'autonomie.
+
+**Vous débutez complètement** — Un débutant complet a généralement intérêt à choisir la formule la plus progressive et la plus structurée. Le stage 5 jours répond mieux à cette logique qu'un format trop court.
+
+**Vous avez peu de temps sur place** — Si vous ne restez que quelques jours à Hyères, un format court peut être une solution réaliste. Mais il faut l'aborder comme une initiation ou une remise en jambes, pas comme un raccourci vers une autonomie complète.
+
+## Pourquoi l'Almanarre favorise les stages sur plusieurs jours
+
+Le spot de l'Almanarre présente de vrais atouts pour l'apprentissage : vents réguliers, baie protégée, plan d'eau plus accessible et zone adaptée aux débutants. Le site met en avant une meilleure période allant d'avril à septembre, avec une moyenne de 15 à 25 nœuds, ainsi que des eaux plates et sécurisées pour apprendre.
+
+Ce type de spot prend tout son sens quand on peut y naviguer plusieurs jours de suite. Un stage de 5 jours permet de profiter davantage de la variabilité naturelle des conditions, d'adapter l'apprentissage au vent du jour et d'ancrer les progrès dans la durée.
+
+## Quel format est le plus rentable pour progresser ?
+
+Le stage 100 % glisse 5 jours est affiché à 399 €, avec un tarif indiqué à 499 € en juillet/août. Le semi-privé 5 jours est affiché à 599 €, et le cours particulier de 2 heures à 230 €, avec un tarif majoré en haute saison.
+
+Même sans formule 3 jours affichée sur cette page, on peut retenir une logique simple : plus l'apprentissage est continu, plus votre budget est bien utilisé. Un format court peut coûter moins cher au départ, mais s'il faut ensuite reprendre plusieurs séances pour retrouver les sensations ou rattraper des bases insuffisamment consolidées, il devient parfois moins rentable qu'un vrai stage complet.
+
+## Le bon choix dépend aussi de la qualité d'encadrement
+
+Au-delà de la durée, la qualité de l'école change tout. Kitesurf Passion met en avant plusieurs éléments importants : une école fondée en 1999, plus de 2 500 élèves formés, un moniteur titulaire du BPJEPS, également formateur de moniteurs, des groupes réduits, du matériel vérifié et un bateau d'assistance systématique.
+
+Pour un débutant, ces éléments sont essentiels. Ils permettent de progresser plus sereinement, de mieux comprendre les consignes, et d'éviter les erreurs fréquentes liées à un apprentissage trop rapide ou mal encadré.
+
+## Alors, faut-il choisir 3 jours ou 5 jours ?
+
+Si vous voulez simplement découvrir le kitesurf, un format court sur 3 jours peut être une bonne entrée en matière. En revanche, si votre objectif est d'apprendre sérieusement, de gagner en fluidité et d'approcher une vraie autonomie, 5 jours restent le choix le plus cohérent.
+
+À Hyères, le stage intensif proposé par Kitesurf Passion est justement conçu pour cette progression complète, dans un cadre sécurisé, sur un spot reconnu et avec une vraie expertise locale.
+
+## Envie de choisir la bonne formule à Hyères ?
+
+Si vous hésitez encore entre un format court et un vrai stage complet, consultez les formules proposées par Kitesurf Passion pour comparer les options selon votre niveau et votre objectif.
+
+👉 [Voir les stages et cours de kitesurf à Hyères](/stage-kitesurf-100-glisse-hyeres)
+
+👉 [Découvrir le spot de l'Almanarre](/spot-kitesurf-almanarre-hyeres-var)
+`,
+    tags: ["Kitesurf", "Stage", "Débutant", "Hyères", "Almanarre", "Progression", "3 jours", "5 jours"],
+  },
   "foil-tracte-hyeres-initiation-vol": [
     { question: "Est-ce dangereux ?", answer: "Non, le foil tracté est très sécurisé. Le mât court limite la hauteur de vol, et la vitesse est contrôlée par le pilote du bateau. En cas de chute, vous tombez dans l'eau." },
     { question: "Faut-il savoir faire du wakeboard avant ?", answer: "Non, aucune expérience préalable n'est requise. Notre pédagogie est adaptée aux débutants complets." },
