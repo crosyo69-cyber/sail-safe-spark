@@ -505,6 +505,17 @@ export const blogArticles = [
     alt: "Stage kitesurf débutant Hyères Almanarre - Programme 5 jours école KiteSurf Passion Var",
     featured: true,
   },
+  {
+    slug: "stage-kitesurf-hyeres-3-jours-ou-5-jours",
+    title: "Stage kitesurf Hyères : 3 jours ou 5 jours ?",
+    excerpt: "Vous hésitez entre un stage kitesurf de 3 jours ou 5 jours à Hyères ? Comparez les deux formats selon votre niveau, votre temps disponible et votre objectif de progression.",
+    category: "Kitesurf",
+    date: "2026-04-04",
+    readTime: "10 min",
+    image: "blog-kitesurf-action.jpg",
+    alt: "Stage kitesurf 3 jours ou 5 jours Hyères - Comparatif durée école KiteSurf Passion Almanarre",
+    featured: true,
+  },
 ];
 
 const categories = ["Tous", "Kitesurf", "Wing Foil", "Pump Foil", "Wakeboard", "Le Spot", "Sécurité"];
