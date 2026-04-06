@@ -5,13 +5,22 @@
     <link>https://www.kitesurfpassion.fr/blog-kitesurf-hyeres</link>
     <description>Actualités, conseils et guides sur le kitesurf, wingfoil et pumpfoil à Hyères. Découvrez le spot de l'Almanarre avec l'école KiteSurf Passion.</description>
     <language>fr-FR</language>
-    <lastBuildDate>Thu, 03 Apr 2026 10:00:00 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 06 Apr 2026 10:00:00 +0200</lastBuildDate>
     <atom:link href="https://www.kitesurfpassion.fr/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://www.kitesurfpassion.fr/favicon.ico</url>
       <title>KiteSurf Passion</title>
       <link>https://www.kitesurfpassion.fr</link>
     </image>
+    
+    <item>
+      <title>Premier stage de kitesurf à Hyères : checklist complète pour débuter sereinement</title>
+      <link>https://www.kitesurfpassion.fr/blog/premier-stage-kitesurf-hyeres-checklist</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/premier-stage-kitesurf-hyeres-checklist</guid>
+      <pubDate>Mon, 06 Apr 2026 10:00:00 +0200</pubDate>
+      <category>Kitesurf</category>
+      <description>Préparez votre premier stage de kitesurf à Hyères avec la checklist complète : équipement, mental, sécurité, spot de l'Almanarre, déroulé sur 5 jours et conseils débutant.</description>
+    </item>
     
     <item>
       <title>Stage kitesurf Hyères : 3 jours ou 5 jours ?</title>
