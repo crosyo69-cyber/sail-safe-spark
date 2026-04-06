@@ -516,6 +516,17 @@ export const blogArticles = [
     alt: "Stage kitesurf 3 jours ou 5 jours Hyères - Comparatif durée école KiteSurf Passion Almanarre",
     featured: true,
   },
+  {
+    slug: "premier-stage-kitesurf-hyeres-checklist",
+    title: "Premier stage de kitesurf à Hyères : checklist complète pour débuter sereinement",
+    excerpt: "Préparez votre premier stage de kitesurf à Hyères avec la checklist complète : équipement, mental, sécurité, spot de l'Almanarre, déroulé sur 5 jours et conseils débutant.",
+    category: "Kitesurf",
+    date: "2026-04-06",
+    readTime: "12 min",
+    image: "blog-kitesurf-debut.jpg",
+    alt: "Premier stage kitesurf Hyères checklist débutant - École KiteSurf Passion Almanarre",
+    featured: true,
+  },
 ];
 
 const categories = ["Tous", "Kitesurf", "Wing Foil", "Pump Foil", "Wakeboard", "Le Spot", "Sécurité"];

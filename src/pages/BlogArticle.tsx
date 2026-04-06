@@ -4572,6 +4572,14 @@ const articleFAQData: Record<string, Array<{ question: string; answer: string }>
     { question: "Le stage 5 jours de Kitesurf Passion est-il adapté aux débutants ?", answer: "Oui, le stage 100 % glisse sur 5 jours est conçu pour les débutants avec progression en sécurité, petits groupes, bateau d'assistance et moniteur diplômé." },
     { question: "Quelle est la meilleure durée de stage pour devenir autonome ?", answer: "La formule 5 jours est la plus cohérente pour viser une autonomie progressive, car elle laisse le temps de travailler la sécurité, le bodydrag, le waterstart, la navigation et les premiers retours au point de départ." },
   ],
+  "premier-stage-kitesurf-hyeres-checklist": [
+    { question: "Faut-il être sportif pour faire un premier stage de kitesurf à Hyères ?", answer: "Pas besoin d'être un athlète, mais il faut être à l'aise dans l'eau et disponible physiquement pour plusieurs séances. Le réseau EFK / FFVL rappelle aussi qu'il faut savoir s'immerger et nager au moins 50 mètres pour pratiquer en école." },
+    { question: "Que prévoir pour un premier stage de kitesurf ?", answer: "Prévoyez au minimum maillot, serviette, eau, crème solaire, encas, vêtements confortables et une organisation simple autour de vos séances." },
+    { question: "Comment se déroule un stage débutant chez Kitesurf Passion ?", answer: "Le stage suit une progression sur 5 jours : sécurité et pilotage, bodydrag, waterstart, navigation, puis autonomie progressive." },
+    { question: "Pourquoi l'Almanarre est-il adapté à un premier stage ?", answer: "Le spot propose une baie protégée, des eaux plus plates, une zone débutants, des vents réguliers et des commodités pratiques sur place." },
+    { question: "Que se passe-t-il s'il n'y a pas de vent pendant le stage ?", answer: "Kitesurf Passion indique que la planche tractée et le foil tracté sont inclus lors des jours sans vent dans la formule stage 100 % glisse." },
+    { question: "Pourquoi choisir une école labellisée FFVL / EFK ?", answer: "Parce que cela apporte un cadre reconnu pour la sécurité, l'encadrement et la qualité pédagogique." },
+  ],
   "foil-tracte-hyeres-initiation-vol": [
     { question: "Est-ce dangereux ?", answer: "Non, le foil tracté est très sécurisé. Le mât court limite la hauteur de vol, et la vitesse est contrôlée par le pilote du bateau. En cas de chute, vous tombez dans l'eau." },
     { question: "Faut-il savoir faire du wakeboard avant ?", answer: "Non, aucune expérience préalable n'est requise. Notre pédagogie est adaptée aux débutants complets." },
