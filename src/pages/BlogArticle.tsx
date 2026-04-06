@@ -4635,7 +4635,7 @@ Si la réponse est oui, vous avez déjà fait une grande partie du chemin.
 
 Un premier stage de kitesurf à Hyères se passe souvent très bien quand on arrive avec deux choses : un cadre sérieux et une préparation simple. Sur ce point, Kitesurf Passion coche beaucoup de cases rassurantes : un spot reconnu à l'Almanarre, une pédagogie progressive sur 5 jours, un moniteur diplômé et expérimenté, de petits groupes, un bateau d'assistance et une vraie culture de la sécurité.
 
-La meilleure manière de réussir votre première semaine n'est pas d'essayer d'être déjà bon avant d'arriver. C'est d'arriver prêt, disponible et bien accompagné.
+La meilleure manière de réussir votre première semaine n'est pas d'essayer d'être déjà bon avant d'arriver. C'est d'arriver prêt, disponible et bien accompagné. Pour aller plus loin, vous pouvez consulter les [cours et stages de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant) proposés par l'école.
 
 ## Prêt à réserver votre premier stage ?
 
