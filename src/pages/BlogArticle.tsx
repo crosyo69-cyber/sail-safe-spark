@@ -4521,7 +4521,7 @@ Si vous hésitez encore entre un format court et un vrai stage complet, consulte
   "premier-stage-kitesurf-hyeres-checklist": {
     content: `## Premier stage de kitesurf à Hyères : checklist complète pour débuter sereinement
 
-Vous préparez votre tout premier stage de kitesurf à Hyères ? Voici la checklist premium pour arriver prêt, comprendre le déroulé des 5 jours, bien vivre vos premières sensations sur l'Almanarre et progresser sans stress inutile.
+Vous préparez votre tout premier stage de kitesurf à Hyères ? Voici la checklist premium pour arriver prêt, comprendre le déroulé des 5 jours, bien vivre vos premières sensations sur le spot de l'Almanarre et progresser sans stress inutile.
 
 ## Pourquoi préparer son premier stage change tout
 
