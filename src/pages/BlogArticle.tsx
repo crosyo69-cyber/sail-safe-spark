@@ -4521,7 +4521,7 @@ Si vous hésitez encore entre un format court et un vrai stage complet, consulte
   "premier-stage-kitesurf-hyeres-checklist": {
     content: `## Premier stage de kitesurf à Hyères : checklist complète pour débuter sereinement
 
-Vous préparez votre tout premier stage de kitesurf à Hyères ? Voici la checklist premium pour arriver prêt, comprendre le déroulé des 5 jours, bien vivre vos premières sensations sur l'Almanarre et progresser sans stress inutile.
+Vous préparez votre tout premier stage de kitesurf à Hyères ? Voici la checklist premium pour arriver prêt, comprendre le déroulé des 5 jours, bien vivre vos premières sensations sur le spot de l'Almanarre et progresser sans stress inutile.
 
 ## Pourquoi préparer son premier stage change tout
 
@@ -4543,11 +4543,11 @@ Un premier stage n'est pas une promesse de performance immédiate. C'est une pha
 
 ### Choisir la bonne formule
 
-Pour un premier stage, la formule la plus naturelle est le [stage 100 % glisse sur 5 jours](/stage-kitesurf-100-glisse-hyeres). Elle est pensée pour favoriser la mémorisation musculaire, l'immersion et la progression continue. L'école propose aussi un stage semi-privé 5 jours et un [cours particulier 2 heures](/cours-particulier-kitesurf-hyeres).
+Pour un premier stage, la formule la plus naturelle est le [stage 5 jours de kitesurf](/stage-kitesurf-100-glisse-hyeres). Elle est pensée pour favoriser la mémorisation musculaire, l'immersion et la progression continue. L'école propose aussi un stage semi-privé 5 jours et un [cours particulier 2 heures](/cours-particulier-kitesurf-hyeres).
 
 ### Vérifier ses dates et sa période
 
-Le spot de l'Almanarre met en avant une meilleure période allant d'avril à septembre, avec des saisons très intéressantes au printemps, en été et au début de l'automne. Juin et septembre sont particulièrement attractifs pour leur bon équilibre entre vent, température et fréquentation.
+Le [spot kitesurf Almanarre Hyères](/spot-kitesurf-almanarre-hyeres-var) met en avant une meilleure période allant d'avril à septembre, avec des saisons très intéressantes au printemps, en été et au début de l'automne. Juin et septembre sont particulièrement attractifs pour leur bon équilibre entre vent, température et fréquentation.
 
 ## Checklist n°2 : ce qu'il faut prévoir concrètement
 
@@ -4579,7 +4579,7 @@ Le bodydrag, la gestion de l'aile, le placement du corps et le waterstart demand
 
 ## Checklist n°4 : ce qu'il faut savoir sur le spot de l'Almanarre
 
-L'[Almanarre](/spot-kitesurf-almanarre-hyeres-var) est présenté comme l'un des meilleurs spots de kitesurf et de wingfoil du Var, avec une baie protégée, des eaux plus plates et sécurisées, ainsi qu'une zone débutants. Les vents dominants sont le Mistral et l'Est, avec une moyenne de 15 à 25 nœuds.
+L'[Almanarre](/spot-kitesurf-almanarre-hyeres-var) est présenté comme l'un des meilleurs spots de kitesurf et de wingfoil du Var, avec une baie protégée, des eaux plus plates et sécurisées, ainsi qu'une zone débutants. Les conditions à l'Almanarre sont particulièrement intéressantes pour découvrir le kite dans un cadre rassurant.
 
 Côté pratique, le spot dispose d'un parking gratuit, d'un accès simple, de douches, sanitaires, restaurants et bars sur place. Pour un premier stage, cette simplicité logistique est un vrai plus.
 
@@ -4607,7 +4607,7 @@ Le dernier jour vise à consolider les acquis : remonter au vent, travailler les
 
 ## Checklist n°6 : ce qui rassure vraiment quand on débute
 
-Pour un premier stage, la qualité de l'encadrement change tout. Kitesurf Passion met en avant une école fondée en 1999, plus de 25 ans d'expérience, plus de 2 500 élèves formés, Yoanne Cros comme moniteur diplômé d'État et formateur de moniteurs, de petits groupes et un bateau d'assistance systématique.
+Pour un premier stage, la qualité de l'encadrement change tout. Choisir une [école de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant) avec une vraie expérience locale fait souvent la différence. Kitesurf Passion met en avant une école fondée en 1999, plus de 25 ans d'expérience, plus de 2 500 élèves formés, Yoanne Cros comme moniteur diplômé d'État et formateur de moniteurs, de petits groupes et un bateau d'assistance systématique.
 
 L'école précise aussi qu'elle est itinérante et s'adapte aux conditions de la presqu'île de Giens pour trouver les meilleures configurations du jour.
 
@@ -4619,7 +4619,7 @@ Sur la page stage, Kitesurf Passion précise qu'en cas de jours sans vent, la pl
 
 Le stage 100 % glisse 5 jours est affiché à 399 €, avec un tarif indiqué à 499 € en juillet/août. Le stage semi-privé 5 jours est affiché à 599 €, avec 699 € en juillet/août. Le cours particulier 2 heures est affiché à 230 €, avec 380 € en juillet/août.
 
-Si vous venez pour un premier stage complet, la formule 5 jours reste la plus cohérente pour installer des bases solides. Consultez tous les [tarifs détaillés](/tarifs-cours-kitesurf-wingfoil-hyeres).
+Si vous venez pour un premier stage complet, la formule 5 jours reste la plus cohérente pour installer des bases solides. Après votre progression, certains pratiquants se projettent ensuite vers la [location de matériel de kitesurf à Hyères](/location-materiel-kitesurf-wingfoil-hyeres). Consultez tous les [tarifs détaillés](/tarifs-cours-kitesurf-wingfoil-hyeres).
 
 ## La checklist finale avant de partir
 
@@ -4635,7 +4635,7 @@ Si la réponse est oui, vous avez déjà fait une grande partie du chemin.
 
 Un premier stage de kitesurf à Hyères se passe souvent très bien quand on arrive avec deux choses : un cadre sérieux et une préparation simple. Sur ce point, Kitesurf Passion coche beaucoup de cases rassurantes : un spot reconnu à l'Almanarre, une pédagogie progressive sur 5 jours, un moniteur diplômé et expérimenté, de petits groupes, un bateau d'assistance et une vraie culture de la sécurité.
 
-La meilleure manière de réussir votre première semaine n'est pas d'essayer d'être déjà bon avant d'arriver. C'est d'arriver prêt, disponible et bien accompagné.
+La meilleure manière de réussir votre première semaine n'est pas d'essayer d'être déjà bon avant d'arriver. C'est d'arriver prêt, disponible et bien accompagné. Pour aller plus loin, vous pouvez consulter les [cours et stages de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant) proposés par l'école.
 
 ## Prêt à réserver votre premier stage ?
 
