@@ -4579,7 +4579,7 @@ Le bodydrag, la gestion de l'aile, le placement du corps et le waterstart demand
 
 ## Checklist n°4 : ce qu'il faut savoir sur le spot de l'Almanarre
 
-L'[Almanarre](/spot-kitesurf-almanarre-hyeres-var) est présenté comme l'un des meilleurs spots de kitesurf et de wingfoil du Var, avec une baie protégée, des eaux plus plates et sécurisées, ainsi qu'une zone débutants. Les vents dominants sont le Mistral et l'Est, avec une moyenne de 15 à 25 nœuds.
+L'[Almanarre](/spot-kitesurf-almanarre-hyeres-var) est présenté comme l'un des meilleurs spots de kitesurf et de wingfoil du Var, avec une baie protégée, des eaux plus plates et sécurisées, ainsi qu'une zone débutants. Les conditions à l'Almanarre sont particulièrement intéressantes pour découvrir le kite dans un cadre rassurant.
 
 Côté pratique, le spot dispose d'un parking gratuit, d'un accès simple, de douches, sanitaires, restaurants et bars sur place. Pour un premier stage, cette simplicité logistique est un vrai plus.
 
