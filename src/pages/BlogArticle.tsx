@@ -4547,7 +4547,7 @@ Pour un premier stage, la formule la plus naturelle est le [stage 5 jours de kit
 
 ### Vérifier ses dates et sa période
 
-Le spot de l'Almanarre met en avant une meilleure période allant d'avril à septembre, avec des saisons très intéressantes au printemps, en été et au début de l'automne. Juin et septembre sont particulièrement attractifs pour leur bon équilibre entre vent, température et fréquentation.
+Le [spot kitesurf Almanarre Hyères](/spot-kitesurf-almanarre-hyeres-var) met en avant une meilleure période allant d'avril à septembre, avec des saisons très intéressantes au printemps, en été et au début de l'automne. Juin et septembre sont particulièrement attractifs pour leur bon équilibre entre vent, température et fréquentation.
 
 ## Checklist n°2 : ce qu'il faut prévoir concrètement
 
