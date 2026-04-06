@@ -4619,7 +4619,7 @@ Sur la page stage, Kitesurf Passion précise qu'en cas de jours sans vent, la pl
 
 Le stage 100 % glisse 5 jours est affiché à 399 €, avec un tarif indiqué à 499 € en juillet/août. Le stage semi-privé 5 jours est affiché à 599 €, avec 699 € en juillet/août. Le cours particulier 2 heures est affiché à 230 €, avec 380 € en juillet/août.
 
-Si vous venez pour un premier stage complet, la formule 5 jours reste la plus cohérente pour installer des bases solides. Consultez tous les [tarifs détaillés](/tarifs-cours-kitesurf-wingfoil-hyeres).
+Si vous venez pour un premier stage complet, la formule 5 jours reste la plus cohérente pour installer des bases solides. Après votre progression, certains pratiquants se projettent ensuite vers la [location de matériel de kitesurf à Hyères](/location-materiel-kitesurf-wingfoil-hyeres). Consultez tous les [tarifs détaillés](/tarifs-cours-kitesurf-wingfoil-hyeres).
 
 ## La checklist finale avant de partir
 
