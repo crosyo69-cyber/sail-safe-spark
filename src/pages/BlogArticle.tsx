@@ -4543,7 +4543,7 @@ Un premier stage n'est pas une promesse de performance immédiate. C'est une pha
 
 ### Choisir la bonne formule
 
-Pour un premier stage, la formule la plus naturelle est le [stage 100 % glisse sur 5 jours](/stage-kitesurf-100-glisse-hyeres). Elle est pensée pour favoriser la mémorisation musculaire, l'immersion et la progression continue. L'école propose aussi un stage semi-privé 5 jours et un [cours particulier 2 heures](/cours-particulier-kitesurf-hyeres).
+Pour un premier stage, la formule la plus naturelle est le [stage 5 jours de kitesurf](/stage-kitesurf-100-glisse-hyeres). Elle est pensée pour favoriser la mémorisation musculaire, l'immersion et la progression continue. L'école propose aussi un stage semi-privé 5 jours et un [cours particulier 2 heures](/cours-particulier-kitesurf-hyeres).
 
 ### Vérifier ses dates et sa période
 
