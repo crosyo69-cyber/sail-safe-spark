@@ -4607,7 +4607,7 @@ Le dernier jour vise à consolider les acquis : remonter au vent, travailler les
 
 ## Checklist n°6 : ce qui rassure vraiment quand on débute
 
-Pour un premier stage, la qualité de l'encadrement change tout. Kitesurf Passion met en avant une école fondée en 1999, plus de 25 ans d'expérience, plus de 2 500 élèves formés, Yoanne Cros comme moniteur diplômé d'État et formateur de moniteurs, de petits groupes et un bateau d'assistance systématique.
+Pour un premier stage, la qualité de l'encadrement change tout. Choisir une [école de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant) avec une vraie expérience locale fait souvent la différence. Kitesurf Passion met en avant une école fondée en 1999, plus de 25 ans d'expérience, plus de 2 500 élèves formés, Yoanne Cros comme moniteur diplômé d'État et formateur de moniteurs, de petits groupes et un bateau d'assistance systématique.
 
 L'école précise aussi qu'elle est itinérante et s'adapte aux conditions de la presqu'île de Giens pour trouver les meilleures configurations du jour.
 
