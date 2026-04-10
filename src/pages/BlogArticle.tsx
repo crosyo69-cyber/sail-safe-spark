@@ -4715,6 +4715,14 @@ const articleFAQData: Record<string, Array<{ question: string; answer: string }>
     { question: "Peut-on faire du foil tracté toute l'année ?", answer: "Oui ! C'est l'avantage majeur : pas de dépendance au vent. La baie de Giens offre des conditions praticables 12 mois sur 12." },
     { question: "Combien de temps pour réussir à voler ?", answer: "La plupart des élèves décollent dès la première session de 30 minutes. Certains y arrivent en 15 minutes !" },
   ],
+  "apprendre-kitesurf-40-50-60-ans": [
+    { question: "Peut-on apprendre le kitesurf à 40 ans ?", answer: "Oui. Le kitesurf ne repose pas uniquement sur la force physique, mais sur la technique, le pilotage et la progression. Avec un bon encadrement, il est tout à fait possible de débuter à 40 ans." },
+    { question: "Peut-on commencer le kitesurf à 50 ans ou 60 ans ?", answer: "Oui, à condition d'être à l'aise dans l'eau, de choisir une école sérieuse et un spot adapté. L'Almanarre est justement présenté comme un spot favorable à l'apprentissage, avec baie protégée, eaux plus plates et zone débutants." },
+    { question: "Faut-il être très sportif pour débuter le kitesurf adulte ?", answer: "Non, mais il faut être en condition correcte, mobile et à l'aise dans l'eau. La progression repose surtout sur la pédagogie, la répétition et le bon choix de formule." },
+    { question: "Quelle formule choisir quand on débute adulte à Hyères ?", answer: "Le stage 5 jours est la formule la plus logique pour un adulte débutant, car il permet une progression continue, de la sécurité jusqu'aux premiers bords et à une autonomie progressive." },
+    { question: "Pourquoi Hyères est-il un bon endroit pour apprendre adulte ?", answer: "Hyères combine un spot réputé, des conditions régulières, un accès pratique et une école locale expérimentée. L'Almanarre est mis en avant pour ses eaux plus sécurisées, ses vents réguliers et sa zone adaptée aux débutants." },
+    { question: "Pourquoi choisir Kitesurf Passion pour apprendre adulte ?", answer: "L'école met en avant plus de 25 ans d'expérience, plus de 2 500 élèves formés, un moniteur diplômé d'État, un bateau d'assistance systématique et de petits groupes, ce qui rassure particulièrement un public adulte débutant." },
+  ],
 };
 
 const BlogArticle = () => {
