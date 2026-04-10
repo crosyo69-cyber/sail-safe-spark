@@ -4869,7 +4869,60 @@ const BlogArticle = () => {
     })),
   } : null;
 
-  const structuredData = {
+  // Custom structured data for specific articles
+  const customArticleStructuredData: Record<string, object> = {
+    "apprendre-kitesurf-40-50-60-ans": {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": "https://www.kitesurfpassion.fr/blog/apprendre-kitesurf-40-50-60-ans#article",
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": "https://www.kitesurfpassion.fr/blog/apprendre-kitesurf-40-50-60-ans",
+          },
+          headline: "Apprendre le kitesurf à 40, 50 ou 60 ans à Hyères",
+          description: article.excerpt,
+          inLanguage: "fr-FR",
+          url: "https://www.kitesurfpassion.fr/blog/apprendre-kitesurf-40-50-60-ans",
+          author: {
+            "@type": "Organization",
+            name: "Kitesurf Passion",
+            url: "https://www.kitesurfpassion.fr/",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Kitesurf Passion",
+            url: "https://www.kitesurfpassion.fr/",
+          },
+          articleSection: "Kitesurf",
+          keywords: [
+            "apprendre le kitesurf adulte Hyères",
+            "apprendre le kitesurf à 40 ans",
+            "apprendre le kitesurf à 50 ans",
+            "apprendre le kitesurf à 60 ans",
+            "stage kitesurf adulte Hyères",
+            "kitesurf débutant adulte Hyères",
+            "école kitesurf Hyères adulte",
+          ],
+          about: [
+            { "@type": "Thing", name: "Kitesurf adulte débutant" },
+            { "@type": "Place", name: "Hyères" },
+            { "@type": "Place", name: "Almanarre" },
+          ],
+        },
+        ...(faqStructuredData ? [{
+          "@type": "FAQPage",
+          "@id": "https://www.kitesurfpassion.fr/blog/apprendre-kitesurf-40-50-60-ans#faq",
+          mainEntity: faqStructuredData.mainEntity,
+        }] : []),
+      ],
+    },
+  };
+
+  const structuredData = slug && customArticleStructuredData[slug]
+    ? customArticleStructuredData[slug]
+    : {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: article.title,
@@ -4912,6 +4965,8 @@ const BlogArticle = () => {
     wordCount: content.content.split(/\s+/).length,
     inLanguage: "fr-FR",
   };
+
+  const hasCustomStructuredData = slug ? !!customArticleStructuredData[slug] : false;
 
   // Find related articles
   const relatedArticles = blogArticles
