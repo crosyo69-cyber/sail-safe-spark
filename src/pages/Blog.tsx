@@ -407,7 +407,7 @@ export const blogArticles = [
     category: "Wakeboard",
     date: "2026-03-06",
     readTime: "6 min",
-    image: "blog-wakeboard-hyeres.jpg",
+    image: "blog-wakeboard-evg-evjf.jpg",
     alt: "EVG EVJF activité nautique Hyères - Enterrement vie groupe école KiteSurf Passion",
   },
   {
