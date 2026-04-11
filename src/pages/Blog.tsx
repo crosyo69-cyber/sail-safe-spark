@@ -38,6 +38,8 @@ import blogKitesurfSautAction from "@/assets/blog-kitesurf-saut-action.jpg?webp"
 import blogKitesurfAilesColorees from "@/assets/blog-kitesurf-ailes-colorees.jpg?webp";
 import blogKitesurfSurfeusePlanche from "@/assets/blog-kitesurf-kitesurfeuse-planche.jpg?webp";
 import blogKitesurfSprayTurquoise from "@/assets/blog-kitesurf-spray-turquoise.jpg?webp";
+import blogKitesurfGrabColoree from "@/assets/blog-kitesurf-grab-coloree.jpg?webp";
+import blogKitesurfBackloopSunset from "@/assets/blog-kitesurf-backloop-sunset.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -66,6 +68,8 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-ailes-colorees.jpg": blogKitesurfAilesColorees,
   "blog-kitesurf-kitesurfeuse-planche.jpg": blogKitesurfSurfeusePlanche,
   "blog-kitesurf-spray-turquoise.jpg": blogKitesurfSprayTurquoise,
+  "blog-kitesurf-grab-coloree.jpg": blogKitesurfGrabColoree,
+  "blog-kitesurf-backloop-sunset.jpg": blogKitesurfBackloopSunset,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -146,7 +150,7 @@ export const blogArticles = [
     category: "Le Spot",
     date: "2026-02-05",
     readTime: "5 min",
-    image: "blog-kitesurf-action.jpg",
+    image: "blog-kitesurf-backloop-sunset.jpg",
     alt: "Conditions météo kitesurf Almanarre Hyères - Vent Mistral spot Var",
   },
   {
@@ -403,7 +407,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-03-08",
     readTime: "6 min",
-    image: "blog-kitesurf-action.jpg",
+    image: "blog-kitesurf-grab-coloree.jpg",
     alt: "Bon cadeau kitesurf wingfoil Hyères - Idée cadeau école KiteSurf Passion Var",
   },
   {
