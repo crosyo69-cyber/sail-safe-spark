@@ -59,6 +59,8 @@ import blogWingfoilVolFoilJaune from "@/assets/blog-wingfoil-vol-foil-jaune.jpg?
 import blogWingfoilMontagnesMaui from "@/assets/blog-wingfoil-montagnes-maui.jpg?webp";
 import blogPumpfoilVolSunset from "@/assets/blog-pumpfoil-vol-sunset-duotone.jpg?webp";
 import blogPumpfoilDockStartDepart from "@/assets/blog-pumpfoil-dock-start-depart.jpg?webp";
+import blogPumpfoilFoilPlanche from "@/assets/blog-pumpfoil-foil-planche-duotone-strider.jpg?webp";
+import blogPumpfoilRiderPlage from "@/assets/blog-pumpfoil-rider-plage-duotone.jpg?webp";
 import blogPumpfoilVolMerCasque from "@/assets/blog-pumpfoil-vol-mer-casque.jpg?webp";
 
 const imageMap: Record<string, string> = {
@@ -107,6 +109,8 @@ const imageMap: Record<string, string> = {
   "blog-wingfoil-montagnes-maui.jpg": blogWingfoilMontagnesMaui,
   "blog-pumpfoil-vol-sunset-duotone.jpg": blogPumpfoilVolSunset,
   "blog-pumpfoil-dock-start-depart.jpg": blogPumpfoilDockStartDepart,
+  "blog-pumpfoil-foil-planche-duotone-strider.jpg": blogPumpfoilFoilPlanche,
+  "blog-pumpfoil-rider-plage-duotone.jpg": blogPumpfoilRiderPlage,
   "blog-pumpfoil-vol-mer-casque.jpg": blogPumpfoilVolMerCasque,
 };
 
