@@ -49,6 +49,7 @@ import blogWingfoilVolEau from "@/assets/blog-wingfoil-vol-eau-cristalline.jpg?w
 import blogWingfoilVolFoilJaune from "@/assets/blog-wingfoil-vol-foil-jaune.jpg?webp";
 import blogWingfoilMontagnesMaui from "@/assets/blog-wingfoil-montagnes-maui.jpg?webp";
 import blogPumpfoilVolSunset from "@/assets/blog-pumpfoil-vol-sunset-duotone.jpg?webp";
+import blogPumpfoilDockStartDepart from "@/assets/blog-pumpfoil-dock-start-depart.jpg?webp";
 import blogPumpfoilVolMerCasque from "@/assets/blog-pumpfoil-vol-mer-casque.jpg?webp";
 
 // Image mapping for dynamic resolution
