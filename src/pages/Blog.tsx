@@ -46,6 +46,8 @@ import blogKitesurfFreestylePink from "@/assets/blog-kitesurf-freestyle-pink.jpg
 import blogKitesurfSautVagues from "@/assets/blog-kitesurf-saut-vagues.jpg?webp";
 import blogKitesurfFreestyleSunset from "@/assets/blog-kitesurf-freestyle-sunset-duotone.jpg?webp";
 import blogKitesurfSautPlanche from "@/assets/blog-kitesurf-saut-planche-duotone.jpg?webp";
+import blogKitesurfAileEvoLagon from "@/assets/blog-kitesurf-aile-duotone-evo-lagon.jpg?webp";
+import blogKitesurfAilesNeoMer from "@/assets/blog-kitesurf-ailes-neo-duotone-mer.jpg?webp";
 import blogWingfoilDuoLagon from "@/assets/blog-wingfoil-duo-lagon-turquoise.jpg?webp";
 import blogWingfoilVolEau from "@/assets/blog-wingfoil-vol-eau-cristalline.jpg?webp";
 import blogWingfoilVolFoilJaune from "@/assets/blog-wingfoil-vol-foil-jaune.jpg?webp";
@@ -88,6 +90,8 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-freestyle-pink.jpg": blogKitesurfFreestylePink,
   "blog-kitesurf-freestyle-sunset-duotone.jpg": blogKitesurfFreestyleSunset,
   "blog-kitesurf-saut-planche-duotone.jpg": blogKitesurfSautPlanche,
+  "blog-kitesurf-aile-duotone-evo-lagon.jpg": blogKitesurfAileEvoLagon,
+  "blog-kitesurf-ailes-neo-duotone-mer.jpg": blogKitesurfAilesNeoMer,
   "blog-kitesurf-saut-vagues.jpg": blogKitesurfSautVagues,
   "blog-wingfoil-duo-lagon-turquoise.jpg": blogWingfoilDuoLagon,
   "blog-wingfoil-vol-eau-cristalline.jpg": blogWingfoilVolEau,
@@ -361,7 +365,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-02-25",
     readTime: "9 min",
-    image: "blog-kite-duotone.jpg",
+    image: "blog-kitesurf-aile-duotone-evo-lagon.jpg",
     alt: "Almanarre meilleur spot kitesurf France - École Hyères KiteSurf Passion Var",
   },
   {
@@ -402,7 +406,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-02-18",
     readTime: "9 min",
-    image: "blog-kite-duotone.jpg",
+    image: "blog-kitesurf-ailes-neo-duotone-mer.jpg",
     alt: "Stage kitesurf Hyères Almanarre - Progresser rapidement école KiteSurf Passion Var",
   },
   {
