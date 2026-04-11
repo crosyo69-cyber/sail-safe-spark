@@ -37,6 +37,7 @@ const footerLinks = {
     { name: "Blog", href: "/blog-kitesurf-hyeres" },
     { name: "À Propos", href: "/a-propos-ecole-kitesurf-hyeres" },
     { name: "Contact", href: "/contact-reservation-kitesurf-hyeres" },
+    { name: "Flux RSS", href: "/rss.xml", external: true },
   ],
   legal: [
     { name: "Mentions Légales", href: "/mentions-legales" },
@@ -173,12 +174,23 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             <ul className="space-y-3">
               {footerLinks.quickLinks.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="text-primary-foreground/70 hover:text-primary-foreground transition-colors text-sm"
-                  >
-                    {link.name}
-                  </Link>
+                  {'external' in link && link.external ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary-foreground/70 hover:text-primary-foreground transition-colors text-sm"
+                    >
+                      {link.name}
+                    </a>
+                  ) : (
+                    <Link
+                      to={link.href}
+                      className="text-primary-foreground/70 hover:text-primary-foreground transition-colors text-sm"
+                    >
+                      {link.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
