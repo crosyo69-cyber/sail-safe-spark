@@ -36,6 +36,8 @@ import blogKitesurfEauClaire from "@/assets/blog-kitesurf-eau-claire.jpg?webp";
 import blogKitesurfSunset from "@/assets/blog-kitesurf-sunset.jpg?webp";
 import blogKitesurfSautAction from "@/assets/blog-kitesurf-saut-action.jpg?webp";
 import blogKitesurfAilesColorees from "@/assets/blog-kitesurf-ailes-colorees.jpg?webp";
+import blogKitesurfSurfeusePlanche from "@/assets/blog-kitesurf-kitesurfeuse-planche.jpg?webp";
+import blogKitesurfSprayTurquoise from "@/assets/blog-kitesurf-spray-turquoise.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -62,6 +64,8 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-sunset.jpg": blogKitesurfSunset,
   "blog-kitesurf-saut-action.jpg": blogKitesurfSautAction,
   "blog-kitesurf-ailes-colorees.jpg": blogKitesurfAilesColorees,
+  "blog-kitesurf-kitesurfeuse-planche.jpg": blogKitesurfSurfeusePlanche,
+  "blog-kitesurf-spray-turquoise.jpg": blogKitesurfSprayTurquoise,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -317,7 +321,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-02-28",
     readTime: "7 min",
-    image: "blog-kitesurf-action.jpg",
+    image: "blog-kitesurf-kitesurfeuse-planche.jpg",
     alt: "Kitesurf enfant Hyères Almanarre - Cours junior école KiteSurf Passion Var",
   },
   {
@@ -538,7 +542,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-04-04",
     readTime: "10 min",
-    image: "blog-kitesurf-action.jpg",
+    image: "blog-kitesurf-spray-turquoise.jpg",
     alt: "Stage kitesurf 3 jours ou 5 jours Hyères - Comparatif durée école KiteSurf Passion Almanarre",
     featured: true,
   },
