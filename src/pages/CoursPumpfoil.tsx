@@ -123,7 +123,7 @@ export default function CoursPumpfoil() {
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="Cours Pumpfoil Hyères | Dock Start à l'Almanarre" />
+        <meta property="og:title" content="Cours Pumpfoil Hyères | Kitesurf Passion – Dock Start Almanarre" />
         <meta property="og:description" content="Volez sur l'eau sans vent ! Cours pumpfoil dès 50€ à Hyères. Dock start, progression rapide, moniteur diplômé." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.kitesurfpassion.fr/cours-pumpfoil-dock-start-hyeres" />

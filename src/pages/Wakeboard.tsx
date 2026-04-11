@@ -195,7 +195,7 @@ const Wakeboard = () => {
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/wakeboard-hyeres" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="Wakeboard Hyères | Glisse Tractée Baie de Giens" />
+        <meta property="og:title" content="Wakeboard Hyères | Kitesurf Passion – Glisse Tractée Baie de Giens" />
         <meta property="og:description" content="Sessions wakeboard dès 40€ sur la baie d'Hyères. Fun et accessible dès 8 ans avec moniteur diplômé." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.kitesurfpassion.fr/wakeboard-hyeres" />

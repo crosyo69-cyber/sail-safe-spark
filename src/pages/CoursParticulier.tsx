@@ -197,7 +197,7 @@ const CoursParticulier = () => {
         <link rel="canonical" href="https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres" />
-        <meta property="og:title" content="Cours Particulier Kitesurf – Hyères Almanarre | Progression Premium" />
+        <meta property="og:title" content="Cours Particulier Kitesurf Hyères | Kitesurf Passion – Progression Premium" />
         <meta property="og:description" content="Leçon privée kitesurf avec moniteur dédié à l'Almanarre Hyères. Progression rapide, encadrement premium, bateau sécurité." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres" />

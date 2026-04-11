@@ -756,7 +756,7 @@ const Blog = () => {
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/blog-kitesurf-hyeres" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="Blog Kitesurf Hyères | Conseils & Guides d'Experts" />
+        <meta property="og:title" content="Blog Kitesurf Hyères | Conseils & Guides d'Experts – Kitesurf Passion" />
         <meta property="og:description" content="25 ans d'expérience partagée : conseils pour débuter, guides des spots, conditions météo et actualités kitesurf à Hyères." />
         <meta property="og:type" content="blog" />
         <meta property="og:url" content="https://www.kitesurfpassion.fr/blog-kitesurf-hyeres" />

@@ -253,7 +253,7 @@ export default function SpotAlmanarre() {
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="Spot Kitesurf Almanarre Hyères | Meilleur Spot du Var" />
+        <meta property="og:title" content="Spot Kitesurf Almanarre Hyères | Kitesurf Passion – Meilleur Spot Var" />
         <meta property="og:description" content="L'Almanarre : le meilleur spot kitesurf du Var. Vent régulier, eaux plates, 300 jours de soleil. Conditions idéales pour apprendre !" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var" />

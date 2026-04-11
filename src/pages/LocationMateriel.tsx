@@ -110,7 +110,7 @@ const LocationMateriel = () => {
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="Location Matériel Kitesurf Hyères | Almanarre & Giens" />
+        <meta property="og:title" content="Location Matériel Kitesurf Hyères | Kitesurf Passion – Almanarre" />
         <meta property="og:description" content="Louez ailes, planches et équipements kitesurf à Hyères. Matériel récent et vérifié. Dès 10€/jour." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.kitesurfpassion.fr/location-materiel-kitesurf-hyeres" />

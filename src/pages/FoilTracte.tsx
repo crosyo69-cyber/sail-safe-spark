@@ -224,7 +224,7 @@ const FoilTracte = () => {
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/foil-tracte-hyeres" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="Foil Tracté Hyères | Voler sur l'Eau en Sécurité" />
+        <meta property="og:title" content="Foil Tracté Hyères | Kitesurf Passion – Voler sur l'Eau" />
         <meta property="og:description" content="Sessions foil tracté par bateau dès 50€ à Hyères. Découvrez les sensations du vol sur l'eau sans vent ni expérience préalable." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.kitesurfpassion.fr/foil-tracte-hyeres" />

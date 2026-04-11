@@ -279,7 +279,7 @@ const CoursKitesurf = () => {
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="Cours Kitesurf Débutant Hyères | Stage avec Bateau d'Assistance" />
+        <meta property="og:title" content="Cours Kitesurf Débutant Hyères | Kitesurf Passion – Bateau d'Assistance" />
         <meta property="og:description" content="Stage kitesurf 5 jours dès 399€ à Hyères. Bateau d'assistance, moniteur diplômé, spot Almanarre. Devenez autonome !" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant" />
