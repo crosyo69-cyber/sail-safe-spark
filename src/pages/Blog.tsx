@@ -46,6 +46,8 @@ import blogKitesurfFreestylePink from "@/assets/blog-kitesurf-freestyle-pink.jpg
 import blogKitesurfSautVagues from "@/assets/blog-kitesurf-saut-vagues.jpg?webp";
 import blogWingfoilDuoLagon from "@/assets/blog-wingfoil-duo-lagon-turquoise.jpg?webp";
 import blogWingfoilVolEau from "@/assets/blog-wingfoil-vol-eau-cristalline.jpg?webp";
+import blogWingfoilVolFoilJaune from "@/assets/blog-wingfoil-vol-foil-jaune.jpg?webp";
+import blogWingfoilMontagnesMaui from "@/assets/blog-wingfoil-montagnes-maui.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -82,6 +84,8 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-saut-vagues.jpg": blogKitesurfSautVagues,
   "blog-wingfoil-duo-lagon-turquoise.jpg": blogWingfoilDuoLagon,
   "blog-wingfoil-vol-eau-cristalline.jpg": blogWingfoilVolEau,
+  "blog-wingfoil-vol-foil-jaune.jpg": blogWingfoilVolFoilJaune,
+  "blog-wingfoil-montagnes-maui.jpg": blogWingfoilMontagnesMaui,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -202,7 +206,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2026-01-10",
     readTime: "6 min",
-    image: "blog-wingfoil.jpg",
+    image: "blog-wingfoil-vol-foil-jaune.jpg",
     alt: "Choisir aile wingfoil débutant - Conseil matériel école KiteSurf Passion Hyères",
   },
   {
@@ -232,7 +236,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2025-12-05",
     readTime: "4 min",
-    image: "blog-wingfoil.jpg",
+    image: "blog-wingfoil-montagnes-maui.jpg",
     alt: "Premiers vols wingfoil conseils - Apprendre wing foil Hyères Almanarre Var",
   },
   {
@@ -378,7 +382,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2026-02-22",
     readTime: "8 min",
-    image: "blog-wingfoil.jpg",
+    image: "blog-wingfoil-vol-foil-jaune.jpg",
     alt: "Kitesurf vs wingfoil comparatif Hyères - Choisir discipline école KiteSurf Passion",
   },
   {
@@ -481,7 +485,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2025-03-18",
     readTime: "6 min",
-    image: "blog-wingfoil.jpg",
+    image: "blog-wingfoil-montagnes-maui.jpg",
     alt: "Wingfoil vs kitesurf comparatif Hyères - Quelle discipline choisir école KiteSurf Passion",
     featured: true,
   },
