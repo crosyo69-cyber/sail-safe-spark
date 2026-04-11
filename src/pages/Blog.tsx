@@ -44,6 +44,8 @@ import blogKitesurfGlisseFille from "@/assets/blog-kitesurf-glisse-fille.jpg?web
 import blogKitesurfPlageRose from "@/assets/blog-kitesurf-plage-rose.jpg?webp";
 import blogKitesurfFreestylePink from "@/assets/blog-kitesurf-freestyle-pink.jpg?webp";
 import blogKitesurfSautVagues from "@/assets/blog-kitesurf-saut-vagues.jpg?webp";
+import blogKitesurfFreestyleSunset from "@/assets/blog-kitesurf-freestyle-sunset-duotone.jpg?webp";
+import blogKitesurfSautPlanche from "@/assets/blog-kitesurf-saut-planche-duotone.jpg?webp";
 import blogWingfoilDuoLagon from "@/assets/blog-wingfoil-duo-lagon-turquoise.jpg?webp";
 import blogWingfoilVolEau from "@/assets/blog-wingfoil-vol-eau-cristalline.jpg?webp";
 import blogWingfoilVolFoilJaune from "@/assets/blog-wingfoil-vol-foil-jaune.jpg?webp";
@@ -84,6 +86,8 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-glisse-fille.jpg": blogKitesurfGlisseFille,
   "blog-kitesurf-plage-rose.jpg": blogKitesurfPlageRose,
   "blog-kitesurf-freestyle-pink.jpg": blogKitesurfFreestylePink,
+  "blog-kitesurf-freestyle-sunset-duotone.jpg": blogKitesurfFreestyleSunset,
+  "blog-kitesurf-saut-planche-duotone.jpg": blogKitesurfSautPlanche,
   "blog-kitesurf-saut-vagues.jpg": blogKitesurfSautVagues,
   "blog-wingfoil-duo-lagon-turquoise.jpg": blogWingfoilDuoLagon,
   "blog-wingfoil-vol-eau-cristalline.jpg": blogWingfoilVolEau,
@@ -132,7 +136,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2025-01-05",
     readTime: "9 min",
-    image: "blog-kite-duotone.jpg",
+    image: "blog-kitesurf-freestyle-sunset-duotone.jpg",
     alt: "Guide équipement kitesurf débutant - Matériel aile planche harnais Hyères",
   },
   {
@@ -202,7 +206,7 @@ export const blogArticles = [
     category: "Le Spot",
     date: "2026-01-15",
     readTime: "7 min",
-    image: "blog-kite-duotone.jpg",
+    image: "blog-kitesurf-saut-planche-duotone.jpg",
     alt: "Meilleure période kitesurf Var Hyères - Saison spot Almanarre",
   },
   {
