@@ -45,6 +45,8 @@ import blogKitesurfGrabColoree from "@/assets/blog-kitesurf-grab-coloree.jpg?web
 import blogKitesurfBackloopSunset from "@/assets/blog-kitesurf-backloop-sunset.jpg?webp";
 import blogKitesurfGlisseFille from "@/assets/blog-kitesurf-glisse-fille.jpg?webp";
 import blogKitesurfPlageRose from "@/assets/blog-kitesurf-plage-rose.jpg?webp";
+import blogKitesurfFreestylePink from "@/assets/blog-kitesurf-freestyle-pink.jpg?webp";
+import blogKitesurfSautVagues from "@/assets/blog-kitesurf-saut-vagues.jpg?webp";
 
 const imageMap: Record<string, string> = {
   "blog-kitesurf-debut.jpg": blogKitesurfDebut,
@@ -78,6 +80,8 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-backloop-sunset.jpg": blogKitesurfBackloopSunset,
   "blog-kitesurf-glisse-fille.jpg": blogKitesurfGlisseFille,
   "blog-kitesurf-plage-rose.jpg": blogKitesurfPlageRose,
+  "blog-kitesurf-freestyle-pink.jpg": blogKitesurfFreestylePink,
+  "blog-kitesurf-saut-vagues.jpg": blogKitesurfSautVagues,
 };
 
 const getArticleImage = (imageName: string): string => {

@@ -42,6 +42,8 @@ import blogKitesurfGrabColoree from "@/assets/blog-kitesurf-grab-coloree.jpg?web
 import blogKitesurfBackloopSunset from "@/assets/blog-kitesurf-backloop-sunset.jpg?webp";
 import blogKitesurfGlisseFille from "@/assets/blog-kitesurf-glisse-fille.jpg?webp";
 import blogKitesurfPlageRose from "@/assets/blog-kitesurf-plage-rose.jpg?webp";
+import blogKitesurfFreestylePink from "@/assets/blog-kitesurf-freestyle-pink.jpg?webp";
+import blogKitesurfSautVagues from "@/assets/blog-kitesurf-saut-vagues.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -74,6 +76,8 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-backloop-sunset.jpg": blogKitesurfBackloopSunset,
   "blog-kitesurf-glisse-fille.jpg": blogKitesurfGlisseFille,
   "blog-kitesurf-plage-rose.jpg": blogKitesurfPlageRose,
+  "blog-kitesurf-freestyle-pink.jpg": blogKitesurfFreestylePink,
+  "blog-kitesurf-saut-vagues.jpg": blogKitesurfSautVagues,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -360,7 +364,7 @@ export const blogArticles = [
     category: "Le Spot",
     date: "2026-02-27",
     readTime: "9 min",
-    image: "blog-kitesurf-action.jpg",
+    image: "blog-kitesurf-freestyle-pink.jpg",
     alt: "Spot kitesurf Almanarre Hyères - Meilleur spot Var école KiteSurf Passion",
   },
   {
@@ -462,7 +466,7 @@ export const blogArticles = [
     category: "Le Spot",
     date: "2025-02-24",
     readTime: "5 min",
-    image: "blog-kitesurf-action.jpg",
+    image: "blog-kitesurf-saut-vagues.jpg",
     alt: "Spot kitesurf Almanarre Hyères Var - Guide complet meilleur spot Méditerranée",
     featured: true,
   },
