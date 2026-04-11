@@ -40,6 +40,8 @@ import blogKitesurfSurfeusePlanche from "@/assets/blog-kitesurf-kitesurfeuse-pla
 import blogKitesurfSprayTurquoise from "@/assets/blog-kitesurf-spray-turquoise.jpg?webp";
 import blogKitesurfGrabColoree from "@/assets/blog-kitesurf-grab-coloree.jpg?webp";
 import blogKitesurfBackloopSunset from "@/assets/blog-kitesurf-backloop-sunset.jpg?webp";
+import blogKitesurfGlisseFille from "@/assets/blog-kitesurf-glisse-fille.jpg?webp";
+import blogKitesurfPlageRose from "@/assets/blog-kitesurf-plage-rose.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -70,6 +72,8 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-spray-turquoise.jpg": blogKitesurfSprayTurquoise,
   "blog-kitesurf-grab-coloree.jpg": blogKitesurfGrabColoree,
   "blog-kitesurf-backloop-sunset.jpg": blogKitesurfBackloopSunset,
+  "blog-kitesurf-glisse-fille.jpg": blogKitesurfGlisseFille,
+  "blog-kitesurf-plage-rose.jpg": blogKitesurfPlageRose,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -239,7 +243,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2025-01-28",
     readTime: "3 min",
-    image: "blog-kitesurf-action.jpg",
+    image: "blog-kitesurf-glisse-fille.jpg",
     alt: "École de kitesurf Hyères Almanarre - Cours débutant spot Var KiteSurf Passion",
     featured: true,
   },
@@ -386,7 +390,7 @@ export const blogArticles = [
     category: "Le Spot",
     date: "2026-02-15",
     readTime: "8 min",
-    image: "blog-kitesurf-action.jpg",
+    image: "blog-kitesurf-plage-rose.jpg",
     alt: "Météo vent kitesurf Hyères - Saisons Mistral Almanarre école KiteSurf Passion",
   },
   {
