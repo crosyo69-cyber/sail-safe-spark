@@ -23,6 +23,12 @@ import blogPumpfoilDock from "@/assets/blog-pumpfoil-dock.jpg?webp";
 import blogWakeboardHyeres from "@/assets/wakeboard-hyeres-glisse-nautique.jpg?webp";
 import blogLocationMateriel from "@/assets/blog-location-materiel.jpg?webp";
 import blogFoilTracteHyeres from "@/assets/blog-foil-tracte-hyeres.jpg?webp";
+import blogKitesurfActionEau from "@/assets/blog-kitesurf-action-eau.jpg?webp";
+import blogKitesurfCoursPlage from "@/assets/blog-kitesurf-cours-plage.jpg?webp";
+import blogKitesurfCoursGroupe from "@/assets/blog-kitesurf-cours-groupe.jpg?webp";
+import blogKitesurfMarchePlage from "@/assets/blog-kitesurf-marche-plage.jpg?webp";
+import blogKitesurfPreparation from "@/assets/blog-kitesurf-preparation.jpg?webp";
+import blogKitesurfCoursIndividuel from "@/assets/blog-kitesurf-cours-individuel.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -36,6 +42,12 @@ const imageMap: Record<string, string> = {
   "blog-wakeboard-hyeres.jpg": blogWakeboardHyeres,
   "blog-location-materiel.jpg": blogLocationMateriel,
   "blog-foil-tracte-hyeres.jpg": blogFoilTracteHyeres,
+  "blog-kitesurf-action-eau.jpg": blogKitesurfActionEau,
+  "blog-kitesurf-cours-plage.jpg": blogKitesurfCoursPlage,
+  "blog-kitesurf-cours-groupe.jpg": blogKitesurfCoursGroupe,
+  "blog-kitesurf-marche-plage.jpg": blogKitesurfMarchePlage,
+  "blog-kitesurf-preparation.jpg": blogKitesurfPreparation,
+  "blog-kitesurf-cours-individuel.jpg": blogKitesurfCoursIndividuel,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -311,7 +323,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-03-02",
     readTime: "8 min",
-    image: "blog-kitesurf-debut.jpg",
+    image: "blog-kitesurf-action-eau.jpg",
     alt: "Cours kitesurf Hyères Almanarre - École KiteSurf Passion moniteur diplômé Var",
     featured: true,
   },
@@ -468,7 +480,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-03-22",
     readTime: "11 min",
-    image: "blog-kitesurf-debut.jpg",
+    image: "blog-kitesurf-cours-groupe.jpg",
     alt: "Stage kitesurf Hyères formule choisir - Cours particulier semi-privé école KiteSurf Passion",
     featured: true,
   },
@@ -479,7 +491,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-03-30",
     readTime: "9 min",
-    image: "blog-kitesurf-debut.jpg",
+    image: "blog-kitesurf-marche-plage.jpg",
     alt: "Prix stage kitesurf Hyères budget - Tarifs cours école KiteSurf Passion Almanarre",
     featured: true,
   },
@@ -501,7 +513,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-04-03",
     readTime: "10 min",
-    image: "blog-kitesurf-debut.jpg",
+    image: "blog-kitesurf-cours-individuel.jpg",
     alt: "Stage kitesurf débutant Hyères Almanarre - Programme 5 jours école KiteSurf Passion Var",
     featured: true,
   },
@@ -523,7 +535,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-04-06",
     readTime: "12 min",
-    image: "blog-kitesurf-debut.jpg",
+    image: "blog-kitesurf-preparation.jpg",
     alt: "Premier stage kitesurf Hyères checklist débutant - École KiteSurf Passion Almanarre",
     featured: true,
   },
@@ -534,7 +546,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-04-10",
     readTime: "10 min",
-    image: "blog-kitesurf-debut.jpg",
+    image: "blog-kitesurf-cours-plage.jpg",
     alt: "Apprendre kitesurf adulte 40 50 60 ans Hyères - Stage débutant école KiteSurf Passion Almanarre",
     featured: true,
   },
