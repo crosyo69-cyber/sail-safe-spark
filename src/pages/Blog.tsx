@@ -30,6 +30,8 @@ import blogKitesurfMarchePlage from "@/assets/blog-kitesurf-marche-plage.jpg?web
 import blogKitesurfPreparation from "@/assets/blog-kitesurf-preparation.jpg?webp";
 import blogKitesurfCoursIndividuel from "@/assets/blog-kitesurf-cours-individuel.jpg?webp";
 import blogWakeboardEvgEvjf from "@/assets/blog-wakeboard-evg-evjf.jpg?webp";
+import blogKitesurfWaterstart from "@/assets/blog-kitesurf-waterstart.jpg?webp";
+import blogKitesurfGlisseTurquoise from "@/assets/blog-kitesurf-glisse-turquoise.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -50,6 +52,8 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-preparation.jpg": blogKitesurfPreparation,
   "blog-kitesurf-cours-individuel.jpg": blogKitesurfCoursIndividuel,
   "blog-wakeboard-evg-evjf.jpg": blogWakeboardEvgEvjf,
+  "blog-kitesurf-waterstart.jpg": blogKitesurfWaterstart,
+  "blog-kitesurf-glisse-turquoise.jpg": blogKitesurfGlisseTurquoise,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -294,7 +298,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-03-01",
     readTime: "8 min",
-    image: "blog-kitesurf-debut.jpg",
+    image: "blog-kitesurf-waterstart.jpg",
     alt: "Progression kitesurf autonomie Hyères - Nombre séances cours école KiteSurf Passion",
     featured: true,
   },
@@ -427,7 +431,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2025-03-10",
     readTime: "5 min",
-    image: "blog-kitesurf-debut.jpg",
+    image: "blog-kitesurf-glisse-turquoise.jpg",
     alt: "Apprendre kitesurf Hyères Almanarre - Guide débutant école KiteSurf Passion Var",
     featured: true,
   },
