@@ -4649,115 +4649,157 @@ Si vous voulez découvrir le kitesurf dans un cadre sérieux, progressif et rass
   },
   "apprendre-kitesurf-40-50-60-ans": {
     content: `
-Oui, il est tout à fait possible d'apprendre le kitesurf adulte à Hyères. Avec le bon encadrement, une progression adaptée et un spot comme l'Almanarre, débuter à 40, 50 ou 60 ans est une démarche réaliste, rassurante et souvent plus agréable qu'on ne l'imagine.
+Vous pensez qu'il est trop tard pour débuter ? En réalité, beaucoup d'adultes apprennent très bien le kite lorsqu'ils choisissent un spot adapté comme l'Almanarre et une [école de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant) capable d'encadrer la progression avec méthode.
 
-## La vraie question n'est pas l'âge, mais le cadre d'apprentissage
+## La réponse courte : oui, on peut commencer le kitesurf adulte
 
-Beaucoup d'adultes se disent qu'ils auraient dû commencer le kitesurf plus tôt. À 40 ans, on pense manquer de souplesse. À 50 ans, on doute de sa condition physique. À 60 ans, on se demande si ce n'est pas devenu "trop tard". En réalité, la bonne question n'est pas tant l'âge que les conditions dans lesquelles on apprend.
+Oui, il est tout à fait possible d'apprendre le kitesurf adulte à Hyères, que vous ayez 40, 50 ou 60 ans. Le point décisif n'est pas l'âge en lui-même, mais le trio suivant : un bon spot, un encadrement sérieux et une progression adaptée à votre rythme.
 
-Le kitesurf ne repose pas uniquement sur la force brute. Il demande surtout de la technique, de la progressivité, une bonne pédagogie et un spot adapté. C'est précisément pour cela que le choix de l'école et du lieu fait toute la différence quand on veut apprendre le kitesurf à Hyères.
+C'est précisément pour cela que de nombreux adultes se tournent vers un [stage de kitesurf à Hyères](/stage-kitesurf-100-glisse-hyeres) plutôt que d'essayer d'apprendre seuls. Avec une méthode structurée, un groupe réduit et un spot reconnu comme le [spot de l'Almanarre](/spot-kitesurf-almanarre-hyeres-var), l'apprentissage devient beaucoup plus lisible, rassurant et efficace.
 
-## La réponse courte : oui, on peut commencer adulte
+> **Ce qu'il faut retenir** : Le kitesurf n'est pas réservé aux jeunes riders ultra-sportifs. Beaucoup d'adultes progressent très bien parce qu'ils sont plus patients, plus attentifs aux consignes et plus réguliers dans leur approche.
 
-Oui, on peut apprendre le kitesurf à 40 ans. Oui, on peut aussi débuter à 50 ans. Et oui, il est encore possible de commencer à 60 ans, si l'on est à l'aise dans l'eau, mobile et encadré de manière sérieuse. Le plus important n'est pas d'être jeune, mais de progresser dans un environnement sécurisé, avec une méthode claire et un rythme adapté.
+### Pourquoi les adultes apprennent souvent mieux qu'ils ne le pensent
 
-À ce titre, un [stage kitesurf adulte à Hyères](/stage-kitesurf-100-glisse-hyeres) peut être une excellente option, car il permet d'apprendre pas à pas, sans pression, sur plusieurs jours.
+- **Technique avant puissance** : Le kite repose surtout sur la lecture du vent, le placement, le pilotage de l'aile et la répétition des bons gestes.
+- **Progression plus méthodique** : Les adultes débutants appliquent souvent mieux les consignes de sécurité et prennent moins de risques inutiles.
+- **Encadrement décisif** : Avec une [école de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant) expérimentée, vous avancez étape par étape sans brûler les étapes.
 
-## Pourquoi les adultes apprennent souvent mieux qu'ils ne le pensent
-
-### 1. Une meilleure écoute des consignes
-
-Les adultes débutants compensent souvent leur manque d'expérience par une meilleure attention aux consignes, une plus grande prudence et une capacité plus forte à intégrer une méthode. En kitesurf, cela compte énormément, surtout dans les premières heures où la sécurité et le pilotage priment sur la glisse.
-
-### 2. Plus de patience, donc une progression plus propre
-
-Beaucoup d'adultes progressent bien parce qu'ils acceptent plus facilement les étapes : apprendre la fenêtre de vent, comprendre les systèmes de sécurité, répéter le bodydrag, puis venir au waterstart. Cette approche est souvent plus efficace que la recherche d'un résultat immédiat.
-
-### 3. Une motivation souvent plus claire
-
-Quand on commence à 40, 50 ou 60 ans, on le fait rarement "par hasard". On vient souvent avec une vraie envie, un projet personnel ou le désir de s'offrir une nouvelle expérience. Cette motivation stabilise beaucoup la progression.
-
-## Les freins les plus fréquents… et pourquoi ils ne sont pas bloquants
+## Pourquoi tant d'adultes hésitent avant leur premier stage
 
 ### "Je suis trop vieux pour commencer"
 
-C'est l'objection la plus fréquente. Pourtant, le kitesurf n'est pas réservé aux jeunes sportifs. Ce qui compte, c'est d'être dans un cadre progressif, de savoir écouter, de respecter ses sensations et d'apprendre avec une école qui adapte son approche aux élèves.
+C'est la peur la plus fréquente. Pourtant, un adulte qui accepte d'apprendre proprement peut très bien débuter. Le kite demande surtout de la coordination, de l'écoute et de la progressivité.
 
 ### "Je ne suis pas assez sportif"
 
-Il n'est pas nécessaire d'avoir un gros niveau athlétique. Il faut surtout être à l'aise dans l'eau, mobile et capable de suivre plusieurs séances. En cas de doute particulier, il est toujours raisonnable de valider avec un professionnel de santé, mais dans la grande majorité des cas, le frein principal est mental, pas physique.
+Il n'est pas nécessaire d'être un athlète. Une condition physique correcte, un bon niveau d'aisance dans l'eau et la capacité à nager sont généralement suffisants pour suivre un stage débutant.
 
-### "J'ai peur que ce soit trop technique ou trop risqué"
+### "J'ai peur de me faire mal"
 
-Le kitesurf doit être appris en école précisément pour cette raison. Une structure sérieuse réduit fortement l'incertitude en posant un cadre : matériel contrôlé, progression claire, consignes de sécurité et accompagnement permanent. C'est là qu'une [école de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant) expérimentée devient déterminante.
+Cette crainte diminue fortement lorsque l'encadrement est sérieux, que le groupe reste réduit et que la sécurité est intégrée dès le premier jour.
 
-## Pourquoi l'Almanarre rassure particulièrement les adultes débutants
+### "Je vais être plus lent que les autres"
 
-Le [spot de l'Almanarre](/spot-kitesurf-almanarre-hyeres-var) est un vrai point fort pour un adulte qui débute. Le site met en avant une baie protégée, des eaux plus plates et sécurisées, une zone débutants et des vents réguliers avec le Mistral et l'Est. Cette configuration réduit le côté impressionnant de l'apprentissage et rend le cadre plus lisible.
+La progression n'est pas une course. Un bon cours de kitesurf adulte à Hyères s'adapte à votre niveau, votre confort et votre rythme d'assimilation.
 
-Les conditions à l'Almanarre sont aussi intéressantes pour les personnes qui veulent apprendre sans agitation inutile : accès pratique, parking gratuit, commodités sur place, et environnement reconnu pour l'enseignement du kitesurf et du wingfoil.
+## Pourquoi l'Almanarre est un spot rassurant pour débuter adulte
 
-### Un spot qui aide à se concentrer sur l'essentiel
+Si vous cherchez où commencer, le vrai sujet n'est pas seulement l'âge : c'est surtout le choix du spot. À Hyères, l'[Almanarre](/spot-kitesurf-almanarre-hyeres-var) est reconnu pour ses conditions favorables à l'apprentissage, avec une baie protégée, des zones adaptées aux débutants et des vents réguliers.
 
-Quand on apprend adulte, le confort mental compte beaucoup. Un spot plus lisible, avec une zone adaptée aux débutants, aide à se concentrer sur le pilotage, les sensations et la progression, plutôt que sur la gestion d'un environnement stressant.
+### Des conditions lisibles
 
-## L'encadrement idéal quand on débute à 40, 50 ou 60 ans
+- Vent fréquent entre 15 et 25 nœuds
+- Mistral et thermique d'est bien connus localement
+- Saison favorable de mars à novembre, avec une période idéale d'avril à septembre
+- Eau plus agréable en été, autour de 18 à 24 °C selon la saison
 
-Pour un public adulte débutant, la qualité de l'encadrement change tout. Kitesurf Passion met en avant plusieurs éléments particulièrement rassurants : plus de 25 ans d'expérience, plus de 2 500 élèves formés, un moniteur diplômé d'État, une école FFVL / EFK, des petits groupes de 3 à 4 élèves et un [bateau d'assistance](/blog/pourquoi-bateau-assistance-essentiel) systématique.
+### Une logistique pratique
 
-L'expérience de Kitesurf Passion est ici un vrai argument. Quand on commence adulte, on a souvent besoin de comprendre, de se sentir suivi, de poser des questions et de progresser sans se sentir "largué". Une pédagogie éprouvée apporte précisément ce cadre.
+- Parking gratuit à proximité
+- Accès simple depuis Hyères
+- Douches et services autour du spot
+- Cadre utile pour limiter le stress d'un premier stage
 
-### Petits groupes et progression plus confortable
+> **Bon réflexe avant de réserver** : Si vous débutez adulte, choisissez d'abord le bon environnement avant de penser performance. [Découvrir le spot de l'Almanarre](/spot-kitesurf-almanarre-hyeres-var).
 
-Les petits groupes permettent une meilleure attention individuelle, tout en évitant la sensation de pression qu'un adulte débutant peut parfois ressentir. Le bateau d'assistance ajoute aussi un niveau de sécurité psychologique très important.
+## Les encadrés réassurance qui comptent vraiment quand on débute adulte
 
-## Quelle formule choisir quand on débute adulte à Hyères ?
+### Une école fondée en 1999
 
-Pour la majorité des adultes débutants, le [stage 5 jours de kitesurf](/stage-kitesurf-100-glisse-hyeres) est la formule la plus cohérente. Il permet d'enchaîner les étapes de progression sans casser le rythme : sécurité et pilotage, bodydrag, waterstart, navigation, puis autonomie progressive.
+L'ancienneté est un vrai facteur de confiance quand on débute. Kitesurf Passion s'appuie sur plus de 25 ans d'expérience locale.
 
-Ce format est aussi psychologiquement plus confortable, car il laisse le temps d'entrer dans l'activité. On ne se juge pas sur une seule séance. On s'installe progressivement dans la pratique.
+### Plus de 2 500 élèves formés
 
-### Stage collectif, semi-privé ou cours particulier ?
+Ce volume d'élèves accompagnés montre une méthodologie éprouvée, pas une approche improvisée.
 
-Le stage collectif 5 jours reste la formule la plus équilibrée. Le semi-privé conviendra bien à deux personnes qui veulent davantage d'attention. Le [cours particulier](/cours-particulier-kitesurf-hyeres) peut être très pertinent pour les adultes qui veulent une approche ultra-personnalisée ou qui préfèrent progresser en tête-à-tête.
+### Petits groupes de 3 à 4 élèves
 
-## Comment se déroule la progression quand on commence adulte
+Un format idéal pour les adultes débutants qui veulent plus d'attention, plus de pédagogie et moins de pression.
 
-### Les premiers jours : sécurité, pilotage et confiance
+### Bateau d'assistance et sécurité
 
-Les débuts portent d'abord sur la sécurité, la compréhension du vent et le pilotage de l'aile. Cette phase est essentielle, car elle construit la confiance. Elle est particulièrement utile pour les adultes qui aiment comprendre avant d'agir.
+Pour un adulte qui appréhende son premier stage, savoir qu'un dispositif de sécurité existe réellement change tout.
 
-### Ensuite : glisse, contrôle et autonomie progressive
+Ces éléments de réassurance sont directement cohérents avec la promesse d'une école Kitesurf Passion orientée sécurité, pédagogie et accompagnement personnalisé.
 
-Le bodydrag, le waterstart, les premiers bords et la navigation viennent ensuite. Là encore, l'objectif n'est pas de brûler les étapes, mais de poser des bases solides. C'est souvent ce qui rend l'expérience plus satisfaisante à l'âge adulte.
+## Checklist adulte débutant : êtes-vous prêt à commencer ?
 
-## Quel budget prévoir pour débuter ?
+Avant de réserver votre [stage 5 jours de kitesurf](/stage-kitesurf-100-glisse-hyeres), passez cette checklist simple. Si vous cochez l'essentiel, vous avez déjà une base saine pour débuter.
 
-Kitesurf Passion affiche un stage 100 % glisse 5 jours à **399 €**, avec un tarif indiqué à **499 €** en juillet/août. Le stage semi-privé 5 jours est affiché à **599 €**, avec 699 € en juillet/août. Le cours particulier de 2 heures est affiché à **230 €**, avec 380 € en juillet/août.
+### Checklist physique et mentale
 
-Pour un adulte débutant, le stage 5 jours reste généralement l'option la plus rationnelle, car il permet d'ancrer les bases. Une fois le niveau suffisant atteint, certains pratiquants envisagent ensuite la [location de matériel de kitesurf à Hyères](/location-materiel-kitesurf-wingfoil-hyeres). Consultez tous les [tarifs détaillés](/tarifs-cours-kitesurf-wingfoil-hyeres).
+- ✅ Je suis à l'aise dans l'eau
+- ✅ Je peux nager sans difficulté
+- ✅ J'accepte d'apprendre progressivement
+- ✅ Je ne cherche pas à brûler les étapes
+- ✅ Je suis prêt à répéter les mêmes gestes plusieurs fois
 
-## Le bon réflexe si vous hésitez encore
+### Checklist pratique
 
-Si vous vous demandez encore si vous êtes "trop vieux", posez-vous une question plus utile : ai-je envie d'apprendre dans un cadre sérieux, progressif et rassurant ? Si la réponse est oui, l'âge devient secondaire. Ce qui compte, c'est d'avoir un spot adapté, un encadrement solide et une formule qui vous laisse le temps d'entrer dans la pratique.
+- ✅ J'ai bloqué plusieurs jours de suite pour progresser
+- ✅ Je choisis une formule encadrée adaptée à mon niveau
+- ✅ Je prévois une tenue simple et confortable pour les sessions
+- ✅ Je vérifie les infos sur le spot et l'organisation
+- ✅ Je préfère une école avec sécurité, petits groupes et expérience locale
 
-## Envie de vous lancer sans pression ?
+> **Le bon état d'esprit pour réussir** : Le meilleur profil n'est pas le plus explosif physiquement, mais celui qui accepte d'écouter, de se détendre et de progresser étape par étape. C'est souvent là que les adultes réussissent particulièrement bien.
 
-Si vous voulez découvrir le kite dans un cadre sécurisant, le plus simple est de consulter les formules proposées par l'école, puis de choisir celle la plus adaptée à votre niveau et à votre rythme.
+## Quelle formule choisir quand on débute le kitesurf adulte à Hyères ?
 
-👉 [Découvrir les stages de kitesurf à Hyères](/stage-kitesurf-100-glisse-hyeres)
+Pour la majorité des adultes débutants, le meilleur choix reste un format progressif sur plusieurs jours. C'est ce qui permet de créer des repères, de revenir sur les gestes essentiels et de laisser le temps à la confiance de s'installer.
 
-👉 [Voir le spot kitesurf Almanarre Hyères](/spot-kitesurf-almanarre-hyeres-var)
+### Stage 5 jours — Recommandé
+
+La formule la plus cohérente pour apprendre à votre rythme et installer des bases solides. **399 €** (499 € en juillet / août). Progression structurée, 3 à 4 élèves par moniteur, très adapté aux adultes débutants.
+
+### Semi-privé 5 jours — Suivi renforcé
+
+Idéal si vous voulez plus d'attention, ou venir à deux avec un rythme proche. **599 €** (699 € en juillet / août). 2 élèves seulement, très bon compromis confort / progression, parfait pour les profils plus prudents.
+
+### Cours particulier 2 h — Ponctuel
+
+Utile si vous manquez de temps ou pour travailler un point précis. **230 €** (380 € en juillet / août). 100 % personnalisé, bon pour débloquer une étape, moins complet qu'un stage long pour débuter de zéro.
+
+> **Le bon choix si vous avez un vrai projet de progression** : Si votre objectif est de commencer dans de bonnes conditions, la solution la plus rassurante reste généralement un [stage de kitesurf à Hyères](/stage-kitesurf-100-glisse-hyeres) sur plusieurs jours. [Comparer les formules de stage](/tarifs-cours-kitesurf-wingfoil-hyeres).
+
+## Comment se passe la progression quand on débute adulte ?
+
+### Jours 1 à 2 : comprendre, piloter, sécuriser
+
+Les premières journées servent à construire les bases : sécurité, découverte du matériel, pilotage de l'aile, premières sensations dans l'eau et compréhension de la fenêtre de vol.
+
+### Jours 3 à 5 : premiers vrais repères
+
+On commence ensuite à connecter les gestes : traction, départ, équilibre, premiers bords et premières sensations de glisse. À ce stade, la confiance devient presque aussi importante que la technique.
+
+Pour un adulte débutant, cette progressivité fait toute la différence. Elle évite de transformer le stage en moment de stress et permet au contraire de construire des automatismes utiles pour la suite.
+
+## Conseil expert : le vrai levier, ce n'est pas l'âge
+
+Le facteur qui fait réussir un adulte débutant n'est pas d'être "encore jeune", mais de choisir une pédagogie claire, un bon spot et une durée suffisante pour s'approprier les bases.
+
+Si vous hésitez entre plusieurs formats, ne pensez pas d'abord en termes de performance. Demandez-vous plutôt : dans quelle formule vais-je être le plus serein pour apprendre ? C'est ce confort mental qui conditionne souvent la progression réelle.
+
+## Faut-il acheter du matériel tout de suite ?
+
+Pas forcément. Quand on débute, il est souvent plus intelligent d'apprendre d'abord avec une formule encadrée, puis d'évaluer ses besoins ensuite. Si vous progressez et souhaitez naviguer davantage, vous pourrez ensuite envisager la [location de matériel de kitesurf à Hyères](/location-materiel-kitesurf-wingfoil-hyeres) selon votre niveau réel d'autonomie.
+
+Cette approche évite les achats trop rapides et vous permet de choisir du matériel plus adapté une fois les premières bases validées.
+
+## Prêt à voir si le kitesurf est vraiment fait pour vous ?
+
+Si vous avez 40, 50 ou 60 ans et que vous voulez commencer dans de bonnes conditions, le plus simple est de partir d'un cadre rassurant : un spot adapté, une école expérimentée et une formule pensée pour progresser sans pression.
+
+👉 [Réserver un stage de kitesurf à Hyères](/stage-kitesurf-100-glisse-hyeres)
+
+👉 [Découvrir le spot de l'Almanarre](/spot-kitesurf-almanarre-hyeres-var)
 
 👉 [À propos de l'école Kitesurf Passion](/a-propos-ecole-kitesurf-hyeres)
 
 👉 [Location matériel kitesurf Hyères](/location-materiel-kitesurf-wingfoil-hyeres)
 
-## Conclusion
-
-Oui, il est possible d'apprendre le kitesurf à 40, 50 ou 60 ans. Et dans beaucoup de cas, on peut même très bien l'apprendre, à condition de choisir le bon cadre. Entre un spot reconnu comme l'Almanarre, une école locale expérimentée, une progression sur 5 jours et un accompagnement sérieux, Hyères offre des conditions particulièrement favorables pour débuter adulte.
-
-L'enjeu n'est donc pas de savoir si vous avez "le bon âge", mais si vous avez le bon environnement pour commencer. Et sur ce point, Kitesurf Passion à Hyères réunit plusieurs éléments très rassurants.
+👉 [Accueil Kitesurf Passion](/)
 `,
     tags: ["Kitesurf", "Adulte", "Débutant", "Hyères", "Almanarre", "40 ans", "50 ans", "60 ans", "Stage", "Var"],
   },
@@ -4830,12 +4872,12 @@ const articleFAQData: Record<string, Array<{ question: string; answer: string }>
     { question: "Combien de temps pour réussir à voler ?", answer: "La plupart des élèves décollent dès la première session de 30 minutes. Certains y arrivent en 15 minutes !" },
   ],
   "apprendre-kitesurf-40-50-60-ans": [
-    { question: "Peut-on apprendre le kitesurf à 40 ans ?", answer: "Oui. Le kitesurf ne repose pas uniquement sur la force physique, mais sur la technique, le pilotage et la progression. Avec un bon encadrement, il est tout à fait possible de débuter à 40 ans." },
-    { question: "Peut-on commencer le kitesurf à 50 ans ou 60 ans ?", answer: "Oui, à condition d'être à l'aise dans l'eau, de choisir une école sérieuse et un spot adapté. L'Almanarre est justement présenté comme un spot favorable à l'apprentissage, avec baie protégée, eaux plus plates et zone débutants." },
-    { question: "Faut-il être très sportif pour débuter le kitesurf adulte ?", answer: "Non, mais il faut être en condition correcte, mobile et à l'aise dans l'eau. La progression repose surtout sur la pédagogie, la répétition et le bon choix de formule." },
-    { question: "Quelle formule choisir quand on débute adulte à Hyères ?", answer: "Le stage 5 jours est la formule la plus logique pour un adulte débutant, car il permet une progression continue, de la sécurité jusqu'aux premiers bords et à une autonomie progressive." },
-    { question: "Pourquoi Hyères est-il un bon endroit pour apprendre adulte ?", answer: "Hyères combine un spot réputé, des conditions régulières, un accès pratique et une école locale expérimentée. L'Almanarre est mis en avant pour ses eaux plus sécurisées, ses vents réguliers et sa zone adaptée aux débutants." },
-    { question: "Pourquoi choisir Kitesurf Passion pour apprendre adulte ?", answer: "L'école met en avant plus de 25 ans d'expérience, plus de 2 500 élèves formés, un moniteur diplômé d'État, un bateau d'assistance systématique et de petits groupes, ce qui rassure particulièrement un public adulte débutant." },
+    { question: "Peut-on apprendre le kitesurf à 40 ans ?", answer: "Oui. À 40 ans, beaucoup de débutants progressent très bien en kitesurf, car la discipline repose surtout sur la technique, l'écoute des consignes et la gestion du vent, plus que sur la force brute." },
+    { question: "Peut-on débuter le kitesurf à 50 ou 60 ans ?", answer: "Oui, à condition d'être à l'aise dans l'eau, capable de nager et de choisir un encadrement adapté. Avec un spot comme l'Almanarre et un moniteur expérimenté, l'apprentissage reste tout à fait accessible." },
+    { question: "Faut-il être très sportif pour commencer le kitesurf adulte ?", answer: "Non. Une condition physique normale, de la mobilité et une bonne aisance aquatique suffisent généralement pour débuter dans de bonnes conditions." },
+    { question: "Quelle formule choisir pour apprendre le kitesurf adulte à Hyères ?", answer: "Le stage 5 jours reste la formule la plus recommandée pour progresser sereinement. Le semi-privé convient aux personnes qui veulent un suivi plus rapproché, et le cours particulier à celles qui manquent de temps ou veulent débloquer un point précis." },
+    { question: "Pourquoi apprendre à Hyères plutôt qu'ailleurs ?", answer: "Hyères et l'Almanarre offrent un spot reconnu, une zone adaptée à l'apprentissage, des vents réguliers et une logistique pratique. C'est un cadre rassurant pour les adultes débutants." },
+    { question: "Pourquoi choisir Kitesurf Passion ?", answer: "Kitesurf Passion s'appuie sur plus de 25 ans d'expérience, plus de 2 500 élèves formés, un moniteur diplômé d'État, une école labellisée FFVL/EFK, des petits groupes et un bateau d'assistance pour maximiser la sécurité." },
   ],
 };
 
@@ -4877,12 +4919,9 @@ const BlogArticle = () => {
         {
           "@type": "Article",
           "@id": "https://www.kitesurfpassion.fr/blog/apprendre-kitesurf-40-50-60-ans#article",
-          mainEntityOfPage: {
-            "@type": "WebPage",
-            "@id": "https://www.kitesurfpassion.fr/blog/apprendre-kitesurf-40-50-60-ans",
-          },
+          mainEntityOfPage: "https://www.kitesurfpassion.fr/blog/apprendre-kitesurf-40-50-60-ans",
           headline: "Apprendre le kitesurf à 40, 50 ou 60 ans à Hyères",
-          description: article.excerpt,
+          description: "Oui, il est possible d'apprendre le kitesurf à 40, 50 ou 60 ans à Hyères. Découvrez pourquoi l'Almanarre est un spot idéal, quelle formule choisir et comment progresser en confiance.",
           inLanguage: "fr-FR",
           url: "https://www.kitesurfpassion.fr/blog/apprendre-kitesurf-40-50-60-ans",
           author: {
@@ -4901,14 +4940,17 @@ const BlogArticle = () => {
             "apprendre le kitesurf à 40 ans",
             "apprendre le kitesurf à 50 ans",
             "apprendre le kitesurf à 60 ans",
+            "débuter le kitesurf adulte",
             "stage kitesurf adulte Hyères",
-            "kitesurf débutant adulte Hyères",
-            "école kitesurf Hyères adulte",
+            "kitesurf senior débutant",
+            "spot Almanarre débutant",
+            "cours kitesurf adulte Hyères",
+            "stage 5 jours kitesurf Hyères",
           ],
           about: [
-            { "@type": "Thing", name: "Kitesurf adulte débutant" },
-            { "@type": "Place", name: "Hyères" },
-            { "@type": "Place", name: "Almanarre" },
+            "Kitesurf adulte débutant",
+            "Hyères",
+            "Almanarre",
           ],
         },
         ...(faqStructuredData ? [{
