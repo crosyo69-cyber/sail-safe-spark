@@ -97,6 +97,7 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-saut-planche-duotone.jpg": blogKitesurfSautPlanche,
   "blog-kitesurf-aile-duotone-evo-lagon.jpg": blogKitesurfAileEvoLagon,
   "blog-kitesurf-ailes-neo-duotone-mer.jpg": blogKitesurfAilesNeoMer,
+  "blog-kitesurf-silhouette-saut-sunset.jpg": blogKitesurfSilhouetteSunset,
   "blog-kitesurf-saut-vagues.jpg": blogKitesurfSautVagues,
   "blog-wingfoil-duo-lagon-turquoise.jpg": blogWingfoilDuoLagon,
   "blog-wingfoil-vol-eau-cristalline.jpg": blogWingfoilVolEau,
