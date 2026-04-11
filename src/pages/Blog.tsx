@@ -152,7 +152,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2026-02-10",
     readTime: "6 min",
-    image: "blog-wingfoil.jpg",
+    image: "blog-wingfoil-duo-lagon-turquoise.jpg",
     alt: "Wingfoil Hyères tendance 2026 - Stage wing foil école KiteSurf Passion Almanarre",
   },
   {
@@ -262,7 +262,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2025-01-27",
     readTime: "3 min",
-    image: "blog-wingfoil.jpg",
+    image: "blog-wingfoil-vol-eau-cristalline.jpg",
     alt: "Stage wingfoil Hyères Almanarre - Cours débutant école KiteSurf Passion Var",
     featured: true,
   },
