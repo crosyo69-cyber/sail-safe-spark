@@ -530,7 +530,7 @@ export const blogArticles = [
   {
     slug: "apprendre-kitesurf-40-50-60-ans",
     title: "Apprendre le kitesurf à 40, 50 ou 60 ans à Hyères",
-    excerpt: "Oui, il est possible d'apprendre le kitesurf à 40, 50 ou 60 ans à Hyères. Découvrez les conditions, le bon encadrement et pourquoi l'Almanarre est un spot idéal pour débuter adulte.",
+    excerpt: "Oui, il est possible d'apprendre le kitesurf à 40, 50 ou 60 ans à Hyères. Découvrez pourquoi l'Almanarre est un spot idéal, quelle formule choisir et comment progresser en confiance.",
     category: "Kitesurf",
     date: "2026-04-10",
     readTime: "10 min",
