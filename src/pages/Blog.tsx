@@ -44,6 +44,8 @@ import blogKitesurfGlisseFille from "@/assets/blog-kitesurf-glisse-fille.jpg?web
 import blogKitesurfPlageRose from "@/assets/blog-kitesurf-plage-rose.jpg?webp";
 import blogKitesurfFreestylePink from "@/assets/blog-kitesurf-freestyle-pink.jpg?webp";
 import blogKitesurfSautVagues from "@/assets/blog-kitesurf-saut-vagues.jpg?webp";
+import blogWingfoilDuoLagon from "@/assets/blog-wingfoil-duo-lagon-turquoise.jpg?webp";
+import blogWingfoilVolEau from "@/assets/blog-wingfoil-vol-eau-cristalline.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -78,6 +80,8 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-plage-rose.jpg": blogKitesurfPlageRose,
   "blog-kitesurf-freestyle-pink.jpg": blogKitesurfFreestylePink,
   "blog-kitesurf-saut-vagues.jpg": blogKitesurfSautVagues,
+  "blog-wingfoil-duo-lagon-turquoise.jpg": blogWingfoilDuoLagon,
+  "blog-wingfoil-vol-eau-cristalline.jpg": blogWingfoilVolEau,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -148,7 +152,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2026-02-10",
     readTime: "6 min",
-    image: "blog-wingfoil.jpg",
+    image: "blog-wingfoil-duo-lagon-turquoise.jpg",
     alt: "Wingfoil Hyères tendance 2026 - Stage wing foil école KiteSurf Passion Almanarre",
   },
   {
@@ -258,7 +262,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2025-01-27",
     readTime: "3 min",
-    image: "blog-wingfoil.jpg",
+    image: "blog-wingfoil-vol-eau-cristalline.jpg",
     alt: "Stage wingfoil Hyères Almanarre - Cours débutant école KiteSurf Passion Var",
     featured: true,
   },
