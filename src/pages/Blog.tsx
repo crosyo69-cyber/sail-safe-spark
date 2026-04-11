@@ -17,6 +17,9 @@ import blogKitesurfDebut from "@/assets/blog-kitesurf-debut.jpg?webp";
 import blogWingfoil from "@/assets/blog-wingfoil.jpg?webp";
 import blogKitesurfAction from "@/assets/blog-kitesurf-action.jpg?webp";
 import blogBateauGroupe from "@/assets/blog-bateau-groupe.jpg?webp";
+import blogBateauSecuriteHyeres from "@/assets/blog-bateau-securite-kitesurf-hyeres.jpg?webp";
+import blogFoilTracteBateauVol from "@/assets/blog-foil-tracte-bateau-hyeres-vol.jpg?webp";
+import blogActivitesFamilleHyeres from "@/assets/blog-activites-nautiques-famille-hyeres.jpg?webp";
 import blogPumpfoil from "@/assets/blog-pumpfoil.jpg?webp";
 import blogKiteDuotone from "@/assets/blog-kite-duotone.jpg?webp";
 import blogPumpfoilDock from "@/assets/blog-pumpfoil-dock.jpg?webp";
@@ -66,6 +69,9 @@ const imageMap: Record<string, string> = {
   "blog-wingfoil.jpg": blogWingfoil,
   "blog-kitesurf-action.jpg": blogKitesurfAction,
   "blog-bateau-groupe.jpg": blogBateauGroupe,
+  "blog-bateau-securite-kitesurf-hyeres.jpg": blogBateauSecuriteHyeres,
+  "blog-foil-tracte-bateau-hyeres-vol.jpg": blogFoilTracteBateauVol,
+  "blog-activites-nautiques-famille-hyeres.jpg": blogActivitesFamilleHyeres,
   "blog-pumpfoil.jpg": blogPumpfoil,
   "blog-kite-duotone.jpg": blogKiteDuotone,
   "blog-pumpfoil-dock.jpg": blogPumpfoilDock,
@@ -137,7 +143,7 @@ export const blogArticles = [
     category: "Sécurité",
     date: "2025-01-08",
     readTime: "8 min",
-    image: "blog-bateau-groupe.jpg",
+    image: "blog-bateau-securite-kitesurf-hyeres.jpg",
     alt: "Sécurité kitesurf wingfoil Hyères - Règles navigation école KiteSurf Passion",
     featured: true,
   },
@@ -198,7 +204,7 @@ export const blogArticles = [
     category: "Sécurité",
     date: "2026-01-28",
     readTime: "4 min",
-    image: "blog-bateau-groupe.jpg",
+    image: "blog-bateau-securite-kitesurf-hyeres.jpg",
     alt: "Bateau assistance kitesurf Hyères - Sécurité école KiteSurf Passion Var",
   },
   {
@@ -310,7 +316,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2025-01-25",
     readTime: "3 min",
-    image: "blog-bateau-groupe.jpg",
+    image: "blog-foil-tracte-bateau-hyeres-vol.jpg",
     alt: "Foil tracté bateau Hyères - Initiation vol école KiteSurf Passion Var",
   },
   {
@@ -434,7 +440,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-03-10",
     readTime: "8 min",
-    image: "blog-bateau-groupe.jpg",
+    image: "blog-activites-nautiques-famille-hyeres.jpg",
     alt: "Activités nautiques famille Hyères Giens - Sports glisse enfants école KiteSurf Passion",
     featured: true,
   },
