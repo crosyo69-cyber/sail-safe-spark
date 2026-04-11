@@ -118,7 +118,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-02-15",
     readTime: "8 min",
-    image: "blog-kitesurf-debut.jpg",
+    image: "blog-kitesurf-sunset.jpg",
     alt: "Débuter kitesurf Hyères Almanarre - Guide débutant école KiteSurf Passion Var",
   },
   {
