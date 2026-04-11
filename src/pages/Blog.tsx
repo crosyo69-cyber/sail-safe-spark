@@ -23,6 +23,12 @@ import blogPumpfoilDock from "@/assets/blog-pumpfoil-dock.jpg?webp";
 import blogWakeboardHyeres from "@/assets/wakeboard-hyeres-glisse-nautique.jpg?webp";
 import blogLocationMateriel from "@/assets/blog-location-materiel.jpg?webp";
 import blogFoilTracteHyeres from "@/assets/blog-foil-tracte-hyeres.jpg?webp";
+import blogKitesurfActionEau from "@/assets/blog-kitesurf-action-eau.jpg?webp";
+import blogKitesurfCoursPlage from "@/assets/blog-kitesurf-cours-plage.jpg?webp";
+import blogKitesurfCoursGroupe from "@/assets/blog-kitesurf-cours-groupe.jpg?webp";
+import blogKitesurfMarchePlage from "@/assets/blog-kitesurf-marche-plage.jpg?webp";
+import blogKitesurfPreparation from "@/assets/blog-kitesurf-preparation.jpg?webp";
+import blogKitesurfCoursIndividuel from "@/assets/blog-kitesurf-cours-individuel.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -36,6 +42,12 @@ const imageMap: Record<string, string> = {
   "blog-wakeboard-hyeres.jpg": blogWakeboardHyeres,
   "blog-location-materiel.jpg": blogLocationMateriel,
   "blog-foil-tracte-hyeres.jpg": blogFoilTracteHyeres,
+  "blog-kitesurf-action-eau.jpg": blogKitesurfActionEau,
+  "blog-kitesurf-cours-plage.jpg": blogKitesurfCoursPlage,
+  "blog-kitesurf-cours-groupe.jpg": blogKitesurfCoursGroupe,
+  "blog-kitesurf-marche-plage.jpg": blogKitesurfMarchePlage,
+  "blog-kitesurf-preparation.jpg": blogKitesurfPreparation,
+  "blog-kitesurf-cours-individuel.jpg": blogKitesurfCoursIndividuel,
 };
 
 const getArticleImage = (imageName: string): string => {
