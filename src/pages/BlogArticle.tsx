@@ -109,6 +109,8 @@ const imageMap: Record<string, string> = {
   "blog-wingfoil-montagnes-maui.jpg": blogWingfoilMontagnesMaui,
   "blog-pumpfoil-vol-sunset-duotone.jpg": blogPumpfoilVolSunset,
   "blog-pumpfoil-dock-start-depart.jpg": blogPumpfoilDockStartDepart,
+  "blog-pumpfoil-foil-planche-duotone-strider.jpg": blogPumpfoilFoilPlanche,
+  "blog-pumpfoil-rider-plage-duotone.jpg": blogPumpfoilRiderPlage,
   "blog-pumpfoil-vol-mer-casque.jpg": blogPumpfoilVolMerCasque,
 };
 

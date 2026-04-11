@@ -105,6 +105,8 @@ const imageMap: Record<string, string> = {
   "blog-wingfoil-montagnes-maui.jpg": blogWingfoilMontagnesMaui,
   "blog-pumpfoil-vol-sunset-duotone.jpg": blogPumpfoilVolSunset,
   "blog-pumpfoil-dock-start-depart.jpg": blogPumpfoilDockStartDepart,
+  "blog-pumpfoil-foil-planche-duotone-strider.jpg": blogPumpfoilFoilPlanche,
+  "blog-pumpfoil-rider-plage-duotone.jpg": blogPumpfoilRiderPlage,
   "blog-pumpfoil-vol-mer-casque.jpg": blogPumpfoilVolMerCasque,
 };
 
@@ -156,7 +158,7 @@ export const blogArticles = [
     category: "Pump Foil",
     date: "2025-01-02",
     readTime: "6 min",
-    image: "blog-pumpfoil-dock.jpg",
+    image: "blog-pumpfoil-foil-planche-duotone-strider.jpg",
     alt: "Progression pumpfoil Hyères - Programme entraînement dock start école KiteSurf Passion",
   },
   {
@@ -266,7 +268,7 @@ export const blogArticles = [
     category: "Pump Foil",
     date: "2025-11-28",
     readTime: "4 min",
-    image: "blog-pumpfoil-dock.jpg",
+    image: "blog-pumpfoil-rider-plage-duotone.jpg",
   },
   {
     slug: "ecole-kitesurf-hyeres-almanarre-cours",
