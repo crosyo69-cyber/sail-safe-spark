@@ -37,6 +37,8 @@ import blogKitesurfWaterstart from "@/assets/blog-kitesurf-waterstart.jpg?webp";
 import blogKitesurfGlisseTurquoise from "@/assets/blog-kitesurf-glisse-turquoise.jpg?webp";
 import blogKitesurfEauClaire from "@/assets/blog-kitesurf-eau-claire.jpg?webp";
 import blogKitesurfSunset from "@/assets/blog-kitesurf-sunset.jpg?webp";
+import blogKitesurfSautAction from "@/assets/blog-kitesurf-saut-action.jpg?webp";
+import blogKitesurfAilesColorees from "@/assets/blog-kitesurf-ailes-colorees.jpg?webp";
 
 const imageMap: Record<string, string> = {
   "blog-kitesurf-debut.jpg": blogKitesurfDebut,
