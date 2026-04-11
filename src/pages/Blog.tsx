@@ -44,6 +44,8 @@ import blogKitesurfGlisseFille from "@/assets/blog-kitesurf-glisse-fille.jpg?web
 import blogKitesurfPlageRose from "@/assets/blog-kitesurf-plage-rose.jpg?webp";
 import blogKitesurfFreestylePink from "@/assets/blog-kitesurf-freestyle-pink.jpg?webp";
 import blogKitesurfSautVagues from "@/assets/blog-kitesurf-saut-vagues.jpg?webp";
+import blogKitesurfFreestyleSunset from "@/assets/blog-kitesurf-freestyle-sunset-duotone.jpg?webp";
+import blogKitesurfSautPlanche from "@/assets/blog-kitesurf-saut-planche-duotone.jpg?webp";
 import blogWingfoilDuoLagon from "@/assets/blog-wingfoil-duo-lagon-turquoise.jpg?webp";
 import blogWingfoilVolEau from "@/assets/blog-wingfoil-vol-eau-cristalline.jpg?webp";
 import blogWingfoilVolFoilJaune from "@/assets/blog-wingfoil-vol-foil-jaune.jpg?webp";
