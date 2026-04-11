@@ -34,6 +34,8 @@ import blogKitesurfWaterstart from "@/assets/blog-kitesurf-waterstart.jpg?webp";
 import blogKitesurfGlisseTurquoise from "@/assets/blog-kitesurf-glisse-turquoise.jpg?webp";
 import blogKitesurfEauClaire from "@/assets/blog-kitesurf-eau-claire.jpg?webp";
 import blogKitesurfSunset from "@/assets/blog-kitesurf-sunset.jpg?webp";
+import blogKitesurfSautAction from "@/assets/blog-kitesurf-saut-action.jpg?webp";
+import blogKitesurfAilesColorees from "@/assets/blog-kitesurf-ailes-colorees.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -58,6 +60,8 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-glisse-turquoise.jpg": blogKitesurfGlisseTurquoise,
   "blog-kitesurf-eau-claire.jpg": blogKitesurfEauClaire,
   "blog-kitesurf-sunset.jpg": blogKitesurfSunset,
+  "blog-kitesurf-saut-action.jpg": blogKitesurfSautAction,
+  "blog-kitesurf-ailes-colorees.jpg": blogKitesurfAilesColorees,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -188,7 +192,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2025-12-25",
     readTime: "7 min",
-    image: "blog-kitesurf-action.jpg",
+    image: "blog-kitesurf-ailes-colorees.jpg",
     alt: "Wingfoil vs kitesurf comparatif - Différences glisse école Hyères Var",
   },
   {
@@ -405,7 +409,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-03-05",
     readTime: "7 min",
-    image: "blog-kitesurf-debut.jpg",
+    image: "blog-kitesurf-saut-action.jpg",
     alt: "Préparation physique kitesurf exercices - Entraînement école KiteSurf Passion Hyères",
   },
   {
