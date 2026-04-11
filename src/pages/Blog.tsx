@@ -32,6 +32,8 @@ import blogKitesurfCoursIndividuel from "@/assets/blog-kitesurf-cours-individuel
 import blogWakeboardEvgEvjf from "@/assets/blog-wakeboard-evg-evjf.jpg?webp";
 import blogKitesurfWaterstart from "@/assets/blog-kitesurf-waterstart.jpg?webp";
 import blogKitesurfGlisseTurquoise from "@/assets/blog-kitesurf-glisse-turquoise.jpg?webp";
+import blogKitesurfEauClaire from "@/assets/blog-kitesurf-eau-claire.jpg?webp";
+import blogKitesurfSunset from "@/assets/blog-kitesurf-sunset.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -54,6 +56,8 @@ const imageMap: Record<string, string> = {
   "blog-wakeboard-evg-evjf.jpg": blogWakeboardEvgEvjf,
   "blog-kitesurf-waterstart.jpg": blogKitesurfWaterstart,
   "blog-kitesurf-glisse-turquoise.jpg": blogKitesurfGlisseTurquoise,
+  "blog-kitesurf-eau-claire.jpg": blogKitesurfEauClaire,
+  "blog-kitesurf-sunset.jpg": blogKitesurfSunset,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -72,7 +76,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2025-01-12",
     readTime: "7 min",
-    image: "blog-kitesurf-debut.jpg",
+    image: "blog-kitesurf-eau-claire.jpg",
     alt: "Erreurs débutant kitesurf Hyères - Conseils progression école KiteSurf Passion",
     featured: true,
   },
@@ -114,7 +118,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2026-02-15",
     readTime: "8 min",
-    image: "blog-kitesurf-debut.jpg",
+    image: "blog-kitesurf-sunset.jpg",
     alt: "Débuter kitesurf Hyères Almanarre - Guide débutant école KiteSurf Passion Var",
   },
   {
