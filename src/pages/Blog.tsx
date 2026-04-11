@@ -76,7 +76,7 @@ export const blogArticles = [
     category: "Kitesurf",
     date: "2025-01-12",
     readTime: "7 min",
-    image: "blog-kitesurf-debut.jpg",
+    image: "blog-kitesurf-eau-claire.jpg",
     alt: "Erreurs débutant kitesurf Hyères - Conseils progression école KiteSurf Passion",
     featured: true,
   },
