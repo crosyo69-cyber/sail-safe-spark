@@ -414,7 +414,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2026-02-22",
     readTime: "8 min",
-    image: "blog-wingfoil-vol-foil-jaune.jpg",
+    image: "blog-wingfoil-saut-vague-duotone-tahiti.jpg",
     alt: "Kitesurf vs wingfoil comparatif Hyères - Choisir discipline école KiteSurf Passion",
   },
   {
@@ -517,7 +517,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2025-03-18",
     readTime: "6 min",
-    image: "blog-wingfoil-montagnes-maui.jpg",
+    image: "blog-wingfoil-rider-vague-unit-duotone.jpg",
     alt: "Wingfoil vs kitesurf comparatif Hyères - Quelle discipline choisir école KiteSurf Passion",
     featured: true,
   },
