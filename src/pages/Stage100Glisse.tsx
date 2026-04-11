@@ -176,11 +176,11 @@ const Stage100Glisse = () => {
   return (
     <>
       <Helmet>
-        <title>Stage Kitesurf 100% Glisse – Hyères Almanarre | 5 Jours Autonomie</title>
-        <meta
-          name="description"
-          content="5 jours pour devenir autonome en kitesurf avec bateau d'assistance"
-        />
+         <title>Stage Kitesurf 100% Glisse – Hyères Almanarre | Kitesurf Passion</title>
+         <meta
+           name="description"
+           content="Stage kitesurf 100% Glisse à Hyères avec Kitesurf Passion. 5 jours pour devenir autonome sur l'Almanarre : bateau d'assistance, moniteur diplômé, petits groupes. Dès 399€."
+         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres" />
         <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/stage-kitesurf-100-glisse-hyeres" />

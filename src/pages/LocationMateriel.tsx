@@ -96,7 +96,7 @@ const LocationMateriel = () => {
   return (
     <>
       <Helmet>
-        <title>Location Kitesurf Hyères | Matériel Almanarre</title>
+        <title>Location Kitesurf Hyères | Kitesurf Passion – Matériel Almanarre</title>
         <meta
           name="description"
           content="Location de matériel kitesurf à Hyères : ailes (30€), planches (10€), foil (20€), combinaisons. Équipement récent à l'Almanarre et Giens."

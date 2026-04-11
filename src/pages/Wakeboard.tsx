@@ -184,7 +184,7 @@ const Wakeboard = () => {
   return (
     <>
       <Helmet>
-        <title>Wakeboard Hyères Almanarre | Session Glisse Bateau</title>
+        <title>Wakeboard Hyères Almanarre | Kitesurf Passion – Session Glisse</title>
         <meta 
           name="description" 
           content="Wakeboard Hyères Almanarre : glisse tractée fun près de Giens. 15 min de sensations avec bateau et moniteur diplômé. 40€ la session !" 

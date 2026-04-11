@@ -233,11 +233,11 @@ const APropos = () => {
   return (
     <>
       <Helmet>
-        <title>École Kitesurf Hyères depuis 1999 | À Propos</title>
-         <meta 
-          name="description" 
-          content="L'histoire de KiteSurf Passion, première école du Var depuis 1999" 
-        />
+         <title>Kitesurf Passion – École Kitesurf Hyères depuis 1999 | À Propos</title>
+          <meta 
+           name="description" 
+           content="Découvrez l'histoire de Kitesurf Passion, école de kitesurf et wingfoil à Hyères Almanarre depuis 1999. Moniteur diplômé BPJEPS, bateau d'assistance, plus de 2 500 élèves formés dans le Var." 
+         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/a-propos-ecole-kitesurf-hyeres" />
