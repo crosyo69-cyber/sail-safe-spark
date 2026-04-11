@@ -49,6 +49,7 @@ import blogKitesurfFreestylePink from "@/assets/blog-kitesurf-freestyle-pink.jpg
 import blogKitesurfSautVagues from "@/assets/blog-kitesurf-saut-vagues.jpg?webp";
 import blogKitesurfFreestyleSunset from "@/assets/blog-kitesurf-freestyle-sunset-duotone.jpg?webp";
 import blogKitesurfSautPlanche from "@/assets/blog-kitesurf-saut-planche-duotone.jpg?webp";
+import blogKitesurfSilhouetteSunset from "@/assets/blog-kitesurf-silhouette-saut-sunset.jpg?webp";
 import blogKitesurfAileEvoLagon from "@/assets/blog-kitesurf-aile-duotone-evo-lagon.jpg?webp";
 import blogKitesurfAilesNeoMer from "@/assets/blog-kitesurf-ailes-neo-duotone-mer.jpg?webp";
 import blogWingfoilDuoLagon from "@/assets/blog-wingfoil-duo-lagon-turquoise.jpg?webp";
@@ -96,6 +97,7 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-saut-planche-duotone.jpg": blogKitesurfSautPlanche,
   "blog-kitesurf-aile-duotone-evo-lagon.jpg": blogKitesurfAileEvoLagon,
   "blog-kitesurf-ailes-neo-duotone-mer.jpg": blogKitesurfAilesNeoMer,
+  "blog-kitesurf-silhouette-saut-sunset.jpg": blogKitesurfSilhouetteSunset,
   "blog-kitesurf-saut-vagues.jpg": blogKitesurfSautVagues,
   "blog-wingfoil-duo-lagon-turquoise.jpg": blogWingfoilDuoLagon,
   "blog-wingfoil-vol-eau-cristalline.jpg": blogWingfoilVolEau,
