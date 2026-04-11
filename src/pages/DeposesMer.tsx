@@ -84,7 +84,7 @@ const DeposesMer = () => {
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="Déposes en Mer Kitesurf Hyères | Bateau Almanarre & Giens" />
+        <meta property="og:title" content="Déposes en Mer Kitesurf Hyères | Kitesurf Passion – Bateau Almanarre" />
         <meta property="og:description" content="Accédez aux meilleurs spots kitesurf de Hyères par bateau. Dépose en mer sécurisée dès 45€. Almanarre, Giens, baie d'Hyères." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />

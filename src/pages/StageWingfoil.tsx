@@ -190,7 +190,7 @@ const StageWingfoil = () => {
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="Stage Wingfoil Hyères Almanarre | Cours Wing Foil Var" />
+        <meta property="og:title" content="Stage Wingfoil Hyères | Kitesurf Passion – Cours Wing Foil Var" />
         <meta property="og:description" content="Apprenez le wingfoil à Hyères dès 440€. Sport tendance, progression rapide, bateau d'assistance. Volez sur l'eau !" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre" />
