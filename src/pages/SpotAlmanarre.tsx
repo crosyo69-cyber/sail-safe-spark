@@ -239,7 +239,7 @@ export default function SpotAlmanarre() {
   return (
     <>
       <Helmet>
-        <title>Spot Kitesurf Almanarre Hyères | Meilleur Spot Var</title>
+        <title>Spot Kitesurf Almanarre Hyères | Kitesurf Passion – Meilleur Spot Var</title>
         <meta
           name="description"
           content="Découvrez le spot de l'Almanarre à Hyères, meilleur spot kitesurf du Var. Vent thermique régulier, eaux plates, idéal débutants. Infos conditions, accès et équipements."

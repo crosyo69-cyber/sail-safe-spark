@@ -197,11 +197,11 @@ const Tarifs = () => {
   return (
     <>
       <Helmet>
-        <title>Tarifs Cours Kitesurf & Wingfoil – Hyères Almanarre | Dès 40€</title>
-        <meta
-          name="description"
-          content="Tarifs et formules des cours de kitesurf, wingfoil et pumpfoil à Hyères"
-        />
+         <title>Tarifs Kitesurf & Wingfoil Hyères | Kitesurf Passion – Dès 40€</title>
+         <meta
+           name="description"
+           content="Tarifs des cours de kitesurf, wingfoil et pumpfoil à Hyères avec Kitesurf Passion. Stage dès 399€, session carte dès 120€. Matériel, bateau et moniteur diplômé inclus."
+         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" />
         <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres" />

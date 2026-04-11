@@ -180,11 +180,11 @@ const StageWingfoil = () => {
   return (
     <>
       <Helmet>
-        <title>Stage Wingfoil – Hyères Almanarre | Cours Wing Foil Var</title>
-        <meta
-          name="description"
-          content="Stage wingfoil 5 jours à l'Almanarre avec foil tracté inclus"
-        />
+         <title>Stage Wingfoil Hyères Almanarre | Kitesurf Passion – Cours Wing Foil Var</title>
+         <meta
+           name="description"
+           content="Stage wingfoil 5 jours à Hyères Almanarre avec Kitesurf Passion. Foil tracté inclus, moniteur diplômé, progression rapide sur le meilleur spot du Var. Dès 440€."
+         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre" />
         <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre" />
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/stage-wingfoil-hyeres-almanarre" />
