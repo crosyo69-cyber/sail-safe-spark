@@ -5,7 +5,7 @@
     <link>https://www.kitesurfpassion.fr/blog-kitesurf-hyeres</link>
     <description>Actualités, conseils et guides sur le kitesurf, wingfoil et pumpfoil à Hyères. Découvrez le spot de l'Almanarre avec l'école KiteSurf Passion.</description>
     <language>fr-FR</language>
-    <lastBuildDate>Fri, 10 Apr 2026 10:00:00 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 11 Apr 2026 10:00:00 +0200</lastBuildDate>
     <atom:link href="https://www.kitesurfpassion.fr/rss.xml" rel="self" type="application/rss+xml"/>
     <image>
       <url>https://www.kitesurfpassion.fr/favicon.ico</url>
@@ -40,6 +40,7 @@
       <description>3 jours ou 5 jours pour apprendre le kitesurf à Hyères ? Comparez les deux formats selon votre niveau, votre budget et votre objectif d'autonomie sur l'Almanarre.</description>
     </item>
     
+    <item>
       <title>Cours particulier ou collectif kitesurf Hyères : que choisir ?</title>
       <link>https://www.kitesurfpassion.fr/blog/cours-particulier-ou-collectif-kitesurf-hyeres</link>
       <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/cours-particulier-ou-collectif-kitesurf-hyeres</guid>
@@ -262,6 +263,42 @@
       <pubDate>Sun, 25 Jan 2026 10:00:00 +0100</pubDate>
       <category>Kitesurf</category>
       <description>Découvrez le foil tracté par bateau à Hyères. Idéal pour s'initier au vol sans vent sur la baie de Giens dans le Var.</description>
+    </item>
+    
+    <item>
+      <title>Stage kitesurf débutant à Hyères : le guide pour bien commencer</title>
+      <link>https://www.kitesurfpassion.fr/blog/stage-kitesurf-debutant-hyeres</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/stage-kitesurf-debutant-hyeres</guid>
+      <pubDate>Fri, 03 Apr 2026 10:00:00 +0200</pubDate>
+      <category>Kitesurf</category>
+      <description>Vous cherchez un stage de kitesurf débutant à Hyères ? Découvrez le programme, le déroulé sur 5 jours, les conditions à l'Almanarre et comment progresser en sécurité.</description>
+    </item>
+    
+    <item>
+      <title>Wingfoil vs Kitesurf : Quelle Discipline Choisir à Hyères ?</title>
+      <link>https://www.kitesurfpassion.fr/blog/wingfoil-vs-kitesurf-quelle-discipline-choisir</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/wingfoil-vs-kitesurf-quelle-discipline-choisir</guid>
+      <pubDate>Wed, 18 Mar 2025 10:00:00 +0100</pubDate>
+      <category>Wing Foil</category>
+      <description>Wingfoil ou kitesurf : laquelle choisir pour débuter à Hyères ? Comparatif complet : matériel, niveau requis, sensations, vent minimum.</description>
+    </item>
+    
+    <item>
+      <title>Apprendre le Kitesurf à Hyères : Guide Complet pour Débutants</title>
+      <link>https://www.kitesurfpassion.fr/blog/apprendre-kitesurf-hyeres-guide-debutant</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/apprendre-kitesurf-hyeres-guide-debutant</guid>
+      <pubDate>Mon, 10 Mar 2025 10:00:00 +0100</pubDate>
+      <category>Kitesurf</category>
+      <description>Vous voulez apprendre le kitesurf à Hyères ? Découvrez notre guide complet : matériel, sécurité, durée d'apprentissage et pourquoi choisir le spot de l'Almanarre.</description>
+    </item>
+    
+    <item>
+      <title>Spot Kitesurf Almanarre Hyères : Tout Savoir sur le Meilleur Spot du Var</title>
+      <link>https://www.kitesurfpassion.fr/blog/spot-kitesurf-almanarre-hyeres</link>
+      <guid isPermaLink="true">https://www.kitesurfpassion.fr/blog/spot-kitesurf-almanarre-hyeres</guid>
+      <pubDate>Mon, 24 Feb 2025 10:00:00 +0100</pubDate>
+      <category>Le Spot</category>
+      <description>L'Almanarre à Hyères est le spot kitesurf incontournable de Méditerranée. Vent, conditions, accès, carte : tout ce qu'il faut savoir pour rider.</description>
     </item>
     
     <item>
