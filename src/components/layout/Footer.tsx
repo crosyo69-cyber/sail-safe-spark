@@ -37,6 +37,7 @@ const footerLinks = {
     { name: "Blog", href: "/blog-kitesurf-hyeres" },
     { name: "À Propos", href: "/a-propos-ecole-kitesurf-hyeres" },
     { name: "Contact", href: "/contact-reservation-kitesurf-hyeres" },
+    { name: "Flux RSS", href: "/rss.xml", external: true },
   ],
   legal: [
     { name: "Mentions Légales", href: "/mentions-legales" },
