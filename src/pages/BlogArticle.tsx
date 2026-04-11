@@ -58,6 +58,8 @@ import blogKitesurfAileEvoLagon from "@/assets/blog-kitesurf-aile-duotone-evo-la
 import blogKitesurfAilesNeoMer from "@/assets/blog-kitesurf-ailes-neo-duotone-mer.jpg?webp";
 import blogWingfoilDuoLagon from "@/assets/blog-wingfoil-duo-lagon-turquoise.jpg?webp";
 import blogWingfoilVolEau from "@/assets/blog-wingfoil-vol-eau-cristalline.jpg?webp";
+import blogWingfoilSautVagueTahiti from "@/assets/blog-wingfoil-saut-vague-duotone-tahiti.jpg?webp";
+import blogWingfoilRiderVagueUnit from "@/assets/blog-wingfoil-rider-vague-unit-duotone.jpg?webp";
 import blogWingfoilVolFoilJaune from "@/assets/blog-wingfoil-vol-foil-jaune.jpg?webp";
 import blogWingfoilMontagnesMaui from "@/assets/blog-wingfoil-montagnes-maui.jpg?webp";
 import blogPumpfoilVolSunset from "@/assets/blog-pumpfoil-vol-sunset-duotone.jpg?webp";
@@ -111,6 +113,8 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-saut-vagues.jpg": blogKitesurfSautVagues,
   "blog-wingfoil-duo-lagon-turquoise.jpg": blogWingfoilDuoLagon,
   "blog-wingfoil-vol-eau-cristalline.jpg": blogWingfoilVolEau,
+  "blog-wingfoil-saut-vague-duotone-tahiti.jpg": blogWingfoilSautVagueTahiti,
+  "blog-wingfoil-rider-vague-unit-duotone.jpg": blogWingfoilRiderVagueUnit,
   "blog-wingfoil-vol-foil-jaune.jpg": blogWingfoilVolFoilJaune,
   "blog-wingfoil-montagnes-maui.jpg": blogWingfoilMontagnesMaui,
   "blog-pumpfoil-vol-sunset-duotone.jpg": blogPumpfoilVolSunset,

@@ -55,6 +55,8 @@ import blogKitesurfAileEvoLagon from "@/assets/blog-kitesurf-aile-duotone-evo-la
 import blogKitesurfAilesNeoMer from "@/assets/blog-kitesurf-ailes-neo-duotone-mer.jpg?webp";
 import blogWingfoilDuoLagon from "@/assets/blog-wingfoil-duo-lagon-turquoise.jpg?webp";
 import blogWingfoilVolEau from "@/assets/blog-wingfoil-vol-eau-cristalline.jpg?webp";
+import blogWingfoilSautVagueTahiti from "@/assets/blog-wingfoil-saut-vague-duotone-tahiti.jpg?webp";
+import blogWingfoilRiderVagueUnit from "@/assets/blog-wingfoil-rider-vague-unit-duotone.jpg?webp";
 import blogWingfoilVolFoilJaune from "@/assets/blog-wingfoil-vol-foil-jaune.jpg?webp";
 import blogWingfoilMontagnesMaui from "@/assets/blog-wingfoil-montagnes-maui.jpg?webp";
 import blogPumpfoilVolSunset from "@/assets/blog-pumpfoil-vol-sunset-duotone.jpg?webp";
@@ -107,6 +109,8 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-saut-vagues.jpg": blogKitesurfSautVagues,
   "blog-wingfoil-duo-lagon-turquoise.jpg": blogWingfoilDuoLagon,
   "blog-wingfoil-vol-eau-cristalline.jpg": blogWingfoilVolEau,
+  "blog-wingfoil-saut-vague-duotone-tahiti.jpg": blogWingfoilSautVagueTahiti,
+  "blog-wingfoil-rider-vague-unit-duotone.jpg": blogWingfoilRiderVagueUnit,
   "blog-wingfoil-vol-foil-jaune.jpg": blogWingfoilVolFoilJaune,
   "blog-wingfoil-montagnes-maui.jpg": blogWingfoilMontagnesMaui,
   "blog-pumpfoil-vol-sunset-duotone.jpg": blogPumpfoilVolSunset,
@@ -410,7 +414,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2026-02-22",
     readTime: "8 min",
-    image: "blog-wingfoil-vol-foil-jaune.jpg",
+    image: "blog-wingfoil-saut-vague-duotone-tahiti.jpg",
     alt: "Kitesurf vs wingfoil comparatif Hyères - Choisir discipline école KiteSurf Passion",
   },
   {
@@ -513,7 +517,7 @@ export const blogArticles = [
     category: "Wing Foil",
     date: "2025-03-18",
     readTime: "6 min",
-    image: "blog-wingfoil-montagnes-maui.jpg",
+    image: "blog-wingfoil-rider-vague-unit-duotone.jpg",
     alt: "Wingfoil vs kitesurf comparatif Hyères - Quelle discipline choisir école KiteSurf Passion",
     featured: true,
   },
