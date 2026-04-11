@@ -113,6 +113,8 @@ const imageMap: Record<string, string> = {
   "blog-kitesurf-saut-vagues.jpg": blogKitesurfSautVagues,
   "blog-wingfoil-duo-lagon-turquoise.jpg": blogWingfoilDuoLagon,
   "blog-wingfoil-vol-eau-cristalline.jpg": blogWingfoilVolEau,
+  "blog-wingfoil-saut-vague-duotone-tahiti.jpg": blogWingfoilSautVagueTahiti,
+  "blog-wingfoil-rider-vague-unit-duotone.jpg": blogWingfoilRiderVagueUnit,
   "blog-wingfoil-vol-foil-jaune.jpg": blogWingfoilVolFoilJaune,
   "blog-wingfoil-montagnes-maui.jpg": blogWingfoilMontagnesMaui,
   "blog-pumpfoil-vol-sunset-duotone.jpg": blogPumpfoilVolSunset,
