@@ -377,7 +377,13 @@ export function resolveLegacyRedirect(pathname: string): string | null {
     return "/placeholder.svg";
   }
 
-  // 3. Check SEO local patterns (keyword+city-zNN or -yNN)
+  // 3. Redirect /blog/slug → /blog-kitesurf-hyeres/slug (malformed external links)
+  const blogPrefixMatch = pathname.match(/^\/blog\/(.+)$/);
+  if (blogPrefixMatch) {
+    return `/blog-kitesurf-hyeres/${blogPrefixMatch[1]}`;
+  }
+
+  // 4. Check SEO local patterns (keyword+city-zNN or -yNN)
   const localSuffixMatch = normalized.match(/-[zy]\d+$/);
   if (localSuffixMatch) {
     const pathWithoutSuffix = normalized.slice(0, localSuffixMatch.index);
