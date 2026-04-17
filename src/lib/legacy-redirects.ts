@@ -263,6 +263,11 @@ export const exactRedirects: Record<string, string> = {
   "/details-depose+en+mer+sur+le+spot+de+l+almanarre+et+le+spot+de+hyeres-34.html": "/deposes-mer-kitesurf-hyeres",
   "/lien-agence+web+marseille+-+creation+site+internet+-+referencement+marseille+jalis-1.html": "/a-propos-ecole-kitesurf-hyeres",
 
+  // 19. Logs 404 avril 2026 - vague 4 (variantes Jalis non couvertes)
+  "/details-apprendre+la+wingfoil+a+hyeres+carqueiranne-174.html": "/stage-wingfoil-hyeres-almanarre",
+  "/details-ecole+de+wingfoil+a+hyeres+pour+votre+stages+de+wing-146.html": "/stage-wingfoil-hyeres-almanarre",
+  "/activites-ecole+pour+des+cours+et+des+stages+de+kitesurf+debutant+et+perfectionnement+hyeres-1.html": "/cours-kitesurf-hyeres-debutant",
+
   // 12. Redirections internes + anciennes URLs courtes crawlées par Google
   "/foil-tracte-wakeboard-hyeres": "/foil-tracte-hyeres",
   "/tarifs": "/tarifs-cours-kitesurf-wingfoil-hyeres",
