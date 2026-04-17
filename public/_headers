@@ -28,6 +28,15 @@
 /.well-known/*
   Content-Type: text/plain; charset=utf-8
 
+# Apple Universal Links - must be served as application/json without extension
+/apple-app-site-association
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=3600
+
+/.well-known/apple-app-site-association
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=3600
+
 # XML files
 /sitemap.xml
   Content-Type: application/xml; charset=utf-8
