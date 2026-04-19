@@ -10,8 +10,27 @@ import { supabase } from "@/integrations/supabase/client";
 const NotFound = () => {
   const location = useLocation();
 
+  // Paths techniques légitimes (sondés par crawlers/OS) — à exclure du logging 404
+  // pour ne pas polluer page_404_logs et fausser le monitoring.
+  const EXCLUDED_404_PATHS = [
+    "/apple-app-site-association",
+    "/.well-known/apple-app-site-association",
+    "/.well-known/assetlinks.json",
+    "/assetlinks.json",
+    "/favicon.ico",
+    "/sw.js",
+    "/manifest.json",
+    "/robots.txt",
+    "/sitemap.xml",
+  ];
+
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+
+    // Skip logging for known legitimate technical paths
+    if (EXCLUDED_404_PATHS.includes(location.pathname)) {
+      return;
+    }
 
     // Log 404 hit to database for monitoring
     const log404 = async () => {
