@@ -52,6 +52,9 @@ export const exactRedirects: Record<string, string> = {
   "/blog": "/blog-kitesurf-hyeres",
   "/cours-kitesurf": "/cours-kitesurf-hyeres-debutant",
   "/wakeboard": "/wakeboard-hyeres",
+
+  // 5. Typos fréquentes
+  "/adim": "/admin",
 };
 
 /**
