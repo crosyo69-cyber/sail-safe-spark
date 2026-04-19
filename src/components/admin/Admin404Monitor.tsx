@@ -100,7 +100,7 @@ const Admin404Monitor = () => {
         <CardHeader className="flex flex-row items-start justify-between gap-4">
           <div>
             <CardTitle className="flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-orange-500" />
+              <AlertTriangle className="w-5 h-5 text-accent" />
               Monitoring des erreurs 404
             </CardTitle>
             <CardDescription>
@@ -129,7 +129,7 @@ const Admin404Monitor = () => {
           </div>
 
           {totalHits >= 5000 && (
-            <div className="p-3 rounded-md bg-orange-500/10 border border-orange-500/30 text-sm">
+            <div className="p-3 rounded-md bg-accent/10 border border-accent/30 text-sm">
               ⚠️ Plus de 5000 hits sur 30 jours — les chiffres affichés sont basés sur un échantillon des plus récents.
             </div>
           )}
