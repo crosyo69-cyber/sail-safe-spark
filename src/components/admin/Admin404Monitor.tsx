@@ -17,6 +17,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 interface AggregatedRow {
   path: string;
@@ -25,6 +27,26 @@ interface AggregatedRow {
   topReferrer: string | null;
 }
 
+/**
+ * Paths techniques légitimes ou bruit connu — masqués par défaut du dashboard.
+ * Ce sont des requêtes automatiques de navigateurs/crawlers/OS, pas des vraies 404 SEO.
+ */
+const TECHNICAL_PATH_PATTERNS: RegExp[] = [
+  /^\/\.well-known\//i,
+  /^\/apple-app-site-association$/i,
+  /^\/apple-touch-icon.*\.png$/i,
+  /^\/favicon\.ico$/i,
+  /^\/robots\.txt$/i,
+  /^\/sitemap.*\.xml$/i,
+  /^\/manifest\.json$/i,
+  /^\/sw\.js$/i,
+  /^\/browserconfig\.xml$/i,
+  /^\/ads\.txt$/i,
+];
+
+const isTechnicalPath = (path: string) =>
+  TECHNICAL_PATH_PATTERNS.some((re) => re.test(path));
+
 const Admin404Monitor = () => {
   const [rows, setRows] = useState<AggregatedRow[]>([]);
   const [totalHits, setTotalHits] = useState(0);
@@ -32,6 +54,8 @@ const Admin404Monitor = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deletingPath, setDeletingPath] = useState<string | null>(null);
+  const [showTechnical, setShowTechnical] = useState(false);
+  const [hiddenCount, setHiddenCount] = useState(0);
 
   const load = async () => {
     setLoading(true);
@@ -70,7 +94,7 @@ const Admin404Monitor = () => {
       }
     });
 
-    const aggregated: AggregatedRow[] = Array.from(map.entries())
+    const allAggregated: AggregatedRow[] = Array.from(map.entries())
       .map(([path, v]) => {
         let topReferrer: string | null = null;
         let topCount = 0;
@@ -82,18 +106,23 @@ const Admin404Monitor = () => {
         });
         return { path, hits: v.hits, lastSeen: v.lastSeen, topReferrer };
       })
-      .sort((a, b) => b.hits - a.hits)
-      .slice(0, 50);
+      .sort((a, b) => b.hits - a.hits);
 
-    setRows(aggregated);
+    const filtered = showTechnical
+      ? allAggregated
+      : allAggregated.filter((r) => !isTechnicalPath(r.path));
+
+    setRows(filtered.slice(0, 50));
     setTotalHits(data?.length ?? 0);
     setUniquePaths(map.size);
+    setHiddenCount(allAggregated.length - filtered.length);
     setLoading(false);
   };
 
   useEffect(() => {
     load();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showTechnical]);
 
   const handleDelete = async (path: string) => {
     setDeletingPath(path);
@@ -135,7 +164,7 @@ const Admin404Monitor = () => {
   return (
     <div className="space-y-6">
       <Card>
-        <CardHeader className="flex flex-row items-start justify-between gap-4">
+        <CardHeader className="flex flex-col sm:flex-row items-start justify-between gap-4">
           <div>
             <CardTitle className="flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-accent" />
@@ -145,10 +174,25 @@ const Admin404Monitor = () => {
               Top 50 des URLs introuvables sur les 30 derniers jours
             </CardDescription>
           </div>
-          <Button onClick={load} variant="outline" size="sm" disabled={loading} className="gap-2">
-            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-            Rafraîchir
-          </Button>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2">
+              <Switch
+                id="show-technical"
+                checked={showTechnical}
+                onCheckedChange={setShowTechnical}
+              />
+              <Label htmlFor="show-technical" className="text-sm cursor-pointer">
+                Inclure paths techniques
+                {!showTechnical && hiddenCount > 0 && (
+                  <span className="ml-1 text-muted-foreground">({hiddenCount} masqués)</span>
+                )}
+              </Label>
+            </div>
+            <Button onClick={load} variant="outline" size="sm" disabled={loading} className="gap-2">
+              <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+              Rafraîchir
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
