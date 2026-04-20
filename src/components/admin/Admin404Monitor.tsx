@@ -3,8 +3,20 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, AlertTriangle, RefreshCw } from "lucide-react";
+import { Loader2, AlertTriangle, RefreshCw, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { toast } from "@/hooks/use-toast";
 
 interface AggregatedRow {
   path: string;
@@ -19,6 +31,7 @@ const Admin404Monitor = () => {
   const [uniquePaths, setUniquePaths] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [deletingPath, setDeletingPath] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -81,6 +94,31 @@ const Admin404Monitor = () => {
   useEffect(() => {
     load();
   }, []);
+
+  const handleDelete = async (path: string) => {
+    setDeletingPath(path);
+    const { error: deleteError, count } = await supabase
+      .from("page_404_logs")
+      .delete({ count: "exact" })
+      .eq("path", path);
+
+    setDeletingPath(null);
+
+    if (deleteError) {
+      toast({
+        title: "Erreur",
+        description: `Impossible de supprimer : ${deleteError.message}`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Logs supprimés",
+      description: `${count ?? 0} entrée(s) supprimée(s) pour ${path}`,
+    });
+    await load();
+  };
 
   const formatDate = (iso: string) =>
     new Date(iso).toLocaleString("fr-FR", {
@@ -158,6 +196,7 @@ const Admin404Monitor = () => {
                     <TableHead className="text-right">Hits</TableHead>
                     <TableHead>Dernière vue</TableHead>
                     <TableHead>Top referrer</TableHead>
+                    <TableHead className="w-16 text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -177,6 +216,45 @@ const Admin404Monitor = () => {
                       </TableCell>
                       <TableCell className="text-xs text-muted-foreground max-w-xs">
                         {row.topReferrer ? truncate(row.topReferrer, 50) : "—"}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                              disabled={deletingPath === row.path}
+                              aria-label={`Supprimer les logs pour ${row.path}`}
+                            >
+                              {deletingPath === row.path ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                              ) : (
+                                <Trash2 className="w-4 h-4" />
+                              )}
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Supprimer les logs 404 ?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Cette action supprimera définitivement les{" "}
+                                <strong>{row.hits}</strong> entrée(s) pour le path :
+                                <br />
+                                <code className="font-mono text-xs break-all">{row.path}</code>
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Annuler</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDelete(row.path)}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                Supprimer
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </TableCell>
                     </TableRow>
                   ))}
