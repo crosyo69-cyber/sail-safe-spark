@@ -25,6 +25,26 @@ interface AggregatedRow {
   topReferrer: string | null;
 }
 
+/**
+ * Paths techniques légitimes ou bruit connu — masqués par défaut du dashboard.
+ * Ce sont des requêtes automatiques de navigateurs/crawlers/OS, pas des vraies 404 SEO.
+ */
+const TECHNICAL_PATH_PATTERNS: RegExp[] = [
+  /^\/\.well-known\//i,
+  /^\/apple-app-site-association$/i,
+  /^\/apple-touch-icon.*\.png$/i,
+  /^\/favicon\.ico$/i,
+  /^\/robots\.txt$/i,
+  /^\/sitemap.*\.xml$/i,
+  /^\/manifest\.json$/i,
+  /^\/sw\.js$/i,
+  /^\/browserconfig\.xml$/i,
+  /^\/ads\.txt$/i,
+];
+
+const isTechnicalPath = (path: string) =>
+  TECHNICAL_PATH_PATTERNS.some((re) => re.test(path));
+
 const Admin404Monitor = () => {
   const [rows, setRows] = useState<AggregatedRow[]>([]);
   const [totalHits, setTotalHits] = useState(0);
@@ -32,6 +52,8 @@ const Admin404Monitor = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deletingPath, setDeletingPath] = useState<string | null>(null);
+  const [showTechnical, setShowTechnical] = useState(false);
+  const [hiddenCount, setHiddenCount] = useState(0);
 
   const load = async () => {
     setLoading(true);
