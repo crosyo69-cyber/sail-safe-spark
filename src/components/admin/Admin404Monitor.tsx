@@ -92,7 +92,7 @@ const Admin404Monitor = () => {
       }
     });
 
-    const aggregated: AggregatedRow[] = Array.from(map.entries())
+    const allAggregated: AggregatedRow[] = Array.from(map.entries())
       .map(([path, v]) => {
         let topReferrer: string | null = null;
         let topCount = 0;
@@ -104,12 +104,16 @@ const Admin404Monitor = () => {
         });
         return { path, hits: v.hits, lastSeen: v.lastSeen, topReferrer };
       })
-      .sort((a, b) => b.hits - a.hits)
-      .slice(0, 50);
+      .sort((a, b) => b.hits - a.hits);
 
-    setRows(aggregated);
+    const filtered = showTechnical
+      ? allAggregated
+      : allAggregated.filter((r) => !isTechnicalPath(r.path));
+
+    setRows(filtered.slice(0, 50));
     setTotalHits(data?.length ?? 0);
     setUniquePaths(map.size);
+    setHiddenCount(allAggregated.length - filtered.length);
     setLoading(false);
   };
 
