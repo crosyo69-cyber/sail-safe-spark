@@ -119,7 +119,8 @@ const Admin404Monitor = () => {
 
   useEffect(() => {
     load();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showTechnical]);
 
   const handleDelete = async (path: string) => {
     setDeletingPath(path);
