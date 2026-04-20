@@ -162,7 +162,7 @@ const Admin404Monitor = () => {
   return (
     <div className="space-y-6">
       <Card>
-        <CardHeader className="flex flex-row items-start justify-between gap-4">
+        <CardHeader className="flex flex-col sm:flex-row items-start justify-between gap-4">
           <div>
             <CardTitle className="flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-accent" />
@@ -172,10 +172,25 @@ const Admin404Monitor = () => {
               Top 50 des URLs introuvables sur les 30 derniers jours
             </CardDescription>
           </div>
-          <Button onClick={load} variant="outline" size="sm" disabled={loading} className="gap-2">
-            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-            Rafraîchir
-          </Button>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2">
+              <Switch
+                id="show-technical"
+                checked={showTechnical}
+                onCheckedChange={setShowTechnical}
+              />
+              <Label htmlFor="show-technical" className="text-sm cursor-pointer">
+                Inclure paths techniques
+                {!showTechnical && hiddenCount > 0 && (
+                  <span className="ml-1 text-muted-foreground">({hiddenCount} masqués)</span>
+                )}
+              </Label>
+            </div>
+            <Button onClick={load} variant="outline" size="sm" disabled={loading} className="gap-2">
+              <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+              Rafraîchir
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
