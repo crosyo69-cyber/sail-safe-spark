@@ -4,7 +4,7 @@ import { forwardRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { trackFormSubmit, trackPhoneClick } from "@/lib/analytics";
+import { trackFormSubmit, trackPhoneClick, trackGoogleAdsConversion } from "@/lib/analytics";
 import { trackMetaLead, trackMetaContact } from "@/lib/meta-pixel";
 import sunsetImage from "@/assets/almanarre-sunset.jpg?webp";
 
@@ -66,6 +66,8 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
       if (error) throw error;
 
       setFormData({ firstName: "", email: "", phone: "", activity: "kitesurf" });
+      // Fire Google Ads conversion immediately before redirect to avoid loss if navigation is interrupted
+      trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
       navigate("/merci");
     } catch (error) {
       console.error("CTA form error:", error);
