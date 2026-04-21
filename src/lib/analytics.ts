@@ -137,6 +137,24 @@ export function trackFormSubmit(
     ...(formData && { form_activity: formData.activity }),
   };
 
+  // Dedupe rapid duplicate submits (double-click safety) — 10s window per form_name
+  try {
+    const key = `__ga4_form_submit_${formName}`;
+    const last = Number(sessionStorage.getItem(key) || '0');
+    if (Date.now() - last < 10_000) {
+      if (import.meta.env.DEV) {
+        console.log(
+          `%c[Analytics] Form Submit SKIPPED (deduped <10s): ${formName}`,
+          'color: #f59e0b; font-weight: bold'
+        );
+      }
+      return;
+    }
+    sessionStorage.setItem(key, String(Date.now()));
+  } catch {
+    // sessionStorage unavailable — fall through
+  }
+
   if (isInitialized && typeof window.gtag === 'function') {
     window.gtag('event', 'form_submit', params);
   }
@@ -224,4 +242,69 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
  */
 export function isAnalyticsEnabled(): boolean {
   return isInitialized && !!(GA_MEASUREMENT_ID || GOOGLE_ADS_ID);
+}
+
+/**
+ * DEV-only validation: simulates a double-click submit and verifies that
+ * GA4 form_submit + Google Ads conversion are each fired EXACTLY ONCE.
+ *
+ * Usage in browser console:  window.__validateConversionDedup()
+ */
+export function validateConversionDedup(): { ga4: number; ads: number; passed: boolean } {
+  const FORM_NAME = '__dedup_test__';
+  const CONV_LABEL = '__dedup_test_label__';
+  const counts = { ga4: 0, ads: 0 };
+
+  // Reset any prior dedup state for these test keys
+  try {
+    sessionStorage.removeItem(`__ga4_form_submit_${FORM_NAME}`);
+    sessionStorage.removeItem(`__gads_conv_${GOOGLE_ADS_ID}/${CONV_LABEL}`);
+  } catch {
+    // ignore
+  }
+
+  // Stub gtag to count fires without hitting the network
+  const originalGtag = window.gtag;
+  const originalInit = isInitialized;
+  isInitialized = true;
+  window.gtag = ((...args: unknown[]) => {
+    const [type, name, params] = args as [string, string, Record<string, unknown>?];
+    if (type !== 'event') return;
+    if (name === 'form_submit' && params?.form_name === FORM_NAME) counts.ga4 += 1;
+    if (name === 'conversion' && typeof params?.send_to === 'string'
+        && (params.send_to as string).endsWith(CONV_LABEL)) counts.ads += 1;
+  }) as typeof window.gtag;
+
+  try {
+    // Simulate a double-click: two synchronous calls in immediate succession
+    trackFormSubmit(FORM_NAME, 'dedup_test');
+    trackFormSubmit(FORM_NAME, 'dedup_test');
+    trackGoogleAdsConversion(CONV_LABEL);
+    trackGoogleAdsConversion(CONV_LABEL);
+  } finally {
+    window.gtag = originalGtag;
+    isInitialized = originalInit;
+    // Clean up test dedup keys
+    try {
+      sessionStorage.removeItem(`__ga4_form_submit_${FORM_NAME}`);
+      sessionStorage.removeItem(`__gads_conv_${GOOGLE_ADS_ID}/${CONV_LABEL}`);
+    } catch {
+      // ignore
+    }
+  }
+
+  const passed = counts.ga4 === 1 && counts.ads === 1;
+  const style = passed
+    ? 'color: #22c55e; font-weight: bold; font-size: 13px'
+    : 'color: #ef4444; font-weight: bold; font-size: 13px';
+  console.log(
+    `%c[Dedup Test] ${passed ? '✅ PASSED' : '❌ FAILED'} — GA4 fires: ${counts.ga4}/1, Google Ads fires: ${counts.ads}/1`,
+    style
+  );
+  return { ...counts, passed };
+}
+
+if (import.meta.env.DEV && typeof window !== 'undefined') {
+  (window as unknown as { __validateConversionDedup: typeof validateConversionDedup })
+    .__validateConversionDedup = validateConversionDedup;
 }
