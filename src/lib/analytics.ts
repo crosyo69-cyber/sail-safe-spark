@@ -177,6 +177,8 @@ export function trackPhoneClick(location: string): void {
 
 /**
  * Track Google Ads conversion (called on /merci page)
+ * De-duplicates within a 10s window to prevent double-counting when both
+ * the form handler and the /merci page useEffect fire the same conversion.
  */
 export function trackGoogleAdsConversion(conversionLabel?: string): void {
   if (!isInitialized || typeof window.gtag !== 'function' || !GOOGLE_ADS_ID) {
@@ -186,6 +188,24 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
   const conversionId = conversionLabel
     ? `${GOOGLE_ADS_ID}/${conversionLabel}`
     : GOOGLE_ADS_ID;
+
+  // Dedupe across rapid double-clicks AND form-handler -> /merci redirect chain
+  try {
+    const key = `__gads_conv_${conversionId}`;
+    const last = Number(sessionStorage.getItem(key) || '0');
+    if (Date.now() - last < 10_000) {
+      if (import.meta.env.DEV) {
+        console.log(
+          `%c[Analytics] Google Ads Conversion SKIPPED (deduped <10s): ${conversionId}`,
+          'color: #f59e0b; font-weight: bold'
+        );
+      }
+      return;
+    }
+    sessionStorage.setItem(key, String(Date.now()));
+  } catch {
+    // sessionStorage may be unavailable (private mode) — fall through and fire
+  }
 
   window.gtag('event', 'conversion', {
     send_to: conversionId,
