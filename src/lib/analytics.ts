@@ -137,6 +137,24 @@ export function trackFormSubmit(
     ...(formData && { form_activity: formData.activity }),
   };
 
+  // Dedupe rapid duplicate submits (double-click safety) — 10s window per form_name
+  try {
+    const key = `__ga4_form_submit_${formName}`;
+    const last = Number(sessionStorage.getItem(key) || '0');
+    if (Date.now() - last < 10_000) {
+      if (import.meta.env.DEV) {
+        console.log(
+          `%c[Analytics] Form Submit SKIPPED (deduped <10s): ${formName}`,
+          'color: #f59e0b; font-weight: bold'
+        );
+      }
+      return;
+    }
+    sessionStorage.setItem(key, String(Date.now()));
+  } catch {
+    // sessionStorage unavailable — fall through
+  }
+
   if (isInitialized && typeof window.gtag === 'function') {
     window.gtag('event', 'form_submit', params);
   }
