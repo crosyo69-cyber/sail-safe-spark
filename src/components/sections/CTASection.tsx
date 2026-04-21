@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Phone, Send } from "lucide-react";
-import { forwardRef, useState } from "react";
+import { forwardRef, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,6 +20,7 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [honeypot, setHoneypot] = useState("");
   const [formTimestamp] = useState(Date.now());
+  const submitLockRef = useRef(false);
 
   const activityLabels: Record<string, string> = {
     kitesurf: "Kitesurf débutant",
@@ -30,6 +31,10 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Synchronous guard against double-clicks (setState is async, button disabled lags one render)
+    if (submitLockRef.current) return;
+    submitLockRef.current = true;
 
     // Honeypot check
     if (honeypot) {
@@ -44,6 +49,7 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
         description: "Veuillez prendre le temps de remplir le formulaire.",
         variant: "destructive",
       });
+      submitLockRef.current = false;
       return;
     }
 
@@ -76,6 +82,7 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
         description: "Une erreur est survenue. Veuillez réessayer ou nous appeler directement.",
         variant: "destructive",
       });
+      submitLockRef.current = false;
     } finally {
       setIsSubmitting(false);
     }
