@@ -65,30 +65,77 @@ export function trackMetaPageView(): void {
 }
 
 /**
- * Track a lead conversion (form submission)
+ * Track a lead conversion (form submission).
+ *
+ * Dedup: 10s sessionStorage window covers BOTH 'Lead' and 'CompleteRegistration'
+ * (single shared key) so a fallback fire never produces a duplicate when the
+ * primary becomes available again within the window.
+ *
+ * Fallback: if `fbq` is unavailable OR the 'Lead' call throws, we attempt
+ * 'CompleteRegistration' (also a Meta standard event). Both outcomes consume
+ * the same dedup slot.
  */
 export function trackMetaLead(params?: Record<string, string>): void {
-  // Dedupe across rapid double-submits AND form-handler -> /merci -> reload chain.
-  // 10s sessionStorage window, scoped to event name (matches Google Ads dedup model).
+  const DEDUP_KEY = '__meta_pixel_lead'; // shared with CompleteRegistration fallback
+
+  // Dedup check
   try {
-    const key = '__meta_pixel_lead';
-    const last = Number(sessionStorage.getItem(key) || '0');
+    const last = Number(sessionStorage.getItem(DEDUP_KEY) || '0');
     if (Date.now() - last < 10_000) {
       if (import.meta.env.DEV) {
         console.log(
-          '%c[Meta Pixel] Lead SKIPPED (deduped <10s)',
+          '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (deduped <10s)',
           'color: #f59e0b; font-weight: bold'
         );
       }
       return;
     }
-    sessionStorage.setItem(key, String(Date.now()));
   } catch {
     // sessionStorage unavailable — fall through and fire
   }
 
+  const markFired = () => {
+    try { sessionStorage.setItem(DEDUP_KEY, String(Date.now())); } catch { /* ignore */ }
+  };
+
+  // Primary: Lead
   if (typeof window.fbq === 'function') {
-    window.fbq('track', 'Lead', params);
+    try {
+      window.fbq('track', 'Lead', params);
+      markFired();
+      if (import.meta.env.DEV) {
+        console.log('%c[Meta Pixel] Lead tracked', 'color: #1877f2; font-weight: bold');
+      }
+      return;
+    } catch (err) {
+      if (import.meta.env.DEV) {
+        console.warn('[Meta Pixel] Lead failed, falling back to CompleteRegistration', err);
+      }
+    }
+  }
+
+  // Fallback: CompleteRegistration
+  if (typeof window.fbq === 'function') {
+    try {
+      window.fbq('track', 'CompleteRegistration', params);
+      markFired();
+      if (import.meta.env.DEV) {
+        console.log(
+          '%c[Meta Pixel] CompleteRegistration tracked (fallback)',
+          'color: #1877f2; font-weight: bold'
+        );
+      }
+      return;
+    } catch (err) {
+      if (import.meta.env.DEV) {
+        console.warn('[Meta Pixel] CompleteRegistration fallback also failed', err);
+      }
+    }
+  }
+
+  // Neither fired — do NOT mark dedup so a later call can retry.
+  if (import.meta.env.DEV) {
+    console.warn('[Meta Pixel] fbq unavailable — Lead/CompleteRegistration not sent');
   }
 }
 
