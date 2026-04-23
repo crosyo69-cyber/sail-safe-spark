@@ -78,10 +78,27 @@ export function trackMetaPageView(): void {
 export function trackMetaLead(params?: Record<string, string>): void {
   const DEDUP_KEY = '__meta_pixel_lead'; // shared with CompleteRegistration fallback
 
-  // Dedup check
+  // In-memory lock — survives rapid component remounts within the same JS
+  // runtime (faster than sessionStorage and immune to storage quirks).
+  // Paired with the sessionStorage check below for cross-reload protection.
+  const w = window as unknown as { __metaPixelLeadLockUntil?: number };
+  const now = Date.now();
+  if (typeof w.__metaPixelLeadLockUntil === 'number' && now < w.__metaPixelLeadLockUntil) {
+    if (import.meta.env.DEV) {
+      console.log(
+        '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (in-memory lock)',
+        'color: #f59e0b; font-weight: bold'
+      );
+    }
+    return;
+  }
+
+  // Dedup check (cross-reload via sessionStorage)
   try {
     const last = Number(sessionStorage.getItem(DEDUP_KEY) || '0');
-    if (Date.now() - last < 10_000) {
+    if (now - last < 10_000) {
+      // Re-arm the in-memory lock to mirror the persistent window.
+      w.__metaPixelLeadLockUntil = last + 10_000;
       if (import.meta.env.DEV) {
         console.log(
           '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (deduped <10s)',
@@ -95,7 +112,9 @@ export function trackMetaLead(params?: Record<string, string>): void {
   }
 
   const markFired = () => {
-    try { sessionStorage.setItem(DEDUP_KEY, String(Date.now())); } catch { /* ignore */ }
+    const ts = Date.now();
+    w.__metaPixelLeadLockUntil = ts + 10_000;
+    try { sessionStorage.setItem(DEDUP_KEY, String(ts)); } catch { /* ignore */ }
   };
 
   // Primary: Lead
