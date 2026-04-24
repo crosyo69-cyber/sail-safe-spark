@@ -40,10 +40,47 @@ async function installInstrumentation(page: Page) {
       }
       calls.push(args);
       persist();
+      // Explicit DOM marker + CustomEvent for every successful track call.
+      // Tests can listen for 'fbq:CompleteRegistration' or query the marker
+      // <meta> tag instead of polling timers.
+      try {
+        if (verb === 'track' && typeof name === 'string') {
+          window.dispatchEvent(
+            new CustomEvent(`fbq:${name}`, { detail: { args, at: Date.now() } })
+          );
+          const id = `__fbq-marker-${name}`;
+          let marker = document.getElementById(id) as HTMLMetaElement | null;
+          if (!marker) {
+            marker = document.createElement('meta');
+            marker.id = id;
+            marker.setAttribute('name', `fbq-${name}`);
+            marker.setAttribute('data-count', '0');
+            (document.head || document.documentElement).appendChild(marker);
+          }
+          const next = Number(marker.getAttribute('data-count') || '0') + 1;
+          marker.setAttribute('data-count', String(next));
+          marker.setAttribute('data-last-at', String(Date.now()));
+        }
+      } catch { /* ignore */ }
     };
 
     (window as unknown as { fbq: typeof fbqStub }).fbq = fbqStub;
     (window as unknown as { _fbq: typeof fbqStub })._fbq = fbqStub;
+
+    // Expose a one-shot promise that resolves the very moment
+    // CompleteRegistration is dispatched — tests can await it directly.
+    (window as unknown as {
+      __completeRegistrationFired?: Promise<{ at: number; args: unknown[] }>;
+    }).__completeRegistrationFired = new Promise((resolve) => {
+      window.addEventListener(
+        'fbq:CompleteRegistration',
+        (e: Event) => {
+          const ce = e as CustomEvent<{ at: number; args: unknown[] }>;
+          resolve(ce.detail);
+        },
+        { once: true }
+      );
+    });
 
     const reinstall = () => {
       const prev = (window as unknown as { fbq: (...a: unknown[]) => void }).fbq;
@@ -112,6 +149,23 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
       submitButton.click({ noWaitAfter: true }),
       submitButton.click({ noWaitAfter: true, force: true }),
     ]);
+
+    // Event-driven detection: wait for the explicit DOM marker injected by
+    // the stub the moment CompleteRegistration is tracked. No timers.
+    await page.waitForSelector(
+      'meta#__fbq-marker-CompleteRegistration[data-count="1"]',
+      { state: 'attached', timeout: 10_000 }
+    );
+
+    // Also assert the one-shot promise resolved with the expected payload.
+    const firedDetail = await page.evaluate(
+      () =>
+        (window as unknown as {
+          __completeRegistrationFired: Promise<{ at: number; args: unknown[] }>;
+        }).__completeRegistrationFired
+    );
+    expect(firedDetail.args[0]).toBe('track');
+    expect(firedDetail.args[1]).toBe('CompleteRegistration');
 
     await page.waitForURL('**/merci', { timeout: 10_000 });
     await expect(
