@@ -137,7 +137,28 @@ async function fillAndSubmit(page: Page, email: string) {
   // 3) On /merci, the loading button must be gone (loader has disappeared)
   //    and the success heading must be rendered.
   await expect(loadingButton).toHaveCount(0);
-  await expect(page.getByRole('heading', { name: /merci pour votre demande/i })).toBeVisible();
+
+  // Exact-text assertions on the /merci page: heading + subtext blocks must
+  // match the production copy verbatim after every submission.
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Merci pour votre demande !' })
+  ).toHaveText('Merci pour votre demande !');
+
+  await expect(
+    page.getByText(/Nous vous contactons sous .* pour confirmer votre réservation\./)
+  ).toContainText('Nous vous contactons sous 24h pour confirmer votre réservation.');
+
+  await expect(
+    page.getByText("À très vite sur l'eau ! 🪁", { exact: true })
+  ).toBeVisible();
+
+  await expect(
+    page.getByText('Besoin d\'une réponse rapide ?', { exact: true })
+  ).toBeVisible();
+
+  await expect(
+    page.getByRole('link', { name: /06 72 71 69 05/ })
+  ).toHaveAttribute('href', 'tel:0672716905');
 }
 
 /** Wait until the recorded CompleteRegistration fires reach `expected`. */
