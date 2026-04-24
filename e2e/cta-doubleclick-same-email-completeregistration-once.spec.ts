@@ -135,6 +135,61 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
       'CompleteRegistration must fire exactly once even with 2 rapid same-form clicks'
     ).toBe(1);
 
+    // ----- Ordering assertions (timing-insensitive) -----
+    //
+    // Build a chronological list of relevant track events with their indices,
+    // then assert structural properties rather than exact timestamps.
+    const trackTimeline = calls
+      .map((c, idx) => ({ idx, verb: c[0], name: c[1] }))
+      .filter(
+        (e) =>
+          (e.verb === 'track' && (e.name === 'Lead' || e.name === 'CompleteRegistration')) ||
+          (e.verb === '__attempt_failed__')
+      );
+
+    const completeRegIndex = trackTimeline.findIndex(
+      (e) => e.verb === 'track' && e.name === 'CompleteRegistration'
+    );
+    expect(
+      completeRegIndex,
+      'CompleteRegistration must appear in the fbq timeline'
+    ).toBeGreaterThanOrEqual(0);
+
+    // 1) CompleteRegistration must occur exactly once across the whole timeline.
+    const completeRegOccurrences = trackTimeline.filter(
+      (e) => e.verb === 'track' && e.name === 'CompleteRegistration'
+    );
+    expect(
+      completeRegOccurrences.length,
+      'CompleteRegistration must occur exactly once in the chronological timeline'
+    ).toBe(1);
+
+    // 2) No SUCCESSFUL Lead may appear before CompleteRegistration. Failed
+    //    Lead attempts (recorded as '__attempt_failed__') are allowed and
+    //    expected — that's how the fallback gets triggered.
+    const successfulLeadBefore = trackTimeline
+      .slice(0, completeRegIndex)
+      .filter((e) => e.verb === 'track' && e.name === 'Lead');
+    expect(
+      successfulLeadBefore.length,
+      'No successful Lead may be tracked before CompleteRegistration'
+    ).toBe(0);
+
+    // 3) No Lead — successful or attempted — may appear AFTER
+    //    CompleteRegistration. Once the fallback fires, the dedup window
+    //    must block any subsequent attempt for the next 10s.
+    const anyLeadAfter = trackTimeline
+      .slice(completeRegIndex + 1)
+      .filter(
+        (e) =>
+          (e.verb === 'track' && e.name === 'Lead') ||
+          e.verb === '__attempt_failed__'
+      );
+    expect(
+      anyLeadAfter.length,
+      'No Lead attempt (success or failure) may occur after CompleteRegistration'
+    ).toBe(0);
+
     // Guards must have been engaged.
     const dedupSet = await page.evaluate(
       () => sessionStorage.getItem('__meta_pixel_lead') !== null
