@@ -85,8 +85,25 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
     await page.getByPlaceholder('Votre email').fill('test@example.com');
     await page.getByPlaceholder('Votre téléphone').fill('0612345678');
 
-    // Anti-bot guard: form must be older than 3s.
-    await page.waitForTimeout(3500);
+    // Anti-bot guard: instead of a fixed sleep, stamp the form's interactive
+    // moment and poll until 3.05s have elapsed AND the button is still
+    // enabled (i.e. the form is genuinely ready to submit). This avoids
+    // flakiness on slow CI machines and exits early on fast ones.
+    await page.evaluate(() => {
+      (window as unknown as { __ctaFormReadyAt?: number }).__ctaFormReadyAt = Date.now();
+    });
+    await expect(submitButton).toBeEnabled();
+    await expect
+      .poll(
+        () =>
+          page.evaluate(() => {
+            const t = (window as unknown as { __ctaFormReadyAt?: number }).__ctaFormReadyAt;
+            return typeof t === 'number' ? Date.now() - t : 0;
+          }),
+        { timeout: 6_000, intervals: [100, 200, 250] }
+      )
+      .toBeGreaterThanOrEqual(3050);
+    await expect(submitButton).toBeEnabled();
 
     // Two rapid clicks — the 2nd one races against React's disabled commit.
     // `clickCount: 2` would be a real double-click; we use two separate
