@@ -107,14 +107,36 @@ async function fillAndSubmit(page: Page, email: string) {
     )
     .toBeGreaterThanOrEqual(3050);
 
+  // Locator for the loading-state button: text becomes exactly "Envoi en cours..."
+  // and the lucide <Send /> icon is removed from the DOM.
+  const loadingButton = page.getByRole('button', { name: /envoi en cours\.\.\./i });
+
   await submitButton.click();
 
-  // Button enters loading state ("Envoi en cours...") and is disabled while
-  // the network call is in flight — assert that real state instead of sleeping.
-  await expect(submitButton).toBeDisabled();
+  // 1) Button immediately enters disabled+loading state — assert real DOM
+  //    transitions instead of sleeping. Race with URL change in case the
+  //    network is so fast that React commits the navigation before we
+  //    observe the loading text.
+  await Promise.race([
+    expect(loadingButton).toBeVisible({ timeout: 3_000 }),
+    page.waitForURL('**/merci', { timeout: 3_000, waitUntil: 'commit' }),
+  ]);
 
-  // Navigation to /merci is the definitive signal that submission succeeded.
+  // If we caught the loading state, also confirm it's disabled and the
+  // original "Envoyer ma demande" label has disappeared.
+  if (page.url().endsWith('/') || !page.url().includes('/merci')) {
+    await expect(loadingButton).toBeDisabled();
+    await expect(
+      page.getByRole('button', { name: /^envoyer ma demande$/i })
+    ).toHaveCount(0);
+  }
+
+  // 2) Navigation to /merci is the definitive success signal.
   await page.waitForURL('**/merci', { timeout: 10_000, waitUntil: 'commit' });
+
+  // 3) On /merci, the loading button must be gone (loader has disappeared)
+  //    and the success heading must be rendered.
+  await expect(loadingButton).toHaveCount(0);
   await expect(page.getByRole('heading', { name: /merci pour votre demande/i })).toBeVisible();
 }
 
