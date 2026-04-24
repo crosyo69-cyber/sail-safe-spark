@@ -70,21 +70,66 @@ async function installInstrumentation(page: Page) {
   });
 }
 
-async function fillAndSubmit(page: Page, email: string) {
+/**
+ * Snapshot the CTA form mount time so we can poll the anti-bot 3s window
+ * instead of relying on a fixed sleep. We mark mount time on first visibility
+ * of the submit button after navigation.
+ */
+async function waitForFormReady(page: Page) {
   const submitButton = page.getByRole('button', { name: /envoyer ma demande/i });
   await submitButton.scrollIntoViewIfNeeded();
   await expect(submitButton).toBeVisible();
+  await expect(submitButton).toBeEnabled();
+  // Stamp mount time the first moment the form is interactive.
+  await page.evaluate(() => {
+    (window as unknown as { __ctaFormMountedAt?: number }).__ctaFormMountedAt = Date.now();
+  });
+  return submitButton;
+}
+
+async function fillAndSubmit(page: Page, email: string) {
+  const submitButton = await waitForFormReady(page);
 
   await page.getByPlaceholder('Votre prénom').fill('TestUser');
   await page.getByPlaceholder('Votre email').fill(email);
   await page.getByPlaceholder('Votre téléphone').fill('0612345678');
 
-  // Anti-bot: form must be older than 3s before submit.
-  await page.waitForTimeout(3500);
+  // Poll the anti-bot 3s window instead of a fixed sleep — exits as soon as
+  // 3.05s have elapsed since the form was deemed interactive.
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() => {
+          const t = (window as unknown as { __ctaFormMountedAt?: number }).__ctaFormMountedAt;
+          return typeof t === 'number' ? Date.now() - t : 0;
+        }),
+      { timeout: 6_000, intervals: [100, 200, 250] }
+    )
+    .toBeGreaterThanOrEqual(3050);
+
   await submitButton.click();
 
-  await page.waitForURL('**/merci', { timeout: 10_000 });
+  // Button enters loading state ("Envoi en cours...") and is disabled while
+  // the network call is in flight — assert that real state instead of sleeping.
+  await expect(submitButton).toBeDisabled();
+
+  // Navigation to /merci is the definitive signal that submission succeeded.
+  await page.waitForURL('**/merci', { timeout: 10_000, waitUntil: 'commit' });
   await expect(page.getByRole('heading', { name: /merci pour votre demande/i })).toBeVisible();
+}
+
+/** Wait until the recorded CompleteRegistration fires reach `expected`. */
+async function waitForCompleteRegistrationCount(page: Page, expected: number) {
+  await expect
+    .poll(
+      async () =>
+        page.evaluate(() => {
+          const calls = (window as unknown as { __fbqCalls?: FbqCall[] }).__fbqCalls ?? [];
+          return calls.filter((c) => c[0] === 'track' && c[1] === 'CompleteRegistration').length;
+        }),
+      { timeout: 5_000, intervals: [50, 100, 200] }
+    )
+    .toBe(expected);
 }
 
 test.describe('Two CTA submissions, different emails — CompleteRegistration once per click', () => {
@@ -95,39 +140,40 @@ test.describe('Two CTA submissions, different emails — CompleteRegistration on
 
     // ----- Submission #1 (email A) -----
     await fillAndSubmit(page, 'alice@example.com');
-    await page.waitForTimeout(1_000); // let Merci's useEffect run
-
-    let calls = await page.evaluate(
-      () => (window as unknown as { __fbqCalls: FbqCall[] }).__fbqCalls
-    );
-    let completeRegFires = calls.filter(
-      (c) => c[0] === 'track' && c[1] === 'CompleteRegistration'
-    );
-    console.log(`[Test] After submit #1 — CompleteRegistration fires: ${completeRegFires.length}`);
-    expect(
-      completeRegFires.length,
-      'After 1st click, CompleteRegistration must fire exactly once'
-    ).toBe(1);
+    // Wait for the fbq call instead of a fixed 1s sleep.
+    await waitForCompleteRegistrationCount(page, 1);
+    console.log('[Test] After submit #1 — CompleteRegistration fires: 1');
 
     // ----- Navigate back to homepage WITHOUT reload (SPA) -----
     await page.goBack();
     await page.waitForURL('**/', { timeout: 5_000 });
+    // Wait for the CTA form to be interactive again on home — replaces a sleep.
+    await waitForFormReady(page);
 
-    // Wait long enough for the 10s dedup window to expire so the 2nd click
-    // is allowed to fire its own CompleteRegistration.
-    await page.waitForTimeout(11_000);
+    // Poll the dedup sessionStorage key until the 10s window has expired,
+    // instead of sleeping 11s blindly.
+    await expect
+      .poll(
+        () =>
+          page.evaluate(() => {
+            const last = Number(sessionStorage.getItem('__meta_pixel_lead') || '0');
+            return last > 0 ? Date.now() - last : Number.POSITIVE_INFINITY;
+          }),
+        { timeout: 15_000, intervals: [250, 500, 500] }
+      )
+      .toBeGreaterThan(10_000);
 
     // ----- Submission #2 (email B) -----
     await fillAndSubmit(page, 'bob@example.com');
-    await page.waitForTimeout(1_000);
+    await waitForCompleteRegistrationCount(page, 2);
 
-    calls = await page.evaluate(
+    const calls = await page.evaluate(
       () => (window as unknown as { __fbqCalls: FbqCall[] }).__fbqCalls
     );
     const leadFires = calls.filter(
       (c) => c[0] === 'track' && c[1] === 'Lead'
     );
-    completeRegFires = calls.filter(
+    const completeRegFires = calls.filter(
       (c) => c[0] === 'track' && c[1] === 'CompleteRegistration'
     );
 
