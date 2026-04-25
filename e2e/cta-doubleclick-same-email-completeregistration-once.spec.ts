@@ -247,35 +247,44 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
       timeout: 15_000,
     });
 
-    // Install a one-shot page-side toast observer that asks the test to
-    // re-click whenever sonner inserts a new toast (= guard rejection).
-    await page.exposeFunction('__retrySubmit', async () => {
-      await submitButton
-        .click({ noWaitAfter: true, force: true })
-        .catch(() => {});
-    });
-    await page.evaluate(() => {
-      const w = window as unknown as {
-        __retrySubmit: () => Promise<void>;
-        __toastObs?: MutationObserver;
-      };
-      w.__toastObs?.disconnect();
-      const obs = new MutationObserver((muts) => {
-        for (const m of muts) {
-          for (const n of Array.from(m.addedNodes)) {
-            if (
-              n instanceof HTMLElement &&
-              (n.matches('[data-sonner-toast]') ||
-                n.querySelector?.('[data-sonner-toast]'))
-            ) {
-              w.__retrySubmit();
-              return;
+    // ONE-SHOT, event-driven sonner toast detector:
+    //   - A MutationObserver fires the instant sonner inserts a toast
+    //     node ([data-sonner-toast]) — no waitForSelector, no polling.
+    //   - It auto-disconnects on the FIRST match and resolves a promise
+    //     exposed via exposeBinding, so the test can issue exactly ONE
+    //     re-click in response.
+    await page.exposeBinding(
+      '__sonnerToastResolved',
+      () => { /* resolved per-call below via the binding mechanism */ },
+      { handle: false }
+    ).catch(() => { /* already exposed on retry */ });
+
+    const sonnerToastSeen = page.evaluate(() => {
+      return new Promise<{ at: number }>((resolve) => {
+        const matches = (n: Node) =>
+          n instanceof HTMLElement &&
+          (n.matches('[data-sonner-toast]') ||
+            !!n.querySelector?.('[data-sonner-toast]'));
+
+        // Fast path — toast already in DOM (shouldn't happen, but safe).
+        if (document.querySelector('[data-sonner-toast]')) {
+          resolve({ at: Date.now() });
+          return;
+        }
+
+        const obs = new MutationObserver((muts) => {
+          for (const m of muts) {
+            for (const n of Array.from(m.addedNodes)) {
+              if (matches(n)) {
+                obs.disconnect(); // ← one-shot
+                resolve({ at: Date.now() });
+                return;
+              }
             }
           }
-        }
+        });
+        obs.observe(document.body, { childList: true, subtree: true });
       });
-      obs.observe(document.body, { childList: true, subtree: true });
-      w.__toastObs = obs;
     });
 
     // Initial probe click.
