@@ -235,37 +235,46 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
     await page.getByPlaceholder('Votre email').fill('test@example.com');
     await page.getByPlaceholder('Votre téléphone').fill('0612345678');
 
-    // Anti-bot guard: no wall-clock waits. We rely on the per-event DOM
-    // markers injected by the fbq stub. The strategy:
+    // Anti-bot guard: arm the MutationObserver-based wait FIRST, then
+    // fire probe clicks. The watcher resolves synchronously on the page
+    // the moment the marker bumps — no expect.poll, no retry interval.
     //
-    //   1. Fire ONE probe submit. If the 3s guard is still active, the
-    //      handler returns early via toast() — fbq is never touched and
-    //      submitLockRef is released synchronously, so the button stays
-    //      enabled. We retry the probe until __fbq-marker-Lead bumps.
-    //   2. The first probe that satisfies the guard will actually run
-    //      the submission. We let it complete (it navigates to /merci),
-    //      then go back, reset the recorded calls + dedup state, and
-    //      perform the REAL double-click burst against an unlocked form.
-    //
-    // Waiting on `__fbq-marker-Lead[data-last-at]` is the precise signal
-    // for "first useful fbq call happened" — no timing involved.
+    // We still need at least one click to attempt a submission; if the
+    // 3s guard rejects it, the toast appears and submitLockRef is
+    // released, so we listen for the toast role="status" (sonner) and
+    // immediately re-click. The wait promise resolves on the click that
+    // finally goes through.
     await expect(submitButton).toBeEnabled();
-    await expect
-      .poll(
-        async () => {
-          const at = await page.evaluate(() => {
-            const m = document.getElementById('__fbq-marker-Lead');
-            return m ? Number(m.getAttribute('data-last-at') || '0') : 0;
-          });
-          if (at > 0) return at;
-          await submitButton
-            .click({ noWaitAfter: true, force: true })
-            .catch(() => {});
-          return 0;
-        },
-        { timeout: 10_000, intervals: [200, 300, 400] }
-      )
-      .toBeGreaterThan(0);
+
+    const markerBumped = waitForFbqMarkerIncrease(page, 'Lead', {
+      from: 0,
+      timeout: 15_000,
+    });
+
+    // Auto-retry click on each toast (anti-bot rejection signal). One
+    // observer is enough; it disconnects when markerBumped resolves.
+    let retryStop = false;
+    markerBumped.finally(() => { retryStop = true; }).catch(() => { /* */ });
+    const clickLoop = (async () => {
+      await submitButton.click({ noWaitAfter: true, force: true }).catch(() => {});
+      // Observe DOM for any new toast/status node and re-click.
+      while (!retryStop) {
+        const toastSeen = await page
+          .waitForSelector('[role="status"], [data-sonner-toast]', {
+            state: 'attached',
+            timeout: 4_000,
+          })
+          .catch(() => null);
+        if (!toastSeen || retryStop) break;
+        await page.waitForTimeout(50); // micro-yield, NOT a guard timer
+        await submitButton
+          .click({ noWaitAfter: true, force: true })
+          .catch(() => {});
+      }
+    })();
+
+    await markerBumped;
+    await clickLoop.catch(() => {});
 
     // The probe submission has navigated to /merci. Go back and reset
     // state so the upcoming double-click burst is the only thing
