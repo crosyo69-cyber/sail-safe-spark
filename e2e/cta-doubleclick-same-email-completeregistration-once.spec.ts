@@ -235,15 +235,11 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
     await page.getByPlaceholder('Votre email').fill('test@example.com');
     await page.getByPlaceholder('Votre téléphone').fill('0612345678');
 
-    // Anti-bot guard: arm the MutationObserver-based wait FIRST, then
-    // fire probe clicks. The watcher resolves synchronously on the page
-    // the moment the marker bumps — no expect.poll, no retry interval.
-    //
-    // We still need at least one click to attempt a submission; if the
-    // 3s guard rejects it, the toast appears and submitLockRef is
-    // released, so we listen for the toast role="status" (sonner) and
-    // immediately re-click. The wait promise resolves on the click that
-    // finally goes through.
+    // Anti-bot guard: arm the MutationObserver-based wait FIRST. It
+    // resolves the very moment __fbq-marker-Lead bumps (the first useful
+    // fbq call from the form). Then drive probe submissions via a page-
+    // side MutationObserver that re-clicks each time the rejection toast
+    // appears — no expect.poll, no fixed interval.
     await expect(submitButton).toBeEnabled();
 
     const markerBumped = waitForFbqMarkerIncrease(page, 'Lead', {
@@ -251,30 +247,49 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
       timeout: 15_000,
     });
 
-    // Auto-retry click on each toast (anti-bot rejection signal). One
-    // observer is enough; it disconnects when markerBumped resolves.
-    let retryStop = false;
-    markerBumped.finally(() => { retryStop = true; }).catch(() => { /* */ });
-    const clickLoop = (async () => {
-      await submitButton.click({ noWaitAfter: true, force: true }).catch(() => {});
-      // Observe DOM for any new toast/status node and re-click.
-      while (!retryStop) {
-        const toastSeen = await page
-          .waitForSelector('[role="status"], [data-sonner-toast]', {
-            state: 'attached',
-            timeout: 4_000,
-          })
-          .catch(() => null);
-        if (!toastSeen || retryStop) break;
-        await page.waitForTimeout(50); // micro-yield, NOT a guard timer
-        await submitButton
-          .click({ noWaitAfter: true, force: true })
-          .catch(() => {});
-      }
-    })();
+    // Install a one-shot page-side toast observer that asks the test to
+    // re-click whenever sonner inserts a new toast (= guard rejection).
+    await page.exposeFunction('__retrySubmit', async () => {
+      await submitButton
+        .click({ noWaitAfter: true, force: true })
+        .catch(() => {});
+    });
+    await page.evaluate(() => {
+      const w = window as unknown as {
+        __retrySubmit: () => Promise<void>;
+        __toastObs?: MutationObserver;
+      };
+      w.__toastObs?.disconnect();
+      const obs = new MutationObserver((muts) => {
+        for (const m of muts) {
+          for (const n of Array.from(m.addedNodes)) {
+            if (
+              n instanceof HTMLElement &&
+              (n.matches('[data-sonner-toast]') ||
+                n.querySelector?.('[data-sonner-toast]'))
+            ) {
+              w.__retrySubmit();
+              return;
+            }
+          }
+        }
+      });
+      obs.observe(document.body, { childList: true, subtree: true });
+      w.__toastObs = obs;
+    });
 
+    // Initial probe click.
+    await submitButton.click({ noWaitAfter: true, force: true }).catch(() => {});
+
+    // Resolves the instant the marker bumps — utility returns immediately.
     await markerBumped;
-    await clickLoop.catch(() => {});
+
+    // Tear down the toast observer.
+    await page.evaluate(() => {
+      const w = window as unknown as { __toastObs?: MutationObserver };
+      w.__toastObs?.disconnect();
+      delete w.__toastObs;
+    });
 
     // The probe submission has navigated to /merci. Go back and reset
     // state so the upcoming double-click burst is the only thing
