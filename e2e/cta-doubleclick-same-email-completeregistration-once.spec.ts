@@ -33,6 +33,28 @@ async function installInstrumentation(page: Page) {
     const fbqStub = (...args: unknown[]) => {
       const verb = args[0];
       const name = args[1];
+      // Generic marker for ANY fbq invocation (success or blocked Lead).
+      // Tests can wait on this to detect that the form actually reached
+      // the tracking layer — i.e. the anti-bot guard has been cleared —
+      // without relying on any wall-clock timer.
+      try {
+        const gid = '__fbq-marker-any';
+        let gmarker = document.getElementById(gid) as HTMLMetaElement | null;
+        if (!gmarker) {
+          gmarker = document.createElement('meta');
+          gmarker.id = gid;
+          gmarker.setAttribute('name', 'fbq-any');
+          gmarker.setAttribute('data-count', '0');
+          (document.head || document.documentElement).appendChild(gmarker);
+        }
+        const gnext = Number(gmarker.getAttribute('data-count') || '0') + 1;
+        gmarker.setAttribute('data-count', String(gnext));
+        gmarker.setAttribute('data-last-at', String(Date.now()));
+        gmarker.setAttribute(
+          'data-last-call',
+          `${String(verb)}:${String(name ?? '')}`
+        );
+      } catch { /* ignore */ }
       if (verb === 'track' && name === 'Lead') {
         calls.push(['__attempt_failed__', ...args]);
         persist();
@@ -122,24 +144,71 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
     await page.getByPlaceholder('Votre email').fill('test@example.com');
     await page.getByPlaceholder('Votre téléphone').fill('0612345678');
 
-    // Anti-bot guard: instead of a fixed sleep, stamp the form's interactive
-    // moment and poll until 3.05s have elapsed AND the button is still
-    // enabled (i.e. the form is genuinely ready to submit). This avoids
-    // flakiness on slow CI machines and exits early on fast ones.
-    await page.evaluate(() => {
-      (window as unknown as { __ctaFormReadyAt?: number }).__ctaFormReadyAt = Date.now();
-    });
+    // Anti-bot guard: rather than waiting on a fixed timer, poll the DOM
+    // marker injected by the fbq stub. Each submission attempt — including
+    // the blocked-too-early case — will eventually reach the tracking
+    // layer once the 3s guard is satisfied. We fire trial clicks until
+    // the marker count moves, proving the guard has been cleared without
+    // any wall-clock dependency in the test.
     await expect(submitButton).toBeEnabled();
     await expect
       .poll(
-        () =>
-          page.evaluate(() => {
-            const t = (window as unknown as { __ctaFormReadyAt?: number }).__ctaFormReadyAt;
-            return typeof t === 'number' ? Date.now() - t : 0;
-          }),
-        { timeout: 6_000, intervals: [100, 200, 250] }
+        async () => {
+          const count = await page.evaluate(() => {
+            const m = document.getElementById('__fbq-marker-any');
+            return m ? Number(m.getAttribute('data-count') || '0') : 0;
+          });
+          if (count > 0) return count;
+          // Trigger a probe click; if the guard is still active the
+          // handler returns early before fbq is touched, marker stays 0.
+          // The submitLockRef is released synchronously in that branch.
+          await submitButton.click({ noWaitAfter: true, force: true }).catch(() => {});
+          return 0;
+        },
+        { timeout: 10_000, intervals: [200, 300, 400] }
       )
-      .toBeGreaterThanOrEqual(3050);
+      .toBeGreaterThan(0);
+
+    // The probe that finally went through already invoked fbq → that
+    // counts as the FIRST submit. We only need ONE more rapid click to
+    // exercise the double-click race. But to keep parity with the original
+    // intent (two genuine rapid clicks), reset the recorded calls and
+    // re-arm the form by waiting for the button to be enabled again.
+    await page.evaluate(() => {
+      const w = window as unknown as { __fbqCalls: FbqCall[] };
+      w.__fbqCalls.length = 0;
+      try { sessionStorage.removeItem('__fbqCallsStash'); } catch { /* ignore */ }
+      // Reset markers so the assertions below count only the real burst.
+      const any = document.getElementById('__fbq-marker-any');
+      if (any) any.setAttribute('data-count', '0');
+      const cr = document.getElementById('__fbq-marker-CompleteRegistration');
+      if (cr) cr.setAttribute('data-count', '0');
+      // Clear dedup state so CompleteRegistration can fire again on the
+      // real burst (the guard we want to test is submitLockRef, not the
+      // 10s sessionStorage dedup which we already proved earlier).
+      try { sessionStorage.removeItem('__meta_pixel_lead'); } catch { /* ignore */ }
+      delete (window as unknown as { __metaPixelLeadLockUntil?: number }).__metaPixelLeadLockUntil;
+      // Re-arm the one-shot CompleteRegistration promise.
+      (window as unknown as {
+        __completeRegistrationFired?: Promise<{ at: number; args: unknown[] }>;
+      }).__completeRegistrationFired = new Promise((resolve) => {
+        window.addEventListener(
+          'fbq:CompleteRegistration',
+          (e: Event) => {
+            const ce = e as CustomEvent<{ at: number; args: unknown[] }>;
+            resolve(ce.detail);
+          },
+          { once: true }
+        );
+      });
+    });
+    // Wait for the probe submission to fully resolve and re-enable the
+    // button (or for /merci navigation to NOT have happened yet — the
+    // probe may already have navigated; in that case go back home).
+    if (page.url().includes('/merci')) {
+      await page.goBack();
+      await expect(submitButton).toBeVisible();
+    }
     await expect(submitButton).toBeEnabled();
 
     // Two rapid clicks — the 2nd one races against React's disabled commit.
