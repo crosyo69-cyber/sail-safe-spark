@@ -248,17 +248,10 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
     });
 
     // ONE-SHOT, event-driven sonner toast detector:
-    //   - A MutationObserver fires the instant sonner inserts a toast
-    //     node ([data-sonner-toast]) — no waitForSelector, no polling.
-    //   - It auto-disconnects on the FIRST match and resolves a promise
-    //     exposed via exposeBinding, so the test can issue exactly ONE
-    //     re-click in response.
-    await page.exposeBinding(
-      '__sonnerToastResolved',
-      () => { /* resolved per-call below via the binding mechanism */ },
-      { handle: false }
-    ).catch(() => { /* already exposed on retry */ });
-
+    // A MutationObserver fires the instant sonner inserts a toast node
+    // ([data-sonner-toast]) — no waitForSelector, no polling. It auto-
+    // disconnects on the FIRST match. The test races this promise
+    // against `markerBumped` and issues exactly ONE re-click on toast.
     const sonnerToastSeen = page.evaluate(() => {
       return new Promise<{ at: number }>((resolve) => {
         const matches = (n: Node) =>
