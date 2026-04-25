@@ -33,28 +33,44 @@ async function installInstrumentation(page: Page) {
     const fbqStub = (...args: unknown[]) => {
       const verb = args[0];
       const name = args[1];
-      // Generic marker for ANY fbq invocation (success or blocked Lead).
-      // Tests can wait on this to detect that the form actually reached
-      // the tracking layer — i.e. the anti-bot guard has been cleared —
-      // without relying on any wall-clock timer.
-      try {
-        const gid = '__fbq-marker-any';
-        let gmarker = document.getElementById(gid) as HTMLMetaElement | null;
-        if (!gmarker) {
-          gmarker = document.createElement('meta');
-          gmarker.id = gid;
-          gmarker.setAttribute('name', 'fbq-any');
-          gmarker.setAttribute('data-count', '0');
-          (document.head || document.documentElement).appendChild(gmarker);
-        }
-        const gnext = Number(gmarker.getAttribute('data-count') || '0') + 1;
-        gmarker.setAttribute('data-count', String(gnext));
-        gmarker.setAttribute('data-last-at', String(Date.now()));
-        gmarker.setAttribute(
-          'data-last-call',
-          `${String(verb)}:${String(name ?? '')}`
-        );
-      } catch { /* ignore */ }
+      // Helper: bump a <meta> marker with data-count + data-last-at, plus
+      // any extra attributes passed in. Markers are the single source of
+      // truth for tests waiting on fbq activity — no wall-clock timers.
+      const bumpMarker = (
+        id: string,
+        extras: Record<string, string> = {}
+      ) => {
+        try {
+          let m = document.getElementById(id) as HTMLMetaElement | null;
+          if (!m) {
+            m = document.createElement('meta');
+            m.id = id;
+            m.setAttribute('name', id.replace(/^__/, ''));
+            m.setAttribute('data-count', '0');
+            (document.head || document.documentElement).appendChild(m);
+          }
+          const next = Number(m.getAttribute('data-count') || '0') + 1;
+          m.setAttribute('data-count', String(next));
+          m.setAttribute('data-last-at', String(Date.now()));
+          for (const [k, v] of Object.entries(extras)) m.setAttribute(k, v);
+        } catch { /* ignore */ }
+      };
+
+      // 1) Generic marker — fires on EVERY fbq invocation, success or not.
+      bumpMarker('__fbq-marker-any', {
+        'data-last-call': `${String(verb)}:${String(name ?? '')}`,
+      });
+
+      // 2) Per-event marker — fires for both Lead (blocked) and any other
+      //    track call. This lets tests wait precisely for the FIRST useful
+      //    call (e.g. __fbq-marker-Lead[data-last-at]) without any timer.
+      if (verb === 'track' && typeof name === 'string') {
+        const blocked = name === 'Lead';
+        bumpMarker(`__fbq-marker-${name}`, {
+          'data-status': blocked ? 'blocked' : 'success',
+        });
+      }
+
       if (verb === 'track' && name === 'Lead') {
         calls.push(['__attempt_failed__', ...args]);
         persist();
@@ -62,26 +78,13 @@ async function installInstrumentation(page: Page) {
       }
       calls.push(args);
       persist();
-      // Explicit DOM marker + CustomEvent for every successful track call.
-      // Tests can listen for 'fbq:CompleteRegistration' or query the marker
-      // <meta> tag instead of polling timers.
+      // 3) CustomEvent for every successful track call. The per-event
+      //    marker has already been bumped above with data-status=success.
       try {
         if (verb === 'track' && typeof name === 'string') {
           window.dispatchEvent(
             new CustomEvent(`fbq:${name}`, { detail: { args, at: Date.now() } })
           );
-          const id = `__fbq-marker-${name}`;
-          let marker = document.getElementById(id) as HTMLMetaElement | null;
-          if (!marker) {
-            marker = document.createElement('meta');
-            marker.id = id;
-            marker.setAttribute('name', `fbq-${name}`);
-            marker.setAttribute('data-count', '0');
-            (document.head || document.documentElement).appendChild(marker);
-          }
-          const next = Number(marker.getAttribute('data-count') || '0') + 1;
-          marker.setAttribute('data-count', String(next));
-          marker.setAttribute('data-last-at', String(Date.now()));
         }
       } catch { /* ignore */ }
     };
@@ -144,51 +147,63 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
     await page.getByPlaceholder('Votre email').fill('test@example.com');
     await page.getByPlaceholder('Votre téléphone').fill('0612345678');
 
-    // Anti-bot guard: rather than waiting on a fixed timer, poll the DOM
-    // marker injected by the fbq stub. Each submission attempt — including
-    // the blocked-too-early case — will eventually reach the tracking
-    // layer once the 3s guard is satisfied. We fire trial clicks until
-    // the marker count moves, proving the guard has been cleared without
-    // any wall-clock dependency in the test.
+    // Anti-bot guard: no wall-clock waits. We rely on the per-event DOM
+    // markers injected by the fbq stub. The strategy:
+    //
+    //   1. Fire ONE probe submit. If the 3s guard is still active, the
+    //      handler returns early via toast() — fbq is never touched and
+    //      submitLockRef is released synchronously, so the button stays
+    //      enabled. We retry the probe until __fbq-marker-Lead bumps.
+    //   2. The first probe that satisfies the guard will actually run
+    //      the submission. We let it complete (it navigates to /merci),
+    //      then go back, reset the recorded calls + dedup state, and
+    //      perform the REAL double-click burst against an unlocked form.
+    //
+    // Waiting on `__fbq-marker-Lead[data-last-at]` is the precise signal
+    // for "first useful fbq call happened" — no timing involved.
     await expect(submitButton).toBeEnabled();
     await expect
       .poll(
         async () => {
-          const count = await page.evaluate(() => {
-            const m = document.getElementById('__fbq-marker-any');
-            return m ? Number(m.getAttribute('data-count') || '0') : 0;
+          const at = await page.evaluate(() => {
+            const m = document.getElementById('__fbq-marker-Lead');
+            return m ? Number(m.getAttribute('data-last-at') || '0') : 0;
           });
-          if (count > 0) return count;
-          // Trigger a probe click; if the guard is still active the
-          // handler returns early before fbq is touched, marker stays 0.
-          // The submitLockRef is released synchronously in that branch.
-          await submitButton.click({ noWaitAfter: true, force: true }).catch(() => {});
+          if (at > 0) return at;
+          await submitButton
+            .click({ noWaitAfter: true, force: true })
+            .catch(() => {});
           return 0;
         },
         { timeout: 10_000, intervals: [200, 300, 400] }
       )
       .toBeGreaterThan(0);
 
-    // The probe that finally went through already invoked fbq → that
-    // counts as the FIRST submit. We only need ONE more rapid click to
-    // exercise the double-click race. But to keep parity with the original
-    // intent (two genuine rapid clicks), reset the recorded calls and
-    // re-arm the form by waiting for the button to be enabled again.
+    // The probe submission has navigated to /merci. Go back and reset
+    // state so the upcoming double-click burst is the only thing
+    // measured by the assertions below.
+    if (page.url().includes('/merci')) {
+      await page.goBack();
+      await expect(submitButton).toBeVisible();
+    }
     await page.evaluate(() => {
       const w = window as unknown as { __fbqCalls: FbqCall[] };
       w.__fbqCalls.length = 0;
       try { sessionStorage.removeItem('__fbqCallsStash'); } catch { /* ignore */ }
-      // Reset markers so the assertions below count only the real burst.
-      const any = document.getElementById('__fbq-marker-any');
-      if (any) any.setAttribute('data-count', '0');
-      const cr = document.getElementById('__fbq-marker-CompleteRegistration');
-      if (cr) cr.setAttribute('data-count', '0');
-      // Clear dedup state so CompleteRegistration can fire again on the
-      // real burst (the guard we want to test is submitLockRef, not the
-      // 10s sessionStorage dedup which we already proved earlier).
+      for (const id of [
+        '__fbq-marker-any',
+        '__fbq-marker-Lead',
+        '__fbq-marker-CompleteRegistration',
+      ]) {
+        const m = document.getElementById(id);
+        if (m) {
+          m.setAttribute('data-count', '0');
+          m.removeAttribute('data-last-at');
+        }
+      }
       try { sessionStorage.removeItem('__meta_pixel_lead'); } catch { /* ignore */ }
-      delete (window as unknown as { __metaPixelLeadLockUntil?: number }).__metaPixelLeadLockUntil;
-      // Re-arm the one-shot CompleteRegistration promise.
+      delete (window as unknown as { __metaPixelLeadLockUntil?: number })
+        .__metaPixelLeadLockUntil;
       (window as unknown as {
         __completeRegistrationFired?: Promise<{ at: number; args: unknown[] }>;
       }).__completeRegistrationFired = new Promise((resolve) => {
@@ -202,13 +217,6 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
         );
       });
     });
-    // Wait for the probe submission to fully resolve and re-enable the
-    // button (or for /merci navigation to NOT have happened yet — the
-    // probe may already have navigated; in that case go back home).
-    if (page.url().includes('/merci')) {
-      await page.goBack();
-      await expect(submitButton).toBeVisible();
-    }
     await expect(submitButton).toBeEnabled();
 
     // Two rapid clicks — the 2nd one races against React's disabled commit.
