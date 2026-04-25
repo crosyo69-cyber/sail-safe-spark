@@ -14,6 +14,94 @@ import { test, expect, type Page } from '@playwright/test';
 
 type FbqCall = unknown[];
 
+/**
+ * Wait until the <meta id="__fbq-marker-{name}"> data-count attribute
+ * strictly exceeds `from`. Returns the new count as soon as it bumps.
+ *
+ * Implementation: runs a MutationObserver INSIDE the page on the marker
+ * (or on <head> while the marker doesn't exist yet) and resolves the very
+ * moment the attribute changes. No polling, no probe clicks.
+ */
+async function waitForFbqMarkerIncrease(
+  page: Page,
+  name: string,
+  opts: { from?: number; timeout?: number } = {}
+): Promise<number> {
+  const { from = 0, timeout = 10_000 } = opts;
+  return await page.evaluate(
+    ({ name, from, timeout }) =>
+      new Promise<number>((resolve, reject) => {
+        const id = `__fbq-marker-${name}`;
+
+        const readCount = (el: Element | null) =>
+          el ? Number(el.getAttribute('data-count') || '0') : 0;
+
+        // Fast path — already bumped.
+        const existing = document.getElementById(id);
+        if (readCount(existing) > from) {
+          resolve(readCount(existing));
+          return;
+        }
+
+        let attrObs: MutationObserver | null = null;
+        let headObs: MutationObserver | null = null;
+        const timer = window.setTimeout(() => {
+          attrObs?.disconnect();
+          headObs?.disconnect();
+          reject(
+            new Error(
+              `[waitForFbqMarkerIncrease] timeout ${timeout}ms waiting ` +
+                `for #${id} data-count > ${from}`
+            )
+          );
+        }, timeout);
+
+        const watchAttr = (target: Element) => {
+          attrObs = new MutationObserver(() => {
+            const c = readCount(target);
+            if (c > from) {
+              window.clearTimeout(timer);
+              attrObs?.disconnect();
+              headObs?.disconnect();
+              resolve(c);
+            }
+          });
+          attrObs.observe(target, {
+            attributes: true,
+            attributeFilter: ['data-count'],
+          });
+          // Re-check synchronously in case it bumped between the fast
+          // path read and observer attachment.
+          const c = readCount(target);
+          if (c > from) {
+            window.clearTimeout(timer);
+            attrObs.disconnect();
+            resolve(c);
+          }
+        };
+
+        if (existing) {
+          watchAttr(existing);
+        } else {
+          // Marker not yet created — watch <head> for its insertion.
+          headObs = new MutationObserver(() => {
+            const el = document.getElementById(id);
+            if (el) {
+              headObs?.disconnect();
+              headObs = null;
+              watchAttr(el);
+            }
+          });
+          headObs.observe(document.head || document.documentElement, {
+            childList: true,
+            subtree: true,
+          });
+        }
+      }),
+    { name, from, timeout }
+  );
+}
+
 async function installInstrumentation(page: Page) {
   await page.addInitScript(() => {
     const STASH_KEY = '__fbqCallsStash';
