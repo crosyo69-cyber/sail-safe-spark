@@ -290,15 +290,24 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
     // Initial probe click.
     await submitButton.click({ noWaitAfter: true, force: true }).catch(() => {});
 
-    // Resolves the instant the marker bumps — utility returns immediately.
-    await markerBumped;
+    // Race the two event-driven signals:
+    //   - markerBumped → the click went through, we're done.
+    //   - sonnerToastSeen → the click was rejected by the 3s anti-bot
+    //     guard. Issue exactly ONE re-click in response, then await the
+    //     marker bump for that retry.
+    const winner = await Promise.race([
+      markerBumped.then(() => 'marker' as const),
+      sonnerToastSeen.then(() => 'toast' as const),
+    ]);
 
-    // Tear down the toast observer.
-    await page.evaluate(() => {
-      const w = window as unknown as { __toastObs?: MutationObserver };
-      w.__toastObs?.disconnect();
-      delete w.__toastObs;
-    });
+    if (winner === 'toast') {
+      // Single, deterministic retry — the guard window has now passed
+      // since the rejection was synchronous on the first click.
+      await submitButton
+        .click({ noWaitAfter: true, force: true })
+        .catch(() => {});
+      await markerBumped;
+    }
 
     // The probe submission has navigated to /merci. Go back and reset
     // state so the upcoming double-click burst is the only thing
