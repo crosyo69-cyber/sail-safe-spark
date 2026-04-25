@@ -14,6 +14,94 @@ import { test, expect, type Page } from '@playwright/test';
 
 type FbqCall = unknown[];
 
+/**
+ * Wait until the <meta id="__fbq-marker-{name}"> data-count attribute
+ * strictly exceeds `from`. Returns the new count as soon as it bumps.
+ *
+ * Implementation: runs a MutationObserver INSIDE the page on the marker
+ * (or on <head> while the marker doesn't exist yet) and resolves the very
+ * moment the attribute changes. No polling, no probe clicks.
+ */
+async function waitForFbqMarkerIncrease(
+  page: Page,
+  name: string,
+  opts: { from?: number; timeout?: number } = {}
+): Promise<number> {
+  const { from = 0, timeout = 10_000 } = opts;
+  return await page.evaluate(
+    ({ name, from, timeout }) =>
+      new Promise<number>((resolve, reject) => {
+        const id = `__fbq-marker-${name}`;
+
+        const readCount = (el: Element | null) =>
+          el ? Number(el.getAttribute('data-count') || '0') : 0;
+
+        // Fast path — already bumped.
+        const existing = document.getElementById(id);
+        if (readCount(existing) > from) {
+          resolve(readCount(existing));
+          return;
+        }
+
+        let attrObs: MutationObserver | null = null;
+        let headObs: MutationObserver | null = null;
+        const timer = window.setTimeout(() => {
+          attrObs?.disconnect();
+          headObs?.disconnect();
+          reject(
+            new Error(
+              `[waitForFbqMarkerIncrease] timeout ${timeout}ms waiting ` +
+                `for #${id} data-count > ${from}`
+            )
+          );
+        }, timeout);
+
+        const watchAttr = (target: Element) => {
+          attrObs = new MutationObserver(() => {
+            const c = readCount(target);
+            if (c > from) {
+              window.clearTimeout(timer);
+              attrObs?.disconnect();
+              headObs?.disconnect();
+              resolve(c);
+            }
+          });
+          attrObs.observe(target, {
+            attributes: true,
+            attributeFilter: ['data-count'],
+          });
+          // Re-check synchronously in case it bumped between the fast
+          // path read and observer attachment.
+          const c = readCount(target);
+          if (c > from) {
+            window.clearTimeout(timer);
+            attrObs.disconnect();
+            resolve(c);
+          }
+        };
+
+        if (existing) {
+          watchAttr(existing);
+        } else {
+          // Marker not yet created — watch <head> for its insertion.
+          headObs = new MutationObserver(() => {
+            const el = document.getElementById(id);
+            if (el) {
+              headObs?.disconnect();
+              headObs = null;
+              watchAttr(el);
+            }
+          });
+          headObs.observe(document.head || document.documentElement, {
+            childList: true,
+            subtree: true,
+          });
+        }
+      }),
+    { name, from, timeout }
+  );
+}
+
 async function installInstrumentation(page: Page) {
   await page.addInitScript(() => {
     const STASH_KEY = '__fbqCallsStash';
@@ -147,37 +235,61 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
     await page.getByPlaceholder('Votre email').fill('test@example.com');
     await page.getByPlaceholder('Votre téléphone').fill('0612345678');
 
-    // Anti-bot guard: no wall-clock waits. We rely on the per-event DOM
-    // markers injected by the fbq stub. The strategy:
-    //
-    //   1. Fire ONE probe submit. If the 3s guard is still active, the
-    //      handler returns early via toast() — fbq is never touched and
-    //      submitLockRef is released synchronously, so the button stays
-    //      enabled. We retry the probe until __fbq-marker-Lead bumps.
-    //   2. The first probe that satisfies the guard will actually run
-    //      the submission. We let it complete (it navigates to /merci),
-    //      then go back, reset the recorded calls + dedup state, and
-    //      perform the REAL double-click burst against an unlocked form.
-    //
-    // Waiting on `__fbq-marker-Lead[data-last-at]` is the precise signal
-    // for "first useful fbq call happened" — no timing involved.
+    // Anti-bot guard: arm the MutationObserver-based wait FIRST. It
+    // resolves the very moment __fbq-marker-Lead bumps (the first useful
+    // fbq call from the form). Then drive probe submissions via a page-
+    // side MutationObserver that re-clicks each time the rejection toast
+    // appears — no expect.poll, no fixed interval.
     await expect(submitButton).toBeEnabled();
-    await expect
-      .poll(
-        async () => {
-          const at = await page.evaluate(() => {
-            const m = document.getElementById('__fbq-marker-Lead');
-            return m ? Number(m.getAttribute('data-last-at') || '0') : 0;
-          });
-          if (at > 0) return at;
-          await submitButton
-            .click({ noWaitAfter: true, force: true })
-            .catch(() => {});
-          return 0;
-        },
-        { timeout: 10_000, intervals: [200, 300, 400] }
-      )
-      .toBeGreaterThan(0);
+
+    const markerBumped = waitForFbqMarkerIncrease(page, 'Lead', {
+      from: 0,
+      timeout: 15_000,
+    });
+
+    // Install a one-shot page-side toast observer that asks the test to
+    // re-click whenever sonner inserts a new toast (= guard rejection).
+    await page.exposeFunction('__retrySubmit', async () => {
+      await submitButton
+        .click({ noWaitAfter: true, force: true })
+        .catch(() => {});
+    });
+    await page.evaluate(() => {
+      const w = window as unknown as {
+        __retrySubmit: () => Promise<void>;
+        __toastObs?: MutationObserver;
+      };
+      w.__toastObs?.disconnect();
+      const obs = new MutationObserver((muts) => {
+        for (const m of muts) {
+          for (const n of Array.from(m.addedNodes)) {
+            if (
+              n instanceof HTMLElement &&
+              (n.matches('[data-sonner-toast]') ||
+                n.querySelector?.('[data-sonner-toast]'))
+            ) {
+              w.__retrySubmit();
+              return;
+            }
+          }
+        }
+      });
+      obs.observe(document.body, { childList: true, subtree: true });
+      w.__toastObs = obs;
+    });
+
+    // Initial probe click.
+    await submitButton.click({ noWaitAfter: true, force: true }).catch(() => {});
+
+    // Resolves the instant the marker bumps — utility returns immediately.
+    await markerBumped;
+
+    // Tear down the toast observer.
+    await page.evaluate(() => {
+      const w = window as unknown as { __toastObs?: MutationObserver };
+      w.__toastObs?.disconnect();
+      delete w.__toastObs;
+    });
 
     // The probe submission has navigated to /merci. Go back and reset
     // state so the upcoming double-click burst is the only thing
