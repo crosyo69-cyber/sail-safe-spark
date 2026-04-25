@@ -247,49 +247,60 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
       timeout: 15_000,
     });
 
-    // Install a one-shot page-side toast observer that asks the test to
-    // re-click whenever sonner inserts a new toast (= guard rejection).
-    await page.exposeFunction('__retrySubmit', async () => {
-      await submitButton
-        .click({ noWaitAfter: true, force: true })
-        .catch(() => {});
-    });
-    await page.evaluate(() => {
-      const w = window as unknown as {
-        __retrySubmit: () => Promise<void>;
-        __toastObs?: MutationObserver;
-      };
-      w.__toastObs?.disconnect();
-      const obs = new MutationObserver((muts) => {
-        for (const m of muts) {
-          for (const n of Array.from(m.addedNodes)) {
-            if (
-              n instanceof HTMLElement &&
-              (n.matches('[data-sonner-toast]') ||
-                n.querySelector?.('[data-sonner-toast]'))
-            ) {
-              w.__retrySubmit();
-              return;
+    // ONE-SHOT, event-driven sonner toast detector:
+    // A MutationObserver fires the instant sonner inserts a toast node
+    // ([data-sonner-toast]) — no waitForSelector, no polling. It auto-
+    // disconnects on the FIRST match. The test races this promise
+    // against `markerBumped` and issues exactly ONE re-click on toast.
+    const sonnerToastSeen = page.evaluate(() => {
+      return new Promise<{ at: number }>((resolve) => {
+        const matches = (n: Node) =>
+          n instanceof HTMLElement &&
+          (n.matches('[data-sonner-toast]') ||
+            !!n.querySelector?.('[data-sonner-toast]'));
+
+        // Fast path — toast already in DOM (shouldn't happen, but safe).
+        if (document.querySelector('[data-sonner-toast]')) {
+          resolve({ at: Date.now() });
+          return;
+        }
+
+        const obs = new MutationObserver((muts) => {
+          for (const m of muts) {
+            for (const n of Array.from(m.addedNodes)) {
+              if (matches(n)) {
+                obs.disconnect(); // ← one-shot
+                resolve({ at: Date.now() });
+                return;
+              }
             }
           }
-        }
+        });
+        obs.observe(document.body, { childList: true, subtree: true });
       });
-      obs.observe(document.body, { childList: true, subtree: true });
-      w.__toastObs = obs;
     });
 
     // Initial probe click.
     await submitButton.click({ noWaitAfter: true, force: true }).catch(() => {});
 
-    // Resolves the instant the marker bumps — utility returns immediately.
-    await markerBumped;
+    // Race the two event-driven signals:
+    //   - markerBumped → the click went through, we're done.
+    //   - sonnerToastSeen → the click was rejected by the 3s anti-bot
+    //     guard. Issue exactly ONE re-click in response, then await the
+    //     marker bump for that retry.
+    const winner = await Promise.race([
+      markerBumped.then(() => 'marker' as const),
+      sonnerToastSeen.then(() => 'toast' as const),
+    ]);
 
-    // Tear down the toast observer.
-    await page.evaluate(() => {
-      const w = window as unknown as { __toastObs?: MutationObserver };
-      w.__toastObs?.disconnect();
-      delete w.__toastObs;
-    });
+    if (winner === 'toast') {
+      // Single, deterministic retry — the guard window has now passed
+      // since the rejection was synchronous on the first click.
+      await submitButton
+        .click({ noWaitAfter: true, force: true })
+        .catch(() => {});
+      await markerBumped;
+    }
 
     // The probe submission has navigated to /merci. Go back and reset
     // state so the upcoming double-click burst is the only thing
