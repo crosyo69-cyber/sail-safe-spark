@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { installFbqMarkerStub } from './utils/fbq-markers';
+import { installFbqMarkerStub } from './utils/fbq-markers';
 
 /**
  * E2E: when `window.fbq` is unavailable at the moment trackMetaLead is invoked,
@@ -38,6 +39,10 @@ import { installFbqMarkerStub } from './utils/fbq-markers';
 type FbqCall = unknown[];
 
 async function installFbqLeadBlocker(page: Page) {
+  // Wrap window.fbq via a setter so EVERY call also bumps
+  // <meta id="__fbq-marker-*"> counters used by the shared marker
+  // utilities. Installed BEFORE the test-owned stub assignment.
+  await installFbqMarkerStub(page);
   await page.addInitScript(() => {
     const calls: FbqCall[] = [];
     (window as unknown as { __fbqCalls: FbqCall[] }).__fbqCalls = calls;
