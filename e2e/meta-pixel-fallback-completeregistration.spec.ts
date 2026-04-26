@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { installFbqMarkerStub } from './utils/fbq-markers';
 
 /**
  * E2E: when `window.fbq` is unavailable at the moment trackMetaLead is invoked,
