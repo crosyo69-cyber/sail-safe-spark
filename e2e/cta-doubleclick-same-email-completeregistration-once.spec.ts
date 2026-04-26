@@ -102,6 +102,69 @@ async function waitForFbqMarkerIncrease(
   );
 }
 
+/**
+ * Wait for the FIRST sonner toast to be inserted in the DOM. Resolves
+ * with `{ at }` (timestamp ms) the instant a `[data-sonner-toast]` node
+ * appears, then auto-disconnects the observer (one-shot).
+ *
+ * Implementation: a single MutationObserver on `document.body` with
+ * `childList: true, subtree: true`. No polling, no waitForSelector loop.
+ * Includes a fast-path check in case a toast is already present, and a
+ * timeout that rejects + disconnects to avoid leaks.
+ *
+ * Usage:
+ *   const seen = waitForSonnerToast(page);          // arm BEFORE the action
+ *   await submitButton.click();
+ *   const { at } = await Promise.race([seen, ...]); // race or await
+ */
+function waitForSonnerToast(
+  page: Page,
+  opts: { timeout?: number } = {}
+): Promise<{ at: number }> {
+  const { timeout = 10_000 } = opts;
+  return page.evaluate(
+    ({ timeout }) =>
+      new Promise<{ at: number }>((resolve, reject) => {
+        const SELECTOR = '[data-sonner-toast]';
+        const matches = (n: Node) =>
+          n instanceof HTMLElement &&
+          (n.matches(SELECTOR) || !!n.querySelector?.(SELECTOR));
+
+        // Fast path — toast already in DOM.
+        if (document.querySelector(SELECTOR)) {
+          resolve({ at: Date.now() });
+          return;
+        }
+
+        let obs: MutationObserver | null = null;
+        const timer = window.setTimeout(() => {
+          obs?.disconnect();
+          reject(
+            new Error(
+              `[waitForSonnerToast] timeout ${timeout}ms waiting for ` +
+                `${SELECTOR}`
+            )
+          );
+        }, timeout);
+
+        obs = new MutationObserver((muts) => {
+          for (const m of muts) {
+            for (const n of Array.from(m.addedNodes)) {
+              if (matches(n)) {
+                window.clearTimeout(timer);
+                obs?.disconnect(); // ← one-shot
+                resolve({ at: Date.now() });
+                return;
+              }
+            }
+          }
+        });
+        obs.observe(document.body, { childList: true, subtree: true });
+      }),
+    { timeout }
+  );
+}
+
 async function installInstrumentation(page: Page) {
   await page.addInitScript(() => {
     const STASH_KEY = '__fbqCallsStash';
@@ -247,38 +310,10 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
       timeout: 15_000,
     });
 
-    // ONE-SHOT, event-driven sonner toast detector:
-    // A MutationObserver fires the instant sonner inserts a toast node
-    // ([data-sonner-toast]) — no waitForSelector, no polling. It auto-
-    // disconnects on the FIRST match. The test races this promise
-    // against `markerBumped` and issues exactly ONE re-click on toast.
-    const sonnerToastSeen = page.evaluate(() => {
-      return new Promise<{ at: number }>((resolve) => {
-        const matches = (n: Node) =>
-          n instanceof HTMLElement &&
-          (n.matches('[data-sonner-toast]') ||
-            !!n.querySelector?.('[data-sonner-toast]'));
-
-        // Fast path — toast already in DOM (shouldn't happen, but safe).
-        if (document.querySelector('[data-sonner-toast]')) {
-          resolve({ at: Date.now() });
-          return;
-        }
-
-        const obs = new MutationObserver((muts) => {
-          for (const m of muts) {
-            for (const n of Array.from(m.addedNodes)) {
-              if (matches(n)) {
-                obs.disconnect(); // ← one-shot
-                resolve({ at: Date.now() });
-                return;
-              }
-            }
-          }
-        });
-        obs.observe(document.body, { childList: true, subtree: true });
-      });
-    });
+    // One-shot, event-driven sonner toast detector — see
+    // `waitForSonnerToast` above. Armed BEFORE the click so the
+    // MutationObserver is already watching when sonner inserts the node.
+    const sonnerToastSeen = waitForSonnerToast(page, { timeout: 15_000 });
 
     // Initial probe click.
     await submitButton.click({ noWaitAfter: true, force: true }).catch(() => {});
