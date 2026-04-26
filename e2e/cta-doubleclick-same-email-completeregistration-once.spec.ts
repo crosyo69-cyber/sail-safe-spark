@@ -1,4 +1,10 @@
 import { test, expect, type Page } from '@playwright/test';
+import {
+  waitForFbqMarkerIncrease,
+  waitForFbqMarkerCount,
+  resetFbqMarkers,
+  waitForSonnerToast,
+} from './utils/fbq-markers';
 
 /**
  * E2E: two rapid clicks on the CTA submit button (same email, no change in
@@ -13,157 +19,6 @@ import { test, expect, type Page } from '@playwright/test';
  */
 
 type FbqCall = unknown[];
-
-/**
- * Wait until the <meta id="__fbq-marker-{name}"> data-count attribute
- * strictly exceeds `from`. Returns the new count as soon as it bumps.
- *
- * Implementation: runs a MutationObserver INSIDE the page on the marker
- * (or on <head> while the marker doesn't exist yet) and resolves the very
- * moment the attribute changes. No polling, no probe clicks.
- */
-async function waitForFbqMarkerIncrease(
-  page: Page,
-  name: string,
-  opts: { from?: number; timeout?: number } = {}
-): Promise<number> {
-  const { from = 0, timeout = 10_000 } = opts;
-  return await page.evaluate(
-    ({ name, from, timeout }) =>
-      new Promise<number>((resolve, reject) => {
-        const id = `__fbq-marker-${name}`;
-
-        const readCount = (el: Element | null) =>
-          el ? Number(el.getAttribute('data-count') || '0') : 0;
-
-        // Fast path — already bumped.
-        const existing = document.getElementById(id);
-        if (readCount(existing) > from) {
-          resolve(readCount(existing));
-          return;
-        }
-
-        let attrObs: MutationObserver | null = null;
-        let headObs: MutationObserver | null = null;
-        const timer = window.setTimeout(() => {
-          attrObs?.disconnect();
-          headObs?.disconnect();
-          reject(
-            new Error(
-              `[waitForFbqMarkerIncrease] timeout ${timeout}ms waiting ` +
-                `for #${id} data-count > ${from}`
-            )
-          );
-        }, timeout);
-
-        const watchAttr = (target: Element) => {
-          attrObs = new MutationObserver(() => {
-            const c = readCount(target);
-            if (c > from) {
-              window.clearTimeout(timer);
-              attrObs?.disconnect();
-              headObs?.disconnect();
-              resolve(c);
-            }
-          });
-          attrObs.observe(target, {
-            attributes: true,
-            attributeFilter: ['data-count'],
-          });
-          // Re-check synchronously in case it bumped between the fast
-          // path read and observer attachment.
-          const c = readCount(target);
-          if (c > from) {
-            window.clearTimeout(timer);
-            attrObs.disconnect();
-            resolve(c);
-          }
-        };
-
-        if (existing) {
-          watchAttr(existing);
-        } else {
-          // Marker not yet created — watch <head> for its insertion.
-          headObs = new MutationObserver(() => {
-            const el = document.getElementById(id);
-            if (el) {
-              headObs?.disconnect();
-              headObs = null;
-              watchAttr(el);
-            }
-          });
-          headObs.observe(document.head || document.documentElement, {
-            childList: true,
-            subtree: true,
-          });
-        }
-      }),
-    { name, from, timeout }
-  );
-}
-
-/**
- * Wait for the FIRST sonner toast to be inserted in the DOM. Resolves
- * with `{ at }` (timestamp ms) the instant a `[data-sonner-toast]` node
- * appears, then auto-disconnects the observer (one-shot).
- *
- * Implementation: a single MutationObserver on `document.body` with
- * `childList: true, subtree: true`. No polling, no waitForSelector loop.
- * Includes a fast-path check in case a toast is already present, and a
- * timeout that rejects + disconnects to avoid leaks.
- *
- * Usage:
- *   const seen = waitForSonnerToast(page);          // arm BEFORE the action
- *   await submitButton.click();
- *   const { at } = await Promise.race([seen, ...]); // race or await
- */
-function waitForSonnerToast(
-  page: Page,
-  opts: { timeout?: number } = {}
-): Promise<{ at: number }> {
-  const { timeout = 10_000 } = opts;
-  return page.evaluate(
-    ({ timeout }) =>
-      new Promise<{ at: number }>((resolve, reject) => {
-        const SELECTOR = '[data-sonner-toast]';
-        const matches = (n: Node) =>
-          n instanceof HTMLElement &&
-          (n.matches(SELECTOR) || !!n.querySelector?.(SELECTOR));
-
-        // Fast path — toast already in DOM.
-        if (document.querySelector(SELECTOR)) {
-          resolve({ at: Date.now() });
-          return;
-        }
-
-        let obs: MutationObserver | null = null;
-        const timer = window.setTimeout(() => {
-          obs?.disconnect();
-          reject(
-            new Error(
-              `[waitForSonnerToast] timeout ${timeout}ms waiting for ` +
-                `${SELECTOR}`
-            )
-          );
-        }, timeout);
-
-        obs = new MutationObserver((muts) => {
-          for (const m of muts) {
-            for (const n of Array.from(m.addedNodes)) {
-              if (matches(n)) {
-                window.clearTimeout(timer);
-                obs?.disconnect(); // ← one-shot
-                resolve({ at: Date.now() });
-                return;
-              }
-            }
-          }
-        });
-        obs.observe(document.body, { childList: true, subtree: true });
-      }),
-    { timeout }
-  );
-}
 
 async function installInstrumentation(page: Page) {
   await page.addInitScript(() => {
@@ -348,17 +203,6 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
       const w = window as unknown as { __fbqCalls: FbqCall[] };
       w.__fbqCalls.length = 0;
       try { sessionStorage.removeItem('__fbqCallsStash'); } catch { /* ignore */ }
-      for (const id of [
-        '__fbq-marker-any',
-        '__fbq-marker-Lead',
-        '__fbq-marker-CompleteRegistration',
-      ]) {
-        const m = document.getElementById(id);
-        if (m) {
-          m.setAttribute('data-count', '0');
-          m.removeAttribute('data-last-at');
-        }
-      }
       try { sessionStorage.removeItem('__meta_pixel_lead'); } catch { /* ignore */ }
       delete (window as unknown as { __metaPixelLeadLockUntil?: number })
         .__metaPixelLeadLockUntil;
@@ -375,6 +219,7 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
         );
       });
     });
+    await resetFbqMarkers(page, ['any', 'Lead', 'CompleteRegistration']);
     await expect(submitButton).toBeEnabled();
 
     // Two rapid clicks — the 2nd one races against React's disabled commit.
@@ -387,10 +232,9 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
 
     // Event-driven detection: wait for the explicit DOM marker injected by
     // the stub the moment CompleteRegistration is tracked. No timers.
-    await page.waitForSelector(
-      'meta#__fbq-marker-CompleteRegistration[data-count="1"]',
-      { state: 'attached', timeout: 10_000 }
-    );
+    await waitForFbqMarkerCount(page, 'CompleteRegistration', 1, {
+      timeout: 10_000,
+    });
 
     // Also assert the one-shot promise resolved with the expected payload.
     const firedDetail = await page.evaluate(
