@@ -28,6 +28,113 @@ export const fbqMarkerSelector = (name: string, count?: number) =>
     : `meta#${fbqMarkerId(name)}[data-count="${count}"]`;
 
 /**
+ * Install an `addInitScript` that wraps `window.fbq` so EVERY call also
+ * bumps the corresponding `<meta id="__fbq-marker-{name}">` counter
+ * (and a generic `__fbq-marker-any`). Safe to install on top of any
+ * test-owned `fbqStub`: this hooks via a `Object.defineProperty` setter
+ * so when the spec assigns its own stub, we wrap it transparently.
+ *
+ * Why a setter wrap and not a one-shot replacement? Specs assign their
+ * stub inside their own `addInitScript`, and the order between init
+ * scripts is preserved but each runs in isolation. By installing the
+ * setter FIRST, any subsequent assignment (whether by a test stub or by
+ * the app's meta-pixel.ts) is automatically wrapped to also bump
+ * markers — the test still sees its own stub running, just with markers
+ * as a side effect.
+ *
+ * Call BEFORE the test installs its own fbq stub:
+ *   await installFbqMarkerStub(page);
+ *   await installInstrumentation(page); // test-specific stub
+ */
+export async function installFbqMarkerStub(
+  page: import('@playwright/test').Page
+): Promise<void> {
+  await page.addInitScript(({ prefix }) => {
+    const bumpMarker = (
+      id: string,
+      extras: Record<string, string> = {}
+    ) => {
+      try {
+        let m = document.getElementById(id) as HTMLMetaElement | null;
+        if (!m) {
+          m = document.createElement('meta');
+          m.id = id;
+          m.setAttribute('name', id.replace(/^__/, ''));
+          m.setAttribute('data-count', '0');
+          (document.head || document.documentElement).appendChild(m);
+        }
+        const next = Number(m.getAttribute('data-count') || '0') + 1;
+        m.setAttribute('data-count', String(next));
+        m.setAttribute('data-last-at', String(Date.now()));
+        for (const [k, v] of Object.entries(extras)) m.setAttribute(k, v);
+      } catch { /* ignore */ }
+    };
+
+    const wrap = (orig: unknown): ((...a: unknown[]) => unknown) => {
+      const fn = typeof orig === 'function'
+        ? (orig as (...a: unknown[]) => unknown)
+        : (() => undefined);
+      const wrapped = (...args: unknown[]) => {
+        const verb = args[0];
+        const name = args[1];
+        bumpMarker(`${prefix}any`, {
+          'data-last-call': `${String(verb)}:${String(name ?? '')}`,
+        });
+        let threw: unknown = null;
+        let result: unknown;
+        try {
+          result = fn(...args);
+        } catch (e) {
+          threw = e;
+        }
+        if (verb === 'track' && typeof name === 'string') {
+          bumpMarker(`${prefix}${name}`, {
+            'data-status': threw ? 'blocked' : 'success',
+          });
+          // Dispatch a CustomEvent for tests that prefer event listeners.
+          try {
+            window.dispatchEvent(
+              new CustomEvent(`fbq:${name}`, {
+                detail: { args, at: Date.now(), blocked: !!threw },
+              })
+            );
+          } catch { /* ignore */ }
+        }
+        if (threw) throw threw;
+        return result;
+      };
+      // Tag the wrapper so we can detect double-wrapping.
+      (wrapped as unknown as { __isMarkerWrap?: boolean }).__isMarkerWrap = true;
+      return wrapped;
+    };
+
+    const isWrapped = (v: unknown) =>
+      typeof v === 'function' &&
+      (v as unknown as { __isMarkerWrap?: boolean }).__isMarkerWrap === true;
+
+    let current: unknown = (window as unknown as { fbq?: unknown }).fbq;
+    if (current && !isWrapped(current)) current = wrap(current);
+
+    try {
+      Object.defineProperty(window, 'fbq', {
+        configurable: true,
+        get() { return current; },
+        set(v: unknown) {
+          current = isWrapped(v) ? v : wrap(v);
+        },
+      });
+      Object.defineProperty(window, '_fbq', {
+        configurable: true,
+        get() { return current; },
+        set(v: unknown) {
+          current = isWrapped(v) ? v : wrap(v);
+        },
+      });
+    } catch { /* ignore — property may already be locked */ }
+  }, { prefix: FBQ_MARKER_PREFIX });
+}
+
+/**
  * Wait until `<meta id="__fbq-marker-{name}">` `data-count` strictly
  * exceeds `from`. Resolves with the new count the very moment it bumps.
  *

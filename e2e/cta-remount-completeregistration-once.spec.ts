@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { installFbqMarkerStub } from './utils/fbq-markers';
 
 /**
  * E2E: rapidly remount the CTASection by navigating between two routes that
@@ -17,6 +18,10 @@ import { test, expect, type Page } from '@playwright/test';
 type FbqCall = unknown[];
 
 async function installInstrumentation(page: Page) {
+  // Wrap window.fbq via a setter so EVERY call also bumps
+  // <meta id="__fbq-marker-*"> counters used by the shared marker
+  // utilities. Installed BEFORE the test-owned stub assignment.
+  await installFbqMarkerStub(page);
   await page.addInitScript(() => {
     const STASH_KEY = '__fbqCallsStash';
     const prior = (() => {
