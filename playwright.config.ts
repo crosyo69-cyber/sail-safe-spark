@@ -13,8 +13,12 @@ export default defineConfig({
   // qui marque comme "skipped on retry" les échecs non éligibles.
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI
-    ? [['list'], ['json', { outputFile: 'playwright-report/results.json' }]]
-    : [['list']],
+    ? [
+        ['list'],
+        ['json', { outputFile: 'playwright-report/results.json' }],
+        ['./e2e/utils/retry-filter-reporter.ts'],
+      ]
+    : [['list'], ['./e2e/utils/retry-filter-reporter.ts']],
   use: {
     baseURL: 'http://localhost:8080',
     trace: 'retain-on-failure',
