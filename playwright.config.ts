@@ -8,10 +8,17 @@ export default defineConfig({
   testDir: './e2e',
   timeout: 30_000,
   fullyParallel: false,
-  retries: 0,
+  // Retries activés uniquement en CI. La logique de filtrage (réseau/timeout
+  // uniquement) est appliquée par le hook `afterEach` dans e2e/retry-filter.ts,
+  // qui marque comme "skipped on retry" les échecs non éligibles.
+  retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI
-    ? [['list'], ['json', { outputFile: 'playwright-report/results.json' }]]
-    : [['list']],
+    ? [
+        ['list'],
+        ['json', { outputFile: 'playwright-report/results.json' }],
+        ['./e2e/utils/retry-filter-reporter.ts'],
+      ]
+    : [['list'], ['./e2e/utils/retry-filter-reporter.ts']],
   use: {
     baseURL: 'http://localhost:8080',
     trace: 'retain-on-failure',
