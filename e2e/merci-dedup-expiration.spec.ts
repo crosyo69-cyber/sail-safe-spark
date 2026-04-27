@@ -18,7 +18,7 @@ const DEDUP_KEY = `__gads_conv_${ADS_ID}/${ADS_LABEL}`;
 const GA4_FORM_DEDUP_KEY = '__ga4_form_submit_cta_reservation';
 
 // GA4 form_submit is tracked via CTASection, not Merci.tsx — but we still check
-the GA4 dedup key to ensure the 10s window is consistent.
+// the GA4 dedup key to ensure the 10s window is consistent.
 
 type GtagCall = [string, string, Record<string, unknown>?];
 
