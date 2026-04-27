@@ -8,7 +8,7 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "lint:e2e:duplicate-imports": "eslint --no-eslintrc --config eslint.config.js --rule '{\"no-duplicate-imports\":\"error\"}' 'e2e/**/*.{ts,tsx}'",
+    "lint:e2e:duplicate-imports": "eslint --no-inline-config --rule '{\"no-duplicate-imports\":\"error\"}' 'e2e/**/*.{ts,tsx}'",
     "preview": "vite preview",
     "test:e2e": "playwright test"
   },
