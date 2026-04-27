@@ -75,7 +75,60 @@ jobs:
         run: npx playwright install-deps
 
       - name: Run Playwright tests
+        id: run-tests
         run: npm run test:e2e
+
+      - name: Generate job summary
+        if: always()
+        run: |
+          REPORT="playwright-report/results.json"
+          {
+            echo "## 🎭 Playwright E2E — Résumé"
+            echo ""
+            if [ -f "$REPORT" ]; then
+              node -e "
+                const r = require('./' + process.env.REPORT);
+                const s = r.stats || {};
+                const dur = s.duration ? (s.duration / 1000).toFixed(2) + ' s' : 'n/a';
+                const expected = s.expected ?? 0;
+                const unexpected = s.unexpected ?? 0;
+                const flaky = s.flaky ?? 0;
+                const skipped = s.skipped ?? 0;
+                const total = expected + unexpected + flaky + skipped;
+                const status = unexpected > 0 ? '❌ Échec' : '✅ Succès';
+                console.log('| Métrique | Valeur |');
+                console.log('| --- | --- |');
+                console.log('| Statut | ' + status + ' |');
+                console.log('| Durée totale | ' + dur + ' |');
+                console.log('| Tests exécutés | ' + total + ' |');
+                console.log('| ✅ Réussis | ' + expected + ' |');
+                console.log('| ❌ Échecs | ' + unexpected + ' |');
+                console.log('| ⚠️ Flaky | ' + flaky + ' |');
+                console.log('| ⏭️ Ignorés | ' + skipped + ' |');
+                if (unexpected > 0) {
+                  console.log('');
+                  console.log('### Tests en échec');
+                  const failed = [];
+                  const walk = (suite) => {
+                    (suite.suites || []).forEach(walk);
+                    (suite.specs || []).forEach(sp => {
+                      (sp.tests || []).forEach(t => {
+                        const ok = (t.results || []).some(res => res.status === 'passed');
+                        const bad = (t.results || []).some(res => res.status === 'failed' || res.status === 'timedOut');
+                        if (bad && !ok) failed.push((sp.file || suite.file || '') + ' › ' + sp.title);
+                      });
+                    });
+                  };
+                  (r.suites || []).forEach(walk);
+                  failed.forEach(f => console.log('- ' + f));
+                }
+              "
+            else
+              echo "_Rapport JSON introuvable (\`$REPORT\`)._"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+        env:
+          REPORT: playwright-report/results.json
 
       - name: Upload Playwright report
         if: always()

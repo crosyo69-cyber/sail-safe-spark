@@ -9,7 +9,9 @@ export default defineConfig({
   timeout: 30_000,
   fullyParallel: false,
   retries: 0,
-  reporter: [['list']],
+  reporter: process.env.CI
+    ? [['list'], ['json', { outputFile: 'playwright-report/results.json' }]]
+    : [['list']],
   use: {
     baseURL: 'http://localhost:8080',
     trace: 'retain-on-failure',
