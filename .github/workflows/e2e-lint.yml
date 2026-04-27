@@ -1,0 +1,36 @@
+name: E2E Lint
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'e2e/**'
+      - 'eslint.config.js'
+      - 'package.json'
+      - '.github/workflows/e2e-lint.yml'
+  pull_request:
+    paths:
+      - 'e2e/**'
+      - 'eslint.config.js'
+      - 'package.json'
+      - '.github/workflows/e2e-lint.yml'
+
+jobs:
+  no-duplicate-imports:
+    name: ESLint — no duplicate imports in e2e
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fail on duplicate imports in e2e/
+        run: npm run lint:e2e:duplicate-imports
