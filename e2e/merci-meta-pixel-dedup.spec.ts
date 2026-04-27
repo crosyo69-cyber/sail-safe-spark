@@ -48,7 +48,7 @@ async function installInstrumentation(page: Page) {
     // Mark as already-initialized so meta-pixel.ts initMetaPixel() short-circuits
     // (it returns early when window.fbq is already defined).
     (window as unknown as { fbq: typeof recorder }).fbq = recorder;
-    (window as unknown as { _fbq: typeof recorder }).fbq = recorder;
+    (window as unknown as { _fbq: typeof recorder })._fbq = recorder;
 
     const reinstall = () => {
       const original = (window as unknown as { fbq: (...a: unknown[]) => void }).fbq;

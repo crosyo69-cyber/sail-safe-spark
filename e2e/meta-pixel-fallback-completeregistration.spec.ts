@@ -95,7 +95,10 @@ test.describe('Meta Pixel — fallback to CompleteRegistration when Lead unavail
     // The first call: 'Lead' throws → fallback to 'CompleteRegistration' fires.
     // The second call: dedup window blocks → no event fires.
     await page.evaluate(async () => {
-      const mod = await import('/src/lib/meta-pixel.ts');
+      // Runtime URL served by Vite dev server; opaque to tsc.
+      const mod = await import(/* @vite-ignore */ '/src/lib/meta-pixel.ts' as string) as {
+        trackMetaLead: (opts: { content_name: string; content_category?: string }) => void;
+      };
       mod.trackMetaLead({ content_name: 'cta_reservation', content_category: 'kitesurf' });
       mod.trackMetaLead({ content_name: 'cta_reservation', content_category: 'kitesurf' });
     });
