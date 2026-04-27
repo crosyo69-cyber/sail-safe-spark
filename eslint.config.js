@@ -23,4 +23,11 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
+  {
+    files: ["e2e/**/*.{ts,tsx}"],
+    rules: {
+      "no-duplicate-imports": "error",
+      "@typescript-eslint/no-duplicate-imports": "off",
+    },
+  },
 );
