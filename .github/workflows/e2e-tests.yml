@@ -82,12 +82,14 @@ jobs:
         if: always()
         run: |
           REPORT="playwright-report/results.json"
+          STOPPED_LOG=".playwright-retry-stats/stopped.log"
           {
             echo "## 🎭 Playwright E2E — Résumé"
             echo ""
             if [ -f "$REPORT" ]; then
               node -e "
                 const r = require('./' + process.env.REPORT);
+                const fs = require('fs');
                 const s = r.stats || {};
                 const dur = s.duration ? (s.duration / 1000).toFixed(2) + ' s' : 'n/a';
                 const expected = s.expected ?? 0;
@@ -96,6 +98,31 @@ jobs:
                 const skipped = s.skipped ?? 0;
                 const total = expected + unexpected + flaky + skipped;
                 const status = unexpected > 0 ? '❌ Échec' : '✅ Succès';
+                // Compte les retries appliqués : chaque résultat avec retry > 0
+                let retriesApplied = 0;
+                const walkAll = (suite, fn) => {
+                  (suite.suites || []).forEach((s) => walkAll(s, fn));
+                  (suite.specs || []).forEach((sp) => {
+                    (sp.tests || []).forEach((t) => {
+                      (t.results || []).forEach((res) => fn(sp, t, res));
+                    });
+                  });
+                };
+                (r.suites || []).forEach((s) => walkAll(s, (_sp, _t, res) => {
+                  if ((res.retry ?? 0) > 0) retriesApplied++;
+                }));
+                // Compte les retries stoppés (déterministes) via le log écrit par retry-filter.ts
+                let retriesStopped = 0;
+                const stoppedTitles = [];
+                try {
+                  const log = fs.readFileSync(process.env.STOPPED_LOG, 'utf8');
+                  const lines = log.split('\n').filter(Boolean);
+                  retriesStopped = lines.length;
+                  lines.forEach((l) => {
+                    const [, title] = l.split('\t');
+                    if (title) stoppedTitles.push(title);
+                  });
+                } catch {}
                 console.log('| Métrique | Valeur |');
                 console.log('| --- | --- |');
                 console.log('| Statut | ' + status + ' |');
@@ -105,6 +132,13 @@ jobs:
                 console.log('| ❌ Échecs | ' + unexpected + ' |');
                 console.log('| ⚠️ Flaky | ' + flaky + ' |');
                 console.log('| ⏭️ Ignorés | ' + skipped + ' |');
+                console.log('| 🔁 Retries appliqués | ' + retriesApplied + ' |');
+                console.log('| 🛑 Retries stoppés (déterministes) | ' + retriesStopped + ' |');
+                if (stoppedTitles.length > 0) {
+                  console.log('');
+                  console.log('### 🛑 Retries stoppés par erreur déterministe');
+                  stoppedTitles.forEach((t) => console.log('- ' + t));
+                }
                 if (unexpected > 0) {
                   console.log('');
                   console.log('### Tests en échec');
@@ -122,6 +156,27 @@ jobs:
                   (r.suites || []).forEach(walk);
                   failed.forEach(f => console.log('- ' + f));
                 }
+                // Patterns réseau/timeout autorisés au retry
+                console.log('');
+                console.log('### 🌐 Patterns réseau/timeout éligibles au retry');
+                try {
+                  const mod = require('./e2e/utils/retry-patterns.ts');
+                  const pats = (mod.RETRYABLE_PATTERNS || []).map((p) => '\`' + p.toString() + '\`');
+                  if (pats.length) {
+                    pats.forEach((p) => console.log('- ' + p));
+                  } else {
+                    console.log('_Aucun pattern exporté._');
+                  }
+                } catch (e) {
+                  // Fallback statique si le require TS échoue (Node sans loader TS)
+                  const fallback = [
+                    '/timeout/i','/timed out/i','/net::ERR_/i','/ECONNREFUSED/i',
+                    '/ECONNRESET/i','/ETIMEDOUT/i','/ENOTFOUND/i','/EAI_AGAIN/i',
+                    '/socket hang up/i','/network/i','/navigation failed/i',
+                    '/Target page, context or browser has been closed/i',
+                  ];
+                  fallback.forEach((p) => console.log('- \`' + p + '\`'));
+                }
               "
             else
               echo "_Rapport JSON introuvable (\`$REPORT\`)._"
@@ -129,6 +184,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
         env:
           REPORT: playwright-report/results.json
+          STOPPED_LOG: .playwright-retry-stats/stopped.log
 
       - name: Upload Playwright report
         if: always()

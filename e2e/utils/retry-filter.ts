@@ -1,6 +1,7 @@
 import { test as base } from '@playwright/test';
-import { existsSync, readFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { RETRYABLE_PATTERNS, isRetryable } from './retry-patterns';
 
 /**
  * Filtre les retries Playwright : on n'autorise un retry QUE si l'échec
@@ -14,25 +15,8 @@ import { join } from 'node:path';
  */
 
 const ERROR_DIR = join(process.cwd(), '.playwright-last-errors');
-
-const RETRYABLE_PATTERNS: RegExp[] = [
-  /timeout/i,
-  /timed out/i,
-  /net::ERR_/i,
-  /ECONNREFUSED/i,
-  /ECONNRESET/i,
-  /ETIMEDOUT/i,
-  /ENOTFOUND/i,
-  /EAI_AGAIN/i,
-  /socket hang up/i,
-  /network/i,
-  /navigation failed/i,
-  /Target page, context or browser has been closed/i,
-];
-
-function isRetryable(message: string): boolean {
-  return RETRYABLE_PATTERNS.some((re) => re.test(message));
-}
+const STATS_DIR = join(process.cwd(), '.playwright-retry-stats');
+const STOPPED_LOG = join(STATS_DIR, 'stopped.log');
 
 export const test = base.extend({});
 
@@ -44,6 +28,15 @@ test.beforeEach(async ({}, testInfo) => {
 
   const lastError = readFileSync(file, 'utf8');
   if (!isRetryable(lastError)) {
+    try {
+      mkdirSync(STATS_DIR, { recursive: true });
+      appendFileSync(
+        STOPPED_LOG,
+        `${testInfo.testId}\t${(testInfo.titlePath || []).join(' › ')}\n`,
+      );
+    } catch {
+      // ignore
+    }
     testInfo.skip(
       true,
       `Retry ignoré : l'échec précédent n'est pas une erreur réseau/timeout.\n` +
@@ -53,3 +46,4 @@ test.beforeEach(async ({}, testInfo) => {
 });
 
 export { expect } from '@playwright/test';
+export { RETRYABLE_PATTERNS };
