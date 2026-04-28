@@ -98,8 +98,12 @@ jobs:
                 const skipped = s.skipped ?? 0;
                 const total = expected + unexpected + flaky + skipped;
                 const status = unexpected > 0 ? '❌ Échec' : '✅ Succès';
-                // Compte les retries appliqués : chaque résultat avec retry > 0
-                let retriesApplied = 0;
+                // Retries :
+                //  - retriesTotal   = nombre total de tentatives de retry, toutes
+                //                     tentatives confondues (chaque résultat avec retry > 0).
+                //  - retriesPerTest = nombre de tests distincts ayant subi >= 1 retry.
+                let retriesTotal = 0;
+                const retriedTestIds = new Set();
                 const walkAll = (suite, fn) => {
                   (suite.suites || []).forEach((s) => walkAll(s, fn));
                   (suite.specs || []).forEach((sp) => {
@@ -108,9 +112,13 @@ jobs:
                     });
                   });
                 };
-                (r.suites || []).forEach((s) => walkAll(s, (_sp, _t, res) => {
-                  if ((res.retry ?? 0) > 0) retriesApplied++;
+                (r.suites || []).forEach((s) => walkAll(s, (_sp, t, res) => {
+                  if ((res.retry ?? 0) > 0) {
+                    retriesTotal++;
+                    retriedTestIds.add(t.id || t.testId || (t.title + ':' + (res.workerIndex ?? '')));
+                  }
                 }));
+                const retriesPerTest = retriedTestIds.size;
                 // Compte les retries stoppés (déterministes) via le log écrit par retry-filter.ts
                 let retriesStopped = 0;
                 const stoppedTitles = [];
@@ -132,7 +140,8 @@ jobs:
                 console.log('| ❌ Échecs | ' + unexpected + ' |');
                 console.log('| ⚠️ Flaky | ' + flaky + ' |');
                 console.log('| ⏭️ Ignorés | ' + skipped + ' |');
-                console.log('| 🔁 Retries appliqués | ' + retriesApplied + ' |');
+                console.log('| 🔁 Retries totaux déclenchés | ' + retriesTotal + ' |');
+                console.log('| 🔂 Tests ayant subi un retry | ' + retriesPerTest + ' |');
                 console.log('| 🛑 Retries stoppés (déterministes) | ' + retriesStopped + ' |');
                 if (stoppedTitles.length > 0) {
                   console.log('');
