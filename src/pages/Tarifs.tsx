@@ -269,6 +269,20 @@ const Tarifs = () => {
                 Économisez jusqu'à <strong>150€</strong> en réservant hors saison !
               </span>
             </div>
+
+            {/* CTA principal — visible dès le haut de page */}
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+              <Button variant="heroFilled" size="lg" className="touch-target" asChild>
+                <Link to="/contact-reservation-kitesurf-hyeres" aria-label="Réserver un cours de kitesurf, wingfoil ou pumpfoil à Hyères">
+                  Réserver un cours
+                </Link>
+              </Button>
+              <Button variant="hero" size="lg" className="touch-target" asChild>
+                <a href="tel:0672716905" aria-label="Appeler Kitesurf Passion au 06 72 71 69 05">
+                  06 72 71 69 05
+                </a>
+              </Button>
+            </div>
           </div>
         </section>
 
