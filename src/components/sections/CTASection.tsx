@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Phone, Send } from "lucide-react";
 import { forwardRef, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { trackFormSubmit, trackPhoneClick, trackGoogleAdsConversion } from "@/lib/analytics";
 import { trackMetaLead, trackMetaContact } from "@/lib/meta-pixel";
@@ -10,7 +10,6 @@ import sunsetImage from "@/assets/almanarre-sunset.jpg?webp";
 
 export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_, ref) {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const [formData, setFormData] = useState({
     firstName: "",
     email: "",
