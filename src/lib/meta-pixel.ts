@@ -1,5 +1,5 @@
 // Meta (Facebook) Pixel initialization and tracking
-import { hasDailyConversionFlag, markDailyConversionFlag } from './conversion-dedup';
+import { hasDailyConversionFlag, isTodayTimestamp, markDailyConversionFlag } from './conversion-dedup';
 
 declare global {
   interface Window {
@@ -10,6 +10,27 @@ declare global {
 
 const META_PIXEL_ID = '733582700316147';
 let isInitialized = false;
+
+type MetaPixelBootstrap = ((...args: unknown[]) => void) & {
+  callMethod?: (...args: unknown[]) => void;
+  push?: MetaPixelBootstrap;
+  loaded?: boolean;
+  version?: string;
+  queue: unknown[][];
+};
+
+function storageHasTodayFlag(key: string): boolean {
+  try {
+    return isTodayTimestamp(sessionStorage.getItem(key)) || isTodayTimestamp(localStorage.getItem(key));
+  } catch {
+    return false;
+  }
+}
+
+function mirrorLegacyFlag(key: string, value = String(Date.now())): void {
+  try { sessionStorage.setItem(key, value); } catch { /* ignore */ }
+  try { localStorage.setItem(key, value); } catch { /* ignore */ }
+}
 
 /**
  * Initialize Meta Pixel
@@ -23,9 +44,14 @@ export function initMetaPixel(): void {
 
   if (f.fbq) return;
 
-  const n: any = (f.fbq = function (...args: unknown[]) {
-    n.callMethod ? n.callMethod.apply(n, args) : n.queue.push(args);
-  });
+  const n = function (...args: unknown[]) {
+    if (typeof n.callMethod === 'function') {
+      n.callMethod(...args);
+      return;
+    }
+    n.queue.push(args);
+  } as MetaPixelBootstrap;
+  f.fbq = n;
 
   if (!f._fbq) f._fbq = n;
   n.push = n;
@@ -50,7 +76,8 @@ export function initMetaPixel(): void {
   window.fbq('track', 'PageView');
 
   if ('requestIdleCallback' in window) {
-    (window as any).requestIdleCallback(loadScript, { timeout: 3000 });
+    (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => void })
+      .requestIdleCallback(loadScript, { timeout: 3000 });
   } else {
     setTimeout(loadScript, 2000);
   }
@@ -105,8 +132,8 @@ export function trackMetaLead(params?: Record<string, string>): void {
   try {
     if (
       hasDailyConversionFlag(DAILY_SCOPE) ||
-      sessionStorage.getItem(FLAG_KEY) ||
-      sessionStorage.getItem(LEGACY_KEY)
+      storageHasTodayFlag(FLAG_KEY) ||
+      storageHasTodayFlag(LEGACY_KEY)
     ) {
       // Keep in-memory lock armed only until the daily key rolls over.
       w.__metaPixelLeadLockUntil = lockUntilTomorrow;
@@ -128,9 +155,9 @@ export function trackMetaLead(params?: Record<string, string>): void {
     w.__metaPixelLeadLockUntil = lockUntilTomorrow;
     try {
       markDailyConversionFlag(DAILY_SCOPE);
-      sessionStorage.setItem(FLAG_KEY, String(ts));
+      mirrorLegacyFlag(FLAG_KEY, String(ts));
       // Mirror to legacy key so older specs that read it still see the lock.
-      sessionStorage.setItem(LEGACY_KEY, String(ts));
+      mirrorLegacyFlag(LEGACY_KEY, String(ts));
     } catch { /* ignore */ }
   };
 

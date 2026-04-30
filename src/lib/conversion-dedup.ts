@@ -4,11 +4,24 @@ const CLEANUP_REGISTERED_FLAG = '__kspConversionDedupCleanupRegistered';
 
 type ConversionFlags = Record<string, string>;
 
-function getDailyKey(date = new Date()): string {
+export function getDailyConversionKey(date = new Date()): string {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   return `${CONVERSION_KEY_PREFIX}${year}-${month}-${day}`;
+}
+
+export function isTodayTimestamp(value: string | null, date = new Date()): boolean {
+  if (!value) return false;
+
+  const timestamp = Number(value);
+  const parsed = Number.isFinite(timestamp) ? timestamp : Date.parse(value);
+  if (!Number.isFinite(parsed)) return false;
+
+  const parsedDate = new Date(parsed);
+  return parsedDate.getFullYear() === date.getFullYear()
+    && parsedDate.getMonth() === date.getMonth()
+    && parsedDate.getDate() === date.getDate();
 }
 
 function safeStorage(type: 'sessionStorage' | 'localStorage'): Storage | null {
@@ -71,7 +84,7 @@ export function registerConversionDedupCleanup(): void {
 
 export function hasDailyConversionFlag(scope: string): boolean {
   registerConversionDedupCleanup();
-  const key = getDailyKey();
+  const key = getDailyConversionKey();
   const sessionFlags = readFlags(safeStorage('sessionStorage'), key);
   const localFlags = readFlags(safeStorage('localStorage'), key);
 
@@ -85,7 +98,7 @@ export function hasDailyConversionFlag(scope: string): boolean {
 
 export function markDailyConversionFlag(scope: string): void {
   registerConversionDedupCleanup();
-  const key = getDailyKey();
+  const key = getDailyConversionKey();
   const timestamp = new Date().toISOString();
 
   const sessionStorageRef = safeStorage('sessionStorage');
@@ -102,7 +115,7 @@ export function markDailyConversionFlag(scope: string): void {
 }
 
 export function clearDailyConversionFlag(scope: string): void {
-  const key = getDailyKey();
+  const key = getDailyConversionKey();
 
   (['sessionStorage', 'localStorage'] as const).forEach((type) => {
     const storage = safeStorage(type);
