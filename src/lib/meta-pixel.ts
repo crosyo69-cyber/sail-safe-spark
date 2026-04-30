@@ -1,4 +1,5 @@
 // Meta (Facebook) Pixel initialization and tracking
+import { hasDailyConversionFlag, markDailyConversionFlag } from './conversion-dedup';
 
 declare global {
   interface Window {
@@ -67,10 +68,10 @@ export function trackMetaPageView(): void {
 /**
  * Track a lead conversion (form submission).
  *
- * Dedup: per-session sessionStorage flag covers BOTH 'Lead' and
- * 'CompleteRegistration' (single shared key) so once either has fired in the
- * current browser session, no further Lead/CompleteRegistration call will
- * reach fbq — even across reloads or back navigation within the same tab.
+ * Dedup: daily sessionStorage + localStorage flag covers BOTH 'Lead' and
+ * 'CompleteRegistration' (single shared scope) so once either has fired today,
+ * no further Lead/CompleteRegistration call will reach fbq — even across
+ * reloads, back navigation, or home reloads.
  *
  * Fallback: if `fbq` is unavailable OR the 'Lead' call throws, we attempt
  * 'CompleteRegistration' (also a Meta standard event). Both outcomes consume
@@ -79,6 +80,7 @@ export function trackMetaPageView(): void {
 export function trackMetaLead(params?: Record<string, string>): void {
   const FLAG_KEY = 'conversion_fired_meta_lead'; // session-wide flag (shared with CR fallback)
   const LEGACY_KEY = '__meta_pixel_lead'; // kept for back-compat with existing e2e specs
+  const DAILY_SCOPE = 'meta:lead_complete_registration';
 
   // In-memory lock — survives rapid component remounts within the same JS
   // runtime (faster than sessionStorage and immune to storage quirks).
