@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL } from './utils/submit-button';
 import { installFbqMarkerStub } from './utils/fbq-markers';
 
 /**
@@ -102,7 +103,7 @@ test.describe('CTASection rapid remounts — CompleteRegistration once on submit
       window.dispatchEvent(new PopStateEvent('popstate'));
     });
 
-    const submitButton = page.getByRole('button', { name: /envoyer ma demande/i });
+    const submitButton = page.getByRole('button', { name: SUBMIT_IDLE_LABEL_RE });
     await submitButton.scrollIntoViewIfNeeded();
     await expect(submitButton).toBeVisible();
 

@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL } from './utils/submit-button';
 import { installFbqMarkerStub } from './utils/fbq-markers';
 
 /**
@@ -88,7 +89,7 @@ async function installInstrumentation(page: Page) {
  * of the submit button after navigation.
  */
 async function waitForFormReady(page: Page) {
-  const submitButton = page.getByRole('button', { name: /envoyer ma demande/i });
+  const submitButton = page.getByRole('button', { name: SUBMIT_IDLE_LABEL_RE });
   await submitButton.scrollIntoViewIfNeeded();
   await expect(submitButton).toBeVisible();
   await expect(submitButton).toBeEnabled();
@@ -128,14 +129,11 @@ async function fillAndSubmit(
   // and the lucide <Send /> icon is removed from the DOM. We also keep a
   // generic submit-button locator (by data-testid) so we can assert its
   // exact textContent without depending on the accessible name.
-  const loadingButton = page.getByRole('button', { name: /envoi en cours\.\.\./i });
+  const loadingButton = page.getByRole('button', { name: SUBMIT_LOADING_LABEL_RE });
   const submitByTestId = page.getByTestId('lead-submit');
 
-  // Allow the expected loading label to be overridden via env so the test
-  // tolerates a future copy change without code edits in the spec.
-  const expectedLoadingLabel = (
-    process.env.E2E_SUBMIT_LOADING_LABEL ?? 'Envoi en cours...'
-  ).trim();
+  // Single source of truth — see e2e/utils/submit-button.ts.
+  const expectedLoadingLabel = SUBMIT_LOADING_LABEL;
 
   await submitButton.click();
 
@@ -161,7 +159,7 @@ async function fillAndSubmit(
 
   // The original idle label must be gone while loading.
   await expect(
-    page.getByRole('button', { name: /^envoyer ma demande$/i }),
+    page.getByRole('button', { name: SUBMIT_IDLE_LABEL_RE }),
     `[${submitLabel}] Idle label "Envoyer ma demande" must disappear during loading`
   ).toHaveCount(0);
 
@@ -270,9 +268,7 @@ test.describe('Two CTA submissions, different emails — CompleteRegistration on
     // assertion is intentionally redundant with the in-helper check so any
     // failure clearly attributes the regression to "submit #2 did not show
     // the loading label" rather than to any later /merci assertion.
-    const expectedLoadingLabel = (
-      process.env.E2E_SUBMIT_LOADING_LABEL ?? 'Envoi en cours...'
-    ).trim();
+    const expectedLoadingLabel = SUBMIT_LOADING_LABEL;
     console.log(
       `[Test] Submit #2 loading-label assertion passed — observed exactly "${expectedLoadingLabel}" on the disabled, aria-busy="true" submit button before navigation to /merci.`
     );
