@@ -275,6 +275,7 @@ export function validateConversionDedup(): { ga4: number; ads: number; passed: b
   try {
     sessionStorage.removeItem(`__ga4_form_submit_${FORM_NAME}`);
     sessionStorage.removeItem(`__gads_conv_${GOOGLE_ADS_ID}/${CONV_LABEL}`);
+    clearDailyConversionFlag(`google_ads:${GOOGLE_ADS_ID}/${CONV_LABEL}`);
   } catch {
     // ignore
   }
@@ -304,6 +305,7 @@ export function validateConversionDedup(): { ga4: number; ads: number; passed: b
     try {
       sessionStorage.removeItem(`__ga4_form_submit_${FORM_NAME}`);
       sessionStorage.removeItem(`__gads_conv_${GOOGLE_ADS_ID}/${CONV_LABEL}`);
+      clearDailyConversionFlag(`google_ads:${GOOGLE_ADS_ID}/${CONV_LABEL}`);
     } catch {
       // ignore
     }
