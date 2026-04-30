@@ -10,7 +10,7 @@ import { installFbqMarkerStub } from './utils/fbq-markers';
  * This validates the in-memory + sessionStorage dedup combo in trackMetaLead:
  * even though the CTASection unmounts/remounts repeatedly (which would reset
  * any component-level state), the module-level lock survives within the JS
- * runtime and the sessionStorage key would survive across reloads.
+ * runtime and the persistent key would survive across reloads.
  *
  * Lead is simulated as unavailable (throws) so the fallback path is exercised.
  */
@@ -146,9 +146,9 @@ test.describe('CTASection rapid remounts — CompleteRegistration once on submit
     ).toBe(1);
 
     const dedupSet = await page.evaluate(
-      () => sessionStorage.getItem('__meta_pixel_lead') !== null
+      () => localStorage.getItem('conversion_fired_meta_lead') !== null
     );
-    expect(dedupSet, 'Dedup sessionStorage key must be set after the flow').toBe(true);
+    expect(dedupSet, 'Persistent dedup key must be set after the flow').toBe(true);
 
     const memLockSet = await page.evaluate(
       () => typeof (window as unknown as { __metaPixelLeadLockUntil?: number }).__metaPixelLeadLockUntil === 'number'

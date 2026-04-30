@@ -350,9 +350,9 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
 
     // Guards must have been engaged.
     const dedupSet = await page.evaluate(
-      () => sessionStorage.getItem('__meta_pixel_lead') !== null
+      () => localStorage.getItem('conversion_fired_meta_lead') !== null
     );
-    expect(dedupSet, 'Dedup sessionStorage key must be set after the flow').toBe(true);
+    expect(dedupSet, 'Persistent dedup key must be set after the flow').toBe(true);
 
     const memLockSet = await page.evaluate(
       () =>

@@ -136,8 +136,8 @@ test.describe('Meta Pixel — fallback to CompleteRegistration when Lead unavail
 
     // Sanity: dedup key must be set.
     const dedupSet = await page.evaluate(
-      () => sessionStorage.getItem('__meta_pixel_lead') !== null
+      () => localStorage.getItem('conversion_fired_meta_lead') !== null
     );
-    expect(dedupSet, 'Dedup sessionStorage key must be set after fallback fire').toBe(true);
+    expect(dedupSet, 'Persistent dedup key must be set after fallback fire').toBe(true);
   });
 });

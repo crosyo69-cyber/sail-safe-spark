@@ -7,7 +7,7 @@ import { installFbqMarkerStub } from './utils/fbq-markers';
  * 'CompleteRegistration' must fire EXACTLY ONCE.
  *
  * Lead is simulated as unavailable (throws) so the fallback path is exercised.
- * Dedup is enforced by the shared 10s sessionStorage key '__meta_pixel_lead'.
+ * Dedup is enforced by the shared 10s persistent key '__meta_pixel_lead'.
  *
  * The double goBack() exercises an additional history transition where the
  * second back may be a no-op (no prior entry) but must not destabilize dedup.
@@ -150,8 +150,8 @@ test.describe('CTA triple-click + /merci + double back + home reload — Complet
     ).toBe(1);
 
     const dedupSet = await page.evaluate(
-      () => sessionStorage.getItem('__meta_pixel_lead') !== null
+      () => localStorage.getItem('conversion_fired_meta_lead') !== null
     );
-    expect(dedupSet, 'Dedup sessionStorage key must remain set after the flow').toBe(true);
+    expect(dedupSet, 'Persistent dedup key must remain set after the flow').toBe(true);
   });
 });
