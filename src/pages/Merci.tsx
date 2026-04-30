@@ -6,9 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { CheckCircle, Phone } from "lucide-react";
 import { trackGoogleAdsConversion } from "@/lib/analytics";
+import { pushMerciConversion } from "@/lib/gtm";
 
 const Merci = () => {
   useEffect(() => {
+    // GTM-driven trigger (preferred): fires even on direct navigation, and
+    // works independently of GA4/Ads init order. GTM must have a Custom
+    // Event trigger on `merci_conversion` wired to the Ads conversion tag.
+    pushMerciConversion('s2n0CL3puI4cEIW4u9AD');
+    // Legacy direct gtag fallback (kept for parity until GTM is fully live).
     trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
   }, []);
   return (
