@@ -205,9 +205,9 @@ export function trackPhoneClick(location: string): void {
 
 /**
  * Track Google Ads conversion (called on /merci page)
- * De-duplicates per session: once a conversion has fired for a given
- * conversionId in the current browser session, it will not fire again.
- * A `conversion_fired` flag in sessionStorage guards every call.
+ * De-duplicates per day using both sessionStorage and localStorage. The shared
+ * daily key (`ksp_conv_YYYY-MM-DD`) survives reload/back flows via localStorage
+ * while still mirroring into sessionStorage for the current tab session.
  */
 export function trackGoogleAdsConversion(conversionLabel?: string): void {
   if (!isInitialized || typeof window.gtag !== 'function' || !GOOGLE_ADS_ID) {
@@ -218,25 +218,27 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
     ? `${GOOGLE_ADS_ID}/${conversionLabel}`
     : GOOGLE_ADS_ID;
 
-  // Per-session dedup: if the flag exists, the conversion has already fired
-  // in this session — skip. Keyed by conversionId so distinct conversions
-  // (e.g. phone vs form) can each fire once per session.
-  try {
-    const flagKey = `conversion_fired_${conversionId}`;
-    if (sessionStorage.getItem(flagKey)) {
-      if (import.meta.env.DEV) {
-        console.log(
-          `%c[Analytics] Google Ads Conversion SKIPPED (already fired this session): ${conversionId}`,
-          'color: #f59e0b; font-weight: bold'
-        );
-      }
-      return;
+  // Daily dedup: if either sessionStorage OR localStorage contains the scope,
+  // the conversion has already fired today — skip. Keyed by conversionId so
+  // distinct conversions can each fire once per day.
+  const dedupScope = `google_ads:${conversionId}`;
+  if (hasDailyConversionFlag(dedupScope)) {
+    if (import.meta.env.DEV) {
+      console.log(
+        `%c[Analytics] Google Ads Conversion SKIPPED (already fired today): ${conversionId}`,
+        'color: #f59e0b; font-weight: bold'
+      );
     }
-    sessionStorage.setItem(flagKey, String(Date.now()));
-    // Legacy key kept for backwards compatibility with existing e2e tests
-    sessionStorage.setItem(`__gads_conv_${conversionId}`, String(Date.now()));
+    return;
+  }
+
+  try {
+    const ts = String(Date.now());
+    markDailyConversionFlag(dedupScope);
+    sessionStorage.setItem(`conversion_fired_${conversionId}`, ts);
+    sessionStorage.setItem(`__gads_conv_${conversionId}`, ts);
   } catch {
-    // sessionStorage may be unavailable (private mode) — fall through and fire
+    // storage may be unavailable (private mode) — fall through and fire
   }
 
   window.gtag('event', 'conversion', {
