@@ -1,4 +1,5 @@
 // Meta (Facebook) Pixel initialization and tracking
+import { hasDailyConversionFlag, markDailyConversionFlag } from './conversion-dedup';
 
 declare global {
   interface Window {
@@ -67,10 +68,10 @@ export function trackMetaPageView(): void {
 /**
  * Track a lead conversion (form submission).
  *
- * Dedup: per-session sessionStorage flag covers BOTH 'Lead' and
- * 'CompleteRegistration' (single shared key) so once either has fired in the
- * current browser session, no further Lead/CompleteRegistration call will
- * reach fbq — even across reloads or back navigation within the same tab.
+ * Dedup: daily sessionStorage + localStorage flag covers BOTH 'Lead' and
+ * 'CompleteRegistration' (single shared scope) so once either has fired today,
+ * no further Lead/CompleteRegistration call will reach fbq — even across
+ * reloads, back navigation, or home reloads.
  *
  * Fallback: if `fbq` is unavailable OR the 'Lead' call throws, we attempt
  * 'CompleteRegistration' (also a Meta standard event). Both outcomes consume
@@ -79,12 +80,16 @@ export function trackMetaPageView(): void {
 export function trackMetaLead(params?: Record<string, string>): void {
   const FLAG_KEY = 'conversion_fired_meta_lead'; // session-wide flag (shared with CR fallback)
   const LEGACY_KEY = '__meta_pixel_lead'; // kept for back-compat with existing e2e specs
+  const DAILY_SCOPE = 'meta:lead_complete_registration';
 
   // In-memory lock — survives rapid component remounts within the same JS
   // runtime (faster than sessionStorage and immune to storage quirks).
-  // Paired with the sessionStorage check below for cross-reload protection.
+  // Paired with the storage check below for cross-reload protection.
   const w = window as unknown as { __metaPixelLeadLockUntil?: number };
   const now = Date.now();
+  const tomorrow = new Date();
+  tomorrow.setHours(24, 0, 0, 0);
+  const lockUntilTomorrow = tomorrow.getTime();
   if (typeof w.__metaPixelLeadLockUntil === 'number' && now < w.__metaPixelLeadLockUntil) {
     if (import.meta.env.DEV) {
       console.log(
@@ -95,15 +100,19 @@ export function trackMetaLead(params?: Record<string, string>): void {
     return;
   }
 
-  // Per-session dedup: if the flag is set, the event already fired in this
-  // browser session — never fire again until the tab is closed.
+  // Daily dedup: if either sessionStorage OR localStorage contains the daily
+  // scope, the event already fired today — never fire again until tomorrow.
   try {
-    if (sessionStorage.getItem(FLAG_KEY) || sessionStorage.getItem(LEGACY_KEY)) {
-      // Keep in-memory lock indefinitely armed for this session.
-      w.__metaPixelLeadLockUntil = Number.MAX_SAFE_INTEGER;
+    if (
+      hasDailyConversionFlag(DAILY_SCOPE) ||
+      sessionStorage.getItem(FLAG_KEY) ||
+      sessionStorage.getItem(LEGACY_KEY)
+    ) {
+      // Keep in-memory lock armed only until the daily key rolls over.
+      w.__metaPixelLeadLockUntil = lockUntilTomorrow;
       if (import.meta.env.DEV) {
         console.log(
-          '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (already fired this session)',
+          '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (already fired today)',
           'color: #f59e0b; font-weight: bold'
         );
       }
@@ -115,9 +124,10 @@ export function trackMetaLead(params?: Record<string, string>): void {
 
   const markFired = () => {
     const ts = Date.now();
-    // Permanent lock for the rest of the session.
-    w.__metaPixelLeadLockUntil = Number.MAX_SAFE_INTEGER;
+    // Lock in this runtime until the daily key rolls over.
+    w.__metaPixelLeadLockUntil = lockUntilTomorrow;
     try {
+      markDailyConversionFlag(DAILY_SCOPE);
       sessionStorage.setItem(FLAG_KEY, String(ts));
       // Mirror to legacy key so older specs that read it still see the lock.
       sessionStorage.setItem(LEGACY_KEY, String(ts));
