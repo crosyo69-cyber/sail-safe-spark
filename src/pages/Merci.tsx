@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { CheckCircle, Phone } from "lucide-react";
 import { trackGoogleAdsConversion } from "@/lib/analytics";
 import { pushMerciConversion } from "@/lib/gtm";
+import { trackMetaLead } from "@/lib/meta-pixel";
 import { ConversionStatusIndicator } from "@/components/debug/ConversionStatusIndicator";
 
 const Merci = () => {
@@ -17,6 +18,13 @@ const Merci = () => {
     pushMerciConversion('s2n0CL3puI4cEIW4u9AD');
     // Legacy direct gtag fallback (kept for parity until GTM is fully live).
     trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
+    // Meta Pixel Lead — fired on the server-validated landing page so direct
+    // navigation to /merci (deep link, reload) also reports the conversion.
+    // Dedup contract (meta-pixel.ts): 10s sliding window on
+    // sessionStorage['__meta_pixel_lead'] + localStorage['conversion_fired_meta_lead'].
+    // → Reload < 10s: skipped (no double Lead).
+    // → Reload > 10s: fires once more (window expired by design).
+    trackMetaLead({ content_name: 'conversion_merci', content_category: 'merci_page' });
   }, []);
 
   // Show debug indicator in dev/preview, on lovable.app hosts, or when ?debug=1
