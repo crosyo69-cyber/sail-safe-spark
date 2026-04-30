@@ -12,7 +12,7 @@
     "typecheck:e2e": "tsc --noEmit -p tsconfig.e2e.json",
     "preview": "vite preview",
     "test:e2e": "playwright test",
-    "lint:no-empty-pattern": "bash -c 'out=$(eslint --format=json \"src/**/*.{ts,tsx}\" \"e2e/**/*.{ts,tsx}\" 2>/dev/null || true); echo \"$out\" | node -e \"let d=\\\"\\\";process.stdin.on(\\\"data\\\",c=>d+=c).on(\\\"end\\\",()=>{const r=JSON.parse(d);const hits=r.flatMap(f=>f.messages.filter(m=>m.ruleId===\\\"no-empty-pattern\\\").map(m=>({file:f.filePath,line:m.line,msg:m.message})));if(hits.length){console.error(\\\"no-empty-pattern violations:\\\");hits.forEach(h=>console.error(\\\"  \\\"+h.file+\\\":\\\"+h.line+\\\" \u2014 \\\"+h.msg));process.exit(1);}else{console.log(\\\"\u2713 no-empty-pattern: no violations\\\");}\"'"
+    "lint:no-empty-pattern": "node scripts/lint-no-empty-pattern.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
