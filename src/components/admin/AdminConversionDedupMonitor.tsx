@@ -9,20 +9,14 @@ import { useToast } from "@/hooks/use-toast";
 import { ShieldAlert, Trash2, RefreshCw } from "lucide-react";
 import {
   CONVERSION_DEDUP_BLOCK_EVENT,
+  CONVERSION_DEDUP_WINDOW_MS,
   clearAllDailyConversionFlags,
   clearConversionDedupBlockHistory,
   getConversionDedupBlockHistory,
   isConversionDedupDebugEnabled,
   setConversionDedupDebug,
   type ConversionDedupBlockEntry,
-  type ConversionDedupSource,
 } from "@/lib/conversion-dedup";
-
-const SOURCE_LABEL: Record<ConversionDedupSource, string> = {
-  sessionStorage: "sessionStorage",
-  localStorage: "localStorage",
-  "window.name": "window.name",
-};
 
 function formatDateTime(iso: string): string {
   try {
@@ -72,8 +66,8 @@ const AdminConversionDedupMonitor = () => {
   const onClearFlags = () => {
     clearAllDailyConversionFlags();
     toast({
-      title: "Flags du jour supprimés",
-      description: "sessionStorage, localStorage et window.name ont été nettoyés.",
+      title: "Flags de conversion supprimés",
+      description: "sessionStorage et localStorage ont été nettoyés.",
     });
   };
 
@@ -87,7 +81,9 @@ const AdminConversionDedupMonitor = () => {
               Déduplication des conversions
             </CardTitle>
             <CardDescription>
-              Derniers blocages enregistrés (CTA / merci) avec scope, date du jour et source du flag.
+              Derniers blocages enregistrés (CTA / merci) — fenêtre glissante de{" "}
+              {CONVERSION_DEDUP_WINDOW_MS / 1000}s. Source : sessionStorage ou
+              localStorage (miroir persistant).
             </CardDescription>
           </div>
           <div className="flex items-center gap-3">
@@ -117,7 +113,7 @@ const AdminConversionDedupMonitor = () => {
           </Button>
           <Button variant="destructive" size="sm" onClick={onClearFlags} className="gap-2">
             <Trash2 className="w-4 h-4" />
-            Supprimer les flags du jour
+            Supprimer les flags actifs
           </Button>
           <span className="text-sm text-muted-foreground self-center">
             {entries.length} blocage{entries.length > 1 ? "s" : ""} enregistré
@@ -136,30 +132,24 @@ const AdminConversionDedupMonitor = () => {
                 <li key={`${entry.blockedAt}-${idx}`} className="p-4 space-y-2">
                   <div className="flex flex-wrap items-center gap-2">
                     <Badge variant="outline" className="font-mono text-xs">
-                      {entry.scope}
+                      {entry.key}
                     </Badge>
-                    {entry.matchedScope === "*" && (
-                      <Badge variant="secondary" className="text-xs">wildcard</Badge>
+                    {entry.mirrorKey && (
+                      <Badge variant="secondary" className="font-mono text-xs">
+                        miroir : {entry.mirrorKey}
+                      </Badge>
                     )}
-                    <span className="text-xs text-muted-foreground">
-                      Jour ciblé : <span className="font-mono">{entry.date}</span>
-                    </span>
                     <span className="text-xs text-muted-foreground ml-auto">
                       {formatDateTime(entry.blockedAt)}
                     </span>
                   </div>
 
-                  <div className="flex flex-wrap gap-2">
-                    {entry.sources.map((src) => (
-                      <Badge key={src} className="text-xs">
-                        {SOURCE_LABEL[src]}
-                        {entry.timestamps[src] ? (
-                          <span className="ml-1 font-mono opacity-80">
-                            · {formatDateTime(entry.timestamps[src] as string)}
-                          </span>
-                        ) : null}
-                      </Badge>
-                    ))}
+                  <div className="flex flex-wrap gap-2 text-xs">
+                    <Badge>{entry.source}</Badge>
+                    <Badge variant="outline">
+                      Dernier fire : {formatDateTime(entry.lastFiredAt)}
+                    </Badge>
+                    <Badge variant="outline">Âge : {entry.ageMs} ms</Badge>
                   </div>
 
                   {entry.url && (
