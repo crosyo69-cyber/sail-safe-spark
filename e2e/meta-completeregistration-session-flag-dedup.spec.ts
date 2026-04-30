@@ -82,9 +82,9 @@ async function fillAndSubmitCta(page: Page, email: string) {
   await submitButton.scrollIntoViewIfNeeded();
   await expect(submitButton).toBeVisible();
 
-  await page.getByPlaceholder('Votre prénom').fill('TestUser');
-  await page.getByPlaceholder('Votre email').fill(email);
-  await page.getByPlaceholder('Votre téléphone').fill('0612345678');
+  await page.getByTestId('lead-firstname').fill('TestUser');
+  await page.getByTestId('lead-email').fill(email);
+  await page.getByTestId('lead-phone').fill('0612345678');
 
   // Anti-bot timestamp guard
   await page.waitForTimeout(3500);

@@ -131,9 +131,9 @@ test.describe('CTA + iframe Meta Pixel — CompleteRegistration once after /merc
     await submitButton.scrollIntoViewIfNeeded();
     await expect(submitButton).toBeVisible();
 
-    await page.getByPlaceholder('Votre prénom').fill('TestUser');
-    await page.getByPlaceholder('Votre email').fill('test@example.com');
-    await page.getByPlaceholder('Votre téléphone').fill('0612345678');
+    await page.getByTestId('lead-firstname').fill('TestUser');
+    await page.getByTestId('lead-email').fill('test@example.com');
+    await page.getByTestId('lead-phone').fill('0612345678');
 
     // Anti-bot guard requires >3s between mount and submit.
     await page.waitForTimeout(3500);
