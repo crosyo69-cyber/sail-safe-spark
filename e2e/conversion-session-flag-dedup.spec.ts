@@ -25,27 +25,46 @@ type GtagCall = [string, string, Record<string, unknown>?];
 
 async function installInstrumentation(page: Page) {
   await page.addInitScript(() => {
-    const calls: GtagCall[] = [];
+    const GTAG_STASH = '__gtagCallsStash';
+    const prior = (() => {
+      try {
+        const raw = sessionStorage.getItem(GTAG_STASH);
+        return raw ? (JSON.parse(raw) as GtagCall[]) : [];
+      } catch { return []; }
+    })();
+    const calls: GtagCall[] = prior;
     (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls = calls;
     (window as unknown as { dataLayer: unknown[] }).dataLayer = [];
 
-    const recorder = (...args: unknown[]) => {
-      calls.push(args as GtagCall);
+    const persist = () => {
+      try { sessionStorage.setItem(GTAG_STASH, JSON.stringify(calls)); } catch { /* ignore */ }
     };
-    (window as unknown as { gtag: typeof recorder }).gtag = recorder;
 
-    // Re-wrap after analytics.ts overwrites window.gtag during initGA4().
-    const reinstall = () => {
-      const original = (window as unknown as { gtag: (...a: unknown[]) => void }).gtag;
-      (window as unknown as { gtag: typeof recorder }).gtag = (...args: unknown[]) => {
-        calls.push(args as GtagCall);
-        try { original?.(...args); } catch { /* ignore */ }
-      };
+    const record = (...args: unknown[]) => {
+      calls.push(args as GtagCall);
+      persist();
     };
-    setTimeout(reinstall, 0);
-    setTimeout(reinstall, 100);
-    setTimeout(reinstall, 500);
-    setTimeout(reinstall, 1500);
+
+    const wrap = (orig: unknown): ((...a: unknown[]) => void) => {
+      const fn = typeof orig === 'function' ? (orig as (...a: unknown[]) => void) : undefined;
+      const wrapped = (...args: unknown[]) => {
+        record(...args);
+        try { fn?.(...args); } catch { /* ignore */ }
+      };
+      (wrapped as unknown as { __isGtagRecorder?: boolean }).__isGtagRecorder = true;
+      return wrapped;
+    };
+
+    const isWrapped = (v: unknown) =>
+      typeof v === 'function' &&
+      (v as unknown as { __isGtagRecorder?: boolean }).__isGtagRecorder === true;
+
+    let current: unknown = wrap((window as unknown as { gtag?: unknown }).gtag);
+    Object.defineProperty(window, 'gtag', {
+      configurable: true,
+      get() { return current; },
+      set(v: unknown) { current = isWrapped(v) ? v : wrap(v); },
+    });
   });
 
   await page.route('**/functions/v1/send-contact-email', async (route) => {
