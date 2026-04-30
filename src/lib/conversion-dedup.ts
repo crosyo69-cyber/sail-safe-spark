@@ -169,4 +169,23 @@ export function clearDailyConversionFlag(scope: string): void {
 
     writeFlags(storage, key, flags);
   });
+
+  const navigationState = readNavigationFallback();
+  const navigationFlags = navigationState[key];
+  if (!navigationFlags) return;
+
+  delete navigationFlags[scope];
+  delete navigationFlags[ALL_SCOPES];
+
+  if (Object.keys(navigationFlags).length === 0) {
+    delete navigationState[key];
+  }
+
+  try {
+    window.name = Object.keys(navigationState).length === 0
+      ? ''
+      : `${NAVIGATION_FALLBACK_PREFIX}${JSON.stringify(navigationState)}`;
+  } catch {
+    // ignore fallback cleanup failures
+  }
 }
