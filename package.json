@@ -12,7 +12,7 @@
     "typecheck:e2e": "tsc --noEmit -p tsconfig.e2e.json",
     "preview": "vite preview",
     "test:e2e": "playwright test",
-    "lint:no-empty-pattern": "eslint --no-inline-config --rule '{\"no-empty-pattern\":\"error\"}' '{src,e2e}/**/*.{ts,tsx}'"
+    "lint:no-empty-pattern": "eslint --no-config-lookup --rule '{\"no-empty-pattern\":\"error\"}' '{src,e2e}/**/*.{ts,tsx}'"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
