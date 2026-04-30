@@ -229,15 +229,18 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
   // validated by the Playwright dedup suite.
   markFired(dedupKey, mirrorKey);
 
-  if (typeof window.gtag === 'function') {
-    window.gtag('event', 'conversion', {
-      send_to: conversionId,
-    });
-  } else if (import.meta.env.DEV) {
-    console.warn(
-      `[Analytics] gtag unavailable — conversion fire skipped, dedup armed for ${conversionId}`
-    );
+  // Bootstrap gtag/dataLayer if init hasn't run yet (e.g. direct landing on
+  // /merci before App's init effect has executed). The actual gtag.js script
+  // loaded by initGA4() will pick up the queued call from dataLayer.
+  if (typeof window.gtag !== 'function') {
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function gtag(...args: unknown[]) {
+      window.dataLayer.push(args);
+    };
   }
+  window.gtag('event', 'conversion', {
+    send_to: conversionId,
+  });
 
   if (import.meta.env.DEV) {
     console.log(
