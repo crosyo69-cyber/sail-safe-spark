@@ -43,10 +43,8 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
 
     // Time-based check — form should take at least 3 seconds
     if (Date.now() - formTimestamp < 3000) {
-      toast({
-        title: "Erreur",
+      toast.error("Erreur", {
         description: "Veuillez prendre le temps de remplir le formulaire.",
-        variant: "destructive",
       });
       submitLockRef.current = false;
       return;
@@ -76,10 +74,8 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
       navigate("/merci");
     } catch (error) {
       console.error("CTA form error:", error);
-      toast({
-        title: "Erreur",
+      toast.error("Erreur", {
         description: "Une erreur est survenue. Veuillez réessayer ou nous appeler directement.",
-        variant: "destructive",
       });
       submitLockRef.current = false;
     } finally {
