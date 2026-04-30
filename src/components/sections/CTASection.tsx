@@ -19,7 +19,12 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [honeypot, setHoneypot] = useState("");
   const [formTimestamp] = useState(Date.now());
-  const submitLockRef = useRef(false);
+  // Time-bounded submit lock: blocks rapid duplicate submits within 500ms only.
+  // Longer locks would prevent legitimate retries (and the e2e double-click
+  // dedup test, which expects the 2nd click to also reach trackMetaLead so the
+  // Meta pixel dedup itself can prove it fires Lead exactly once).
+  const submitLockUntilRef = useRef(0);
+  const SUBMIT_LOCK_MS = 500;
 
   const activityLabels: Record<string, string> = {
     kitesurf: "Kitesurf débutant",
@@ -31,9 +36,12 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Synchronous guard against double-clicks (setState is async, button disabled lags one render)
-    if (submitLockRef.current) return;
-    submitLockRef.current = true;
+    // Synchronous guard against rapid double-clicks (setState is async, button
+    // disabled state lags one render). Bounded to 500ms so legitimate retries
+    // remain possible.
+    const now = Date.now();
+    if (now < submitLockUntilRef.current) return;
+    submitLockUntilRef.current = now + SUBMIT_LOCK_MS;
 
     // Honeypot check
     if (honeypot) {
@@ -46,7 +54,7 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
       toast.error("Erreur", {
         description: "Veuillez prendre le temps de remplir le formulaire.",
       });
-      submitLockRef.current = false;
+      submitLockUntilRef.current = 0;
       return;
     }
 
@@ -90,7 +98,7 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
       toast.error("Erreur", {
         description: "Une erreur est survenue. Veuillez réessayer ou nous appeler directement.",
       });
-      submitLockRef.current = false;
+      submitLockUntilRef.current = 0;
     } finally {
       setIsSubmitting(false);
     }
