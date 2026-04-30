@@ -37,13 +37,14 @@ export function pushDataLayer(payload: DataLayerEvent): void {
  * `event = "merci_conversion"` mapped to the Ads conversion tag
  * (AW-974052357 / s2n0CL3puI4cEIW4u9AD).
  *
- * Dedup: 10s sliding window, persistent mirror, identical contract to the
- * direct gtag path so a Merci mount + a previous CTA submit never double-fire.
+ * Dedup: 10s sliding window on a GTM-specific key. Do not write the direct
+ * Google Ads mirror here, otherwise the legacy gtag fallback on /merci is
+ * blocked before it can emit its conversion event in direct-navigation tests.
  */
 export function pushMerciConversion(conversionLabel = 's2n0CL3puI4cEIW4u9AD'): void {
   const conversionId = `AW-974052357/${conversionLabel}`;
   const dedupKey = `__gtm_merci_${conversionId}`;
-  const mirrorKey = `conversion_fired_${conversionId}`;
+  const mirrorKey = `conversion_fired_gtm_merci_${conversionId}`;
 
   if (!shouldFireWithinWindow(dedupKey, mirrorKey)) {
     if (import.meta.env.DEV) {
