@@ -2,16 +2,19 @@ import { test, expect, type Page } from '@playwright/test';
 import { installFbqMarkerStub } from './utils/fbq-markers';
 
 /**
- * E2E: two distinct CTA submissions (different emails) within the same page
- * session (no full reload). Each click must trigger 'CompleteRegistration'
- * EXACTLY ONCE — never twice for a single click.
+ * E2E: two distinct CTA submissions (different emails) within the same browser
+ * session. Per the strict per-session rule for Meta Pixel, ONLY THE FIRST
+ * submission must fire CompleteRegistration. The second submission, even with
+ * a different email and even after the 10s sliding window has expired, MUST
+ * be blocked by the permanent localStorage flag `conversion_fired_meta_lead`.
  *
  * Flow:
  *   1. Fill form with email A → submit → land on /merci → assert 1 fire.
  *   2. goBack to homepage (SPA, no reload).
- *   3. Wait >10s so the dedup window expires (otherwise the 2nd click is
- *      legitimately skipped and we cannot assert "1 fire per click").
- *   4. Fill form with email B → submit → land on /merci → assert 2 fires total.
+ *   3. Wait >10s so the 10s window has clearly expired (proves the permanent
+ *      flag — not the sliding window — is what blocks the 2nd fire).
+ *   4. Fill form with email B → submit → land on /merci → assert STILL 1 fire.
+ *   5. Assert the persistent localStorage flag is set throughout.
  *
  * Lead is forced to fail so the fallback path ('CompleteRegistration') is the
  * one being measured.
@@ -162,7 +165,7 @@ async function fillAndSubmit(page: Page, email: string) {
   ).toBeVisible();
 
   await expect(
-    page.getByRole('link', { name: /06 72 71 69 05/ })
+    page.getByRole('main').getByRole('link', { name: /06 72 71 69 05/ })
   ).toHaveAttribute('href', 'tel:0672716905');
 }
 
@@ -180,8 +183,8 @@ async function waitForCompleteRegistrationCount(page: Page, expected: number) {
     .toBe(expected);
 }
 
-test.describe('Two CTA submissions, different emails — CompleteRegistration once per click', () => {
-  test('submit A → goBack → wait dedup window → submit B → 2 total CompleteRegistration fires', async ({ page }) => {
+test.describe('Two CTA submissions, different emails — CompleteRegistration once per session', () => {
+  test('submit A → goBack → wait >10s → submit B → still only 1 CompleteRegistration (permanent session flag)', async ({ page }) => {
     await installInstrumentation(page);
 
     await page.goto('/');
@@ -192,14 +195,24 @@ test.describe('Two CTA submissions, different emails — CompleteRegistration on
     await waitForCompleteRegistrationCount(page, 1);
     console.log('[Test] After submit #1 — CompleteRegistration fires: 1');
 
+    // The permanent per-session flag must be armed after the first fire.
+    const flagAfterFirst = await page.evaluate(
+      () => localStorage.getItem('conversion_fired_meta_lead')
+    );
+    expect(
+      flagAfterFirst,
+      'Persistent flag conversion_fired_meta_lead must be set after first fire'
+    ).not.toBeNull();
+
     // ----- Navigate back to homepage WITHOUT reload (SPA) -----
     await page.goBack();
     await page.waitForURL('**/', { timeout: 5_000 });
     // Wait for the CTA form to be interactive again on home — replaces a sleep.
     await waitForFormReady(page);
 
-    // Poll the dedup persistent key until the 10s window has expired,
-    // instead of sleeping 11s blindly.
+    // Poll until the 10s sliding window has clearly expired. We deliberately
+    // wait beyond 10s to PROVE the second fire is blocked by the permanent
+    // session flag (not by the sliding window).
     await expect
       .poll(
         () =>
@@ -211,9 +224,12 @@ test.describe('Two CTA submissions, different emails — CompleteRegistration on
       )
       .toBeGreaterThan(10_000);
 
-    // ----- Submission #2 (email B) -----
+    // ----- Submission #2 (email B) — MUST NOT fire CompleteRegistration -----
     await fillAndSubmit(page, 'bob@example.com');
-    await waitForCompleteRegistrationCount(page, 2);
+
+    // Give the app some time to (incorrectly) fire — if dedup works, no new
+    // CompleteRegistration call will appear in __fbqCalls.
+    await page.waitForTimeout(1_000);
 
     const calls = await page.evaluate(
       () => (window as unknown as { __fbqCalls: FbqCall[] }).__fbqCalls
@@ -234,7 +250,16 @@ test.describe('Two CTA submissions, different emails — CompleteRegistration on
     expect(leadFires.length, 'Lead must never successfully fire when blocked').toBe(0);
     expect(
       completeRegFires.length,
-      'Each click must produce exactly 1 CompleteRegistration → 2 total for 2 clicks'
-    ).toBe(2);
+      'Strict per-session rule: only the FIRST submit fires; the 2nd is blocked by the permanent flag'
+    ).toBe(1);
+
+    // Flag must still be present after the second (blocked) attempt.
+    const flagAfterSecond = await page.evaluate(
+      () => localStorage.getItem('conversion_fired_meta_lead')
+    );
+    expect(
+      flagAfterSecond,
+      'Persistent flag must remain set after 2nd (blocked) submission'
+    ).not.toBeNull();
   });
 });
