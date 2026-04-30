@@ -1,10 +1,5 @@
 // Google Analytics 4 initialization and utilities
-import {
-  clearDailyConversionFlag,
-  hasDailyConversionFlag,
-  isTodayTimestamp,
-  markDailyConversionFlag,
-} from './conversion-dedup';
+import { markFired, shouldFireWithinWindow } from './conversion-dedup';
 
 declare global {
   interface Window {
@@ -17,19 +12,6 @@ const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
 const GOOGLE_ADS_ID = 'AW-974052357';
 
 let isInitialized = false;
-
-function storageHasTodayFlag(key: string): boolean {
-  try {
-    return isTodayTimestamp(sessionStorage.getItem(key)) || isTodayTimestamp(localStorage.getItem(key));
-  } catch {
-    return false;
-  }
-}
-
-function mirrorLegacyFlag(key: string, value = String(Date.now())): void {
-  try { sessionStorage.setItem(key, value); } catch { /* ignore */ }
-  try { localStorage.setItem(key, value); } catch { /* ignore */ }
-}
 
 /**
  * Initialize Google Analytics 4
