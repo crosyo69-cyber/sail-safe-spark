@@ -51,8 +51,16 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
     }
 
     setIsSubmitting(true);
-    trackFormSubmit("cta_reservation", "homepage_cta", { activity: formData.activity });
-    trackMetaLead({ content_name: "cta_reservation", content_category: formData.activity });
+    try {
+      trackFormSubmit("cta_reservation", "homepage_cta", { activity: formData.activity });
+    } catch (err) {
+      if (import.meta.env.DEV) console.warn("[CTA] trackFormSubmit threw", err);
+    }
+    try {
+      trackMetaLead({ content_name: "cta_reservation", content_category: formData.activity });
+    } catch (err) {
+      if (import.meta.env.DEV) console.warn("[CTA] trackMetaLead threw", err);
+    }
 
     try {
       const { data, error } = await supabase.functions.invoke("send-contact-email", {
@@ -69,8 +77,13 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
       if (error) throw error;
 
       setFormData({ firstName: "", email: "", phone: "", activity: "kitesurf" });
-      // Fire Google Ads conversion immediately before redirect to avoid loss if navigation is interrupted
-      trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
+      // Fire Google Ads conversion immediately before redirect to avoid loss if navigation is interrupted.
+      // Wrapped so any throw (rare: e.g. analytics blocker) cannot prevent the /merci redirect.
+      try {
+        trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
+      } catch (err) {
+        if (import.meta.env.DEV) console.warn("[CTA] trackGoogleAdsConversion threw", err);
+      }
       navigate("/merci");
     } catch (error) {
       console.error("CTA form error:", error);
