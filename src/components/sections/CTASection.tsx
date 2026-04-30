@@ -128,6 +128,8 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
           {/* Form */}
           <form
             onSubmit={handleSubmit}
+            data-testid="lead-form"
+            aria-label="Formulaire de réservation kitesurf"
             className="bg-primary-foreground/10 backdrop-blur-xl rounded-3xl p-6 sm:p-10 border border-primary-foreground/20 max-w-2xl mx-auto mb-8"
           >
             {/* Honeypot - hidden from humans */}
@@ -146,6 +148,8 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
                 <input
                   type="text"
                   placeholder="Votre prénom"
+                  data-testid="lead-firstname"
+                  aria-label="Votre prénom"
                   value={formData.firstName}
                   onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                   required
@@ -156,6 +160,8 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
                 <input
                   type="email"
                   placeholder="Votre email"
+                  data-testid="lead-email"
+                  aria-label="Votre email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
@@ -166,6 +172,8 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
                 <input
                   type="tel"
                   placeholder="Votre téléphone"
+                  data-testid="lead-phone"
+                  aria-label="Votre téléphone"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   required
@@ -175,6 +183,8 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
               <div>
                 <select
                   value={formData.activity}
+                  data-testid="lead-activity"
+                  aria-label="Activité"
                   onChange={(e) => setFormData({ ...formData, activity: e.target.value })}
                   className="w-full h-14 px-5 rounded-xl bg-primary-foreground/10 border border-primary-foreground/20 text-primary-foreground focus:outline-none focus:border-sunset transition-colors"
                 >
@@ -190,6 +200,7 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
               type="submit"
               variant="sunset"
               size="xl"
+              data-testid="lead-submit"
               className="w-full sm:w-auto"
               disabled={isSubmitting}
             >

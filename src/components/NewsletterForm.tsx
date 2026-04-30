@@ -57,11 +57,18 @@ export const NewsletterForm = forwardRef<HTMLDivElement, NewsletterFormProps>(
 
   if (variant === "footer") {
     return (
-      <form onSubmit={handleSubmit} className={`space-y-3 ${className}`}>
+      <form
+        onSubmit={handleSubmit}
+        data-testid="newsletter-form-footer"
+        aria-label="Inscription newsletter (footer)"
+        className={`space-y-3 ${className}`}
+      >
         <div className="flex gap-2">
           <Input
             type="email"
             placeholder="Email newsletter"
+            data-testid="newsletter-email-footer"
+            aria-label="Email newsletter"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="bg-background/10 border-border/30 text-foreground placeholder:text-muted-foreground"
@@ -82,10 +89,17 @@ export const NewsletterForm = forwardRef<HTMLDivElement, NewsletterFormProps>(
 
   if (variant === "compact") {
     return (
-      <form onSubmit={handleSubmit} className={`flex flex-col sm:flex-row gap-3 ${className}`}>
+      <form
+        onSubmit={handleSubmit}
+        data-testid="newsletter-form-compact"
+        aria-label="Inscription newsletter"
+        className={`flex flex-col sm:flex-row gap-3 ${className}`}
+      >
         <Input
           type="email"
           placeholder="Entrez votre email"
+          data-testid="newsletter-email-compact"
+          aria-label="Entrez votre email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="flex-1"
@@ -118,11 +132,18 @@ export const NewsletterForm = forwardRef<HTMLDivElement, NewsletterFormProps>(
           Recevez nos conseils d'experts, prévisions météo et offres exclusives directement dans votre boîte mail.
         </p>
         
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          data-testid="newsletter-form-default"
+          aria-label="Inscription newsletter"
+          className="space-y-4"
+        >
           <div className="flex flex-col sm:flex-row gap-3">
             <Input
               type="email"
               placeholder="Votre adresse email"
+              data-testid="newsletter-email-default"
+              aria-label="Votre adresse email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="flex-1 h-12"
