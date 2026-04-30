@@ -1,9 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import {
-  waitForFbqMarkerIncrease,
   waitForFbqMarkerCount,
   resetFbqMarkers,
-  waitForSonnerToast,
 } from './utils/fbq-markers';
 
 /**
@@ -153,52 +151,13 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
     await page.getByTestId('lead-email').fill('test@example.com');
     await page.getByTestId('lead-phone').fill('0612345678');
 
-    // Anti-bot guard: arm the MutationObserver-based wait FIRST. It
-    // resolves the very moment __fbq-marker-Lead bumps (the first useful
-    // fbq call from the form). Then drive probe submissions via a page-
-    // side MutationObserver that re-clicks each time the rejection toast
-    // appears — no expect.poll, no fixed interval.
+    // Anti-bot guard: wait before the measured double-click burst so this
+    // spec validates dedup/locking only, not the contact form spam delay.
     await expect(submitButton).toBeEnabled();
+    await page.waitForTimeout(3500);
 
-    const markerBumped = waitForFbqMarkerIncrease(page, 'Lead', {
-      from: 0,
-      timeout: 15_000,
-    });
-
-    // One-shot, event-driven sonner toast detector — see
-    // `waitForSonnerToast` above. Armed BEFORE the click so the
-    // MutationObserver is already watching when sonner inserts the node.
-    const sonnerToastSeen = waitForSonnerToast(page, { timeout: 15_000 });
-
-    // Initial probe click.
-    await submitButton.click({ noWaitAfter: true, force: true }).catch(() => {});
-
-    // Race the two event-driven signals:
-    //   - markerBumped → the click went through, we're done.
-    //   - sonnerToastSeen → the click was rejected by the 3s anti-bot
-    //     guard. Issue exactly ONE re-click in response, then await the
-    //     marker bump for that retry.
-    const winner = await Promise.race([
-      markerBumped.then(() => 'marker' as const),
-      sonnerToastSeen.then(() => 'toast' as const),
-    ]);
-
-    if (winner === 'toast') {
-      // Single, deterministic retry — the guard window has now passed
-      // since the rejection was synchronous on the first click.
-      await submitButton
-        .click({ noWaitAfter: true, force: true })
-        .catch(() => {});
-      await markerBumped;
-    }
-
-    // The probe submission has navigated to /merci. Go back and reset
-    // state so the upcoming double-click burst is the only thing
+    // Reset state so the upcoming double-click burst is the only thing
     // measured by the assertions below.
-    if (page.url().includes('/merci')) {
-      await page.goBack();
-      await expect(submitButton).toBeVisible();
-    }
     await page.evaluate(() => {
       const w = window as unknown as { __fbqCalls: FbqCall[] };
       const clearDailyConversionFlags = (storage: Storage) => {
