@@ -222,7 +222,12 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
               variant="sunset"
               size="xl"
               data-testid="lead-submit"
-              className="w-full sm:w-auto"
+              className={`w-full sm:w-auto ${
+                isSubmitting
+                  ? "!transition-none !transform-none hover:!scale-100"
+                  : ""
+              }`}
+              disabled={isSubmitting}
               aria-disabled={isSubmitting}
               aria-busy={isSubmitting}
             >
