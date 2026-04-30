@@ -1,23 +1,9 @@
 // Meta (Facebook) Pixel initialization and tracking
 import { markFired, shouldFireWithinWindow } from './conversion-dedup';
 
-/**
- * Persistent per-session flag for Meta Pixel Lead/CompleteRegistration.
- * Once set, NO further Lead/CompleteRegistration fires until the user clears
- * localStorage or starts a fresh browser profile. This is stricter than the
- * 10s sliding window used for Google Ads — Meta wants exactly 1 conversion
- * per session navigateur.
- */
-const META_LEAD_SESSION_FLAG = 'conversion_fired_meta_lead';
-
-function isMetaLeadSessionLocked(): boolean {
-  if (typeof window === 'undefined') return false;
-  try {
-    return window.localStorage.getItem(META_LEAD_SESSION_FLAG) !== null;
-  } catch {
-    return false;
-  }
-}
+const META_LEAD_KEY = '__meta_pixel_lead';
+const META_LEAD_MIRROR_KEY = 'conversion_fired_meta_lead';
+const META_LEAD_WINDOW_MS = 10_000;
 
 declare global {
   interface Window {
@@ -111,24 +97,6 @@ export function trackMetaPageView(): void {
  * Both consume the same dedup slot.
  */
 export function trackMetaLead(params?: Record<string, string>): void {
-  const KEY = '__meta_pixel_lead';
-  const MIRROR = 'conversion_fired_meta_lead';
-  const WINDOW_MS = 10_000;
-
-  // Strict per-session permanent lock for Meta Pixel.
-  // Once Lead/CompleteRegistration has ever fired in this browser profile,
-  // never fire it again — regardless of how much time has passed.
-  // This is INTENTIONALLY stricter than the Google Ads 10s sliding window.
-  if (isMetaLeadSessionLocked()) {
-    if (import.meta.env.DEV) {
-      console.log(
-        '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (permanent session flag)',
-        'color: #f59e0b; font-weight: bold'
-      );
-    }
-    return;
-  }
-
   // Synchronous in-memory lock — guards against true parallel calls
   // (e.g. Promise.all([click, click])) that race BEFORE either has had
   // a chance to write to sessionStorage. Storage writes happen after
@@ -145,7 +113,7 @@ export function trackMetaLead(params?: Record<string, string>): void {
     return;
   }
 
-  if (!shouldFireWithinWindow(KEY, MIRROR)) {
+  if (!shouldFireWithinWindow(META_LEAD_KEY, META_LEAD_MIRROR_KEY)) {
     if (import.meta.env.DEV) {
       console.log(
         '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (10s dedup window)',
@@ -157,14 +125,13 @@ export function trackMetaLead(params?: Record<string, string>): void {
 
   // Arm the in-memory lock IMMEDIATELY so any synchronous re-entry is blocked,
   // even before fbq returns or storage is written.
-  w.__metaPixelLeadLockUntil = now + WINDOW_MS;
+  w.__metaPixelLeadLockUntil = now + META_LEAD_WINDOW_MS;
 
-  // Arm the persistent session flag IMMEDIATELY (before fbq is called) so
+  // Arm the persistent dedup flag IMMEDIATELY (before fbq is called) so
   // that a throw inside fbq (or a stub that throws in tests) cannot leave
-  // the flag unarmed and allow re-fires on subsequent reloads. This makes
-  // the per-session lock truly persistent — it applies to BOTH the Lead
-  // event and the CompleteRegistration fallback.
-  markFired(KEY, MIRROR);
+  // the flag unarmed and allow re-fires on subsequent reloads. This applies
+  // to BOTH the Lead event and the CompleteRegistration fallback.
+  markFired(META_LEAD_KEY, META_LEAD_MIRROR_KEY);
   const markIfFired = () => {
     /* already marked above */
   };
