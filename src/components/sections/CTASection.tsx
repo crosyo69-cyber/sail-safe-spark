@@ -223,7 +223,8 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
               size="xl"
               data-testid="lead-submit"
               className="w-full sm:w-auto"
-              disabled={isSubmitting}
+              aria-disabled={isSubmitting}
+              aria-busy={isSubmitting}
             >
               {isSubmitting ? (
                 "Envoi en cours..."
