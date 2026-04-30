@@ -139,7 +139,8 @@ test.describe('Meta Pixel Lead — /merci dedup window lifecycle', () => {
     console.log(
       `[Phase A] Lead marker = ${markerAfterA} | Lead-family fbq count = ${afterPhaseA}`
     );
-    expect(markerAfterA, 'Lead marker must equal 1 after 5 rapid reloads').toBe(1);
+    // Deterministic: marker must be 1 AND remain 1 for 500ms (no late re-fire).
+    await expectFbqMarkerCountStable(page, 'Lead', 1, { stableForMs: 500 });
     expect(
       afterPhaseA,
       'Inside the 10s window, Lead+CompleteRegistration combined must equal 1'
@@ -188,7 +189,8 @@ test.describe('Meta Pixel Lead — /merci dedup window lifecycle', () => {
       `[Phase B] Lead marker = ${markerAfterB} | Lead-family fbq count = ${afterPhaseB}`
     );
 
-    expect(markerAfterB, 'Lead marker must equal 2 after window expiry + reload').toBe(2);
+    // Deterministic: marker must be 2 AND stable (no spurious 3rd fire).
+    await expectFbqMarkerCountStable(page, 'Lead', 2, { stableForMs: 500 });
     expect(
       afterPhaseB,
       'After the 10s window expired, the next /merci mount must fire a 2nd Lead (total = 2)'
