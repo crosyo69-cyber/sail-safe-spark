@@ -1,4 +1,9 @@
 // Google Analytics 4 initialization and utilities
+import {
+  clearDailyConversionFlag,
+  hasDailyConversionFlag,
+  markDailyConversionFlag,
+} from './conversion-dedup';
 
 declare global {
   interface Window {
