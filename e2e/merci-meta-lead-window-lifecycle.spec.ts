@@ -3,6 +3,7 @@ import {
   installFbqMarkerStub,
   waitForFbqMarkerCount,
   readFbqMarkerCount,
+  expectFbqMarkerCountStable,
 } from './utils/fbq-markers';
 
 /**
