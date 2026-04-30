@@ -1,6 +1,6 @@
 import { memo, useState, useEffect, useCallback, useLayoutEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
+import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap, CheckCircle2, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { trackCTAClick } from "@/lib/analytics";
 
@@ -106,6 +106,7 @@ export const HeroSection = memo(function HeroSection() {
   const slide = slides[currentSlide];
 
   return (
+    <>
     <section 
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ 
@@ -147,7 +148,7 @@ export const HeroSection = memo(function HeroSection() {
             }}
           />
           <div 
-            className="absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/30 to-navy/70" 
+            className="absolute inset-0 bg-gradient-to-b from-navy/60 via-navy/45 to-navy/85" 
             style={{ contain: 'strict' }}
           />
         </div>
@@ -172,63 +173,84 @@ export const HeroSection = memo(function HeroSection() {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 pt-24 pb-16 text-center">
         <div className="max-w-4xl mx-auto">
-          {/* Pre-title */}
+          {/* Pre-title — Fixed offer clarity (no slide dependency) */}
           <div 
-            key={`pretitle-${currentSlide}`}
-            className="inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 rounded-full px-4 py-2 mb-6 animate-fade-in"
+            className="inline-flex items-center gap-2 bg-sunset/20 backdrop-blur-sm border border-sunset/40 rounded-full px-4 py-2 mb-6 animate-fade-in"
           >
             <Shield className="w-4 h-4 text-sunset" />
-            <span className="text-primary-foreground text-sm font-medium">
-              {slide.preTitle}
+            <span className="text-primary-foreground text-sm font-semibold">
+              École de Kitesurf, Wingfoil & Pumpfoil à Hyères — depuis 1999
             </span>
           </div>
 
-          {/* Main Title */}
+          {/* Main Title — Fixed value proposition */}
           <h1 
-            key={`title-${currentSlide}`}
             className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-primary-foreground leading-tight mb-6 animate-fade-in"
             style={{ animationDelay: "0.1s" }}
           >
-            {slide.titleStart}{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-ocean to-turquoise">
-              {slide.titleHighlight}
+            Apprenez à glisser en{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sunset to-sunset-light">
+              toute sécurité
             </span>{" "}
-            {slide.titleEnd}
+            sur l'Almanarre
           </h1>
 
-          {/* Subtitle */}
-          <p 
+          {/* Dynamic activity sub-headline (changes with slide) */}
+          <p
             key={`subtitle-${currentSlide}`}
-            className="text-lg sm:text-xl text-primary-foreground/80 mb-8 max-w-2xl mx-auto animate-fade-in"
-            style={{ animationDelay: "0.2s" }}
+            className="text-lg sm:text-xl text-primary-foreground/90 mb-3 max-w-2xl mx-auto animate-fade-in font-medium"
+            style={{ animationDelay: "0.15s" }}
           >
-            {slide.subtitle}
+            <span className="text-sunset font-semibold">{slide.titleStart} {slide.titleEnd.replace('à Hyères', '').trim()}</span> — {slide.subtitle}
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+          {/* Reassurance micro-copy near CTA */}
+          <div
+            className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 mb-8 animate-fade-in"
+            style={{ animationDelay: "0.2s" }}
+          >
+            <span className="inline-flex items-center gap-1.5 text-primary-foreground/90 text-sm">
+              <CheckCircle2 className="w-4 h-4 text-sunset" /> Débutants bienvenus
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-primary-foreground/90 text-sm">
+              <CheckCircle2 className="w-4 h-4 text-sunset" /> Bateau d'assistance inclus
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-primary-foreground/90 text-sm">
+              <CheckCircle2 className="w-4 h-4 text-sunset" /> Acompte 50 € — réservation flexible
+            </span>
+          </div>
+
+          {/* CTA Buttons — Stronger primary hierarchy */}
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-4 animate-fade-in" style={{ animationDelay: "0.3s" }}>
             <Button 
               variant="heroFilled" 
               size="xl" 
+              className="w-full sm:w-auto shadow-sunset ring-2 ring-sunset/40 ring-offset-2 ring-offset-transparent hover:ring-sunset/60 animate-pulse-slow"
               asChild
               onClick={() => trackCTAClick("reserver_cours", "hero", "/contact-reservation-kitesurf-hyeres")}
             >
               <Link to="/contact-reservation-kitesurf-hyeres">
-                Réserver un Cours
+                Réserver mon cours
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </Button>
             <Button 
               variant="hero" 
-              size="xl" 
+              size="lg" 
+              className="w-full sm:w-auto"
               asChild
               onClick={() => trackCTAClick("voir_tarifs", "hero", "/tarifs-cours-kitesurf-wingfoil-hyeres")}
             >
               <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres">
-                Voir les Tarifs
+                Voir les tarifs
               </Link>
             </Button>
           </div>
+
+          {/* Trust micro-line under CTA */}
+          <p className="text-primary-foreground/70 text-xs sm:text-sm mb-10 animate-fade-in" style={{ animationDelay: "0.35s" }}>
+            Réponse sous 24 h • Sans engagement • Paiement sécurisé Stripe
+          </p>
 
           {/* Slide Indicators */}
           <div className="flex justify-center gap-3 mb-8">
@@ -268,5 +290,37 @@ export const HeroSection = memo(function HeroSection() {
         </div>
       </div>
     </section>
+
+    {/* Sticky mobile CTA — only visible on mobile, increases conversion */}
+    <div
+      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-background/95 backdrop-blur-lg border-t border-border shadow-xl px-3 py-2.5 flex gap-2 safe-area-pb"
+      role="region"
+      aria-label="Réservation rapide"
+    >
+      <Button
+        variant="default"
+        size="default"
+        className="flex-1 bg-gradient-to-r from-sunset to-sunset-light text-accent-foreground font-bold shadow-sunset touch-target"
+        asChild
+        onClick={() => trackCTAClick("reserver_cours", "sticky_mobile", "/contact-reservation-kitesurf-hyeres")}
+      >
+        <Link to="/contact-reservation-kitesurf-hyeres" aria-label="Réserver un cours">
+          Réserver
+          <ArrowRight className="w-4 h-4" />
+        </Link>
+      </Button>
+      <Button
+        variant="outline"
+        size="icon"
+        asChild
+        onClick={() => trackCTAClick("appeler", "sticky_mobile", "tel:0672716905")}
+        className="touch-target shrink-0"
+      >
+        <a href="tel:+33672716905" aria-label="Appeler l'école">
+          <Phone className="w-5 h-5" />
+        </a>
+      </Button>
+    </div>
+    </>
   );
 });
