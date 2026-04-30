@@ -84,9 +84,12 @@ export function trackMetaLead(params?: Record<string, string>): void {
 
   // In-memory lock — survives rapid component remounts within the same JS
   // runtime (faster than sessionStorage and immune to storage quirks).
-  // Paired with the sessionStorage check below for cross-reload protection.
+  // Paired with the storage check below for cross-reload protection.
   const w = window as unknown as { __metaPixelLeadLockUntil?: number };
   const now = Date.now();
+  const tomorrow = new Date();
+  tomorrow.setHours(24, 0, 0, 0);
+  const lockUntilTomorrow = tomorrow.getTime();
   if (typeof w.__metaPixelLeadLockUntil === 'number' && now < w.__metaPixelLeadLockUntil) {
     if (import.meta.env.DEV) {
       console.log(
@@ -105,8 +108,8 @@ export function trackMetaLead(params?: Record<string, string>): void {
       sessionStorage.getItem(FLAG_KEY) ||
       sessionStorage.getItem(LEGACY_KEY)
     ) {
-      // Keep in-memory lock indefinitely armed for this session.
-      w.__metaPixelLeadLockUntil = Number.MAX_SAFE_INTEGER;
+      // Keep in-memory lock armed only until the daily key rolls over.
+      w.__metaPixelLeadLockUntil = lockUntilTomorrow;
       if (import.meta.env.DEV) {
         console.log(
           '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (already fired today)',
@@ -121,8 +124,8 @@ export function trackMetaLead(params?: Record<string, string>): void {
 
   const markFired = () => {
     const ts = Date.now();
-    // Permanent lock for the rest of the session.
-    w.__metaPixelLeadLockUntil = Number.MAX_SAFE_INTEGER;
+    // Lock in this runtime until the daily key rolls over.
+    w.__metaPixelLeadLockUntil = lockUntilTomorrow;
     try {
       markDailyConversionFlag(DAILY_SCOPE);
       sessionStorage.setItem(FLAG_KEY, String(ts));
