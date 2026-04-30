@@ -1,6 +1,7 @@
 const CONVERSION_KEY_PREFIX = 'ksp_conv_';
 const ALL_SCOPES = '*';
 const CLEANUP_REGISTERED_FLAG = '__kspConversionDedupCleanupRegistered';
+const NAVIGATION_FALLBACK_PREFIX = 'ksp_conv_nav:';
 
 type ConversionFlags = Record<string, string>;
 
@@ -57,6 +58,32 @@ function writeFlags(storage: Storage | null, key: string, flags: ConversionFlags
   }
 }
 
+function readNavigationFallback(): Record<string, ConversionFlags> {
+  if (typeof window === 'undefined') return {};
+  try {
+    if (!window.name.startsWith(NAVIGATION_FALLBACK_PREFIX)) return {};
+    const parsed = JSON.parse(window.name.slice(NAVIGATION_FALLBACK_PREFIX.length)) as unknown;
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+      return parsed as Record<string, ConversionFlags>;
+    }
+  } catch {
+    // ignore malformed window.name values
+  }
+  return {};
+}
+
+function writeNavigationFallback(key: string, flags: ConversionFlags): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.name = `${NAVIGATION_FALLBACK_PREFIX}${JSON.stringify({
+      ...readNavigationFallback(),
+      [key]: flags,
+    })}`;
+  } catch {
+    // ignore fallback failures
+  }
+}
+
 function clearSessionConversionFlags(): void {
   const storage = safeStorage('sessionStorage');
   if (!storage) return;
@@ -87,12 +114,15 @@ export function hasDailyConversionFlag(scope: string): boolean {
   const key = getDailyConversionKey();
   const sessionFlags = readFlags(safeStorage('sessionStorage'), key);
   const localFlags = readFlags(safeStorage('localStorage'), key);
+  const navigationFlags = readNavigationFallback()[key] ?? {};
 
   return Boolean(
     sessionFlags[scope] ||
     sessionFlags[ALL_SCOPES] ||
     localFlags[scope] ||
-    localFlags[ALL_SCOPES]
+    localFlags[ALL_SCOPES] ||
+    navigationFlags[scope] ||
+    navigationFlags[ALL_SCOPES]
   );
 }
 
@@ -110,6 +140,10 @@ export function markDailyConversionFlag(scope: string): void {
   });
   writeFlags(localStorageRef, key, {
     ...readFlags(localStorageRef, key),
+    [scope]: timestamp,
+  });
+  writeNavigationFallback(key, {
+    ...(readNavigationFallback()[key] ?? {}),
     [scope]: timestamp,
   });
 }
