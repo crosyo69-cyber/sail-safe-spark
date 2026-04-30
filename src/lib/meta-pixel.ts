@@ -159,7 +159,15 @@ export function trackMetaLead(params?: Record<string, string>): void {
   // even before fbq returns or storage is written.
   w.__metaPixelLeadLockUntil = now + WINDOW_MS;
 
-  const markIfFired = () => markFired(KEY, MIRROR);
+  // Arm the persistent session flag IMMEDIATELY (before fbq is called) so
+  // that a throw inside fbq (or a stub that throws in tests) cannot leave
+  // the flag unarmed and allow re-fires on subsequent reloads. This makes
+  // the per-session lock truly persistent — it applies to BOTH the Lead
+  // event and the CompleteRegistration fallback.
+  markFired(KEY, MIRROR);
+  const markIfFired = () => {
+    /* already marked above */
+  };
 
   // Primary: Lead
   if (typeof window.fbq === 'function') {
