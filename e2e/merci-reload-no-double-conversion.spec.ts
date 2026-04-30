@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL } from './utils/submit-button';
 
 /**
  * E2E: verify that after a successful CTA submission + redirect to /merci,
@@ -66,7 +67,7 @@ test.describe('CTA → /merci → reload — no double conversion', () => {
     await installInstrumentation(page);
 
     await page.goto('/');
-    const submitButton = page.getByRole('button', { name: /envoyer ma demande/i });
+    const submitButton = page.getByRole('button', { name: SUBMIT_IDLE_LABEL_RE });
     await submitButton.scrollIntoViewIfNeeded();
     await expect(submitButton).toBeVisible();
 

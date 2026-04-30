@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL } from './utils/submit-button';
 
 /**
  * E2E: verify that a double-click on the homepage CTA "Envoyer ma demande"
@@ -66,7 +67,7 @@ test.describe('CTA homepage — double-click conversion dedup', () => {
     await page.goto('/');
 
     // Scroll to the CTA section to ensure it's mounted/visible.
-    const submitButton = page.getByRole('button', { name: /envoyer ma demande/i });
+    const submitButton = page.getByRole('button', { name: SUBMIT_IDLE_LABEL_RE });
     await submitButton.scrollIntoViewIfNeeded();
     await expect(submitButton).toBeVisible();
 

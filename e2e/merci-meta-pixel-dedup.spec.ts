@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL } from './utils/submit-button';
 import { installFbqMarkerStub } from './utils/fbq-markers';
 
 /**
@@ -78,7 +79,7 @@ test.describe('Meta Pixel — Lead/CompleteRegistration dedup across submit + re
     await installInstrumentation(page);
 
     await page.goto('/');
-    const submitButton = page.getByRole('button', { name: /envoyer ma demande/i });
+    const submitButton = page.getByRole('button', { name: SUBMIT_IDLE_LABEL_RE });
     await submitButton.scrollIntoViewIfNeeded();
     await expect(submitButton).toBeVisible();
 
