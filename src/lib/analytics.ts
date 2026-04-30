@@ -137,20 +137,25 @@ export function trackFormSubmit(
     ...(formData && { form_activity: formData.activity }),
   };
 
-  // Dedupe rapid duplicate submits (double-click safety) — 10s window per form_name
+  // Per-session dedup: once a form_submit has fired for this formName in the
+  // current browser session, never fire again — survives page reloads and
+  // back navigation within the same tab. Legacy timestamp key is kept and
+  // mirrored for back-compat with existing e2e specs and validators.
   try {
-    const key = `__ga4_form_submit_${formName}`;
-    const last = Number(sessionStorage.getItem(key) || '0');
-    if (Date.now() - last < 10_000) {
+    const flagKey = `conversion_fired_form_submit_${formName}`;
+    const legacyKey = `__ga4_form_submit_${formName}`;
+    if (sessionStorage.getItem(flagKey) || sessionStorage.getItem(legacyKey)) {
       if (import.meta.env.DEV) {
         console.log(
-          `%c[Analytics] Form Submit SKIPPED (deduped <10s): ${formName}`,
+          `%c[Analytics] Form Submit SKIPPED (already fired this session): ${formName}`,
           'color: #f59e0b; font-weight: bold'
         );
       }
       return;
     }
-    sessionStorage.setItem(key, String(Date.now()));
+    const ts = String(Date.now());
+    sessionStorage.setItem(flagKey, ts);
+    sessionStorage.setItem(legacyKey, ts);
   } catch {
     // sessionStorage unavailable — fall through
   }
