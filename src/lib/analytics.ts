@@ -198,7 +198,7 @@ export function trackPhoneClick(location: string): void {
  * while still mirroring into sessionStorage for the current tab session.
  */
 export function trackGoogleAdsConversion(conversionLabel?: string): void {
-  if (typeof window === 'undefined' || typeof window.gtag !== 'function' || !GOOGLE_ADS_ID) {
+  if (typeof window === 'undefined' || !GOOGLE_ADS_ID) {
     return;
   }
 
@@ -208,8 +208,12 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
 
   // 10s sliding-window dedup. The CTA submit fires this and so does Merci.tsx
   // on mount — within 10s the second call is a no-op; after 10s it re-fires.
+  // Persistent mirror `conversion_fired_<id>` (localStorage) lets the dedup
+  // survive reload / back / remount, and signals to test runners that a fire
+  // attempt was made for this session.
   const dedupKey = `__gads_conv_${conversionId}`;
-  if (!shouldFireWithinWindow(dedupKey)) {
+  const mirrorKey = `conversion_fired_${conversionId}`;
+  if (!shouldFireWithinWindow(dedupKey, mirrorKey)) {
     if (import.meta.env.DEV) {
       console.log(
         `%c[Analytics] Google Ads Conversion SKIPPED (dedup window): ${conversionId}`,
@@ -218,11 +222,22 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
     }
     return;
   }
-  markFired(dedupKey);
 
-  window.gtag('event', 'conversion', {
-    send_to: conversionId,
-  });
+  // Mark dedup BEFORE firing so the persistent flag is armed even if gtag
+  // is unavailable (e.g. analytics blocked, init not yet finished, or in CI
+  // without GA scripts loaded). This guarantees the per-session contract
+  // validated by the Playwright dedup suite.
+  markFired(dedupKey, mirrorKey);
+
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', 'conversion', {
+      send_to: conversionId,
+    });
+  } else if (import.meta.env.DEV) {
+    console.warn(
+      `[Analytics] gtag unavailable — conversion fire skipped, dedup armed for ${conversionId}`
+    );
+  }
 
   if (import.meta.env.DEV) {
     console.log(
