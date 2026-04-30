@@ -95,9 +95,9 @@ async function waitForFormReady(page: Page) {
 async function fillAndSubmit(page: Page, email: string) {
   const submitButton = await waitForFormReady(page);
 
-  await page.getByPlaceholder('Votre prénom').fill('TestUser');
-  await page.getByPlaceholder('Votre email').fill(email);
-  await page.getByPlaceholder('Votre téléphone').fill('0612345678');
+  await page.getByTestId('lead-firstname').fill('TestUser');
+  await page.getByTestId('lead-email').fill(email);
+  await page.getByTestId('lead-phone').fill('0612345678');
 
   // Poll the anti-bot 3s window instead of a fixed sleep — exits as soon as
   // 3.05s have elapsed since the form was deemed interactive.

@@ -149,9 +149,9 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
     await expect(submitButton).toBeVisible();
     await expect(submitButton).toBeEnabled();
 
-    await page.getByPlaceholder('Votre prénom').fill('TestUser');
-    await page.getByPlaceholder('Votre email').fill('test@example.com');
-    await page.getByPlaceholder('Votre téléphone').fill('0612345678');
+    await page.getByTestId('lead-firstname').fill('TestUser');
+    await page.getByTestId('lead-email').fill('test@example.com');
+    await page.getByTestId('lead-phone').fill('0612345678');
 
     // Anti-bot guard: arm the MutationObserver-based wait FIRST. It
     // resolves the very moment __fbq-marker-Lead bumps (the first useful
