@@ -6,12 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { CheckCircle, Phone } from "lucide-react";
 import { trackGoogleAdsConversion } from "@/lib/analytics";
-import { trackMetaLead } from "@/lib/meta-pixel";
 
 const Merci = () => {
   useEffect(() => {
     trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
-    trackMetaLead({ content_name: "conversion_merci" });
   }, []);
   return (
     <>
