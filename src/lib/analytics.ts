@@ -2,6 +2,7 @@
 import {
   clearDailyConversionFlag,
   hasDailyConversionFlag,
+  isTodayTimestamp,
   markDailyConversionFlag,
 } from './conversion-dedup';
 
@@ -16,6 +17,19 @@ const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
 const GOOGLE_ADS_ID = 'AW-974052357';
 
 let isInitialized = false;
+
+function storageHasTodayFlag(key: string): boolean {
+  try {
+    return isTodayTimestamp(sessionStorage.getItem(key)) || isTodayTimestamp(localStorage.getItem(key));
+  } catch {
+    return false;
+  }
+}
+
+function mirrorLegacyFlag(key: string, value = String(Date.now())): void {
+  try { sessionStorage.setItem(key, value); } catch { /* ignore */ }
+  try { localStorage.setItem(key, value); } catch { /* ignore */ }
+}
 
 /**
  * Initialize Google Analytics 4
@@ -142,14 +156,18 @@ export function trackFormSubmit(
     ...(formData && { form_activity: formData.activity }),
   };
 
-  // Per-session dedup: once a form_submit has fired for this formName in the
-  // current browser session, never fire again — survives page reloads and
-  // back navigation within the same tab. Legacy timestamp key is kept and
-  // mirrored for back-compat with existing e2e specs and validators.
+  // Daily dual-storage dedup: block if either sessionStorage or localStorage
+  // already contains today's shared conversion flag. Legacy keys are mirrored
+  // for compatibility with existing tests and validators.
   try {
+    const dailyScope = `ga4_form_submit:${formName}`;
     const flagKey = `conversion_fired_form_submit_${formName}`;
     const legacyKey = `__ga4_form_submit_${formName}`;
-    if (sessionStorage.getItem(flagKey) || sessionStorage.getItem(legacyKey)) {
+    if (
+      hasDailyConversionFlag(dailyScope) ||
+      storageHasTodayFlag(flagKey) ||
+      storageHasTodayFlag(legacyKey)
+    ) {
       if (import.meta.env.DEV) {
         console.log(
           `%c[Analytics] Form Submit SKIPPED (already fired this session): ${formName}`,
@@ -159,10 +177,11 @@ export function trackFormSubmit(
       return;
     }
     const ts = String(Date.now());
-    sessionStorage.setItem(flagKey, ts);
-    sessionStorage.setItem(legacyKey, ts);
+    markDailyConversionFlag(dailyScope);
+    mirrorLegacyFlag(flagKey, ts);
+    mirrorLegacyFlag(legacyKey, ts);
   } catch {
-    // sessionStorage unavailable — fall through
+    // storage unavailable — fall through
   }
 
   if (isInitialized && typeof window.gtag === 'function') {
@@ -222,7 +241,11 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
   // the conversion has already fired today — skip. Keyed by conversionId so
   // distinct conversions can each fire once per day.
   const dedupScope = `google_ads:${conversionId}`;
-  if (hasDailyConversionFlag(dedupScope)) {
+  if (
+    hasDailyConversionFlag(dedupScope) ||
+    storageHasTodayFlag(`conversion_fired_${conversionId}`) ||
+    storageHasTodayFlag(`__gads_conv_${conversionId}`)
+  ) {
     if (import.meta.env.DEV) {
       console.log(
         `%c[Analytics] Google Ads Conversion SKIPPED (already fired today): ${conversionId}`,
@@ -235,8 +258,8 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
   try {
     const ts = String(Date.now());
     markDailyConversionFlag(dedupScope);
-    sessionStorage.setItem(`conversion_fired_${conversionId}`, ts);
-    sessionStorage.setItem(`__gads_conv_${conversionId}`, ts);
+    mirrorLegacyFlag(`conversion_fired_${conversionId}`, ts);
+    mirrorLegacyFlag(`__gads_conv_${conversionId}`, ts);
   } catch {
     // storage may be unavailable (private mode) — fall through and fire
   }
