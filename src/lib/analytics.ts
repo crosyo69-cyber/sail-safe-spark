@@ -111,7 +111,7 @@ export function trackCTAClick(
     ...(ctaDestination && { cta_destination: ctaDestination }),
   };
 
-  if (isInitialized && typeof window.gtag === 'function') {
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
     window.gtag('event', 'cta_click', params);
   }
 
@@ -153,7 +153,7 @@ export function trackFormSubmit(
   }
   markFired(dedupKey);
 
-  if (isInitialized && typeof window.gtag === 'function') {
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
     window.gtag('event', 'form_submit', params);
   }
 
@@ -176,7 +176,7 @@ export function trackPhoneClick(location: string): void {
     phone_number: '0672716905',
   };
 
-  if (isInitialized && typeof window.gtag === 'function') {
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
     window.gtag('event', 'phone_click', params);
   }
 
@@ -198,7 +198,7 @@ export function trackPhoneClick(location: string): void {
  * while still mirroring into sessionStorage for the current tab session.
  */
 export function trackGoogleAdsConversion(conversionLabel?: string): void {
-  if (!isInitialized || typeof window.gtag !== 'function' || !GOOGLE_ADS_ID) {
+  if (typeof window === 'undefined' || typeof window.gtag !== 'function' || !GOOGLE_ADS_ID) {
     return;
   }
 
