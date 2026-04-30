@@ -132,11 +132,8 @@ async function fillAndSubmit(
   const loadingButton = page.getByRole('button', { name: SUBMIT_LOADING_LABEL_RE });
   const submitByTestId = page.getByTestId('lead-submit');
 
-  // Allow the expected loading label to be overridden via env so the test
-  // tolerates a future copy change without code edits in the spec.
-  const expectedLoadingLabel = (
-    process.env.E2E_SUBMIT_LOADING_LABEL ?? 'Envoi en cours...'
-  ).trim();
+  // Single source of truth — see e2e/utils/submit-button.ts.
+  const expectedLoadingLabel = SUBMIT_LOADING_LABEL;
 
   await submitButton.click();
 
@@ -271,9 +268,7 @@ test.describe('Two CTA submissions, different emails — CompleteRegistration on
     // assertion is intentionally redundant with the in-helper check so any
     // failure clearly attributes the regression to "submit #2 did not show
     // the loading label" rather than to any later /merci assertion.
-    const expectedLoadingLabel = (
-      process.env.E2E_SUBMIT_LOADING_LABEL ?? 'Envoi en cours...'
-    ).trim();
+    const expectedLoadingLabel = SUBMIT_LOADING_LABEL;
     console.log(
       `[Test] Submit #2 loading-label assertion passed — observed exactly "${expectedLoadingLabel}" on the disabled, aria-busy="true" submit button before navigation to /merci.`
     );
