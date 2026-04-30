@@ -61,7 +61,7 @@ export const NewsletterForm = forwardRef<HTMLDivElement, NewsletterFormProps>(
         <div className="flex gap-2">
           <Input
             type="email"
-            placeholder="Votre email"
+            placeholder="Email newsletter"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="bg-background/10 border-border/30 text-foreground placeholder:text-muted-foreground"
