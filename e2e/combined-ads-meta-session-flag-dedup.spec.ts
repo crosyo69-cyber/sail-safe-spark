@@ -162,7 +162,24 @@ test.describe('Combined Google Ads + Meta Pixel — per-session dedup', () => {
 
     // ---- 2) /merci re-fires both trackers via useEffect ----
     await page.waitForURL('**/merci', { timeout: 10_000 });
-    await page.waitForTimeout(500);
+    // Wait for BOTH trackers to have fired before reading. The persistent
+    // dedup mirrors are armed synchronously inside trackGoogleAdsConversion
+    // and trackMetaLead, so polling them is the deterministic signal that
+    // both /merci useEffect tracker calls have completed. Replaces the
+    // previous 500ms fixed sleep that was the source of CI flake.
+    await expect
+      .poll(
+        () =>
+          page.evaluate(
+            (id) => ({
+              ads: localStorage.getItem(`conversion_fired_${id}`) !== null,
+              meta: localStorage.getItem('conversion_fired_meta_lead') !== null,
+            }),
+            CONV_ID
+          ),
+        { timeout: 10_000, intervals: [50, 100, 200] }
+      )
+      .toEqual({ ads: true, meta: true });
 
     let counts = await readCounts(page);
     expect(counts.ads, 'after submit + /merci, Google Ads fires once').toBe(1);
