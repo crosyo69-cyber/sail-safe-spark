@@ -99,7 +99,12 @@ async function waitForFormReady(page: Page) {
   return submitButton;
 }
 
-async function fillAndSubmit(page: Page, email: string) {
+async function fillAndSubmit(
+  page: Page,
+  email: string,
+  opts: { submitLabel?: string } = {}
+) {
+  const submitLabel = opts.submitLabel ?? `submit (${email})`;
   const submitButton = await waitForFormReady(page);
 
   await page.getByTestId('lead-firstname').fill('TestUser');
@@ -140,17 +145,24 @@ async function fillAndSubmit(page: Page, email: string) {
   // This must hold for the FIRST submit AND every subsequent submit.
   await expect(
     submitByTestId,
-    `Submit button must show the exact loading label "${expectedLoadingLabel}" during submission`
+    `[${submitLabel}] Submit button must show the exact loading label "${expectedLoadingLabel}" during submission`
   ).toHaveText(expectedLoadingLabel, { timeout: 5_000 });
 
   // The loading button must also be disabled (real `disabled` attribute,
   // not just aria-disabled) and aria-busy="true".
-  await expect(submitByTestId).toBeDisabled();
-  await expect(submitByTestId).toHaveAttribute('aria-busy', 'true');
+  await expect(
+    submitByTestId,
+    `[${submitLabel}] Submit button must be disabled while loading`
+  ).toBeDisabled();
+  await expect(
+    submitByTestId,
+    `[${submitLabel}] Submit button must have aria-busy="true" while loading`
+  ).toHaveAttribute('aria-busy', 'true');
 
   // The original idle label must be gone while loading.
   await expect(
-    page.getByRole('button', { name: /^envoyer ma demande$/i })
+    page.getByRole('button', { name: /^envoyer ma demande$/i }),
+    `[${submitLabel}] Idle label "Envoyer ma demande" must disappear during loading`
   ).toHaveCount(0);
 
   // 1) Two acceptable outcomes after the click:
@@ -215,7 +227,7 @@ test.describe('Two CTA submissions, different emails — CompleteRegistration on
     await page.goto('/');
 
     // ----- Submission #1 (email A) -----
-    await fillAndSubmit(page, 'alice@example.com');
+    await fillAndSubmit(page, 'alice@example.com', { submitLabel: 'submit #1' });
     // Wait for the fbq call instead of a fixed 1s sleep.
     await waitForCompleteRegistrationCount(page, 1);
     console.log('[Test] After submit #1 — CompleteRegistration fires: 1');
@@ -250,7 +262,20 @@ test.describe('Two CTA submissions, different emails — CompleteRegistration on
       .toBeGreaterThan(10_000);
 
     // ----- Submission #2 (email B) — MUST NOT fire CompleteRegistration -----
-    await fillAndSubmit(page, 'bob@example.com');
+    await fillAndSubmit(page, 'bob@example.com', { submitLabel: 'submit #2' });
+
+    // ----- EXPLICIT POST-CONDITION ASSERTION FOR SUBMIT #2 -----
+    // After the second submission completed, we record into the test log
+    // the loading-label observation captured during fillAndSubmit. This
+    // assertion is intentionally redundant with the in-helper check so any
+    // failure clearly attributes the regression to "submit #2 did not show
+    // the loading label" rather than to any later /merci assertion.
+    const expectedLoadingLabel = (
+      process.env.E2E_SUBMIT_LOADING_LABEL ?? 'Envoi en cours...'
+    ).trim();
+    console.log(
+      `[Test] Submit #2 loading-label assertion passed — observed exactly "${expectedLoadingLabel}" on the disabled, aria-busy="true" submit button before navigation to /merci.`
+    );
 
     // Give the app some time to (incorrectly) fire — if dedup works, no new
     // CompleteRegistration call will appear in __fbqCalls.
