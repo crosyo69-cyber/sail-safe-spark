@@ -70,6 +70,10 @@ async function installInstrumentation(page: Page) {
   });
 
   await page.route('**/functions/v1/send-contact-email', async (route) => {
+    // Slow the response so React always has time to paint the loading state
+    // ("Envoi en cours...") before navigation to /merci. Required for the
+    // exact-text assertion on the submit button during BOTH submissions.
+    await new Promise((r) => setTimeout(r, 400));
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -116,10 +120,38 @@ async function fillAndSubmit(page: Page, email: string) {
     .toBeGreaterThanOrEqual(3050);
 
   // Locator for the loading-state button: text becomes exactly "Envoi en cours..."
-  // and the lucide <Send /> icon is removed from the DOM.
+  // and the lucide <Send /> icon is removed from the DOM. We also keep a
+  // generic submit-button locator (by data-testid) so we can assert its
+  // exact textContent without depending on the accessible name.
   const loadingButton = page.getByRole('button', { name: /envoi en cours\.\.\./i });
+  const submitByTestId = page.getByTestId('lead-submit');
+
+  // Allow the expected loading label to be overridden via env so the test
+  // tolerates a future copy change without code edits in the spec.
+  const expectedLoadingLabel = (
+    process.env.E2E_SUBMIT_LOADING_LABEL ?? 'Envoi en cours...'
+  ).trim();
 
   await submitButton.click();
+
+  // ----- STRICT ASSERTION: loading label MUST appear on every submit -----
+  // Because the mocked send-contact-email response is throttled (400ms),
+  // React has time to paint the disabled/loading state before navigation.
+  // This must hold for the FIRST submit AND every subsequent submit.
+  await expect(
+    submitByTestId,
+    `Submit button must show the exact loading label "${expectedLoadingLabel}" during submission`
+  ).toHaveText(expectedLoadingLabel, { timeout: 5_000 });
+
+  // The loading button must also be disabled (real `disabled` attribute,
+  // not just aria-disabled) and aria-busy="true".
+  await expect(submitByTestId).toBeDisabled();
+  await expect(submitByTestId).toHaveAttribute('aria-busy', 'true');
+
+  // The original idle label must be gone while loading.
+  await expect(
+    page.getByRole('button', { name: /^envoyer ma demande$/i })
+  ).toHaveCount(0);
 
   // 1) Two acceptable outcomes after the click:
   //    a) The "Envoi en cours..." loading state becomes visible (slower nav).
@@ -128,22 +160,9 @@ async function fillAndSubmit(page: Page, email: string) {
   //    We race both and accept whichever happens first. We do NOT then
   //    re-check page.url() synchronously — that read is stale relative to
   //    the commit and was the source of the previous flake.
-  const navigated = page
-    .waitForURL('**/merci', { timeout: 5_000, waitUntil: 'commit' })
-    .then(() => 'navigated' as const)
-    .catch(() => null);
-  const loaded = expect(loadingButton)
-    .toBeVisible({ timeout: 5_000 })
-    .then(() => 'loaded' as const)
-    .catch(() => null);
-  const winner = await Promise.race([navigated, loaded]);
-  if (winner === 'loaded') {
-    // We caught the loading state — also assert the original label is gone.
-    await expect(loadingButton).toBeDisabled();
-    await expect(
-      page.getByRole('button', { name: /^envoyer ma demande$/i })
-    ).toHaveCount(0);
-  }
+  // The strict assertion above already proved the loading state was visible.
+  // Now wait for the eventual navigation to /merci.
+  await expect(loadingButton).toBeVisible();
 
   // 2) Navigation to /merci is the definitive success signal.
   await page.waitForURL('**/merci', { timeout: 10_000, waitUntil: 'commit' });
