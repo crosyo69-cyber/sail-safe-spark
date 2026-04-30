@@ -210,6 +210,7 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
       w.__fbqCalls.length = 0;
       try { sessionStorage.removeItem('__fbqCallsStash'); } catch { /* ignore */ }
       try { sessionStorage.removeItem('__meta_pixel_lead'); } catch { /* ignore */ }
+      try { localStorage.removeItem('conversion_fired_meta_lead'); } catch { /* ignore */ }
       try { clearDailyConversionFlags(sessionStorage); } catch { /* ignore */ }
       try { clearDailyConversionFlags(localStorage); } catch { /* ignore */ }
       delete (window as unknown as { __metaPixelLeadLockUntil?: number })
