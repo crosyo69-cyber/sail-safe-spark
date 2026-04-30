@@ -287,3 +287,17 @@ export function clearDailyConversionFlag(scope: string): void {
     // ignore fallback cleanup failures
   }
 }
+
+if (typeof window !== 'undefined') {
+  (window as unknown as {
+    __kspConversionDedupDebug?: {
+      enable: () => void;
+      disable: () => void;
+      isEnabled: () => boolean;
+    };
+  }).__kspConversionDedupDebug = {
+    enable: () => setConversionDedupDebug(true),
+    disable: () => setConversionDedupDebug(false),
+    isEnabled: () => isConversionDedupDebugEnabled(),
+  };
+}
