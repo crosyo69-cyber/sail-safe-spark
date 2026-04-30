@@ -195,8 +195,9 @@ export function trackPhoneClick(location: string): void {
 
 /**
  * Track Google Ads conversion (called on /merci page)
- * De-duplicates within a 10s window to prevent double-counting when both
- * the form handler and the /merci page useEffect fire the same conversion.
+ * De-duplicates per session: once a conversion has fired for a given
+ * conversionId in the current browser session, it will not fire again.
+ * A `conversion_fired` flag in sessionStorage guards every call.
  */
 export function trackGoogleAdsConversion(conversionLabel?: string): void {
   if (!isInitialized || typeof window.gtag !== 'function' || !GOOGLE_ADS_ID) {
@@ -207,20 +208,23 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
     ? `${GOOGLE_ADS_ID}/${conversionLabel}`
     : GOOGLE_ADS_ID;
 
-  // Dedupe across rapid double-clicks AND form-handler -> /merci redirect chain
+  // Per-session dedup: if the flag exists, the conversion has already fired
+  // in this session — skip. Keyed by conversionId so distinct conversions
+  // (e.g. phone vs form) can each fire once per session.
   try {
-    const key = `__gads_conv_${conversionId}`;
-    const last = Number(sessionStorage.getItem(key) || '0');
-    if (Date.now() - last < 10_000) {
+    const flagKey = `conversion_fired_${conversionId}`;
+    if (sessionStorage.getItem(flagKey)) {
       if (import.meta.env.DEV) {
         console.log(
-          `%c[Analytics] Google Ads Conversion SKIPPED (deduped <10s): ${conversionId}`,
+          `%c[Analytics] Google Ads Conversion SKIPPED (already fired this session): ${conversionId}`,
           'color: #f59e0b; font-weight: bold'
         );
       }
       return;
     }
-    sessionStorage.setItem(key, String(Date.now()));
+    sessionStorage.setItem(flagKey, String(Date.now()));
+    // Legacy key kept for backwards compatibility with existing e2e tests
+    sessionStorage.setItem(`__gads_conv_${conversionId}`, String(Date.now()));
   } catch {
     // sessionStorage may be unavailable (private mode) — fall through and fire
   }
