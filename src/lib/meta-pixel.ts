@@ -97,15 +97,19 @@ export function trackMetaLead(params?: Record<string, string>): void {
     return;
   }
 
-  // Per-session dedup: if the flag is set, the event already fired in this
-  // browser session — never fire again until the tab is closed.
+  // Daily dedup: if either sessionStorage OR localStorage contains the daily
+  // scope, the event already fired today — never fire again until tomorrow.
   try {
-    if (sessionStorage.getItem(FLAG_KEY) || sessionStorage.getItem(LEGACY_KEY)) {
+    if (
+      hasDailyConversionFlag(DAILY_SCOPE) ||
+      sessionStorage.getItem(FLAG_KEY) ||
+      sessionStorage.getItem(LEGACY_KEY)
+    ) {
       // Keep in-memory lock indefinitely armed for this session.
       w.__metaPixelLeadLockUntil = Number.MAX_SAFE_INTEGER;
       if (import.meta.env.DEV) {
         console.log(
-          '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (already fired this session)',
+          '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (already fired today)',
           'color: #f59e0b; font-weight: bold'
         );
       }
@@ -120,6 +124,7 @@ export function trackMetaLead(params?: Record<string, string>): void {
     // Permanent lock for the rest of the session.
     w.__metaPixelLeadLockUntil = Number.MAX_SAFE_INTEGER;
     try {
+      markDailyConversionFlag(DAILY_SCOPE);
       sessionStorage.setItem(FLAG_KEY, String(ts));
       // Mirror to legacy key so older specs that read it still see the lock.
       sessionStorage.setItem(LEGACY_KEY, String(ts));
