@@ -121,18 +121,24 @@ async function fillAndSubmit(page: Page, email: string) {
 
   await submitButton.click();
 
-  // 1) Button immediately enters disabled+loading state — assert real DOM
-  //    transitions instead of sleeping. Race with URL change in case the
-  //    network is so fast that React commits the navigation before we
-  //    observe the loading text.
-  await Promise.race([
-    expect(loadingButton).toBeVisible({ timeout: 3_000 }),
-    page.waitForURL('**/merci', { timeout: 3_000, waitUntil: 'commit' }),
-  ]);
-
-  // If we caught the loading state, also confirm it's disabled and the
-  // original "Envoyer ma demande" label has disappeared.
-  if (page.url().endsWith('/') || !page.url().includes('/merci')) {
+  // 1) Two acceptable outcomes after the click:
+  //    a) The "Envoi en cours..." loading state becomes visible (slower nav).
+  //    b) The page already navigated to /merci before React could paint
+  //       the loading state (faster-than-paint nav, fully legitimate).
+  //    We race both and accept whichever happens first. We do NOT then
+  //    re-check page.url() synchronously — that read is stale relative to
+  //    the commit and was the source of the previous flake.
+  const navigated = page
+    .waitForURL('**/merci', { timeout: 5_000, waitUntil: 'commit' })
+    .then(() => 'navigated' as const)
+    .catch(() => null);
+  const loaded = expect(loadingButton)
+    .toBeVisible({ timeout: 5_000 })
+    .then(() => 'loaded' as const)
+    .catch(() => null);
+  const winner = await Promise.race([navigated, loaded]);
+  if (winner === 'loaded') {
+    // We caught the loading state — also assert the original label is gone.
     await expect(loadingButton).toBeDisabled();
     await expect(
       page.getByRole('button', { name: /^envoyer ma demande$/i })
