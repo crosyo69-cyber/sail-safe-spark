@@ -67,16 +67,18 @@ export function trackMetaPageView(): void {
 /**
  * Track a lead conversion (form submission).
  *
- * Dedup: 10s sessionStorage window covers BOTH 'Lead' and 'CompleteRegistration'
- * (single shared key) so a fallback fire never produces a duplicate when the
- * primary becomes available again within the window.
+ * Dedup: per-session sessionStorage flag covers BOTH 'Lead' and
+ * 'CompleteRegistration' (single shared key) so once either has fired in the
+ * current browser session, no further Lead/CompleteRegistration call will
+ * reach fbq — even across reloads or back navigation within the same tab.
  *
  * Fallback: if `fbq` is unavailable OR the 'Lead' call throws, we attempt
  * 'CompleteRegistration' (also a Meta standard event). Both outcomes consume
  * the same dedup slot.
  */
 export function trackMetaLead(params?: Record<string, string>): void {
-  const DEDUP_KEY = '__meta_pixel_lead'; // shared with CompleteRegistration fallback
+  const FLAG_KEY = 'conversion_fired_meta_lead'; // session-wide flag (shared with CR fallback)
+  const LEGACY_KEY = '__meta_pixel_lead'; // kept for back-compat with existing e2e specs
 
   // In-memory lock — survives rapid component remounts within the same JS
   // runtime (faster than sessionStorage and immune to storage quirks).
@@ -93,15 +95,15 @@ export function trackMetaLead(params?: Record<string, string>): void {
     return;
   }
 
-  // Dedup check (cross-reload via sessionStorage)
+  // Per-session dedup: if the flag is set, the event already fired in this
+  // browser session — never fire again until the tab is closed.
   try {
-    const last = Number(sessionStorage.getItem(DEDUP_KEY) || '0');
-    if (now - last < 10_000) {
-      // Re-arm the in-memory lock to mirror the persistent window.
-      w.__metaPixelLeadLockUntil = last + 10_000;
+    if (sessionStorage.getItem(FLAG_KEY) || sessionStorage.getItem(LEGACY_KEY)) {
+      // Keep in-memory lock indefinitely armed for this session.
+      w.__metaPixelLeadLockUntil = Number.MAX_SAFE_INTEGER;
       if (import.meta.env.DEV) {
         console.log(
-          '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (deduped <10s)',
+          '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (already fired this session)',
           'color: #f59e0b; font-weight: bold'
         );
       }
@@ -113,8 +115,13 @@ export function trackMetaLead(params?: Record<string, string>): void {
 
   const markFired = () => {
     const ts = Date.now();
-    w.__metaPixelLeadLockUntil = ts + 10_000;
-    try { sessionStorage.setItem(DEDUP_KEY, String(ts)); } catch { /* ignore */ }
+    // Permanent lock for the rest of the session.
+    w.__metaPixelLeadLockUntil = Number.MAX_SAFE_INTEGER;
+    try {
+      sessionStorage.setItem(FLAG_KEY, String(ts));
+      // Mirror to legacy key so older specs that read it still see the lock.
+      sessionStorage.setItem(LEGACY_KEY, String(ts));
+    } catch { /* ignore */ }
   };
 
   // Primary: Lead
