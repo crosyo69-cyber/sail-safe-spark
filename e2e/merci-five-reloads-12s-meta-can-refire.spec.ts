@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL } from './utils/submit-button';
+import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL, SUBMIT_BUTTON_TESTID, getSubmitButton } from './utils/submit-button';
 import { installFbqMarkerStub } from './utils/fbq-markers';
 
 /**
@@ -93,7 +93,7 @@ function leadFamilyCount(calls: FbqCall[]): number {
 
 async function submitCta(page: Page, email: string, firstname: string) {
   await page.goto('/');
-  const submitButton = page.getByRole('button', { name: SUBMIT_IDLE_LABEL_RE });
+  const submitButton = getSubmitButton(page);
   await submitButton.scrollIntoViewIfNeeded();
   await expect(submitButton).toBeVisible();
 

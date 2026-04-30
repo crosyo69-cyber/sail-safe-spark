@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL } from './utils/submit-button';
+import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL, SUBMIT_BUTTON_TESTID, getSubmitButton } from './utils/submit-button';
 import { installFbqMarkerStub } from './utils/fbq-markers';
 
 /**
@@ -89,7 +89,7 @@ async function installInstrumentation(page: Page) {
  * of the submit button after navigation.
  */
 async function waitForFormReady(page: Page) {
-  const submitButton = page.getByRole('button', { name: SUBMIT_IDLE_LABEL_RE });
+  const submitButton = getSubmitButton(page);
   await submitButton.scrollIntoViewIfNeeded();
   await expect(submitButton).toBeVisible();
   await expect(submitButton).toBeEnabled();
@@ -130,7 +130,7 @@ async function fillAndSubmit(
   // generic submit-button locator (by data-testid) so we can assert its
   // exact textContent without depending on the accessible name.
   const loadingButton = page.getByRole('button', { name: SUBMIT_LOADING_LABEL_RE });
-  const submitByTestId = page.getByTestId('lead-submit');
+  const submitByTestId = getSubmitButton(page);
 
   // Single source of truth — see e2e/utils/submit-button.ts.
   const expectedLoadingLabel = SUBMIT_LOADING_LABEL;
@@ -159,7 +159,7 @@ async function fillAndSubmit(
 
   // The original idle label must be gone while loading.
   await expect(
-    page.getByRole('button', { name: SUBMIT_IDLE_LABEL_RE }),
+    getSubmitButton(page),
     `[${submitLabel}] Idle label "Envoyer ma demande" must disappear during loading`
   ).toHaveCount(0);
 
