@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { CheckCircle, Phone } from "lucide-react";
 import { trackGoogleAdsConversion } from "@/lib/analytics";
 import { pushMerciConversion } from "@/lib/gtm";
+import { ConversionStatusIndicator } from "@/components/debug/ConversionStatusIndicator";
 
 const Merci = () => {
   useEffect(() => {
@@ -17,6 +18,14 @@ const Merci = () => {
     // Legacy direct gtag fallback (kept for parity until GTM is fully live).
     trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
   }, []);
+
+  // Show debug indicator in dev/preview, on lovable.app hosts, or when ?debug=1
+  const showDebug =
+    typeof window !== "undefined" &&
+    (import.meta.env.DEV ||
+      window.location.hostname.includes("lovable") ||
+      new URLSearchParams(window.location.search).get("debug") === "1");
+
   return (
     <>
       <Helmet>
@@ -72,6 +81,8 @@ const Merci = () => {
       </main>
 
       <Footer />
+
+      {showDebug && <ConversionStatusIndicator />}
     </>
   );
 };
