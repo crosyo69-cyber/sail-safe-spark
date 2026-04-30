@@ -201,9 +201,17 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
     }
     await page.evaluate(() => {
       const w = window as unknown as { __fbqCalls: FbqCall[] };
+      const clearDailyConversionFlags = (storage: Storage) => {
+        for (let index = storage.length - 1; index >= 0; index -= 1) {
+          const key = storage.key(index);
+          if (key?.startsWith('ksp_conv_')) storage.removeItem(key);
+        }
+      };
       w.__fbqCalls.length = 0;
       try { sessionStorage.removeItem('__fbqCallsStash'); } catch { /* ignore */ }
       try { sessionStorage.removeItem('__meta_pixel_lead'); } catch { /* ignore */ }
+      try { clearDailyConversionFlags(sessionStorage); } catch { /* ignore */ }
+      try { clearDailyConversionFlags(localStorage); } catch { /* ignore */ }
       delete (window as unknown as { __metaPixelLeadLockUntil?: number })
         .__metaPixelLeadLockUntil;
       (window as unknown as {
