@@ -2,8 +2,83 @@ const CONVERSION_KEY_PREFIX = 'ksp_conv_';
 const ALL_SCOPES = '*';
 const CLEANUP_REGISTERED_FLAG = '__kspConversionDedupCleanupRegistered';
 const NAVIGATION_FALLBACK_PREFIX = 'ksp_conv_nav:';
+const DEBUG_FLAG_KEY = 'ksp_conv_debug';
 
 type ConversionFlags = Record<string, string>;
+
+export type ConversionDedupSource =
+  | 'sessionStorage'
+  | 'localStorage'
+  | 'window.name';
+
+export interface ConversionDedupBlockInfo {
+  scope: string;
+  date: string; // YYYY-MM-DD (today's daily key suffix)
+  sources: ConversionDedupSource[]; // every storage where the flag was found
+  matchedScope: string; // either the requested scope or '*' (wildcard)
+  timestamps: Partial<Record<ConversionDedupSource, string>>;
+}
+
+/**
+ * Enable/disable verbose dedup logging at runtime. Persisted to
+ * localStorage so it survives reloads. Also auto-on in dev or when the
+ * URL contains `?debugDedup=1` / `#debugDedup`.
+ */
+export function setConversionDedupDebug(enabled: boolean): void {
+  try {
+    const ls = safeStorage('localStorage');
+    if (!ls) return;
+    if (enabled) ls.setItem(DEBUG_FLAG_KEY, '1');
+    else ls.removeItem(DEBUG_FLAG_KEY);
+  } catch {
+    // ignore
+  }
+}
+
+export function isConversionDedupDebugEnabled(): boolean {
+  try {
+    if (typeof import.meta !== 'undefined' && (import.meta as ImportMeta).env?.DEV) {
+      return true;
+    }
+  } catch {
+    // ignore
+  }
+  if (typeof window !== 'undefined') {
+    try {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get('debugDedup') === '1') return true;
+      if (url.hash.includes('debugDedup')) return true;
+    } catch {
+      // ignore
+    }
+    try {
+      const ls = safeStorage('localStorage');
+      if (ls?.getItem(DEBUG_FLAG_KEY) === '1') return true;
+    } catch {
+      // ignore
+    }
+  }
+  return false;
+}
+
+function logBlockedConversion(info: ConversionDedupBlockInfo): void {
+  if (!isConversionDedupDebugEnabled()) return;
+  const reason = info.matchedScope === ALL_SCOPES
+    ? 'wildcard flag (*) covers every scope today'
+    : `scope flag matched`;
+  // eslint-disable-next-line no-console
+  console.log(
+    `%c[ConversionDedup] BLOCKED %c${info.scope}%c on ${info.date} — ${reason}`,
+    'color: #f59e0b; font-weight: bold',
+    'color: #1f2937; font-weight: bold; background: #fde68a; padding: 0 4px; border-radius: 3px',
+    'color: #6b7280',
+    {
+      sources: info.sources,
+      matchedScope: info.matchedScope,
+      timestamps: info.timestamps,
+    },
+  );
+}
 
 export function getDailyConversionKey(date = new Date()): string {
   const year = date.getFullYear();
@@ -116,14 +191,37 @@ export function hasDailyConversionFlag(scope: string): boolean {
   const localFlags = readFlags(safeStorage('localStorage'), key);
   const navigationFlags = readNavigationFallback()[key] ?? {};
 
-  return Boolean(
-    sessionFlags[scope] ||
-    sessionFlags[ALL_SCOPES] ||
-    localFlags[scope] ||
-    localFlags[ALL_SCOPES] ||
-    navigationFlags[scope] ||
-    navigationFlags[ALL_SCOPES]
-  );
+  const sources: ConversionDedupSource[] = [];
+  const timestamps: Partial<Record<ConversionDedupSource, string>> = {};
+  let matchedScope: string | null = null;
+
+  const check = (
+    name: ConversionDedupSource,
+    flags: ConversionFlags,
+  ) => {
+    const ts = flags[scope] ?? flags[ALL_SCOPES];
+    if (!ts) return;
+    sources.push(name);
+    timestamps[name] = ts;
+    if (matchedScope === null) {
+      matchedScope = flags[scope] ? scope : ALL_SCOPES;
+    }
+  };
+
+  check('sessionStorage', sessionFlags);
+  check('localStorage', localFlags);
+  check('window.name', navigationFlags);
+
+  if (sources.length === 0) return false;
+
+  logBlockedConversion({
+    scope,
+    date: key.slice(CONVERSION_KEY_PREFIX.length),
+    sources,
+    matchedScope: matchedScope ?? scope,
+    timestamps,
+  });
+  return true;
 }
 
 export function markDailyConversionFlag(scope: string): void {
