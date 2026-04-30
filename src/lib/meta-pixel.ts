@@ -95,6 +95,23 @@ export function trackMetaPageView(): void {
 export function trackMetaLead(params?: Record<string, string>): void {
   const KEY = '__meta_pixel_lead';
   const MIRROR = 'conversion_fired_meta_lead';
+  const WINDOW_MS = 10_000;
+
+  // Synchronous in-memory lock — guards against true parallel calls
+  // (e.g. Promise.all([click, click])) that race BEFORE either has had
+  // a chance to write to sessionStorage. Storage writes happen after
+  // fbq returns; the lock is set immediately on entry.
+  const w = window as unknown as { __metaPixelLeadLockUntil?: number };
+  const now = Date.now();
+  if (typeof w.__metaPixelLeadLockUntil === 'number' && w.__metaPixelLeadLockUntil > now) {
+    if (import.meta.env.DEV) {
+      console.log(
+        '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (in-memory lock)',
+        'color: #f59e0b; font-weight: bold'
+      );
+    }
+    return;
+  }
 
   if (!shouldFireWithinWindow(KEY, MIRROR)) {
     if (import.meta.env.DEV) {
@@ -105,6 +122,10 @@ export function trackMetaLead(params?: Record<string, string>): void {
     }
     return;
   }
+
+  // Arm the in-memory lock IMMEDIATELY so any synchronous re-entry is blocked,
+  // even before fbq returns or storage is written.
+  w.__metaPixelLeadLockUntil = now + WINDOW_MS;
 
   const markIfFired = () => markFired(KEY, MIRROR);
 
@@ -144,6 +165,8 @@ export function trackMetaLead(params?: Record<string, string>): void {
   }
 
   // Neither fired — do NOT mark dedup so a later call can retry.
+  // Also release the in-memory lock so a retry is possible.
+  w.__metaPixelLeadLockUntil = undefined;
   if (import.meta.env.DEV) {
     console.warn('[Meta Pixel] fbq unavailable — Lead/CompleteRegistration not sent');
   }
