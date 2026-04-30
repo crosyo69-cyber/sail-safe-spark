@@ -45,3 +45,57 @@ export const SUBMIT_IDLE_LABEL_RE: RegExp = new RegExp(
   `^${escapeRegExp(SUBMIT_IDLE_LABEL)}$`,
   'i'
 );
+
+/* ------------------------------------------------------------------ */
+/* Selector constants & helpers                                       */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Single source of truth for the submit button's `data-testid`.
+ * Must match `data-testid="lead-submit"` in
+ * `src/components/sections/CTASection.tsx`.
+ */
+export const SUBMIT_BUTTON_TESTID = 'lead-submit' as const;
+
+/**
+ * ARIA role used to locate the submit button by accessible name.
+ * All native <button> elements implicitly have role="button" — this is
+ * exposed as a constant so any future role change (e.g. switch to
+ * <input type="submit">) only requires editing this file.
+ */
+export const SUBMIT_BUTTON_ROLE = 'button' as const;
+
+/**
+ * Locate the submit button using the canonical `data-testid` selector.
+ * This is the PREFERRED way for every spec to grab the submit button —
+ * it is decoupled from the visible label (idle vs loading) and from any
+ * accessible-name change.
+ *
+ * Usage:
+ *   import { getSubmitButton } from './utils/submit-button';
+ *   const submitButton = getSubmitButton(page);
+ */
+export function getSubmitButton(page: import('@playwright/test').Page) {
+  return page.getByTestId(SUBMIT_BUTTON_TESTID);
+}
+
+/**
+ * Locate the submit button by role + idle accessible name.
+ * Useful for assertions that specifically require the button to be in
+ * its idle state (e.g. "no loading label visible").
+ */
+export function getSubmitButtonByIdleRole(
+  page: import('@playwright/test').Page
+) {
+  return page.getByRole(SUBMIT_BUTTON_ROLE, { name: SUBMIT_IDLE_LABEL_RE });
+}
+
+/**
+ * Locate the submit button by role + loading accessible name.
+ * Useful when an assertion needs the button mid-submission.
+ */
+export function getSubmitButtonByLoadingRole(
+  page: import('@playwright/test').Page
+) {
+  return page.getByRole(SUBMIT_BUTTON_ROLE, { name: SUBMIT_LOADING_LABEL_RE });
+}
