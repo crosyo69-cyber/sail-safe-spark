@@ -222,36 +222,218 @@ export async function waitForFbqMarkerIncrease(
 }
 
 /**
- * Wait for an fbq marker to reach EXACTLY `count`. Backed by Playwright's
- * native `waitForSelector` (which already uses MutationObserver under the
- * hood). Convenient when a test needs a precise final count rather than
- * "any increase".
+ * Wait until `<meta id="__fbq-marker-{name}">` `data-count` is at least
+ * `count`. Resolves with the actual count the moment it reaches/exceeds
+ * the target. Fully deterministic — uses MutationObserver and re-checks
+ * synchronously after observer attachment to eliminate the gap between
+ * the fast-path read and observer setup.
+ *
+ * On timeout, the rejection includes the LAST observed count to make
+ * debugging easier ("expected >=2, got 1").
+ *
+ * Defaults to "at least N"; pass `exact: true` if you need strict equality
+ * AT the moment of resolution (rarely useful — the counter is monotonic).
  */
 export async function waitForFbqMarkerCount(
   page: Page,
   name: string,
   count: number,
-  opts: { timeout?: number } = {}
-): Promise<void> {
-  const { timeout = 10_000 } = opts;
-  await page.waitForSelector(fbqMarkerSelector(name, count), {
-    state: 'attached',
-    timeout,
-  });
+  opts: { timeout?: number; exact?: boolean } = {}
+): Promise<number> {
+  const { timeout = 10_000, exact = false } = opts;
+  return await page.evaluate(
+    ({ name, count, timeout, prefix, exact }) =>
+      new Promise<number>((resolve, reject) => {
+        const id = `${prefix}${name}`;
+
+        const readCount = (el: Element | null) =>
+          el ? Number(el.getAttribute('data-count') || '0') : 0;
+        const matches = (c: number) => (exact ? c === count : c >= count);
+
+        let lastSeen = readCount(document.getElementById(id));
+        if (matches(lastSeen)) {
+          resolve(lastSeen);
+          return;
+        }
+
+        let attrObs: MutationObserver | null = null;
+        let headObs: MutationObserver | null = null;
+        const timer = window.setTimeout(() => {
+          attrObs?.disconnect();
+          headObs?.disconnect();
+          reject(
+            new Error(
+              `[waitForFbqMarkerCount] timeout ${timeout}ms waiting for ` +
+                `#${id} data-count ${exact ? '==' : '>='} ${count} ` +
+                `(last seen: ${lastSeen})`
+            )
+          );
+        }, timeout);
+
+        const watchAttr = (target: Element) => {
+          attrObs = new MutationObserver(() => {
+            const c = readCount(target);
+            lastSeen = c;
+            if (matches(c)) {
+              window.clearTimeout(timer);
+              attrObs?.disconnect();
+              headObs?.disconnect();
+              resolve(c);
+            }
+          });
+          attrObs.observe(target, {
+            attributes: true,
+            attributeFilter: ['data-count'],
+          });
+          // Re-check synchronously to close the gap between fast-path
+          // read and observer attachment.
+          const c = readCount(target);
+          lastSeen = c;
+          if (matches(c)) {
+            window.clearTimeout(timer);
+            attrObs.disconnect();
+            resolve(c);
+          }
+        };
+
+        const existing = document.getElementById(id);
+        if (existing) {
+          watchAttr(existing);
+          return;
+        }
+
+        headObs = new MutationObserver(() => {
+          const el = document.getElementById(id);
+          if (el) {
+            headObs?.disconnect();
+            headObs = null;
+            watchAttr(el);
+          }
+        });
+        headObs.observe(document.head || document.documentElement, {
+          childList: true,
+          subtree: true,
+        });
+      }),
+    { name, count, timeout, prefix: FBQ_MARKER_PREFIX, exact }
+  );
 }
 
-/** Read the current `data-count` of a marker (0 when absent). */
+export interface FbqMarkerSnapshot {
+  /** Current `data-count` (0 when the marker has not been created yet). */
+  count: number;
+  /** `data-last-at` timestamp in ms (null when never bumped). */
+  lastAt: number | null;
+  /** `data-status` of the most recent track call ('success' | 'blocked' | null). */
+  status: 'success' | 'blocked' | null;
+  /** True iff the marker `<meta>` element exists in the DOM. */
+  exists: boolean;
+}
+
+/**
+ * Read a complete snapshot of an fbq marker (count + last timestamp + status).
+ * Always returns a structured object — never throws. Useful for assertions
+ * AND for diagnostic logging in failing tests.
+ */
+export async function readFbqMarker(
+  page: Page,
+  name: string
+): Promise<FbqMarkerSnapshot> {
+  return await page.evaluate(
+    ({ id }) => {
+      const el = document.getElementById(id);
+      if (!el) {
+        return { count: 0, lastAt: null, status: null, exists: false };
+      }
+      const rawCount = el.getAttribute('data-count');
+      const rawAt = el.getAttribute('data-last-at');
+      const rawStatus = el.getAttribute('data-status');
+      const at = rawAt ? Number(rawAt) : NaN;
+      return {
+        count: rawCount ? Number(rawCount) : 0,
+        lastAt: Number.isFinite(at) ? at : null,
+        status:
+          rawStatus === 'success' || rawStatus === 'blocked' ? rawStatus : null,
+        exists: true,
+      };
+    },
+    { id: fbqMarkerId(name) }
+  );
+}
+
+/** Read the current `data-count` of a marker (0 when absent). Convenience wrapper. */
 export async function readFbqMarkerCount(
   page: Page,
   name: string
 ): Promise<number> {
-  return await page.evaluate(
-    ({ id }) => {
-      const el = document.getElementById(id);
-      return el ? Number(el.getAttribute('data-count') || '0') : 0;
-    },
-    { id: fbqMarkerId(name) }
+  return (await readFbqMarker(page, name)).count;
+}
+
+/**
+ * Assert that an fbq marker's count equals exactly `expected` AND remains
+ * stable for `stableForMs` (default 500 ms). This is the deterministic
+ * primitive for "fired exactly N times" assertions: it eliminates the
+ * race where a late N+1 fire would otherwise sneak in just after the
+ * test reads the count.
+ *
+ * On mismatch the thrown error includes the observed snapshot for fast
+ * triage in CI logs.
+ */
+export async function expectFbqMarkerCountStable(
+  page: Page,
+  name: string,
+  expected: number,
+  opts: { stableForMs?: number } = {}
+): Promise<void> {
+  const { stableForMs = 500 } = opts;
+
+  const initial = await readFbqMarker(page, name);
+  if (initial.count !== expected) {
+    throw new Error(
+      `[expectFbqMarkerCountStable] expected ${name} count=${expected}, ` +
+        `got ${initial.count} (snapshot: ${JSON.stringify(initial)})`
+    );
+  }
+
+  // Watch for any further bump during the stability window. We use a
+  // MutationObserver in-page so we don't poll across the IPC boundary.
+  const drift = await page.evaluate(
+    ({ id, stableForMs, baseline }) =>
+      new Promise<{ count: number; bumped: boolean }>((resolve) => {
+        const el = document.getElementById(id);
+        if (!el) {
+          // Marker disappeared between read and observe — treat as no drift.
+          window.setTimeout(
+            () => resolve({ count: baseline, bumped: false }),
+            stableForMs
+          );
+          return;
+        }
+        let bumped = false;
+        const obs = new MutationObserver(() => {
+          const c = Number(el.getAttribute('data-count') || '0');
+          if (c !== baseline) {
+            bumped = true;
+            obs.disconnect();
+            resolve({ count: c, bumped: true });
+          }
+        });
+        obs.observe(el, { attributes: true, attributeFilter: ['data-count'] });
+        window.setTimeout(() => {
+          obs.disconnect();
+          const c = Number(el.getAttribute('data-count') || '0');
+          resolve({ count: c, bumped: bumped || c !== baseline });
+        }, stableForMs);
+      }),
+    { id: fbqMarkerId(name), stableForMs, baseline: expected }
   );
+
+  if (drift.bumped) {
+    throw new Error(
+      `[expectFbqMarkerCountStable] ${name} drifted during ${stableForMs}ms ` +
+        `stability window: expected=${expected}, observed=${drift.count}`
+    );
+  }
 }
 
 /**
