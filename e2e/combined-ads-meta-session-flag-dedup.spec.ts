@@ -132,12 +132,26 @@ function countCompleteRegistration(calls: FbqCall[]): number {
 }
 
 async function readCounts(page: Page): Promise<{ ads: number; cr: number }> {
-  const [gtag, fbq] = await Promise.all([
-    page.evaluate(() => (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls),
-    page.evaluate(() => (window as unknown as { __fbqCalls: FbqCall[] }).__fbqCalls),
+  // Aggregate from BOTH `__gtagCalls` (recorded by our stub) AND
+  // `window.dataLayer` (populated by the production bootstrap fallback in
+  // `trackGoogleAdsConversion`). The race we hit before was: when
+  // `trackGoogleAdsConversion` runs BEFORE our stub's reinstall timer fires,
+  // the production code does `window.gtag = (...args) => dataLayer.push(args)`,
+  // overwriting our recorder. The actual conversion call then lands in
+  // `dataLayer` but never in `__gtagCalls`. By unioning both sources we
+  // count the call regardless of which one captured it.
+  const [gtag, fbq, dl] = await Promise.all([
+    page.evaluate(() => (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls ?? []),
+    page.evaluate(() => (window as unknown as { __fbqCalls: FbqCall[] }).__fbqCalls ?? []),
+    page.evaluate(
+      () =>
+        ((window as unknown as { dataLayer?: unknown[] }).dataLayer ?? []) as unknown[]
+    ),
   ]);
+  // dataLayer entries are arguments arrays of `gtag(...args)` — same shape as GtagCall.
+  const dlAsGtag = dl.filter(Array.isArray) as GtagCall[];
   return {
-    ads: countAdsConversions(gtag),
+    ads: countAdsConversions([...gtag, ...dlAsGtag]),
     cr: countCompleteRegistration(fbq),
   };
 }
