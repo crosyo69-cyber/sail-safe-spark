@@ -1,5 +1,5 @@
 // Meta (Facebook) Pixel initialization and tracking
-import { hasDailyConversionFlag, markDailyConversionFlag } from './conversion-dedup';
+import { hasDailyConversionFlag, isTodayTimestamp, markDailyConversionFlag } from './conversion-dedup';
 
 declare global {
   interface Window {
@@ -10,6 +10,19 @@ declare global {
 
 const META_PIXEL_ID = '733582700316147';
 let isInitialized = false;
+
+function storageHasTodayFlag(key: string): boolean {
+  try {
+    return isTodayTimestamp(sessionStorage.getItem(key)) || isTodayTimestamp(localStorage.getItem(key));
+  } catch {
+    return false;
+  }
+}
+
+function mirrorLegacyFlag(key: string, value = String(Date.now())): void {
+  try { sessionStorage.setItem(key, value); } catch { /* ignore */ }
+  try { localStorage.setItem(key, value); } catch { /* ignore */ }
+}
 
 /**
  * Initialize Meta Pixel
@@ -105,8 +118,8 @@ export function trackMetaLead(params?: Record<string, string>): void {
   try {
     if (
       hasDailyConversionFlag(DAILY_SCOPE) ||
-      sessionStorage.getItem(FLAG_KEY) ||
-      sessionStorage.getItem(LEGACY_KEY)
+      storageHasTodayFlag(FLAG_KEY) ||
+      storageHasTodayFlag(LEGACY_KEY)
     ) {
       // Keep in-memory lock armed only until the daily key rolls over.
       w.__metaPixelLeadLockUntil = lockUntilTomorrow;
@@ -128,9 +141,9 @@ export function trackMetaLead(params?: Record<string, string>): void {
     w.__metaPixelLeadLockUntil = lockUntilTomorrow;
     try {
       markDailyConversionFlag(DAILY_SCOPE);
-      sessionStorage.setItem(FLAG_KEY, String(ts));
+      mirrorLegacyFlag(FLAG_KEY, String(ts));
       // Mirror to legacy key so older specs that read it still see the lock.
-      sessionStorage.setItem(LEGACY_KEY, String(ts));
+      mirrorLegacyFlag(LEGACY_KEY, String(ts));
     } catch { /* ignore */ }
   };
 
