@@ -20,7 +20,7 @@ const STOPPED_LOG = join(STATS_DIR, 'stopped.log');
 
 export const test = base.extend({});
 
-test.beforeEach(async ({}, testInfo) => {
+test.beforeEach(async (_fixtures, testInfo) => {
   if (testInfo.retry === 0) return;
 
   const file = join(ERROR_DIR, `${encodeURIComponent(testInfo.testId)}.txt`);
