@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'e2e/**'
+      - 'src/**'
       - 'eslint.config.js'
       - 'tsconfig.e2e.json'
       - 'package.json'
@@ -12,6 +13,7 @@ on:
   pull_request:
     paths:
       - 'e2e/**'
+      - 'src/**'
       - 'eslint.config.js'
       - 'tsconfig.e2e.json'
       - 'package.json'
@@ -46,6 +48,35 @@ jobs:
 
       - name: Fail on duplicate imports in e2e/
         run: npm run lint:e2e:duplicate-imports
+
+  no-empty-pattern:
+    name: ESLint — no-empty-pattern (src/ + e2e/)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Cache node_modules
+        id: cache-node-modules-empty-pattern
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node20-modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node20-modules-
+
+      - name: Install dependencies
+        if: steps.cache-node-modules-empty-pattern.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Fail on empty destructuring patterns
+        run: npm run lint:no-empty-pattern
 
   typecheck-e2e:
     name: TypeScript typecheck — e2e/
