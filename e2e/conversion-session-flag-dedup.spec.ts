@@ -96,10 +96,10 @@ test.describe('Google Ads conversion — per-session dedup flag', () => {
 
     // The session flag must now be present
     const flagAfterMerci = await page.evaluate(
-      (id) => sessionStorage.getItem(`conversion_fired_${id}`),
+      (id) => localStorage.getItem(`conversion_fired_${id}`),
       CONV_ID
     );
-    expect(flagAfterMerci, 'sessionStorage flag conversion_fired_<id> must be set').not.toBeNull();
+    expect(flagAfterMerci, 'persistent flag conversion_fired_<id> must be set').not.toBeNull();
 
     // ---- 3) Reload /merci in the same tab (same session) ----
     await page.reload();
@@ -126,7 +126,7 @@ test.describe('Google Ads conversion — per-session dedup flag', () => {
         __gtagCalls?: GtagCall[];
       };
       const flagKey = `conversion_fired_AW-974052357/${label}`;
-      if (sessionStorage.getItem(flagKey)) {
+      if (sessionStorage.getItem(flagKey) || localStorage.getItem(flagKey)) {
         // dedup engaged — do nothing, mirroring trackGoogleAdsConversion
         return;
       }

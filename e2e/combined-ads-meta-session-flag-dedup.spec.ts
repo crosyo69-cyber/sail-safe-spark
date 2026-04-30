@@ -170,11 +170,11 @@ test.describe('Combined Google Ads + Meta Pixel — per-session dedup', () => {
 
     // Both session flags must be set
     const flags = await page.evaluate((id) => ({
-      ads: sessionStorage.getItem(`conversion_fired_${id}`),
-      meta: sessionStorage.getItem('conversion_fired_meta_lead'),
+      ads: localStorage.getItem(`conversion_fired_${id}`),
+      meta: localStorage.getItem('conversion_fired_meta_lead'),
     }), CONV_ID);
-    expect(flags.ads, 'Google Ads session flag must be present').not.toBeNull();
-    expect(flags.meta, 'Meta Pixel session flag must be present').not.toBeNull();
+    expect(flags.ads, 'Google Ads persistent flag must be present').not.toBeNull();
+    expect(flags.meta, 'Meta Pixel persistent flag must be present').not.toBeNull();
 
     // ---- 3) Reload /merci ----
     await page.reload();

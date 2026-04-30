@@ -149,9 +149,9 @@ test.describe('CTA scroll after remounts — single click fires CompleteRegistra
     ).toBe(1);
 
     const dedupSet = await page.evaluate(
-      () => sessionStorage.getItem('__meta_pixel_lead') !== null
+      () => localStorage.getItem('conversion_fired_meta_lead') !== null
     );
-    expect(dedupSet, 'Dedup sessionStorage key must be set after the flow').toBe(true);
+    expect(dedupSet, 'Persistent dedup key must be set after the flow').toBe(true);
 
     const memLockSet = await page.evaluate(
       () => typeof (window as unknown as { __metaPixelLeadLockUntil?: number }).__metaPixelLeadLockUntil === 'number'

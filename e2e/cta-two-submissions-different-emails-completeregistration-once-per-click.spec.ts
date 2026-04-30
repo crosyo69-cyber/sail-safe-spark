@@ -198,7 +198,7 @@ test.describe('Two CTA submissions, different emails — CompleteRegistration on
     // Wait for the CTA form to be interactive again on home — replaces a sleep.
     await waitForFormReady(page);
 
-    // Poll the dedup sessionStorage key until the 10s window has expired,
+    // Poll the dedup persistent key until the 10s window has expired,
     // instead of sleeping 11s blindly.
     await expect
       .poll(

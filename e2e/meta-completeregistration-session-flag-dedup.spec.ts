@@ -113,11 +113,11 @@ test.describe('Meta Pixel CompleteRegistration — per-session dedup flag', () =
 
     // The session flag must be set
     const flagAfterMerci = await page.evaluate(
-      () => sessionStorage.getItem('conversion_fired_meta_lead')
+      () => localStorage.getItem('conversion_fired_meta_lead')
     );
     expect(
       flagAfterMerci,
-      'sessionStorage flag conversion_fired_meta_lead must be set after first fire'
+      'persistent localStorage flag conversion_fired_meta_lead must be set after first fire'
     ).not.toBeNull();
 
     // ---- 2) Reload /merci in the same tab ----

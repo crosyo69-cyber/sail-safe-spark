@@ -129,8 +129,8 @@ test.describe('Meta Pixel — Lead error → CompleteRegistration fallback, no d
     ).toBe(1);
 
     const dedupSet = await page.evaluate(
-      () => sessionStorage.getItem('__meta_pixel_lead') !== null
+      () => localStorage.getItem('conversion_fired_meta_lead') !== null
     );
-    expect(dedupSet, 'Dedup sessionStorage key must remain set after the flow').toBe(true);
+    expect(dedupSet, 'Persistent dedup key must remain set after the flow').toBe(true);
   });
 });
