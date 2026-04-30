@@ -193,8 +193,12 @@ test.describe('CTA double-click same email — CompleteRegistration once', () =>
     // Two rapid clicks — the 2nd one races against React's disabled commit.
     // `clickCount: 2` would be a real double-click; we use two separate
     // clicks with no delay to mimic an impatient user mashing the button.
+    // `force: true` on BOTH clicks bypasses Playwright's "element is stable"
+    // pre-check, which can flap on the sunset button (hover:scale-105
+    // transform causes Playwright to perceive the element as moving even
+    // when no user interaction is happening).
     await Promise.all([
-      submitButton.click({ noWaitAfter: true }),
+      submitButton.click({ noWaitAfter: true, force: true }),
       submitButton.click({ noWaitAfter: true, force: true }),
     ]);
 
