@@ -11,8 +11,9 @@ import AdminMonthlyCalendar from "@/components/admin/AdminMonthlyCalendar";
 import AdminRevenueDashboard from "@/components/admin/AdminRevenueDashboard";
 import AdminSeasonStats from "@/components/admin/AdminSeasonStats";
 import Admin404Monitor from "@/components/admin/Admin404Monitor";
+import AdminConversionDedupMonitor from "@/components/admin/AdminConversionDedupMonitor";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert } from "lucide-react";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -56,7 +57,7 @@ const Admin = () => {
         </h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-6xl grid-cols-4 md:grid-cols-8">
+          <TabsList className="grid w-full max-w-6xl grid-cols-3 md:grid-cols-9">
             <TabsTrigger value="overview" className="gap-2">
               <LayoutDashboard className="w-4 h-4" />
               <span className="hidden sm:inline">Vue d'ensemble</span>
@@ -88,6 +89,10 @@ const Admin = () => {
             <TabsTrigger value="404" className="gap-2">
               <AlertTriangle className="w-4 h-4" />
               <span className="hidden sm:inline">404</span>
+            </TabsTrigger>
+            <TabsTrigger value="dedup" className="gap-2">
+              <ShieldAlert className="w-4 h-4" />
+              <span className="hidden sm:inline">Dédup</span>
             </TabsTrigger>
           </TabsList>
 
@@ -121,6 +126,10 @@ const Admin = () => {
 
           <TabsContent value="404">
             <Admin404Monitor />
+          </TabsContent>
+
+          <TabsContent value="dedup">
+            <AdminConversionDedupMonitor />
           </TabsContent>
         </Tabs>
       </main>

@@ -3,6 +3,9 @@ const ALL_SCOPES = '*';
 const CLEANUP_REGISTERED_FLAG = '__kspConversionDedupCleanupRegistered';
 const NAVIGATION_FALLBACK_PREFIX = 'ksp_conv_nav:';
 const DEBUG_FLAG_KEY = 'ksp_conv_debug';
+const BLOCK_HISTORY_KEY = 'ksp_conv_block_history';
+const BLOCK_HISTORY_MAX = 100;
+const BLOCK_HISTORY_EVENT = 'ksp:conversion-dedup:block';
 
 type ConversionFlags = Record<string, string>;
 
@@ -17,6 +20,11 @@ export interface ConversionDedupBlockInfo {
   sources: ConversionDedupSource[]; // every storage where the flag was found
   matchedScope: string; // either the requested scope or '*' (wildcard)
   timestamps: Partial<Record<ConversionDedupSource, string>>;
+}
+
+export interface ConversionDedupBlockEntry extends ConversionDedupBlockInfo {
+  blockedAt: string; // ISO timestamp when the block happened
+  url?: string;
 }
 
 /**
@@ -62,6 +70,7 @@ export function isConversionDedupDebugEnabled(): boolean {
 }
 
 function logBlockedConversion(info: ConversionDedupBlockInfo): void {
+  recordBlockedConversion(info);
   if (!isConversionDedupDebugEnabled()) return;
   const reason = info.matchedScope === ALL_SCOPES
     ? 'wildcard flag (*) covers every scope today'
@@ -78,6 +87,92 @@ function logBlockedConversion(info: ConversionDedupBlockInfo): void {
       timestamps: info.timestamps,
     },
   );
+}
+
+function recordBlockedConversion(info: ConversionDedupBlockInfo): void {
+  if (typeof window === 'undefined') return;
+  const entry: ConversionDedupBlockEntry = {
+    ...info,
+    blockedAt: new Date().toISOString(),
+    url: typeof window.location !== 'undefined' ? window.location.href : undefined,
+  };
+  try {
+    const ls = safeStorage('localStorage');
+    if (ls) {
+      const raw = ls.getItem(BLOCK_HISTORY_KEY);
+      const list: ConversionDedupBlockEntry[] = raw ? (JSON.parse(raw) as ConversionDedupBlockEntry[]) : [];
+      const next = [entry, ...(Array.isArray(list) ? list : [])].slice(0, BLOCK_HISTORY_MAX);
+      ls.setItem(BLOCK_HISTORY_KEY, JSON.stringify(next));
+    }
+  } catch {
+    // ignore quota / parse failures
+  }
+  try {
+    window.dispatchEvent(new CustomEvent(BLOCK_HISTORY_EVENT, { detail: entry }));
+  } catch {
+    // ignore
+  }
+}
+
+export function getConversionDedupBlockHistory(): ConversionDedupBlockEntry[] {
+  try {
+    const ls = safeStorage('localStorage');
+    if (!ls) return [];
+    const raw = ls.getItem(BLOCK_HISTORY_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as unknown;
+    return Array.isArray(parsed) ? (parsed as ConversionDedupBlockEntry[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function clearConversionDedupBlockHistory(): void {
+  try {
+    safeStorage('localStorage')?.removeItem(BLOCK_HISTORY_KEY);
+  } catch {
+    // ignore
+  }
+  if (typeof window !== 'undefined') {
+    try {
+      window.dispatchEvent(new CustomEvent(BLOCK_HISTORY_EVENT, { detail: null }));
+    } catch {
+      // ignore
+    }
+  }
+}
+
+export const CONVERSION_DEDUP_BLOCK_EVENT = BLOCK_HISTORY_EVENT;
+
+/**
+ * Wipe ALL today's daily conversion flags from sessionStorage, localStorage
+ * and the window.name fallback. Useful for admins testing conversions.
+ */
+export function clearAllDailyConversionFlags(): void {
+  const today = getDailyConversionKey();
+  (['sessionStorage', 'localStorage'] as const).forEach((type) => {
+    const storage = safeStorage(type);
+    if (!storage) return;
+    try {
+      for (let i = storage.length - 1; i >= 0; i -= 1) {
+        const key = storage.key(i);
+        if (key?.startsWith(CONVERSION_KEY_PREFIX)) storage.removeItem(key);
+      }
+    } catch {
+      // ignore
+    }
+  });
+  if (typeof window !== 'undefined') {
+    try {
+      const nav = readNavigationFallback();
+      delete nav[today];
+      window.name = Object.keys(nav).length === 0
+        ? ''
+        : `${NAVIGATION_FALLBACK_PREFIX}${JSON.stringify(nav)}`;
+    } catch {
+      // ignore
+    }
+  }
 }
 
 export function getDailyConversionKey(date = new Date()): string {
