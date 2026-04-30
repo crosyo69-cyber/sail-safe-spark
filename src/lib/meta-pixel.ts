@@ -1,5 +1,5 @@
 // Meta (Facebook) Pixel initialization and tracking
-import { hasDailyConversionFlag, isTodayTimestamp, markDailyConversionFlag } from './conversion-dedup';
+import { markFired, shouldFireWithinWindow } from './conversion-dedup';
 
 declare global {
   interface Window {
@@ -19,26 +19,12 @@ type MetaPixelBootstrap = ((...args: unknown[]) => void) & {
   queue: unknown[][];
 };
 
-function storageHasTodayFlag(key: string): boolean {
-  try {
-    return isTodayTimestamp(sessionStorage.getItem(key)) || isTodayTimestamp(localStorage.getItem(key));
-  } catch {
-    return false;
-  }
-}
-
-function mirrorLegacyFlag(key: string, value = String(Date.now())): void {
-  try { sessionStorage.setItem(key, value); } catch { /* ignore */ }
-  try { localStorage.setItem(key, value); } catch { /* ignore */ }
-}
-
 /**
  * Initialize Meta Pixel
  */
 export function initMetaPixel(): void {
   if (isInitialized) return;
 
-  // Meta Pixel base code
   const f = window;
   const b = document;
 
@@ -59,7 +45,6 @@ export function initMetaPixel(): void {
   n.version = '2.0';
   n.queue = [];
 
-  // Load pixel script
   const loadScript = () => {
     const t = b.createElement('script');
     t.async = true;
@@ -71,7 +56,6 @@ export function initMetaPixel(): void {
     console.log('%c[Meta Pixel] Initialized', 'color: #1877f2; font-weight: bold');
   };
 
-  // Initialize pixel
   window.fbq('init', META_PIXEL_ID);
   window.fbq('track', 'PageView');
 
@@ -93,79 +77,42 @@ export function trackMetaPageView(): void {
 }
 
 /**
- * Track a lead conversion (form submission).
+ * Track a Lead conversion (form submission).
  *
- * Dedup: daily sessionStorage + localStorage flag covers BOTH 'Lead' and
- * 'CompleteRegistration' (single shared scope) so once either has fired today,
- * no further Lead/CompleteRegistration call will reach fbq — even across
- * reloads, back navigation, or home reloads.
+ * Dedup contract (10s sliding window, validated by Playwright e2e):
+ *   - Primary timestamp:  sessionStorage['__meta_pixel_lead']        = Date.now()
+ *   - Persistent mirror:  localStorage['conversion_fired_meta_lead'] = Date.now()
+ *   - Both Lead AND CompleteRegistration share the SAME dedup slot
+ *     (CompleteRegistration is the standard fallback when Lead throws).
+ *   - Window: 10_000 ms. After expiry the mirror is auto-cleared and the
+ *     event can fire again.
  *
- * Fallback: if `fbq` is unavailable OR the 'Lead' call throws, we attempt
- * 'CompleteRegistration' (also a Meta standard event). Both outcomes consume
- * the same dedup slot.
+ * Fallback chain:
+ *   1. fbq('track','Lead', params)
+ *   2. on throw or fbq missing → fbq('track','CompleteRegistration', params)
+ * Both consume the same dedup slot.
  */
 export function trackMetaLead(params?: Record<string, string>): void {
-  const FLAG_KEY = 'conversion_fired_meta_lead'; // session-wide flag (shared with CR fallback)
-  const LEGACY_KEY = '__meta_pixel_lead'; // kept for back-compat with existing e2e specs
-  const DAILY_SCOPE = 'meta:lead_complete_registration';
+  const KEY = '__meta_pixel_lead';
+  const MIRROR = 'conversion_fired_meta_lead';
 
-  // In-memory lock — survives rapid component remounts within the same JS
-  // runtime (faster than sessionStorage and immune to storage quirks).
-  // Paired with the storage check below for cross-reload protection.
-  const w = window as unknown as { __metaPixelLeadLockUntil?: number };
-  const now = Date.now();
-  const tomorrow = new Date();
-  tomorrow.setHours(24, 0, 0, 0);
-  const lockUntilTomorrow = tomorrow.getTime();
-  if (typeof w.__metaPixelLeadLockUntil === 'number' && now < w.__metaPixelLeadLockUntil) {
+  if (!shouldFireWithinWindow(KEY, MIRROR)) {
     if (import.meta.env.DEV) {
       console.log(
-        '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (in-memory lock)',
+        '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (10s dedup window)',
         'color: #f59e0b; font-weight: bold'
       );
     }
     return;
   }
 
-  // Daily dedup: if either sessionStorage OR localStorage contains the daily
-  // scope, the event already fired today — never fire again until tomorrow.
-  try {
-    if (
-      hasDailyConversionFlag(DAILY_SCOPE) ||
-      storageHasTodayFlag(FLAG_KEY) ||
-      storageHasTodayFlag(LEGACY_KEY)
-    ) {
-      // Keep in-memory lock armed only until the daily key rolls over.
-      w.__metaPixelLeadLockUntil = lockUntilTomorrow;
-      if (import.meta.env.DEV) {
-        console.log(
-          '%c[Meta Pixel] Lead/CompleteRegistration SKIPPED (already fired today)',
-          'color: #f59e0b; font-weight: bold'
-        );
-      }
-      return;
-    }
-  } catch {
-    // sessionStorage unavailable — fall through and fire
-  }
-
-  const markFired = () => {
-    const ts = Date.now();
-    // Lock in this runtime until the daily key rolls over.
-    w.__metaPixelLeadLockUntil = lockUntilTomorrow;
-    try {
-      markDailyConversionFlag(DAILY_SCOPE);
-      mirrorLegacyFlag(FLAG_KEY, String(ts));
-      // Mirror to legacy key so older specs that read it still see the lock.
-      mirrorLegacyFlag(LEGACY_KEY, String(ts));
-    } catch { /* ignore */ }
-  };
+  const markIfFired = () => markFired(KEY, MIRROR);
 
   // Primary: Lead
   if (typeof window.fbq === 'function') {
     try {
       window.fbq('track', 'Lead', params);
-      markFired();
+      markIfFired();
       if (import.meta.env.DEV) {
         console.log('%c[Meta Pixel] Lead tracked', 'color: #1877f2; font-weight: bold');
       }
@@ -181,7 +128,7 @@ export function trackMetaLead(params?: Record<string, string>): void {
   if (typeof window.fbq === 'function') {
     try {
       window.fbq('track', 'CompleteRegistration', params);
-      markFired();
+      markIfFired();
       if (import.meta.env.DEV) {
         console.log(
           '%c[Meta Pixel] CompleteRegistration tracked (fallback)',
