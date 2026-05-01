@@ -2,7 +2,7 @@ import { test as base } from '@playwright/test';
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { RETRYABLE_PATTERNS, isRetryable } from './retry-patterns';
-import { clearDedupStorage } from './dedup-storage';
+import { clearDedupStorage, hasDedupAutoResetSkip } from './dedup-storage';
 
 /**
  * Filtre les retries Playwright : on n'autorise un retry QUE si l'échec
@@ -42,10 +42,7 @@ export const test = base.extend({});
  * inside the test before any navigation.
  */
 test.beforeEach(async ({ page }, testInfo) => {
-  const optedOut = testInfo.annotations.some(
-    (a) => a.type === 'dedupAutoReset' && a.description === 'false',
-  );
-  if (optedOut) return;
+  if (hasDedupAutoResetSkip(testInfo)) return;
   try {
     await page.goto('/');
     await clearDedupStorage(page);

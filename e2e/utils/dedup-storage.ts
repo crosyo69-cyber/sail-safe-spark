@@ -89,3 +89,51 @@ export function installDedupStorageReset(
     await clearDedupStorage(page);
   });
 }
+
+/**
+ * Annotation key used by the global auto-reset hook (in
+ * `./utils/retry-filter`) to opt a test out of dedup-storage cleanup.
+ */
+export const DEDUP_AUTO_RESET_ANNOTATION = 'dedupAutoReset';
+
+/**
+ * Helper to disable the global dedup auto-reset for a single test.
+ *
+ * Usage:
+ *   import { test, expect } from './utils/retry-filter';
+ *   import { skipDedupAutoReset } from './utils/dedup-storage';
+ *
+ *   test('garde l’état dédup pré-armé', async ({ page }, testInfo) => {
+ *     skipDedupAutoReset(testInfo);
+ *     // ...sessionStorage / localStorage are NOT wiped before this test.
+ *   });
+ *
+ * Equivalent à pousser manuellement
+ * `{ type: 'dedupAutoReset', description: 'false' }` dans
+ * `testInfo.annotations`, mais sans risque de typo sur le nom de la clé.
+ */
+export function skipDedupAutoReset(
+  testInfo: { annotations: Array<{ type: string; description?: string }> },
+  reason = 'false',
+): void {
+  testInfo.annotations.push({
+    type: DEDUP_AUTO_RESET_ANNOTATION,
+    description: reason === 'false' ? 'false' : `false: ${reason}`,
+  });
+}
+
+/**
+ * Returns true if the given testInfo has opted out of the global
+ * dedup-storage auto-reset (annotation `dedupAutoReset` whose description
+ * starts with `false`).
+ */
+export function hasDedupAutoResetSkip(
+  testInfo: { annotations: Array<{ type: string; description?: string }> },
+): boolean {
+  return testInfo.annotations.some(
+    (a) =>
+      a.type === DEDUP_AUTO_RESET_ANNOTATION &&
+      typeof a.description === 'string' &&
+      a.description.startsWith('false'),
+  );
+}
