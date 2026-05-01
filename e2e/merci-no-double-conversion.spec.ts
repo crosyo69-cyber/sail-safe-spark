@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { clearDedupStorage } from './utils/dedup-storage';
 
 /**
  * E2E: verify that loading /merci AFTER a successful CTA submission does NOT
@@ -23,7 +24,6 @@ import { test, expect, type Page } from '@playwright/test';
 const ADS_LABEL = 's2n0CL3puI4cEIW4u9AD';
 const ADS_ID = 'AW-974052357';
 const DEDUP_KEY = `__gads_conv_${ADS_ID}/${ADS_LABEL}`;
-const MIRROR_KEY = `conversion_fired_${ADS_ID}/${ADS_LABEL}`;
 
 type GtagCall = [string, string, Record<string, unknown>?];
 
@@ -65,6 +65,14 @@ async function getConversionCount(page: Page): Promise<number> {
 }
 
 test.describe('/merci page — conversion dedup after CTA submission', () => {
+  // Per-test reset: wipes sessionStorage + localStorage dedup keys
+  // (incl. conversion_fired_*) so one test's persistent mirror cannot
+  // leak into the next via the shared browser context.
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await clearDedupStorage(page);
+  });
+
   test('does NOT fire conversion when CTASection already fired it <10s ago', async ({ page }) => {
     await installGtagRecorder(page);
 
@@ -99,15 +107,9 @@ test.describe('/merci page — conversion dedup after CTA submission', () => {
   test('DOES fire conversion exactly once on /merci when no recent dedup exists', async ({ page }) => {
     await installGtagRecorder(page);
 
-    // Visit / first to get same-origin storage, then clear BOTH the
-    // sessionStorage primary key AND the localStorage mirror — the previous
-    // test (or a same-context residue) may have set the persistent mirror
-    // `conversion_fired_<id>` which would otherwise block this fire.
+    // beforeEach already wiped dedup storage (session + local incl.
+    // conversion_fired_*). Just reset captured calls before navigating.
     await page.goto('/');
-    await page.evaluate(({ key, mirror }) => {
-      sessionStorage.removeItem(key);
-      localStorage.removeItem(mirror);
-    }, { key: DEDUP_KEY, mirror: MIRROR_KEY });
 
     // Reset capture.
     await page.evaluate(() => {
