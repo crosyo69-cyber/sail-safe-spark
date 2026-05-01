@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Send, SkipForward, Activity } from "lucide-react";
+import { Send, SkipForward, Activity, RotateCcw } from "lucide-react";
+import { trackGoogleAdsConversion } from "@/lib/analytics";
 
 type LogEntry = {
   status: "sent" | "skipped";
@@ -8,6 +9,7 @@ type LogEntry = {
 };
 
 const EXPECTED_SEND_TO = "AW-974052357/s2n0CL3puI4cEIW4u9AD";
+const CONVERSION_LABEL = "s2n0CL3puI4cEIW4u9AD";
 
 function formatTime(ts: number): string {
   const d = new Date(ts);
@@ -30,6 +32,20 @@ export function GoogleAdsConversionLog() {
 
   const sentCount = entries.filter((e) => e.status === "sent").length;
   const skippedCount = entries.filter((e) => e.status === "skipped").length;
+
+  const replay = () => {
+    trackGoogleAdsConversion(CONVERSION_LABEL);
+  };
+
+  const forceReplay = () => {
+    try {
+      window.localStorage.removeItem(`conversion_fired_${EXPECTED_SEND_TO}`);
+      window.sessionStorage.removeItem(`__gads_conv_${EXPECTED_SEND_TO}`);
+    } catch {
+      /* ignore */
+    }
+    trackGoogleAdsConversion(CONVERSION_LABEL);
+  };
 
   return (
     <div
@@ -54,6 +70,24 @@ export function GoogleAdsConversionLog() {
         <div className="text-[11px] font-mono text-foreground break-all">
           {EXPECTED_SEND_TO}
         </div>
+      </div>
+      <div className="flex gap-2 px-3 py-2 border-b border-border">
+        <button
+          onClick={replay}
+          className="flex-1 inline-flex items-center justify-center gap-1.5 bg-primary text-primary-foreground hover:opacity-90 rounded-md px-2 py-1.5 text-[11px] font-semibold min-h-[36px]"
+          aria-label="Rejouer un test de conversion"
+        >
+          <RotateCcw className="w-3 h-3" />
+          Rejouer un test
+        </button>
+        <button
+          onClick={forceReplay}
+          className="inline-flex items-center justify-center gap-1.5 bg-secondary text-secondary-foreground hover:opacity-90 rounded-md px-2 py-1.5 text-[11px] font-semibold min-h-[36px]"
+          aria-label="Forcer un envoi en réinitialisant la dédup"
+          title="Vide la dédup puis rejoue (force ENVOYÉ)"
+        >
+          Forcer
+        </button>
       </div>
       <div className="max-h-[240px] overflow-y-auto divide-y divide-border/50">
         {entries.length === 0 ? (
