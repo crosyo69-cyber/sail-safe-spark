@@ -8,8 +8,6 @@ import {
   readFbqCalls,
   countAdsConversions,
   countMetaEvent,
-  type GtagCall,
-  type FbqCall,
 } from './utils/conversion-readers';
 
 /**
