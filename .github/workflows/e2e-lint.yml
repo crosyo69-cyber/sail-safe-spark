@@ -2,22 +2,14 @@ name: E2E Lint
 
 on:
   push:
-    branches: [main]
-    paths:
-      - 'e2e/**'
-      - 'src/**'
-      - 'eslint.config.js'
-      - 'tsconfig.e2e.json'
-      - 'package.json'
-      - '.github/workflows/e2e-lint.yml'
+    branches: ['**']
+    # Pas de filtre `paths:` ici — `no-empty-pattern` doit tourner sur
+    # chaque push pour rester un check obligatoire fiable. Les autres
+    # jobs filtrent leurs propres invocations via `if:` si besoin.
   pull_request:
-    paths:
-      - 'e2e/**'
-      - 'src/**'
-      - 'eslint.config.js'
-      - 'tsconfig.e2e.json'
-      - 'package.json'
-      - '.github/workflows/e2e-lint.yml'
+    # Idem : aucune restriction `paths:` afin que GitHub publie
+    # toujours un statut `no-empty-pattern` exploitable en branch
+    # protection (sans filtre, un check requis "skipped" bloque la PR).
 
 jobs:
   no-duplicate-imports:
