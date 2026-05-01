@@ -3,7 +3,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
-import { Check, ArrowRight, Ship, Users, Clock, Award, MapPin, Calendar, Shield, Wind } from "lucide-react";
+import { Check, ArrowRight, Ship, Users, Clock, Award, MapPin, Calendar, Shield, Wind, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { InternalLinking, disciplineLinks, pillarLinks } from "@/components/sections/InternalLinking";
 import { getProductRatingData } from "@/lib/seo-ratings";
