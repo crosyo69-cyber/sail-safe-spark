@@ -1,5 +1,5 @@
-import { test, expect, type Page } from '@playwright/test';
-import { clearDedupStorage } from './utils/dedup-storage';
+import { type Page } from '@playwright/test';
+import { test, expect } from './utils/retry-filter';
 
 /**
  * E2E: verify that loading /merci AFTER a successful CTA submission does NOT
@@ -65,13 +65,9 @@ async function getConversionCount(page: Page): Promise<number> {
 }
 
 test.describe('/merci page — conversion dedup after CTA submission', () => {
-  // Per-test reset: wipes sessionStorage + localStorage dedup keys
-  // (incl. conversion_fired_*) so one test's persistent mirror cannot
-  // leak into the next via the shared browser context.
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await clearDedupStorage(page);
-  });
+  // Per-test reset of sessionStorage + localStorage dedup keys
+  // (incl. conversion_fired_*) is provided GLOBALLY by the
+  // `./utils/retry-filter` test fixture — no manual beforeEach needed.
 
   test('does NOT fire conversion when CTASection already fired it <10s ago', async ({ page }) => {
     await installGtagRecorder(page);
