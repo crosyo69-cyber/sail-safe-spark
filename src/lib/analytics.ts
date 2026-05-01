@@ -8,7 +8,13 @@ declare global {
   }
 }
 
-const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
+// Google Ads conversion ID is the canonical tracking ID for this project.
+// VITE_GA_MEASUREMENT_ID is intentionally NOT read here: a misconfigured value
+// (e.g. "Kitesurfpassion@69" instead of a "G-XXXXXXXXXX" GA4 ID) would cause
+// gtag.js to load against an invalid ID and silently drop all conversion hits
+// to Google Ads. Until a valid GA4 ID is wired in, we load gtag.js with
+// GOOGLE_ADS_ID so AW-974052357/<label> conversions fire correctly.
+const GA_MEASUREMENT_ID: string | undefined = undefined;
 const GOOGLE_ADS_ID = 'AW-974052357';
 
 let isInitialized = false;
