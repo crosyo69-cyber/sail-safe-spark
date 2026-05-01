@@ -23,6 +23,7 @@ import { test, expect, type Page } from '@playwright/test';
 const ADS_LABEL = 's2n0CL3puI4cEIW4u9AD';
 const ADS_ID = 'AW-974052357';
 const DEDUP_KEY = `__gads_conv_${ADS_ID}/${ADS_LABEL}`;
+const MIRROR_KEY = `conversion_fired_${ADS_ID}/${ADS_LABEL}`;
 
 type GtagCall = [string, string, Record<string, unknown>?];
 
@@ -98,11 +99,15 @@ test.describe('/merci page — conversion dedup after CTA submission', () => {
   test('DOES fire conversion exactly once on /merci when no recent dedup exists', async ({ page }) => {
     await installGtagRecorder(page);
 
-    // Visit / first to get same-origin sessionStorage, then ensure no dedup key.
+    // Visit / first to get same-origin storage, then clear BOTH the
+    // sessionStorage primary key AND the localStorage mirror — the previous
+    // test (or a same-context residue) may have set the persistent mirror
+    // `conversion_fired_<id>` which would otherwise block this fire.
     await page.goto('/');
-    await page.evaluate(({ key }) => {
+    await page.evaluate(({ key, mirror }) => {
       sessionStorage.removeItem(key);
-    }, { key: DEDUP_KEY });
+      localStorage.removeItem(mirror);
+    }, { key: DEDUP_KEY, mirror: MIRROR_KEY });
 
     // Reset capture.
     await page.evaluate(() => {
