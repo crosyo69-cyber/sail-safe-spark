@@ -2,7 +2,12 @@ import { test as base } from '@playwright/test';
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { RETRYABLE_PATTERNS, isRetryable } from './retry-patterns';
-import { clearDedupStorage, hasDedupAutoResetSkip } from './dedup-storage';
+import {
+  clearDedupStorage,
+  getDedupAutoResetSkipReason,
+  hasDedupAutoResetSkip,
+  snapshotDedupStorage,
+} from './dedup-storage';
 
 /**
  * Filtre les retries Playwright : on n'autorise un retry QUE si l'échec
@@ -42,7 +47,59 @@ export const test = base.extend({});
  * inside the test before any navigation.
  */
 test.beforeEach(async ({ page }, testInfo) => {
-  if (hasDedupAutoResetSkip(testInfo)) return;
+  if (hasDedupAutoResetSkip(testInfo)) {
+    // Debug trace: when a test opts out of the auto-reset, dump what dedup
+    // state is currently sitting in the browser context. A later "conversion
+    // did not fire" assertion can then be cross-referenced against this
+    // concrete snapshot instead of guessing what leaked from a prior test.
+    const reason = getDedupAutoResetSkipReason(testInfo) ?? '(unknown)';
+    let snapshot: Awaited<ReturnType<typeof snapshotDedupStorage>> | null = null;
+    try {
+      // Snapshot needs a real origin; navigate only if we're on about:blank.
+      const url = page.url();
+      if (!url || url === 'about:blank' || url.startsWith('chrome-error://')) {
+        await page.goto('/');
+      }
+      snapshot = await snapshotDedupStorage(page);
+    } catch {
+      /* page not navigable yet — leave snapshot null */
+    }
+
+    const header =
+      `[dedup-reset SKIPPED] test="${testInfo.title}" ` +
+      `retry=${testInfo.retry} reason=${reason}`;
+    if (snapshot) {
+      const sessionKeys = Object.keys(snapshot.sessionStorage);
+      const localKeys = Object.keys(snapshot.localStorage);
+      // eslint-disable-next-line no-console
+      console.log(
+        `${header} | origin=${snapshot.origin} | totalDedupKeys=${snapshot.totalKeys} ` +
+        `| session=[${sessionKeys.join(', ')}] | local=[${localKeys.join(', ')}]`,
+      );
+    } else {
+      // eslint-disable-next-line no-console
+      console.log(`${header} | snapshot=unavailable (no real origin yet)`);
+    }
+
+    // Attach the structured snapshot so it shows up in the HTML / JSON report.
+    try {
+      await testInfo.attach('dedup-storage-snapshot.json', {
+        body: JSON.stringify(
+          {
+            reason,
+            retry: testInfo.retry,
+            snapshot,
+          },
+          null,
+          2,
+        ),
+        contentType: 'application/json',
+      });
+    } catch {
+      /* attach can fail if testInfo isn't ready — non-blocking */
+    }
+    return;
+  }
   try {
     await page.goto('/');
     await clearDedupStorage(page);

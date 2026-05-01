@@ -98,5 +98,23 @@ test('garde l’état dédup', async ({ page }, testInfo) => {
 `{ type: 'dedupAutoReset', description: 'false[: <reason>]' }` sans risque
 de typo ; le hook global la lit via `hasDedupAutoResetSkip(testInfo)`.
 
+### Trace de debug en cas d'opt-out
+
+Quand un test désactive le reset (via `skipDedupAutoReset` ou l'annotation
+manuelle), le hook global :
+
+1. Logge dans la console une ligne `[dedup-reset SKIPPED]` avec le titre du
+   test, le `retry`, la raison fournie, l'origine, et la liste des clés de
+   dédup encore présentes dans `sessionStorage` et `localStorage`.
+2. Attache au rapport Playwright un fichier
+   `dedup-storage-snapshot.json` contenant la raison, le numéro de retry et
+   le snapshot complet (clé → valeur) pour les deux stores.
+
+Objectif : quand une assertion "la conversion ne s'est pas déclenchée"
+échoue ensuite, on voit immédiatement *quelles* clés (`__gads_conv_*`,
+`conversion_fired_*`, …) bloquaient le tir, sans avoir à instrumenter le
+test à la main. Le snapshot est lisible dans le rapport HTML
+(`Attachments → dedup-storage-snapshot.json`) et dans le JSON CI.
+
 Les specs encore importés depuis `@playwright/test` ne bénéficient PAS du
 hook global ; migrez-les vers `./utils/retry-filter` pour activer le reset.
