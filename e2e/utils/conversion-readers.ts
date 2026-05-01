@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 
 /**
  * Single source of truth for reading conversion tracker calls in E2E specs.
@@ -223,18 +224,180 @@ export function countGa4Event(calls: GtagCall[], eventName: string): number {
   return calls.filter((c) => c[0] === 'event' && c[1] === eventName).length;
 }
 
-/** Poll until a count reaches `expected`. Helps avoid fixed-sleep flakies. */
-export async function waitForCount(
-  read: () => Promise<number>,
-  expected: number,
-  opts: { timeout?: number } = {}
+// ───────────────────────── generic conversion waiters ─────────────────────────
+//
+// Every conversion assertion in the suite should go through one of these
+// helpers instead of `await page.waitForTimeout(N)` followed by a one-shot
+// `expect(...).toBe(N)`. Fixed sleeps are the #1 source of CI flake here:
+// they either wait too little (false negative on slow workers) or too long
+// (slow suite). The helpers below all use Playwright's `expect.poll` which
+// retries until the condition is met OR a timeout elapses, with rich
+// per-attempt diagnostics in the trace viewer.
+
+const DEFAULT_POLL_TIMEOUT_MS = 10_000;
+const DEFAULT_POLL_INTERVALS = [50, 100, 200, 250];
+
+export interface WaitOpts {
+  /** Hard upper bound, in ms. Default: 10_000. */
+  timeout?: number;
+  /** Backoff intervals in ms. Default: [50, 100, 200, 250]. */
+  intervals?: number[];
+  /** Friendly message attached to the failing expect call. */
+  message?: string;
+}
+
+/**
+ * Generic waiter — polls `read()` until its value equals `expected`.
+ * Use this for every "X tracker fired exactly N times" assertion.
+ *
+ * Example:
+ *   await waitForConversionCount(
+ *     () => readGtagCalls(page).then((c) => countAdsConversions(c, CONV_ID)),
+ *     1,
+ *     { message: 'Google Ads conversion fires exactly once after submit' },
+ *   );
+ */
+export async function waitForConversionCount<T>(
+  read: () => Promise<T> | T,
+  expected: T,
+  opts: WaitOpts = {}
 ): Promise<void> {
-  const timeout = opts.timeout ?? 5_000;
-  const start = Date.now();
-  // Simple poll; intentionally loose — callers usually wrap with expect.poll
-  // when they need richer reporting.
-  while (Date.now() - start < timeout) {
-    if ((await read()) >= expected) return;
-    await new Promise((r) => setTimeout(r, 100));
+  await expect
+    .poll(read, {
+      timeout: opts.timeout ?? DEFAULT_POLL_TIMEOUT_MS,
+      intervals: opts.intervals ?? DEFAULT_POLL_INTERVALS,
+      message: opts.message,
+    })
+    .toEqual(expected);
+}
+
+/**
+ * Wait for an Ads conversion count to reach `expected` (reads `__gtagCalls`).
+ * Convenience around `waitForConversionCount`.
+ */
+export async function waitForAdsConversionCount(
+  page: Page,
+  convId: string,
+  expected: number,
+  opts: WaitOpts = {}
+): Promise<void> {
+  await waitForConversionCount(
+    async () => countAdsConversions(await readGtagCalls(page), convId),
+    expected,
+    {
+      ...opts,
+      message: opts.message ?? `Google Ads conversion (${convId}) reaches ${expected}`,
+    }
+  );
+}
+
+/**
+ * Wait for a Meta Pixel `track:<name>` count to reach `expected`
+ * (reads `__fbqCalls`).
+ */
+export async function waitForMetaEventCount(
+  page: Page,
+  eventName: string,
+  expected: number,
+  opts: WaitOpts = {}
+): Promise<void> {
+  await waitForConversionCount(
+    async () => countMetaEvent(await readFbqCalls(page), eventName),
+    expected,
+    {
+      ...opts,
+      message: opts.message ?? `Meta Pixel ${eventName} reaches ${expected}`,
+    }
+  );
+}
+
+/**
+ * Wait for a GA4 `event:<name>` count to reach `expected`. Useful for
+ * `form_submit` assertions that should NOT double-fire.
+ */
+export async function waitForGa4EventCount(
+  page: Page,
+  eventName: string,
+  expected: number,
+  opts: WaitOpts = {}
+): Promise<void> {
+  await waitForConversionCount(
+    async () => countGa4Event(await readGtagCalls(page), eventName),
+    expected,
+    {
+      ...opts,
+      message: opts.message ?? `GA4 ${eventName} reaches ${expected}`,
+    }
+  );
+}
+
+/**
+ * Assert a count STAYS at `expected` for `windowMs` (default 1500ms). Use
+ * after a possible re-fire trigger (reload, back-nav, remount) to prove no
+ * additional fire happened. Replaces the `waitForTimeout(500); expect(...).toBe(N)`
+ * pattern, which only proved "no fire in the first 500ms" and frequently
+ * masked late re-fires.
+ */
+export async function expectCountStable<T>(
+  read: () => Promise<T> | T,
+  expected: T,
+  opts: { windowMs?: number; intervalMs?: number; message?: string } = {}
+): Promise<void> {
+  const windowMs = opts.windowMs ?? 1500;
+  const intervalMs = opts.intervalMs ?? 100;
+  const deadline = Date.now() + windowMs;
+  while (Date.now() < deadline) {
+    const actual = await read();
+    expect(actual, opts.message ?? `count must stay at ${String(expected)}`).toEqual(expected);
+    await new Promise((r) => setTimeout(r, intervalMs));
   }
+}
+
+/**
+ * Wait for a `localStorage` key to exist (non-null). Used to deterministically
+ * detect that a persistent dedup mirror (`conversion_fired_*`,
+ * `conversion_fired_meta_lead`, …) has been armed by the production code.
+ * Far more reliable than waiting for a fixed delay after navigation.
+ */
+export async function waitForLocalStorageKey(
+  page: Page,
+  key: string,
+  opts: WaitOpts = {}
+): Promise<void> {
+  await expect
+    .poll(
+      () => page.evaluate((k) => localStorage.getItem(k), key),
+      {
+        timeout: opts.timeout ?? DEFAULT_POLL_TIMEOUT_MS,
+        intervals: opts.intervals ?? DEFAULT_POLL_INTERVALS,
+        message: opts.message ?? `localStorage["${key}"] must be armed`,
+      }
+    )
+    .not.toBeNull();
+}
+
+/**
+ * Wait until ALL provided localStorage keys are present. Convenient for
+ * combined Ads + Meta scenarios where both mirrors must be armed before
+ * we read the call counts.
+ */
+export async function waitForLocalStorageKeys(
+  page: Page,
+  keys: string[],
+  opts: WaitOpts = {}
+): Promise<void> {
+  await expect
+    .poll(
+      () =>
+        page.evaluate(
+          (ks) => ks.every((k) => localStorage.getItem(k) !== null),
+          keys
+        ),
+      {
+        timeout: opts.timeout ?? DEFAULT_POLL_TIMEOUT_MS,
+        intervals: opts.intervals ?? DEFAULT_POLL_INTERVALS,
+        message: opts.message ?? `localStorage keys must all be armed: ${keys.join(', ')}`,
+      }
+    )
+    .toBe(true);
 }
