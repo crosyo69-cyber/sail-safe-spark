@@ -10,6 +10,7 @@ import { pushMerciConversion } from "@/lib/gtm";
 import { trackMetaLead } from "@/lib/meta-pixel";
 import { verifyGtagId } from "@/lib/gtag-id-check";
 import { ConversionStatusIndicator } from "@/components/debug/ConversionStatusIndicator";
+import { GoogleAdsConversionLog } from "@/components/debug/GoogleAdsConversionLog";
 
 const Merci = () => {
   useEffect(() => {
@@ -97,6 +98,7 @@ const Merci = () => {
       <Footer />
 
       {showDebug && <ConversionStatusIndicator />}
+      {showDebug && <GoogleAdsConversionLog />}
     </>
   );
 };

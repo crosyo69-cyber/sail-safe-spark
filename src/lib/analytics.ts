@@ -226,6 +226,13 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
         'color: #f59e0b; font-weight: bold'
       );
     }
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('ksp:gads-conversion', {
+          detail: { status: 'skipped', send_to: conversionId, ts: Date.now() },
+        })
+      );
+    }
     return;
   }
 
@@ -252,6 +259,13 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
     console.log(
       `%c[Analytics] Google Ads Conversion tracked: ${conversionId}`,
       'color: #ea4335; font-weight: bold'
+    );
+  }
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(
+      new CustomEvent('ksp:gads-conversion', {
+        detail: { status: 'sent', send_to: conversionId, ts: Date.now() },
+      })
     );
   }
 }
