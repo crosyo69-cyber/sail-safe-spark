@@ -137,3 +137,86 @@ export function hasDedupAutoResetSkip(
       a.description.startsWith('false'),
   );
 }
+
+/**
+ * Returns the human-readable opt-out reason recorded by `skipDedupAutoReset`,
+ * or `null` if no opt-out annotation is present.
+ *
+ * - `skipDedupAutoReset(info)` → `"(no reason given)"`
+ * - `skipDedupAutoReset(info, "pré-arme __gads_conv_")` → that string
+ */
+export function getDedupAutoResetSkipReason(
+  testInfo: { annotations: Array<{ type: string; description?: string }> },
+): string | null {
+  const ann = testInfo.annotations.find(
+    (a) =>
+      a.type === DEDUP_AUTO_RESET_ANNOTATION &&
+      typeof a.description === 'string' &&
+      a.description.startsWith('false'),
+  );
+  if (!ann || typeof ann.description !== 'string') return null;
+  const stripped = ann.description.replace(/^false:?\s*/, '');
+  return stripped.length > 0 ? stripped : '(no reason given)';
+}
+
+/**
+ * Snapshot of every dedup-related key currently sitting in the page's
+ * sessionStorage + localStorage on the current origin. Used by the global
+ * auto-reset hook to log what state was carried over when a test opts out
+ * of the cleanup, so a flake on the next conversion assertion can be
+ * diagnosed against a concrete record.
+ */
+export interface DedupStorageSnapshot {
+  origin: string;
+  capturedAt: string; // ISO 8601
+  sessionStorage: Record<string, string>;
+  localStorage: Record<string, string>;
+  totalKeys: number;
+}
+
+export async function snapshotDedupStorage(
+  page: Page,
+): Promise<DedupStorageSnapshot> {
+  // Need a real origin to read web storage.
+  const url = page.url();
+  if (!url || url === 'about:blank' || url.startsWith('chrome-error://')) {
+    try {
+      await page.goto('/');
+    } catch {
+      return {
+        origin: url || 'about:blank',
+        capturedAt: new Date().toISOString(),
+        sessionStorage: {},
+        localStorage: {},
+        totalKeys: 0,
+      };
+    }
+  }
+
+  return page.evaluate((prefixes) => {
+    const collect = (storage: Storage): Record<string, string> => {
+      const out: Record<string, string> = {};
+      try {
+        for (let i = 0; i < storage.length; i += 1) {
+          const k = storage.key(i);
+          if (!k) continue;
+          if (prefixes.some((p) => k.startsWith(p))) {
+            out[k] = storage.getItem(k) ?? '';
+          }
+        }
+      } catch {
+        /* ignore */
+      }
+      return out;
+    };
+    const session = collect(window.sessionStorage);
+    const local = collect(window.localStorage);
+    return {
+      origin: window.location.origin,
+      capturedAt: new Date().toISOString(),
+      sessionStorage: session,
+      localStorage: local,
+      totalKeys: Object.keys(session).length + Object.keys(local).length,
+    };
+  }, DEDUP_STORAGE_PREFIXES as unknown as string[]);
+}
