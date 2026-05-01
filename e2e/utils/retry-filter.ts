@@ -1,6 +1,6 @@
 import { test as base } from '@playwright/test';
 import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { join, resolve, sep } from 'node:path';
+import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { RETRYABLE_PATTERNS, isRetryable } from './retry-patterns';
 import {
