@@ -70,6 +70,54 @@ jobs:
       - name: Fail on empty destructuring patterns
         run: npm run lint:no-empty-pattern
 
+  no-empty-pattern-guard:
+    name: Guard — no-empty-pattern job présent dans le workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Vérifier que le job no-empty-pattern et sa commande sont déclarés
+        shell: bash
+        run: |
+          set -euo pipefail
+          WF=".github/workflows/e2e-lint.yml"
+
+          # 1) Le job doit exister, sinon branch protection ne pourra pas
+          #    le marquer "required".
+          if ! grep -qE '^\s*no-empty-pattern\s*:' "$WF"; then
+            echo "::error file=$WF::Job 'no-empty-pattern' introuvable dans $WF"
+            exit 1
+          fi
+
+          # 2) La commande de lint doit toujours être appelée.
+          if ! grep -q 'npm run lint:no-empty-pattern' "$WF"; then
+            echo "::error file=$WF::Step 'npm run lint:no-empty-pattern' manquant dans $WF"
+            exit 1
+          fi
+
+          # 3) Aucun filtre `paths:` ne doit restreindre les triggers du
+          #    workflow — sinon le check 'no-empty-pattern' peut être
+          #    "skipped" et bloquer toute PR sur laquelle il est requis.
+          if grep -qE '^\s{2,}paths\s*:' "$WF"; then
+            echo "::error file=$WF::Filtre 'paths:' détecté ; il rendrait le check no-empty-pattern non systématique"
+            exit 1
+          fi
+
+          # 4) Le déclencheur pull_request doit exister.
+          if ! grep -qE '^\s*pull_request\s*:' "$WF"; then
+            echo "::error file=$WF::Trigger 'pull_request' manquant — le job ne tournera pas sur les PR"
+            exit 1
+          fi
+
+          # 5) Le déclencheur push doit couvrir toutes les branches.
+          if ! grep -qE "branches:\s*\[\s*'\*\*'\s*\]" "$WF"; then
+            echo "::error file=$WF::Trigger 'push' doit cibler branches: ['**'] pour couvrir chaque branche"
+            exit 1
+          fi
+
+          echo "✓ no-empty-pattern job correctement câblé dans $WF"
+
   typecheck-e2e:
     name: TypeScript typecheck — e2e/
     runs-on: ubuntu-latest
