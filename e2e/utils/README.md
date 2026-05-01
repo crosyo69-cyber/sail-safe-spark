@@ -109,6 +109,10 @@ manuelle), le hook global :
 2. Attache au rapport Playwright un fichier
    `dedup-storage-snapshot.json` contenant la raison, le numéro de retry et
    le snapshot complet (clé → valeur) pour les deux stores.
+3. Logge une seconde ligne `[dedup-reset SKIPPED] snapshot → file://…` avec
+   l'URL `file://` cliquable du JSON sur disque (sous `testInfo.outputDir`),
+   pour ouvrir le snapshot directement depuis le terminal de l'IDE/CI sans
+   passer par le rapport HTML.
 
 Objectif : quand une assertion "la conversion ne s'est pas déclenchée"
 échoue ensuite, on voit immédiatement *quelles* clés (`__gads_conv_*`,
