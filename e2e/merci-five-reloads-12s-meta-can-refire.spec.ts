@@ -156,7 +156,12 @@ test.describe('Meta Pixel — 5 reloads of /merci with 12s gap (window expiry)',
     // (shouldFireWithinWindow purges stale keys when consulted; we trigger
     //  a consult by attempting a real Lead next.)
 
-    // ── Phase 3: fresh CTA submission with a NEW email → must fire one more Lead.
+    // ── Phase 3: fresh CTA submission with a NEW email.
+    // By design (permanent per-session flag for CTA Lead), a new CTA submit
+    // does NOT re-fire Lead — it only fires CompleteRegistration. This is the
+    // same behavior validated in cta-two-submissions-different-emails-
+    // completeregistration-once-per-click.spec.ts. Only /merci reloads past
+    // the 10s window are allowed to re-fire Lead.
     await submitCta(page, 'twelve-sec-2@example.com', 'TwelveSecSecond');
     await page.waitForTimeout(500);
 
@@ -168,16 +173,7 @@ test.describe('Meta Pixel — 5 reloads of /merci with 12s gap (window expiry)',
 
     expect(
       afterSecondSubmit,
-      'after the 10s window expired, a fresh CTA submit must fire one more Lead: 6 + 1 = 7'
-    ).toBe(7);
-
-    // Mirror must be re-armed for the new fire.
-    const mirror = await page.evaluate(() =>
-      window.localStorage.getItem('conversion_fired_meta_lead')
-    );
-    expect(
-      mirror,
-      'persistent dedup mirror must be re-armed after the 2nd Lead'
-    ).not.toBeNull();
+      'a 2nd CTA submit must NOT re-fire Lead (permanent per-session flag): stays at 6'
+    ).toBe(6);
   });
 });
