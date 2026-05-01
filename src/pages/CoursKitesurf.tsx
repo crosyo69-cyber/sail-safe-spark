@@ -556,6 +556,171 @@ const CoursKitesurf = () => {
           </div>
         </section>
 
+        {/* Publics concernés */}
+        <section className="py-20 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-6">
+                Pour Qui Sont Nos Cours de Kitesurf à Hyères ?
+              </h2>
+              <p className="text-muted-foreground text-lg">
+                Notre pédagogie s'adapte à tous les profils, du primo-débutant au rider en perfectionnement.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              {[
+                {
+                  icon: Users,
+                  title: "Débutants complets",
+                  desc: "Vous n'avez jamais touché à une aile : nous partons des fondamentaux jusqu'à l'autonomie en 5 jours.",
+                },
+                {
+                  icon: Award,
+                  title: "Adolescents (dès 10 ans)",
+                  desc: "Encadrement adapté, matériel taille junior, autorisation parentale incluse dans le dossier d'inscription.",
+                },
+                {
+                  icon: ArrowRight,
+                  title: "Riders en progression",
+                  desc: "Vous savez naviguer mais souhaitez remonter au vent, sauter ou passer au foil : programme sur mesure.",
+                },
+                {
+                  icon: Shield,
+                  title: "Reprise après pause",
+                  desc: "Nous proposons des séances de remise en confiance pour reprendre le kitesurf sereinement après plusieurs années.",
+                },
+              ].map((item) => (
+                <div key={item.title} className="bg-card rounded-2xl p-6 border border-border/50">
+                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                    <item.icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-display font-bold text-foreground mb-2">{item.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Prérequis & matériel */}
+        <section className="py-20 bg-secondary/30">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-6">
+                  Prérequis &amp; Matériel Inclus
+                </h2>
+                <p className="text-muted-foreground text-lg">
+                  Tout est prévu pour que vous arriviez les mains dans les poches le jour de votre première séance.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="bg-card rounded-2xl p-8 border border-border/50">
+                  <h3 className="font-display font-bold text-foreground text-xl mb-4 flex items-center gap-3">
+                    <Shield className="w-6 h-6 text-primary" />
+                    Prérequis pour participer
+                  </h3>
+                  <ul className="space-y-3 text-muted-foreground">
+                    {[
+                      "Savoir nager 25 mètres en eau profonde",
+                      "Âge minimum : 10 ans (35 kg)",
+                      "Certificat médical de non contre-indication",
+                      "Autorisation parentale pour les mineurs",
+                      "Licence FFVL (délivrée par l'école)",
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="bg-card rounded-2xl p-8 border border-border/50">
+                  <h3 className="font-display font-bold text-foreground text-xl mb-4 flex items-center gap-3">
+                    <Wind className="w-6 h-6 text-primary" />
+                    Matériel fourni à 100%
+                  </h3>
+                  <ul className="space-y-3 text-muted-foreground">
+                    {[
+                      "Aile de kitesurf (toutes tailles disponibles)",
+                      "Planche twin-tip adaptée à votre niveau",
+                      "Harnais ergonomique culotte ou ceinture",
+                      "Combinaison néoprène 3/2 mm ou 5/4 mm",
+                      "Casque, gilet de flottaison et leash",
+                    ]. map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ visible */}
+        <section className="py-20 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-6">
+                  Questions Fréquentes sur les Cours Kitesurf à Hyères
+                </h2>
+                <p className="text-muted-foreground text-lg">
+                  Les réponses aux questions que se posent nos futurs élèves avant de réserver.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                {faqStructuredData.mainEntity.map((q, i) => (
+                  <details
+                    key={i}
+                    className="group bg-card rounded-2xl border border-border/50 p-6 [&_summary::-webkit-details-marker]:hidden"
+                  >
+                    <summary className="flex items-start justify-between gap-4 cursor-pointer list-none min-h-[44px]">
+                      <h3 className="font-display font-semibold text-foreground text-lg">
+                        {q.name}
+                      </h3>
+                      <span className="text-primary font-bold text-xl flex-shrink-0 transition-transform group-open:rotate-45">
+                        +
+                      </span>
+                    </summary>
+                    <p className="text-muted-foreground mt-4 leading-relaxed">
+                      {q.acceptedAnswer.text}
+                    </p>
+                  </details>
+                ))}
+              </div>
+
+              <div className="mt-12 text-center bg-gradient-to-r from-primary/10 to-turquoise/10 rounded-3xl p-8 border border-primary/20">
+                <div className="flex items-center justify-center gap-3 mb-4 text-primary">
+                  <MapPin className="w-5 h-5" />
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <h3 className="font-display text-2xl font-bold text-foreground mb-3">
+                  Une autre question ? Parlons-en !
+                </h3>
+                <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                  Notre moniteur Yoanne Cros répond personnellement à toutes vos demandes par téléphone, email ou via le formulaire de réservation.
+                </p>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Button variant="sunset" size="lg" asChild>
+                    <Link to="/contact-reservation-kitesurf-hyeres">Nous Contacter</Link>
+                  </Button>
+                  <Button variant="outline" size="lg" asChild>
+                    <a href="tel:+33672716905">06 72 71 69 05</a>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Tarifs */}
         <section id="tarifs" className="py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
