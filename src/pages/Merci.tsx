@@ -8,6 +8,7 @@ import { CheckCircle, Phone } from "lucide-react";
 import { trackGoogleAdsConversion } from "@/lib/analytics";
 import { pushMerciConversion } from "@/lib/gtm";
 import { trackMetaLead } from "@/lib/meta-pixel";
+import { verifyGtagId } from "@/lib/gtag-id-check";
 import { ConversionStatusIndicator } from "@/components/debug/ConversionStatusIndicator";
 
 const Merci = () => {
@@ -25,6 +26,11 @@ const Merci = () => {
     // → Reload < 10s: skipped (no double Lead).
     // → Reload > 10s: fires once more (window expired by design).
     trackMetaLead({ content_name: 'conversion_merci', content_category: 'merci_page' });
+    // Telemetry: confirm gtag.js loaded with the expected Google Ads ID.
+    // Logs ✓ on success, console.error if a wrong/missing id is detected so
+    // future regressions (stray VITE_GA_MEASUREMENT_ID secret, blocker, CSP)
+    // surface immediately instead of silently dropping conversions.
+    verifyGtagId();
   }, []);
 
   // Show debug indicator in dev/preview, on lovable.app hosts, or when ?debug=1
