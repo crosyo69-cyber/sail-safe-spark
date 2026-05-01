@@ -204,8 +204,18 @@ export function trackPhoneClick(location: string): void {
     window.gtag('event', 'phone_click', params);
   }
 
-  // Track Google Ads conversion for phone clicks
-  trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
+  // Track Google Ads PHONE conversion (separate action from LEAD).
+  // Falls back silently if the label is still the placeholder, so the GA4
+  // `phone_click` event still fires while the Ads action is being created.
+  if (ADS_PHONE_LABEL && ADS_PHONE_LABEL !== 'REPLACE_WITH_PHONE_LABEL') {
+    trackGoogleAdsConversion(ADS_PHONE_LABEL);
+  } else if (import.meta.env.DEV) {
+    console.warn(
+      '[Analytics] PHONE conversion not fired: ADS_PHONE_LABEL placeholder. ' +
+        'Create the "Phone call" conversion action in Google Ads and update ' +
+        'ADS_PHONE_LABEL in src/lib/analytics.ts.'
+    );
+  }
 
   if (import.meta.env.DEV) {
     console.log(
