@@ -170,18 +170,13 @@ async function fillAndSubmit(
     `[${submitLabel}] Idle label "Envoyer ma demande" must disappear during loading`
   ).toHaveCount(0);
 
-  // 1) Two acceptable outcomes after the click:
-  //    a) The "Envoi en cours..." loading state becomes visible (slower nav).
-  //    b) The page already navigated to /merci before React could paint
-  //       the loading state (faster-than-paint nav, fully legitimate).
-  //    We race both and accept whichever happens first. We do NOT then
-  //    re-check page.url() synchronously — that read is stale relative to
-  //    the commit and was the source of the previous flake.
-  // The strict assertion above already proved the loading state was visible.
-  // Now wait for the eventual navigation to /merci.
-  await expect(loadingButton).toBeVisible();
+  // The strict `toHaveText(expectedLoadingLabel)` assertion above already
+  // proved the "Envoi en cours..." loading state was painted. Re-asserting
+  // visibility here would race the imminent navigation to /merci (the
+  // submitButton may have already been torn down by the route change).
+  // Skip straight to the navigation check.
 
-  // 2) Navigation to /merci is the definitive success signal.
+  // Navigation to /merci is the definitive success signal.
   await page.waitForURL('**/merci', { timeout: 10_000, waitUntil: 'commit' });
 
   // 3) On /merci, the loading button must be gone (loader has disappeared)
