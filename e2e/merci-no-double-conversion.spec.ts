@@ -24,7 +24,6 @@ import { clearDedupStorage } from './utils/dedup-storage';
 const ADS_LABEL = 's2n0CL3puI4cEIW4u9AD';
 const ADS_ID = 'AW-974052357';
 const DEDUP_KEY = `__gads_conv_${ADS_ID}/${ADS_LABEL}`;
-const MIRROR_KEY = `conversion_fired_${ADS_ID}/${ADS_LABEL}`;
 
 type GtagCall = [string, string, Record<string, unknown>?];
 
