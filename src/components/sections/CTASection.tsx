@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Phone, Send } from "lucide-react";
+import { Phone, Send, ShieldCheck, Clock, BadgeCheck } from "lucide-react";
 import { forwardRef, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -146,6 +146,22 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
             Réservez dès maintenant votre stage à Hyères et rejoignez les 2 500 élèves formés depuis 1999
           </p>
 
+          {/* Trust badges — réassurance avant formulaire */}
+          <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 mb-8 text-sm text-primary-foreground/90">
+            <li className="inline-flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-sunset" aria-hidden="true" />
+              Sans CB requise
+            </li>
+            <li className="inline-flex items-center gap-2">
+              <Clock className="w-4 h-4 text-sunset" aria-hidden="true" />
+              Réponse sous 24h
+            </li>
+            <li className="inline-flex items-center gap-2">
+              <BadgeCheck className="w-4 h-4 text-sunset" aria-hidden="true" />
+              École FFVL · Moniteur BPJEPS
+            </li>
+          </ul>
+
           {/* Form */}
           <form
             onSubmit={handleSubmit}
@@ -174,6 +190,9 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
                   value={formData.firstName}
                   onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                   required
+                  autoComplete="given-name"
+                  autoCapitalize="words"
+                  maxLength={50}
                   className="w-full h-14 px-5 rounded-xl bg-primary-foreground/10 border border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:border-sunset transition-colors"
                 />
               </div>
@@ -186,6 +205,9 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
+                  autoComplete="email"
+                  inputMode="email"
+                  maxLength={120}
                   className="w-full h-14 px-5 rounded-xl bg-primary-foreground/10 border border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:border-sunset transition-colors"
                 />
               </div>
@@ -198,6 +220,11 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   required
+                  autoComplete="tel"
+                  inputMode="tel"
+                  pattern="^(?:\+?\d[\s.\-]?){9,15}$"
+                  title="Numéro de téléphone valide (ex. 06 12 34 56 78)"
+                  maxLength={20}
                   className="w-full h-14 px-5 rounded-xl bg-primary-foreground/10 border border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:border-sunset transition-colors"
                 />
               </div>
@@ -235,11 +262,14 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
                 "Envoi en cours..."
               ) : (
                 <>
-                  Envoyer ma demande
+                  Recevoir ma proposition gratuite
                   <Send className="w-5 h-5" />
                 </>
               )}
             </Button>
+            <p className="mt-4 text-xs text-primary-foreground/70">
+              Réponse personnalisée sous 24h · Aucun engagement · Vos données restent confidentielles
+            </p>
           </form>
 
           {/* Phone Alternative */}
