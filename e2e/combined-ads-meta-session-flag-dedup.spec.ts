@@ -8,6 +8,8 @@ import {
   readFbqCalls,
   countAdsConversions,
   countMetaEvent,
+  waitForLocalStorageKeys,
+  expectCountStable,
 } from './utils/conversion-readers';
 
 /**
@@ -81,24 +83,13 @@ test.describe('Combined Google Ads + Meta Pixel — per-session dedup', () => {
 
     // ---- 2) /merci re-fires both trackers via useEffect ----
     await page.waitForURL('**/merci', { timeout: 10_000 });
-    // Wait for BOTH trackers to have fired before reading. The persistent
+    // Deterministic signal that BOTH trackers have completed: their persistent
     // dedup mirrors are armed synchronously inside trackGoogleAdsConversion
-    // and trackMetaLead, so polling them is the deterministic signal that
-    // both /merci useEffect tracker calls have completed. Replaces the
-    // previous 500ms fixed sleep that was the source of CI flake.
-    await expect
-      .poll(
-        () =>
-          page.evaluate(
-            (id) => ({
-              ads: localStorage.getItem(`conversion_fired_${id}`) !== null,
-              meta: localStorage.getItem('conversion_fired_meta_lead') !== null,
-            }),
-            CONV_ID
-          ),
-        { timeout: 10_000, intervals: [50, 100, 200] }
-      )
-      .toEqual({ ads: true, meta: true });
+    // and trackMetaLead. Polling these keys replaces every fixed sleep.
+    await waitForLocalStorageKeys(page, [
+      `conversion_fired_${CONV_ID}`,
+      'conversion_fired_meta_lead',
+    ]);
 
     let counts = await readCounts(page);
     expect(counts.ads, 'after submit + /merci, Google Ads fires once').toBe(1);
@@ -112,25 +103,23 @@ test.describe('Combined Google Ads + Meta Pixel — per-session dedup', () => {
     expect(flags.ads, 'Google Ads persistent flag must be present').not.toBeNull();
     expect(flags.meta, 'Meta Pixel persistent flag must be present').not.toBeNull();
 
-    // ---- 3) Reload /merci ----
+    // ---- 3) Reload /merci — assert counts STAY at 1 over a stability window ----
     await page.reload();
-    await page.waitForTimeout(500);
+    await expectCountStable(() => readCounts(page), { ads: 1, cr: 1 }, {
+      message: 'after /merci reload, Ads & CompleteRegistration must stay at 1',
+    });
 
-    counts = await readCounts(page);
-    expect(counts.ads, 'after /merci reload, Google Ads still 1').toBe(1);
-    expect(counts.cr, 'after /merci reload, CompleteRegistration still 1').toBe(1);
-
-    // ---- 4) Browser back to "/" ----
+    // ---- 4) Browser back to "/" — counts must still stay at 1 ----
     await page.goBack();
-    await page.waitForTimeout(500);
+    await expectCountStable(() => readCounts(page), { ads: 1, cr: 1 }, {
+      message: 'after back to /, Ads & CompleteRegistration must stay at 1',
+    });
 
-    counts = await readCounts(page);
-    expect(counts.ads, 'after back to /, Google Ads still 1').toBe(1);
-    expect(counts.cr, 'after back to /, CompleteRegistration still 1').toBe(1);
-
-    // ---- 5) Reload home ----
+    // ---- 5) Reload home — final stability check ----
     await page.reload();
-    await page.waitForTimeout(500);
+    await expectCountStable(() => readCounts(page), { ads: 1, cr: 1 }, {
+      message: 'after home reload, Ads & CompleteRegistration must stay at 1',
+    });
 
     counts = await readCounts(page);
 
