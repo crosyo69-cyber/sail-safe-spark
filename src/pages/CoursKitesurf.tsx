@@ -3,7 +3,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
-import { Check, ArrowRight, Ship, Users, Clock, Award } from "lucide-react";
+import { Check, ArrowRight, Ship, Users, Clock, Award, MapPin, Calendar, Shield, Wind } from "lucide-react";
 import { Link } from "react-router-dom";
 import { InternalLinking, disciplineLinks, pillarLinks } from "@/components/sections/InternalLinking";
 import { getProductRatingData } from "@/lib/seo-ratings";
@@ -131,6 +131,46 @@ const CoursKitesurf = () => {
         acceptedAnswer: {
           "@type": "Answer",
           text: "L'Almanarre bénéficie de vents réguliers de mars à novembre. Le Mistral et le Levant offrent d'excellentes conditions. L'été combine eau chaude et vent régulier, idéal pour débuter.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Faut-il savoir nager pour faire du kitesurf à Hyères ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Oui, savoir nager au moins 25 mètres en eau profonde est obligatoire. Vous évoluez en mer Méditerranée avec gilet de flottaison fourni, mais l'aisance aquatique reste indispensable pour votre sécurité.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Quel est l'âge minimum pour apprendre le kitesurf ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "L'âge minimum est de 10 ans avec un poids minimum de 35 kg. Pour les mineurs, une autorisation parentale signée est obligatoire. Aucune limite d'âge maximale : nous formons régulièrement des élèves de plus de 60 ans.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "La licence FFVL est-elle obligatoire pour suivre un cours ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Oui, la licence FFVL (Fédération Française de Vol Libre) est obligatoire pour toute pratique encadrée du kitesurf. Elle inclut l'assurance responsabilité civile et est délivrée par notre école dès votre première séance.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Que se passe-t-il s'il n'y a pas de vent pendant mon stage ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "En cas de jour sans vent, nous proposons des alternatives tractées par bateau incluses dans le stage 100% Glisse : foil tracté et planche tractée. Vous progressez quand même sur l'équilibre, le pilotage et la sensation de glisse.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Comment se rendre au spot de l'Almanarre depuis Hyères centre ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Le spot de l'Almanarre se situe sur la presqu'île de Giens à 15 minutes en voiture du centre d'Hyères. Parking gratuit sur place. Notre point de rendez-vous précis vous est communiqué chaque matin selon la direction du vent.",
         },
       },
     ],
@@ -510,6 +550,171 @@ const CoursKitesurf = () => {
                     <p className="font-display text-3xl font-bold text-primary mb-2">100%</p>
                     <p className="text-muted-foreground text-sm">Matériel inclus</p>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Publics concernés */}
+        <section className="py-20 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-6">
+                Pour Qui Sont Nos Cours de Kitesurf à Hyères ?
+              </h2>
+              <p className="text-muted-foreground text-lg">
+                Notre pédagogie s'adapte à tous les profils, du primo-débutant au rider en perfectionnement.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+              {[
+                {
+                  icon: Users,
+                  title: "Débutants complets",
+                  desc: "Vous n'avez jamais touché à une aile : nous partons des fondamentaux jusqu'à l'autonomie en 5 jours.",
+                },
+                {
+                  icon: Award,
+                  title: "Adolescents (dès 10 ans)",
+                  desc: "Encadrement adapté, matériel taille junior, autorisation parentale incluse dans le dossier d'inscription.",
+                },
+                {
+                  icon: ArrowRight,
+                  title: "Riders en progression",
+                  desc: "Vous savez naviguer mais souhaitez remonter au vent, sauter ou passer au foil : programme sur mesure.",
+                },
+                {
+                  icon: Shield,
+                  title: "Reprise après pause",
+                  desc: "Nous proposons des séances de remise en confiance pour reprendre le kitesurf sereinement après plusieurs années.",
+                },
+              ].map((item) => (
+                <div key={item.title} className="bg-card rounded-2xl p-6 border border-border/50">
+                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
+                    <item.icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="font-display font-bold text-foreground mb-2">{item.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Prérequis & matériel */}
+        <section className="py-20 bg-secondary/30">
+          <div className="container mx-auto px-4">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-6">
+                  Prérequis &amp; Matériel Inclus
+                </h2>
+                <p className="text-muted-foreground text-lg">
+                  Tout est prévu pour que vous arriviez les mains dans les poches le jour de votre première séance.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="bg-card rounded-2xl p-8 border border-border/50">
+                  <h3 className="font-display font-bold text-foreground text-xl mb-4 flex items-center gap-3">
+                    <Shield className="w-6 h-6 text-primary" />
+                    Prérequis pour participer
+                  </h3>
+                  <ul className="space-y-3 text-muted-foreground">
+                    {[
+                      "Savoir nager 25 mètres en eau profonde",
+                      "Âge minimum : 10 ans (35 kg)",
+                      "Certificat médical de non contre-indication",
+                      "Autorisation parentale pour les mineurs",
+                      "Licence FFVL (délivrée par l'école)",
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="bg-card rounded-2xl p-8 border border-border/50">
+                  <h3 className="font-display font-bold text-foreground text-xl mb-4 flex items-center gap-3">
+                    <Wind className="w-6 h-6 text-primary" />
+                    Matériel fourni à 100%
+                  </h3>
+                  <ul className="space-y-3 text-muted-foreground">
+                    {[
+                      "Aile de kitesurf (toutes tailles disponibles)",
+                      "Planche twin-tip adaptée à votre niveau",
+                      "Harnais ergonomique culotte ou ceinture",
+                      "Combinaison néoprène 3/2 mm ou 5/4 mm",
+                      "Casque, gilet de flottaison et leash",
+                    ]. map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ visible */}
+        <section className="py-20 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-6">
+                  Questions Fréquentes sur les Cours Kitesurf à Hyères
+                </h2>
+                <p className="text-muted-foreground text-lg">
+                  Les réponses aux questions que se posent nos futurs élèves avant de réserver.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                {faqStructuredData.mainEntity.map((q, i) => (
+                  <details
+                    key={i}
+                    className="group bg-card rounded-2xl border border-border/50 p-6 [&_summary::-webkit-details-marker]:hidden"
+                  >
+                    <summary className="flex items-start justify-between gap-4 cursor-pointer list-none min-h-[44px]">
+                      <h3 className="font-display font-semibold text-foreground text-lg">
+                        {q.name}
+                      </h3>
+                      <span className="text-primary font-bold text-xl flex-shrink-0 transition-transform group-open:rotate-45">
+                        +
+                      </span>
+                    </summary>
+                    <p className="text-muted-foreground mt-4 leading-relaxed">
+                      {q.acceptedAnswer.text}
+                    </p>
+                  </details>
+                ))}
+              </div>
+
+              <div className="mt-12 text-center bg-gradient-to-r from-primary/10 to-turquoise/10 rounded-3xl p-8 border border-primary/20">
+                <div className="flex items-center justify-center gap-3 mb-4 text-primary">
+                  <MapPin className="w-5 h-5" />
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <h3 className="font-display text-2xl font-bold text-foreground mb-3">
+                  Une autre question ? Parlons-en !
+                </h3>
+                <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                  Notre moniteur Yoanne Cros répond personnellement à toutes vos demandes par téléphone, email ou via le formulaire de réservation.
+                </p>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Button variant="sunset" size="lg" asChild>
+                    <Link to="/contact-reservation-kitesurf-hyeres">Nous Contacter</Link>
+                  </Button>
+                  <Button variant="outline" size="lg" asChild>
+                    <a href="tel:+33672716905">06 72 71 69 05</a>
+                  </Button>
                 </div>
               </div>
             </div>
