@@ -53,17 +53,13 @@ async function installInstrumentation(page: Page) {
     (window as unknown as { fbq: typeof recorder }).fbq = recorder;
     (window as unknown as { _fbq: typeof recorder })._fbq = recorder;
 
+    // Re-pin the canonical recorder if anything else overwrites window.fbq.
+    // Do NOT wrap the previous function — wrapping accumulates layers across
+    // timer ticks and inflates the recorded call count (1 real fire → N records).
     const reinstall = () => {
-      const original = (window as unknown as { fbq: (...a: unknown[]) => void }).fbq;
-      (window as unknown as { fbq: typeof recorder }).fbq = (...args: unknown[]) => {
-        calls.push(args);
-        persist();
-        try {
-          original?.(...args);
-        } catch {
-          /* ignore */
-        }
-      };
+      if ((window as unknown as { fbq: unknown }).fbq !== recorder) {
+        (window as unknown as { fbq: typeof recorder }).fbq = recorder;
+      }
     };
     setTimeout(reinstall, 0);
     setTimeout(reinstall, 100);
