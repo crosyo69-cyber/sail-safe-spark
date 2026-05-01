@@ -63,3 +63,33 @@ test.beforeEach(async ({ page }) => {
 
 `clearDedupStorage` retire toute clé commençant par : `__gads_conv_`,
 `__ga4_form_submit_`, `__meta_pixel_lead`, `conversion_fired_`, `ksp_conv_`.
+
+### Hook global automatique
+
+Le fixture `test` exporté par `./utils/retry-filter` installe en plus un
+`beforeEach` global qui exécute `clearDedupStorage(page)` AVANT chaque test
+(après une navigation vers `/` pour disposer d'une origine same-origin).
+
+Conséquence : tout spec qui fait
+
+```ts
+import { test, expect } from './utils/retry-filter';
+```
+
+récupère automatiquement le reset session+local des préfixes de dédup
+(`__gads_conv_*`, `__ga4_form_submit_*`, `__meta_pixel_lead`,
+`conversion_fired_*`, `ksp_conv_*`). Plus besoin d'appeler
+`installDedupStorageReset(test)` ni `clearDedupStorage` à la main.
+
+Opt-out ponctuel (rare, p. ex. tests qui doivent observer un état dédup
+pré-armé sans le perdre) :
+
+```ts
+test('garde l’état dédup', async ({ page }, testInfo) => {
+  testInfo.annotations.push({ type: 'dedupAutoReset', description: 'false' });
+  // ...
+});
+```
+
+Les specs encore importés depuis `@playwright/test` ne bénéficient PAS du
+hook global ; migrez-les vers `./utils/retry-filter` pour activer le reset.
