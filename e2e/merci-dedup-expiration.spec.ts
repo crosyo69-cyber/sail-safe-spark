@@ -12,7 +12,8 @@ import {
  * boundary condition: when the last conversion was >10s ago, the event should fire.
  *
  * The dedup window is 10 seconds, defined in trackGoogleAdsConversion() (analytics.ts).
- * Key format: `__gads_conv_${GOOGLE_ADS_ID}/${conversionLabel}`.
+ * Key format: session `__gads_conv_${GOOGLE_ADS_ID}/${conversionLabel}` and
+ * local mirror `conversion_fired_${GOOGLE_ADS_ID}/${conversionLabel}`.
  */
 
 const ADS_LABEL = 's2n0CL3puI4cEIW4u9AD';
@@ -20,11 +21,6 @@ const ADS_ID = 'AW-974052357';
 const CONV_ID = `${ADS_ID}/${ADS_LABEL}`;
 const DEDUP_KEY = `__gads_conv_${ADS_ID}/${ADS_LABEL}`;
 const MIRROR_KEY = `conversion_fired_${ADS_ID}/${ADS_LABEL}`;
-
-const GA4_FORM_DEDUP_KEY = '__ga4_form_submit_cta_reservation';
-
-// GA4 form_submit is tracked via CTASection, not Merci.tsx — but we still check
-// the GA4 dedup key to ensure the 10s window is consistent.
 
 test.describe('/merci page — 10s dedup window expiration', () => {
   test('DOES fire conversion again when dedup timestamp is >10s old', async ({ page }) => {
