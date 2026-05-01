@@ -82,14 +82,21 @@ récupère automatiquement le reset session+local des préfixes de dédup
 `installDedupStorageReset(test)` ni `clearDedupStorage` à la main.
 
 Opt-out ponctuel (rare, p. ex. tests qui doivent observer un état dédup
-pré-armé sans le perdre) :
+pré-armé sans le perdre) — utilisez l'helper dédié `skipDedupAutoReset` :
 
 ```ts
+import { test, expect } from './utils/retry-filter';
+import { skipDedupAutoReset } from './utils/dedup-storage';
+
 test('garde l’état dédup', async ({ page }, testInfo) => {
-  testInfo.annotations.push({ type: 'dedupAutoReset', description: 'false' });
-  // ...
+  skipDedupAutoReset(testInfo, 'pré-arme __gads_conv_ pour vérifier le blocage');
+  // ...sessionStorage / localStorage ne sont PAS wipés avant ce test.
 });
 ```
+
+`skipDedupAutoReset(testInfo, reason?)` pousse l'annotation
+`{ type: 'dedupAutoReset', description: 'false[: <reason>]' }` sans risque
+de typo ; le hook global la lit via `hasDedupAutoResetSkip(testInfo)`.
 
 Les specs encore importés depuis `@playwright/test` ne bénéficient PAS du
 hook global ; migrez-les vers `./utils/retry-filter` pour activer le reset.
