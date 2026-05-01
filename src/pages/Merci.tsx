@@ -5,7 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { CheckCircle, Phone } from "lucide-react";
-import { trackGoogleAdsConversion } from "@/lib/analytics";
+import { trackGoogleAdsConversion, trackPhoneClick } from "@/lib/analytics";
 import { pushMerciConversion } from "@/lib/gtm";
 import { trackMetaLead } from "@/lib/meta-pixel";
 import { verifyGtagId } from "@/lib/gtag-id-check";
