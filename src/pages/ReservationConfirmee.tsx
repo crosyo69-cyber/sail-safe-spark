@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { trackPhoneClick } from "@/lib/analytics";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -47,7 +48,7 @@ const ReservationConfirmee = () => {
                 <a
                   href="tel:0672716905"
                   className="flex items-center justify-center gap-2 mt-3 text-primary font-bold text-xl hover:underline"
-                >
+                 onClick={() => trackPhoneClick("reservation_confirmee")}>
                   <Phone className="w-5 h-5" />
                   06 72 71 69 05
                 </a>

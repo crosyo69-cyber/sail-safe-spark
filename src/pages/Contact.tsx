@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { trackGoogleAdsConversion } from "@/lib/analytics";
+import { trackGoogleAdsConversion, trackPhoneClick } from "@/lib/analytics";
 import { trackMetaLead } from "@/lib/meta-pixel";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -494,7 +494,7 @@ const Contact = () => {
                   <a
                     href="tel:0672716905"
                     className="flex items-start gap-4 p-6 bg-card rounded-2xl border border-border/50 hover:border-primary transition-colors"
-                  >
+                   onClick={() => trackPhoneClick("contact")}>
                     <div className="w-12 h-12 bg-sunset/10 rounded-xl flex items-center justify-center flex-shrink-0">
                       <Phone className="w-6 h-6 text-sunset" />
                     </div>

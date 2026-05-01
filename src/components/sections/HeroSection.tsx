@@ -2,7 +2,7 @@ import { memo, useState, useEffect, useCallback, useLayoutEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap, CheckCircle2, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
-import { trackCTAClick } from "@/lib/analytics";
+import { trackCTAClick, trackPhoneClick } from "@/lib/analytics";
 
 // Import hero images with WebP conversion - Desktop (full size)
 import heroKitesurf from "@/assets/kitesurf-hyeres.jpg?webp";
@@ -313,7 +313,7 @@ export const HeroSection = memo(function HeroSection() {
         onClick={() => trackCTAClick("appeler", "sticky_mobile", "tel:0672716905")}
         className="touch-target shrink-0 h-12 w-12 bg-primary-foreground/10 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/20"
       >
-        <a href="tel:+33672716905" aria-label="Appeler l'école">
+        <a href="tel:+33672716905" aria-label="Appeler l'école" onClick={() => trackPhoneClick("hero_section")}>
           <Phone className="w-5 h-5" />
         </a>
       </Button>

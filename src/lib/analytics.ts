@@ -17,6 +17,24 @@ declare global {
 const GA_MEASUREMENT_ID: string | undefined = undefined;
 const GOOGLE_ADS_ID = 'AW-974052357';
 
+/**
+ * Google Ads conversion labels (centralized).
+ *
+ * Strategy decided with the client (2026-05): only TWO conversion actions in
+ * Google Ads:
+ *   - LEAD  → form submit, primary booking CTA, /merci page landing
+ *   - PHONE → any click on a `tel:` link anywhere on the site
+ *
+ * To add the PHONE conversion in Google Ads:
+ *   1. Google Ads → Tools → Conversions → New conversion action
+ *      Source: Website. Category: "Phone call lead". Goal: "Submit lead form"
+ *   2. Use the AW-974052357 tag (already loaded site-wide via gtag.js)
+ *   3. Copy the generated label (looks like "AbCdEfGhIj1KlMnOp")
+ *   4. Replace REPLACE_WITH_PHONE_LABEL below — that's the only change needed.
+ */
+export const ADS_LEAD_LABEL = 's2n0CL3puI4cEIW4u9AD';
+export const ADS_PHONE_LABEL = 'REPLACE_WITH_PHONE_LABEL';
+
 let isInitialized = false;
 
 /**
@@ -186,8 +204,18 @@ export function trackPhoneClick(location: string): void {
     window.gtag('event', 'phone_click', params);
   }
 
-  // Track Google Ads conversion for phone clicks
-  trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
+  // Track Google Ads PHONE conversion (separate action from LEAD).
+  // Falls back silently if the label is still the placeholder, so the GA4
+  // `phone_click` event still fires while the Ads action is being created.
+  if (ADS_PHONE_LABEL && ADS_PHONE_LABEL !== 'REPLACE_WITH_PHONE_LABEL') {
+    trackGoogleAdsConversion(ADS_PHONE_LABEL);
+  } else if (import.meta.env.DEV) {
+    console.warn(
+      '[Analytics] PHONE conversion not fired: ADS_PHONE_LABEL placeholder. ' +
+        'Create the "Phone call" conversion action in Google Ads and update ' +
+        'ADS_PHONE_LABEL in src/lib/analytics.ts.'
+    );
+  }
 
   if (import.meta.env.DEV) {
     console.log(
