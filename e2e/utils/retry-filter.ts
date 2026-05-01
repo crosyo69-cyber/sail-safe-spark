@@ -1,6 +1,7 @@
 import { test as base } from '@playwright/test';
-import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { RETRYABLE_PATTERNS, isRetryable } from './retry-patterns';
 import {
   clearDedupStorage,
@@ -82,21 +83,29 @@ test.beforeEach(async ({ page }, testInfo) => {
     }
 
     // Attach the structured snapshot so it shows up in the HTML / JSON report.
+    let attachmentUrl: string | null = null;
     try {
+      // Write to a stable path under the test's outputDir so we can hand the
+      // user a clickable file:// URL that survives test teardown.
+      const onDiskPath = testInfo.outputPath('dedup-storage-snapshot.json');
+      const payload = JSON.stringify(
+        { reason, retry: testInfo.retry, snapshot },
+        null,
+        2,
+      );
+      writeFileSync(onDiskPath, payload, 'utf8');
       await testInfo.attach('dedup-storage-snapshot.json', {
-        body: JSON.stringify(
-          {
-            reason,
-            retry: testInfo.retry,
-            snapshot,
-          },
-          null,
-          2,
-        ),
+        path: onDiskPath,
         contentType: 'application/json',
       });
+      attachmentUrl = pathToFileURL(resolve(onDiskPath)).href;
     } catch {
       /* attach can fail if testInfo isn't ready — non-blocking */
+    }
+
+    if (attachmentUrl) {
+      // eslint-disable-next-line no-console
+      console.log(`[dedup-reset SKIPPED] snapshot → ${attachmentUrl}`);
     }
     return;
   }
