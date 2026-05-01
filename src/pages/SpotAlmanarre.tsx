@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { trackPhoneClick } from "@/lib/analytics";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
@@ -569,7 +570,7 @@ export default function SpotAlmanarre() {
                 </Link>
               </Button>
               <Button variant="hero" size="xl" asChild>
-                <a href="tel:0672716905">
+                <a href="tel:0672716905" onClick={() => trackPhoneClick("spot_almanarre")}>
                   Appeler : 06 72 71 69 05
                 </a>
               </Button>

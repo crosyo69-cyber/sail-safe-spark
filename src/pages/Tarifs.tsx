@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { trackPhoneClick } from "@/lib/analytics";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
@@ -278,7 +279,7 @@ const Tarifs = () => {
                 </Link>
               </Button>
               <Button variant="hero" size="lg" className="touch-target" asChild>
-                <a href="tel:0672716905" aria-label="Appeler Kitesurf Passion au 06 72 71 69 05">
+                <a href="tel:0672716905" aria-label="Appeler Kitesurf Passion au 06 72 71 69 05" onClick={() => trackPhoneClick("tarifs")}>
                   06 72 71 69 05
                 </a>
               </Button>
@@ -727,7 +728,7 @@ const Tarifs = () => {
                 <Link to="/contact-reservation-kitesurf-hyeres">Réserver en Ligne</Link>
               </Button>
               <Button variant="hero" size="lg" className="touch-target" asChild>
-                <a href="tel:0672716905">Appeler : 06 72 71 69 05</a>
+                <a href="tel:0672716905" onClick={() => trackPhoneClick("tarifs")}>Appeler : 06 72 71 69 05</a>
               </Button>
             </div>
           </div>

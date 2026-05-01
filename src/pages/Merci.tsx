@@ -81,7 +81,7 @@ const Merci = () => {
                 <a
                   href="tel:0672716905"
                   className="inline-flex items-center gap-2 mt-2 text-primary font-bold text-xl hover:underline"
-                >
+                 onClick={() => trackPhoneClick("merci")}>
                   <Phone className="w-5 h-5" />
                   06 72 71 69 05
                 </a>

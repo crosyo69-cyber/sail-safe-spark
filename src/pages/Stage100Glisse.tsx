@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { trackPhoneClick } from "@/lib/analytics";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
@@ -534,7 +535,7 @@ const Stage100Glisse = () => {
                 <Link to="/contact-reservation-kitesurf-hyeres">Réserver maintenant</Link>
               </Button>
               <Button variant="hero" size="lg" asChild>
-                <a href="tel:0672716905">06 72 71 69 05</a>
+                <a href="tel:0672716905" onClick={() => trackPhoneClick("stage100_glisse")}>06 72 71 69 05</a>
               </Button>
             </div>
           </div>
