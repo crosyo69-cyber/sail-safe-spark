@@ -133,6 +133,46 @@ const CoursKitesurf = () => {
           text: "L'Almanarre bénéficie de vents réguliers de mars à novembre. Le Mistral et le Levant offrent d'excellentes conditions. L'été combine eau chaude et vent régulier, idéal pour débuter.",
         },
       },
+      {
+        "@type": "Question",
+        name: "Faut-il savoir nager pour faire du kitesurf à Hyères ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Oui, savoir nager au moins 25 mètres en eau profonde est obligatoire. Vous évoluez en mer Méditerranée avec gilet de flottaison fourni, mais l'aisance aquatique reste indispensable pour votre sécurité.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Quel est l'âge minimum pour apprendre le kitesurf ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "L'âge minimum est de 10 ans avec un poids minimum de 35 kg. Pour les mineurs, une autorisation parentale signée est obligatoire. Aucune limite d'âge maximale : nous formons régulièrement des élèves de plus de 60 ans.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "La licence FFVL est-elle obligatoire pour suivre un cours ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Oui, la licence FFVL (Fédération Française de Vol Libre) est obligatoire pour toute pratique encadrée du kitesurf. Elle inclut l'assurance responsabilité civile et est délivrée par notre école dès votre première séance.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Que se passe-t-il s'il n'y a pas de vent pendant mon stage ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "En cas de jour sans vent, nous proposons des alternatives tractées par bateau incluses dans le stage 100% Glisse : foil tracté et planche tractée. Vous progressez quand même sur l'équilibre, le pilotage et la sensation de glisse.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Comment se rendre au spot de l'Almanarre depuis Hyères centre ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Le spot de l'Almanarre se situe sur la presqu'île de Giens à 15 minutes en voiture du centre d'Hyères. Parking gratuit sur place. Notre point de rendez-vous précis vous est communiqué chaque matin selon la direction du vent.",
+        },
+      },
     ],
   };
 
