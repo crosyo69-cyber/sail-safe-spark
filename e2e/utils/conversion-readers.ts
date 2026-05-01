@@ -1,5 +1,4 @@
-import type { Page } from '@playwright/test';
-import { expect } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 
 /**
  * Single source of truth for reading conversion tracker calls in E2E specs.
@@ -348,7 +347,9 @@ export async function expectCountStable<T>(
   const deadline = Date.now() + windowMs;
   while (Date.now() < deadline) {
     const actual = await read();
-    expect(actual, opts.message ?? `count must stay at ${String(expected)}`).toEqual(expected);
+    expect(actual as unknown, opts.message ?? `count must stay at ${String(expected)}`).toEqual(
+      expected as unknown
+    );
     await new Promise((r) => setTimeout(r, intervalMs));
   }
 }
