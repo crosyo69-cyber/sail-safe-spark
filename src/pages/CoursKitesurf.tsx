@@ -454,6 +454,64 @@ const CoursKitesurf = () => {
 
         {/* Expert Content Section - SEO 1500+ mots */}
         <section className="py-20 bg-background">
+          {/* Liens internes contextuels — autres cours */}
+          <div className="container mx-auto px-4 mb-16">
+            <div className="max-w-6xl mx-auto bg-gradient-to-br from-primary/5 via-background to-sunset/5 rounded-3xl p-8 md:p-10 border border-primary/10">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+                <div>
+                  <span className="inline-flex items-center gap-2 text-primary font-semibold text-sm mb-2">
+                    <Sparkles className="w-4 h-4" />
+                    Découvrir nos autres cours
+                  </span>
+                  <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground">
+                    Toutes les disciplines de glisse à Hyères
+                  </h2>
+                </div>
+                <Link
+                  to="/tarifs-cours-kitesurf-wingfoil-hyeres"
+                  className="inline-flex items-center gap-2 text-primary font-semibold hover:underline min-h-[44px]"
+                >
+                  Voir tous les tarifs
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[
+                  disciplineLinks.stage100,
+                  disciplineLinks.particulier,
+                  disciplineLinks.sessionCarte,
+                  disciplineLinks.wingfoil,
+                  disciplineLinks.pumpfoil,
+                  disciplineLinks.foilTracte,
+                  disciplineLinks.wakeboard,
+                  disciplineLinks.location,
+                  disciplineLinks.deposes,
+                ].map((link) => (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    className="group bg-card border border-border/50 hover:border-primary/50 rounded-xl p-5 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 min-h-[44px]"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <span className="font-display font-bold text-foreground group-hover:text-primary transition-colors block">
+                          {link.label}
+                        </span>
+                        {link.description && (
+                          <span className="text-muted-foreground text-sm block mt-1">
+                            {link.description}
+                          </span>
+                        )}
+                      </div>
+                      <ArrowRight className="w-4 h-4 text-primary opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all flex-shrink-0" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-16">
