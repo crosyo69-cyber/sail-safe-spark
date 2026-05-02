@@ -70,6 +70,17 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
       if (import.meta.env.DEV) console.warn("[CTA] trackMetaLead threw", err);
     }
 
+    // Fire Google Ads conversion immediately after client-side validation passes
+    // (honeypot OK, 3s delay OK, form valid). We do NOT wait for the edge
+    // function response: a lead is qualified the moment the user submits a
+    // valid form. If we waited and the backend errored, the conversion would
+    // never fire even though the user completed the action.
+    try {
+      trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
+    } catch (err) {
+      if (import.meta.env.DEV) console.warn("[CTA] trackGoogleAdsConversion threw", err);
+    }
+
     try {
       const { data, error } = await supabase.functions.invoke("send-contact-email", {
         body: {
@@ -85,13 +96,6 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
       if (error) throw error;
 
       setFormData({ firstName: "", email: "", phone: "", activity: "kitesurf" });
-      // Fire Google Ads conversion immediately before redirect to avoid loss if navigation is interrupted.
-      // Wrapped so any throw (rare: e.g. analytics blocker) cannot prevent the /merci redirect.
-      try {
-        trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
-      } catch (err) {
-        if (import.meta.env.DEV) console.warn("[CTA] trackGoogleAdsConversion threw", err);
-      }
       navigate("/merci");
     } catch (error) {
       console.error("CTA form error:", error);
