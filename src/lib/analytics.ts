@@ -5,6 +5,7 @@ declare global {
   interface Window {
     dataLayer: unknown[];
     gtag: (...args: unknown[]) => void;
+    gtag_report_conversion?: (url?: string) => boolean;
   }
 }
 
@@ -34,6 +35,11 @@ const GOOGLE_ADS_ID = 'AW-974052357';
  */
 export const ADS_LEAD_LABEL = 's2n0CL3puI4cEIW4u9AD';
 export const ADS_PHONE_LABEL = 'REPLACE_WITH_PHONE_LABEL';
+
+type AdsConversionOptions = {
+  onComplete?: () => void;
+  transportUrl?: string;
+};
 
 let isInitialized = false;
 
@@ -244,7 +250,10 @@ export function trackPhoneClick(location: string): void {
  * daily key (`ksp_conv_YYYY-MM-DD`) survives reload/back flows via localStorage
  * while still mirroring into sessionStorage for the current tab session.
  */
-export function trackGoogleAdsConversion(conversionLabel?: string): void {
+export function trackGoogleAdsConversion(
+  conversionLabel?: string,
+  options: AdsConversionOptions = {}
+): void {
   if (typeof window === 'undefined' || !GOOGLE_ADS_ID) {
     return;
   }
@@ -252,6 +261,16 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
   const conversionId = conversionLabel
     ? `${GOOGLE_ADS_ID}/${conversionLabel}`
     : GOOGLE_ADS_ID;
+
+  let completed = false;
+  const completeOnce = () => {
+    if (completed) return;
+    completed = true;
+    options.onComplete?.();
+  };
+  if (options.onComplete) {
+    window.setTimeout(completeOnce, 2000);
+  }
 
   // 10s sliding-window dedup. The CTA submit fires this and so does Merci.tsx
   // on mount — within 10s the second call is a no-op; after 10s it re-fires.
@@ -267,6 +286,7 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
         'color: #f59e0b; font-weight: bold'
       );
     }
+    completeOnce();
     if (typeof window !== 'undefined') {
       window.dispatchEvent(
         new CustomEvent('ksp:gads-conversion', {
@@ -287,17 +307,28 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
   // /merci before App's init effect has executed). The actual gtag.js script
   // loaded by the head snippet/initGA4() will pick up the queued call.
   ensureGtagBootstrap();
-  window.gtag('event', 'conversion', {
-    send_to: conversionId,
-    event_timeout: 2000,
-    event_callback: () => {
+  // Match Google's recommended click-conversion helper signature so Ads Tag
+  // Assistant can recognize this as the configured Contact action during the
+  // conversion-action troubleshooter flow, not only as a generic queued event.
+  window.gtag_report_conversion = (url?: string) => {
+    const callback = () => {
+      completeOnce();
       window.dispatchEvent(
         new CustomEvent('ksp:gads-conversion-callback', {
           detail: { send_to: conversionId, ts: Date.now() },
         })
       );
-    },
-  });
+      if (typeof url === 'string' && url) window.location.href = url;
+    };
+    window.gtag('event', 'conversion', {
+      send_to: conversionId,
+      event_callback: callback,
+      event_timeout: 2000,
+      ...(url ? { value: 1.0, currency: 'EUR' } : {}),
+    });
+    return false;
+  };
+  window.gtag_report_conversion(options.transportUrl);
 
   if (import.meta.env.DEV) {
     console.log(
