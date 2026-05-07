@@ -5,6 +5,7 @@ declare global {
   interface Window {
     dataLayer: unknown[];
     gtag: (...args: unknown[]) => void;
+    gtag_report_conversion?: (url?: string) => boolean;
   }
 }
 
@@ -34,6 +35,11 @@ const GOOGLE_ADS_ID = 'AW-974052357';
  */
 export const ADS_LEAD_LABEL = 's2n0CL3puI4cEIW4u9AD';
 export const ADS_PHONE_LABEL = 'REPLACE_WITH_PHONE_LABEL';
+
+type AdsConversionOptions = {
+  onComplete?: () => void;
+  transportUrl?: string;
+};
 
 let isInitialized = false;
 
@@ -244,7 +250,10 @@ export function trackPhoneClick(location: string): void {
  * daily key (`ksp_conv_YYYY-MM-DD`) survives reload/back flows via localStorage
  * while still mirroring into sessionStorage for the current tab session.
  */
-export function trackGoogleAdsConversion(conversionLabel?: string): void {
+export function trackGoogleAdsConversion(
+  conversionLabel?: string,
+  options: AdsConversionOptions = {}
+): void {
   if (typeof window === 'undefined' || !GOOGLE_ADS_ID) {
     return;
   }
@@ -291,13 +300,30 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
     send_to: conversionId,
     event_timeout: 2000,
     event_callback: () => {
+      options.onComplete?.();
       window.dispatchEvent(
         new CustomEvent('ksp:gads-conversion-callback', {
           detail: { send_to: conversionId, ts: Date.now() },
         })
       );
     },
+    ...(options.transportUrl ? { value: 1.0, currency: 'EUR' } : {}),
   });
+
+  // Match Google's recommended click-conversion helper signature so Ads Tag
+  // Assistant can recognize this as the configured Contact action during the
+  // conversion-action troubleshooter flow, not only as a generic queued event.
+  window.gtag_report_conversion = (url?: string) => {
+    const callback = () => {
+      if (typeof url === 'string' && url) window.location.href = url;
+    };
+    window.gtag('event', 'conversion', {
+      send_to: conversionId,
+      event_callback: callback,
+      event_timeout: 2000,
+    });
+    return false;
+  };
 
   if (import.meta.env.DEV) {
     console.log(
