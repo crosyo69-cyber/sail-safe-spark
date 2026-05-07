@@ -307,34 +307,28 @@ export function trackGoogleAdsConversion(
   // /merci before App's init effect has executed). The actual gtag.js script
   // loaded by the head snippet/initGA4() will pick up the queued call.
   ensureGtagBootstrap();
-  window.gtag('event', 'conversion', {
-    send_to: conversionId,
-    event_timeout: 2000,
-    event_callback: () => {
+  // Match Google's recommended click-conversion helper signature so Ads Tag
+  // Assistant can recognize this as the configured Contact action during the
+  // conversion-action troubleshooter flow, not only as a generic queued event.
+  window.gtag_report_conversion = (url?: string) => {
+    const callback = () => {
       completeOnce();
       window.dispatchEvent(
         new CustomEvent('ksp:gads-conversion-callback', {
           detail: { send_to: conversionId, ts: Date.now() },
         })
       );
-    },
-    ...(options.transportUrl ? { value: 1.0, currency: 'EUR' } : {}),
-  });
-
-  // Match Google's recommended click-conversion helper signature so Ads Tag
-  // Assistant can recognize this as the configured Contact action during the
-  // conversion-action troubleshooter flow, not only as a generic queued event.
-  window.gtag_report_conversion = (url?: string) => {
-    const callback = () => {
       if (typeof url === 'string' && url) window.location.href = url;
     };
     window.gtag('event', 'conversion', {
       send_to: conversionId,
       event_callback: callback,
       event_timeout: 2000,
+      ...(url ? { value: 1.0, currency: 'EUR' } : {}),
     });
     return false;
   };
+  window.gtag_report_conversion(options.transportUrl);
 
   if (import.meta.env.DEV) {
     console.log(
