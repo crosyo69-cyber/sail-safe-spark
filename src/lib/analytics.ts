@@ -262,6 +262,16 @@ export function trackGoogleAdsConversion(
     ? `${GOOGLE_ADS_ID}/${conversionLabel}`
     : GOOGLE_ADS_ID;
 
+  let completed = false;
+  const completeOnce = () => {
+    if (completed) return;
+    completed = true;
+    options.onComplete?.();
+  };
+  if (options.onComplete) {
+    window.setTimeout(completeOnce, 2000);
+  }
+
   // 10s sliding-window dedup. The CTA submit fires this and so does Merci.tsx
   // on mount — within 10s the second call is a no-op; after 10s it re-fires.
   // Persistent mirror `conversion_fired_<id>` (localStorage) lets the dedup
@@ -276,6 +286,7 @@ export function trackGoogleAdsConversion(
         'color: #f59e0b; font-weight: bold'
       );
     }
+    completeOnce();
     if (typeof window !== 'undefined') {
       window.dispatchEvent(
         new CustomEvent('ksp:gads-conversion', {
@@ -300,7 +311,7 @@ export function trackGoogleAdsConversion(
     send_to: conversionId,
     event_timeout: 2000,
     event_callback: () => {
-      options.onComplete?.();
+      completeOnce();
       window.dispatchEvent(
         new CustomEvent('ksp:gads-conversion-callback', {
           detail: { send_to: conversionId, ts: Date.now() },
