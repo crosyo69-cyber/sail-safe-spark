@@ -37,6 +37,15 @@ export const ADS_PHONE_LABEL = 'REPLACE_WITH_PHONE_LABEL';
 
 let isInitialized = false;
 
+function ensureGtagBootstrap(): void {
+  window.dataLayer = window.dataLayer || [];
+  if (typeof window.gtag !== 'function') {
+    window.gtag = function gtag(...args: unknown[]) {
+      window.dataLayer.push(args);
+    };
+  }
+}
+
 /**
  * Initialize Google Analytics 4
  * Uses a deferred approach to avoid React DOM conflicts
@@ -51,11 +60,10 @@ export function initGA4(): void {
     return;
   }
 
-  // Initialize dataLayer and gtag function
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag(...args: unknown[]) {
-    window.dataLayer.push(args);
-  };
+  // Initialize dataLayer and gtag function. If the canonical head snippet has
+  // already run, keep its gtag function so Tag Assistant sees one consistent
+  // implementation instead of a late body-injected replacement.
+  ensureGtagBootstrap();
 
   // Set initial timestamp
   window.gtag('js', new Date());
@@ -76,10 +84,15 @@ export function initGA4(): void {
   // Defer script loading to avoid React DOM conflicts
   const loadGAScript = () => {
     const trackingId = GA_MEASUREMENT_ID || GOOGLE_ADS_ID;
+    if (document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${trackingId}"]`)) {
+      isInitialized = true;
+      console.log('%c[Analytics] Google Analytics & Ads initialized', 'color: #4285f4; font-weight: bold');
+      return;
+    }
     const script = document.createElement('script');
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
-    document.body.appendChild(script);
+    document.head.appendChild(script);
     
     isInitialized = true;
     console.log('%c[Analytics] Google Analytics & Ads initialized', 'color: #4285f4; font-weight: bold');
@@ -272,15 +285,18 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
 
   // Bootstrap gtag/dataLayer if init hasn't run yet (e.g. direct landing on
   // /merci before App's init effect has executed). The actual gtag.js script
-  // loaded by initGA4() will pick up the queued call from dataLayer.
-  if (typeof window.gtag !== 'function') {
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function gtag(...args: unknown[]) {
-      window.dataLayer.push(args);
-    };
-  }
+  // loaded by the head snippet/initGA4() will pick up the queued call.
+  ensureGtagBootstrap();
   window.gtag('event', 'conversion', {
     send_to: conversionId,
+    event_timeout: 2000,
+    event_callback: () => {
+      window.dispatchEvent(
+        new CustomEvent('ksp:gads-conversion-callback', {
+          detail: { send_to: conversionId, ts: Date.now() },
+        })
+      );
+    },
   });
 
   if (import.meta.env.DEV) {
