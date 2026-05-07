@@ -88,13 +88,15 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
       // the form submission succeeded. This avoids counting simple clicks,
       // validation failures, honeypot submissions, or email-send errors.
       try {
-        trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
+        trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD', {
+          onComplete: () => navigate("/merci"),
+        });
       } catch (err) {
         if (import.meta.env.DEV) console.warn("[CTA] trackGoogleAdsConversion threw", err);
+        navigate("/merci");
       }
 
       setFormData({ firstName: "", email: "", phone: "", activity: "kitesurf" });
-      navigate("/merci");
     } catch (error) {
       console.error("CTA form error:", error);
       toast.error("Erreur", {
