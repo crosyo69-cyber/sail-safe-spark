@@ -1,5 +1,6 @@
 // Google Analytics 4 initialization and utilities
 import { markFired, shouldFireWithinWindow } from './conversion-dedup';
+import { hasMarketingConsent, onMarketingConsent } from './consent';
 
 declare global {
   interface Window {
@@ -270,6 +271,32 @@ export function trackGoogleAdsConversion(
   };
   if (options.onComplete) {
     window.setTimeout(completeOnce, 2000);
+  }
+
+  // Cookie consent gate: never send a Google Ads hit before the user has
+  // accepted marketing cookies. Blocked hits would otherwise show up as
+  // failures in Tag Assistant / Ads diagnostics. We still call onComplete so
+  // navigation (e.g. → /merci) is not held hostage by the consent state, and
+  // we re-arm the fire for when the user later accepts.
+  if (!hasMarketingConsent()) {
+    if (import.meta.env.DEV) {
+      console.log(
+        `%c[Analytics] Google Ads Conversion DEFERRED (no marketing consent): ${conversionId}`,
+        'color: #f59e0b; font-weight: bold'
+      );
+    }
+    completeOnce();
+    window.dispatchEvent(
+      new CustomEvent('ksp:gads-conversion', {
+        detail: { status: 'deferred', send_to: conversionId, ts: Date.now() },
+      })
+    );
+    onMarketingConsent(() => {
+      // Replay once consent is granted. Dedup keys still protect against
+      // duplicates if the user had already navigated away and back.
+      trackGoogleAdsConversion(conversionLabel);
+    });
+    return;
   }
 
   // 10s sliding-window dedup. The CTA submit fires this and so does Merci.tsx
