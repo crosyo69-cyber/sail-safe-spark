@@ -7,6 +7,7 @@
  * the /merci page, which must fire even on direct navigation (no submit).
  */
 import { markFired, shouldFireWithinWindow } from './conversion-dedup';
+import { hasMarketingConsent, onMarketingConsent } from './consent';
 
 declare global {
   interface Window {
@@ -45,6 +46,20 @@ export function pushMerciConversion(conversionLabel = 's2n0CL3puI4cEIW4u9AD'): v
   const conversionId = `AW-974052357/${conversionLabel}`;
   const dedupKey = `__gtm_merci_${conversionId}`;
   const mirrorKey = `conversion_fired_gtm_merci_${conversionId}`;
+
+  // Consent gate — do not push the Ads conversion event into the dataLayer
+  // until the visitor has accepted marketing cookies. Replays once on accept.
+  if (!hasMarketingConsent()) {
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.log(
+        `%c[GTM] merci_conversion DEFERRED (no marketing consent): ${conversionId}`,
+        'color:#f59e0b;font-weight:bold'
+      );
+    }
+    onMarketingConsent(() => pushMerciConversion(conversionLabel));
+    return;
+  }
 
   if (!shouldFireWithinWindow(dedupKey, mirrorKey)) {
     if (import.meta.env.DEV) {
