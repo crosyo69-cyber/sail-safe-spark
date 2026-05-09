@@ -78,6 +78,11 @@ export const CookieConsent = () => {
     } else {
       disableAnalytics();
     }
+
+    // Notify listeners (analytics gating, queued conversions, etc.)
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('ksp:consent-updated', { detail: prefs }));
+    }
   };
 
   const acceptAll = () => {
