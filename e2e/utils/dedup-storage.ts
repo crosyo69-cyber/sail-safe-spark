@@ -56,6 +56,16 @@ export async function clearDedupStorage(page: Page): Promise<void> {
     };
     try { wipe(window.sessionStorage); } catch { /* ignore */ }
     try { wipe(window.localStorage); } catch { /* ignore */ }
+    // Seed marketing/analytics consent so conversion tests are not blocked
+    // by the new cookie-consent gate in src/lib/consent.ts. Production
+    // behavior remains gated until the visitor accepts cookies.
+    try {
+      window.localStorage.setItem('cookie-consent', 'true');
+      window.localStorage.setItem(
+        'cookie-preferences',
+        JSON.stringify({ necessary: true, analytics: true, marketing: true }),
+      );
+    } catch { /* ignore */ }
   }, DEDUP_STORAGE_PREFIXES as unknown as string[]);
 }
 
