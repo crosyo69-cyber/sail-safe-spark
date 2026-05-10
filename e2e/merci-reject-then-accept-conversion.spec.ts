@@ -7,55 +7,44 @@ import { test, expect } from './utils/retry-filter';
  *
  * Contract under test:
  *  1. Visitor rejects marketing cookies (marketing:false).
- *  2. Landing on /merci → NO gtag('event','conversion', { send_to:... }).
+ *  2. Landing on /merci → NO ksp:gads-conversion with status 'sent'.
  *  3. Visitor later accepts marketing cookies (marketing:true).
- *  4. The deferred conversion replays and fires exactly once.
+ *  4. The deferred conversion replays and fires exactly once (status 'sent').
+ *
+ * We listen for the app's own `ksp:gads-conversion` CustomEvent instead of
+ * intercepting gtag, because gtag wrapping is fragile (gtag.js can overwrite
+ * window.gtag late, requiring multiple reinstalls that multiply recordings).
  */
 
 const ADS_LABEL = 's2n0CL3puI4cEIW4u9AD';
 const ADS_ID = 'AW-974052357';
 const SEND_TO = `${ADS_ID}/${ADS_LABEL}`;
 
-type GtagCall = [string, string, Record<string, unknown>?];
+type GadsEvent = { status: string; send_to: string; ts: number };
 
-async function installGtagRecorder(page: Page) {
+async function installGadsRecorder(page: Page) {
   await page.addInitScript(() => {
-    const calls: GtagCall[] = [];
-    (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls = calls;
-    (window as unknown as { dataLayer: unknown[] }).dataLayer = [];
-
-    const recorder = (...args: unknown[]) => {
-      calls.push(args as GtagCall);
-    };
-    (window as unknown as { gtag: typeof recorder }).gtag = recorder;
-
-    const reinstall = () => {
-      const original = (window as unknown as { gtag: (...a: unknown[]) => void }).gtag;
-      (window as unknown as { gtag: typeof recorder }).gtag = (...args: unknown[]) => {
-        calls.push(args as GtagCall);
-        try { original?.(...args); } catch { /* ignore */ }
-      };
-    };
-    setTimeout(reinstall, 0);
-    setTimeout(reinstall, 100);
-    setTimeout(reinstall, 500);
-    setTimeout(reinstall, 1500);
+    const events: GadsEvent[] = [];
+    (window as unknown as { __gadsEvents: GadsEvent[] }).__gadsEvents = events;
+    window.addEventListener('ksp:gads-conversion', (e: Event) => {
+      const detail = (e as CustomEvent<GadsEvent>).detail;
+      if (detail) events.push(detail);
+    });
   });
 }
 
-async function countConversions(page: Page): Promise<number> {
-  const calls = await page.evaluate(
-    () => (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls
+async function countSentConversions(page: Page): Promise<number> {
+  const events = await page.evaluate(
+    () => (window as unknown as { __gadsEvents: GadsEvent[] }).__gadsEvents
   );
-  return calls.filter(
-    (c) => c[0] === 'event' && c[1] === 'conversion'
-      && (c[2] as Record<string, unknown>)?.send_to === SEND_TO
+  return events.filter(
+    (e) => e.status === 'sent' && e.send_to === SEND_TO
   ).length;
 }
 
-async function resetCapture(page: Page) {
+async function resetGadsCapture(page: Page) {
   await page.evaluate(() => {
-    (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls.length = 0;
+    (window as unknown as { __gadsEvents: GadsEvent[] }).__gadsEvents.length = 0;
   });
 }
 
@@ -91,7 +80,7 @@ async function acceptMarketing(page: Page) {
 
 test.describe('/merci — Google Ads conversion after reject-then-accept', () => {
   test('conversion stays silent after initial rejection, then fires once on acceptance', async ({ page }) => {
-    await installGtagRecorder(page);
+    await installGadsRecorder(page);
 
     // Override the global auto-seeded consent so the test starts from a
     // clean "rejected" state.
@@ -99,7 +88,7 @@ test.describe('/merci — Google Ads conversion after reject-then-accept', () =>
     await revokeConsent(page);
     await rejectMarketing(page);
 
-    await resetCapture(page);
+    await resetGadsCapture(page);
 
     // 1. Land on /merci with marketing rejected → conversion must NOT fire.
     await page.goto('/merci');
@@ -107,7 +96,7 @@ test.describe('/merci — Google Ads conversion after reject-then-accept', () =>
     await page.waitForTimeout(1_000);
 
     expect(
-      await countConversions(page),
+      await countSentConversions(page),
       'Google Ads conversion must NOT fire while marketing cookies are rejected'
     ).toBe(0);
 
@@ -121,7 +110,7 @@ test.describe('/merci — Google Ads conversion after reject-then-accept', () =>
     await acceptMarketing(page);
     await page.waitForTimeout(800);
 
-    const conversionsAfter = await countConversions(page);
+    const conversionsAfter = await countSentConversions(page);
     expect(
       conversionsAfter,
       'Google Ads conversion must fire exactly once after marketing consent is granted'
