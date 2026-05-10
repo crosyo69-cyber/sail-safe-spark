@@ -118,7 +118,7 @@ test.beforeEach(async ({ page }, testInfo) => {
   }
 });
 
-test.beforeEach(async (_fixtures, testInfo) => {
+test.beforeEach(async ({}, testInfo) => {
   if (testInfo.retry === 0) return;
 
   const file = join(ERROR_DIR, `${encodeURIComponent(testInfo.testId)}.txt`);
