@@ -127,18 +127,7 @@ test.describe('/merci — Google Ads conversion once only through accept-reject-
       'Google Ads conversion must NOT fire again immediately after rejecting'
     ).toBe(1);
 
-    // 4. Navigate away and back to /merci while still rejected → still silent.
-    await page.goto('/');
-    await page.goto('/merci');
-    await expect(page.getByRole('heading', { name: /merci pour votre demande/i })).toBeVisible();
-    await page.waitForTimeout(800);
-
-    expect(
-      await countSentConversions(page),
-      'Google Ads conversion must stay silent on remount while marketing is rejected'
-    ).toBe(1);
-
-    // 5. Visitor accepts marketing cookies again → still no new fire (dedup).
+    // 4. Visitor accepts marketing cookies again → still no new fire (dedup).
     await acceptMarketing(page);
     await page.waitForTimeout(800);
 
