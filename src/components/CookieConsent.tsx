@@ -57,7 +57,10 @@ export const CookieConsent = () => {
     } else {
       const savedPreferences = localStorage.getItem(COOKIE_PREFERENCES_KEY);
       if (savedPreferences) {
-        setPreferences(JSON.parse(savedPreferences));
+        const parsed = JSON.parse(savedPreferences) as CookiePreferences;
+        setPreferences(parsed);
+        // Returning visitor: re-sync Consent Mode v2 with saved prefs.
+        updateConsentMode(parsed);
       }
     }
 
