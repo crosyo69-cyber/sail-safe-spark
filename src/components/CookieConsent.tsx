@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Cookie, Settings, X } from 'lucide-react';
+import { updateConsentMode } from '@/lib/consent-mode';
 import {
   Dialog,
   DialogContent,
@@ -56,7 +57,10 @@ export const CookieConsent = () => {
     } else {
       const savedPreferences = localStorage.getItem(COOKIE_PREFERENCES_KEY);
       if (savedPreferences) {
-        setPreferences(JSON.parse(savedPreferences));
+        const parsed = JSON.parse(savedPreferences) as CookiePreferences;
+        setPreferences(parsed);
+        // Returning visitor: re-sync Consent Mode v2 with saved prefs.
+        updateConsentMode(parsed);
       }
     }
 
@@ -71,13 +75,9 @@ export const CookieConsent = () => {
     setPreferences(prefs);
     setShowBanner(false);
     setShowPreferences(false);
-    
-    // Apply preferences (disable/enable analytics scripts)
-    if (prefs.analytics) {
-      enableAnalytics();
-    } else {
-      disableAnalytics();
-    }
+
+    // Sync Google Consent Mode v2 (analytics + ad storage flags).
+    updateConsentMode(prefs);
 
     // Notify listeners (analytics gating, queued conversions, etc.)
     if (typeof window !== 'undefined') {
@@ -97,23 +97,6 @@ export const CookieConsent = () => {
     saveConsent(preferences);
   };
 
-  const enableAnalytics = () => {
-    // Enable Google Analytics if configured
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('consent', 'update', {
-        analytics_storage: 'granted',
-      });
-    }
-  };
-
-  const disableAnalytics = () => {
-    // Disable Google Analytics
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('consent', 'update', {
-        analytics_storage: 'denied',
-      });
-    }
-  };
 
   return (
     <>

@@ -110,6 +110,16 @@
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      // Google Consent Mode v2 — default to denied until the visitor accepts.
+      // CookieConsent.tsx + src/lib/consent-mode.ts will call gtag('consent','update', ...)
+      // when the user grants analytics/marketing consent.
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500
+      });
       gtag('js', new Date());
       gtag('config', 'AW-974052357');
     </script>
