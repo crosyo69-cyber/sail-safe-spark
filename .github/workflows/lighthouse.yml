@@ -1,0 +1,68 @@
+name: Lighthouse & Accessibility
+
+# Runs after every push to main (Lovable publishes from main) and can be
+# triggered manually. Fails the run if Performance or Accessibility drop
+# below 0.95 on the live published site.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    # Daily safety net at 04:00 UTC
+    - cron: "0 4 * * *"
+
+jobs:
+  lighthouse:
+    name: Lighthouse CI (desktop, perf + a11y >= 95)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.14.x
+
+      - name: Wait for deployment to propagate
+        run: sleep 60
+
+      - name: Run Lighthouse CI
+        run: lhci autorun --config=./.lighthouserc.json
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+          retention-days: 30
+
+  pa11y:
+    name: Accessibility (pa11y-ci, WCAG 2.1 AA)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install pa11y-ci
+        run: npm install -g pa11y-ci@3
+
+      - name: Run pa11y-ci
+        run: pa11y-ci --config ./.pa11yci.json
+
+      - name: Upload pa11y report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pa11y-report
+          path: pa11y-report.json
+          retention-days: 30
