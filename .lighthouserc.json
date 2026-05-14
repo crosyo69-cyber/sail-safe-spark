@@ -1,0 +1,26 @@
+{
+  "ci": {
+    "collect": {
+      "url": [
+        "https://www.kitesurfpassion.fr/",
+        "https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres",
+        "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres"
+      ],
+      "numberOfRuns": 2,
+      "settings": {
+        "preset": "desktop",
+        "onlyCategories": ["performance", "accessibility"],
+        "chromeFlags": "--headless=new --no-sandbox --disable-gpu"
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["error", { "minScore": 0.95, "aggregationMethod": "median" }],
+        "categories:accessibility": ["error", { "minScore": 0.95, "aggregationMethod": "median" }]
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}
