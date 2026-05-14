@@ -1,0 +1,18 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "timeout": 60000,
+    "wait": 2000,
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--disable-gpu"]
+    },
+    "ignore": []
+  },
+  "urls": [
+    "https://www.kitesurfpassion.fr/",
+    "https://www.kitesurfpassion.fr/tarifs-cours-kitesurf-wingfoil-hyeres",
+    "https://www.kitesurfpassion.fr/contact-reservation-kitesurf-hyeres",
+    "https://www.kitesurfpassion.fr/cours-kitesurf-hyeres-debutant",
+    "https://www.kitesurfpassion.fr/blog-kitesurf-hyeres"
+  ]
+}
