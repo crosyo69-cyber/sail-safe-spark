@@ -52,6 +52,69 @@ export type Database = {
           },
         ]
       }
+      client_packages: {
+        Row: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          created_at: string
+          deposit_amount: number | null
+          deposit_paid_at: string | null
+          email: string
+          expires_at: string
+          first_name: string
+          id: string
+          last_name: string
+          notes_admin: string | null
+          package_code: string
+          package_type: string
+          phone: string | null
+          status: string
+          stripe_session_id: string | null
+          total_sessions: number
+          updated_at: string
+          used_sessions: number
+        }
+        Insert: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          created_at?: string
+          deposit_amount?: number | null
+          deposit_paid_at?: string | null
+          email: string
+          expires_at?: string
+          first_name: string
+          id?: string
+          last_name: string
+          notes_admin?: string | null
+          package_code: string
+          package_type: string
+          phone?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          total_sessions: number
+          updated_at?: string
+          used_sessions?: number
+        }
+        Update: {
+          activity?: Database["public"]["Enums"]["activity_type"]
+          created_at?: string
+          deposit_amount?: number | null
+          deposit_paid_at?: string | null
+          email?: string
+          expires_at?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          notes_admin?: string | null
+          package_code?: string
+          package_type?: string
+          phone?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          total_sessions?: number
+          updated_at?: string
+          used_sessions?: number
+        }
+        Relationships: []
+      }
       email_send_log: {
         Row: {
           created_at: string
@@ -138,6 +201,48 @@ export type Database = {
           used_at?: string | null
         }
         Relationships: []
+      }
+      package_bookings: {
+        Row: {
+          created_at: string
+          id: string
+          package_id: string
+          session_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          package_id: string
+          session_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          package_id?: string
+          session_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "package_bookings_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "client_packages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "package_bookings_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       page_404_logs: {
         Row: {
@@ -368,6 +473,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      book_session_with_code: {
+        Args: { p_code: string; p_session_id: string }
+        Returns: Json
+      }
+      cancel_booking_with_code: {
+        Args: { p_booking_id: string; p_code: string }
+        Returns: Json
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
@@ -380,6 +493,7 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      get_package_by_code: { Args: { p_code: string }; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
