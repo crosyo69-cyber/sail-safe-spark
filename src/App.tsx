@@ -42,6 +42,7 @@ const PolitiqueConfidentialite = lazy(() => import("./pages/PolitiqueConfidentia
 const ReservationConfirmee = lazy(() => import("./pages/ReservationConfirmee"));
 const Merci = lazy(() => import("./pages/Merci"));
 const Admin = lazy(() => import("./pages/Admin"));
+const MonEspace = lazy(() => import("./pages/MonEspace"));
 // NotFound is handled inside LegacyRedirectHandler
 
 const queryClient = new QueryClient({
@@ -114,6 +115,8 @@ const App = () => {
                 <Route path="/reservation-confirmee" element={<ReservationConfirmee />} />
                 <Route path="/merci" element={<Merci />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/mon-espace" element={<MonEspace />} />
+                <Route path="/mon-espace/:code" element={<MonEspace />} />
                 {/* Legacy URL redirections (old .com site → new .fr routes) */}
                <Route path="*" element={<LegacyRedirectHandler />} />
              </Routes>
