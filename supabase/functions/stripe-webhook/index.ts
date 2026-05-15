@@ -30,6 +30,67 @@ const MAX_BY_ACTIVITY: Record<string, number> = {
   foil_tracte: 4,
 };
 
+function generatePackageCode(): string {
+  const year = new Date().getFullYear();
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no ambiguous chars
+  let suffix = "";
+  const buf = new Uint8Array(4);
+  crypto.getRandomValues(buf);
+  for (let i = 0; i < 4; i++) suffix += alphabet[buf[i] % alphabet.length];
+  return `KP-${year}-${suffix}`;
+}
+
+async function createClientPackage(
+  supabase: any,
+  session: Stripe.Checkout.Session,
+): Promise<string | null> {
+  const customerEmail = session.customer_details?.email;
+  if (!customerEmail) return null;
+
+  const customerName = session.metadata?.customer_name || session.customer_details?.name || "";
+  const activityName = session.metadata?.activity_name || "votre activité";
+  const phone = session.metadata?.phone || session.customer_details?.phone || "";
+  const participants = Math.max(1, parseInt(session.metadata?.participants || "1", 10));
+  const totalSessions = Math.max(
+    1,
+    parseInt(session.metadata?.total_sessions || String(participants), 10),
+  );
+
+  const nameParts = customerName.trim().split(/\s+/);
+  const firstName = nameParts[0] || "Client";
+  const lastName = nameParts.slice(1).join(" ") || "Stripe";
+  const activityEnum = mapActivityToEnum(activityName);
+
+  // Try a few times in case of code collision
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const code = generatePackageCode();
+    const { data, error } = await supabase
+      .from("client_packages")
+      .insert({
+        package_code: code,
+        email: customerEmail,
+        first_name: firstName,
+        last_name: lastName,
+        phone,
+        activity: activityEnum,
+        package_type: activityName,
+        total_sessions: totalSessions,
+        deposit_amount: participants * 50,
+        deposit_paid_at: new Date().toISOString(),
+        stripe_session_id: session.id,
+        status: "active",
+      })
+      .select("package_code")
+      .single();
+    if (!error && data) return data.package_code;
+    if (error && !String(error.message).includes("duplicate")) {
+      console.error("createClientPackage error:", error);
+      return null;
+    }
+  }
+  return null;
+}
+
 function mapActivityToEnum(activityName: string): string {
   const normalized = activityName.toLowerCase().trim();
   for (const [key, value] of Object.entries(ACTIVITY_NAME_MAP)) {
@@ -55,9 +116,30 @@ function escapeHtml(text: string): string {
 }
 
 function buildCustomerPaymentEmail(activityName: string, participants: number, preferredDate?: string): string {
+  return buildCustomerPaymentEmailWithCode(activityName, participants, preferredDate);
+}
+
+function buildCustomerPaymentEmailWithCode(
+  activityName: string,
+  participants: number,
+  preferredDate?: string,
+  packageCode?: string,
+  totalSessions?: number,
+): string {
   const amount = participants * 50;
   const participantsLabel = participants > 1 ? `${participants} personnes` : '1 personne';
   const dateRow = preferredDate ? `<tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Date souhaitée</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${escapeHtml(preferredDate)}</td></tr>` : '';
+  const codeBlock = packageCode ? `
+    <tr><td style="padding:0 25px 24px;">
+      <table width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(135deg,#0891B2,#0F172A);border-radius:12px;overflow:hidden;">
+        <tr><td style="padding:20px;text-align:center;">
+          <p style="margin:0 0 8px;color:#bae6fd;font-size:13px;text-transform:uppercase;letter-spacing:1px;">Votre code de réservation</p>
+          <p style="margin:0 0 12px;color:#ffffff;font-size:28px;font-weight:bold;letter-spacing:3px;font-family:Menlo,monospace;">${escapeHtml(packageCode)}</p>
+          <p style="margin:0 0 16px;color:#e0f2fe;font-size:13px;line-height:1.5;">${totalSessions ? `Vous disposez de <strong>${totalSessions} session${totalSessions>1?'s':''}</strong> à réserver librement selon les conditions météo.` : 'Réservez librement vos journées selon les conditions météo.'}</p>
+          <a href="https://www.kitesurfpassion.fr/mon-espace/${encodeURIComponent(packageCode)}" style="display:inline-block;background-color:#F97316;color:#ffffff;font-size:14px;font-weight:bold;border-radius:10px;padding:12px 24px;text-decoration:none;">📅 Réserver mes journées</a>
+        </td></tr>
+      </table>
+    </td></tr>` : '';
   return `<!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
@@ -72,6 +154,7 @@ function buildCustomerPaymentEmail(activityName: string, participants: number, p
         Nous avons bien reçu votre acompte de <strong>${amount}€</strong> pour <strong>${escapeHtml(activityName)}</strong> (${participantsLabel}).
       </p>
     </td></tr>
+    ${codeBlock}
     <tr><td style="padding:0 25px 24px;">
       <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F1F5F9;border-radius:12px;overflow:hidden;">
         <tr><td style="padding:16px;font-size:15px;font-weight:bold;color:#0F172A;border-bottom:1px solid #E2E8F0;">📋 Récapitulatif</td></tr>
@@ -337,12 +420,25 @@ Deno.serve(async (req) => {
 
       // Send confirmation emails
       if (customerEmail) {
+        // Create client package and capture code for the email
+        let packageCode: string | null = null;
+        let totalSessions = participants;
+        try {
+          packageCode = await createClientPackage(supabase, session);
+          totalSessions = Math.max(
+            1,
+            parseInt(session.metadata?.total_sessions || String(participants), 10),
+          );
+        } catch (error) {
+          console.error("Client package creation error:", error instanceof Error ? error.message : error);
+        }
+
         try {
           await enqueueEmail(
             supabase,
             customerEmail,
             `Confirmation de réservation – ${activityName}`,
-            buildCustomerPaymentEmail(activityName, participants, preferredDate),
+            buildCustomerPaymentEmailWithCode(activityName, participants, preferredDate, packageCode || undefined, totalSessions),
             'booking_confirmation',
           );
         } catch (error) {
