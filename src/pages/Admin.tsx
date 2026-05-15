@@ -12,8 +12,9 @@ import AdminRevenueDashboard from "@/components/admin/AdminRevenueDashboard";
 import AdminSeasonStats from "@/components/admin/AdminSeasonStats";
 import Admin404Monitor from "@/components/admin/Admin404Monitor";
 import AdminConversionDedupMonitor from "@/components/admin/AdminConversionDedupMonitor";
+import AdminPackagesManager from "@/components/admin/AdminPackagesManager";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket } from "lucide-react";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -57,7 +58,7 @@ const Admin = () => {
         </h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-6xl grid-cols-3 md:grid-cols-9">
+          <TabsList className="grid w-full max-w-6xl grid-cols-3 md:grid-cols-10">
             <TabsTrigger value="overview" className="gap-2">
               <LayoutDashboard className="w-4 h-4" />
               <span className="hidden sm:inline">Vue d'ensemble</span>
@@ -73,6 +74,10 @@ const Admin = () => {
             <TabsTrigger value="reservations" className="gap-2">
               <ClipboardList className="w-4 h-4" />
               <span className="hidden sm:inline">Réservations</span>
+            </TabsTrigger>
+            <TabsTrigger value="packages" className="gap-2">
+              <Ticket className="w-4 h-4" />
+              <span className="hidden sm:inline">Packs</span>
             </TabsTrigger>
             <TabsTrigger value="revenue" className="gap-2">
               <Euro className="w-4 h-4" />
@@ -110,6 +115,10 @@ const Admin = () => {
 
           <TabsContent value="reservations">
             <AdminReservationList />
+          </TabsContent>
+
+          <TabsContent value="packages">
+            <AdminPackagesManager />
           </TabsContent>
 
           <TabsContent value="revenue">
