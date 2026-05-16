@@ -123,9 +123,8 @@ test.describe('Flow réservation pack acompte', () => {
     await card.getByPlaceholder('06 12 34 56 78').fill('0612345678');
 
     await card.getByRole('button', { name: /Choisir une date/i }).click();
-    // Calendar : choisit la prochaine date dispo
-    const enabledDay = page.locator('[role="gridcell"] button:not([disabled])').first();
-    await enabledDay.click();
+    // Calendar (react-day-picker v8) : chaque jour est un <button name="day">
+    await page.locator('button[name="day"]:not([disabled])').first().click();
 
     const [, popup] = await Promise.all([
       card.getByRole('button', { name: /Payer l'acompte/i }).click(),
@@ -150,8 +149,9 @@ test.describe('Flow réservation pack acompte', () => {
     await expect(page.getByText('E2E Tester')).toBeVisible();
     await expect(page.getByText(TEST_CODE)).toBeVisible();
 
-    // Crédits initiaux : 2 / 2
-    await expect(page.getByText('2', { exact: true }).first()).toBeVisible();
+    // Crédits initiaux : "2 / 2" sessions restantes
+    await expect(page.getByText(/sessions restantes/i)).toBeVisible();
+    await expect(page.getByText('/ 2').first()).toBeVisible();
 
     // Trouve la carte de notre session seedée (date J+7) et clique Réserver
     const reserveBtn = page.getByRole('button', { name: /^Réserver$/ }).first();
