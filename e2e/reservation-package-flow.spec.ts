@@ -18,9 +18,10 @@ const TEST_CODE = `KP-TEST-${Math.random().toString(36).slice(2, 6).toUpperCase(
 const TEST_EMAIL = `e2e+${Date.now()}@kitesurfpassion.test`;
 
 function sql(query: string): string {
-  return execSync(`psql -At -c ${JSON.stringify(query)}`, {
+  return execSync('psql -At', {
+    input: query,
     encoding: 'utf8',
-    stdio: ['ignore', 'pipe', 'pipe'],
+    stdio: ['pipe', 'pipe', 'pipe'],
   }).trim();
 }
 
