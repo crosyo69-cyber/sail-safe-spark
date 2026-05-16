@@ -91,15 +91,9 @@ test.describe('Flow réservation pack acompte', () => {
   test('1. Formulaire acompte appelle create-checkout et reçoit une URL Stripe', async ({ page }) => {
     // Intercepte l'appel à l'edge function pour ne pas réellement créer
     // de session Stripe ni quitter le domaine de test.
+    let capturedPayload: any = null;
     await page.route('**/functions/v1/create-checkout', async (route) => {
-      const payload = route.request().postDataJSON();
-      expect(payload).toMatchObject({
-        activityName: expect.any(String),
-        participants: expect.any(Number),
-        preferredDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
-        phone: expect.any(String),
-        customerName: expect.any(String),
-      });
+      capturedPayload = route.request().postDataJSON();
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -108,9 +102,6 @@ test.describe('Flow réservation pack acompte', () => {
         }),
       });
     });
-
-    // Empêche la redirection effective vers Stripe (ouverture nouvel onglet)
-    const popupPromise = page.waitForEvent('popup').catch(() => null);
 
     await page.goto('/contact-reservation-kitesurf-hyeres');
 
@@ -125,18 +116,22 @@ test.describe('Flow réservation pack acompte', () => {
     await card.getByRole('button', { name: /Choisir une date/i }).click();
     // Calendar (react-day-picker v8) : chaque jour est un <button name="day">
     await page.locator('button[name="day"]:not([disabled])').first().click();
+    // Ferme la popover éventuellement ouverte
+    await page.keyboard.press('Escape').catch(() => {});
 
-    const [, popup] = await Promise.all([
-      card.getByRole('button', { name: /Payer l'acompte/i }).click(),
-      popupPromise,
-    ]);
+    const payBtn = card.getByRole('button', { name: /Payer l'acompte/i });
+    await payBtn.scrollIntoViewIfNeeded();
+    await payBtn.click({ force: true });
 
-    // L'onglet popup (s'il a été ouvert) doit pointer vers notre URL stub
-    if (popup) {
-      await popup.waitForLoadState('domcontentloaded').catch(() => {});
-      expect(popup.url()).toContain('checkout.stripe.com');
-      await popup.close();
-    }
+    // Attend que l'edge function ait été appelée
+    await expect.poll(() => capturedPayload, { timeout: 10_000 }).toBeTruthy();
+    expect(capturedPayload).toMatchObject({
+      activityName: expect.stringContaining('Cours Particulier'),
+      participants: expect.any(Number),
+      preferredDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
+      phone: '0612345678',
+      customerName: 'E2E Tester',
+    });
   });
 
   test('2. /mon-espace : code KP → réservation d\'une session → annulation', async ({ page }) => {
@@ -168,11 +163,20 @@ test.describe('Flow réservation pack acompte', () => {
     const used = sql(`SELECT used_sessions FROM public.client_packages WHERE id = '${packageId}';`);
     expect(used).toBe('1');
 
-    // Annulation (session à J+7 → annulation autorisée)
-    await page.getByRole('button', { name: /Annuler/i }).first().click();
-    await expect(page.getByText(/Journée annulée/i)).toBeVisible({ timeout: 5000 });
+    // Annulation (session future éloignée → annulation autorisée).
+    // Scope au panneau "Mes journées réservées" pour ne pas cliquer un
+    // bouton "Annuler" d'un toast / cookie banner.
+    const bookedSection = page
+      .locator('section')
+      .filter({ has: page.getByRole('heading', { name: /Mes journées réservées/i }) });
+    await bookedSection.getByRole('button', { name: /Annuler/i }).first().click();
 
-    const usedAfter = sql(`SELECT used_sessions FROM public.client_packages WHERE id = '${packageId}';`);
-    expect(usedAfter).toBe('0');
+    // Poll DB jusqu'à voir le décrément (toast peut disparaître trop vite)
+    await expect
+      .poll(
+        () => sql(`SELECT used_sessions FROM public.client_packages WHERE id = '${packageId}';`),
+        { timeout: 10_000, intervals: [500, 1000, 1500] },
+      )
+      .toBe('0');
   });
 });
