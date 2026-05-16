@@ -12,6 +12,15 @@ import { execSync } from 'node:child_process';
  *
  * Pré-requis : un accès `psql` configuré (variables PG* dans la sandbox
  * Lovable Cloud). Le test est skip si psql n'est pas disponible.
+ *
+ * STATUT : squelette opérationnel.
+ *   - Test 1 (formulaire acompte) : à finaliser — l'interception
+ *     `**\/functions\/v1\/create-checkout` ne capture pas encore le payload
+ *     (probable validation côté formulaire). À investiguer via trace.
+ *   - Test 2 (espace client) : la réservation cible "la 1ʳᵉ session
+ *     disponible" alors que d'autres sessions kitesurf existent déjà en
+ *     base. Il faut filtrer le bouton Réserver sur la date exacte de la
+ *     session seedée (sessionId) pour fiabiliser l'assertion DB.
  */
 
 const TEST_CODE = `KP-TEST-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 4).toUpperCase()}`;
