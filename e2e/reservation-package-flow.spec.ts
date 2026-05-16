@@ -93,10 +93,28 @@ test.describe('Flow réservation pack acompte', () => {
     // de session Stripe ni quitter le domaine de test.
     let capturedPayload: any = null;
     await page.route('**/functions/v1/create-checkout', async (route) => {
-      capturedPayload = route.request().postDataJSON();
+      const req = route.request();
+      if (req.method() === 'OPTIONS') {
+        await route.fulfill({
+          status: 204,
+          headers: {
+            'access-control-allow-origin': '*',
+            'access-control-allow-methods': 'POST, OPTIONS',
+            'access-control-allow-headers':
+              'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
+          },
+        });
+        return;
+      }
+      try {
+        capturedPayload = req.postDataJSON();
+      } catch {
+        capturedPayload = req.postData();
+      }
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
+        headers: { 'access-control-allow-origin': '*' },
         body: JSON.stringify({
           url: 'https://checkout.stripe.com/c/pay/cs_test_FAKE_E2E_SESSION',
         }),
