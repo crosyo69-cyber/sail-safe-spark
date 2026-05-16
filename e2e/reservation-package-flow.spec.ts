@@ -187,7 +187,16 @@ test.describe('Flow réservation pack acompte', () => {
     const bookedSection = page
       .locator('section')
       .filter({ has: page.getByRole('heading', { name: /Mes journées réservées/i }) });
-    await bookedSection.getByRole('button', { name: /Annuler/i }).first().click();
+    const cancelBtn = bookedSection.getByRole('button', { name: /Annuler/i }).first();
+    await expect(cancelBtn).toBeVisible();
+
+    const cancelResponse = page.waitForResponse(
+      (r) => r.url().includes('/rest/v1/rpc/cancel_booking_with_code'),
+      { timeout: 10_000 },
+    );
+    await cancelBtn.click();
+    const resp = await cancelResponse;
+    expect(resp.status()).toBe(200);
 
     // Poll DB jusqu'à voir le décrément (toast peut disparaître trop vite)
     await expect
