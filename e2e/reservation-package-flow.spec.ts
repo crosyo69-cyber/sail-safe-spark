@@ -18,11 +18,13 @@ const TEST_CODE = `KP-TEST-${Math.random().toString(36).slice(2, 6).toUpperCase(
 const TEST_EMAIL = `e2e+${Date.now()}@kitesurfpassion.test`;
 
 function sql(query: string): string {
-  return execSync('psql -At', {
+  const out = execSync('psql -At', {
     input: query,
     encoding: 'utf8',
     stdio: ['pipe', 'pipe', 'pipe'],
   }).trim();
+  // psql renvoie parfois "<value>\nINSERT 0 1" – on garde la 1re ligne
+  return out.split('\n')[0].trim();
 }
 
 function psqlAvailable(): boolean {
