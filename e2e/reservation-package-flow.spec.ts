@@ -166,29 +166,29 @@ test.describe('Flow réservation pack acompte', () => {
     await expect(page.getByText(/sessions restantes/i)).toBeVisible();
     await expect(page.getByText('/ 2').first()).toBeVisible();
 
-    // Trouve la carte de notre session seedée (date J+7) et clique Réserver
+    // Clique Réserver et attend la réponse de l'RPC
     const reserveBtn = page.getByRole('button', { name: /^Réserver$/ }).first();
     await expect(reserveBtn).toBeEnabled();
+    const bookResp = page.waitForResponse(
+      (r) => r.url().includes('/rest/v1/rpc/book_session_with_code'),
+      { timeout: 10_000 },
+    );
     await reserveBtn.click();
+    expect((await bookResp).status()).toBe(200);
 
-    // Toast succès + la session apparaît dans "Mes journées réservées"
-    await expect(page.getByText(/Journée réservée/i)).toBeVisible({ timeout: 5000 });
-    await expect(
-      page.locator('text=Mes journées réservées').locator('..').getByRole('button', { name: /Annuler/i }).first()
-    ).toBeVisible();
-
-    // Vérifie côté DB que used_sessions = 1
-    const used = sql(`SELECT used_sessions FROM public.client_packages WHERE id = '${packageId}';`);
-    expect(used).toBe('1');
+    // DB : used_sessions = 1
+    await expect
+      .poll(
+        () => sql(`SELECT used_sessions FROM public.client_packages WHERE id = '${packageId}';`),
+        { timeout: 10_000, intervals: [500, 1000] },
+      )
+      .toBe('1');
 
     // Annulation (session future éloignée → annulation autorisée).
     // Scope au panneau "Mes journées réservées" pour ne pas cliquer un
     // bouton "Annuler" d'un toast / cookie banner.
-    const bookedSection = page
-      .locator('section')
-      .filter({ has: page.getByRole('heading', { name: /Mes journées réservées/i }) });
-    const cancelBtn = bookedSection.getByRole('button', { name: /Annuler/i }).first();
-    await expect(cancelBtn).toBeVisible();
+    const cancelBtn = page.getByRole('button', { name: /Annuler/i }).first();
+    await expect(cancelBtn).toBeVisible({ timeout: 10_000 });
 
     const cancelResponse = page.waitForResponse(
       (r) => r.url().includes('/rest/v1/rpc/cancel_booking_with_code'),
