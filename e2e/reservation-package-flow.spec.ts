@@ -14,7 +14,7 @@ import { execSync } from 'node:child_process';
  * Lovable Cloud). Le test est skip si psql n'est pas disponible.
  */
 
-const TEST_CODE = `KP-TEST-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+const TEST_CODE = `KP-TEST-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 4).toUpperCase()}`;
 const TEST_EMAIL = `e2e+${Date.now()}@kitesurfpassion.test`;
 
 function sql(query: string): string {
@@ -46,12 +46,25 @@ test.describe('Flow réservation pack acompte', () => {
   let packageId = '';
 
   test.beforeAll(async () => {
-    // Session ouverte dans 7 jours (au-delà du J-2 → annulation possible)
-    sessionId = sql(`
-      INSERT INTO public.sessions (date, time_slot, activity, max_participants, status)
-      VALUES ((CURRENT_DATE + INTERVAL '7 days')::date, 'morning', 'kitesurf', 4, 'open')
-      RETURNING id;
-    `);
+    // Session ouverte dans 20–90 jours (au-delà du J-2 → annulation possible).
+    // On essaie plusieurs créneaux pour contourner la contrainte unique
+    // (date, time_slot, activity).
+    const slots = ['morning', 'afternoon', 'full_day'];
+    let lastErr: unknown = null;
+    for (let i = 0; i < 20 && !sessionId; i++) {
+      const offset = 20 + Math.floor(Math.random() * 70);
+      const slot = slots[Math.floor(Math.random() * slots.length)];
+      try {
+        sessionId = sql(`
+          INSERT INTO public.sessions (date, time_slot, activity, max_participants, status, notes)
+          VALUES ((CURRENT_DATE + INTERVAL '${offset} days')::date, '${slot}', 'kitesurf', 4, 'open', 'e2e-${TEST_CODE}')
+          RETURNING id;
+        `);
+      } catch (e) {
+        lastErr = e;
+      }
+    }
+    if (!sessionId) throw lastErr ?? new Error('Impossible de créer une session de test');
 
     packageId = sql(`
       INSERT INTO public.client_packages
@@ -70,14 +83,9 @@ test.describe('Flow réservation pack acompte', () => {
   });
 
   test.afterAll(async () => {
-    if (!packageId) return;
-    try {
-      sql(`DELETE FROM public.package_bookings WHERE package_id = '${packageId}';`);
-      sql(`DELETE FROM public.client_packages WHERE id = '${packageId}';`);
-      sql(`DELETE FROM public.sessions WHERE id = '${sessionId}';`);
-    } catch (e) {
-      console.warn('Cleanup partiel:', e);
-    }
+    // NOTE: l'utilisateur psql sandbox n'a pas la permission DELETE.
+    // Les données de test (suffixées par TEST_CODE) restent en base et seront
+    // purgées via une migration de cleanup ou manuellement par l'admin.
   });
 
   test('1. Formulaire acompte appelle create-checkout et reçoit une URL Stripe', async ({ page }) => {
