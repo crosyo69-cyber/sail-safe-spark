@@ -23,18 +23,21 @@ const activities = [
     name: "Stage 100% Glisse",
     icon: Ship,
     description: "5 jours consécutifs vers l'autonomie",
+    defaultSessions: 5,
   },
   {
     id: "cours-carte",
     name: "Cours à la Carte",
     icon: Settings,
     description: "Flexibilité totale selon vos disponibilités",
+    packOptions: [1, 3, 5, 10],
   },
   {
     id: "stage-wingfoil",
     name: "Cours Wingfoil",
     icon: Repeat,
     description: "Découvrez le vol sur l'eau en wingfoil",
+    packOptions: [1, 3, 5],
   },
   {
     id: "location-materiel",
@@ -63,6 +66,7 @@ const DepositPaymentSection = () => {
   const [selectedDates, setSelectedDates] = useState<Record<string, Date | undefined>>({});
   const [phones, setPhones] = useState<Record<string, string>>({});
   const [names, setNames] = useState<Record<string, string>>({});
+  const [packSessions, setPackSessions] = useState<Record<string, number>>({});
 
   const getCount = (id: string) => participants[id] || 1;
 
@@ -74,7 +78,11 @@ const DepositPaymentSection = () => {
     });
   };
 
-  const handleCheckout = async (activityName: string, activityId: string) => {
+  const handleCheckout = async (
+    activityName: string,
+    activityId: string,
+    totalSessions?: number,
+  ) => {
     const date = selectedDates[activityId];
     const phone = phones[activityId]?.trim();
     const name = names[activityId]?.trim();
@@ -103,6 +111,7 @@ const DepositPaymentSection = () => {
           preferredDate: format(date, "yyyy-MM-dd"),
           phone,
           customerName: name,
+          totalSessions: totalSessions ?? count,
         },
       });
 
@@ -154,6 +163,10 @@ const DepositPaymentSection = () => {
               const count = getCount(activity.id);
               const total = count * 50;
               const date = selectedDates[activity.id];
+              const packOptions = (activity as any).packOptions as number[] | undefined;
+              const defaultSessions = (activity as any).defaultSessions as number | undefined;
+              const selectedPack =
+                packSessions[activity.id] ?? packOptions?.[0] ?? defaultSessions ?? count;
               return (
                 <div
                   key={activity.id}
@@ -166,6 +179,36 @@ const DepositPaymentSection = () => {
                   <p className="text-muted-foreground text-sm mb-4 flex-1">
                     {activity.description}
                   </p>
+                  {packOptions && (
+                    <div className="mb-3">
+                      <Label className="text-xs text-muted-foreground">
+                        Pack — nombre de sessions
+                      </Label>
+                      <div className="grid grid-cols-4 gap-1.5 mt-1">
+                        {packOptions.map((n) => (
+                          <button
+                            key={n}
+                            type="button"
+                            onClick={() =>
+                              setPackSessions((prev) => ({ ...prev, [activity.id]: n }))
+                            }
+                            className={cn(
+                              "h-9 rounded-lg border text-sm font-semibold transition-colors min-w-[44px]",
+                              selectedPack === n
+                                ? "bg-primary text-primary-foreground border-primary"
+                                : "bg-background border-border text-foreground hover:border-primary/50",
+                            )}
+                            aria-pressed={selectedPack === n}
+                          >
+                            {n}
+                          </button>
+                        ))}
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-1 leading-snug">
+                        Réservez ensuite vos journées librement avec votre code KP, selon la météo.
+                      </p>
+                    </div>
+                  )}
 
                   {/* Name field */}
                   <div className="mb-3">
@@ -250,14 +293,22 @@ const DepositPaymentSection = () => {
                       Acompte : {total}€ {count > 1 && <span className="font-normal text-muted-foreground">({count} × 50€)</span>}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      (solde à régler le jour J)
+                      {packOptions
+                        ? `Pack ${selectedPack} session${selectedPack > 1 ? "s" : ""} — solde à régler sur place`
+                        : "(solde à régler le jour J)"}
                     </p>
                   </div>
                   <Button
                     variant="sunset"
                     className="w-full"
                     disabled={loadingId === activity.id}
-                    onClick={() => handleCheckout(activity.name, activity.id)}
+                    onClick={() =>
+                      handleCheckout(
+                        activity.name,
+                        activity.id,
+                        packOptions ? selectedPack : defaultSessions,
+                      )
+                    }
                   >
                     {loadingId === activity.id ? "Redirection…" : "Payer l'acompte"}
                   </Button>
