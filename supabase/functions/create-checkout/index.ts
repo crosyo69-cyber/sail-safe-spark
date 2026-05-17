@@ -12,7 +12,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { activityName, participants, preferredDate, phone, customerName } = await req.json();
+    const { activityName, participants, preferredDate, phone, customerName, totalSessions } = await req.json();
 
     if (!activityName || typeof activityName !== "string") {
       return new Response(JSON.stringify({ error: "activityName is required" }), {
@@ -43,6 +43,7 @@ Deno.serve(async (req) => {
     }
 
     const count = Math.max(1, Math.min(6, Math.floor(Number(participants) || 1)));
+    const packSessions = Math.max(1, Math.min(20, Math.floor(Number(totalSessions) || count)));
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
       apiVersion: "2023-10-16",
@@ -68,6 +69,7 @@ Deno.serve(async (req) => {
         preferred_date: preferredDate,
         phone: phone.trim(),
         customer_name: customerName.trim(),
+        total_sessions: String(packSessions),
       },
       success_url: `${origin}/reservation-confirmee?activity=${encodeURIComponent(activityName)}`,
       cancel_url: `${origin}/contact-reservation-kitesurf-hyeres`,
