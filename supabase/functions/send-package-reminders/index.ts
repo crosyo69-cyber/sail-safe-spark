@@ -149,7 +149,7 @@ Deno.serve(async (req) => {
       .select("id")
       .eq("template_name", "package_reminder")
       .eq("recipient_email", p.email)
-      .ilike("metadata", `%${b.id}%`)
+      .filter("metadata->>booking_id", "eq", b.id)
       .limit(1);
     if (existing && existing.length > 0) continue;
 
