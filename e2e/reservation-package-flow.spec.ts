@@ -175,8 +175,12 @@ test.describe('Flow réservation pack acompte', () => {
     await expect(page.getByText(/sessions restantes/i)).toBeVisible();
     await expect(page.getByText('/ 2').first()).toBeVisible();
 
-    // Clique Réserver et attend la réponse de l'RPC
-    const reserveBtn = page.getByRole('button', { name: /^Réserver$/ }).first();
+    // Cible explicitement la session seedée via data-session-id pour éviter
+    // de cliquer sur une autre session kitesurf ouverte en base.
+    const seededCard = page.locator(`[data-session-id="${sessionId}"]`);
+    await expect(seededCard).toBeVisible({ timeout: 10_000 });
+    await seededCard.scrollIntoViewIfNeeded();
+    const reserveBtn = seededCard.getByRole('button', { name: /^Réserver$/ });
     await expect(reserveBtn).toBeEnabled();
     const bookResp = page.waitForResponse(
       (r) => r.url().includes('/rest/v1/rpc/book_session_with_code'),
@@ -184,6 +188,20 @@ test.describe('Flow réservation pack acompte', () => {
     );
     await reserveBtn.click();
     expect((await bookResp).status()).toBe(200);
+
+    // DB : un package_booking confirmé existe bien pour CETTE session précise
+    await expect
+      .poll(
+        () =>
+          sql(`
+            SELECT COUNT(*)::int FROM public.package_bookings
+             WHERE package_id = '${packageId}'
+               AND session_id = '${sessionId}'
+               AND status = 'confirmed';
+          `),
+        { timeout: 10_000, intervals: [500, 1000] },
+      )
+      .toBe('1');
 
     // DB : used_sessions = 1
     await expect
