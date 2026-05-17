@@ -327,7 +327,12 @@ const MonEspace = () => {
                     const full = s.taken >= s.max_participants;
                     const already = bookedSessionIds.has(s.id);
                     return (
-                      <Card key={s.id} className={already ? "border-primary" : ""}>
+                      <Card
+                        key={s.id}
+                        data-session-id={s.id}
+                        data-testid="available-session-card"
+                        className={already ? "border-primary" : ""}
+                      >
                         <CardContent className="py-4">
                           <div className="flex items-start justify-between gap-2 mb-2">
                             <div>
