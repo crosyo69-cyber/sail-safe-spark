@@ -285,6 +285,48 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
         ))}
       </div>
 
+      {/* Source & status filters */}
+      <div className="flex flex-wrap gap-2 mb-4 text-xs">
+        <span className="text-muted-foreground self-center mr-1">Source :</span>
+        {([
+          { id: "all", label: "Toutes" },
+          { id: "reservation", label: "Réservations" },
+          { id: "package", label: "Pack KP" },
+        ] as const).map((opt) => (
+          <button
+            key={opt.id}
+            onClick={() => setSourceFilter(opt.id)}
+            className={cn(
+              "px-2.5 py-1 rounded-full border transition-colors min-h-[28px]",
+              sourceFilter === opt.id
+                ? "border-primary bg-primary/10 text-primary font-semibold"
+                : "border-border text-muted-foreground hover:bg-muted/50",
+            )}
+          >
+            {opt.label}
+          </button>
+        ))}
+        <span className="text-muted-foreground self-center ml-2 mr-1">Statut :</span>
+        {([
+          { id: "all", label: "Tous" },
+          { id: "confirmed", label: "Confirmés" },
+          { id: "pending", label: "En attente" },
+        ] as const).map((opt) => (
+          <button
+            key={opt.id}
+            onClick={() => setStatusFilter(opt.id)}
+            className={cn(
+              "px-2.5 py-1 rounded-full border transition-colors min-h-[28px]",
+              statusFilter === opt.id
+                ? "border-primary bg-primary/10 text-primary font-semibold"
+                : "border-border text-muted-foreground hover:bg-muted/50",
+            )}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+
       {/* Grid */}
       <div className="grid grid-cols-7 gap-px bg-border rounded-lg overflow-hidden">
         {/* Week day headers */}
