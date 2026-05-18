@@ -33,6 +33,8 @@ interface ReservationInfo {
   participants: number;
   skill_level: string;
   status: string;
+  source?: "reservation" | "package";
+  package_code?: string;
 }
 
 interface SessionSummary {
@@ -93,31 +95,55 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
 
       const { data, error } = await supabase
         .from("sessions")
-        .select("id, date, activity, time_slot, max_participants, status, reservations(id, first_name, last_name, email, phone, participants, skill_level, status)")
+        .select(`
+          id, date, activity, time_slot, max_participants, status,
+          reservations(id, first_name, last_name, email, phone, participants, skill_level, status),
+          package_bookings(id, status, client_packages(package_code, first_name, last_name, email, phone))
+        `)
         .gte("date", from)
         .lte("date", to);
 
       if (!error && data) {
         setSessions(
-          data.map((s: any) => ({
-            id: s.id,
-            date: s.date,
-            activity: s.activity,
-            time_slot: s.time_slot,
-            max_participants: s.max_participants,
-            reservation_count: s.reservations?.filter((r: any) => r.status === 'confirmed' || r.status === 'pending').length || 0,
-            status: s.status,
-            reservations: (s.reservations || []).map((r: any) => ({
-              id: r.id,
-              first_name: r.first_name,
-              last_name: r.last_name,
-              email: r.email,
-              phone: r.phone,
-              participants: r.participants,
-              skill_level: r.skill_level,
-              status: r.status,
-            })),
-          }))
+          data.map((s: any) => {
+            const reservationParticipants: ReservationInfo[] = (s.reservations || [])
+              .map((r: any) => ({
+                id: r.id,
+                first_name: r.first_name,
+                last_name: r.last_name,
+                email: r.email,
+                phone: r.phone,
+                participants: r.participants,
+                skill_level: r.skill_level,
+                status: r.status,
+                source: "reservation" as const,
+              }));
+            const packageParticipants: ReservationInfo[] = (s.package_bookings || [])
+              .filter((b: any) => b.client_packages)
+              .map((b: any) => ({
+                id: `pkg-${b.id}`,
+                first_name: b.client_packages.first_name,
+                last_name: b.client_packages.last_name,
+                email: b.client_packages.email,
+                phone: b.client_packages.phone || "",
+                participants: 1,
+                skill_level: "-",
+                status: b.status,
+                source: "package" as const,
+                package_code: b.client_packages.package_code,
+              }));
+            const all = [...reservationParticipants, ...packageParticipants];
+            return {
+              id: s.id,
+              date: s.date,
+              activity: s.activity,
+              time_slot: s.time_slot,
+              max_participants: s.max_participants,
+              reservation_count: all.filter((r) => r.status === "confirmed" || r.status === "pending").length,
+              status: s.status,
+              reservations: all,
+            };
+          })
         );
       }
       setLoading(false);
