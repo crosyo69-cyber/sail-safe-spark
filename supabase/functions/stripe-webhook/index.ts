@@ -106,6 +106,83 @@ function mapActivityToEnum(activityName: string): string {
   return "kitesurf";
 }
 
+// Auto-enroll a 5-day consecutive stage starting from preferredDate.
+// Creates missing sessions and inserts confirmed package_bookings on each day.
+async function autoEnrollConsecutiveStage(
+  supabase: any,
+  packageCode: string,
+  activityName: string,
+  preferredDate: string,
+  totalSessions: number,
+) {
+  const name = (activityName || "").toLowerCase();
+  const isStage =
+    name.includes("stage 100") ||
+    name.includes("100% glisse") ||
+    name.includes("100%glisse") ||
+    (name.includes("stage") && totalSessions === 5);
+  if (!isStage || !preferredDate || totalSessions < 2) return;
+
+  const { data: pkg } = await supabase
+    .from("client_packages")
+    .select("id, activity")
+    .eq("package_code", packageCode)
+    .single();
+  if (!pkg) return;
+
+  const activityEnum = pkg.activity;
+  const maxParticipants = MAX_BY_ACTIVITY[activityEnum] || 4;
+  const start = new Date(`${preferredDate}T00:00:00Z`);
+
+  for (let i = 0; i < totalSessions; i++) {
+    const d = new Date(start);
+    d.setUTCDate(start.getUTCDate() + i);
+    const dateStr = d.toISOString().split("T")[0];
+
+    // Find or create an open session for this day + activity (morning slot)
+    let sessionId: string | null = null;
+    const { data: existing } = await supabase
+      .from("sessions")
+      .select("id")
+      .eq("date", dateStr)
+      .eq("activity", activityEnum)
+      .eq("status", "open")
+      .limit(1);
+    if (existing && existing.length > 0) {
+      sessionId = existing[0].id;
+    } else {
+      const { data: created, error: sErr } = await supabase
+        .from("sessions")
+        .insert({
+          date: dateStr,
+          time_slot: "morning",
+          activity: activityEnum,
+          max_participants: maxParticipants,
+          status: "open",
+          notes: `Stage auto-créé – ${activityName}`,
+        })
+        .select("id")
+        .single();
+      if (sErr) {
+        console.error(`autoEnrollConsecutiveStage: session ${dateStr} error`, sErr);
+        continue;
+      }
+      sessionId = created.id;
+    }
+
+    const { error: bErr } = await supabase
+      .from("package_bookings")
+      .upsert(
+        { package_id: pkg.id, session_id: sessionId, status: "confirmed" },
+        { onConflict: "package_id,session_id" },
+      );
+    if (bErr) {
+      console.error(`autoEnrollConsecutiveStage: booking ${dateStr} error`, bErr);
+    }
+  }
+  console.log(`Auto-enrolled ${packageCode} on ${totalSessions} consecutive days from ${preferredDate}`);
+}
+
 function escapeHtml(text: string): string {
   return String(text)
     .replace(/&/g, "&amp;")
@@ -431,6 +508,21 @@ Deno.serve(async (req) => {
           );
         } catch (error) {
           console.error("Client package creation error:", error instanceof Error ? error.message : error);
+        }
+
+        // Auto-enroll consecutive-day stages (Stage 100% Glisse, 5 jours, etc.)
+        if (packageCode && preferredDate) {
+          try {
+            await autoEnrollConsecutiveStage(
+              supabase,
+              packageCode,
+              activityName,
+              preferredDate,
+              totalSessions,
+            );
+          } catch (error) {
+            console.error("Auto-enroll stage error:", error instanceof Error ? error.message : error);
+          }
         }
 
         try {
