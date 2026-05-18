@@ -78,6 +78,8 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
   const [loading, setLoading] = useState(false);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [activityFilter, setActivityFilter] = useState<Activity | "all">("all");
+  const [sourceFilter, setSourceFilter] = useState<"all" | "reservation" | "package">("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | "confirmed" | "pending">("all");
   const [addingToSession, setAddingToSession] = useState<string | null>(null);
   const [creatingSession, setCreatingSession] = useState(false);
 
