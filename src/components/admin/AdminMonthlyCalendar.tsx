@@ -164,9 +164,22 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
   }, [refreshSessions]);
 
   const filteredSessions = useMemo(() => {
-    if (activityFilter === "all") return sessions;
-    return sessions.filter((s) => s.activity === activityFilter);
-  }, [sessions, activityFilter]);
+    return sessions
+      .filter((s) => activityFilter === "all" || s.activity === activityFilter)
+      .map((s) => {
+        const filtered = s.reservations.filter((r) => {
+          if (sourceFilter !== "all" && r.source !== sourceFilter) return false;
+          if (statusFilter !== "all" && r.status !== statusFilter) return false;
+          if (statusFilter === "all" && r.status !== "confirmed" && r.status !== "pending") return false;
+          return true;
+        });
+        return {
+          ...s,
+          reservations: filtered,
+          reservation_count: filtered.reduce((n, r) => n + (r.participants || 1), 0),
+        };
+      });
+  }, [sessions, activityFilter, sourceFilter, statusFilter]);
 
   const exportCSV = useCallback(() => {
     const allReservations = filteredSessions.flatMap((s) =>
