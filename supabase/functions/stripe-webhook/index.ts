@@ -510,6 +510,21 @@ Deno.serve(async (req) => {
           console.error("Client package creation error:", error instanceof Error ? error.message : error);
         }
 
+        // Auto-enroll consecutive-day stages (Stage 100% Glisse, 5 jours, etc.)
+        if (packageCode && preferredDate) {
+          try {
+            await autoEnrollConsecutiveStage(
+              supabase,
+              packageCode,
+              activityName,
+              preferredDate,
+              totalSessions,
+            );
+          } catch (error) {
+            console.error("Auto-enroll stage error:", error instanceof Error ? error.message : error);
+          }
+        }
+
         try {
           await enqueueEmail(
             supabase,
