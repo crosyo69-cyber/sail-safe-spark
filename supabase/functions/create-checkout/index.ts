@@ -45,6 +45,37 @@ Deno.serve(async (req) => {
     const count = Math.max(1, Math.min(6, Math.floor(Number(participants) || 1)));
     const packSessions = Math.max(1, Math.min(20, Math.floor(Number(totalSessions) || count)));
 
+    // Server-side validation: total_sessions must match the activity's allowed pack sizes.
+    const name = String(activityName).toLowerCase();
+    let allowed: number[];
+    if (name.includes("carte")) {
+      allowed = [1, 3, 5, 10];
+    } else if (name.includes("wingfoil")) {
+      allowed = [1, 3, 5];
+    } else if (name.includes("100%") || name.includes("100% glisse") || name.includes("stage 100")) {
+      allowed = [5];
+    } else {
+      // per-participant activities (cours particulier, location, foil tracté, déposes en mer)
+      allowed = [1, 2, 3, 4, 5, 6];
+      // must equal participant count
+      if (packSessions !== count) {
+        return new Response(
+          JSON.stringify({
+            error: `Pour "${activityName}", total_sessions doit être égal au nombre de participants (${count}).`,
+          }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        );
+      }
+    }
+    if (!allowed.includes(packSessions)) {
+      return new Response(
+        JSON.stringify({
+          error: `Pack invalide pour "${activityName}". Valeurs autorisées : ${allowed.join(", ")}.`,
+        }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
       apiVersion: "2023-10-16",
     });
