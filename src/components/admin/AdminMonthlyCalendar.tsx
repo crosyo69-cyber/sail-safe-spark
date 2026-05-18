@@ -78,6 +78,8 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
   const [loading, setLoading] = useState(false);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [activityFilter, setActivityFilter] = useState<Activity | "all">("all");
+  const [sourceFilter, setSourceFilter] = useState<"all" | "reservation" | "package">("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | "confirmed" | "pending">("all");
   const [addingToSession, setAddingToSession] = useState<string | null>(null);
   const [creatingSession, setCreatingSession] = useState(false);
 
@@ -162,9 +164,22 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
   }, [refreshSessions]);
 
   const filteredSessions = useMemo(() => {
-    if (activityFilter === "all") return sessions;
-    return sessions.filter((s) => s.activity === activityFilter);
-  }, [sessions, activityFilter]);
+    return sessions
+      .filter((s) => activityFilter === "all" || s.activity === activityFilter)
+      .map((s) => {
+        const filtered = s.reservations.filter((r) => {
+          if (sourceFilter !== "all" && r.source !== sourceFilter) return false;
+          if (statusFilter !== "all" && r.status !== statusFilter) return false;
+          if (statusFilter === "all" && r.status !== "confirmed" && r.status !== "pending") return false;
+          return true;
+        });
+        return {
+          ...s,
+          reservations: filtered,
+          reservation_count: filtered.reduce((n, r) => n + (r.participants || 1), 0),
+        };
+      });
+  }, [sessions, activityFilter, sourceFilter, statusFilter]);
 
   const exportCSV = useCallback(() => {
     const allReservations = filteredSessions.flatMap((s) =>
@@ -266,6 +281,48 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
           >
             <div className={cn("w-2 h-2 rounded-full", ACTIVITY_DOT_COLORS[a])} />
             {ACTIVITY_LABELS[a]}
+          </button>
+        ))}
+      </div>
+
+      {/* Source & status filters */}
+      <div className="flex flex-wrap gap-2 mb-4 text-xs">
+        <span className="text-muted-foreground self-center mr-1">Source :</span>
+        {([
+          { id: "all", label: "Toutes" },
+          { id: "reservation", label: "Réservations" },
+          { id: "package", label: "Pack KP" },
+        ] as const).map((opt) => (
+          <button
+            key={opt.id}
+            onClick={() => setSourceFilter(opt.id)}
+            className={cn(
+              "px-2.5 py-1 rounded-full border transition-colors min-h-[28px]",
+              sourceFilter === opt.id
+                ? "border-primary bg-primary/10 text-primary font-semibold"
+                : "border-border text-muted-foreground hover:bg-muted/50",
+            )}
+          >
+            {opt.label}
+          </button>
+        ))}
+        <span className="text-muted-foreground self-center ml-2 mr-1">Statut :</span>
+        {([
+          { id: "all", label: "Tous" },
+          { id: "confirmed", label: "Confirmés" },
+          { id: "pending", label: "En attente" },
+        ] as const).map((opt) => (
+          <button
+            key={opt.id}
+            onClick={() => setStatusFilter(opt.id)}
+            className={cn(
+              "px-2.5 py-1 rounded-full border transition-colors min-h-[28px]",
+              statusFilter === opt.id
+                ? "border-primary bg-primary/10 text-primary font-semibold"
+                : "border-border text-muted-foreground hover:bg-muted/50",
+            )}
+          >
+            {opt.label}
           </button>
         ))}
       </div>
