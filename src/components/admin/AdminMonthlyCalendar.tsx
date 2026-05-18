@@ -485,6 +485,11 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
                                       ×{r.participants}
                                     </Badge>
                                   )}
+                                  {r.source === "package" && r.package_code && (
+                                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-primary/40 text-primary font-mono">
+                                      {r.package_code}
+                                    </Badge>
+                                  )}
                                 </div>
                                 <div className="flex items-center gap-2 text-muted-foreground shrink-0 ml-2">
                                   <span>{r.phone}</span>
