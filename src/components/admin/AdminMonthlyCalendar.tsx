@@ -350,6 +350,16 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
         <Button
           variant="ghost"
           size="sm"
+          className="gap-1 text-xs min-h-[28px] px-2.5 py-1 rounded-full hover:bg-muted/50 text-muted-foreground"
+          onClick={exportParticipantsCSV}
+          title="Exporter les participants filtrés en CSV"
+        >
+          <Download className="w-3.5 h-3.5" />
+          Exporter participants
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
           className="gap-1 text-xs ml-auto min-h-[28px] px-2.5 py-1 rounded-full hover:bg-muted/50 text-muted-foreground"
           onClick={() => {
             setActivityFilter("all");
