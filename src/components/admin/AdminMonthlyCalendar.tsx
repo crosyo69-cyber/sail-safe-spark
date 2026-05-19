@@ -210,6 +210,28 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
     URL.revokeObjectURL(url);
   }, [filteredSessions, currentMonth]);
 
+  const exportParticipantsCSV = useCallback(() => {
+    const rows = filteredSessions.flatMap((s) =>
+      s.reservations.map((r) => ({
+        activite: ACTIVITY_LABELS[s.activity],
+        journee: s.date,
+        nom: `${r.first_name} ${r.last_name}`,
+        statut: r.status === "confirmed" ? "Confirmé" : "En attente",
+        source: r.source === "package" ? "Pack KP" : "Réservation",
+      }))
+    );
+    if (rows.length === 0) return;
+    const headers = Object.keys(rows[0]);
+    const csv = "\uFEFF" + [headers.join(";"), ...rows.map((r) => headers.map((h) => `"${(r as any)[h]}"`).join(";"))].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `participants-${format(currentMonth, "yyyy-MM")}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [filteredSessions, currentMonth]);
+
   const sessionsByDate = useMemo(() => {
     const map: Record<string, SessionSummary[]> = {};
     filteredSessions.forEach((s) => {
@@ -325,6 +347,16 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
             {opt.label}
           </button>
         ))}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="gap-1 text-xs min-h-[28px] px-2.5 py-1 rounded-full hover:bg-muted/50 text-muted-foreground"
+          onClick={exportParticipantsCSV}
+          title="Exporter les participants filtrés en CSV"
+        >
+          <Download className="w-3.5 h-3.5" />
+          Exporter participants
+        </Button>
         <Button
           variant="ghost"
           size="sm"
