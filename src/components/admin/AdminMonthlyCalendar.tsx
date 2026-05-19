@@ -17,7 +17,7 @@ import {
   subMonths,
 } from "date-fns";
 import { fr } from "date-fns/locale";
-import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus, Download, LockOpen, Lock, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus, Download, LockOpen, Lock, Plus, RotateCcw } from "lucide-react";
 import CalendarAddReservation from "./CalendarAddReservation";
 import CalendarReservationActions from "./CalendarReservationActions";
 import CalendarQuickSession from "./CalendarQuickSession";
@@ -285,8 +285,8 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
         ))}
       </div>
 
-      {/* Source & status filters */}
-      <div className="flex flex-wrap gap-2 mb-4 text-xs">
+      {/* Source & status filters + reset */}
+      <div className="flex flex-wrap gap-2 mb-4 text-xs items-center">
         <span className="text-muted-foreground self-center mr-1">Source :</span>
         {([
           { id: "all", label: "Toutes" },
@@ -325,6 +325,20 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
             {opt.label}
           </button>
         ))}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="gap-1 text-xs ml-auto min-h-[28px] px-2.5 py-1 rounded-full hover:bg-muted/50 text-muted-foreground"
+          onClick={() => {
+            setActivityFilter("all");
+            setSourceFilter("all");
+            setStatusFilter("all");
+          }}
+          title="Réinitialiser tous les filtres"
+        >
+          <RotateCcw className="w-3.5 h-3.5" />
+          Réinitialiser
+        </Button>
       </div>
 
       {/* Grid */}
