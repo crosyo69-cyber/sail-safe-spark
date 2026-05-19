@@ -19,6 +19,7 @@ import {
 import { fr } from "date-fns/locale";
 import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus, Download, FileSpreadsheet, LockOpen, Lock, Plus, RotateCcw } from "lucide-react";
 import * as XLSX from "xlsx";
+import { toast } from "sonner";
 import CalendarAddReservation from "./CalendarAddReservation";
 import CalendarReservationActions from "./CalendarReservationActions";
 import CalendarQuickSession from "./CalendarQuickSession";
@@ -221,7 +222,10 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
         source: r.source === "package" ? "Pack KP" : "Réservation",
       }))
     );
-    if (rows.length === 0) return;
+    if (rows.length === 0) {
+      toast("Aucune donnée à exporter", { icon: "ℹ️" });
+      return;
+    }
     const headers = Object.keys(rows[0]);
     const csv = "\uFEFF" + [headers.join(";"), ...rows.map((r) => headers.map((h) => `"${(r as any)[h]}"`).join(";"))].join("\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -243,7 +247,10 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
         Source: r.source === "package" ? "Pack KP" : "Réservation",
       }))
     );
-    if (rows.length === 0) return;
+    if (rows.length === 0) {
+      toast("Aucune donnée à exporter", { icon: "ℹ️" });
+      return;
+    }
     const ws = XLSX.utils.json_to_sheet(rows);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Participants");
