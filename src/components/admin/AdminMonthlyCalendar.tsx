@@ -19,6 +19,7 @@ import {
 import { fr } from "date-fns/locale";
 import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus, Download, FileSpreadsheet, LockOpen, Lock, Plus, RotateCcw } from "lucide-react";
 import * as XLSX from "xlsx";
+import { toast } from "sonner";
 import CalendarAddReservation from "./CalendarAddReservation";
 import CalendarReservationActions from "./CalendarReservationActions";
 import CalendarQuickSession from "./CalendarQuickSession";
