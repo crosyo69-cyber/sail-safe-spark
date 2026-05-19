@@ -247,7 +247,10 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
         Source: r.source === "package" ? "Pack KP" : "Réservation",
       }))
     );
-    if (rows.length === 0) return;
+    if (rows.length === 0) {
+      toast("Aucune donnée à exporter", { icon: "ℹ️" });
+      return;
+    }
     const ws = XLSX.utils.json_to_sheet(rows);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Participants");
