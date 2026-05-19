@@ -222,7 +222,10 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
         source: r.source === "package" ? "Pack KP" : "Réservation",
       }))
     );
-    if (rows.length === 0) return;
+    if (rows.length === 0) {
+      toast("Aucune donnée à exporter", { icon: "ℹ️" });
+      return;
+    }
     const headers = Object.keys(rows[0]);
     const csv = "\uFEFF" + [headers.join(";"), ...rows.map((r) => headers.map((h) => `"${(r as any)[h]}"`).join(";"))].join("\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
