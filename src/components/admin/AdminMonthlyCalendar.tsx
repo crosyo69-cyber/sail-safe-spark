@@ -17,7 +17,8 @@ import {
   subMonths,
 } from "date-fns";
 import { fr } from "date-fns/locale";
-import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus, Download, LockOpen, Lock, Plus, RotateCcw } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, CalendarDays, UserPlus, Download, FileSpreadsheet, LockOpen, Lock, Plus, RotateCcw } from "lucide-react";
+import * as XLSX from "xlsx";
 import CalendarAddReservation from "./CalendarAddReservation";
 import CalendarReservationActions from "./CalendarReservationActions";
 import CalendarQuickSession from "./CalendarQuickSession";
@@ -232,6 +233,23 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
     URL.revokeObjectURL(url);
   }, [filteredSessions, currentMonth]);
 
+  const exportParticipantsXLSX = useCallback(() => {
+    const rows = filteredSessions.flatMap((s) =>
+      s.reservations.map((r) => ({
+        Activité: ACTIVITY_LABELS[s.activity],
+        Journée: s.date,
+        Nom: `${r.first_name} ${r.last_name}`,
+        Statut: r.status === "confirmed" ? "Confirmé" : "En attente",
+        Source: r.source === "package" ? "Pack KP" : "Réservation",
+      }))
+    );
+    if (rows.length === 0) return;
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Participants");
+    XLSX.writeFile(wb, `participants-${format(currentMonth, "yyyy-MM")}.xlsx`);
+  }, [filteredSessions, currentMonth]);
+
   const sessionsByDate = useMemo(() => {
     const map: Record<string, SessionSummary[]> = {};
     filteredSessions.forEach((s) => {
@@ -355,7 +373,17 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
           title="Exporter les participants filtrés en CSV"
         >
           <Download className="w-3.5 h-3.5" />
-          Exporter participants
+          CSV
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="gap-1 text-xs min-h-[28px] px-2.5 py-1 rounded-full hover:bg-muted/50 text-muted-foreground"
+          onClick={exportParticipantsXLSX}
+          title="Exporter les participants filtrés en XLSX"
+        >
+          <FileSpreadsheet className="w-3.5 h-3.5" />
+          XLSX
         </Button>
         <Button
           variant="ghost"
