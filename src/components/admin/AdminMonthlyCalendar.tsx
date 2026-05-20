@@ -410,12 +410,30 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
 
       {/* Participant count */}
       <div className="mb-4 text-sm">
-        <span className="text-muted-foreground">
-          {(() => {
-            const count = filteredSessions.reduce((sum, s) => sum + s.reservation_count, 0);
-            return `${count} participant${count !== 1 ? 's' : ''} trouvé${count !== 1 ? 's' : ''}`;
-          })()}
-        </span>
+        {(() => {
+          let confirmed = 0;
+          let pending = 0;
+          filteredSessions.forEach((s) => {
+            s.reservations.forEach((r) => {
+              if (r.status === "confirmed") confirmed += r.participants || 1;
+              else if (r.status === "pending") pending += r.participants || 1;
+            });
+          });
+          const total = confirmed + pending;
+          return (
+            <span className="text-muted-foreground">
+              {total} participant{total !== 1 ? "s" : ""} trouvé{total !== 1 ? "s" : ""}
+              {total > 0 && (
+                <>
+                  {" "}—{" "}
+                  <span className="text-green-600 font-medium">{confirmed} confirmé{confirmed !== 1 ? "s" : ""}</span>
+                  {" "}et{" "}
+                  <span className="text-yellow-600 font-medium">{pending} en attente</span>
+                </>
+              )}
+            </span>
+          );
+        })()}
       </div>
 
       {/* Grid */}
