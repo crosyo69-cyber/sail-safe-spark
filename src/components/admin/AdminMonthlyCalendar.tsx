@@ -408,6 +408,16 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
         </Button>
       </div>
 
+      {/* Participant count */}
+      <div className="mb-4 text-sm">
+        <span className="text-muted-foreground">
+          {(() => {
+            const count = filteredSessions.reduce((sum, s) => sum + s.reservation_count, 0);
+            return `${count} participant${count !== 1 ? 's' : ''} trouvé${count !== 1 ? 's' : ''}`;
+          })()}
+        </span>
+      </div>
+
       {/* Grid */}
       <div className="grid grid-cols-7 gap-px bg-border rounded-lg overflow-hidden">
         {/* Week day headers */}
