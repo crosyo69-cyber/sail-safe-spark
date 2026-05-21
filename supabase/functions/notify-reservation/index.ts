@@ -139,6 +139,56 @@ Deno.serve(async (req) => {
   }
 
   try {
+    // Auth check: only authenticated admins (or service_role) may send
+    // owner-notification emails. Prevents anyone with the anon key from
+    // spamming the inbox with arbitrary content.
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader?.startsWith("Bearer ")) {
+      return new Response(
+        JSON.stringify({ error: "Unauthorized" }),
+        { status: 401, headers: { "Content-Type": "application/json", ...corsHeaders } },
+      );
+    }
+    const token = authHeader.slice("Bearer ".length).trim();
+
+    const authClient = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } },
+    );
+
+    // Allow service-role bypass (decoded JWT role claim).
+    let isServiceRole = false;
+    try {
+      const parts = token.split(".");
+      if (parts.length >= 2) {
+        const payload = JSON.parse(
+          atob(parts[1].replaceAll("-", "+").replaceAll("_", "/").padEnd(Math.ceil(parts[1].length / 4) * 4, "=")),
+        );
+        isServiceRole = payload?.role === "service_role";
+      }
+    } catch { /* ignore */ }
+
+    if (!isServiceRole) {
+      const { data: userData, error: userErr } = await authClient.auth.getUser(token);
+      if (userErr || !userData?.user) {
+        return new Response(
+          JSON.stringify({ error: "Unauthorized" }),
+          { status: 401, headers: { "Content-Type": "application/json", ...corsHeaders } },
+        );
+      }
+      const { data: isAdmin } = await authClient.rpc("has_role", {
+        _user_id: userData.user.id,
+        _role: "admin",
+      });
+      if (!isAdmin) {
+        return new Response(
+          JSON.stringify({ error: "Forbidden" }),
+          { status: 403, headers: { "Content-Type": "application/json", ...corsHeaders } },
+        );
+      }
+    }
+
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
@@ -149,6 +199,26 @@ Deno.serve(async (req) => {
     if (!data.first_name || !data.last_name || !data.email || !data.activity || !data.date) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } },
+      );
+    }
+
+    // Length validation to prevent oversized payloads
+    const maxLen = (v: string | undefined, n: number) => !v || v.length <= n;
+    if (
+      !maxLen(data.first_name, 100) ||
+      !maxLen(data.last_name, 100) ||
+      !maxLen(data.email, 254) ||
+      !maxLen(data.phone, 40) ||
+      !maxLen(data.activity, 50) ||
+      !maxLen(data.time_slot, 50) ||
+      !maxLen(data.skill_level, 50) ||
+      !maxLen(data.source, 50) ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(data.date) ||
+      typeof data.participants !== "number" || data.participants < 1 || data.participants > 20
+    ) {
+      return new Response(
+        JSON.stringify({ error: "Invalid field values" }),
         { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } },
       );
     }
