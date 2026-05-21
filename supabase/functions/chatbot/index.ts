@@ -83,6 +83,38 @@ serve(async (req) => {
 
   try {
     const { messages } = await req.json();
+
+    // Input validation: prevent token-burn abuse and prompt injection via roles
+    if (!Array.isArray(messages) || messages.length === 0) {
+      return new Response(JSON.stringify({ error: "Messages requis" }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (messages.length > 20) {
+      return new Response(JSON.stringify({ error: "Conversation trop longue" }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const sanitized: Array<{ role: string; content: string }> = [];
+    for (const m of messages) {
+      if (!m || typeof m !== "object") {
+        return new Response(JSON.stringify({ error: "Format de message invalide" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      if (m.role !== "user" && m.role !== "assistant") {
+        return new Response(JSON.stringify({ error: "Rôle non autorisé" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      if (typeof m.content !== "string" || m.content.length === 0 || m.content.length > 2000) {
+        return new Response(JSON.stringify({ error: "Contenu de message invalide" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      sanitized.push({ role: m.role, content: m.content });
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
@@ -96,7 +128,7 @@ serve(async (req) => {
         model: "google/gemini-3-flash-preview",
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
-          ...messages,
+          ...sanitized,
         ],
         stream: true,
       }),
