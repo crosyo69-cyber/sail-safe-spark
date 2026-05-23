@@ -80,8 +80,16 @@ Deno.serve(async (req) => {
       apiVersion: "2023-10-16",
     });
 
-    const origin =
-      req.headers.get("origin") || "https://www.kitesurfpassion.fr";
+    const ALLOWED_ORIGINS = new Set([
+      "https://www.kitesurfpassion.fr",
+      "https://kitesurfpassion.fr",
+      "https://www.kitesurfpassion.com",
+      "https://kitesurfpassion.com",
+    ]);
+    const rawOrigin = req.headers.get("origin") ?? "";
+    const origin = ALLOWED_ORIGINS.has(rawOrigin)
+      ? rawOrigin
+      : "https://www.kitesurfpassion.fr";
 
     const PRICE_ID = "price_1TAXYhJTWAAnYv4Vnnoy6jIP";
 
