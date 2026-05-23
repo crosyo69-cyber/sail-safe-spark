@@ -1,4 +1,5 @@
 import Stripe from "https://esm.sh/stripe@14.21.0";
+import { resolveOrigin } from "./origin.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -80,16 +81,7 @@ Deno.serve(async (req) => {
       apiVersion: "2023-10-16",
     });
 
-    const ALLOWED_ORIGINS = new Set([
-      "https://www.kitesurfpassion.fr",
-      "https://kitesurfpassion.fr",
-      "https://www.kitesurfpassion.com",
-      "https://kitesurfpassion.com",
-    ]);
-    const rawOrigin = req.headers.get("origin") ?? "";
-    const origin = ALLOWED_ORIGINS.has(rawOrigin)
-      ? rawOrigin
-      : "https://www.kitesurfpassion.fr";
+    const origin = resolveOrigin(req.headers.get("origin"));
 
     const PRICE_ID = "price_1TAXYhJTWAAnYv4Vnnoy6jIP";
 
