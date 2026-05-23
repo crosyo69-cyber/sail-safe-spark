@@ -26,10 +26,13 @@ jobs:
       - name: Verify token is set and not the revoked one
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          # SHA-256 of the revoked token `sbp_a685…1286` (full value never
-          # committed). If a future rotation is needed, recompute with:
+          # SHA-256 of any token(s) that must NEVER be accepted again
+          # (e.g. the revoked `sbp_a685…1286`). Store as a repo variable
+          # (Settings → Secrets and variables → Actions → Variables) named
+          # REVOKED_SUPABASE_TOKEN_SHA256. Multiple hashes can be provided
+          # space- or comma-separated. Compute locally with:
           #   printf '%s' "$OLD_TOKEN" | sha256sum
-          REVOKED_TOKEN_SHA256: "b6f3a0d6f1b0c4e6f2a4d8e9c1b3a5d7e9f1a3b5c7d9e1f3a5b7c9d1e3f5a7b9"
+          REVOKED_TOKEN_SHA256: ${{ vars.REVOKED_SUPABASE_TOKEN_SHA256 }}
         shell: bash
         run: |
           set -euo pipefail
@@ -45,9 +48,17 @@ jobs:
           fi
 
           ACTUAL_SHA=$(printf '%s' "$SUPABASE_ACCESS_TOKEN" | sha256sum | awk '{print $1}')
-          if [ "$ACTUAL_SHA" = "$REVOKED_TOKEN_SHA256" ]; then
-            echo "::error ::SUPABASE_ACCESS_TOKEN still matches a previously revoked token. Generate a new one in Supabase and update the GitHub secret."
-            exit 1
+          if [ -n "${REVOKED_TOKEN_SHA256:-}" ]; then
+            # Normalise separators (comma or whitespace) into newlines.
+            while IFS= read -r bad; do
+              [ -z "$bad" ] && continue
+              if [ "$ACTUAL_SHA" = "$bad" ]; then
+                echo "::error ::SUPABASE_ACCESS_TOKEN matches a revoked token hash. Generate a new token in Supabase and update the GitHub secret."
+                exit 1
+              fi
+            done < <(printf '%s' "$REVOKED_TOKEN_SHA256" | tr ', ' '\n\n')
+          else
+            echo "::notice ::Repo variable REVOKED_SUPABASE_TOKEN_SHA256 not set — skipping revoked-token comparison. Add it to enforce rotation."
           fi
 
           echo "OK — SUPABASE_ACCESS_TOKEN is set and does not match the revoked token."
