@@ -157,17 +157,12 @@ Deno.serve(async (req) => {
       { global: { headers: { Authorization: authHeader } } },
     );
 
-    // Allow service-role bypass (decoded JWT role claim).
-    let isServiceRole = false;
-    try {
-      const parts = token.split(".");
-      if (parts.length >= 2) {
-        const payload = JSON.parse(
-          atob(parts[1].replaceAll("-", "+").replaceAll("_", "/").padEnd(Math.ceil(parts[1].length / 4) * 4, "=")),
-        );
-        isServiceRole = payload?.role === "service_role";
-      }
-    } catch { /* ignore */ }
+    // Allow service-role bypass only when the bearer token matches the
+    // server-held service-role key exactly (cryptographically verified, since
+    // the key is a signed JWT). Decoding the payload alone would let an
+    // attacker forge `role: service_role` and bypass auth.
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+    const isServiceRole = !!token && !!serviceKey && token === serviceKey;
 
     if (!isServiceRole) {
       const { data: userData, error: userErr } = await authClient.auth.getUser(token);
