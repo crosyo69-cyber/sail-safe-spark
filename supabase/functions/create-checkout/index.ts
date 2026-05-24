@@ -1,5 +1,5 @@
 import Stripe from "https://esm.sh/stripe@14.21.0";
-import { resolveOrigin } from "./origin.ts";
+import { resolveOrigin, getAllowedOrigins } from "./origin.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -7,7 +7,26 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-Deno.serve(async (req) => {
+// Minimal contract used by the handler. Tests inject a fake; production uses
+// the real Stripe SDK via createStripeClient().
+export interface CheckoutClient {
+  checkout: {
+    sessions: {
+      create(params: Record<string, unknown>): Promise<{ url: string | null }>;
+    };
+  };
+}
+
+function createStripeClient(): CheckoutClient {
+  return new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
+    apiVersion: "2023-10-16",
+  }) as unknown as CheckoutClient;
+}
+
+export function createHandler(
+  stripeFactory: () => CheckoutClient = createStripeClient,
+) {
+  return async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -77,13 +96,27 @@ Deno.serve(async (req) => {
       );
     }
 
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
-      apiVersion: "2023-10-16",
-    });
+    const stripe = stripeFactory();
 
     const origin = resolveOrigin(req.headers.get("origin"));
 
     const PRICE_ID = "price_1TAXYhJTWAAnYv4Vnnoy6jIP";
+
+    const successUrl = `${origin}/reservation-confirmee?activity=${encodeURIComponent(activityName)}`;
+    const cancelUrl = `${origin}/contact-reservation-kitesurf-hyeres`;
+
+    // Defense in depth: never send a redirect URL whose host isn't in the
+    // allowlist, even if resolveOrigin() is ever weakened upstream.
+    const allowedOrigins = getAllowedOrigins();
+    for (const url of [successUrl, cancelUrl]) {
+      const host = new URL(url).origin;
+      if (!allowedOrigins.has(host)) {
+        return new Response(
+          JSON.stringify({ error: "Invalid redirect origin" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        );
+      }
+    }
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -102,21 +135,27 @@ Deno.serve(async (req) => {
         customer_name: customerName.trim(),
         total_sessions: String(packSessions),
       },
-      success_url: `${origin}/reservation-confirmee?activity=${encodeURIComponent(activityName)}`,
-      cancel_url: `${origin}/contact-reservation-kitesurf-hyeres`,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
     });
 
     return new Response(JSON.stringify({ url: session.url }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Stripe checkout error:", error);
+    const message = error instanceof Error ? error.message : "Erreur lors de la création du paiement";
     return new Response(
-      JSON.stringify({ error: error.message || "Erreur lors de la création du paiement" }),
+      JSON.stringify({ error: message }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
   }
-});
+  };
+}
+
+if (import.meta.main) {
+  Deno.serve(createHandler());
+}
