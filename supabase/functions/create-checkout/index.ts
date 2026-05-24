@@ -142,10 +142,11 @@ export function createHandler(
     return new Response(JSON.stringify({ url: session.url }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Stripe checkout error:", error);
+    const message = error instanceof Error ? error.message : "Erreur lors de la création du paiement";
     return new Response(
-      JSON.stringify({ error: error.message || "Erreur lors de la création du paiement" }),
+      JSON.stringify({ error: message }),
       {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
