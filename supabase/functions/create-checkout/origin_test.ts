@@ -116,3 +116,73 @@ Deno.test("ALLOWLIST_DOMAINS unset falls back to built-in production domains", (
     if (prev !== undefined) Deno.env.set("ALLOWLIST_DOMAINS", prev);
   }
 });
+
+// Mirror of the URL construction in index.ts. If index.ts changes its
+// templates, update this helper accordingly.
+function buildCheckoutUrls(rawOrigin: string | null | undefined, activity: string) {
+  const origin = resolveOrigin(rawOrigin);
+  return {
+    success_url: `${origin}/reservation-confirmee?activity=${encodeURIComponent(activity)}`,
+    cancel_url: `${origin}/contact-reservation-kitesurf-hyeres`,
+  };
+}
+
+Deno.test("checkout URLs only use allowlisted origins (allowlisted input passes through)", () => {
+  for (const allowed of ALLOWED_ORIGINS) {
+    const { success_url, cancel_url } = buildCheckoutUrls(allowed, "Cours à la Carte");
+    assert(success_url.startsWith(`${allowed}/reservation-confirmee`),
+      `success_url must start with ${allowed}, got ${success_url}`);
+    assert(cancel_url.startsWith(`${allowed}/contact-reservation-kitesurf-hyeres`),
+      `cancel_url must start with ${allowed}, got ${cancel_url}`);
+  }
+});
+
+Deno.test("checkout URLs fall back to DEFAULT_ORIGIN for non-allowlisted / attacker origins", () => {
+  const bad = [
+    "https://evil.com",
+    "https://kitesurfpassion.fr.evil.com",
+    "https://www.kitesurfpassion.fr.evil.com",
+    "http://www.kitesurfpassion.fr",
+    "https://www.kitesurfpassion.fr:8080",
+    "javascript:alert(1)",
+    "//evil.com",
+    "",
+    null,
+    undefined,
+  ];
+  for (const origin of bad) {
+    const { success_url, cancel_url } = buildCheckoutUrls(origin, "Stage Wingfoil");
+    assert(
+      success_url.startsWith(`${DEFAULT_ORIGIN}/reservation-confirmee`),
+      `success_url must fall back to ${DEFAULT_ORIGIN} for origin=${JSON.stringify(origin)}, got ${success_url}`,
+    );
+    assert(
+      cancel_url.startsWith(`${DEFAULT_ORIGIN}/contact-reservation-kitesurf-hyeres`),
+      `cancel_url must fall back to ${DEFAULT_ORIGIN} for origin=${JSON.stringify(origin)}, got ${cancel_url}`,
+    );
+    // Defense in depth: the host must be an allowlisted one, never the attacker host.
+    const successHost = new URL(success_url).origin;
+    const cancelHost = new URL(cancel_url).origin;
+    assert(ALLOWED_ORIGINS.has(successHost), `success_url host ${successHost} not in allowlist`);
+    assert(ALLOWED_ORIGINS.has(cancelHost), `cancel_url host ${cancelHost} not in allowlist`);
+  }
+});
+
+Deno.test("index.ts only assembles success_url/cancel_url from the resolved origin", async () => {
+  const src = await Deno.readTextFile(new URL("./index.ts", import.meta.url));
+  // Both URLs must be templated from `${origin}` — never from req headers,
+  // request body, or any other variable.
+  assert(
+    /success_url:\s*`\$\{origin\}\//.test(src),
+    "success_url must be built from the `${origin}` template literal",
+  );
+  assert(
+    /cancel_url:\s*`\$\{origin\}\//.test(src),
+    "cancel_url must be built from the `${origin}` template literal",
+  );
+  // And `origin` must come from resolveOrigin(...) — not from anywhere else.
+  assert(
+    /const\s+origin\s*=\s*resolveOrigin\(/.test(src),
+    "origin must be assigned from resolveOrigin(...)",
+  );
+});
