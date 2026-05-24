@@ -107,10 +107,10 @@ export function createHandler(
 
     // Defense in depth: never send a redirect URL whose host isn't in the
     // allowlist, even if resolveOrigin() is ever weakened upstream.
-    const allowed = getAllowedOrigins();
+    const allowedOrigins = getAllowedOrigins();
     for (const url of [successUrl, cancelUrl]) {
       const host = new URL(url).origin;
-      if (!allowed.has(host)) {
+      if (!allowedOrigins.has(host)) {
         return new Response(
           JSON.stringify({ error: "Invalid redirect origin" }),
           { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
