@@ -155,4 +155,6 @@ export function createHandler(
   };
 }
 
-Deno.serve(createHandler());
+if (import.meta.main) {
+  Deno.serve(createHandler());
+}
