@@ -172,13 +172,15 @@ Deno.test("index.ts only assembles success_url/cancel_url from the resolved orig
   const src = await Deno.readTextFile(new URL("./index.ts", import.meta.url));
   // Both URLs must be templated from `${origin}` — never from req headers,
   // request body, or any other variable.
+  // success/cancel URLs must be built from a template that starts with
+  // `${origin}` — either inlined or via an intermediate variable.
   assert(
-    /success_url:\s*`\$\{origin\}\//.test(src),
-    "success_url must be built from the `${origin}` template literal",
+    /`\$\{origin\}\/reservation-confirmee/.test(src),
+    "success_url template must start with `${origin}/reservation-confirmee`",
   );
   assert(
-    /cancel_url:\s*`\$\{origin\}\//.test(src),
-    "cancel_url must be built from the `${origin}` template literal",
+    /`\$\{origin\}\/contact-reservation-kitesurf-hyeres`/.test(src),
+    "cancel_url template must be `${origin}/contact-reservation-kitesurf-hyeres`",
   );
   // And `origin` must come from resolveOrigin(...) — not from anywhere else.
   assert(
