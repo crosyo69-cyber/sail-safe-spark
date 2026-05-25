@@ -5,6 +5,7 @@ import {
   DEFAULT_ORIGIN,
   getAllowedOrigins,
   parseAllowlist,
+  assertSafeRedirectUrl,
 } from "./origin.ts";
 
 Deno.test("resolveOrigin: accepts each allowlisted production domain as-is", () => {
@@ -193,4 +194,63 @@ Deno.test("index.ts only assembles success_url/cancel_url from the resolved orig
       /=>\s*resolveOrigin\(raw\)/.test(src),
     "originResolver default must delegate to resolveOrigin(raw)",
   );
+});
+
+Deno.test("assertSafeRedirectUrl: accepts allowlisted https URLs with paths/queries", () => {
+  for (const origin of ALLOWED_ORIGINS) {
+    assertSafeRedirectUrl(`${origin}/reservation-confirmee?activity=Stage%20Wingfoil`);
+    assertSafeRedirectUrl(`${origin}/contact-reservation-kitesurf-hyeres`);
+    assertSafeRedirectUrl(`${origin}/`);
+  }
+});
+
+Deno.test("assertSafeRedirectUrl: rejects wrong scheme, port, userinfo, casing, non-allowlisted host", () => {
+  const bad = [
+    // wrong scheme
+    "http://www.kitesurfpassion.fr/x",
+    "ftp://www.kitesurfpassion.fr/x",
+    "javascript:alert(1)",
+    "data:text/html,<script>alert(1)</script>",
+    // protocol-relative
+    "//www.kitesurfpassion.fr/x",
+    // explicit port (even default 443)
+    "https://www.kitesurfpassion.fr:443/x",
+    "https://www.kitesurfpassion.fr:8080/x",
+    // upper-case host
+    "https://WWW.kitesurfpassion.fr/x",
+    "https://www.KITESURFPASSION.fr/x",
+    // userinfo smuggling
+    "https://user@www.kitesurfpassion.fr/x",
+    "https://user:pass@www.kitesurfpassion.fr/x",
+    "https://www.kitesurfpassion.fr@evil.com/x",
+    // attacker hosts
+    "https://evil.com/x",
+    "https://kitesurfpassion.fr.evil.com/x",
+    "https://www.kitesurfpassion.fr.evil.com/x",
+    // garbage
+    "",
+    "not-a-url",
+    "https://",
+  ];
+  for (const url of bad) {
+    let threw = false;
+    try {
+      assertSafeRedirectUrl(url);
+    } catch (e) {
+      threw = true;
+      assertEquals((e as Error).message, "Invalid redirect origin");
+    }
+    assert(threw, `assertSafeRedirectUrl should have rejected ${JSON.stringify(url)}`);
+  }
+});
+
+Deno.test("assertSafeRedirectUrl: rejects oversized URLs", () => {
+  const huge = `${DEFAULT_ORIGIN}/x?a=${"a".repeat(3000)}`;
+  let threw = false;
+  try {
+    assertSafeRedirectUrl(huge);
+  } catch {
+    threw = true;
+  }
+  assert(threw, "assertSafeRedirectUrl should reject URLs > 2048 chars");
 });
