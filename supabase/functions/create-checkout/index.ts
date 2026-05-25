@@ -25,6 +25,7 @@ function createStripeClient(): CheckoutClient {
 
 export function createHandler(
   stripeFactory: () => CheckoutClient = createStripeClient,
+  originResolver: (rawOrigin: string | null) => string = (raw) => resolveOrigin(raw),
 ) {
   return async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
@@ -96,9 +97,7 @@ export function createHandler(
       );
     }
 
-    const stripe = stripeFactory();
-
-    const origin = resolveOrigin(req.headers.get("origin"));
+    const origin = originResolver(req.headers.get("origin"));
 
     const PRICE_ID = "price_1TAXYhJTWAAnYv4Vnnoy6jIP";
 
@@ -109,7 +108,15 @@ export function createHandler(
     // allowlist, even if resolveOrigin() is ever weakened upstream.
     const allowedOrigins = getAllowedOrigins();
     for (const url of [successUrl, cancelUrl]) {
-      const host = new URL(url).origin;
+      let host: string;
+      try {
+        host = new URL(url).origin;
+      } catch {
+        return new Response(
+          JSON.stringify({ error: "Invalid redirect origin" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        );
+      }
       if (!allowedOrigins.has(host)) {
         return new Response(
           JSON.stringify({ error: "Invalid redirect origin" }),
@@ -117,6 +124,8 @@ export function createHandler(
         );
       }
     }
+
+    const stripe = stripeFactory();
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
