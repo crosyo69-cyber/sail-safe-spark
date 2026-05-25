@@ -182,9 +182,15 @@ Deno.test("index.ts only assembles success_url/cancel_url from the resolved orig
     /`\$\{origin\}\/contact-reservation-kitesurf-hyeres`/.test(src),
     "cancel_url template must be `${origin}/contact-reservation-kitesurf-hyeres`",
   );
-  // And `origin` must come from resolveOrigin(...) — not from anywhere else.
+  // And `origin` must come from resolveOrigin(...) (directly or via an
+  // injectable resolver that defaults to resolveOrigin) — never from raw input.
   assert(
-    /const\s+origin\s*=\s*resolveOrigin\(/.test(src),
-    "origin must be assigned from resolveOrigin(...)",
+    /const\s+origin\s*=\s*(resolveOrigin|originResolver)\(/.test(src),
+    "origin must be assigned from resolveOrigin(...) or originResolver(...)",
+  );
+  assert(
+    /originResolver[^=]*=\s*\(raw\)\s*=>\s*resolveOrigin\(raw\)/.test(src) ||
+      !/originResolver/.test(src),
+    "originResolver default must delegate to resolveOrigin",
   );
 });
