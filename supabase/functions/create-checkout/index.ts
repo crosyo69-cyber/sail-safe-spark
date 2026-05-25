@@ -1,5 +1,5 @@
 import Stripe from "https://esm.sh/stripe@14.21.0";
-import { resolveOrigin, getAllowedOrigins } from "./origin.ts";
+import { resolveOrigin, assertSafeRedirectUrl } from "./origin.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -104,25 +104,18 @@ export function createHandler(
     const successUrl = `${origin}/reservation-confirmee?activity=${encodeURIComponent(activityName)}`;
     const cancelUrl = `${origin}/contact-reservation-kitesurf-hyeres`;
 
-    // Defense in depth: never send a redirect URL whose host isn't in the
-    // allowlist, even if resolveOrigin() is ever weakened upstream.
-    const allowedOrigins = getAllowedOrigins();
-    for (const url of [successUrl, cancelUrl]) {
-      let host: string;
-      try {
-        host = new URL(url).origin;
-      } catch {
-        return new Response(
-          JSON.stringify({ error: "Invalid redirect origin" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-        );
-      }
-      if (!allowedOrigins.has(host)) {
-        return new Response(
-          JSON.stringify({ error: "Invalid redirect origin" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-        );
-      }
+    // Defense in depth: strictly validate every redirect URL handed to Stripe.
+    // Rejects non-https, explicit ports, upper-case hosts, userinfo, and any
+    // host not in the active allowlist — even if resolveOrigin() is ever
+    // weakened upstream.
+    try {
+      assertSafeRedirectUrl(successUrl);
+      assertSafeRedirectUrl(cancelUrl);
+    } catch {
+      return new Response(
+        JSON.stringify({ error: "Invalid redirect origin" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
     }
 
     const stripe = stripeFactory();
