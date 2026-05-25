@@ -135,3 +135,50 @@ Deno.test("create-checkout: defense-in-depth — rejects if Stripe would receive
     }
   }
 });
+
+Deno.test("create-checkout: returns 400 and does NOT call Stripe when resolved origin is not allowlisted", async () => {
+  // Simulate a regression where resolveOrigin returns an attacker-controlled
+  // origin. The defense-in-depth guard MUST short-circuit before Stripe.
+  const attackerOrigins = [
+    "https://evil.com",
+    "https://kitesurfpassion.fr.evil.com",
+    "http://www.kitesurfpassion.fr",
+    "https://www.kitesurfpassion.fr:8080",
+    "not-a-url",
+    "",
+  ];
+
+  for (const malicious of attackerOrigins) {
+    const captured: CapturedCall[] = [];
+    let stripeFactoryCalls = 0;
+    const factory = () => {
+      stripeFactoryCalls++;
+      return makeFakeStripe(captured)();
+    };
+    const handler = createHandler(factory, () => malicious);
+
+    const res = await handler(makeRequest("https://www.kitesurfpassion.fr"));
+    const body = await res.json();
+
+    assertEquals(
+      res.status,
+      400,
+      `Expected 400 for malicious resolved origin=${JSON.stringify(malicious)}, got ${res.status}`,
+    );
+    assertEquals(
+      body.error,
+      "Invalid redirect origin",
+      `Expected 'Invalid redirect origin' error, got ${JSON.stringify(body)}`,
+    );
+    assertEquals(
+      captured.length,
+      0,
+      `Stripe.checkout.sessions.create MUST NOT be called for malicious origin=${JSON.stringify(malicious)}`,
+    );
+    assertEquals(
+      stripeFactoryCalls,
+      0,
+      `Stripe client factory MUST NOT be invoked for malicious origin=${JSON.stringify(malicious)}`,
+    );
+  }
+});
