@@ -53,3 +53,51 @@ export function resolveOrigin(rawOrigin: string | null | undefined): string {
   const first = allowed.values().next().value;
   return first ?? DEFAULT_ORIGIN;
 }
+
+/**
+ * Strict validation of a redirect URL before it is handed to Stripe.
+ * Rejects anything that is not exactly `https://<allowlisted-host>` with:
+ *   - protocol === "https:"
+ *   - no userinfo (user/password)
+ *   - no explicit port (including default 443)
+ *   - host is lower-case (no upper-case smuggling — Set lookup is case-sensitive)
+ *   - origin is in the active allowlist
+ * Throws `Error("Invalid redirect origin")` on any violation so callers can
+ * return a 400 without leaking specifics.
+ */
+export function assertSafeRedirectUrl(rawUrl: string): void {
+  if (typeof rawUrl !== "string" || rawUrl.length === 0 || rawUrl.length > 2048) {
+    throw new Error("Invalid redirect origin");
+  }
+  // The raw string must start with https:// — never protocol-relative,
+  // javascript:, data:, file:, http:, etc.
+  if (!rawUrl.startsWith("https://")) {
+    throw new Error("Invalid redirect origin");
+  }
+  let parsed: URL;
+  try {
+    parsed = new URL(rawUrl);
+  } catch {
+    throw new Error("Invalid redirect origin");
+  }
+  if (parsed.protocol !== "https:") throw new Error("Invalid redirect origin");
+  if (parsed.username !== "" || parsed.password !== "") {
+    throw new Error("Invalid redirect origin");
+  }
+  if (parsed.port !== "") throw new Error("Invalid redirect origin");
+  if (parsed.hostname !== parsed.hostname.toLowerCase()) {
+    throw new Error("Invalid redirect origin");
+  }
+  // Reject any upper-case characters in the host portion of the raw input,
+  // before URL parsing normalises them away.
+  const rawHostMatch = rawUrl.slice("https://".length).split(/[/?#]/, 1)[0];
+  if (rawHostMatch !== rawHostMatch.toLowerCase()) {
+    throw new Error("Invalid redirect origin");
+  }
+  // Reject explicit ports in the raw input (incl. default :443).
+  if (rawHostMatch.includes(":")) {
+    throw new Error("Invalid redirect origin");
+  }
+  const allowed = getAllowedOrigins();
+  if (!allowed.has(parsed.origin)) throw new Error("Invalid redirect origin");
+}
