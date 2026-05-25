@@ -189,8 +189,8 @@ Deno.test("index.ts only assembles success_url/cancel_url from the resolved orig
     "origin must be assigned from resolveOrigin(...) or originResolver(...)",
   );
   assert(
-    /originResolver[^=]*=\s*\(raw\)\s*=>\s*resolveOrigin\(raw\)/.test(src) ||
-      !/originResolver/.test(src),
-    "originResolver default must delegate to resolveOrigin",
+    !/originResolver/.test(src) ||
+      /=>\s*resolveOrigin\(raw\)/.test(src),
+    "originResolver default must delegate to resolveOrigin(raw)",
   );
 });
