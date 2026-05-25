@@ -1,0 +1,42 @@
+name: Edge Function Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/functions/**'
+      - 'scripts/test-edge-functions.sh'
+      - '.github/workflows/edge-function-tests.yml'
+  pull_request:
+    paths:
+      - 'supabase/functions/**'
+      - 'scripts/test-edge-functions.sh'
+      - '.github/workflows/edge-function-tests.yml'
+  workflow_dispatch:
+
+jobs:
+  deno-tests:
+    name: Run all edge function Deno tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Cache Deno dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/deno
+            ~/.deno
+          key: ${{ runner.os }}-deno-${{ hashFiles('supabase/functions/**/*.ts') }}
+          restore-keys: |
+            ${{ runner.os }}-deno-
+
+      - name: Run edge function tests
+        run: bash scripts/test-edge-functions.sh
