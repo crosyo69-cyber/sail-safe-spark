@@ -12,6 +12,7 @@
     "typecheck:e2e": "tsc --noEmit -p tsconfig.e2e.json",
     "preview": "vite preview",
     "test:e2e": "playwright test",
+    "test:edge": "bash scripts/test-edge-functions.sh",
     "lint:no-empty-pattern": "node scripts/lint-no-empty-pattern.mjs"
   },
   "dependencies": {
