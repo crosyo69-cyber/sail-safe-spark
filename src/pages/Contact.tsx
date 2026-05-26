@@ -150,6 +150,9 @@ const Contact = () => {
 
       // Track Google Ads conversion
       trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
+      // Also push the GTM dataLayer event so the GTM-managed Ads conversion
+      // tag fires (and Tag Assistant detects the "Contact" action).
+      pushMerciConversion('s2n0CL3puI4cEIW4u9AD');
       trackMetaLead({ content_name: "contact_form", content_category: "contact_page" });
 
       toast({
