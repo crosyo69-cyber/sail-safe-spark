@@ -1,5 +1,10 @@
 // Google Analytics 4 initialization and utilities
-import { markFired, shouldFireWithinWindow } from './conversion-dedup';
+import {
+  hasSessionConversionFired,
+  markFired,
+  markSessionConversionFired,
+  shouldFireWithinWindow,
+} from './conversion-dedup';
 import { hasMarketingConsent, onMarketingConsent } from './consent';
 
 declare global {
