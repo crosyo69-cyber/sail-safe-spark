@@ -6,7 +6,12 @@
  * react via dedicated triggers — most notably the Google Ads conversion on
  * the /merci page, which must fire even on direct navigation (no submit).
  */
-import { markFired, shouldFireWithinWindow } from './conversion-dedup';
+import {
+  hasSessionConversionFired,
+  markFired,
+  markSessionConversionFired,
+  shouldFireWithinWindow,
+} from './conversion-dedup';
 import { hasMarketingConsent, onMarketingConsent } from './consent';
 
 declare global {
@@ -61,6 +66,22 @@ export function pushMerciConversion(conversionLabel = 's2n0CL3puI4cEIW4u9AD'): v
     return;
   }
 
+  // Session-once guard: if this conversion already fired via ANY path
+  // (Contact form → gtag direct, or earlier GTM push, or previous /merci
+  // visit in this session), refuse to push it again. Protects against
+  // double counting when the user is routed Contact → /merci or when
+  // GTM triggers multiple times for the same hit.
+  if (hasSessionConversionFired(conversionId)) {
+    if (import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
+      console.log(
+        `%c[GTM] merci_conversion SKIPPED (session-once): ${conversionId}`,
+        'color:#f59e0b;font-weight:bold'
+      );
+    }
+    return;
+  }
+
   if (!shouldFireWithinWindow(dedupKey, mirrorKey)) {
     if (import.meta.env.DEV) {
       // eslint-disable-next-line no-console
@@ -72,6 +93,7 @@ export function pushMerciConversion(conversionLabel = 's2n0CL3puI4cEIW4u9AD'): v
     return;
   }
   markFired(dedupKey, mirrorKey);
+  markSessionConversionFired(conversionId);
 
   pushDataLayer({
     event: 'merci_conversion',
