@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { trackGoogleAdsConversion, trackPhoneClick } from "@/lib/analytics";
 import { trackMetaLead } from "@/lib/meta-pixel";
+import { pushMerciConversion } from "@/lib/gtm";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
