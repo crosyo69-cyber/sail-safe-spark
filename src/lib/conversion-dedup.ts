@@ -20,6 +20,34 @@
 
 export const CONVERSION_DEDUP_WINDOW_MS = 10_000;
 
+/**
+ * Session-once guard prefix. Once a conversion fires successfully in the
+ * current browser session (any tab), we set this flag and refuse to fire
+ * the SAME conversion id again for the whole session — regardless of the
+ * 10s sliding window. Prevents double counting when the user is routed
+ * Contact form → /merci page (which would otherwise both push the GTM
+ * `merci_conversion` event after the 10s window expires).
+ *
+ * Stored in localStorage so it survives reloads, back/forward, new tabs,
+ * and the direct-navigation /merci flow. Cleared by the admin reset
+ * button (clearAllDailyConversionFlags) via the `conversion_once_` prefix.
+ */
+const SESSION_ONCE_PREFIX = 'conversion_once_';
+
+export function hasSessionConversionFired(conversionId: string): boolean {
+  const key = `${SESSION_ONCE_PREFIX}${conversionId}`;
+  return (
+    readTimestamp(safeStorage('localStorage'), key) !== null ||
+    readTimestamp(safeStorage('sessionStorage'), key) !== null
+  );
+}
+
+export function markSessionConversionFired(conversionId: string, ts = Date.now()): void {
+  const key = `${SESSION_ONCE_PREFIX}${conversionId}`;
+  writeTimestamp(safeStorage('localStorage'), key, ts);
+  writeTimestamp(safeStorage('sessionStorage'), key, ts);
+}
+
 const DEBUG_FLAG_KEY = 'ksp_conv_debug';
 const BLOCK_HISTORY_KEY = 'ksp_conv_block_history';
 const BLOCK_HISTORY_MAX = 100;
@@ -212,6 +240,7 @@ export function clearAllDailyConversionFlags(): void {
     '__ga4_form_submit_',
     '__meta_pixel_lead',
     'conversion_fired_',
+    'conversion_once_',
     'ksp_conv_',
   ];
   (['sessionStorage', 'localStorage'] as const).forEach((type) => {

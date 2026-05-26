@@ -1,5 +1,10 @@
 // Google Analytics 4 initialization and utilities
-import { markFired, shouldFireWithinWindow } from './conversion-dedup';
+import {
+  hasSessionConversionFired,
+  markFired,
+  markSessionConversionFired,
+  shouldFireWithinWindow,
+} from './conversion-dedup';
 import { hasMarketingConsent, onMarketingConsent } from './consent';
 
 declare global {
@@ -306,6 +311,28 @@ export function trackGoogleAdsConversion(
   // attempt was made for this session.
   const dedupKey = `__gads_conv_${conversionId}`;
   const mirrorKey = `conversion_fired_${conversionId}`;
+
+  // Session-once guard: once this exact conversion id has fired via any
+  // path (gtag direct here OR the GTM `merci_conversion` event) in this
+  // browser session, block all further fires. Prevents double counting
+  // when the visitor flows Contact form → /merci page, or when GTM
+  // triggers multiple events for the same hit.
+  if (hasSessionConversionFired(conversionId)) {
+    if (import.meta.env.DEV) {
+      console.log(
+        `%c[Analytics] Google Ads Conversion SKIPPED (session-once): ${conversionId}`,
+        'color: #f59e0b; font-weight: bold'
+      );
+    }
+    completeOnce();
+    window.dispatchEvent(
+      new CustomEvent('ksp:gads-conversion', {
+        detail: { status: 'skipped', send_to: conversionId, ts: Date.now() },
+      })
+    );
+    return;
+  }
+
   if (!shouldFireWithinWindow(dedupKey, mirrorKey)) {
     if (import.meta.env.DEV) {
       console.log(
@@ -329,6 +356,7 @@ export function trackGoogleAdsConversion(
   // without GA scripts loaded). This guarantees the per-session contract
   // validated by the Playwright dedup suite.
   markFired(dedupKey, mirrorKey);
+  markSessionConversionFired(conversionId);
 
   // Bootstrap gtag/dataLayer if init hasn't run yet (e.g. direct landing on
   // /merci before App's init effect has executed). The actual gtag.js script
