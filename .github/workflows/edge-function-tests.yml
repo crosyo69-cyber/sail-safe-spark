@@ -12,6 +12,10 @@ on:
       - 'supabase/functions/**'
       - 'scripts/test-edge-functions.sh'
       - '.github/workflows/edge-function-tests.yml'
+  schedule:
+    # Nightly run at 03:17 UTC — catches regressions from external deps
+    # (Deno std, Stripe SDK, etc.) even when no code has changed.
+    - cron: '17 3 * * *'
   workflow_dispatch:
 
 jobs:
