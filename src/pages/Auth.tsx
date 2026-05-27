@@ -26,14 +26,17 @@ const Auth = () => {
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
-        navigate(-1);
+      // Ne rediriger que sur une vraie connexion (évite la boucle au montage
+      // avec INITIAL_SESSION / TOKEN_REFRESHED qui renvoyait immédiatement
+      // l'utilisateur en arrière, faisant "repartir" le formulaire).
+      if (event === "SIGNED_IN" && session?.user) {
+        navigate("/", { replace: true });
       }
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        navigate(-1);
+        navigate("/", { replace: true });
       }
     });
 
@@ -81,6 +84,8 @@ const Auth = () => {
     }
 
     toast.success("Compte créé avec succès !");
+    // La redirection est gérée par onAuthStateChange (SIGNED_IN) après
+    // que Supabase a établi la session — laisse le toast s'afficher.
   };
 
   const handleSignIn = async (e: React.FormEvent) => {
