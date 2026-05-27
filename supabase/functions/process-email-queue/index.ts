@@ -1,6 +1,40 @@
 import { sendLovableEmail } from 'npm:@lovable.dev/email-js'
 import { createClient } from 'npm:@supabase/supabase-js@2'
 
+const RESEND_API_KEY_ENV = 'RESEND_API_KEY'
+
+// Send email via Resend API (for transactional emails)
+async function sendViaResend(payload: any): Promise<void> {
+  const resendKey = Deno.env.get(RESEND_API_KEY_ENV)
+  if (!resendKey) throw new Error('RESEND_API_KEY not configured')
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${resendKey}`,
+    },
+    body: JSON.stringify({
+      from: payload.from,
+      to: [payload.to],
+      subject: payload.subject,
+      html: payload.html,
+      ...(payload.text ? { text: payload.text } : {}),
+      ...(payload.reply_to ? { reply_to: payload.reply_to } : {}),
+    }),
+  })
+  const result = await res.json()
+  if (!res.ok) {
+    if (res.status === 429) {
+      const err: any = new Error(`Resend rate limit: ${JSON.stringify(result)}`)
+      err.status = 429
+      err.retryAfterSeconds = parseInt(res.headers.get('Retry-After') || '60', 10)
+      throw err
+    }
+    throw new Error(`Resend error ${res.status}: ${JSON.stringify(result)}`)
+  }
+}
+
 const MAX_RETRIES = 5
 const DEFAULT_BATCH_SIZE = 10
 const DEFAULT_SEND_DELAY_MS = 200
@@ -249,26 +283,28 @@ Deno.serve(async (req) => {
       }
 
       try {
-        await sendLovableEmail(
-          {
-            run_id: payload.run_id,
-            to: payload.to,
-            from: payload.from,
-            sender_domain: payload.sender_domain,
-            subject: payload.subject,
-            html: payload.html,
-            text: payload.text,
-            purpose: payload.purpose,
-            label: payload.label,
-            idempotency_key: payload.idempotency_key,
-            unsubscribe_token: payload.unsubscribe_token,
-            message_id: payload.message_id,
-          },
-          // sendUrl is optional — when LOVABLE_SEND_URL is not set, the library
-          // falls back to the default Lovable API endpoint (https://api.lovable.dev).
-          // Set LOVABLE_SEND_URL as a Supabase secret to override (e.g. for local dev).
-          { apiKey, sendUrl: Deno.env.get('LOVABLE_SEND_URL') }
-        )
+        // Use Resend for transactional emails, Lovable Email API for auth emails
+        if (queue === 'transactional_emails') {
+          await sendViaResend(payload)
+        } else {
+          await sendLovableEmail(
+            {
+              run_id: payload.run_id,
+              to: payload.to,
+              from: payload.from,
+              sender_domain: payload.sender_domain,
+              subject: payload.subject,
+              html: payload.html,
+              text: payload.text,
+              purpose: payload.purpose,
+              label: payload.label,
+              idempotency_key: payload.idempotency_key,
+              unsubscribe_token: payload.unsubscribe_token,
+              message_id: payload.message_id,
+            },
+            { apiKey, sendUrl: Deno.env.get('LOVABLE_SEND_URL') }
+          )
+        }
 
         // Log success
         await supabase.from('email_send_log').insert({
