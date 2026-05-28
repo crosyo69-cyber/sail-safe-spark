@@ -40,11 +40,9 @@ Deno.serve(async (req) => {
   const report: Record<string, unknown> = {}
 
   try {
-    // 1. Check pgmq queue depths via public view
-    const { data: queueRows, error: qErr } = await supabase
-      .from('pgmq_queue_status')
-      .select('*')
-    if (qErr) issues.push(`Lecture pgmq_queue_status impossible: ${qErr.message}`)
+    // 1. Check pgmq queue depths via security-definer RPC
+    const { data: queueRows, error: qErr } = await supabase.rpc('get_email_queue_status')
+    if (qErr) issues.push(`Lecture file email impossible: ${qErr.message}`)
     report.queues = queueRows || []
 
     for (const q of (queueRows || []) as Array<{ queue_name: string; queue_length: number; oldest_msg_age_sec: number | null }>) {
