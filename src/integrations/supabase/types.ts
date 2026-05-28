@@ -491,15 +491,6 @@ export type Database = {
         }
         Relationships: []
       }
-      pgmq_queue_status: {
-        Row: {
-          oldest_msg_age_sec: number | null
-          queue_length: number | null
-          queue_name: string | null
-          total_messages: number | null
-        }
-        Relationships: []
-      }
     }
     Functions: {
       book_session_with_code: {
@@ -521,6 +512,15 @@ export type Database = {
       enqueue_email: {
         Args: { payload: Json; queue_name: string }
         Returns: number
+      }
+      get_email_queue_status: {
+        Args: never
+        Returns: {
+          oldest_msg_age_sec: number
+          queue_length: number
+          queue_name: string
+          total_messages: number
+        }[]
       }
       get_package_by_code: { Args: { p_code: string }; Returns: Json }
       has_role: {
