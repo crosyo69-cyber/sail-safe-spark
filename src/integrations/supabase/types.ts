@@ -470,7 +470,36 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      cron_job_status: {
+        Row: {
+          active: boolean | null
+          jobid: number | null
+          jobname: string | null
+          schedule: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          jobid?: number | null
+          jobname?: string | null
+          schedule?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          jobid?: number | null
+          jobname?: string | null
+          schedule?: string | null
+        }
+        Relationships: []
+      }
+      pgmq_queue_status: {
+        Row: {
+          oldest_msg_age_sec: number | null
+          queue_length: number | null
+          queue_name: string | null
+          total_messages: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       book_session_with_code: {
