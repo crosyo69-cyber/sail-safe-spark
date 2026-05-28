@@ -40,22 +40,14 @@ Deno.serve(async (req) => {
   const report: Record<string, unknown> = {}
 
   try {
-    // 1. Check pgmq queue depths
-    const { data: metrics, error: mErr } = await supabase.rpc('pgmq_metrics_snapshot' as never)
-    // Fallback: query via raw SQL through a wrapper RPC. If not available, use direct query.
-    let queueRows: Array<{ queue_name: string; queue_length: number; oldest_msg_age_sec: number | null }> = []
-    if (mErr || !metrics) {
-      const { data, error } = await supabase
-        .from('pgmq_queue_status')
-        .select('*')
-      if (!error && data) queueRows = data as any
-    } else {
-      queueRows = metrics as any
-    }
+    // 1. Check pgmq queue depths via public view
+    const { data: queueRows, error: qErr } = await supabase
+      .from('pgmq_queue_status')
+      .select('*')
+    if (qErr) issues.push(`Lecture pgmq_queue_status impossible: ${qErr.message}`)
+    report.queues = queueRows || []
 
-    report.queues = queueRows
-
-    for (const q of queueRows) {
+    for (const q of (queueRows || []) as Array<{ queue_name: string; queue_length: number; oldest_msg_age_sec: number | null }>) {
       if (['auth_emails', 'transactional_emails'].includes(q.queue_name)) {
         if ((q.queue_length ?? 0) > MAX_QUEUE_DEPTH) {
           issues.push(`File "${q.queue_name}" engorgée: ${q.queue_length} messages en attente.`)
