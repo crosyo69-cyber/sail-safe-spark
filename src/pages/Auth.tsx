@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Loader2 } from "lucide-react";
+import { Loader2, MailCheck, RefreshCw } from "lucide-react";
 
 const emailSchema = z.string().trim().email("Email invalide").max(255, "Email trop long");
 const passwordSchema = z.string().min(6, "6 caractères minimum").max(128, "Mot de passe trop long");
@@ -22,6 +22,9 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [signupPendingEmail, setSignupPendingEmail] = useState<string | null>(null);
+  const [isResending, setIsResending] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,6 +45,52 @@ const Auth = () => {
 
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  // Cooldown ticker (30s) pour éviter le spam Supabase rate-limit
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const t = setInterval(() => setResendCooldown((s) => Math.max(0, s - 1)), 1000);
+    return () => clearInterval(t);
+  }, [resendCooldown]);
+
+  // Tente un renvoi avec 1 retry auto en cas d'échec réseau / transitoire
+  const resendConfirmation = async (targetEmail: string): Promise<void> => {
+    setIsResending(true);
+    const redirectUrl = `${window.location.origin}/`;
+
+    const attempt = async () =>
+      supabase.auth.resend({
+        type: "signup",
+        email: targetEmail,
+        options: { emailRedirectTo: redirectUrl },
+      });
+
+    let { error } = await attempt();
+
+    if (error) {
+      // 1 seul retry automatique après 1,5s
+      await new Promise((r) => setTimeout(r, 1500));
+      const retry = await attempt();
+      error = retry.error;
+      if (!error) {
+        toast.success("E-mail renvoyé après une nouvelle tentative.");
+      }
+    } else {
+      toast.success("E-mail de confirmation renvoyé. Vérifiez votre boîte.");
+    }
+
+    if (error) {
+      toast.error(
+        error.message?.includes("rate")
+          ? "Trop de tentatives. Réessayez dans quelques instants."
+          : `Échec de l'envoi : ${error.message}`,
+      );
+    } else {
+      setResendCooldown(30);
+    }
+
+    setIsResending(false);
+  };
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,8 +133,10 @@ const Auth = () => {
     }
 
     toast.success("Compte créé avec succès !");
-    // La redirection est gérée par onAuthStateChange (SIGNED_IN) après
-    // que Supabase a établi la session — laisse le toast s'afficher.
+    // Affiche le panneau "vérifiez votre email" — si l'auto-confirm est
+    // actif côté Supabase, onAuthStateChange déclenchera la redirection.
+    setSignupPendingEmail(email.trim());
+    setPassword("");
   };
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -141,6 +192,60 @@ const Auth = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              {signupPendingEmail ? (
+                <div className="space-y-5 py-2 text-center">
+                  <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+                    <MailCheck className="h-7 w-7 text-primary" aria-hidden="true" />
+                  </div>
+                  <div className="space-y-2">
+                    <h2 className="text-lg font-semibold">Vérifiez votre boîte mail</h2>
+                    <p className="text-sm text-muted-foreground">
+                      Nous avons envoyé un lien de confirmation à
+                      <br />
+                      <span className="font-medium text-foreground">{signupPendingEmail}</span>
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Pensez à regarder dans vos courriers indésirables.
+                    </p>
+                  </div>
+
+                  <Button
+                    type="button"
+                    className="w-full min-h-[44px]"
+                    onClick={() => resendConfirmation(signupPendingEmail)}
+                    disabled={isResending || resendCooldown > 0}
+                  >
+                    {isResending ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Envoi en cours…
+                      </>
+                    ) : resendCooldown > 0 ? (
+                      <>
+                        <RefreshCw className="mr-2 h-4 w-4" />
+                        Renvoyer ({resendCooldown}s)
+                      </>
+                    ) : (
+                      <>
+                        <RefreshCw className="mr-2 h-4 w-4" />
+                        Renvoyer l'e-mail de confirmation
+                      </>
+                    )}
+                  </Button>
+
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="w-full"
+                    onClick={() => {
+                      setSignupPendingEmail(null);
+                      setResendCooldown(0);
+                    }}
+                  >
+                    Utiliser une autre adresse
+                  </Button>
+                </div>
+              ) : (
               <Tabs defaultValue="login" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 mb-6">
                   <TabsTrigger value="login">Connexion</TabsTrigger>
@@ -237,6 +342,7 @@ const Auth = () => {
                   </form>
                 </TabsContent>
               </Tabs>
+              )}
             </CardContent>
           </Card>
         </div>
