@@ -329,12 +329,13 @@ const AdminEmailQueueMonitor = () => {
                   <TableHead>Enfilé</TableHead>
                   <TableHead>Dernier événement</TableHead>
                   <TableHead>Dernière erreur</TableHead>
+                  <TableHead className="text-right">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {paginated.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
+                    <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
                       Aucune entrée trouvée.
                     </TableCell>
                   </TableRow>
