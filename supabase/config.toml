@@ -17,3 +17,5 @@ project_id = "unqxudbxxzzmmbwwxwcr"
     verify_jwt = false
   [functions.process-email-queue]
     verify_jwt = true
+  [functions.retry-dlq-email]
+    verify_jwt = true

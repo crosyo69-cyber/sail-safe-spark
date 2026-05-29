@@ -6,7 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Loader2, RefreshCw, Clock, CheckCircle2, XCircle, AlertTriangle, Inbox } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
+import { Loader2, RefreshCw, Clock, CheckCircle2, XCircle, AlertTriangle, Inbox, RotateCw } from "lucide-react";
 
 type EmailLog = {
   id: string;
@@ -73,6 +84,8 @@ const AdminEmailQueueMonitor = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
   const [autoRefresh, setAutoRefresh] = useState(true);
+  const [retryTarget, setRetryTarget] = useState<QueueRow | null>(null);
+  const [retryingIds, setRetryingIds] = useState<Set<string>>(new Set());
 
   const fetchLogs = async () => {
     setLoading(true);
@@ -96,6 +109,41 @@ const AdminEmailQueueMonitor = () => {
     const id = setInterval(fetchLogs, 15000);
     return () => clearInterval(id);
   }, [autoRefresh, hours]);
+
+  const guessQueue = (row: QueueRow): "auth_emails" | "transactional_emails" => {
+    const t = row.template_name.toLowerCase();
+    if (t === "auth_emails" || t.includes("auth") || t.includes("signup") || t.includes("magic") ||
+        t.includes("recovery") || t.includes("invite") || t.includes("confirm") || t.includes("reauth")) {
+      return "auth_emails";
+    }
+    return "transactional_emails";
+  };
+
+  const handleRetry = async () => {
+    if (!retryTarget) return;
+    const row = retryTarget;
+    const queue = guessQueue(row);
+    setRetryingIds((prev) => new Set(prev).add(row.message_id));
+    setRetryTarget(null);
+
+    const { data, error } = await supabase.functions.invoke("retry-dlq-email", {
+      body: { message_id: row.message_id, queue },
+    });
+
+    setRetryingIds((prev) => {
+      const next = new Set(prev);
+      next.delete(row.message_id);
+      return next;
+    });
+
+    if (error || (data && (data as any).error)) {
+      const msg = (data as any)?.error || error?.message || "Erreur inconnue";
+      toast.error(`Renvoi impossible : ${msg}`);
+      return;
+    }
+    toast.success(`E-mail remis en file pour ${row.recipient_email}.`);
+    fetchLogs();
+  };
 
   // Group by message_id → full lifecycle row per email
   const queueRows = useMemo<QueueRow[]>(() => {
@@ -281,12 +329,13 @@ const AdminEmailQueueMonitor = () => {
                   <TableHead>Enfilé</TableHead>
                   <TableHead>Dernier événement</TableHead>
                   <TableHead>Dernière erreur</TableHead>
+                  <TableHead className="text-right">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {paginated.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
+                    <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
                       Aucune entrée trouvée.
                     </TableCell>
                   </TableRow>
@@ -295,6 +344,8 @@ const AdminEmailQueueMonitor = () => {
                     const isStuck =
                       r.current_status === "pending" &&
                       Date.now() - new Date(r.enqueued_at).getTime() > 15 * 60_000;
+                    const canRetry = r.current_status === "dlq" || r.current_status === "failed";
+                    const isRetrying = retryingIds.has(r.message_id);
                     return (
                       <TableRow key={r.message_id} className={isStuck ? "bg-destructive/5" : ""}>
                         <TableCell>
@@ -318,6 +369,26 @@ const AdminEmailQueueMonitor = () => {
                         >
                           {r.last_error || "—"}
                         </TableCell>
+                        <TableCell>
+                          {canRetry ? (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setRetryTarget(r)}
+                              disabled={isRetrying}
+                              className="gap-1"
+                            >
+                              {isRetrying ? (
+                                <Loader2 className="h-3 w-3 animate-spin" />
+                              ) : (
+                                <RotateCw className="h-3 w-3" />
+                              )}
+                              Renvoyer
+                            </Button>
+                          ) : (
+                            <span className="text-xs text-muted-foreground">—</span>
+                          )}
+                        </TableCell>
                       </TableRow>
                     );
                   })
@@ -340,6 +411,40 @@ const AdminEmailQueueMonitor = () => {
           )}
         </>
       )}
+
+      <AlertDialog open={!!retryTarget} onOpenChange={(open) => !open && setRetryTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Renvoyer cet e-mail&nbsp;?</AlertDialogTitle>
+            <AlertDialogDescription asChild>
+              <div className="space-y-2 text-sm">
+                <div>
+                  L'e-mail va être remis en file d'attente et renvoyé au prochain cycle (≤ 5 s).
+                </div>
+                {retryTarget && (
+                  <div className="rounded border bg-muted/40 p-2 text-xs space-y-1">
+                    <div><span className="text-muted-foreground">Destinataire&nbsp;:</span> <span className="font-medium">{retryTarget.recipient_email}</span></div>
+                    <div><span className="text-muted-foreground">Template&nbsp;:</span> <span className="font-mono">{retryTarget.template_name}</span></div>
+                    <div><span className="text-muted-foreground">Tentatives précédentes&nbsp;:</span> {retryTarget.attempts}</div>
+                    {retryTarget.last_error && (
+                      <div className="text-destructive break-words">
+                        <span className="text-muted-foreground">Dernière erreur&nbsp;:</span> {retryTarget.last_error}
+                      </div>
+                    )}
+                  </div>
+                )}
+                <div className="text-xs text-muted-foreground">
+                  Si la cause de l'échec n'a pas été corrigée, le message risque de retomber en DLQ.
+                </div>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={handleRetry}>Renvoyer</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
