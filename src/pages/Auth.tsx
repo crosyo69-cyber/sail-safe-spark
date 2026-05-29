@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Loader2, MailCheck, RefreshCw } from "lucide-react";
+import { Loader2, MailCheck, RefreshCw, CheckCircle2, Clock, AlertTriangle } from "lucide-react";
 
 const emailSchema = z.string().trim().email("Email invalide").max(255, "Email trop long");
 const passwordSchema = z.string().min(6, "6 caractères minimum").max(128, "Mot de passe trop long");
@@ -25,6 +25,12 @@ const Auth = () => {
   const [signupPendingEmail, setSignupPendingEmail] = useState<string | null>(null);
   const [isResending, setIsResending] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
+  const [emailStatus, setEmailStatus] = useState<{
+    status: string;
+    last_event_at: string;
+    error_message: string | null;
+  } | null>(null);
+  const [statusLoading, setStatusLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,6 +58,35 @@ const Auth = () => {
     const t = setInterval(() => setResendCooldown((s) => Math.max(0, s - 1)), 1000);
     return () => clearInterval(t);
   }, [resendCooldown]);
+
+  // Récupère l'état du dernier email envoyé à cette adresse
+  const fetchEmailStatus = async (targetEmail: string) => {
+    setStatusLoading(true);
+    const { data, error } = await supabase.rpc("get_latest_auth_email_status", {
+      p_email: targetEmail,
+    });
+    if (!error && data && data.length > 0) {
+      setEmailStatus({
+        status: data[0].status,
+        last_event_at: data[0].last_event_at,
+        error_message: data[0].error_message,
+      });
+    } else if (!error) {
+      setEmailStatus(null);
+    }
+    setStatusLoading(false);
+  };
+
+  // Polling toutes les 5s tant que l'écran de confirmation est affiché
+  useEffect(() => {
+    if (!signupPendingEmail) {
+      setEmailStatus(null);
+      return;
+    }
+    fetchEmailStatus(signupPendingEmail);
+    const id = setInterval(() => fetchEmailStatus(signupPendingEmail), 5000);
+    return () => clearInterval(id);
+  }, [signupPendingEmail]);
 
   // Tente un renvoi avec 1 retry auto en cas d'échec réseau / transitoire
   const resendConfirmation = async (targetEmail: string): Promise<void> => {
@@ -232,6 +267,87 @@ const Auth = () => {
                       </>
                     )}
                   </Button>
+
+                  {/* Indicateur d'état de l'e-mail */}
+                  <div
+                    className="rounded-md border bg-muted/40 p-3 text-left"
+                    role="status"
+                    aria-live="polite"
+                  >
+                    <div className="flex items-start gap-2">
+                      {!emailStatus ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mt-0.5 animate-spin text-muted-foreground" />
+                          <div className="text-xs text-muted-foreground">
+                            {statusLoading
+                              ? "Vérification de l'envoi…"
+                              : "En attente d'informations sur l'envoi…"}
+                          </div>
+                        </>
+                      ) : emailStatus.status === "sent" ? (
+                        <>
+                          <CheckCircle2 className="h-4 w-4 mt-0.5 text-green-600 shrink-0" />
+                          <div className="text-xs">
+                            <div className="font-medium text-green-700">E-mail envoyé</div>
+                            <div className="text-muted-foreground">
+                              Dernier envoi&nbsp;:{" "}
+                              {new Date(emailStatus.last_event_at).toLocaleString("fr-FR", {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </div>
+                          </div>
+                        </>
+                      ) : emailStatus.status === "pending" ? (
+                        <>
+                          <Clock className="h-4 w-4 mt-0.5 text-blue-500 shrink-0" />
+                          <div className="text-xs">
+                            <div className="font-medium text-blue-600">En attente d'envoi</div>
+                            <div className="text-muted-foreground">
+                              En file depuis le{" "}
+                              {new Date(emailStatus.last_event_at).toLocaleString("fr-FR", {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <AlertTriangle className="h-4 w-4 mt-0.5 text-destructive shrink-0" />
+                          <div className="text-xs">
+                            <div className="font-medium text-destructive">
+                              Échec de l'envoi
+                            </div>
+                            <div className="text-muted-foreground">
+                              Dernière tentative&nbsp;:{" "}
+                              {new Date(emailStatus.last_event_at).toLocaleString("fr-FR", {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </div>
+                            {emailStatus.error_message && (
+                              <div className="text-destructive/80 mt-1 break-words">
+                                {emailStatus.error_message}
+                              </div>
+                            )}
+                            <div className="text-muted-foreground mt-1">
+                              Utilisez le bouton « Renvoyer » ci-dessus.
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
 
                   <Button
                     type="button"

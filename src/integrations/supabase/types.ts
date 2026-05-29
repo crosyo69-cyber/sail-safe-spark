@@ -522,6 +522,15 @@ export type Database = {
           total_messages: number
         }[]
       }
+      get_latest_auth_email_status: {
+        Args: { p_email: string }
+        Returns: {
+          error_message: string
+          last_event_at: string
+          status: string
+          template_name: string
+        }[]
+      }
       get_package_by_code: { Args: { p_code: string }; Returns: Json }
       has_role: {
         Args: {
