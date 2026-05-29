@@ -7,6 +7,7 @@ import AdminOverview from "@/components/admin/AdminOverview";
 import AdminSessionManager from "@/components/admin/AdminSessionManager";
 import AdminReservationList from "@/components/admin/AdminReservationList";
 import AdminEmailDashboard from "@/components/admin/AdminEmailDashboard";
+import AdminEmailQueueMonitor from "@/components/admin/AdminEmailQueueMonitor";
 import AdminMonthlyCalendar from "@/components/admin/AdminMonthlyCalendar";
 import AdminRevenueDashboard from "@/components/admin/AdminRevenueDashboard";
 import AdminSeasonStats from "@/components/admin/AdminSeasonStats";
@@ -14,7 +15,7 @@ import Admin404Monitor from "@/components/admin/Admin404Monitor";
 import AdminConversionDedupMonitor from "@/components/admin/AdminConversionDedupMonitor";
 import AdminPackagesManager from "@/components/admin/AdminPackagesManager";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox } from "lucide-react";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -58,7 +59,7 @@ const Admin = () => {
         </h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-6xl grid-cols-3 md:grid-cols-10">
+          <TabsList className="grid w-full max-w-6xl grid-cols-3 md:grid-cols-11">
             <TabsTrigger value="overview" className="gap-2">
               <LayoutDashboard className="w-4 h-4" />
               <span className="hidden sm:inline">Vue d'ensemble</span>
@@ -90,6 +91,10 @@ const Admin = () => {
             <TabsTrigger value="emails" className="gap-2">
               <Mail className="w-4 h-4" />
               <span className="hidden sm:inline">Emails</span>
+            </TabsTrigger>
+            <TabsTrigger value="queue" className="gap-2">
+              <Inbox className="w-4 h-4" />
+              <span className="hidden sm:inline">File email</span>
             </TabsTrigger>
             <TabsTrigger value="404" className="gap-2">
               <AlertTriangle className="w-4 h-4" />
@@ -131,6 +136,10 @@ const Admin = () => {
 
           <TabsContent value="emails">
             <AdminEmailDashboard />
+          </TabsContent>
+
+          <TabsContent value="queue">
+            <AdminEmailQueueMonitor />
           </TabsContent>
 
           <TabsContent value="404">
