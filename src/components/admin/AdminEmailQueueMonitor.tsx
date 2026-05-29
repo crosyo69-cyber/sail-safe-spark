@@ -411,6 +411,40 @@ const AdminEmailQueueMonitor = () => {
           )}
         </>
       )}
+
+      <AlertDialog open={!!retryTarget} onOpenChange={(open) => !open && setRetryTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Renvoyer cet e-mail&nbsp;?</AlertDialogTitle>
+            <AlertDialogDescription asChild>
+              <div className="space-y-2 text-sm">
+                <div>
+                  L'e-mail va être remis en file d'attente et renvoyé au prochain cycle (≤ 5 s).
+                </div>
+                {retryTarget && (
+                  <div className="rounded border bg-muted/40 p-2 text-xs space-y-1">
+                    <div><span className="text-muted-foreground">Destinataire&nbsp;:</span> <span className="font-medium">{retryTarget.recipient_email}</span></div>
+                    <div><span className="text-muted-foreground">Template&nbsp;:</span> <span className="font-mono">{retryTarget.template_name}</span></div>
+                    <div><span className="text-muted-foreground">Tentatives précédentes&nbsp;:</span> {retryTarget.attempts}</div>
+                    {retryTarget.last_error && (
+                      <div className="text-destructive break-words">
+                        <span className="text-muted-foreground">Dernière erreur&nbsp;:</span> {retryTarget.last_error}
+                      </div>
+                    )}
+                  </div>
+                )}
+                <div className="text-xs text-muted-foreground">
+                  Si la cause de l'échec n'a pas été corrigée, le message risque de retomber en DLQ.
+                </div>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={handleRetry}>Renvoyer</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
