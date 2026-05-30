@@ -24,7 +24,17 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { toast } from "sonner";
-import { Loader2, RefreshCw, Clock, CheckCircle2, XCircle, AlertTriangle, Inbox, RotateCw, Download } from "lucide-react";
+import { Loader2, RefreshCw, Clock, CheckCircle2, XCircle, AlertTriangle, Inbox, RotateCw, Download, BarChart3 } from "lucide-react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 
 type EmailLog = {
   id: string;
