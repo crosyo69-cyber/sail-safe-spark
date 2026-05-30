@@ -130,6 +130,17 @@ const breadcrumbItems = [
 
 export const blogArticles = [
   {
+    slug: "quelle-aile-choisir-almanarre",
+    title: "Quelle taille d'aile de kitesurf choisir à l'Almanarre selon le vent ?",
+    excerpt: "Mistral fort ou thermique d'Est régulier : guide pratique pour choisir la bonne taille d'aile de kitesurf à l'Almanarre (Hyères) selon le vent, votre poids, votre niveau et votre support.",
+    category: "Le Spot",
+    date: "2026-05-30",
+    readTime: "7 min",
+    image: "blog-kitesurf-ailes-colorees.jpg",
+    alt: "Taille d'aile kitesurf Almanarre Hyères - Guide vent poids niveau Kitesurf Passion",
+    featured: true,
+  },
+  {
     slug: "erreurs-debutant-kitesurf-eviter",
     title: "10 Erreurs de Débutant en Kitesurf et Comment les Éviter",
     excerpt: "Découvrez les erreurs les plus fréquentes des débutants en kitesurf et nos conseils d'experts pour les éviter. Progressez plus vite et en toute sécurité.",
