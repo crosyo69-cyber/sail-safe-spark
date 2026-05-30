@@ -154,6 +154,47 @@ const AdminEmailQueueMonitor = () => {
     fetchLogs();
   };
 
+  const handleExportCSV = () => {
+    const rows = filtered;
+    if (rows.length === 0) {
+      toast.info("Aucune donnée à exporter pour les filtres actuels.");
+      return;
+    }
+
+    const escapeCsv = (val: string) => {
+      const str = String(val ?? "");
+      if (str.includes(";") || str.includes("\n") || str.includes('"')) {
+        return `"${str.replace(/"/g, '""')}"`;
+      }
+      return str;
+    };
+
+    const headers = ["Statut", "Destinataire", "Template", "Tentatives", "Enfile a", "Dernier evenement", "Derniere erreur"];
+    const lines = rows.map((r) =>
+      [
+        escapeCsv(r.current_status),
+        escapeCsv(r.recipient_email),
+        escapeCsv(r.template_name),
+        escapeCsv(String(r.attempts)),
+        escapeCsv(new Date(r.enqueued_at).toLocaleString("fr-FR")),
+        escapeCsv(new Date(r.last_event_at).toLocaleString("fr-FR")),
+        escapeCsv(r.last_error ?? ""),
+      ].join(";")
+    );
+
+    const csv = "\ufeff" + headers.map(escapeCsv).join(";") + "\n" + lines.join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `emails-${statusFilter}-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success(`${rows.length} ligne(s) exportée(s) en CSV.`);
+  };
+
   // Group by message_id → full lifecycle row per email
   const queueRows = useMemo<QueueRow[]>(() => {
     const groups = new Map<string, EmailLog[]>();
