@@ -7,7 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, lazy, Suspense } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -32,6 +32,7 @@ const RATE_LIMIT_COOLDOWN_MS = 60000; // 1 minute between submissions
 
 const Contact = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -148,17 +149,8 @@ const Contact = () => {
       // Record submission time for rate limiting
       localStorage.setItem('lastContactSubmit', Date.now().toString());
 
-      // Track Google Ads conversion
-      trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
-      // Also push the GTM dataLayer event so the GTM-managed Ads conversion
-      // tag fires (and Tag Assistant detects the "Contact" action).
-      pushMerciConversion('s2n0CL3puI4cEIW4u9AD');
+      // Meta Lead — fired here so it isn't lost during navigation.
       trackMetaLead({ content_name: "contact_form", content_category: "contact_page" });
-
-      toast({
-        title: "Demande envoyée !",
-        description: "Nous vous recontacterons sous 24h pour confirmer votre réservation.",
-      });
 
       setFormData({
         firstName: "",
@@ -169,6 +161,12 @@ const Contact = () => {
         dates: "",
         people: "1",
         message: "",
+      });
+
+      // Redirect to /merci so the Google Ads conversion fires on the
+      // landing page (gtag + GTM merci_conversion event live there).
+      trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD', {
+        onComplete: () => navigate("/merci"),
       });
     } catch (error: any) {
       console.error("Error sending contact form:", error);
