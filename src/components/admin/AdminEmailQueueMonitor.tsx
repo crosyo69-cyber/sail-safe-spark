@@ -94,6 +94,7 @@ const AdminEmailQueueMonitor = () => {
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [retryTarget, setRetryTarget] = useState<QueueRow | null>(null);
   const [retryingIds, setRetryingIds] = useState<Set<string>>(new Set());
+  const [selectedRow, setSelectedRow] = useState<QueueRow | null>(null);
 
   const fetchLogs = async () => {
     setLoading(true);
@@ -356,7 +357,11 @@ const AdminEmailQueueMonitor = () => {
                     const canRetry = r.current_status === "dlq" || r.current_status === "failed";
                     const isRetrying = retryingIds.has(r.message_id);
                     return (
-                      <TableRow key={r.message_id} className={isStuck ? "bg-destructive/5" : ""}>
+                      <TableRow
+                        key={r.message_id}
+                        className={`cursor-pointer ${isStuck ? "bg-destructive/5" : ""}`}
+                        onClick={() => setSelectedRow(r)}
+                      >
                         <TableCell>
                           {statusBadge(r.current_status)}
                           {isStuck && (
@@ -378,7 +383,7 @@ const AdminEmailQueueMonitor = () => {
                         >
                           {r.last_error || "—"}
                         </TableCell>
-                        <TableCell>
+                        <TableCell onClick={(e) => e.stopPropagation()}>
                           {canRetry ? (
                             <Button
                               variant="outline"
