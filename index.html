@@ -20,10 +20,10 @@
     <meta name="geo.position" content="43.0779;6.1508" />
     <meta name="ICBM" content="43.0779, 6.1508" />
     
-    <!-- Canonical & Language -->
-    <link rel="canonical" href="https://www.kitesurfpassion.fr/" />
-    <link rel="alternate" hreflang="fr" href="https://www.kitesurfpassion.fr/" />
-    <link rel="alternate" hreflang="x-default" href="https://www.kitesurfpassion.fr/" />
+    <!-- Canonical & hreflang are emitted per route via react-helmet-async.
+         Do NOT add static <link rel="canonical"> or <link rel="alternate" hreflang> here:
+         <link> tags don't dedupe by rel, so any static value would create
+         duplicate canonicals on every inner route (invalid SEO). -->
     
     <!-- Favicons & App Icons -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
