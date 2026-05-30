@@ -16,6 +16,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { Loader2, RefreshCw, Clock, CheckCircle2, XCircle, AlertTriangle, Inbox, RotateCw } from "lucide-react";
 
@@ -40,6 +47,7 @@ type QueueRow = {
   last_event_at: string;
   last_error: string | null;
   history: { status: string; at: string; error: string | null }[];
+  entries: EmailLog[];
 };
 
 const TIME_RANGES = [
@@ -86,6 +94,7 @@ const AdminEmailQueueMonitor = () => {
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [retryTarget, setRetryTarget] = useState<QueueRow | null>(null);
   const [retryingIds, setRetryingIds] = useState<Set<string>>(new Set());
+  const [selectedRow, setSelectedRow] = useState<QueueRow | null>(null);
 
   const fetchLogs = async () => {
     setLoading(true);
@@ -171,6 +180,7 @@ const AdminEmailQueueMonitor = () => {
         last_event_at: latest.created_at,
         last_error: firstError,
         history: sorted.map((r) => ({ status: r.status, at: r.created_at, error: r.error_message })),
+        entries: sorted,
       });
     }
     return rows.sort(
@@ -347,7 +357,11 @@ const AdminEmailQueueMonitor = () => {
                     const canRetry = r.current_status === "dlq" || r.current_status === "failed";
                     const isRetrying = retryingIds.has(r.message_id);
                     return (
-                      <TableRow key={r.message_id} className={isStuck ? "bg-destructive/5" : ""}>
+                      <TableRow
+                        key={r.message_id}
+                        className={`cursor-pointer ${isStuck ? "bg-destructive/5" : ""}`}
+                        onClick={() => setSelectedRow(r)}
+                      >
                         <TableCell>
                           {statusBadge(r.current_status)}
                           {isStuck && (
@@ -369,7 +383,7 @@ const AdminEmailQueueMonitor = () => {
                         >
                           {r.last_error || "—"}
                         </TableCell>
-                        <TableCell>
+                        <TableCell onClick={(e) => e.stopPropagation()}>
                           {canRetry ? (
                             <Button
                               variant="outline"
@@ -445,6 +459,95 @@ const AdminEmailQueueMonitor = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <Sheet open={!!selectedRow} onOpenChange={(open) => !open && setSelectedRow(null)}>
+        <SheetContent side="right" className="w-full sm:max-w-xl overflow-y-auto">
+          {selectedRow && (
+            <>
+              <SheetHeader>
+                <SheetTitle className="flex items-center gap-2">
+                  Détail du message
+                  {statusBadge(selectedRow.current_status)}
+                </SheetTitle>
+                <SheetDescription className="break-all font-mono text-xs">
+                  {selectedRow.message_id}
+                </SheetDescription>
+              </SheetHeader>
+
+              <div className="mt-6 space-y-6">
+                <div className="rounded-md border bg-muted/30 p-3 text-sm space-y-1">
+                  <div className="grid grid-cols-3 gap-2">
+                    <span className="text-muted-foreground">Destinataire</span>
+                    <span className="col-span-2 font-medium break-all">{selectedRow.recipient_email}</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    <span className="text-muted-foreground">Template</span>
+                    <span className="col-span-2 font-mono text-xs">{selectedRow.template_name}</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    <span className="text-muted-foreground">Tentatives</span>
+                    <span className="col-span-2">{selectedRow.attempts}</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    <span className="text-muted-foreground">Enfilé</span>
+                    <span className="col-span-2 text-xs">{new Date(selectedRow.enqueued_at).toLocaleString("fr-FR")}</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    <span className="text-muted-foreground">Dernier événement</span>
+                    <span className="col-span-2 text-xs">{new Date(selectedRow.last_event_at).toLocaleString("fr-FR")}</span>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-semibold mb-3">Historique (timeline)</h3>
+                  <ol className="relative border-l-2 border-border ml-2 space-y-4">
+                    {selectedRow.entries.map((e, i) => (
+                      <li key={e.id} className="ml-4">
+                        <span className="absolute -left-[7px] mt-1.5 w-3 h-3 rounded-full bg-primary border-2 border-background" />
+                        <div className="flex items-center gap-2 flex-wrap">
+                          {statusBadge(e.status)}
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(e.created_at).toLocaleString("fr-FR")} · il y a {fmtAge(e.created_at)}
+                          </span>
+                          <span className="text-xs text-muted-foreground">#{i + 1}</span>
+                        </div>
+                        {e.error_message && (
+                          <div className="mt-1 text-xs text-destructive break-words rounded bg-destructive/10 p-2">
+                            {e.error_message}
+                          </div>
+                        )}
+                        {e.metadata && Object.keys(e.metadata).length > 0 && (
+                          <details className="mt-1 text-xs">
+                            <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
+                              Métadonnées
+                            </summary>
+                            <pre className="mt-1 rounded bg-muted/50 p-2 overflow-x-auto text-[11px] leading-tight">
+{JSON.stringify(e.metadata, null, 2)}
+                            </pre>
+                          </details>
+                        )}
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                {(selectedRow.current_status === "dlq" || selectedRow.current_status === "failed") && (
+                  <Button
+                    onClick={() => {
+                      setRetryTarget(selectedRow);
+                      setSelectedRow(null);
+                    }}
+                    className="w-full gap-2"
+                  >
+                    <RotateCw className="h-4 w-4" />
+                    Renvoyer cet e-mail
+                  </Button>
+                )}
+              </div>
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
