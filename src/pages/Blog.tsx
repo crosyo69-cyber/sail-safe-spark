@@ -568,9 +568,9 @@ export const blogArticles = [
   {
     slug: "prix-stage-kitesurf-hyeres",
     title: "Prix d'un stage de kitesurf à Hyères : quel budget prévoir pour débuter ?",
-    excerpt: "Quel budget prévoir pour apprendre le kitesurf à Hyères ? Tarifs, options, hébergement et conseils pour choisir la bonne formule.",
+    excerpt: "Combien coûte un stage de kitesurf à Hyères ? Tarifs 2026 par formule, budget séjour complet, écarts entre écoles et conseils pour réserver.",
     category: "Kitesurf",
-    date: "2026-03-30",
+    date: "2026-05-30",
     readTime: "9 min",
     image: "blog-kitesurf-marche-plage.jpg",
     alt: "Prix stage kitesurf Hyères budget - Tarifs cours école KiteSurf Passion Almanarre",
