@@ -308,6 +308,10 @@ const AdminEmailQueueMonitor = () => {
         <Button variant="ghost" size="sm" onClick={fetchLogs} disabled={loading}>
           <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
         </Button>
+        <Button variant="outline" size="sm" onClick={handleExportCSV} className="gap-1">
+          <Download className="w-4 h-4" />
+          Export CSV
+        </Button>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
