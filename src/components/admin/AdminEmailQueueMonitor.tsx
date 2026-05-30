@@ -24,7 +24,17 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { toast } from "sonner";
-import { Loader2, RefreshCw, Clock, CheckCircle2, XCircle, AlertTriangle, Inbox, RotateCw, Download } from "lucide-react";
+import { Loader2, RefreshCw, Clock, CheckCircle2, XCircle, AlertTriangle, Inbox, RotateCw, Download, BarChart3 } from "lucide-react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
 
 type EmailLog = {
   id: string;
@@ -261,6 +271,43 @@ const AdminEmailQueueMonitor = () => {
     });
   }, [queueRows, statusFilter, search]);
 
+  // Chart data: status breakdown per template
+  const templateStatusData = useMemo(() => {
+    const map = new Map<string, { pending: number; sent: number; dlq: number; suppressed: number; bounced: number; total: number }>();
+    for (const r of queueRows) {
+      const t = r.template_name;
+      if (!map.has(t)) map.set(t, { pending: 0, sent: 0, dlq: 0, suppressed: 0, bounced: 0, total: 0 });
+      const entry = map.get(t)!;
+      entry.total++;
+      if (r.current_status === "pending") entry.pending++;
+      else if (r.current_status === "sent") entry.sent++;
+      else if (r.current_status === "dlq" || r.current_status === "failed") entry.dlq++;
+      else if (r.current_status === "suppressed") entry.suppressed++;
+      else if (r.current_status === "bounced") entry.bounced++;
+    }
+    return Array.from(map.entries())
+      .map(([name, vals]) => ({ name, ...vals }))
+      .sort((a, b) => b.total - a.total);
+  }, [queueRows]);
+
+  // Chart data: average processing time (seconds) per template for sent emails
+  const avgTimeData = useMemo(() => {
+    const sums = new Map<string, { totalMs: number; count: number }>();
+    for (const r of queueRows) {
+      if (r.current_status !== "sent") continue;
+      const t = r.template_name;
+      const ms = new Date(r.last_event_at).getTime() - new Date(r.enqueued_at).getTime();
+      const prev = sums.get(t) || { totalMs: 0, count: 0 };
+      sums.set(t, { totalMs: prev.totalMs + ms, count: prev.count + 1 });
+    }
+    return Array.from(sums.entries())
+      .map(([name, { totalMs, count }]) => ({
+        name,
+        avgSec: count > 0 ? Math.round(totalMs / count / 1000) : 0,
+      }))
+      .sort((a, b) => b.avgSec - a.avgSec);
+  }, [queueRows]);
+
   const paginated = filtered.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE);
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
 
@@ -366,6 +413,66 @@ const AdminEmailQueueMonitor = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Mini analytics charts */}
+      {queueRows.length > 0 && (
+        <div className="space-y-4">
+          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+            <BarChart3 className="w-4 h-4 text-primary" />
+            Analyse par template ({hours}h)
+          </h3>
+          <div className="grid md:grid-cols-2 gap-4">
+            <Card className="p-4">
+              <h4 className="text-xs font-medium text-muted-foreground mb-3">Répartition des statuts par template</h4>
+              <ResponsiveContainer width="100%" height={240}>
+                <BarChart data={templateStatusData} margin={{ top: 5, right: 5, bottom: 5, left: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis dataKey="name" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} interval={0} angle={-20} textAnchor="end" height={50} />
+                  <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} allowDecimals={false} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "hsl(var(--card))",
+                      border: "1px solid hsl(var(--border))",
+                      borderRadius: "8px",
+                      fontSize: "12px",
+                    }}
+                  />
+                  <Legend wrapperStyle={{ fontSize: "11px" }} />
+                  <Bar dataKey="pending" name="En attente" stackId="a" fill="hsl(217, 91%, 60%)" radius={[0, 0, 0, 0]} />
+                  <Bar dataKey="sent" name="Envoyé" stackId="a" fill="hsl(142, 71%, 45%)" radius={[0, 0, 0, 0]} />
+                  <Bar dataKey="dlq" name="DLQ" stackId="a" fill="hsl(0, 84%, 60%)" radius={[0, 0, 0, 0]} />
+                  <Bar dataKey="suppressed" name="Supprimé" stackId="a" fill="hsl(38, 92%, 50%)" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </Card>
+
+            <Card className="p-4">
+              <h4 className="text-xs font-medium text-muted-foreground mb-3">Temps moyen de traitement (s) — emails envoyés</h4>
+              {avgTimeData.length > 0 ? (
+                <ResponsiveContainer width="100%" height={240}>
+                  <BarChart data={avgTimeData} margin={{ top: 5, right: 5, bottom: 5, left: 5 }} layout="vertical">
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                    <XAxis type="number" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
+                    <YAxis dataKey="name" type="category" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} width={100} />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "hsl(var(--card))",
+                        border: "1px solid hsl(var(--border))",
+                        borderRadius: "8px",
+                        fontSize: "12px",
+                      }}
+                      formatter={(value: number) => [`${value}s`, "Temps moyen"]}
+                    />
+                    <Bar dataKey="avgSec" name="Secondes" fill="hsl(189, 94%, 37%)" radius={[0, 4, 4, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-10">Aucun email envoyé sur la période</p>
+              )}
+            </Card>
+          </div>
+        </div>
+      )}
 
       {loading && logs.length === 0 ? (
         <div className="flex justify-center py-12">
