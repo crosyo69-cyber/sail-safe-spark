@@ -130,6 +130,85 @@ const getArticleImage = (imageName: string): string => {
 
 // Article content data
 const articleContent: Record<string, { content: string; tags: string[] }> = {
+  "quelle-aile-choisir-almanarre": {
+    content: `
+## Quelle taille d'aile choisir à l'Almanarre selon le vent et votre niveau ?
+
+Mistral fort ou thermique d'Est plus régulier : à Hyères, choisir la bonne taille d'aile de kitesurf à l'Almanarre demande de tenir compte du vent, de votre poids, de votre niveau et du support utilisé. Voici un guide clair pour naviguer à l'Almanarre avec plus de sécurité, plus de confort et plus de plaisir.
+
+### Comprendre les deux grands régimes de vent à l'Almanarre
+
+Avant de choisir une taille d'aile de kitesurf à l'Almanarre, il faut comprendre que ce spot fonctionne principalement avec deux régimes de vent très différents : le **Mistral** et le **vent d'Est**.
+
+Le Mistral, souvent de secteur nord à nord-ouest, peut être puissant, sec et rafaleux. Il impose généralement de réduire la surface pour garder du contrôle. Le vent d'Est, lui, est souvent plus régulier, plus humide et plus progressif dans la traction.
+
+Résultat : **20 nœuds de Mistral ne se naviguent pas comme 20 nœuds d'Est**. Il faut donc toujours adapter son aile au type de vent, et pas seulement au chiffre affiché sur la météo.
+
+### Les 3 critères qui changent tout : vent, poids et niveau
+
+Le choix d'une aile repose sur trois critères essentiels : **la force du vent**, **votre poids** et **votre niveau technique**.
+
+Un rider léger partira plus tôt au planning qu'un gabarit plus lourd. De la même façon, un pratiquant confirmé pourra gérer une aile plus puissante qu'un débutant dans les mêmes conditions.
+
+En règle générale, un rider d'environ 75 kg en twin-tip naviguera souvent en **12 m² autour de 15 nœuds**, puis en **9 m² entre 20 et 25 nœuds**. Si le vent monte davantage, une **7 m²** peut devenir plus adaptée.
+
+Si vous débutez, retenez cette règle simple : **mieux vaut être légèrement sous-toilé que surtoilé**.
+
+### Tableau indicatif des tailles d'ailes à l'Almanarre
+
+| Vent observé | Rider léger (60-70 kg) | Rider moyen (70-85 kg) | Rider lourd (85 kg et +) |
+| --- | --- | --- | --- |
+| 12-15 nœuds | 10-11 m² | 12 m² | 13-14 m² |
+| 16-20 nœuds | 8-9 m² | 9-10 m² | 11-12 m² |
+| 21-25 nœuds | 7 m² | 8-9 m² | 9-10 m² |
+| 26 nœuds et + | 5-6 m² | 6-7 m² | 7-8 m² |
+
+Ce tableau est indicatif. Il ne remplace pas l'observation réelle du spot, les rafales du jour ni les conseils d'un professionnel local.
+
+### Le type de planche influence aussi le choix de l'aile
+
+On oublie souvent que la planche modifie beaucoup le besoin en puissance. En **twin-tip**, il faut généralement plus d'appui pour partir tôt. En **surf strapless**, on peut souvent réduire légèrement la taille.
+
+En **kitefoil**, l'écart est encore plus marqué : le foil décolle tôt et permet de naviguer avec des ailes plus petites. Un rider utilisant une 12 m² en twin-tip dans le light wind pourra parfois naviguer en 7 ou 8 m² en foil.
+
+### Quel quiver prévoir pour naviguer souvent à Hyères ?
+
+Pour beaucoup de pratiquants, le quiver le plus polyvalent dans le Var reste le duo **9 m² + 12 m²**. C'est une base très cohérente pour couvrir une grande partie des sessions à l'Almanarre.
+
+Si vous naviguez toute l'année, une **7 m²** peut compléter parfaitement l'ensemble pour les journées de Mistral plus soutenu. Les gabarits plus lourds pourront aussi envisager une 13 ou 14 m².
+
+### Les erreurs les plus fréquentes à éviter
+
+#### Se surtoiler pour partir plus tôt
+
+C'est l'erreur la plus fréquente. Une aile trop grande fatigue davantage, réduit le contrôle et peut vite transformer une bonne session en situation risquée.
+
+#### Copier la taille d'un autre rider
+
+Deux personnes sur le spot n'ont pas forcément le même poids, le même support ni le même niveau. Copier une taille sans contexte est souvent une mauvaise idée.
+
+#### Se fier uniquement aux applications météo
+
+À l'Almanarre, la topographie, les rafales et l'orientation réelle du vent changent beaucoup le ressenti. Il faut toujours compléter la météo par une vraie lecture du spot.
+
+### Pourquoi louer la bonne aile à la journée est souvent la meilleure solution
+
+Si vous ne naviguez pas régulièrement à Hyères, louer la bonne aile le jour J est souvent la solution la plus simple. Vous adaptez votre matériel au vent réel, vous évitez de transporter un quiver complet et vous profitez d'un équipement récent.
+
+Chez [Kitesurf Passion](/location-materiel-kitesurf-hyeres), vous pouvez louer du matériel adapté aux conditions du moment et à votre niveau.
+
+### Conclusion : mieux vaut une aile adaptée qu'une aile théorique
+
+Choisir la bonne taille d'aile à l'Almanarre ne dépend pas seulement du nombre de nœuds affiché. Il faut croiser le type de vent, votre poids, votre niveau et votre support.
+
+En cas de doute, la meilleure stratégie reste la même : **observer, demander conseil et privilégier la sécurité**.
+
+### Envie de naviguer avec le bon matériel à Hyères ?
+
+Réservez votre [location de matériel de kitesurf à Hyères](/location-materiel-kitesurf-hyeres). Consultez aussi notre [guide du spot de l'Almanarre](/spot-kitesurf-almanarre-hyeres-var) et découvrez nos [cours et stages de kitesurf à Hyères](/prendre+des+cours+en+ecole+de+kitesurf+hyeres-z55).
+`,
+    tags: ["Kitesurf", "Almanarre", "Hyères", "Aile", "Mistral", "Vent d'Est", "Matériel", "Location", "Var"],
+  },
   "erreurs-debutant-kitesurf-eviter": {
     content: `
 ## 10 Erreurs de Débutant en Kitesurf : Comment les Éviter
