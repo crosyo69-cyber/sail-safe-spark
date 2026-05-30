@@ -12,7 +12,6 @@ import {
   markSessionConversionFired,
   shouldFireWithinWindow,
 } from './conversion-dedup';
-import { hasMarketingConsent, onMarketingConsent } from './consent';
 
 declare global {
   interface Window {
