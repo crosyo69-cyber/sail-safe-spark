@@ -4270,84 +4270,121 @@ Vous savez maintenant quelle formule correspond le mieux à votre profil. [Rése
   "prix-stage-kitesurf-hyeres": {
     content: `
 
-Vous préparez vos premières vacances glisse dans le Var et vous voulez savoir combien coûte vraiment un stage de kitesurf à Hyères ? Voici un guide clair pour estimer votre budget total et choisir la formule la plus rentable selon votre objectif.
+Vous préparez vos premières vacances glisse dans le Var et vous voulez savoir **combien coûte un stage de kitesurf à Hyères** ? Voici un guide complet pour comprendre les écarts de prix entre formules, estimer votre budget global et choisir l'option la plus rentable selon votre objectif — sans rogner sur la sécurité ni sur la qualité de l'encadrement.
 
-### Pourquoi estimer son budget avant de réserver ?
+## Prix stage kitesurf Hyères : combien prévoir en 2026 ?
 
-Quand on découvre le kitesurf, on pense d'abord au prix affiché du stage. En réalité, il faut aussi prendre en compte la saison, le type de cours, le logement, les repas, le transport et quelques accessoires utiles. Le but n'est pas seulement de trouver l'option la moins chère, mais celle qui vous permettra de **progresser dans de bonnes conditions**.
+Le **prix d'un stage de kitesurf à Hyères** varie principalement selon la formule (collectif, semi-privé, particulier), la durée (3 ou 5 jours) et la saison (haute ou basse). Chez **Kitesurf Passion**, école active sur le spot de l'Almanarre **depuis 1999**, les tarifs publics sont les suivants :
 
-À Hyères, le budget dépend beaucoup de votre temps disponible, de votre niveau et du niveau d'accompagnement recherché. Un stage bien structuré sur plusieurs jours permet souvent de mieux amortir votre séjour qu'une formule dispersée.
+- **Stage 100% Glisse 5 jours (collectif, 4 élèves max)** : **399 € hors saison**, **499 € en juillet/août**
+- **Stage semi-privé 5 jours (2 élèves)** : **599 € hors saison**, **699 € en juillet/août**
+- **Cours particulier 2 h** : **230 € hors saison**, **380 € en juillet/août**
 
-### Les tarifs des formules de stage à Hyères
+Comptez en moyenne **80 € à 100 € par jour** pour un stage collectif et **120 € à 160 € par jour** pour un format semi-privé. Le détail complet de nos **tarifs cours kitesurf** est disponible sur la page [tarifs cours kitesurf et wingfoil](/tarifs-cours-kitesurf-wingfoil-hyeres).
 
-Chez KiteSurf Passion, plusieurs formules sont proposées pour apprendre le kitesurf à Hyères sur le spot de l'Almanarre :
+## Pourquoi un tel écart de prix entre les écoles de kitesurf à Hyères ?
 
-- **Stage 100% Glisse sur 5 jours** : 399 € hors saison, 499 € en juillet/août
-- **Stage semi-privé sur 5 jours** : 599 € hors saison, 699 € en juillet/août
-- **Cours particulier 2 heures** : 230 € hors saison, 380 € en juillet/août
+Quand on compare le **prix d'une école de kitesurf à Hyères**, les écarts s'expliquent rarement par la marge. Ils traduisent surtout des choix d'encadrement, de sécurité et de matériel :
 
-Le stage 5 jours reste généralement la formule la plus cohérente pour un débutant qui veut installer des bases solides et viser une vraie progression. Consultez nos [tarifs détaillés](/tarifs-cours-kitesurf-wingfoil-hyeres) pour comparer toutes les options.
+- **Taille du groupe** : 4 élèves maximum par moniteur diplômé d'État chez Kitesurf Passion, contre 6 à 8 dans certaines structures. Plus le ratio est bas, plus vous progressez vite.
+- **Bateau d'assistance permanent** : nos sessions sont systématiquement encadrées depuis un bateau à moteur avec liaison radio. C'est un coût structurel important, mais c'est ce qui fait la différence en termes de **sécurité** et de temps réellement passé sur l'eau.
+- **Matériel récent** : nous travaillons exclusivement avec du **matériel Duotone** renouvelé chaque saison (ailes, planches, harnais), gage de pédagogie efficace et de confort.
+- **Expérience pédagogique** : une école active **depuis 1999** sur l'Almanarre, ce sont 25+ ans de spot connu par cœur, des protocoles éprouvés et des moniteurs formés en interne.
 
-### Ce qui fait varier le prix d'un stage de kitesurf
+Un stage à 250 € sans bateau, sans matériel récent et avec 7 élèves par moniteur n'est pas réellement « moins cher » : votre temps de pratique effectif sur l'eau y est divisé par deux.
 
-#### 1. La saison
+## Tarif cours kitesurf Hyères : ce qui fait varier le prix
 
-En haute saison (juillet-août), les prix montent naturellement avec la demande. En revanche, le printemps ou septembre offrent souvent un excellent compromis entre conditions, fréquentation et budget. Les conditions de vent sur l'Almanarre sont d'ailleurs excellentes au [printemps et en automne](/blog/quand-faire-kitesurf-hyeres-saisons).
+### 1. La saison
 
-#### 2. La formule choisie
+En haute saison (juillet–août), la demande pousse les tarifs naturellement à la hausse. **Hors saison** (avril–juin, septembre–octobre), vous économisez **100 € à 150 €** sur un stage 5 jours, avec souvent de meilleures conditions de vent. Voir notre guide [meilleure période kitesurf dans le Var](/blog/meilleure-periode-kitesurf-var).
 
-Un cours particulier coûte plus cher, mais il est plus intensif. Le stage collectif ou semi-privé reste souvent plus rentable si vous disposez de plusieurs jours sur place. Pour comparer en détail, consultez notre guide : [stage 5 jours, semi-privé ou cours particulier ?](/blog/stage-kitesurf-hyeres-formule-choisir)
+### 2. La formule choisie
 
-#### 3. Le coût du séjour
+- **Collectif (4 élèves)** : le meilleur rapport qualité/prix, idéal vrai débutant.
+- **Semi-privé (2 élèves)** : compromis premium, parfait pour les couples ou amis.
+- **Particulier** : intensif, recommandé pour court séjour ou objectif technique précis.
 
-Hébergement, transport, repas et logistique locale peuvent peser presque autant que le stage lui-même si vous venez de loin. Il faut donc raisonner en **budget global**. Retrouvez nos conseils dans le [guide hébergement kitesurf Hyères](/blog/hebergement-kitesurf-hyeres-ou-dormir).
+Comparatif complet : [stage 5 jours, semi-privé ou cours particulier ?](/blog/stage-kitesurf-hyeres-formule-choisir)
 
-#### 4. Les dépenses complémentaires
+### 3. La durée
 
-Même si le gros du matériel est fourni pendant l'apprentissage, vous pouvez prévoir quelques dépenses de confort : lycra, crème solaire, lunettes flottantes, chaussons ou tenue de plage adaptée.
+Un **stage 5 jours** coûte plus cher qu'un 3 jours, mais le **prix à l'heure baisse mécaniquement** et la progression est nettement plus solide. Détails : [stage kitesurf 3 jours ou 5 jours](/blog/stage-kitesurf-hyeres-3-jours-ou-5-jours).
 
-### Trois exemples de budget selon votre profil
+### 4. Ce qui est inclus
 
-#### Vous venez 5 jours pour apprendre
+Chez Kitesurf Passion, **tout est inclus** dans le prix affiché : moniteur diplômé, matériel Duotone complet (aile, planche, harnais, combinaison, casque, gilet), bateau d'assistance, radio. Vous n'avez **aucun supplément** matériel à prévoir pendant l'apprentissage.
 
-C'est le cas le plus classique. Le budget comprend le stage (399 à 499 €), 4 à 6 nuits de logement (200 à 600 € selon le type), les repas (100 à 200 €), les trajets et quelques frais annexes. **Budget total estimé : 800 à 1 400 €** selon la saison et le standing.
+## Budget apprentissage kite : le coût réel d'un séjour à Hyères
 
-C'est aussi la solution la plus efficace si votre objectif est de viser une vraie progression. Le [stage 100% Glisse](/stage-100-glisse-kitesurf-hyeres) inclut 5 séances avec moniteur diplômé et bateau d'assistance.
+Le **prix du stage 5 jours kite** n'est qu'une partie du budget. Pour un séjour complet, prévoyez aussi :
 
-#### Vous êtes en court séjour
+| Poste | Budget basse saison | Budget haute saison |
+|---|---|---|
+| Stage 100% Glisse 5 jours | 399 € | 499 € |
+| Hébergement (5 nuits) | 200–400 € | 400–800 € |
+| Repas | 100–150 € | 120–200 € |
+| Transport (essence/train) | 80–200 € | 80–200 € |
+| Accessoires (lycra, crème, lunettes) | 30–60 € | 30–60 € |
+| **Total estimé** | **810 € – 1 210 €** | **1 130 € – 1 760 €** |
 
-Si vous ne restez que 2 ou 3 jours, un [cours particulier](/cours-particulier-kitesurf-hyeres) ou semi-privé peut être plus pertinent qu'un stage complet. Vous payez davantage à la séance, mais vous optimisez votre temps. **Budget total estimé : 400 à 800 €.**
+Pour réduire la facture sans toucher à la qualité : venez **hors saison**, partagez un logement, et concentrez votre stage sur 5 jours consécutifs plutôt que de l'étaler. Guide hébergement : [où dormir pour un stage kitesurf à Hyères](/blog/hebergement-kitesurf-hyeres-ou-dormir).
 
-#### Vous vivez déjà dans le Var
+### Et après le stage ?
 
-Dans ce cas, le budget global chute fortement. Sans hébergement ni grand déplacement, vous pouvez choisir plus librement entre stage, séances à la carte et cours particulier. **Budget total estimé : 230 à 500 €.**
+Une fois autonome, le budget chute : la [location de matériel kitesurf](/location-materiel-kitesurf-hyeres) à la journée ou à la semaine vous permet de continuer à naviguer sur l'Almanarre sans racheter d'équipement complet immédiatement. C'est l'étape logique entre le stage et l'achat d'un quiver perso.
 
-### Comment réduire le budget sans sacrifier la qualité
+## Trois profils, trois budgets concrets
 
-Le meilleur levier n'est pas de choisir systématiquement l'option la moins chère. Il vaut mieux privilégier une formule adaptée à votre objectif, à votre rythme et à votre temps disponible. Un stage bien encadré, avec progression logique, petits groupes et [sécurité renforcée par bateau d'assistance](/blog/pourquoi-bateau-assistance-essentiel), vous fera souvent gagner plus de temps et donc plus de valeur.
+### Vous venez 5 jours pour apprendre (cas le plus fréquent)
+Stage 100% Glisse + logement + repas + trajet. **Budget total : 800 € à 1 400 €** selon la saison.
 
-Si vous débutez vraiment, le format long reste le plus rentable à moyen terme. Il favorise la répétition, la confiance et la continuité de l'apprentissage. Découvrez notre [guide complet pour débuter le kitesurf à Hyères](/blog/debuter-kitesurf-hyeres-guide-complet).
+### Vous êtes en court séjour (week-end)
+Un [cours particulier](/cours-particulier-kitesurf-hyeres) ou semi-privé optimise un temps limité. **Budget total : 400 € à 800 €.**
 
-### FAQ : vos questions sur le budget kitesurf
+### Vous vivez dans le Var
+Pas d'hébergement, choix libre entre stage, sessions à la carte ou particulier. **Budget total : 230 € à 500 €.**
+
+## Pourquoi le « moins cher » coûte souvent plus cher
+
+Choisir une école au prix le plus bas, c'est souvent payer **deux fois** : une fois le stage, une fois les heures supplémentaires pour rattraper ce qui n'a pas été acquis. Chez Kitesurf Passion, ce qui justifie le tarif :
+
+- **Sécurité** : bateau d'assistance + radio à chaque session, moniteurs diplômés d'État, [protocoles éprouvés](/blog/pourquoi-bateau-assistance-essentiel)
+- **Matériel Duotone récent** renouvelé chaque saison
+- **Petits groupes** (4 max) pour un vrai suivi personnalisé
+- **École active depuis 1999** sur l'Almanarre — découvrez notre histoire et notre équipe sur la page [à propos de l'école](/a-propos-ecole-kitesurf-hyeres)
+- **Jour sans vent ?** Une activité tractée (foil tracté, wakeboard) est proposée pour ne pas perdre votre journée
+
+## FAQ : prix stage kitesurf Hyères
 
 **Quel est le prix moyen d'un stage de kitesurf à Hyères ?**
-Le stage 5 jours (formule la plus populaire) coûte entre 399 € et 499 € selon la saison chez KiteSurf Passion. C'est la formule la plus rentable pour un débutant souhaitant acquérir les bases complètes.
+Comptez **399 € à 499 €** pour un stage 5 jours collectif chez Kitesurf Passion, selon la saison. C'est la formule la plus rentable pour un débutant qui vise l'autonomie.
 
 **Le matériel est-il inclus dans le prix du stage ?**
-Oui, toutes nos formules incluent l'intégralité du matériel : aile, planche, harnais, combinaison, casque et gilet de flottaison. Aucun supplément matériel à prévoir.
+Oui, l'intégralité du matériel Duotone (aile, planche, harnais, combinaison, casque, gilet) est incluse. Aucun supplément matériel à prévoir.
 
 **Est-ce moins cher d'apprendre le kitesurf hors saison ?**
-Oui, les tarifs basse saison (octobre à mars) permettent d'économiser jusqu'à 150 € sur un stage 5 jours. Les conditions de vent sont souvent excellentes au printemps et en automne.
+Oui. Vous économisez **100 € à 150 €** sur un stage 5 jours en avril–juin ou septembre–octobre, avec d'excellentes conditions de vent sur l'Almanarre.
+
+**Faut-il une licence FFVL en plus du stage ?**
+Oui, la **licence FFVL** est obligatoire pour pratiquer le kitesurf en école. Elle couvre votre assurance responsabilité civile. Comptez environ **65 €** pour la licence annuelle (ou licence temporaire à la journée selon les cas).
 
 **Peut-on payer le stage en plusieurs fois ?**
-Contactez-nous directement pour discuter des modalités de paiement. Un acompte est demandé à la réservation pour confirmer votre place.
+Un acompte de **50 €** est demandé en ligne pour confirmer la réservation, le solde est réglé sur place. Contactez-nous pour discuter d'un échelonnement si besoin.
 
 **Y a-t-il des frais cachés ?**
-Non. Le prix affiché comprend le stage, le moniteur diplômé, le matériel complet et le bateau d'assistance. Seuls le logement, les repas et le transport restent à votre charge.
+Non. Le tarif comprend moniteur diplômé, matériel complet, bateau d'assistance et radio. Seuls le logement, les repas, le transport et la licence FFVL restent à votre charge.
+
+**Combien coûte un cours particulier kitesurf à Hyères ?**
+**230 € pour 2 heures** hors saison, **380 €** en juillet/août. Idéal pour débloquer une difficulté ou progresser vite sur un temps court.
 
 ---
 
-Vous avez maintenant toutes les clés pour estimer votre budget kitesurf à Hyères. [Réservez votre stage](/contact-reservation-kitesurf-hyeres) dès maintenant ou appelez-nous au 06 72 71 69 05 pour un conseil personnalisé. Yoanne et son équipe sont là pour vous aider à trouver la formule idéale.
+## Réservez votre stage de kitesurf à Hyères
+
+Vous avez désormais toutes les clés pour estimer votre **budget kitesurf à Hyères** et choisir la formule la plus rentable. Notre équipe vous conseille gratuitement pour adapter le stage à votre niveau, votre temps et votre budget.
+
+👉 [**Réservez votre stage en ligne**](/contact-reservation-kitesurf-hyeres) (acompte 50 €) ou appelez Yoanne au **06 72 71 69 05**. Découvrez aussi nos [cours et stages](/tarifs-cours-kitesurf-wingfoil-hyeres), notre [location matériel](/location-materiel-kitesurf-hyeres) et l'[histoire de l'école depuis 1999](/a-propos-ecole-kitesurf-hyeres).
     `,
     tags: ["Kitesurf", "Prix", "Budget", "Stage", "Hyères", "Tarifs", "Almanarre", "Débutant"],
   },
