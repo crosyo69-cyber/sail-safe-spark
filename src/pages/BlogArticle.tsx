@@ -4996,6 +4996,13 @@ Parce que l'école s'appuie sur plus de 25 ans d'expérience, plus de 2 500 él�
 
 // FAQ structured data for articles with FAQ sections (FAQPage schema for Google rich snippets)
 const articleFAQData: Record<string, Array<{ question: string; answer: string }>> = {
+  "quelle-aile-choisir-almanarre": [
+    { question: "Quelle aile de kitesurf choisir à l'Almanarre pour 20 nœuds ?", answer: "Pour un rider moyen en twin-tip, une 9 ou 10 m² est souvent une bonne base, mais il faut aussi tenir compte du type de vent (Mistral plus rafaleux ou vent d'Est plus régulier) et de votre niveau technique." },
+    { question: "Faut-il une aile plus petite en Mistral qu'en vent d'Est ?", answer: "Oui, très souvent. Le Mistral est généralement plus sec, plus fort et plus rafaleux que le vent d'Est à l'Almanarre, ce qui pousse à réduire la surface pour conserver du contrôle." },
+    { question: "Le poids du rider change-t-il vraiment le choix de l'aile ?", answer: "Oui. Plus le rider est lourd, plus il aura besoin de puissance pour partir tôt et tenir son planning. Un rider léger pourra utiliser une aile plus petite dans les mêmes conditions de vent." },
+    { question: "Peut-on utiliser la même aile en twin-tip et en foil ?", answer: "Techniquement oui, mais en kitefoil on utilise souvent une taille plus petite car le foil décolle beaucoup plus tôt qu'un twin-tip. Un rider en 12 m² en twin-tip pourra parfois naviguer en 7 ou 8 m² en foil." },
+    { question: "Que faire si j'hésite entre deux tailles d'ailes ?", answer: "En cas de doute, demandez conseil à une école locale comme Kitesurf Passion à Hyères et privilégiez toujours la sécurité, surtout si vous êtes débutant. Mieux vaut être légèrement sous-toilé que surtoilé." },
+  ],
   "stage-kitesurf-debutant-hyeres": [
     { question: "Quel est le meilleur stage de kitesurf pour débuter à Hyères ?", answer: "Un stage progressif sur plusieurs jours est souvent le meilleur choix pour un débutant. Kitesurf Passion propose un stage 5 jours avec progression structurée, petits groupes et bateau d'assistance." },
     { question: "Peut-on apprendre le kitesurf à l'Almanarre quand on n'a jamais essayé ?", answer: "Oui, le spot de l'Almanarre est adapté à l'apprentissage grâce à sa baie protégée, ses eaux plus plates et sa zone débutants." },
