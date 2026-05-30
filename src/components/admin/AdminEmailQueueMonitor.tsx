@@ -271,6 +271,43 @@ const AdminEmailQueueMonitor = () => {
     });
   }, [queueRows, statusFilter, search]);
 
+  // Chart data: status breakdown per template
+  const templateStatusData = useMemo(() => {
+    const map = new Map<string, { pending: number; sent: number; dlq: number; suppressed: number; bounced: number; total: number }>();
+    for (const r of queueRows) {
+      const t = r.template_name;
+      if (!map.has(t)) map.set(t, { pending: 0, sent: 0, dlq: 0, suppressed: 0, bounced: 0, total: 0 });
+      const entry = map.get(t)!;
+      entry.total++;
+      if (r.current_status === "pending") entry.pending++;
+      else if (r.current_status === "sent") entry.sent++;
+      else if (r.current_status === "dlq" || r.current_status === "failed") entry.dlq++;
+      else if (r.current_status === "suppressed") entry.suppressed++;
+      else if (r.current_status === "bounced") entry.bounced++;
+    }
+    return Array.from(map.entries())
+      .map(([name, vals]) => ({ name, ...vals }))
+      .sort((a, b) => b.total - a.total);
+  }, [queueRows]);
+
+  // Chart data: average processing time (seconds) per template for sent emails
+  const avgTimeData = useMemo(() => {
+    const sums = new Map<string, { totalMs: number; count: number }>();
+    for (const r of queueRows) {
+      if (r.current_status !== "sent") continue;
+      const t = r.template_name;
+      const ms = new Date(r.last_event_at).getTime() - new Date(r.enqueued_at).getTime();
+      const prev = sums.get(t) || { totalMs: 0, count: 0 };
+      sums.set(t, { totalMs: prev.totalMs + ms, count: prev.count + 1 });
+    }
+    return Array.from(sums.entries())
+      .map(([name, { totalMs, count }]) => ({
+        name,
+        avgSec: count > 0 ? Math.round(totalMs / count / 1000) : 0,
+      }))
+      .sort((a, b) => b.avgSec - a.avgSec);
+  }, [queueRows]);
+
   const paginated = filtered.slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE);
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
 
