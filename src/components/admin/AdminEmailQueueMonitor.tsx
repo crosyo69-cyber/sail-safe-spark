@@ -16,6 +16,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { Loader2, RefreshCw, Clock, CheckCircle2, XCircle, AlertTriangle, Inbox, RotateCw } from "lucide-react";
 
@@ -40,6 +47,7 @@ type QueueRow = {
   last_event_at: string;
   last_error: string | null;
   history: { status: string; at: string; error: string | null }[];
+  entries: EmailLog[];
 };
 
 const TIME_RANGES = [
@@ -171,6 +179,7 @@ const AdminEmailQueueMonitor = () => {
         last_event_at: latest.created_at,
         last_error: firstError,
         history: sorted.map((r) => ({ status: r.status, at: r.created_at, error: r.error_message })),
+        entries: sorted,
       });
     }
     return rows.sort(
