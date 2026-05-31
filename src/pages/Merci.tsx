@@ -14,6 +14,20 @@ import { GoogleAdsConversionLog } from "@/components/debug/GoogleAdsConversionLo
 
 const Merci = () => {
   useEffect(() => {
+    // Direct, unconditional Google Ads conversion call.
+    // Fires at mount without any consent gate — RGPD is handled by
+    // Google Consent Mode v2 (ad_storage / ad_user_data signals).
+    try {
+      const w = window as unknown as { gtag?: (...args: unknown[]) => void };
+      if (typeof w.gtag === 'function') {
+        w.gtag('event', 'conversion', {
+          send_to: 'AW-974052357/s2n0CL3puI4cEIW4u9AD',
+        });
+      }
+    } catch {
+      /* never let analytics break the page */
+    }
+
     // GTM-driven trigger (preferred): fires even on direct navigation, and
     // works independently of GA4/Ads init order. GTM must have a Custom
     // Event trigger on `merci_conversion` wired to the Ads conversion tag.
