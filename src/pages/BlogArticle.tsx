@@ -4506,6 +4506,9 @@ Notre [équipe pédagogique](/a-propos-ecole-kitesurf-hyeres) est composée de m
 
 ## FAQ
 
+**Cours particulier ou cours collectif de kitesurf : lequel choisir ?**
+Le cours particulier est plus rapide et personnalisé ; le cours collectif est plus économique et convivial. Le particulier convient à ceux qui veulent débloquer un point précis ou progresser vite, le collectif aux débutants qui veulent découvrir en groupe. Comparez les deux formats sur la page [cours de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant).
+
 **Combien d'élèves y a-t-il dans un cours collectif ?**
 3 à 4 élèves maximum par moniteur. Chez Kitesurf Passion, nous plafonnons volontairement nos [cours collectifs de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant) à ce ratio, bien en dessous des 6 à 8 élèves pratiqués ailleurs, pour garantir du temps d'eau et un encadrement sécurisé sur l'Almanarre.
 
@@ -4513,19 +4516,19 @@ Notre [équipe pédagogique](/a-propos-ecole-kitesurf-hyeres) est composée de m
 Oui, un cours particulier est plus intense qu'un cours collectif. L'absence de pause (le roulement du groupe sert aussi à récupérer) rend la séance plus exigeante physiquement : nos [cours particuliers de kitesurf à Hyères](/cours-particulier-kitesurf-hyeres) durent donc 2 heures, format calibré pour rester concentré du début à la fin.
 
 **Peut-on faire un cours semi-privé en couple ?**
-Oui, le cours semi-privé est parfait pour un couple. C'est même l'une de nos formules les plus demandées par les couples en vacances à Hyères, à condition d'avoir des poids et niveaux proches. Le format est intégré dans notre [stage semi-privé kitesurf 100 % Glisse](/stage-kitesurf-100-glisse-hyeres).
+Oui, le cours semi-privé est la formule idéale pour un couple. C'est même l'une de nos formules les plus demandées par les couples en vacances à Hyères, à condition d'avoir des poids et niveaux proches. Le format est intégré dans notre [stage semi-privé kitesurf 100 % Glisse](/stage-kitesurf-100-glisse-hyeres).
 
-**Quel est le prix d'un cours particulier kitesurf Hyères ?**
-160 € hors saison et 180 € en été pour 2 heures. Ce tarif de [cours particulier kitesurf Hyères](/cours-particulier-kitesurf-hyeres) inclut le matériel, le moniteur diplômé d'État et le suivi en bateau d'assistance. Comparez toutes les formules sur la page [tarifs cours kitesurf Hyères](/tarifs-cours-kitesurf-wingfoil-hyeres).
+**Peut-on apprendre le kitesurf à l'Almanarre en un week-end ?**
+Un week-end suffit pour découvrir les bases, pas pour devenir autonome. Pour apprendre kitesurf Almanarre sur un temps court, privilégiez le [cours particulier](/cours-particulier-kitesurf-hyeres) ou le semi-privé qui condensent la progression ; pour viser l'autonomie, comptez plutôt un [stage de kitesurf de 3 à 5 jours](/stage-kitesurf-100-glisse-hyeres).
 
-**Le cours particulier inclut-il le bateau ?**
-Oui, le bateau d'assistance est inclus dans toutes nos formules. Sans exception, cours particulier, semi-privé ou collectif sont suivis en mer : c'est un engagement fondamental de [l'école Kitesurf Passion](/a-propos-ecole-kitesurf-hyeres) pour la sécurité et la progression.
-
-**Quel moniteur kite Hyères m'encadrera pendant mon cours ?**
+**Quel moniteur kite à Hyères m'encadrera pendant mon cours ?**
 Un moniteur kite Hyères diplômé d'État (BPJEPS), formé et expérimenté. Yoanne Cros, fondateur de [Kitesurf Passion depuis 1999](/a-propos-ecole-kitesurf-hyeres), supervise personnellement la qualité pédagogique de chaque session sur l'Almanarre.
 
-**Est-ce que je peux apprendre kitesurf Almanarre en un week-end ?**
-Un week-end suffit pour découvrir les bases, pas pour devenir autonome. Pour apprendre kitesurf Almanarre sur un temps court, privilégiez le [cours particulier](/cours-particulier-kitesurf-hyeres) ou le semi-privé qui condensent la progression ; pour viser l'autonomie, comptez plutôt un [stage de kitesurf de 3 à 5 jours](/stage-kitesurf-100-glisse-hyeres).
+**Le cours particulier inclut-il le bateau d'assistance ?**
+Oui, le bateau d'assistance est inclus dans toutes nos formules. Sans exception, cours particulier, semi-privé ou collectif sont suivis en mer : c'est un engagement fondamental de [l'école Kitesurf Passion](/a-propos-ecole-kitesurf-hyeres) pour la sécurité et la progression.
+
+**Quel est le prix d'un cours particulier kitesurf à Hyères ?**
+160 € hors saison et 180 € en été pour 2 heures. Ce tarif de [cours particulier kitesurf Hyères](/cours-particulier-kitesurf-hyeres) inclut le matériel, le moniteur diplômé d'État et le suivi en bateau d'assistance. Comparez toutes les formules sur la page [tarifs cours kitesurf Hyères](/tarifs-cours-kitesurf-wingfoil-hyeres).
 
 ---
 
@@ -5091,13 +5094,14 @@ const articleFAQData: Record<string, Array<{ question: string; answer: string }>
     { question: "Y a-t-il des frais cachés ?", answer: "Non. Le prix affiché comprend le stage, le moniteur diplômé, le matériel complet et le bateau d'assistance. Seuls le logement, les repas et le transport restent à votre charge." },
   ],
   "cours-particulier-ou-collectif-kitesurf-hyeres": [
+    { question: "Cours particulier ou cours collectif de kitesurf : lequel choisir ?", answer: "Le cours particulier est plus rapide et personnalisé ; le cours collectif est plus économique et convivial. Le particulier convient à ceux qui veulent débloquer un point précis ou progresser vite, le collectif aux débutants qui veulent découvrir en groupe." },
     { question: "Combien d'élèves y a-t-il dans un cours collectif ?", answer: "3 à 4 élèves maximum par moniteur. Chez Kitesurf Passion, nous plafonnons volontairement nos cours collectifs de kitesurf à Hyères à ce ratio, bien en dessous des 6 à 8 élèves pratiqués ailleurs, pour garantir du temps d'eau et un encadrement sécurisé sur l'Almanarre." },
     { question: "Le cours particulier fatigue-t-il plus vite ?", answer: "Oui, un cours particulier est plus intense qu'un cours collectif. L'absence de pause (le roulement du groupe sert aussi à récupérer) rend la séance plus exigeante physiquement : nos cours particuliers de kitesurf à Hyères durent donc 2 heures, format calibré pour rester concentré du début à la fin." },
-    { question: "Peut-on faire un cours semi-privé en couple ?", answer: "Oui, le cours semi-privé est parfait pour un couple. C'est même l'une de nos formules les plus demandées par les couples en vacances à Hyères, à condition d'avoir des poids et niveaux proches. Le format est intégré dans notre stage semi-privé kitesurf 100 % Glisse." },
-    { question: "Quel est le prix d'un cours particulier kitesurf Hyères ?", answer: "160 € hors saison et 180 € en été pour 2 heures. Ce tarif de cours particulier kitesurf Hyères inclut le matériel, le moniteur diplômé d'État et le suivi en bateau d'assistance." },
-    { question: "Le cours particulier inclut-il le bateau ?", answer: "Oui, le bateau d'assistance est inclus dans toutes nos formules. Sans exception, cours particulier, semi-privé ou collectif sont suivis en mer : c'est un engagement fondamental de l'école Kitesurf Passion pour la sécurité et la progression." },
-    { question: "Quel moniteur kite Hyères m'encadrera pendant mon cours ?", answer: "Un moniteur kite Hyères diplômé d'État (BPJEPS), formé et expérimenté. Yoanne Cros, fondateur de Kitesurf Passion depuis 1999, supervise personnellement la qualité pédagogique de chaque session sur l'Almanarre." },
-    { question: "Est-ce que je peux apprendre kitesurf Almanarre en un week-end ?", answer: "Un week-end suffit pour découvrir les bases, pas pour devenir autonome. Pour apprendre kitesurf Almanarre sur un temps court, privilégiez le cours particulier ou le semi-privé qui condensent la progression ; pour viser l'autonomie, comptez plutôt un stage de kitesurf de 3 à 5 jours." },
+    { question: "Peut-on faire un cours semi-privé en couple ?", answer: "Oui, le cours semi-privé est la formule idéale pour un couple. C'est même l'une de nos formules les plus demandées par les couples en vacances à Hyères, à condition d'avoir des poids et niveaux proches. Le format est intégré dans notre stage semi-privé kitesurf 100 % Glisse." },
+    { question: "Peut-on apprendre le kitesurf à l'Almanarre en un week-end ?", answer: "Un week-end suffit pour découvrir les bases, pas pour devenir autonome. Pour apprendre kitesurf Almanarre sur un temps court, privilégiez le cours particulier ou le semi-privé qui condensent la progression ; pour viser l'autonomie, comptez plutôt un stage de kitesurf de 3 à 5 jours." },
+    { question: "Quel moniteur kite à Hyères m'encadrera pendant mon cours ?", answer: "Un moniteur kite Hyères diplômé d'État (BPJEPS), formé et expérimenté. Yoanne Cros, fondateur de Kitesurf Passion depuis 1999, supervise personnellement la qualité pédagogique de chaque session sur l'Almanarre." },
+    { question: "Le cours particulier inclut-il le bateau d'assistance ?", answer: "Oui, le bateau d'assistance est inclus dans toutes nos formules. Sans exception, cours particulier, semi-privé ou collectif sont suivis en mer : c'est un engagement fondamental de l'école Kitesurf Passion pour la sécurité et la progression." },
+    { question: "Quel est le prix d'un cours particulier kitesurf à Hyères ?", answer: "160 € hors saison et 180 € en été pour 2 heures. Ce tarif de cours particulier kitesurf Hyères inclut le matériel, le moniteur diplômé d'État et le suivi en bateau d'assistance." },
   ],
   "stage-kitesurf-hyeres-3-jours-ou-5-jours": [
     { question: "Un stage de 3 jours suffit-il pour apprendre le kitesurf ?", answer: "Un format de 3 jours peut suffire pour découvrir la discipline, apprendre les bases de sécurité et commencer les premiers exercices. En revanche, il est souvent trop court pour viser une autonomie solide." },
