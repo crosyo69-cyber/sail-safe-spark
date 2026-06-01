@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -13,7 +13,12 @@ import { ConversionStatusIndicator } from "@/components/debug/ConversionStatusIn
 import { GoogleAdsConversionLog } from "@/components/debug/GoogleAdsConversionLog";
 
 const Merci = () => {
+  const hasFiredRef = useRef(false);
+
   useEffect(() => {
+    if (hasFiredRef.current) return;
+    hasFiredRef.current = true;
+
     // Direct, unconditional Google Ads conversion call.
     // Fires at mount without any consent gate — RGPD is handled by
     // Google Consent Mode v2 (ad_storage / ad_user_data signals).
