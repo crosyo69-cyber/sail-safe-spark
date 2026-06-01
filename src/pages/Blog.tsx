@@ -578,8 +578,8 @@ export const blogArticles = [
   },
   {
     slug: "cours-particulier-ou-collectif-kitesurf-hyeres",
-    title: "Cours particulier ou collectif kitesurf Hyères : que choisir ?",
-    excerpt: "Hésitez-vous entre un cours particulier et un stage collectif de kitesurf à Hyères ? Découvrez les avantages de chaque formule pour apprendre à l'Almanarre.",
+    title: "Cours particulier kitesurf Hyères : que choisir ?",
+    excerpt: "Cours particulier kitesurf Hyères ou stage collectif ? Comparez les avantages, les tarifs et les profils pour choisir la bonne formule à l'Almanarre avec Kitesurf Passion.",
     category: "Kitesurf",
     date: "2026-04-01",
     readTime: "10 min",
