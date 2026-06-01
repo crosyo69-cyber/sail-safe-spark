@@ -4415,7 +4415,7 @@ Chez Kitesurf Passion, les groupes sont limités à **3 ou 4 élèves par monite
 
 ## Pourquoi choisir le cours particulier kitesurf Hyères ?
 
-Le cours particulier kitesurf Hyères est la formule premium pour ceux qui veulent aller vite ou qui ont des objectifs précis. Avec un moniteur diplômé d'État dédié, chaque minute sur l'eau est optimisée.
+Le cours particulier kitesurf Hyères est la formule premium pour ceux qui veulent aller vite ou qui ont des objectifs précis. Avec un moniteur kite Hyères diplômé d'État dédié, chaque minute sur l'eau est optimisée.
 
 ### Une progression 100% personnalisée
 
