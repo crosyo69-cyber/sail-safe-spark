@@ -4391,7 +4391,7 @@ Vous avez désormais toutes les clés pour estimer votre **budget kitesurf à Hy
   "cours-particulier-ou-collectif-kitesurf-hyeres": {
     content: `
 
-Choisir la bonne formule d'apprentissage est crucial pour progresser rapidement et en toute sécurité en kitesurf. À l'école Kitesurf Passion sur le spot de l'Almanarre, nous proposons plusieurs approches pédagogiques. Faut-il opter pour l'émulation d'un cours collectif, ou pour le suivi sur-mesure d'un cours particulier kitesurf Hyères ? Voici notre guide pour faire le bon choix.
+Choisir la bonne formule d'apprentissage est crucial pour progresser rapidement et en toute sécurité en kitesurf. À l'[école Kitesurf Passion](/a-propos-ecole-kitesurf-hyeres) sur le spot de l'Almanarre, nous proposons plusieurs [cours de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant) adaptés à tous les niveaux. Faut-il opter pour l'émulation d'un cours collectif, ou pour le suivi sur-mesure d'un cours particulier kitesurf Hyères ? Voici notre guide pour faire le bon choix.
 
 ## Cours particulier kitesurf Hyères : la formule premium sur-mesure
 
@@ -4449,7 +4449,7 @@ Le choix de la formule dépend avant tout de votre expérience et de vos objecti
 
 ### Vrai débutant : l'intérêt du stage collectif 5 jours pour apprendre kitesurf Almanarre
 
-Si vous n'avez jamais touché une aile de kitesurf, le **stage 100% Glisse sur 5 jours** est notre recommandation n°1 pour apprendre kitesurf Almanarre. Pourquoi ?
+Si vous n'avez jamais touché une aile de kitesurf, le [**stage 100% Glisse sur 5 jours**](/stage-kitesurf-100-glisse-hyeres) est notre recommandation n°1 pour apprendre kitesurf Almanarre. Pourquoi ?
 
 - **Régularité** : 5 jours consécutifs permettent de consolider les acquis sans oublier entre les séances
 - **Progression structurée** : du pilotage de l'aile au sol jusqu'au waterstart, chaque étape est franchie méthodiquement
