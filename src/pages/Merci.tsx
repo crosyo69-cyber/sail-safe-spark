@@ -18,11 +18,20 @@ const Merci = () => {
     // Fires at mount without any consent gate — RGPD is handled by
     // Google Consent Mode v2 (ad_storage / ad_user_data signals).
     try {
+      const key = '__ksp_merci_gtag_count';
+      const prev = Number(sessionStorage.getItem(key) || '0');
+      const next = prev + 1;
+      sessionStorage.setItem(key, String(next));
+      console.log(`[Merci Conversion] #${next} — gtag direct AW-974052357/s2n0CL3puI4cEIW4u9AD`);
+
       const w = window as unknown as { gtag?: (...args: unknown[]) => void };
       if (typeof w.gtag === 'function') {
         w.gtag('event', 'conversion', {
           send_to: 'AW-974052357/s2n0CL3puI4cEIW4u9AD',
         });
+        console.log(`[Merci Conversion] #${next} — gtag event SENT`);
+      } else {
+        console.warn(`[Merci Conversion] #${next} — gtag NOT AVAILABLE`);
       }
     } catch {
       /* never let analytics break the page */
