@@ -16,8 +16,15 @@ const Merci = () => {
   const hasFiredRef = useRef(false);
 
   useEffect(() => {
-    if (hasFiredRef.current) return;
+    const reqId = `merci-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+
+    if (hasFiredRef.current) {
+      console.log(`[Merci Debug] SKIP — reqId ${reqId} : doublon détecté (useRef guard)`);
+      return;
+    }
     hasFiredRef.current = true;
+
+    console.log(`[Merci Debug] START — reqId ${reqId} : première exécution`);
 
     // Direct, unconditional Google Ads conversion call.
     // Fires at mount without any consent gate — RGPD is handled by
