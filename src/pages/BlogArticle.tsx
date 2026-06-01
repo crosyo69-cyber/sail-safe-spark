@@ -4447,9 +4447,9 @@ Le cours semi-privé chez Kitesurf Passion est disponible à **80€ par personn
 
 Le choix de la formule dépend avant tout de votre expérience et de vos objectifs. Voici nos recommandations personnalisées.
 
-### Vrai débutant : l'intérêt du stage collectif 5 jours
+### Vrai débutant : l'intérêt du stage collectif 5 jours pour apprendre kitesurf Almanarre
 
-Si vous n'avez jamais touché une aile de kitesurf, le **stage 100% Glisse sur 5 jours** est notre recommandation n°1. Pourquoi ?
+Si vous n'avez jamais touché une aile de kitesurf, le **stage 100% Glisse sur 5 jours** est notre recommandation n°1 pour apprendre kitesurf Almanarre. Pourquoi ?
 
 - **Régularité** : 5 jours consécutifs permettent de consolider les acquis sans oublier entre les séances
 - **Progression structurée** : du pilotage de l'aile au sol jusqu'au waterstart, chaque étape est franchie méthodiquement
