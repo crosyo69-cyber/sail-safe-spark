@@ -4521,6 +4521,12 @@ Le cours particulier kitesurf Hyères est proposé à 160 € hors saison et 180
 **Le cours particulier inclut-il le bateau ?**
 Oui, le suivi sécurisé en bateau est assuré pour toutes nos formules, sans exception. C'est un engagement fondamental de Kitesurf Passion pour votre sécurité et votre progression.
 
+**Quel moniteur kite Hyères m'encadrera pendant mon cours ?**
+Tous nos cours sont encadrés par un moniteur kite Hyères diplômé d'État (BPJEPS), expérimenté et passionné. Yoanne Cros, fondateur de l'école depuis 1999, supervise personnellement la qualité pédagogique de chaque session.
+
+**Est-ce que je peux apprendre kitesurf Almanarre en un week-end ?**
+Un week-end suffit pour découvrir les bases et faire vos premiers bords guidés, mais l'autonomie complète demande généralement un stage de 3 à 5 jours. Pour apprendre kitesurf Almanarre sur un temps court, privilégiez le cours particulier ou semi-privé qui condensent la progression.
+
 ---
 
 Besoin de conseils pour choisir votre formule ? Appelez Kitesurf Passion au **06 72 71 69 05** ou [réservez en ligne](/contact-reservation-kitesurf-hyeres). Vous pouvez aussi consulter nos [tarifs](/tarifs-cours-kitesurf-wingfoil-hyeres) pour comparer toutes les options et trouver la formule parfaite pour votre niveau et vos envies.
