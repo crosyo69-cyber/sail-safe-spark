@@ -4391,7 +4391,11 @@ Vous avez désormais toutes les clés pour estimer votre **budget kitesurf à Hy
   "cours-particulier-ou-collectif-kitesurf-hyeres": {
     content: `
 
-Choisir la bonne formule d'apprentissage est crucial pour progresser rapidement et en toute sécurité en kitesurf. À l'école Kitesurf Passion sur le spot de l'Almanarre, nous proposons plusieurs approches pédagogiques. Faut-il opter pour l'émulation d'un cours collectif, ou pour le suivi sur-mesure d'un cours particulier ? Voici notre guide pour faire le bon choix.
+Choisir la bonne formule d'apprentissage est crucial pour progresser rapidement et en toute sécurité en kitesurf. À l'école Kitesurf Passion sur le spot de l'Almanarre, nous proposons plusieurs approches pédagogiques. Faut-il opter pour l'émulation d'un cours collectif, ou pour le suivi sur-mesure d'un cours particulier kitesurf Hyères ? Voici notre guide pour faire le bon choix.
+
+## Cours particulier kitesurf Hyères : la formule premium sur-mesure
+
+Le cours particulier kitesurf Hyères est la formule la plus personnalisée que propose Kitesurf Passion. Avec un moniteur diplômé d'État dédié, chaque minute sur l'eau est optimisée selon votre niveau, votre morphologie et vos objectifs.
 
 ## Les avantages du cours collectif en kitesurf
 
@@ -4409,9 +4413,9 @@ Un avantage souvent sous-estimé du cours collectif : le temps de rotation. Pend
 
 Chez Kitesurf Passion, les groupes sont limités à **3 ou 4 élèves par moniteur**. Le rythme est ainsi parfaitement calibré : suffisamment de temps de pratique pour progresser, et assez de repos pour rester lucide et performant tout au long de la séance.
 
-## Pourquoi choisir le cours particulier de kitesurf à Hyères ?
+## Pourquoi choisir le cours particulier kitesurf Hyères ?
 
-Le cours particulier est la formule premium pour ceux qui veulent aller vite ou qui ont des objectifs précis. Avec un moniteur diplômé d'État dédié, chaque minute sur l'eau est optimisée.
+Le cours particulier kitesurf Hyères est la formule premium pour ceux qui veulent aller vite ou qui ont des objectifs précis. Avec un moniteur diplômé d'État dédié, chaque minute sur l'eau est optimisée.
 
 ### Une progression 100% personnalisée
 
@@ -4454,7 +4458,7 @@ Si vous n'avez jamais touché une aile de kitesurf, le **stage 100% Glisse sur 5
 
 ### Niveau intermédiaire : l'heure de cours particulier
 
-Vous savez déjà naviguer mais vous voulez perfectionner votre technique ? Le cours particulier à l'heure est fait pour vous. En 1 à 2 séances ciblées, vous pouvez :
+Vous savez déjà naviguer mais vous voulez perfectionner votre technique ? Le cours particulier kitesurf Hyères à l'heure est fait pour vous. En 1 à 2 séances ciblées, vous pouvez :
 
 - Corriger une mauvaise habitude (position du corps, pilotage de barre)
 - Apprendre une nouvelle manœuvre (transition, saut, ride en toeside)
@@ -4511,6 +4515,9 @@ Oui, l'absence de pause (contrairement au roulement du collectif) rend la séanc
 **Peut-on faire un cours semi-privé en couple ?**
 Absolument, c'est la formule idéale si vous avez des poids et des niveaux similaires. C'est d'ailleurs l'une de nos formules les plus demandées par les couples en vacances à Hyères.
 
+**Quel est le prix d'un cours particulier kitesurf Hyères ?**
+Le cours particulier kitesurf Hyères est proposé à 160 € hors saison et 180 € en été pour une séance de 2 heures. Ce tarif inclut le matériel, l'encadrement par un moniteur diplômé d'État et le suivi en bateau d'assistance.
+
 **Le cours particulier inclut-il le bateau ?**
 Oui, le suivi sécurisé en bateau est assuré pour toutes nos formules, sans exception. C'est un engagement fondamental de Kitesurf Passion pour votre sécurité et votre progression.
 
@@ -4518,7 +4525,7 @@ Oui, le suivi sécurisé en bateau est assuré pour toutes nos formules, sans ex
 
 Besoin de conseils pour choisir votre formule ? Appelez Kitesurf Passion au **06 72 71 69 05** ou [réservez en ligne](/contact-reservation-kitesurf-hyeres). Vous pouvez aussi consulter nos [tarifs](/tarifs-cours-kitesurf-wingfoil-hyeres) pour comparer toutes les options et trouver la formule parfaite pour votre niveau et vos envies.
     `,
-    tags: ["Kitesurf", "Cours Particulier", "Cours Collectif", "Hyères", "Almanarre", "Stage", "Formules", "Semi-Privé"],
+    tags: ["cours particulier kitesurf Hyères", "Kitesurf", "Cours Particulier", "Cours Collectif", "Hyères", "Almanarre", "Stage", "Formules", "Semi-Privé"],
   },
   "stage-kitesurf-debutant-hyeres": {
     content: `
