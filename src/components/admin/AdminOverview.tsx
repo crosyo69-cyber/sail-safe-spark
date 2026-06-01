@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Users, CalendarDays, ChevronDown, ChevronUp, Mail, Phone, CreditCard, RefreshCw, Download, Send } from "lucide-react";
+import { Users, CalendarDays, ChevronDown, ChevronUp, Mail, Phone, CreditCard, RefreshCw, Download, Send, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 
@@ -79,6 +79,7 @@ const AdminOverview = () => {
   const [expandedSessions, setExpandedSessions] = useState<Set<string>>(new Set());
   const [showPast, setShowPast] = useState(false);
   const [sendingSummary, setSendingSummary] = useState(false);
+  const [resubmittingSitemap, setResubmittingSitemap] = useState(false);
 
   const sendWeeklySummary = async () => {
     setSendingSummary(true);
@@ -90,6 +91,29 @@ const AdminOverview = () => {
       toast({ title: "Erreur", description: e.message || "Impossible d'envoyer le résumé", variant: "destructive" });
     } finally {
       setSendingSummary(false);
+    }
+  };
+
+  const resubmitSitemap = async () => {
+    setResubmittingSitemap(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("resubmit-sitemap-gsc", { body: { trigger: "manual-admin" } });
+      if (error) throw error;
+      const submitted = data?.status?.contents?.[0]?.submitted;
+      toast({
+        title: "Sitemap relancé ✓",
+        description: submitted
+          ? `Google a reçu la demande (${submitted} URLs). Recrawl prioritaire en cours.`
+          : "Google a reçu la demande de recrawl.",
+      });
+    } catch (e: any) {
+      toast({
+        title: "Erreur",
+        description: e.message || "Impossible de relancer la soumission GSC",
+        variant: "destructive",
+      });
+    } finally {
+      setResubmittingSitemap(false);
     }
   };
 
@@ -228,6 +252,17 @@ const AdminOverview = () => {
         >
           <Send className="w-3 h-3" />
           {sendingSummary ? "Envoi…" : "Résumé hebdo"}
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={resubmitSitemap}
+          disabled={resubmittingSitemap}
+          className="gap-1"
+          title="Resoumettre sitemap.xml à Google Search Console"
+        >
+          <Globe className="w-3 h-3" />
+          {resubmittingSitemap ? "Envoi…" : "Relancer GSC maintenant"}
         </Button>
       </div>
 
