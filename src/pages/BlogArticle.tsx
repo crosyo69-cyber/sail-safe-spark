@@ -4391,7 +4391,7 @@ Vous avez désormais toutes les clés pour estimer votre **budget kitesurf à Hy
   "cours-particulier-ou-collectif-kitesurf-hyeres": {
     content: `
 
-Choisir la bonne formule d'apprentissage est crucial pour progresser rapidement et en toute sécurité en kitesurf. À l'école Kitesurf Passion sur le spot de l'Almanarre, nous proposons plusieurs approches pédagogiques. Faut-il opter pour l'émulation d'un cours collectif, ou pour le suivi sur-mesure d'un cours particulier kitesurf Hyères ? Voici notre guide pour faire le bon choix.
+Choisir la bonne formule d'apprentissage est crucial pour progresser rapidement et en toute sécurité en kitesurf. À l'[école Kitesurf Passion](/a-propos-ecole-kitesurf-hyeres) sur le spot de l'Almanarre, nous proposons plusieurs [cours de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant) adaptés à tous les niveaux. Faut-il opter pour l'émulation d'un cours collectif, ou pour le suivi sur-mesure d'un cours particulier kitesurf Hyères ? Voici notre guide pour faire le bon choix.
 
 ## Cours particulier kitesurf Hyères : la formule premium sur-mesure
 
