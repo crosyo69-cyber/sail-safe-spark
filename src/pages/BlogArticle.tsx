@@ -4515,6 +4515,9 @@ Oui, l'absence de pause (contrairement au roulement du collectif) rend la séanc
 **Peut-on faire un cours semi-privé en couple ?**
 Absolument, c'est la formule idéale si vous avez des poids et des niveaux similaires. C'est d'ailleurs l'une de nos formules les plus demandées par les couples en vacances à Hyères.
 
+**Quel est le prix d'un cours particulier kitesurf Hyères ?**
+Le cours particulier kitesurf Hyères est proposé à 160 € hors saison et 180 € en été pour une séance de 2 heures. Ce tarif inclut le matériel, l'encadrement par un moniteur diplômé d'État et le suivi en bateau d'assistance.
+
 **Le cours particulier inclut-il le bateau ?**
 Oui, le suivi sécurisé en bateau est assuré pour toutes nos formules, sans exception. C'est un engagement fondamental de Kitesurf Passion pour votre sécurité et votre progression.
 
@@ -4522,7 +4525,7 @@ Oui, le suivi sécurisé en bateau est assuré pour toutes nos formules, sans ex
 
 Besoin de conseils pour choisir votre formule ? Appelez Kitesurf Passion au **06 72 71 69 05** ou [réservez en ligne](/contact-reservation-kitesurf-hyeres). Vous pouvez aussi consulter nos [tarifs](/tarifs-cours-kitesurf-wingfoil-hyeres) pour comparer toutes les options et trouver la formule parfaite pour votre niveau et vos envies.
     `,
-    tags: ["Kitesurf", "Cours Particulier", "Cours Collectif", "Hyères", "Almanarre", "Stage", "Formules", "Semi-Privé"],
+    tags: ["cours particulier kitesurf Hyères", "Kitesurf", "Cours Particulier", "Cours Collectif", "Hyères", "Almanarre", "Stage", "Formules", "Semi-Privé"],
   },
   "stage-kitesurf-debutant-hyeres": {
     content: `
