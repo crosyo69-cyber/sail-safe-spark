@@ -4395,11 +4395,11 @@ Choisir la bonne formule d'apprentissage est crucial pour progresser rapidement 
 
 ## Cours particulier kitesurf Hyères : la formule premium sur-mesure
 
-Le cours particulier kitesurf Hyères est la formule la plus personnalisée que propose Kitesurf Passion. Avec un moniteur diplômé d'État dédié, chaque minute sur l'eau est optimisée selon votre niveau, votre morphologie et vos objectifs.
+Le cours particulier kitesurf Hyères est la formule la plus personnalisée que propose Kitesurf Passion. Avec un moniteur kite Hyères diplômé d'État dédié, chaque minute sur l'eau est optimisée selon votre niveau, votre morphologie et vos objectifs.
 
 ## Les avantages du cours collectif en kitesurf
 
-Le stage collectif reste la formule la plus populaire pour débuter le kitesurf à Hyères. Et pour cause : il offre un cadre motivant, un rythme adapté à l'apprentissage et un excellent rapport qualité-prix.
+Le stage collectif reste la formule la plus populaire pour apprendre kitesurf Almanarre. Et pour cause : il offre un cadre motivant, un rythme adapté à l'apprentissage et un excellent rapport qualité-prix.
 
 ### L'observation et l'apprentissage par mimétisme
 
@@ -4415,7 +4415,7 @@ Chez Kitesurf Passion, les groupes sont limités à **3 ou 4 élèves par monite
 
 ## Pourquoi choisir le cours particulier kitesurf Hyères ?
 
-Le cours particulier kitesurf Hyères est la formule premium pour ceux qui veulent aller vite ou qui ont des objectifs précis. Avec un moniteur diplômé d'État dédié, chaque minute sur l'eau est optimisée.
+Le cours particulier kitesurf Hyères est la formule premium pour ceux qui veulent aller vite ou qui ont des objectifs précis. Avec un moniteur kite Hyères diplômé d'État dédié, chaque minute sur l'eau est optimisée.
 
 ### Une progression 100% personnalisée
 
@@ -4447,9 +4447,9 @@ Le cours semi-privé chez Kitesurf Passion est disponible à **80€ par personn
 
 Le choix de la formule dépend avant tout de votre expérience et de vos objectifs. Voici nos recommandations personnalisées.
 
-### Vrai débutant : l'intérêt du stage collectif 5 jours
+### Vrai débutant : l'intérêt du stage collectif 5 jours pour apprendre kitesurf Almanarre
 
-Si vous n'avez jamais touché une aile de kitesurf, le **stage 100% Glisse sur 5 jours** est notre recommandation n°1. Pourquoi ?
+Si vous n'avez jamais touché une aile de kitesurf, le **stage 100% Glisse sur 5 jours** est notre recommandation n°1 pour apprendre kitesurf Almanarre. Pourquoi ?
 
 - **Régularité** : 5 jours consécutifs permettent de consolider les acquis sans oublier entre les séances
 - **Progression structurée** : du pilotage de l'aile au sol jusqu'au waterstart, chaque étape est franchie méthodiquement
@@ -4494,7 +4494,7 @@ C'est un avantage considérable par rapport aux écoles qui enseignent uniquemen
 
 ### Des groupes réduits (3 à 4 élèves maximum)
 
-Même en formule collective, nos groupes ne dépassent jamais **4 élèves par moniteur diplômé d'État**. Ce ratio garantit :
+Même en formule collective, nos groupes ne dépassent jamais **4 élèves par moniteur kite Hyères diplômé d'État**. Ce ratio garantit :
 
 - Un suivi personnalisé même en groupe
 - Des rotations courtes (plus de temps sur l'eau)
@@ -4520,6 +4520,12 @@ Le cours particulier kitesurf Hyères est proposé à 160 € hors saison et 180
 
 **Le cours particulier inclut-il le bateau ?**
 Oui, le suivi sécurisé en bateau est assuré pour toutes nos formules, sans exception. C'est un engagement fondamental de Kitesurf Passion pour votre sécurité et votre progression.
+
+**Quel moniteur kite Hyères m'encadrera pendant mon cours ?**
+Tous nos cours sont encadrés par un moniteur kite Hyères diplômé d'État (BPJEPS), expérimenté et passionné. Yoanne Cros, fondateur de l'école depuis 1999, supervise personnellement la qualité pédagogique de chaque session.
+
+**Est-ce que je peux apprendre kitesurf Almanarre en un week-end ?**
+Un week-end suffit pour découvrir les bases et faire vos premiers bords guidés, mais l'autonomie complète demande généralement un stage de 3 à 5 jours. Pour apprendre kitesurf Almanarre sur un temps court, privilégiez le cours particulier ou semi-privé qui condensent la progression.
 
 ---
 
@@ -5089,6 +5095,8 @@ const articleFAQData: Record<string, Array<{ question: string; answer: string }>
     { question: "Le cours particulier fatigue-t-il plus vite ?", answer: "Oui, l'absence de pause (contrairement au roulement du collectif) rend la séance plus intense physiquement. C'est pourquoi nos cours particuliers durent 2 heures — un format optimisé pour maintenir concentration et énergie du début à la fin." },
     { question: "Peut-on faire un cours semi-privé en couple ?", answer: "Absolument, c'est la formule idéale si vous avez des poids et des niveaux similaires. C'est d'ailleurs l'une de nos formules les plus demandées par les couples en vacances à Hyères." },
     { question: "Le cours particulier inclut-il le bateau ?", answer: "Oui, le suivi sécurisé en bateau est assuré pour toutes nos formules, sans exception. C'est un engagement fondamental de Kitesurf Passion pour votre sécurité et votre progression." },
+    { question: "Quel moniteur kite Hyères m'encadrera pendant mon cours ?", answer: "Tous nos cours sont encadrés par un moniteur kite Hyères diplômé d'État (BPJEPS), expérimenté et passionné. Yoanne Cros, fondateur de l'école depuis 1999, supervise personnellement la qualité pédagogique de chaque session." },
+    { question: "Est-ce que je peux apprendre kitesurf Almanarre en un week-end ?", answer: "Un week-end suffit pour découvrir les bases et faire vos premiers bords guidés, mais l'autonomie complète demande généralement un stage de 3 à 5 jours. Pour apprendre kitesurf Almanarre sur un temps court, privilégiez le cours particulier ou semi-privé qui condensent la progression." },
   ],
   "stage-kitesurf-hyeres-3-jours-ou-5-jours": [
     { question: "Un stage de 3 jours suffit-il pour apprendre le kitesurf ?", answer: "Un format de 3 jours peut suffire pour découvrir la discipline, apprendre les bases de sécurité et commencer les premiers exercices. En revanche, il est souvent trop court pour viser une autonomie solide." },
