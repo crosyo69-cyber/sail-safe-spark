@@ -4399,7 +4399,7 @@ Le cours particulier kitesurf Hyères est la formule la plus personnalisée que 
 
 ## Les avantages du cours collectif en kitesurf
 
-Le stage collectif reste la formule la plus populaire pour débuter le kitesurf à Hyères. Et pour cause : il offre un cadre motivant, un rythme adapté à l'apprentissage et un excellent rapport qualité-prix.
+Le stage collectif reste la formule la plus populaire pour apprendre kitesurf Almanarre. Et pour cause : il offre un cadre motivant, un rythme adapté à l'apprentissage et un excellent rapport qualité-prix.
 
 ### L'observation et l'apprentissage par mimétisme
 
