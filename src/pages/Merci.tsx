@@ -21,15 +21,18 @@ const Merci = () => {
   const hasFiredRef = useRef(false);
 
   useEffect(() => {
+    const debug = isDebugEnabled();
     const reqId = `merci-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 
     if (hasFiredRef.current) {
-      console.log(`[Merci Debug] SKIP — reqId ${reqId} : doublon détecté (useRef guard)`);
+      if (debug)
+        console.log(`[Merci Debug] SKIP — reqId ${reqId} : doublon détecté (useRef guard)`);
       return;
     }
     hasFiredRef.current = true;
 
-    console.log(`[Merci Debug] START — reqId ${reqId} : première exécution`);
+    if (debug)
+      console.log(`[Merci Debug] START — reqId ${reqId} : première exécution`);
 
     // Direct, unconditional Google Ads conversion call.
     // Fires at mount without any consent gate — RGPD is handled by
@@ -39,16 +42,19 @@ const Merci = () => {
       const prev = Number(sessionStorage.getItem(key) || '0');
       const next = prev + 1;
       sessionStorage.setItem(key, String(next));
-      console.log(`[Merci Conversion] #${next} — gtag direct AW-974052357/s2n0CL3puI4cEIW4u9AD`);
+      if (debug)
+        console.log(`[Merci Conversion] #${next} — gtag direct AW-974052357/s2n0CL3puI4cEIW4u9AD`);
 
       const w = window as unknown as { gtag?: (...args: unknown[]) => void };
       if (typeof w.gtag === 'function') {
         w.gtag('event', 'conversion', {
           send_to: 'AW-974052357/s2n0CL3puI4cEIW4u9AD',
         });
-        console.log(`[Merci Conversion] #${next} — gtag event SENT`);
+        if (debug)
+          console.log(`[Merci Conversion] #${next} — gtag event SENT`);
       } else {
-        console.warn(`[Merci Conversion] #${next} — gtag NOT AVAILABLE`);
+        if (debug)
+          console.warn(`[Merci Conversion] #${next} — gtag NOT AVAILABLE`);
       }
     } catch {
       /* never let analytics break the page */
