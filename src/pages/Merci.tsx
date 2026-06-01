@@ -12,6 +12,11 @@ import { verifyGtagId } from "@/lib/gtag-id-check";
 import { ConversionStatusIndicator } from "@/components/debug/ConversionStatusIndicator";
 import { GoogleAdsConversionLog } from "@/components/debug/GoogleAdsConversionLog";
 
+function isDebugEnabled(): boolean {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).get("debug") === "1";
+}
+
 const Merci = () => {
   const hasFiredRef = useRef(false);
 
