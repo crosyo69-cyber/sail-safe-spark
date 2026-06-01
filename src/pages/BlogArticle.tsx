@@ -4494,7 +4494,7 @@ C'est un avantage considérable par rapport aux écoles qui enseignent uniquemen
 
 ### Des groupes réduits (3 à 4 élèves maximum)
 
-Même en formule collective, nos groupes ne dépassent jamais **4 élèves par moniteur diplômé d'État**. Ce ratio garantit :
+Même en formule collective, nos groupes ne dépassent jamais **4 élèves par moniteur kite Hyères diplômé d'État**. Ce ratio garantit :
 
 - Un suivi personnalisé même en groupe
 - Des rotations courtes (plus de temps sur l'eau)
