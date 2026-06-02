@@ -232,6 +232,45 @@ export type Database = {
         }
         Relationships: []
       }
+      last_minute_subscribers: {
+        Row: {
+          activities: string[]
+          confirm_token: string
+          confirmed: boolean
+          confirmed_at: string | null
+          created_at: string
+          email: string
+          id: string
+          phone: string | null
+          unsubscribe_token: string
+          updated_at: string
+        }
+        Insert: {
+          activities?: string[]
+          confirm_token?: string
+          confirmed?: boolean
+          confirmed_at?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          phone?: string | null
+          unsubscribe_token?: string
+          updated_at?: string
+        }
+        Update: {
+          activities?: string[]
+          confirm_token?: string
+          confirmed?: boolean
+          confirmed_at?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          phone?: string | null
+          unsubscribe_token?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       package_bookings: {
         Row: {
           created_at: string
@@ -390,36 +429,48 @@ export type Database = {
           created_at: string
           date: string
           id: string
+          is_last_minute: boolean
+          last_minute_label: string | null
           max_participants: number
           notes: string | null
+          published_at: string | null
           status: string
           time_slot: Database["public"]["Enums"]["time_slot"]
           updated_at: string
           weather_condition: string | null
+          weather_note: string | null
         }
         Insert: {
           activity: Database["public"]["Enums"]["activity_type"]
           created_at?: string
           date: string
           id?: string
+          is_last_minute?: boolean
+          last_minute_label?: string | null
           max_participants?: number
           notes?: string | null
+          published_at?: string | null
           status?: string
           time_slot: Database["public"]["Enums"]["time_slot"]
           updated_at?: string
           weather_condition?: string | null
+          weather_note?: string | null
         }
         Update: {
           activity?: Database["public"]["Enums"]["activity_type"]
           created_at?: string
           date?: string
           id?: string
+          is_last_minute?: boolean
+          last_minute_label?: string | null
           max_participants?: number
           notes?: string | null
+          published_at?: string | null
           status?: string
           time_slot?: Database["public"]["Enums"]["time_slot"]
           updated_at?: string
           weather_condition?: string | null
+          weather_note?: string | null
         }
         Relationships: []
       }
@@ -531,6 +582,10 @@ export type Database = {
         Args: { p_booking_id: string; p_code: string }
         Returns: Json
       }
+      confirm_last_minute_subscription: {
+        Args: { p_token: string }
+        Returns: boolean
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
@@ -586,6 +641,7 @@ export type Database = {
           read_ct: number
         }[]
       }
+      unsubscribe_last_minute: { Args: { p_token: string }; Returns: boolean }
       unsubscribe_weather_alert: { Args: { p_token: string }; Returns: boolean }
     }
     Enums: {
