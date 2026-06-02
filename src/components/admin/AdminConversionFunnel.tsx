@@ -116,6 +116,8 @@ export default function AdminConversionFunnel() {
   const [eventFilter, setEventFilter] = useState<"all" | "phone_click" | "form_submit">("all");
   const [pageSearch, setPageSearch] = useState("");
   const [sortNewest, setSortNewest] = useState(true);
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -158,11 +160,19 @@ export default function AdminConversionFunnel() {
       const q = pageSearch.trim().toLowerCase();
       list = list.filter((ev) => (ev.page_path || "/").toLowerCase().includes(q));
     }
+    if (dateFrom) {
+      const from = new Date(dateFrom).getTime();
+      list = list.filter((ev) => new Date(ev.created_at).getTime() >= from);
+    }
+    if (dateTo) {
+      const to = new Date(dateTo).getTime();
+      list = list.filter((ev) => new Date(ev.created_at).getTime() <= to);
+    }
     if (!sortNewest) {
       list = list.slice().sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
     }
     return list;
-  }, [liveEvents, eventFilter, pageSearch, sortNewest]);
+  }, [liveEvents, eventFilter, pageSearch, sortNewest, dateFrom, dateTo]);
 
   // Realtime subscription for debug mode
   useEffect(() => {
@@ -291,6 +301,21 @@ export default function AdminConversionFunnel() {
                   {sortNewest ? "Plus récents" : "Plus anciens"}
                 </span>
               </Button>
+              <div className="flex items-center gap-2">
+                <Input
+                  type="datetime-local"
+                  value={dateFrom}
+                  onChange={(e) => setDateFrom(e.target.value)}
+                  className="h-8 text-xs w-[170px]"
+                />
+                <span className="text-xs text-muted-foreground">à</span>
+                <Input
+                  type="datetime-local"
+                  value={dateTo}
+                  onChange={(e) => setDateTo(e.target.value)}
+                  className="h-8 text-xs w-[170px]"
+                />
+              </div>
             </div>
           </CardHeader>
           <CardContent>
