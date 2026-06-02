@@ -1,8 +1,8 @@
 import { memo, useState, useEffect, useCallback, useLayoutEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Phone, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { trackCTAClick } from "@/lib/analytics";
+import { trackCTAClick, trackPhoneClick } from "@/lib/analytics";
 
 // Import hero images with WebP conversion - Desktop (full size)
 import heroKitesurf from "@/assets/kitesurf-hyeres.jpg?webp";
@@ -228,6 +228,18 @@ export const HeroSection = memo(function HeroSection() {
               <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres">
                 Voir les tarifs
               </Link>
+            </Button>
+            <Button 
+              variant="hero" 
+              size="lg" 
+              className="w-full sm:w-auto backdrop-blur-md"
+              asChild
+              onClick={() => trackPhoneClick("hero")}
+            >
+              <a href="tel:+33672716905">
+                <Phone className="w-5 h-5" />
+                06 72 71 69 05
+              </a>
             </Button>
           </div>
 
