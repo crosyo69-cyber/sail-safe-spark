@@ -42,6 +42,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-deno-
 
+      - name: Verify Supabase secret is configured (manual dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          if [ -z "${SUPABASE_SERVICE_ROLE_KEY:-}" ]; then
+            echo "::error::SUPABASE_SERVICE_ROLE_KEY GitHub secret is not configured."
+            echo "Add it under Settings → Secrets and variables → Actions before triggering this workflow."
+            exit 1
+          fi
+          echo "✓ SUPABASE_SERVICE_ROLE_KEY is present — integration tests will run against Supabase."
+
       - name: Run edge function tests against Supabase
         env:
           SUPABASE_URL: https://unqxudbxxzzmmbwwxwcr.supabase.co
