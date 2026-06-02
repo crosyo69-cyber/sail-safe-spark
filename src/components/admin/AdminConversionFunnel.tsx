@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,7 @@ import {
   ArrowDownAZ,
   ArrowDownZA,
   RotateCcw,
+  Upload,
 } from "lucide-react";
 
 type RangeKey = "24h" | "7d" | "30d";
@@ -121,6 +122,7 @@ export default function AdminConversionFunnel() {
   const [dateTo, setDateTo] = useState("");
   const [appliedDateFrom, setAppliedDateFrom] = useState("");
   const [appliedDateTo, setAppliedDateTo] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Restore debug filters from localStorage on mount
   useEffect(() => {
@@ -229,6 +231,25 @@ export default function AdminConversionFunnel() {
     setAppliedDateFrom("");
     setAppliedDateTo("");
     localStorage.removeItem("admin_debug_filters");
+  };
+
+  const handleImport = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target?.result as string);
+        if (data.eventFilter) setEventFilter(data.eventFilter);
+        if (data.pageSearch !== undefined) setPageSearch(data.pageSearch);
+        if (data.sortNewest !== undefined) setSortNewest(data.sortNewest);
+        if (data.dateFrom !== undefined) setDateFrom(data.dateFrom);
+        if (data.dateTo !== undefined) setDateTo(data.dateTo);
+        if (data.appliedDateFrom !== undefined) setAppliedDateFrom(data.appliedDateFrom);
+        if (data.appliedDateTo !== undefined) setAppliedDateTo(data.appliedDateTo);
+      } catch {
+        // ignore malformed JSON
+      }
+    };
+    reader.readAsText(file);
   };
 
   // Realtime subscription for debug mode
@@ -391,6 +412,26 @@ export default function AdminConversionFunnel() {
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   Réinitialiser
+                </Button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".json"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleImport(file);
+                    if (e.target) e.target.value = "";
+                  }}
+                />
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-8 text-xs gap-1.5"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Upload className="w-3.5 h-3.5" />
+                  Importer
                 </Button>
               </div>
             </div>
