@@ -25,6 +25,7 @@ import {
   Search,
   ArrowDownAZ,
   ArrowDownZA,
+  RotateCcw,
 } from "lucide-react";
 
 type RangeKey = "24h" | "7d" | "30d";
@@ -175,6 +176,16 @@ export default function AdminConversionFunnel() {
     }
     return list;
   }, [liveEvents, eventFilter, pageSearch, sortNewest, appliedDateFrom, appliedDateTo]);
+
+  const resetFilters = () => {
+    setEventFilter("all");
+    setPageSearch("");
+    setSortNewest(true);
+    setDateFrom("");
+    setDateTo("");
+    setAppliedDateFrom("");
+    setAppliedDateTo("");
+  };
 
   // Realtime subscription for debug mode
   useEffect(() => {
@@ -327,6 +338,15 @@ export default function AdminConversionFunnel() {
                   }}
                 >
                   Appliquer
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-8 text-xs gap-1.5"
+                  onClick={resetFilters}
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  Réinitialiser
                 </Button>
               </div>
             </div>
