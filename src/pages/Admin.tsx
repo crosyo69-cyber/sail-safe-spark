@@ -14,8 +14,9 @@ import AdminSeasonStats from "@/components/admin/AdminSeasonStats";
 import Admin404Monitor from "@/components/admin/Admin404Monitor";
 import AdminConversionDedupMonitor from "@/components/admin/AdminConversionDedupMonitor";
 import AdminPackagesManager from "@/components/admin/AdminPackagesManager";
+import AdminConversionFunnel from "@/components/admin/AdminConversionFunnel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp } from "lucide-react";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -59,7 +60,7 @@ const Admin = () => {
         </h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-6xl grid-cols-3 md:grid-cols-11">
+          <TabsList className="grid w-full max-w-6xl grid-cols-3 md:grid-cols-12">
             <TabsTrigger value="overview" className="gap-2">
               <LayoutDashboard className="w-4 h-4" />
               <span className="hidden sm:inline">Vue d'ensemble</span>
@@ -87,6 +88,10 @@ const Admin = () => {
             <TabsTrigger value="stats" className="gap-2">
               <BarChart3 className="w-4 h-4" />
               <span className="hidden sm:inline">Statistiques</span>
+            </TabsTrigger>
+            <TabsTrigger value="conversion" className="gap-2">
+              <TrendingUp className="w-4 h-4" />
+              <span className="hidden sm:inline">Conversion</span>
             </TabsTrigger>
             <TabsTrigger value="emails" className="gap-2">
               <Mail className="w-4 h-4" />
@@ -132,6 +137,10 @@ const Admin = () => {
 
           <TabsContent value="stats">
             <AdminSeasonStats />
+          </TabsContent>
+
+          <TabsContent value="conversion">
+            <AdminConversionFunnel />
           </TabsContent>
 
           <TabsContent value="emails">
