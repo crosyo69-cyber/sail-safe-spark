@@ -265,7 +265,7 @@ Deno.test({
 
     try {
       // 3 réservations directes (2 places + 1 place + 1 place) + 3 packs (1 place chacun) = 7 tentatives pour 4 places
-      const ops: Promise<unknown>[] = [
+      const ops: PromiseLike<unknown>[] = [
         sb.from("reservations").insert({
           session_id: session.id,
           first_name: "Direct",
