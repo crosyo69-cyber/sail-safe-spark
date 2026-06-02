@@ -49,6 +49,16 @@ type EventRow = {
 
 type LiveEvent = EventRow & { id: string; metadata?: Record<string, unknown> | null };
 
+const debugFiltersSchema = z.object({
+  eventFilter: z.enum(["all", "phone_click", "form_submit"]),
+  pageSearch: z.string(),
+  sortNewest: z.boolean(),
+  dateFrom: z.string(),
+  dateTo: z.string(),
+  appliedDateFrom: z.string(),
+  appliedDateTo: z.string(),
+});
+
 type Stats = {
   visitors: number;
   pageViews: number;
