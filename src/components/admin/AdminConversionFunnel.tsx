@@ -146,6 +146,7 @@ export default function AdminConversionFunnel() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [importError, setImportError] = useState<string | null>(null);
   const [pendingImport, setPendingImport] = useState<z.infer<typeof debugFiltersSchema> | null>(null);
+  const originalImportRef = useRef<z.infer<typeof debugFiltersSchema> | null>(null);
 
   // Restore debug filters from localStorage on mount
   useEffect(() => {
@@ -261,6 +262,7 @@ export default function AdminConversionFunnel() {
   const handleImport = (file: File) => {
     setImportError(null);
     setPendingImport(null);
+    originalImportRef.current = null;
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
@@ -274,6 +276,7 @@ export default function AdminConversionFunnel() {
           return;
         }
         setPendingImport(result.data);
+        originalImportRef.current = result.data;
       } catch {
         setImportError("Impossible de lire le fichier. Vérifiez qu'il s'agit d'un JSON valide.");
       }
@@ -291,10 +294,18 @@ export default function AdminConversionFunnel() {
     setAppliedDateFrom(pendingImport.appliedDateFrom);
     setAppliedDateTo(pendingImport.appliedDateTo);
     setPendingImport(null);
+    originalImportRef.current = null;
   };
 
   const cancelImport = () => {
     setPendingImport(null);
+    originalImportRef.current = null;
+  };
+
+  const resetImportEdits = () => {
+    if (originalImportRef.current) {
+      setPendingImport(originalImportRef.current);
+    }
   };
 
   // Realtime subscription for debug mode
@@ -594,7 +605,11 @@ export default function AdminConversionFunnel() {
                     </div>
                   </div>
                 )}
-                <DialogFooter>
+                <DialogFooter className="gap-2">
+                  <Button variant="ghost" size="sm" onClick={resetImportEdits} className="gap-1.5">
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    Réinitialiser
+                  </Button>
                   <Button variant="outline" onClick={cancelImport}>
                     Annuler
                   </Button>
