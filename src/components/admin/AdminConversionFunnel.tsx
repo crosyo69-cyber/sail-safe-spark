@@ -488,6 +488,46 @@ export default function AdminConversionFunnel() {
                 </AlertDescription>
               </Alert>
             )}
+            <Dialog open={!!pendingImport} onOpenChange={(open) => !open && cancelImport()}>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Importer les filtres</DialogTitle>
+                  <DialogDescription>
+                    Vérifiez les filtres déduits du fichier JSON avant de les appliquer.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-3 py-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Événement</span>
+                    <span className="font-medium">{pendingImport?.eventFilter === "all" ? "Tous" : pendingImport?.eventFilter === "phone_click" ? "Clics téléphone" : "Formulaires"}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Recherche page</span>
+                    <span className="font-medium">{pendingImport?.pageSearch || "—"}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Tri</span>
+                    <span className="font-medium">{pendingImport?.sortNewest ? "Plus récents" : "Plus anciens"}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Plage horaire de</span>
+                    <span className="font-medium">{pendingImport?.appliedDateFrom || "—"}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Plage horaire à</span>
+                    <span className="font-medium">{pendingImport?.appliedDateTo || "—"}</span>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={cancelImport}>
+                    Annuler
+                  </Button>
+                  <Button onClick={confirmImport}>
+                    Confirmer
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </CardHeader>
           <CardContent>
             {filteredEvents.length === 0 ? (
