@@ -460,6 +460,14 @@ export default function AdminConversionFunnel() {
                 </Button>
               </div>
             </div>
+            {importError && (
+              <Alert variant="destructive" className="mt-3">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription className="whitespace-pre-line text-xs">
+                  {importError}
+                </AlertDescription>
+              </Alert>
+            )}
           </CardHeader>
           <CardContent>
             {filteredEvents.length === 0 ? (
