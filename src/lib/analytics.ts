@@ -6,6 +6,7 @@ import {
   shouldFireWithinWindow,
 } from './conversion-dedup';
 import { hasMarketingConsent, onMarketingConsent } from './consent';
+import { logAnalyticsEvent } from './event-logger';
 
 declare global {
   interface Window {
