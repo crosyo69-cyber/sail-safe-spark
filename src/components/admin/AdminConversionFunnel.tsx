@@ -113,6 +113,9 @@ export default function AdminConversionFunnel() {
   const [debug, setDebug] = useState(false);
   const [liveEvents, setLiveEvents] = useState<LiveEvent[]>([]);
   const [realtimeStatus, setRealtimeStatus] = useState<string>("idle");
+  const [eventFilter, setEventFilter] = useState<"all" | "phone_click" | "form_submit">("all");
+  const [pageSearch, setPageSearch] = useState("");
+  const [sortNewest, setSortNewest] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
