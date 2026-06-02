@@ -135,6 +135,7 @@ export default function AdminConversionFunnel() {
   const [appliedDateFrom, setAppliedDateFrom] = useState("");
   const [appliedDateTo, setAppliedDateTo] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [importError, setImportError] = useState<string | null>(null);
 
   // Restore debug filters from localStorage on mount
   useEffect(() => {
@@ -242,6 +243,7 @@ export default function AdminConversionFunnel() {
     setDateTo("");
     setAppliedDateFrom("");
     setAppliedDateTo("");
+    setImportError(null);
     localStorage.removeItem("admin_debug_filters");
   };
 
