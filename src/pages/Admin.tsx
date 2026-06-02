@@ -15,8 +15,9 @@ import Admin404Monitor from "@/components/admin/Admin404Monitor";
 import AdminConversionDedupMonitor from "@/components/admin/AdminConversionDedupMonitor";
 import AdminPackagesManager from "@/components/admin/AdminPackagesManager";
 import AdminConversionFunnel from "@/components/admin/AdminConversionFunnel";
+import AdminLastMinuteManager from "@/components/admin/AdminLastMinuteManager";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, Flame } from "lucide-react";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -60,7 +61,7 @@ const Admin = () => {
         </h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-6xl grid-cols-3 md:grid-cols-12">
+          <TabsList className="grid w-full max-w-6xl grid-cols-3 md:grid-cols-13">
             <TabsTrigger value="overview" className="gap-2">
               <LayoutDashboard className="w-4 h-4" />
               <span className="hidden sm:inline">Vue d'ensemble</span>
@@ -80,6 +81,10 @@ const Admin = () => {
             <TabsTrigger value="packages" className="gap-2">
               <Ticket className="w-4 h-4" />
               <span className="hidden sm:inline">Packs</span>
+            </TabsTrigger>
+            <TabsTrigger value="lastminute" className="gap-2">
+              <Flame className="w-4 h-4" />
+              <span className="hidden sm:inline">Dernière Minute</span>
             </TabsTrigger>
             <TabsTrigger value="revenue" className="gap-2">
               <Euro className="w-4 h-4" />
@@ -129,6 +134,10 @@ const Admin = () => {
 
           <TabsContent value="packages">
             <AdminPackagesManager />
+          </TabsContent>
+
+          <TabsContent value="lastminute">
+            <AdminLastMinuteManager />
           </TabsContent>
 
           <TabsContent value="revenue">
