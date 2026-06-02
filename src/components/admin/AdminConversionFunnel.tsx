@@ -233,6 +233,25 @@ export default function AdminConversionFunnel() {
     localStorage.removeItem("admin_debug_filters");
   };
 
+  const handleImport = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target?.result as string);
+        if (data.eventFilter) setEventFilter(data.eventFilter);
+        if (data.pageSearch !== undefined) setPageSearch(data.pageSearch);
+        if (data.sortNewest !== undefined) setSortNewest(data.sortNewest);
+        if (data.dateFrom !== undefined) setDateFrom(data.dateFrom);
+        if (data.dateTo !== undefined) setDateTo(data.dateTo);
+        if (data.appliedDateFrom !== undefined) setAppliedDateFrom(data.appliedDateFrom);
+        if (data.appliedDateTo !== undefined) setAppliedDateTo(data.appliedDateTo);
+      } catch {
+        // ignore malformed JSON
+      }
+    };
+    reader.readAsText(file);
+  };
+
   // Realtime subscription for debug mode
   useEffect(() => {
     if (!debug) {
