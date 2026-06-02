@@ -34,14 +34,14 @@ export function logAnalyticsEvent(
     event_type: eventType,
     session_id: getSessionId(),
     page_path: options.pagePath ?? window.location.pathname,
-    location: options.location ?? null,
-    metadata: options.metadata ?? null,
+    location: options.location ?? undefined,
+    metadata: (options.metadata ?? null) as never,
   };
 
   // Fire and forget — never block UX on analytics
   void supabase
     .from("analytics_events")
-    .insert(payload)
+    .insert([payload])
     .then(({ error }) => {
       if (error && import.meta.env.DEV) {
         console.warn("[Analytics] Failed to log event", eventType, error.message);
