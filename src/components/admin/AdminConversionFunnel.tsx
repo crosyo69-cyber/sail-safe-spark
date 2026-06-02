@@ -301,6 +301,21 @@ export default function AdminConversionFunnel() {
                   {sortNewest ? "Plus récents" : "Plus anciens"}
                 </span>
               </Button>
+              <div className="flex items-center gap-2">
+                <Input
+                  type="datetime-local"
+                  value={dateFrom}
+                  onChange={(e) => setDateFrom(e.target.value)}
+                  className="h-8 text-xs w-[170px]"
+                />
+                <span className="text-xs text-muted-foreground">à</span>
+                <Input
+                  type="datetime-local"
+                  value={dateTo}
+                  onChange={(e) => setDateTo(e.target.value)}
+                  className="h-8 text-xs w-[170px]"
+                />
+              </div>
             </div>
           </CardHeader>
           <CardContent>
