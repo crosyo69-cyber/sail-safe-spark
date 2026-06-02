@@ -116,6 +116,8 @@ export default function AdminConversionFunnel() {
   const [eventFilter, setEventFilter] = useState<"all" | "phone_click" | "form_submit">("all");
   const [pageSearch, setPageSearch] = useState("");
   const [sortNewest, setSortNewest] = useState(true);
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
   useEffect(() => {
     let cancelled = false;
