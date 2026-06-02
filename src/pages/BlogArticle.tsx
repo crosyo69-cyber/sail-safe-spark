@@ -67,6 +67,7 @@ import blogPumpfoilDockStartDepart from "@/assets/blog-pumpfoil-dock-start-depar
 import blogPumpfoilFoilPlanche from "@/assets/blog-pumpfoil-foil-planche-duotone-strider.jpg?webp";
 import blogPumpfoilRiderPlage from "@/assets/blog-pumpfoil-rider-plage-duotone.jpg?webp";
 import blogPumpfoilVolMerCasque from "@/assets/blog-pumpfoil-vol-mer-casque.jpg?webp";
+import blogLogementStageKitesurfHyeres from "@/assets/blog-logement-stage-kitesurf-hyeres.jpg?webp";
 
 const imageMap: Record<string, string> = {
   "blog-kitesurf-debut.jpg": blogKitesurfDebut,
@@ -122,6 +123,7 @@ const imageMap: Record<string, string> = {
   "blog-pumpfoil-foil-planche-duotone-strider.jpg": blogPumpfoilFoilPlanche,
   "blog-pumpfoil-rider-plage-duotone.jpg": blogPumpfoilRiderPlage,
   "blog-pumpfoil-vol-mer-casque.jpg": blogPumpfoilVolMerCasque,
+  "blog-logement-stage-kitesurf-hyeres.jpg": blogLogementStageKitesurfHyeres,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -5045,6 +5047,167 @@ Parce que l'école s'appuie sur plus de 25 ans d'expérience, plus de 2 500 él�
 `,
     tags: ["Kitesurf", "Adulte", "Débutant", "Hyères", "Almanarre", "40 ans", "50 ans", "60 ans", "Stage", "Var"],
   },
+  "logement-stage-kitesurf-hyeres": {
+    content: `
+## Où loger pour un stage de kitesurf à Hyères ?
+
+Vous avez réservé (ou vous envisagez) un **stage de kitesurf à Hyères** et vous cherchez le bon **logement stage kitesurf Hyères** pour caler vos journées sur l'eau ? Le choix du quartier change tout : 10 minutes de vélo à l'Almanarre n'ont rien à voir avec 25 minutes de voiture coincée dans les bouchons d'été depuis le centre-ville. Ce guide compare les **4 zones de logement** autour du spot, les options (camping Almanarre, hôtel presqu'île de Giens, airbnb Hyères kitesurf), et la logistique réelle pour rejoindre le spot chaque matin.
+
+L'objectif : que votre **hébergement kite Var** maximise votre temps d'eau, pas vos temps de trajet.
+
+### Pourquoi le choix du logement est stratégique pour un stage de kitesurf
+
+Un stage de kitesurf, c'est généralement **5 jours de 3 heures de cours**, souvent en début d'après-midi quand le thermique se lève, ou le matin par Mistral. Vos contraintes :
+
+- Arriver **30 minutes avant** le cours pour gréer
+- Être **détendu** (pas énervé par 40 minutes de bouchons)
+- Pouvoir **sécher et stocker** un harnais, une combi, une planche si vous avez la vôtre
+- Récupérer le soir, manger, dormir — pas conduire 1 heure pour trouver un restaurant
+
+En juillet-août, la route du sel et la D97 vers la presqu'île de Giens **saturent dès 10h** et restent bloquées jusqu'en début de soirée. **Loger près du spot devient un atout majeur** pour ne pas transformer votre stage en marathon logistique.
+
+### Comparatif des 4 zones de logement pour un stage kitesurf à Hyères
+
+| Zone | Distance du spot | Temps voiture (été) | Vélo | Profil idéal |
+|------|------------------|---------------------|------|--------------|
+| **L'Almanarre / Route du sel** | 0 – 1,5 km | 5 min (hors bouchons) | 5-10 min | Riders 100% kite, autonomes |
+| **Presqu'île de Giens / La Capte** | 3 – 7 km | 10-30 min selon trafic | 15-25 min | Couples, familles, confort |
+| **Hyères Port / Ayguade** | 8 – 10 km | 20-40 min | 30-40 min | Stage + activités bateau |
+| **Hyères centre-ville** | 10 – 12 km | 25-45 min | 40 min (vallonné) | Tourisme + kite, restos & vie |
+
+#### 1. L'Almanarre et la route du sel : au pied du spot
+
+C'est l'option **rêvée pour un stage intensif**. Vous logez à quelques centaines de mètres du spot, vous y allez à pied, en vélo ou avec un trajet voiture de 5 minutes hors bouchons.
+
+- **Hébergements** : campings (dont le **camping de l'Almanarre**), quelques locations saisonnières et appartements, peu d'hôtels
+- **Avantages** : zéro logistique, vous voyez les conditions de vos fenêtres, vous pouvez enchaîner une session libre après le cours
+- **Inconvénients** : peu de commerces sur place, restauration limitée le soir, réservation à faire 4-6 mois à l'avance pour juillet-août
+- **Budget** : 25 à 60 €/nuit en camping, 80 à 200 €/nuit en location selon la saison
+
+#### 2. La presqu'île de Giens et La Capte : le meilleur compromis
+
+La zone **Giens / La Capte / La Madrague** est probablement le **meilleur compromis** pour la majorité des stagiaires : à 5-10 km du spot, vous gardez une bonne logistique tout en bénéficiant de plus de choix d'hébergement, de restaurants et d'une ambiance bord de mer plus animée.
+
+- **Hébergements** : nombreux **hôtels presqu'île de Giens** (2 à 4 étoiles), résidences de tourisme, locations saisonnières, campings de bord de mer
+- **Avantages** : plus de confort, restaurants à pied, accès facile au [port pour les déposes en mer](/deposes-mer-kitesurf-hyeres) et activités bateau
+- **Inconvénients** : route du sel saturée en été, prévoir le vélo ou partir tôt
+- **Budget** : 90 à 220 €/nuit en hôtel, 70 à 180 €/nuit en location
+
+#### 3. Port d'Hyères et l'Ayguade : pratique côté est
+
+Côté est de la presqu'île, le port d'Hyères et le quartier de l'Ayguade offrent une alternative intéressante, surtout si votre stage combine kitesurf et **activités bateau** (foil tracté, wakeboard, déposes vers Porquerolles).
+
+- **Hébergements** : résidences, hôtels, locations
+- **Avantages** : navette pour les îles d'Or, plage de l'Ayguade pour les jours sans kite, distance correcte du spot hors heures de pointe
+- **Inconvénients** : 20 à 40 minutes pour rejoindre l'Almanarre en été, traversée toute la presqu'île
+- **Budget** : 80 à 200 €/nuit
+
+#### 4. Hyères centre-ville : pour combiner kite et tourisme
+
+Le centre médiéval de Hyères est **charmant** (vieille ville, marché provençal, restaurants, vie nocturne). C'est le choix de ceux qui veulent **panacher kitesurf et vacances culturelles**.
+
+- **Hébergements** : hôtels de centre-ville, appartements anciens avec cachet, **airbnb Hyères kitesurf** plus économiques
+- **Avantages** : meilleur rapport qualité-prix, dépaysement total, animation le soir
+- **Inconvénients** : **25-45 minutes de voiture** pour rejoindre l'Almanarre en haute saison, vélo possible mais vallonné (environ 12 km)
+- **Budget** : 70 à 180 €/nuit
+
+### Camping, hôtel, airbnb : quel type d'hébergement choisir ?
+
+#### Camping Almanarre et campings de Giens
+
+Pour un stage à budget contrôlé, le **camping Almanarre** ou les campings de la presqu'île restent imbattables. Vous êtes proche du spot, vous pouvez sécher votre matériel sur l'emplacement, et l'ambiance "communauté de riders" est appréciable.
+
+- Prévoir tente, mobil-home ou bungalow
+- Sanitaires partagés, cuisine sur place selon la formule
+- Réservation 4-6 mois à l'avance pour l'été
+
+#### Hôtel presqu'île de Giens
+
+L'**hôtel presqu'île de Giens** est le bon choix pour ceux qui veulent du confort, du petit-déjeuner inclus et ne pas s'embêter avec l'intendance. Beaucoup d'hôtels disposent de parking, certains acceptent le stockage de matériel léger.
+
+#### Airbnb Hyères kitesurf
+
+L'option **airbnb Hyères kitesurf** est plébiscitée par les couples et petits groupes : appartement ou maison pour la semaine, espace pour sécher le matériel sur la terrasse, cuisine pour préparer ses repas et économiser. Filtrez sur les annonces avec **parking** et **terrasse / jardin**.
+
+> 💡 Conseil de l'école : indiquez dans votre demande Airbnb que vous venez pour un stage de kitesurf et que vous souhaitez sécher harnais et combi. La plupart des hôtes apprécient la transparence et acceptent.
+
+### Logistique, bouchons et vélo : la vraie info terrain
+
+#### Les bouchons d'été à Hyères
+
+En juillet-août, **la D97 (route du sel) et la D559 (vers Giens)** sont saturées. Concrètement :
+
+- **10h-13h** : bouchons en direction de la presqu'île (touristes vers les plages)
+- **17h-20h** : bouchons en direction d'Hyères (retour de plage)
+- **Effet** : un trajet "10 minutes" peut prendre **35-45 minutes**
+
+#### Le vélo : votre meilleur ami à Hyères
+
+La majorité des riders qui logent à moins de 7 km du spot **viennent en vélo**. Pourquoi ?
+
+- Vous **doublez la file de voitures** sans stress
+- Vous trouvez **toujours une place** près du spot (le parking est saturé l'été)
+- Le terrain est **plat** entre Giens / La Capte / La Madrague et l'Almanarre
+- Un **vélo cargo** ou une remorque permet même de transporter une planche
+
+Beaucoup de locations et campings prêtent ou louent des vélos. Demandez avant de réserver.
+
+#### Stationnement à l'Almanarre
+
+Le parking sauvage le long de la route du sel est **gratuit hors saison** et saturé en juillet-août. Arrivez avant 10h ou après 16h pour avoir une chance d'être proche.
+
+### Comment caler votre logement avec un stage de 5 jours
+
+Un [stage 100% Glisse](/stage-kitesurf-100-glisse-hyeres) se déroule typiquement sur 5 jours consécutifs. Voici la logique :
+
+1. **Arrivée** la veille (J-1) en fin d'après-midi pour décharger et repérer le spot
+2. **5 jours de cours** (3h/jour en moyenne, créneau adapté au vent)
+3. **Soirées libres** pour récupérer
+4. **Départ** J+5 en milieu de journée
+
+→ Pensez à réserver **6 nuits** plutôt que 5, l'arrivée la veille évite le stress du jour 1.
+
+Pour les formules plus courtes, consultez nos [cours et stages disponibles](/tarifs-cours-kitesurf-wingfoil-hyeres) ou repassez par la [page d'accueil de l'école](/) pour une vue d'ensemble.
+
+### Saison haute vs saison intermédiaire : impact sur le logement
+
+| Période | Disponibilité | Prix moyen / nuit (location) | Bouchons | Vent |
+|---------|---------------|------------------------------|----------|------|
+| **Avr-juin** | Bonne | 70-140 € | Faibles | Mistral fréquent |
+| **Juil-août** | Très tendue | 150-300 € | Forts | Thermique régulier |
+| **Sept-oct** | Bonne | 70-140 € | Faibles | Mistral fréquent |
+| **Nov-mars** | Excellente | 50-100 € | Nuls | Mistral épisodique |
+
+→ **Avril-juin et septembre-octobre** : meilleur ratio prix / conditions / sérénité pour un stage.
+
+### Erreurs à éviter dans le choix de votre hébergement
+
+- ❌ **Loger à Toulon ou Le Lavandou** "parce que c'est moins cher" : 40 minutes à 1 heure de route, vous craquerez au bout de 2 jours
+- ❌ **Choisir un Airbnb sans parking** en juillet-août : galère assurée
+- ❌ **Réserver à la dernière minute** pour juillet-août : disponibilités quasi-nulles à moins de 3 mois
+- ❌ **Sous-estimer les bouchons** : prévoir toujours **+30 minutes** sur l'horaire Google Maps en haute saison
+- ❌ **Loger trop loin du spot pour économiser** : vous perdrez en confort et en plaisir bien plus que ce que vous économisez
+
+### Le bon plan : combiner stage et logement partenaire
+
+Nous travaillons depuis des années avec des hébergeurs locaux (campings, locations, hôtels) qui accueillent régulièrement nos stagiaires. Si vous le souhaitez, **mentionnez votre stage au moment de la réservation** : certains proposent des **tarifs préférentiels** pour les élèves de l'école.
+
+→ N'hésitez pas à nous écrire avant de réserver votre logement : nous vous orienterons vers la zone la plus adaptée à votre stage, votre budget et votre profil (couple, famille, solo).
+
+### Prêt à réserver votre stage de kitesurf à Hyères ?
+
+Une fois le logement calé, il ne vous reste qu'à **réserver votre stage**. L'école Kitesurf Passion propose :
+
+- Le [stage 100% Glisse 5 jours](/stage-kitesurf-100-glisse-hyeres) pour viser l'autonomie
+- Le [cours particulier](/cours-particulier-kitesurf-hyeres) pour les emplois du temps serrés
+- Les [sessions à la carte](/session-kitesurf-carte-hyeres) pour compléter votre semaine
+
+Pour des conseils personnalisés sur **où loger pour votre stage de kitesurf à Hyères**, [contactez-nous](/contact-reservation-kitesurf-hyeres) ou explorez les autres [guides du blog](/blog-kitesurf-hyeres).
+
+> 🌊 **Astuce finale** : la meilleure adresse à Hyères, c'est celle qui vous met **à 10 minutes de vélo de l'eau**. Le reste, c'est de l'optimisation.
+`,
+    tags: ["Logement", "Stage", "Kitesurf", "Hyères", "Almanarre", "Presqu'île de Giens", "Camping", "Airbnb", "Hébergement", "Var"],
+  },
 };
 
 // FAQ structured data for articles with FAQ sections (FAQPage schema for Google rich snippets)
@@ -5131,6 +5294,16 @@ const articleFAQData: Record<string, Array<{ question: string; answer: string }>
     { question: "Quelle formule choisir pour apprendre le kitesurf adulte à Hyères ?", answer: "Le stage 5 jours reste la formule la plus recommandée pour progresser sereinement. Le semi-privé convient aux personnes qui veulent un suivi plus rapproché, et le cours particulier à celles qui manquent de temps ou veulent débloquer un point précis." },
     { question: "Pourquoi apprendre à Hyères plutôt qu'ailleurs ?", answer: "Hyères et l'Almanarre offrent un spot reconnu, une zone adaptée à l'apprentissage, des vents réguliers et une logistique pratique. C'est un cadre rassurant pour les adultes débutants." },
     { question: "Pourquoi choisir Kitesurf Passion ?", answer: "Kitesurf Passion s'appuie sur plus de 25 ans d'expérience, plus de 2 500 élèves formés, un moniteur diplômé d'État, une école labellisée FFVL/EFK, des petits groupes et un bateau d'assistance pour maximiser la sécurité." },
+  ],
+  "logement-stage-kitesurf-hyeres": [
+    { question: "Où loger pour un stage de kitesurf à Hyères ?", answer: "Les 4 zones principales sont l'Almanarre (au pied du spot), la presqu'île de Giens / La Capte (meilleur compromis confort / proximité), le port d'Hyères / Ayguade (pratique côté est) et le centre-ville (charme et tourisme). Pour un stage intensif, privilégiez l'Almanarre ou Giens pour limiter les trajets." },
+    { question: "Quelle est la meilleure zone pour un logement pendant un stage kitesurf à Hyères ?", answer: "La presqu'île de Giens / La Capte est le meilleur compromis : à 5-10 km du spot, vous gardez une bonne logistique tout en bénéficiant de plus de choix d'hébergement et de restaurants. L'Almanarre reste imbattable pour les riders 100% kite." },
+    { question: "Y a-t-il un camping à l'Almanarre proche du spot de kitesurf ?", answer: "Oui, le camping de l'Almanarre est situé directement sur le spot, idéal pour stocker le matériel et marcher à pied à la plage. Plusieurs campings de Giens et de La Capte sont aussi à 5-15 minutes du spot." },
+    { question: "Peut-on rejoindre le spot de l'Almanarre en vélo depuis Giens ou Hyères ?", answer: "Oui, le vélo est même fortement recommandé en été. Depuis Giens, La Capte ou La Madrague, comptez 15-25 minutes sur terrain plat. Depuis Hyères centre, environ 40 minutes (vallonné). Vous évitez les bouchons et trouvez toujours une place près du spot." },
+    { question: "Combien de temps de voiture entre Hyères centre et le spot de l'Almanarre ?", answer: "Hors saison, 15-20 minutes. En juillet-août, prévoyez 25 à 45 minutes selon l'heure, à cause des bouchons sur la D97 (route du sel) et la D559 vers Giens." },
+    { question: "Un airbnb à Hyères pour un stage de kitesurf, c'est une bonne idée ?", answer: "Oui, surtout pour les couples ou petits groupes. Privilégiez les annonces avec parking et terrasse pour sécher le matériel, et indiquez à l'hôte que vous venez pour un stage de kitesurf. Filtrez par zone (Almanarre, Giens, La Capte) pour limiter les trajets." },
+    { question: "Faut-il réserver son logement longtemps à l'avance pour un stage de kitesurf en été ?", answer: "Oui, pour juillet-août il faut réserver 4 à 6 mois à l'avance. En basse et moyenne saison (avril-juin, septembre-octobre), 4 à 6 semaines suffisent généralement et les prix sont 30 à 50% moins chers." },
+    { question: "Y a-t-il des hôtels partenaires de l'école Kitesurf Passion ?", answer: "Nous travaillons avec plusieurs hébergeurs locaux (campings, locations, hôtels presqu'île de Giens) qui accueillent régulièrement nos stagiaires. Certains proposent des tarifs préférentiels : contactez-nous avant de réserver pour des recommandations personnalisées." },
   ],
 };
 
