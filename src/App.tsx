@@ -10,6 +10,7 @@ import { CookieConsent } from "@/components/CookieConsent";
 import { ChatBot } from "@/components/ChatBot";
 import { WebVitalsDashboard } from "@/components/WebVitalsDashboard";
 import { PageTracker } from "@/components/PageTracker";
+import { StickyMobileCTA } from "@/components/StickyMobileCTA";
 import { initGA4 } from "@/lib/analytics";
 import { initMetaPixel } from "@/lib/meta-pixel";
 import { SEORedirect } from "@/components/SEORedirect";
@@ -74,6 +75,7 @@ const App = () => {
         <WebVitalsDashboard />
         <BrowserRouter>
           <PageTracker />
+          <StickyMobileCTA />
            <Suspense fallback={null}>
              <Routes>
                <Route path="/" element={<Index />} />
