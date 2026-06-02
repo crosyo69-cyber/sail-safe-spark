@@ -118,6 +118,8 @@ export default function AdminConversionFunnel() {
   const [sortNewest, setSortNewest] = useState(true);
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
+  const [appliedDateFrom, setAppliedDateFrom] = useState("");
+  const [appliedDateTo, setAppliedDateTo] = useState("");
 
   useEffect(() => {
     let cancelled = false;
