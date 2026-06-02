@@ -228,6 +228,7 @@ export default function AdminConversionFunnel() {
     setDateTo("");
     setAppliedDateFrom("");
     setAppliedDateTo("");
+    localStorage.removeItem("admin_debug_filters");
   };
 
   // Realtime subscription for debug mode
