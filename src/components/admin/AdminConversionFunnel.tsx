@@ -6,6 +6,14 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Loader2,
   Users,
@@ -14,6 +22,9 @@ import {
   TrendingUp,
   Radio,
   Trash2,
+  Search,
+  ArrowDownAZ,
+  ArrowDownZA,
 } from "lucide-react";
 
 type RangeKey = "24h" | "7d" | "30d";
@@ -102,6 +113,9 @@ export default function AdminConversionFunnel() {
   const [debug, setDebug] = useState(false);
   const [liveEvents, setLiveEvents] = useState<LiveEvent[]>([]);
   const [realtimeStatus, setRealtimeStatus] = useState<string>("idle");
+  const [eventFilter, setEventFilter] = useState<"all" | "phone_click" | "form_submit">("all");
+  const [pageSearch, setPageSearch] = useState("");
+  const [sortNewest, setSortNewest] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -134,6 +148,21 @@ export default function AdminConversionFunnel() {
   }, [range]);
 
   const stats = useMemo(() => computeStats(rows), [rows]);
+
+  const filteredEvents = useMemo(() => {
+    let list = [...liveEvents];
+    if (eventFilter !== "all") {
+      list = list.filter((ev) => ev.event_type === eventFilter);
+    }
+    if (pageSearch.trim()) {
+      const q = pageSearch.trim().toLowerCase();
+      list = list.filter((ev) => (ev.page_path || "/").toLowerCase().includes(q));
+    }
+    if (!sortNewest) {
+      list = list.slice().sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+    }
+    return list;
+  }, [liveEvents, eventFilter, pageSearch, sortNewest]);
 
   // Realtime subscription for debug mode
   useEffect(() => {
@@ -223,17 +252,58 @@ export default function AdminConversionFunnel() {
                 </Button>
               </div>
             </div>
+            <div className="flex flex-wrap items-center gap-3 mt-4">
+              <Select
+                value={eventFilter}
+                onValueChange={(v) => setEventFilter(v as typeof eventFilter)}
+              >
+                <SelectTrigger className="w-[180px] text-xs h-8">
+                  <SelectValue placeholder="Tous les événements" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tous les événements</SelectItem>
+                  <SelectItem value="phone_click">Clics téléphone</SelectItem>
+                  <SelectItem value="form_submit">Formulaires</SelectItem>
+                </SelectContent>
+              </Select>
+              <div className="relative flex-1 min-w-[180px] max-w-xs">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Rechercher une page…"
+                  value={pageSearch}
+                  onChange={(e) => setPageSearch(e.target.value)}
+                  className="pl-8 h-8 text-xs"
+                />
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setSortNewest((s) => !s)}
+                className="gap-1.5 h-8"
+              >
+                {sortNewest ? (
+                  <ArrowDownZA className="w-3.5 h-3.5" />
+                ) : (
+                  <ArrowDownAZ className="w-3.5 h-3.5" />
+                )}
+                <span className="text-xs">
+                  {sortNewest ? "Plus récents" : "Plus anciens"}
+                </span>
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
-            {liveEvents.length === 0 ? (
+            {filteredEvents.length === 0 ? (
               <p className="text-sm text-muted-foreground py-4 text-center">
-                En attente d'événements… Cliquez sur un bouton téléphone ou envoyez un
-                formulaire dans un autre onglet pour vérifier.
+                {liveEvents.length === 0
+                  ? "En attente d'événements… Cliquez sur un bouton téléphone ou envoyez un formulaire dans un autre onglet pour vérifier."
+                  : "Aucun événement ne correspond aux filtres sélectionnés."}
               </p>
             ) : (
               <ScrollArea className="h-[320px]">
                 <ul className="divide-y divide-border/50">
-                  {liveEvents.map((ev) => (
+                  {filteredEvents.map((ev) => (
                     <li key={ev.id} className="py-2 flex items-start gap-3 text-xs">
                       <Badge
                         variant={
