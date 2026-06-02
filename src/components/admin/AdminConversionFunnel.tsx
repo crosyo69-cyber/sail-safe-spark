@@ -493,51 +493,107 @@ export default function AdminConversionFunnel() {
                 <DialogHeader>
                   <DialogTitle>Importer les filtres</DialogTitle>
                   <DialogDescription>
-                    Vérifiez les filtres déduits du fichier JSON avant de les appliquer.
+                    Vérifiez et modifiez les filtres déduits du fichier JSON avant de les appliquer.
                   </DialogDescription>
                 </DialogHeader>
-                <div className="space-y-3 py-2">
-                  <div className="rounded-lg bg-muted/40 border border-border/60 p-3 flex flex-wrap gap-3 items-center">
-                    <span className="text-xs text-muted-foreground uppercase tracking-wide">Résumé</span>
-                    <Badge variant="secondary" className="text-xs">
-                      {pendingImport?.eventFilter === "all" ? "Tous les événements" : pendingImport?.eventFilter === "phone_click" ? "Clics téléphone" : "Formulaires"}
-                    </Badge>
-                    <Badge variant="secondary" className="text-xs">
-                      {pendingImport?.sortNewest ? "Plus récents" : "Plus anciens"}
-                    </Badge>
-                    {(pendingImport?.appliedDateFrom || pendingImport?.appliedDateTo) && (
-                      <Badge variant="outline" className="text-xs font-mono">
-                        {pendingImport?.appliedDateFrom
-                          ? new Date(pendingImport.appliedDateFrom).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })
-                          : "—"}
-                        <span className="mx-1">→</span>
-                        {pendingImport?.appliedDateTo
-                          ? new Date(pendingImport.appliedDateTo).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })
-                          : "—"}
+                {pendingImport && (
+                  <div className="space-y-3 py-2">
+                    <div className="rounded-lg bg-muted/40 border border-border/60 p-3 flex flex-wrap gap-3 items-center">
+                      <span className="text-xs text-muted-foreground uppercase tracking-wide">Résumé</span>
+                      <Badge variant="secondary" className="text-xs">
+                        {pendingImport.eventFilter === "all" ? "Tous les événements" : pendingImport.eventFilter === "phone_click" ? "Clics téléphone" : "Formulaires"}
                       </Badge>
-                    )}
+                      <Badge variant="secondary" className="text-xs">
+                        {pendingImport.sortNewest ? "Plus récents" : "Plus anciens"}
+                      </Badge>
+                      {(pendingImport.appliedDateFrom || pendingImport.appliedDateTo) && (
+                        <Badge variant="outline" className="text-xs font-mono">
+                          {pendingImport.appliedDateFrom
+                            ? new Date(pendingImport.appliedDateFrom).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })
+                            : "—"}
+                          <span className="mx-1">→</span>
+                          {pendingImport.appliedDateTo
+                            ? new Date(pendingImport.appliedDateTo).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })
+                            : "—"}
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="space-y-3">
+                      <div className="space-y-1.5">
+                        <Label className="text-xs text-muted-foreground">Événement</Label>
+                        <Select
+                          value={pendingImport.eventFilter}
+                          onValueChange={(v) =>
+                            setPendingImport((prev) => prev && { ...prev, eventFilter: v as z.infer<typeof debugFiltersSchema>["eventFilter"] })
+                          }
+                        >
+                          <SelectTrigger className="w-full text-xs h-8">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">Tous les événements</SelectItem>
+                            <SelectItem value="phone_click">Clics téléphone</SelectItem>
+                            <SelectItem value="form_submit">Formulaires</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-1.5">
+                        <Label className="text-xs text-muted-foreground">Recherche page</Label>
+                        <Input
+                          type="text"
+                          placeholder="Rechercher une page…"
+                          value={pendingImport.pageSearch}
+                          onChange={(e) =>
+                            setPendingImport((prev) => prev && { ...prev, pageSearch: e.target.value })
+                          }
+                          className="h-8 text-xs"
+                        />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <Label className="text-xs text-muted-foreground">Tri</Label>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() =>
+                            setPendingImport((prev) => prev && { ...prev, sortNewest: !prev.sortNewest })
+                          }
+                          className="gap-1.5 h-8"
+                        >
+                          {pendingImport.sortNewest ? (
+                            <ArrowDownZA className="w-3.5 h-3.5" />
+                          ) : (
+                            <ArrowDownAZ className="w-3.5 h-3.5" />
+                          )}
+                          <span className="text-xs">
+                            {pendingImport.sortNewest ? "Plus récents" : "Plus anciens"}
+                          </span>
+                        </Button>
+                      </div>
+                      <div className="space-y-1.5">
+                        <Label className="text-xs text-muted-foreground">Plage horaire</Label>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            type="datetime-local"
+                            value={pendingImport.appliedDateFrom}
+                            onChange={(e) =>
+                              setPendingImport((prev) => prev && { ...prev, appliedDateFrom: e.target.value })
+                            }
+                            className="h-8 text-xs flex-1"
+                          />
+                          <span className="text-xs text-muted-foreground">à</span>
+                          <Input
+                            type="datetime-local"
+                            value={pendingImport.appliedDateTo}
+                            onChange={(e) =>
+                              setPendingImport((prev) => prev && { ...prev, appliedDateTo: e.target.value })
+                            }
+                            className="h-8 text-xs flex-1"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Événement</span>
-                    <span className="font-medium">{pendingImport?.eventFilter === "all" ? "Tous" : pendingImport?.eventFilter === "phone_click" ? "Clics téléphone" : "Formulaires"}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Recherche page</span>
-                    <span className="font-medium">{pendingImport?.pageSearch || "—"}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Tri</span>
-                    <span className="font-medium">{pendingImport?.sortNewest ? "Plus récents" : "Plus anciens"}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Plage horaire de</span>
-                    <span className="font-medium">{pendingImport?.appliedDateFrom || "—"}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Plage horaire à</span>
-                    <span className="font-medium">{pendingImport?.appliedDateTo || "—"}</span>
-                  </div>
-                </div>
+                )}
                 <DialogFooter>
                   <Button variant="outline" onClick={cancelImport}>
                     Annuler
