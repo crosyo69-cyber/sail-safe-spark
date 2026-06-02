@@ -75,6 +75,7 @@ const App = () => {
         <WebVitalsDashboard />
         <BrowserRouter>
           <PageTracker />
+          <StickyMobileCTA />
            <Suspense fallback={null}>
              <Routes>
                <Route path="/" element={<Index />} />
