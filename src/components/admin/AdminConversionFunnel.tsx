@@ -413,6 +413,26 @@ export default function AdminConversionFunnel() {
                   <RotateCcw className="w-3.5 h-3.5" />
                   Réinitialiser
                 </Button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".json"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleImport(file);
+                    if (e.target) e.target.value = "";
+                  }}
+                />
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-8 text-xs gap-1.5"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Upload className="w-3.5 h-3.5" />
+                  Importer
+                </Button>
               </div>
             </div>
           </CardHeader>
