@@ -254,11 +254,13 @@ export default function AdminConversionFunnel() {
     setAppliedDateFrom("");
     setAppliedDateTo("");
     setImportError(null);
+    setPendingImport(null);
     localStorage.removeItem("admin_debug_filters");
   };
 
   const handleImport = (file: File) => {
     setImportError(null);
+    setPendingImport(null);
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
@@ -271,19 +273,28 @@ export default function AdminConversionFunnel() {
           setImportError(`Le fichier JSON est invalide :\n${issues}`);
           return;
         }
-        const data = result.data;
-        setEventFilter(data.eventFilter);
-        setPageSearch(data.pageSearch);
-        setSortNewest(data.sortNewest);
-        setDateFrom(data.dateFrom);
-        setDateTo(data.dateTo);
-        setAppliedDateFrom(data.appliedDateFrom);
-        setAppliedDateTo(data.appliedDateTo);
+        setPendingImport(result.data);
       } catch {
         setImportError("Impossible de lire le fichier. Vérifiez qu'il s'agit d'un JSON valide.");
       }
     };
     reader.readAsText(file);
+  };
+
+  const confirmImport = () => {
+    if (!pendingImport) return;
+    setEventFilter(pendingImport.eventFilter);
+    setPageSearch(pendingImport.pageSearch);
+    setSortNewest(pendingImport.sortNewest);
+    setDateFrom(pendingImport.dateFrom);
+    setDateTo(pendingImport.dateTo);
+    setAppliedDateFrom(pendingImport.appliedDateFrom);
+    setAppliedDateTo(pendingImport.appliedDateTo);
+    setPendingImport(null);
+  };
+
+  const cancelImport = () => {
+    setPendingImport(null);
   };
 
   // Realtime subscription for debug mode
