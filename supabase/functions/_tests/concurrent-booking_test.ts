@@ -339,3 +339,106 @@ Deno.test({
     }
   },
 });
+
+Deno.test({
+  name: "anti-oversell: limite stricte — capacité 1, place restante = 1, deux concurrents → 1 seul gagne, session 'closed'",
+  ignore: !RUN,
+  async fn() {
+    const sb = client();
+    const CAPACITY = 1;
+
+    // Session de capacité 1 : la première réservation amène le restant à 0
+    const { data: session, error: sErr } = await sb
+      .from("sessions")
+      .insert({
+        date: futureDate(90),
+        time_slot: "morning",
+        activity: "kitefoil",
+        max_participants: CAPACITY,
+        status: "open",
+      })
+      .select()
+      .single();
+    assertEquals(sErr, null, `session insert failed: ${sErr?.message}`);
+    assert(session);
+
+    try {
+      const ts = Date.now();
+      // Deux tentatives strictement simultanées d'1 place chacune sur capacité 1
+      const ops = [
+        sb.from("reservations").insert({
+          session_id: session.id,
+          first_name: "Edge",
+          last_name: "A",
+          email: `edge-a-${ts}@test.local`,
+          phone: "0600000000",
+          participants: 1,
+          status: "pending",
+        }).select().single(),
+        sb.from("reservations").insert({
+          session_id: session.id,
+          first_name: "Edge",
+          last_name: "B",
+          email: `edge-b-${ts}@test.local`,
+          phone: "0600000000",
+          participants: 1,
+          status: "pending",
+        }).select().single(),
+      ];
+      const results = await Promise.all(ops);
+
+      const succeeded = results.filter((r) => !r.error).length;
+      const failed = results.filter((r) => r.error).length;
+
+      // Invariant strict : exactement 1 gagne, 1 perd
+      assertEquals(succeeded, 1, `attendu 1 succès, obtenu ${succeeded}`);
+      assertEquals(failed, 1, `attendu 1 échec, obtenu ${failed}`);
+
+      const loser = results.find((r) => r.error)!;
+      const msg = loser.error!.message.toLowerCase();
+      assert(
+        msg.includes("session_full") || msg.includes("session_closed"),
+        `erreur perdante inattendue: ${loser.error!.message}`,
+      );
+
+      // Le compteur tombe exactement à 0 place restante → la session DOIT être 'closed'
+      const { data: after } = await sb
+        .from("sessions")
+        .select("status")
+        .eq("id", session.id)
+        .single();
+      assertEquals(
+        after?.status,
+        "closed",
+        "session de capacité 1 remplie doit passer à 'closed' immédiatement",
+      );
+
+      // Et il y a strictement 1 réservation active en base
+      const { count } = await sb
+        .from("reservations")
+        .select("*", { count: "exact", head: true })
+        .eq("session_id", session.id)
+        .neq("status", "cancelled");
+      assertEquals(count, 1, "exactement 1 place doit être occupée");
+
+      // Toute nouvelle tentative APRÈS la fermeture doit être refusée
+      const { error: lateErr } = await sb.from("reservations").insert({
+        session_id: session.id,
+        first_name: "Late",
+        last_name: "Comer",
+        email: `late-${ts}@test.local`,
+        phone: "0600000000",
+        participants: 1,
+        status: "pending",
+      });
+      assert(lateErr, "une réservation post-fermeture aurait dû échouer");
+      const lateMsg = lateErr!.message.toLowerCase();
+      assert(
+        lateMsg.includes("session_closed") || lateMsg.includes("session_full"),
+        `erreur post-fermeture inattendue: ${lateErr!.message}`,
+      );
+    } finally {
+      await cleanup(sb, { sessionId: session.id });
+    }
+  },
+});
