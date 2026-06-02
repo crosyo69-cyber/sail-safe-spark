@@ -294,7 +294,7 @@ export default function AdminConversionFunnel() {
             </div>
           </CardHeader>
           <CardContent>
-            {liveEvents.length === 0 ? (
+            {filteredEvents.length === 0 ? (
               <p className="text-sm text-muted-foreground py-4 text-center">
                 En attente d'événements… Cliquez sur un bouton téléphone ou envoyez un
                 formulaire dans un autre onglet pour vérifier.
