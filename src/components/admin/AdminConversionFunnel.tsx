@@ -160,11 +160,19 @@ export default function AdminConversionFunnel() {
       const q = pageSearch.trim().toLowerCase();
       list = list.filter((ev) => (ev.page_path || "/").toLowerCase().includes(q));
     }
+    if (dateFrom) {
+      const from = new Date(dateFrom).getTime();
+      list = list.filter((ev) => new Date(ev.created_at).getTime() >= from);
+    }
+    if (dateTo) {
+      const to = new Date(dateTo).getTime();
+      list = list.filter((ev) => new Date(ev.created_at).getTime() <= to);
+    }
     if (!sortNewest) {
       list = list.slice().sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
     }
     return list;
-  }, [liveEvents, eventFilter, pageSearch, sortNewest]);
+  }, [liveEvents, eventFilter, pageSearch, sortNewest, dateFrom, dateTo]);
 
   // Realtime subscription for debug mode
   useEffect(() => {
