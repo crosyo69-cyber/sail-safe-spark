@@ -177,6 +177,16 @@ export default function AdminConversionFunnel() {
     return list;
   }, [liveEvents, eventFilter, pageSearch, sortNewest, appliedDateFrom, appliedDateTo]);
 
+  const resetFilters = () => {
+    setEventFilter("all");
+    setPageSearch("");
+    setSortNewest(true);
+    setDateFrom("");
+    setDateTo("");
+    setAppliedDateFrom("");
+    setAppliedDateTo("");
+  };
+
   // Realtime subscription for debug mode
   useEffect(() => {
     if (!debug) {
