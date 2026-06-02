@@ -633,6 +633,17 @@ export const blogArticles = [
     alt: "Apprendre kitesurf adulte 40 50 60 ans Hyères - Stage débutant école KiteSurf Passion Almanarre",
     featured: true,
   },
+  {
+    slug: "logement-stage-kitesurf-hyeres",
+    title: "Où loger pour un stage de kitesurf à Hyères ? Guide logement par zone",
+    excerpt: "Almanarre, Giens, port, centre-ville : comparatif complet des zones de logement pour un stage de kitesurf à Hyères. Camping, hôtel presqu'île de Giens, airbnb, accès vélo et logistique pour rejoindre le spot.",
+    category: "Le Spot",
+    date: "2026-06-02",
+    readTime: "11 min",
+    image: "blog-logement-stage-kitesurf-hyeres.jpg",
+    alt: "Logement stage kitesurf Hyères Almanarre Giens - Guide hébergement école Kitesurf Passion Var",
+    featured: true,
+  },
 ];
 
 const categories = ["Tous", "Kitesurf", "Wing Foil", "Pump Foil", "Wakeboard", "Le Spot", "Sécurité"];
