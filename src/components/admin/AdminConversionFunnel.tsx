@@ -2,7 +2,19 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Loader2, Users, Phone, Mail, TrendingUp } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Loader2,
+  Users,
+  Phone,
+  Mail,
+  TrendingUp,
+  Radio,
+  Trash2,
+} from "lucide-react";
 
 type RangeKey = "24h" | "7d" | "30d";
 
@@ -19,6 +31,8 @@ type EventRow = {
   location: string | null;
   created_at: string;
 };
+
+type LiveEvent = EventRow & { id: string; metadata?: Record<string, unknown> | null };
 
 type Stats = {
   visitors: number;
@@ -85,6 +99,9 @@ export default function AdminConversionFunnel() {
   const [rows, setRows] = useState<EventRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [debug, setDebug] = useState(false);
+  const [liveEvents, setLiveEvents] = useState<LiveEvent[]>([]);
+  const [realtimeStatus, setRealtimeStatus] = useState<string>("idle");
 
   useEffect(() => {
     let cancelled = false;
@@ -118,6 +135,30 @@ export default function AdminConversionFunnel() {
 
   const stats = useMemo(() => computeStats(rows), [rows]);
 
+  // Realtime subscription for debug mode
+  useEffect(() => {
+    if (!debug) {
+      setRealtimeStatus("idle");
+      return;
+    }
+    setRealtimeStatus("connecting");
+    const channel = supabase
+      .channel("analytics_events_debug")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "analytics_events" },
+        (payload) => {
+          const ev = payload.new as LiveEvent;
+          setLiveEvents((prev) => [ev, ...prev].slice(0, 50));
+        },
+      )
+      .subscribe((status) => setRealtimeStatus(status));
+
+    return () => {
+      void supabase.removeChannel(channel);
+    };
+  }, [debug]);
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -129,7 +170,19 @@ export default function AdminConversionFunnel() {
             Visiteurs uniques, clics téléphone et soumissions formulaire
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-4 flex-wrap">
+          <div className="flex items-center gap-2">
+            <Switch
+              id="conversion-debug-toggle"
+              checked={debug}
+              onCheckedChange={setDebug}
+            />
+            <Label htmlFor="conversion-debug-toggle" className="text-sm flex items-center gap-1.5">
+              <Radio className="w-3.5 h-3.5" />
+              Mode debug temps réel
+            </Label>
+          </div>
+          <div className="flex gap-2">
           {RANGES.map((r) => (
             <Button
               key={r.key}
@@ -140,8 +193,82 @@ export default function AdminConversionFunnel() {
               {r.label}
             </Button>
           ))}
+          </div>
         </div>
       </div>
+
+      {debug && (
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Radio className="w-4 h-4 text-primary animate-pulse" />
+                Flux d'événements en direct
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                <Badge
+                  variant={realtimeStatus === "SUBSCRIBED" ? "default" : "secondary"}
+                  className="font-mono text-[10px]"
+                >
+                  {realtimeStatus}
+                </Badge>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setLiveEvents([])}
+                  className="gap-1.5"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  Vider
+                </Button>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {liveEvents.length === 0 ? (
+              <p className="text-sm text-muted-foreground py-4 text-center">
+                En attente d'événements… Cliquez sur un bouton téléphone ou envoyez un
+                formulaire dans un autre onglet pour vérifier.
+              </p>
+            ) : (
+              <ScrollArea className="h-[320px]">
+                <ul className="divide-y divide-border/50">
+                  {liveEvents.map((ev) => (
+                    <li key={ev.id} className="py-2 flex items-start gap-3 text-xs">
+                      <Badge
+                        variant={
+                          ev.event_type === "form_submit"
+                            ? "default"
+                            : ev.event_type === "phone_click"
+                              ? "secondary"
+                              : "outline"
+                        }
+                        className="font-mono shrink-0"
+                      >
+                        {ev.event_type}
+                      </Badge>
+                      <div className="min-w-0 flex-1">
+                        <div className="font-mono text-foreground truncate">
+                          {ev.page_path || "/"}
+                          {ev.location && (
+                            <span className="text-muted-foreground">
+                              {" "}· {ev.location}
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-muted-foreground text-[10px] font-mono">
+                          session {ev.session_id.slice(0, 12)}… ·{" "}
+                          {new Date(ev.created_at).toLocaleTimeString("fr-FR")}
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </ScrollArea>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {loading ? (
         <div className="flex justify-center py-12">
