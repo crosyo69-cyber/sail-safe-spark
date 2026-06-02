@@ -149,6 +149,21 @@ export default function AdminConversionFunnel() {
 
   const stats = useMemo(() => computeStats(rows), [rows]);
 
+  const filteredEvents = useMemo(() => {
+    let list = [...liveEvents];
+    if (eventFilter !== "all") {
+      list = list.filter((ev) => ev.event_type === eventFilter);
+    }
+    if (pageSearch.trim()) {
+      const q = pageSearch.trim().toLowerCase();
+      list = list.filter((ev) => (ev.page_path || "/").toLowerCase().includes(q));
+    }
+    if (!sortNewest) {
+      list = list.slice().sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+    }
+    return list;
+  }, [liveEvents, eventFilter, pageSearch, sortNewest]);
+
   // Realtime subscription for debug mode
   useEffect(() => {
     if (!debug) {
