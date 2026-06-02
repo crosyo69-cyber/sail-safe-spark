@@ -9,6 +9,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -137,6 +145,7 @@ export default function AdminConversionFunnel() {
   const [appliedDateTo, setAppliedDateTo] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [importError, setImportError] = useState<string | null>(null);
+  const [pendingImport, setPendingImport] = useState<z.infer<typeof debugFiltersSchema> | null>(null);
 
   // Restore debug filters from localStorage on mount
   useEffect(() => {
@@ -245,11 +254,13 @@ export default function AdminConversionFunnel() {
     setAppliedDateFrom("");
     setAppliedDateTo("");
     setImportError(null);
+    setPendingImport(null);
     localStorage.removeItem("admin_debug_filters");
   };
 
   const handleImport = (file: File) => {
     setImportError(null);
+    setPendingImport(null);
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
@@ -262,19 +273,28 @@ export default function AdminConversionFunnel() {
           setImportError(`Le fichier JSON est invalide :\n${issues}`);
           return;
         }
-        const data = result.data;
-        setEventFilter(data.eventFilter);
-        setPageSearch(data.pageSearch);
-        setSortNewest(data.sortNewest);
-        setDateFrom(data.dateFrom);
-        setDateTo(data.dateTo);
-        setAppliedDateFrom(data.appliedDateFrom);
-        setAppliedDateTo(data.appliedDateTo);
+        setPendingImport(result.data);
       } catch {
         setImportError("Impossible de lire le fichier. Vérifiez qu'il s'agit d'un JSON valide.");
       }
     };
     reader.readAsText(file);
+  };
+
+  const confirmImport = () => {
+    if (!pendingImport) return;
+    setEventFilter(pendingImport.eventFilter);
+    setPageSearch(pendingImport.pageSearch);
+    setSortNewest(pendingImport.sortNewest);
+    setDateFrom(pendingImport.dateFrom);
+    setDateTo(pendingImport.dateTo);
+    setAppliedDateFrom(pendingImport.appliedDateFrom);
+    setAppliedDateTo(pendingImport.appliedDateTo);
+    setPendingImport(null);
+  };
+
+  const cancelImport = () => {
+    setPendingImport(null);
   };
 
   // Realtime subscription for debug mode
@@ -468,6 +488,46 @@ export default function AdminConversionFunnel() {
                 </AlertDescription>
               </Alert>
             )}
+            <Dialog open={!!pendingImport} onOpenChange={(open) => !open && cancelImport()}>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Importer les filtres</DialogTitle>
+                  <DialogDescription>
+                    Vérifiez les filtres déduits du fichier JSON avant de les appliquer.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-3 py-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Événement</span>
+                    <span className="font-medium">{pendingImport?.eventFilter === "all" ? "Tous" : pendingImport?.eventFilter === "phone_click" ? "Clics téléphone" : "Formulaires"}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Recherche page</span>
+                    <span className="font-medium">{pendingImport?.pageSearch || "—"}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Tri</span>
+                    <span className="font-medium">{pendingImport?.sortNewest ? "Plus récents" : "Plus anciens"}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Plage horaire de</span>
+                    <span className="font-medium">{pendingImport?.appliedDateFrom || "—"}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Plage horaire à</span>
+                    <span className="font-medium">{pendingImport?.appliedDateTo || "—"}</span>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button variant="outline" onClick={cancelImport}>
+                    Annuler
+                  </Button>
+                  <Button onClick={confirmImport}>
+                    Confirmer
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </CardHeader>
           <CardContent>
             {filteredEvents.length === 0 ? (
