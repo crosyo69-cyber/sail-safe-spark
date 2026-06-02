@@ -248,19 +248,29 @@ export default function AdminConversionFunnel() {
   };
 
   const handleImport = (file: File) => {
+    setImportError(null);
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
-        const data = JSON.parse(e.target?.result as string);
-        if (data.eventFilter) setEventFilter(data.eventFilter);
-        if (data.pageSearch !== undefined) setPageSearch(data.pageSearch);
-        if (data.sortNewest !== undefined) setSortNewest(data.sortNewest);
-        if (data.dateFrom !== undefined) setDateFrom(data.dateFrom);
-        if (data.dateTo !== undefined) setDateTo(data.dateTo);
-        if (data.appliedDateFrom !== undefined) setAppliedDateFrom(data.appliedDateFrom);
-        if (data.appliedDateTo !== undefined) setAppliedDateTo(data.appliedDateTo);
+        const raw = JSON.parse(e.target?.result as string);
+        const result = debugFiltersSchema.safeParse(raw);
+        if (!result.success) {
+          const issues = result.error.errors
+            .map((err) => `  • ${err.path.join(".") || "racine"} — ${err.message}`)
+            .join("\n");
+          setImportError(`Le fichier JSON est invalide :\n${issues}`);
+          return;
+        }
+        const data = result.data;
+        setEventFilter(data.eventFilter);
+        setPageSearch(data.pageSearch);
+        setSortNewest(data.sortNewest);
+        setDateFrom(data.dateFrom);
+        setDateTo(data.dateTo);
+        setAppliedDateFrom(data.appliedDateFrom);
+        setAppliedDateTo(data.appliedDateTo);
       } catch {
-        // ignore malformed JSON
+        setImportError("Impossible de lire le fichier. Vérifiez qu'il s'agit d'un JSON valide.");
       }
     };
     reader.readAsText(file);
