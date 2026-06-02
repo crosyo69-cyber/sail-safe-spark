@@ -42,5 +42,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-deno-
 
-      - name: Run edge function tests
+      - name: Run edge function tests against Supabase
+        env:
+          SUPABASE_URL: https://unqxudbxxzzmmbwwxwcr.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: bash scripts/test-edge-functions.sh
