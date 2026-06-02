@@ -6,6 +6,7 @@ import {
   shouldFireWithinWindow,
 } from './conversion-dedup';
 import { hasMarketingConsent, onMarketingConsent } from './consent';
+import { logAnalyticsEvent } from './event-logger';
 
 declare global {
   interface Window {
@@ -206,6 +207,12 @@ export function trackFormSubmit(
     window.gtag('event', 'form_submit', params);
   }
 
+  // Persist to our own analytics store for the conversion dashboard
+  logAnalyticsEvent('form_submit', {
+    location: formLocation,
+    metadata: { form_name: formName, ...(formData ?? {}) },
+  });
+
   if (import.meta.env.DEV) {
     console.log(
       `%c[Analytics] Form Submit: ${formName}`,
@@ -228,6 +235,9 @@ export function trackPhoneClick(location: string): void {
   if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
     window.gtag('event', 'phone_click', params);
   }
+
+  // Persist to our own analytics store for the conversion dashboard
+  logAnalyticsEvent('phone_click', { location });
 
   // Track Google Ads PHONE conversion (separate action from LEAD).
   // Falls back silently if the label is still the placeholder, so the GA4

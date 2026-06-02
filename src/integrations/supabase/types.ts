@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          location: string | null
+          metadata: Json | null
+          page_path: string | null
+          session_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          location?: string | null
+          metadata?: Json | null
+          page_path?: string | null
+          session_id: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          location?: string | null
+          metadata?: Json | null
+          page_path?: string | null
+          session_id?: string
+        }
+        Relationships: []
+      }
       blog_comments: {
         Row: {
           article_slug: string
