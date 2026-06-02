@@ -296,13 +296,14 @@ export default function AdminConversionFunnel() {
           <CardContent>
             {filteredEvents.length === 0 ? (
               <p className="text-sm text-muted-foreground py-4 text-center">
-                En attente d'événements… Cliquez sur un bouton téléphone ou envoyez un
-                formulaire dans un autre onglet pour vérifier.
+                {liveEvents.length === 0
+                  ? "En attente d'événements… Cliquez sur un bouton téléphone ou envoyez un formulaire dans un autre onglet pour vérifier."
+                  : "Aucun événement ne correspond aux filtres sélectionnés."}
               </p>
             ) : (
               <ScrollArea className="h-[320px]">
                 <ul className="divide-y divide-border/50">
-                  {liveEvents.map((ev) => (
+                  {filteredEvents.map((ev) => (
                     <li key={ev.id} className="py-2 flex items-start gap-3 text-xs">
                       <Badge
                         variant={
