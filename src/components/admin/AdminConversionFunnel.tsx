@@ -122,6 +122,49 @@ export default function AdminConversionFunnel() {
   const [appliedDateFrom, setAppliedDateFrom] = useState("");
   const [appliedDateTo, setAppliedDateTo] = useState("");
 
+  // Restore debug filters from localStorage on mount
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("admin_debug_filters");
+      if (raw) {
+        const saved = JSON.parse(raw) as {
+          eventFilter: typeof eventFilter;
+          pageSearch: string;
+          sortNewest: boolean;
+          dateFrom: string;
+          dateTo: string;
+          appliedDateFrom: string;
+          appliedDateTo: string;
+        };
+        if (saved.eventFilter) setEventFilter(saved.eventFilter);
+        if (saved.pageSearch !== undefined) setPageSearch(saved.pageSearch);
+        if (saved.sortNewest !== undefined) setSortNewest(saved.sortNewest);
+        if (saved.dateFrom !== undefined) setDateFrom(saved.dateFrom);
+        if (saved.dateTo !== undefined) setDateTo(saved.dateTo);
+        if (saved.appliedDateFrom !== undefined) setAppliedDateFrom(saved.appliedDateFrom);
+        if (saved.appliedDateTo !== undefined) setAppliedDateTo(saved.appliedDateTo);
+      }
+    } catch {
+      // ignore malformed storage
+    }
+  }, []);
+
+  // Persist debug filters to localStorage
+  useEffect(() => {
+    localStorage.setItem(
+      "admin_debug_filters",
+      JSON.stringify({
+        eventFilter,
+        pageSearch,
+        sortNewest,
+        dateFrom,
+        dateTo,
+        appliedDateFrom,
+        appliedDateTo,
+      })
+    );
+  }, [eventFilter, pageSearch, sortNewest, dateFrom, dateTo, appliedDateFrom, appliedDateTo]);
+
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
@@ -185,6 +228,7 @@ export default function AdminConversionFunnel() {
     setDateTo("");
     setAppliedDateFrom("");
     setAppliedDateTo("");
+    localStorage.removeItem("admin_debug_filters");
   };
 
   // Realtime subscription for debug mode
