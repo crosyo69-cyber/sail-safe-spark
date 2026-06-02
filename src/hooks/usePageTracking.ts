@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { trackPageView, isAnalyticsEnabled } from "@/lib/analytics";
+import { logAnalyticsEvent } from "@/lib/event-logger";
 
 /**
  * Hook to track page views on route changes in SPA
@@ -12,6 +13,12 @@ export function usePageTracking(): void {
   useEffect(() => {
     // Small delay to ensure the page title has been updated by react-helmet-async
     const timeoutId = setTimeout(() => {
+      // Log every page view to our own store for the conversion dashboard,
+      // independently of whether GA4 / Ads is enabled.
+      logAnalyticsEvent('page_view', {
+        pagePath: location.pathname + location.search,
+      });
+
       if (isAnalyticsEnabled()) {
         trackPageView(location.pathname + location.search, document.title);
         
