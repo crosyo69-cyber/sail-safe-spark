@@ -146,6 +146,7 @@ export default function AdminConversionFunnel() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [importError, setImportError] = useState<string | null>(null);
   const [pendingImport, setPendingImport] = useState<z.infer<typeof debugFiltersSchema> | null>(null);
+  const originalImportRef = useRef<z.infer<typeof debugFiltersSchema> | null>(null);
 
   // Restore debug filters from localStorage on mount
   useEffect(() => {
