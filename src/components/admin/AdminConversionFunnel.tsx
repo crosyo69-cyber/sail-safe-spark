@@ -317,6 +317,17 @@ export default function AdminConversionFunnel() {
                   onChange={(e) => setDateTo(e.target.value)}
                   className="h-8 text-xs w-[170px]"
                 />
+                <Button
+                  size="sm"
+                  variant="default"
+                  className="h-8 text-xs"
+                  onClick={() => {
+                    setAppliedDateFrom(dateFrom);
+                    setAppliedDateTo(dateTo);
+                  }}
+                >
+                  Appliquer
+                </Button>
               </div>
             </div>
           </CardHeader>
