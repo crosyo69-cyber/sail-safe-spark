@@ -229,6 +229,18 @@ export const HeroSection = memo(function HeroSection() {
                 Voir les tarifs
               </Link>
             </Button>
+            <Button 
+              variant="hero" 
+              size="lg" 
+              className="w-full sm:w-auto backdrop-blur-md"
+              asChild
+              onClick={() => trackPhoneClick("hero")}
+            >
+              <a href="tel:+33672716905">
+                <Phone className="w-5 h-5" />
+                06 72 71 69 05
+              </a>
+            </Button>
           </div>
 
           {/* Reassurance — single dense line, max info / min visual cost */}
