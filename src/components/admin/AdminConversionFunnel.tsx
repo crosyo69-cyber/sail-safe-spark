@@ -122,6 +122,7 @@ export default function AdminConversionFunnel() {
   const [dateTo, setDateTo] = useState("");
   const [appliedDateFrom, setAppliedDateFrom] = useState("");
   const [appliedDateTo, setAppliedDateTo] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Restore debug filters from localStorage on mount
   useEffect(() => {
