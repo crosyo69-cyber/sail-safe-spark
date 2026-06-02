@@ -26,6 +26,7 @@ import {
   ArrowDownAZ,
   ArrowDownZA,
   RotateCcw,
+  Upload,
 } from "lucide-react";
 
 type RangeKey = "24h" | "7d" | "30d";
