@@ -5111,6 +5111,16 @@ Le centre médiéval de Hyères est **charmant** (vieille ville, marché proven�
 - **Inconvénients** : **25-45 minutes de voiture** pour rejoindre l'Almanarre en haute saison, vélo possible mais vallonné (environ 12 km)
 - **Budget** : 70 à 180 €/nuit
 
+---
+
+**🎯 Vous avez choisi votre zone ? Réservez votre stage de kitesurf**
+
+Le logage est calé, il ne vous reste plus qu'à réserver votre stage pour enchaîner les sessions sur l'eau. Le [stage 100% Glisse 5 jours](/stage-kitesurf-100-glisse-hyeres) est la formule la plus complète pour viser l'autonomie à Hyères.
+
+**[👉 Réserver mon stage maintenant](/contact-reservation-kitesurf-hyeres)**
+
+---
+
 ### Camping, hôtel, airbnb : quel type d'hébergement choisir ?
 
 #### Camping Almanarre et campings de Giens
