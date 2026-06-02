@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Select,
   SelectContent,
@@ -27,7 +28,9 @@ import {
   ArrowDownZA,
   RotateCcw,
   Upload,
+  AlertTriangle,
 } from "lucide-react";
+import { z } from "zod";
 
 type RangeKey = "24h" | "7d" | "30d";
 
@@ -46,6 +49,16 @@ type EventRow = {
 };
 
 type LiveEvent = EventRow & { id: string; metadata?: Record<string, unknown> | null };
+
+const debugFiltersSchema = z.object({
+  eventFilter: z.enum(["all", "phone_click", "form_submit"]),
+  pageSearch: z.string(),
+  sortNewest: z.boolean(),
+  dateFrom: z.string(),
+  dateTo: z.string(),
+  appliedDateFrom: z.string(),
+  appliedDateTo: z.string(),
+});
 
 type Stats = {
   visitors: number;
@@ -123,6 +136,7 @@ export default function AdminConversionFunnel() {
   const [appliedDateFrom, setAppliedDateFrom] = useState("");
   const [appliedDateTo, setAppliedDateTo] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [importError, setImportError] = useState<string | null>(null);
 
   // Restore debug filters from localStorage on mount
   useEffect(() => {
@@ -230,23 +244,34 @@ export default function AdminConversionFunnel() {
     setDateTo("");
     setAppliedDateFrom("");
     setAppliedDateTo("");
+    setImportError(null);
     localStorage.removeItem("admin_debug_filters");
   };
 
   const handleImport = (file: File) => {
+    setImportError(null);
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
-        const data = JSON.parse(e.target?.result as string);
-        if (data.eventFilter) setEventFilter(data.eventFilter);
-        if (data.pageSearch !== undefined) setPageSearch(data.pageSearch);
-        if (data.sortNewest !== undefined) setSortNewest(data.sortNewest);
-        if (data.dateFrom !== undefined) setDateFrom(data.dateFrom);
-        if (data.dateTo !== undefined) setDateTo(data.dateTo);
-        if (data.appliedDateFrom !== undefined) setAppliedDateFrom(data.appliedDateFrom);
-        if (data.appliedDateTo !== undefined) setAppliedDateTo(data.appliedDateTo);
+        const raw = JSON.parse(e.target?.result as string);
+        const result = debugFiltersSchema.safeParse(raw);
+        if (!result.success) {
+          const issues = result.error.errors
+            .map((err) => `  • ${err.path.join(".") || "racine"} — ${err.message}`)
+            .join("\n");
+          setImportError(`Le fichier JSON est invalide :\n${issues}`);
+          return;
+        }
+        const data = result.data;
+        setEventFilter(data.eventFilter);
+        setPageSearch(data.pageSearch);
+        setSortNewest(data.sortNewest);
+        setDateFrom(data.dateFrom);
+        setDateTo(data.dateTo);
+        setAppliedDateFrom(data.appliedDateFrom);
+        setAppliedDateTo(data.appliedDateTo);
       } catch {
-        // ignore malformed JSON
+        setImportError("Impossible de lire le fichier. Vérifiez qu'il s'agit d'un JSON valide.");
       }
     };
     reader.readAsText(file);
@@ -435,6 +460,14 @@ export default function AdminConversionFunnel() {
                 </Button>
               </div>
             </div>
+            {importError && (
+              <Alert variant="destructive" className="mt-3">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription className="whitespace-pre-line text-xs">
+                  {importError}
+                </AlertDescription>
+              </Alert>
+            )}
           </CardHeader>
           <CardContent>
             {filteredEvents.length === 0 ? (
