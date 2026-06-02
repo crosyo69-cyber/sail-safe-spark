@@ -497,6 +497,26 @@ export default function AdminConversionFunnel() {
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-3 py-2">
+                  <div className="rounded-lg bg-muted/40 border border-border/60 p-3 flex flex-wrap gap-3 items-center">
+                    <span className="text-xs text-muted-foreground uppercase tracking-wide">Résumé</span>
+                    <Badge variant="secondary" className="text-xs">
+                      {pendingImport?.eventFilter === "all" ? "Tous les événements" : pendingImport?.eventFilter === "phone_click" ? "Clics téléphone" : "Formulaires"}
+                    </Badge>
+                    <Badge variant="secondary" className="text-xs">
+                      {pendingImport?.sortNewest ? "Plus récents" : "Plus anciens"}
+                    </Badge>
+                    {(pendingImport?.appliedDateFrom || pendingImport?.appliedDateTo) && (
+                      <Badge variant="outline" className="text-xs font-mono">
+                        {pendingImport?.appliedDateFrom
+                          ? new Date(pendingImport.appliedDateFrom).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })
+                          : "—"}
+                        <span className="mx-1">→</span>
+                        {pendingImport?.appliedDateTo
+                          ? new Date(pendingImport.appliedDateTo).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })
+                          : "—"}
+                      </Badge>
+                    )}
+                  </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Événement</span>
                     <span className="font-medium">{pendingImport?.eventFilter === "all" ? "Tous" : pendingImport?.eventFilter === "phone_click" ? "Clics téléphone" : "Formulaires"}</span>
