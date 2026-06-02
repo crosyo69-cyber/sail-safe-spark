@@ -1,8 +1,8 @@
 import { memo, useState, useEffect, useCallback, useLayoutEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap, CheckCircle2, Phone } from "lucide-react";
+import { ArrowRight, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { trackCTAClick, trackPhoneClick } from "@/lib/analytics";
+import { trackCTAClick } from "@/lib/analytics";
 
 // Import hero images with WebP conversion - Desktop (full size)
 import heroKitesurf from "@/assets/kitesurf-hyeres.jpg?webp";
