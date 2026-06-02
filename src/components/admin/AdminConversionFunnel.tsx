@@ -262,6 +262,7 @@ export default function AdminConversionFunnel() {
   const handleImport = (file: File) => {
     setImportError(null);
     setPendingImport(null);
+    originalImportRef.current = null;
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
@@ -275,6 +276,7 @@ export default function AdminConversionFunnel() {
           return;
         }
         setPendingImport(result.data);
+        originalImportRef.current = result.data;
       } catch {
         setImportError("Impossible de lire le fichier. Vérifiez qu'il s'agit d'un JSON valide.");
       }
@@ -292,10 +294,18 @@ export default function AdminConversionFunnel() {
     setAppliedDateFrom(pendingImport.appliedDateFrom);
     setAppliedDateTo(pendingImport.appliedDateTo);
     setPendingImport(null);
+    originalImportRef.current = null;
   };
 
   const cancelImport = () => {
     setPendingImport(null);
+    originalImportRef.current = null;
+  };
+
+  const resetImportEdits = () => {
+    if (originalImportRef.current) {
+      setPendingImport(originalImportRef.current);
+    }
   };
 
   // Realtime subscription for debug mode
