@@ -252,6 +252,46 @@ export default function AdminConversionFunnel() {
                 </Button>
               </div>
             </div>
+            <div className="flex flex-wrap items-center gap-3 mt-4">
+              <Select
+                value={eventFilter}
+                onValueChange={(v) => setEventFilter(v as typeof eventFilter)}
+              >
+                <SelectTrigger className="w-[180px] text-xs h-8">
+                  <SelectValue placeholder="Tous les événements" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tous les événements</SelectItem>
+                  <SelectItem value="phone_click">Clics téléphone</SelectItem>
+                  <SelectItem value="form_submit">Formulaires</SelectItem>
+                </SelectContent>
+              </Select>
+              <div className="relative flex-1 min-w-[180px] max-w-xs">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Rechercher une page…"
+                  value={pageSearch}
+                  onChange={(e) => setPageSearch(e.target.value)}
+                  className="pl-8 h-8 text-xs"
+                />
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setSortNewest((s) => !s)}
+                className="gap-1.5 h-8"
+              >
+                {sortNewest ? (
+                  <ArrowDownZA className="w-3.5 h-3.5" />
+                ) : (
+                  <ArrowDownAZ className="w-3.5 h-3.5" />
+                )}
+                <span className="text-xs">
+                  {sortNewest ? "Plus récents" : "Plus anciens"}
+                </span>
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             {liveEvents.length === 0 ? (
