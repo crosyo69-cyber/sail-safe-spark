@@ -605,7 +605,11 @@ export default function AdminConversionFunnel() {
                     </div>
                   </div>
                 )}
-                <DialogFooter>
+                <DialogFooter className="gap-2">
+                  <Button variant="ghost" size="sm" onClick={resetImportEdits} className="gap-1.5">
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    Réinitialiser
+                  </Button>
                   <Button variant="outline" onClick={cancelImport}>
                     Annuler
                   </Button>
