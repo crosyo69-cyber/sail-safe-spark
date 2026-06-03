@@ -5629,7 +5629,9 @@ const BlogArticle = () => {
             { "@type": "ListItem", "position": 3, "name": article.title, "item": `https://www.kitesurfpassion.fr/blog/${slug}` }
           ]
         })}</script>
-        {faqStructuredData && !hasCustomStructuredData && (
+        {/* FAQPage emitted as its own JSON-LD block (separate from Article/@graph)
+            so Google Rich Results Test detects it as a standalone FAQPage entity. */}
+        {faqStructuredData && (
           <script type="application/ld+json">{JSON.stringify(faqStructuredData)}</script>
         )}
       </Helmet>
