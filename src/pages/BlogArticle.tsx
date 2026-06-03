@@ -6,6 +6,12 @@ import { BlogComments } from "@/components/BlogComments";
 import { Link, useParams } from "react-router-dom";
 import { Calendar, Clock, ArrowLeft, ArrowRight, User, Tag, Facebook, Twitter, Linkedin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { blogArticles } from "./Blog";
 import DOMPurify from "dompurify";
 import { marked } from "marked";
@@ -5436,6 +5442,54 @@ const BlogArticle = () => {
 
   // Custom structured data for specific articles
   const customArticleStructuredData: Record<string, object> = {
+    "pumpfoil-vs-wingfoil-lequel-choisir-hyeres": {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": "https://www.kitesurfpassion.fr/blog/pumpfoil-vs-wingfoil-lequel-choisir-hyeres#article",
+          mainEntityOfPage: "https://www.kitesurfpassion.fr/blog/pumpfoil-vs-wingfoil-lequel-choisir-hyeres",
+          headline: "Pumpfoil vs Wingfoil : Lequel Choisir pour Débuter à Hyères ?",
+          description: "Guide comparatif complet entre pumpfoil et wingfoil à l'Almanarre. Avantages, inconvénients, tarifs et conseils d'un moniteur diplômé d'État.",
+          inLanguage: "fr-FR",
+          url: "https://www.kitesurfpassion.fr/blog/pumpfoil-vs-wingfoil-lequel-choisir-hyeres",
+          author: {
+            "@type": "Organization",
+            name: "Kitesurf Passion",
+            url: "https://www.kitesurfpassion.fr/",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Kitesurf Passion",
+            url: "https://www.kitesurfpassion.fr/",
+          },
+          articleSection: "Wing Foil",
+          keywords: [
+            "pumpfoil vs wingfoil",
+            "wingfoil débutant Hyères",
+            "pumpfoil Hyères",
+            "stage wingfoil Almanarre",
+            "cours pumpfoil dock start",
+            "foil débutant Var",
+            "wingfoil sans vent",
+            "pumpfoil prix",
+            "wingfoil prix Hyères",
+            "Almanarre wingfoil",
+          ],
+          about: [
+            "Wingfoil",
+            "Pumpfoil",
+            "Hyères",
+            "Almanarre",
+          ],
+        },
+        ...(faqStructuredData ? [{
+          "@type": "FAQPage",
+          "@id": "https://www.kitesurfpassion.fr/blog/pumpfoil-vs-wingfoil-lequel-choisir-hyeres#faq",
+          mainEntity: faqStructuredData.mainEntity,
+        }] : []),
+      ],
+    },
     "apprendre-kitesurf-40-50-60-ans": {
       "@context": "https://schema.org",
       "@graph": [
@@ -5683,6 +5737,27 @@ const BlogArticle = () => {
           <div className="max-w-3xl mx-auto prose prose-lg prose-headings:font-display prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-a:text-primary prose-strong:text-foreground prose-table:border-collapse prose-th:border prose-th:border-border prose-th:p-2 prose-th:bg-muted prose-td:border prose-td:border-border prose-td:p-2">
             <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(content.content, { async: false }) as string) }} />
           </div>
+
+          {/* FAQ Accordion */}
+          {faqData && (
+            <div className="max-w-3xl mx-auto mt-12">
+              <h2 className="font-display text-2xl font-bold text-foreground mb-6">
+                Questions fréquentes
+              </h2>
+              <Accordion type="single" collapsible className="w-full">
+                {faqData.map((faq, index) => (
+                  <AccordionItem key={index} value={`item-${index}`}>
+                    <AccordionTrigger className="text-left text-foreground font-medium">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          )}
 
           {/* Tags */}
           <div className="max-w-3xl mx-auto mt-12 pt-8 border-t border-border">
