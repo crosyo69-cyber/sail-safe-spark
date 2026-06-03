@@ -8,7 +8,6 @@ export interface LastMinuteSession {
   activity: string;
   max_participants: number;
   status: string;
-  notes: string | null;
   weather_condition: string | null;
   weather_note: string | null;
   last_minute_label: "fire" | "wind" | null;
@@ -23,7 +22,7 @@ async function fetchLastMinute(): Promise<LastMinuteSession[]> {
   const today = todayStr();
   const { data: sessions, error } = await supabase
     .from("sessions")
-    .select("id,date,time_slot,activity,max_participants,status,notes,weather_condition,weather_note,last_minute_label,published_at,is_last_minute")
+    .select("id,date,time_slot,activity,max_participants,status,weather_condition,weather_note,last_minute_label,published_at,is_last_minute")
     .eq("is_last_minute", true)
     .gte("date", today)
     .order("date", { ascending: true });
