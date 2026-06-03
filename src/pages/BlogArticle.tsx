@@ -6,6 +6,12 @@ import { BlogComments } from "@/components/BlogComments";
 import { Link, useParams } from "react-router-dom";
 import { Calendar, Clock, ArrowLeft, ArrowRight, User, Tag, Facebook, Twitter, Linkedin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { blogArticles } from "./Blog";
 import DOMPurify from "dompurify";
 import { marked } from "marked";
