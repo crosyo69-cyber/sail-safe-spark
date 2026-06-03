@@ -140,6 +140,76 @@ const getArticleImage = (imageName: string): string => {
 
 // Article content data
 const articleContent: Record<string, { content: string; tags: string[] }> = {
+  "week-end-kitesurf-hyeres-guide-complet": {
+    content: `
+## Week-end kitesurf à Hyères : le guide complet pour un séjour réussi
+
+Hyères et sa plage de l'Almanarre font partie des destinations kitesurf les plus prisées d'Europe. Plus de **250 jours de vent par an**, une eau plate idéale pour apprendre, un cadre naturel exceptionnel entre mer et presqu'île de Giens — tout est réuni pour un week-end inoubliable. Voici le guide complet de **KiteSurf Passion**, école itinérante implantée sur ce spot depuis 1999.
+
+### Pourquoi choisir Hyères pour un week-end kitesurf ?
+
+L'[Almanarre](/spot-kitesurf-almanarre-hyeres-var) n'est pas un spot comme les autres. Classée parmi les meilleures baies du monde, cette plage de sable fin bénéficie de deux vents dominants complémentaires : le **vent d'est** venant d'Italie, régulier et stable, et le **mistral** venant de l'ouest, puissant et fiable. Résultat : il y a du vent pratiquement toute l'année, avec des conditions idéales pour les débutants comme pour les riders confirmés.
+
+L'Almanarre accueille chaque année la **Semaine Olympique Française** — la plus grande régate de voile olympique d'Europe — ce qui confirme sa réputation internationale pour les sports nautiques.
+
+### Quand venir pour avoir du vent ?
+
+**Meilleure période : avril à octobre.** La saison principale s'étend d'avril à octobre avec des conditions optimales en mai-juin et septembre. Le vent souffle en moyenne **15 à 25 nœuds**, idéal pour progresser.
+
+- **Juillet-août :** vent thermique l'après-midi, conditions parfaites pour les débutants le matin.
+- **Hors saison (novembre à mars) :** mistral fréquent et puissant — réservé aux pratiquants confirmés.
+
+**Conseil de moniteur :** venez de préférence en semaine de mai ou septembre — moins de monde sur le spot, plus de vent, et des tarifs hébergement plus accessibles.
+
+### Le programme idéal pour un week-end
+
+#### Samedi
+
+**Matin — Cours d'initiation kitesurf ou wingfoil.** Retrouvez votre moniteur diplômé d'État KiteSurf Passion sur le spot. La première session commence par la théorie de sécurité, la prise en main de l'aile, puis les premiers bords sur l'eau avec bateau d'assistance. Comptez **3 heures** pour les premières sensations.
+
+**Après-midi — Session libre ou perfectionnement.** Si les conditions le permettent, enchaînez avec une deuxième session l'après-midi. Sinon, profitez de la plage, explorez la presqu'île de Giens à vélo ou visitez le village perché de Hyères-les-Palmiers.
+
+**Soir — Dîner à Hyères.** La vieille ville médiévale propose de nombreux restaurants. Essayez les spécialités provençales et les poissons frais du port.
+
+#### Dimanche
+
+**Matin — Deuxième session.** Après une nuit de repos, la deuxième session permet de consolider les acquis. En wingfoil, certains élèves commencent à voler dès la deuxième journée !
+
+**Après-midi — Découverte du spot.** Balade en kayak vers la Tour Fondue, plongée dans la baie, ou farniente sur la plage de l'Almanarre avant le retour.
+
+### Comment venir à Hyères ?
+
+- **En voiture :** A57 depuis Toulon, sortie Hyères-Centre, puis direction Presqu'île de Giens. Parking gratuit à proximité de la plage de l'Almanarre.
+- **En train :** Gare de Hyères desservie depuis Toulon (20 min) et Marseille (1h). Taxi ou vélo pour rejoindre l'Almanarre (8 km).
+- **En avion :** Aéroport Toulon-Hyères — à seulement **10 minutes** de l'Almanarre. Vols directs depuis Paris, Lyon et plusieurs villes européennes.
+
+### Où dormir pour un week-end kitesurf à Hyères ?
+
+**À proximité immédiate du spot :** plusieurs campings et locations saisonnières sont disponibles sur la presqu'île de Giens, à moins d'un kilomètre de la plage. Idéal pour ne pas perdre de temps le matin.
+
+**En ville :** Hyères-les-Palmiers propose hôtels et chambres d'hôtes dans un cadre provençal authentique, à 10 minutes du spot en voiture.
+
+Pour aller plus loin, consultez notre guide dédié : [Où loger pour un stage de kitesurf à Hyères ?](/blog/logement-stage-kitesurf-hyeres)
+
+**Conseil :** réservez tôt en juillet-août — l'Almanarre est très prisée en haute saison.
+
+### Réserver votre cours de kitesurf ou wingfoil
+
+KiteSurf Passion propose des cours adaptés à tous les niveaux pour votre week-end :
+
+- **Initiation kitesurf** — premier contact avec la discipline, zéro expérience requise
+- **[Stage wingfoil](/stage-wingfoil-hyeres-almanarre)** — apprenez à voler en 1 à 2 journées
+- **Perfectionnement** — progressez avec un moniteur diplômé d'État
+- **[Cours pumpfoil](/cours-pumpfoil-dock-start-hyeres)** — la discipline sans vent, pour les foilers en progression
+
+**Matériel fourni — Bateau d'assistance inclus — Acompte 50 € seulement.**
+
+Découvrez nos [tarifs cours kitesurf et wingfoil à Hyères](/tarifs-cours-kitesurf-wingfoil-hyeres) ou [contactez-nous](/contact-reservation-kitesurf-hyeres) directement au **06 72 71 69 05** pour organiser votre week-end.
+
+*KiteSurf Passion — École itinérante, Presqu'île de Giens, Hyères (83) — 06 72 71 69 05 — kitesurfpassion.fr*
+    `,
+    tags: ["Week-end", "Hyères", "Almanarre", "Kitesurf", "Wingfoil", "Presqu'île de Giens", "Var", "Séjour", "Guide"],
+  },
   "pumpfoil-vs-wingfoil-lequel-choisir-hyeres": {
     content: `
 ## Pumpfoil vs Wingfoil : Lequel Choisir pour Débuter à Hyères ?
@@ -5310,6 +5380,13 @@ Pour des conseils personnalisés sur **où loger pour votre stage de kitesurf à
 
 // FAQ structured data for articles with FAQ sections (FAQPage schema for Google rich snippets)
 export const articleFAQData: Record<string, Array<{ question: string; answer: string }>> = {
+  "week-end-kitesurf-hyeres-guide-complet": [
+    { question: "Peut-on apprendre le kitesurf en un week-end ?", answer: "En deux jours d'initiation intensive, vous acquérez les bases solides : gestion de l'aile, premiers bords, sécurité. Pour naviguer de façon autonome, comptez 5 à 8 heures de cours au total selon votre progression." },
+    { question: "Faut-il savoir nager pour faire du kitesurf à Hyères ?", answer: "Oui, savoir nager est obligatoire. Un niveau basique suffit — vous portez un gilet de sauvetage et le bateau d'assistance est toujours présent." },
+    { question: "Quelle est la météo idéale pour un week-end kitesurf à Hyères ?", answer: "Un vent régulier de 15 à 20 nœuds est idéal pour débuter. L'Almanarre bénéficie de ces conditions très fréquemment de mai à septembre. Nous vérifions la météo avant chaque session." },
+    { question: "Peut-on faire du wingfoil et du kitesurf le même week-end ?", answer: "Oui ! Certains pratiquants choisissent le kitesurf le samedi et le wingfoil le dimanche pour découvrir les deux disciplines. Parlez-en à votre moniteur lors de la réservation." },
+    { question: "Quelle est la différence entre KiteSurf Passion et les autres écoles de Hyères ?", answer: "KiteSurf Passion est une école itinérante active depuis 1999, agréée FFVL, avec un moniteur diplômé d'État. Nous nous adaptons aux meilleurs spots du moment — Almanarre, presqu'île de Giens — selon les conditions du vent pour garantir les meilleures sessions possibles." },
+  ],
   "pumpfoil-vs-wingfoil-lequel-choisir-hyeres": [
     { question: "Le pumpfoil est-il dangereux pour un débutant ?", answer: "Le pumpfoil demande une bonne maîtrise du foil avant de se lancer. Nous recommandons au minimum 5 à 8 séances de wingfoil ou kitefoil avant d'aborder le pumpfoil. Toutes nos sessions à Hyères sont encadrées par un moniteur diplômé d'État avec bateau d'assistance." },
     { question: "Peut-on faire wingfoil et pumpfoil le même jour ?", answer: "Oui ! C'est même une excellente façon de progresser. Le matin en wingfoil pour travailler la gestion du foil quand le vent est présent, l'après-midi en pumpfoil pour affiner le pumping sans dépendre du vent." },
@@ -5444,6 +5521,53 @@ const BlogArticle = () => {
 
   // Custom structured data for specific articles
   const customArticleStructuredData: Record<string, object> = {
+    "week-end-kitesurf-hyeres-guide-complet": {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": "https://www.kitesurfpassion.fr/blog/week-end-kitesurf-hyeres-guide-complet#article",
+          mainEntityOfPage: "https://www.kitesurfpassion.fr/blog/week-end-kitesurf-hyeres-guide-complet",
+          headline: "Week-end kitesurf à Hyères : le guide complet pour un séjour réussi",
+          description: "Tout pour organiser votre week-end kitesurf à Hyères : le spot de l'Almanarre, les conditions de vent, les cours avec KiteSurf Passion et les bons plans du Var.",
+          inLanguage: "fr-FR",
+          url: "https://www.kitesurfpassion.fr/blog/week-end-kitesurf-hyeres-guide-complet",
+          datePublished: "2026-06-03T09:00:00+02:00",
+          dateModified: "2026-06-03T09:00:00+02:00",
+          author: {
+            "@type": "Person",
+            name: "Yoanne Cros",
+            jobTitle: "Moniteur Diplômé d'État",
+            url: "https://www.kitesurfpassion.fr/ecole-kitesurf-hyeres-almanarre",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Kitesurf Passion",
+            url: "https://www.kitesurfpassion.fr/",
+          },
+          articleSection: "Le Spot",
+          keywords: [
+            "week-end kitesurf Hyères",
+            "séjour kitesurf Almanarre",
+            "kitesurf Hyères week-end",
+            "wingfoil Hyères week-end",
+            "stage kitesurf 2 jours Hyères",
+            "presqu'île de Giens kitesurf",
+            "spot Almanarre",
+            "vent Hyères kitesurf",
+            "cours kitesurf Hyères",
+            "école kitesurf Hyères",
+          ],
+          about: [
+            "Kitesurf",
+            "Wingfoil",
+            "Hyères",
+            "Almanarre",
+            "Presqu'île de Giens",
+          ],
+        },
+      ],
+    },
     "pumpfoil-vs-wingfoil-lequel-choisir-hyeres": {
       "@context": "https://schema.org",
       "@graph": [
