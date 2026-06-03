@@ -5,8 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { blogArticles } from "@/pages/Blog";
-import { CheckCircle2, XCircle, ExternalLink, Loader2, FileSearch } from "lucide-react";
+import { CheckCircle2, XCircle, ExternalLink, Loader2, FileSearch, ListChecks } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface SchemaReport {
   url: string;
@@ -111,6 +115,26 @@ const AdminRichResultsValidator = () => {
   const [loading, setLoading] = useState(false);
   const [report, setReport] = useState<SchemaReport | null>(null);
 
+  // Bulk validation state
+  const categories = Array.from(new Set(blogArticles.map((a: any) => a.category).filter(Boolean))) as string[];
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedSlugs, setSelectedSlugs] = useState<string[]>([]);
+  const [bulkLoading, setBulkLoading] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState({ done: 0, total: 0 });
+  const [bulkReports, setBulkReports] = useState<SchemaReport[]>([]);
+
+  const toggleCategory = (c: string) =>
+    setSelectedCategories((prev) => (prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]));
+  const toggleSlug = (s: string) =>
+    setSelectedSlugs((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
+
+  const resolveBulkSlugs = (): string[] => {
+    const fromCats = blogArticles
+      .filter((a: any) => selectedCategories.includes(a.category))
+      .map((a: any) => a.slug);
+    return Array.from(new Set([...fromCats, ...selectedSlugs]));
+  };
+
   const targetPath = customPath.trim() || `/blog/${slug}`;
   const targetUrl = `${window.location.origin}${targetPath}`;
 
@@ -145,6 +169,75 @@ const AdminRichResultsValidator = () => {
     }
   };
 
+  const runBulkValidation = async () => {
+    const slugs = resolveBulkSlugs();
+    if (slugs.length === 0) {
+      toast({ title: "Aucun article sélectionné", variant: "destructive" });
+      return;
+    }
+    setBulkLoading(true);
+    setBulkReports([]);
+    setBulkProgress({ done: 0, total: slugs.length });
+    const results: SchemaReport[] = [];
+    for (const s of slugs) {
+      const path = `/blog/${s}`;
+      const url = `${window.location.origin}${path}`;
+      try {
+        const doc = await loadInIframe(path);
+        results.push(extractFromDoc(doc, url));
+      } catch (e: any) {
+        results.push({
+          url, scripts: 0, types: [], hasArticle: false, hasFAQPage: false,
+          faqQuestions: [], visibleQuestions: [], questionsMatch: false, rawJsonLd: [],
+          error: e?.message || "Erreur",
+        });
+      }
+      setBulkProgress((p) => ({ ...p, done: p.done + 1 }));
+      setBulkReports([...results]);
+    }
+    setBulkLoading(false);
+    const ok = results.filter((r) => r.hasFAQPage && r.questionsMatch && !r.error).length;
+    toast({
+      title: `Validation terminée : ${ok}/${results.length} OK`,
+      description: `${results.filter((r) => !r.hasFAQPage).length} sans FAQPage, ${results.filter((r) => r.error).length} erreur(s).`,
+    });
+  };
+
+  const downloadBulkJson = () => {
+    if (bulkReports.length === 0) return;
+    const payload = {
+      generatedAt: new Date().toISOString(),
+      total: bulkReports.length,
+      okCount: bulkReports.filter((r) => r.hasFAQPage && r.questionsMatch && !r.error).length,
+      reports: bulkReports,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `rich-results-bulk-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const downloadBulkCsv = () => {
+    if (bulkReports.length === 0) return;
+    const esc = (v: any) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const header = ["url", "scripts", "types", "hasArticle", "hasFAQPage", "faqQuestionsCount", "visibleQuestionsCount", "questionsMatch", "error"];
+    const rows = bulkReports.map((r) => [
+      r.url, r.scripts, r.types.join("|"), r.hasArticle, r.hasFAQPage,
+      r.faqQuestions.length, r.visibleQuestions.length, r.questionsMatch, r.error || "",
+    ]);
+    const csv = [header, ...rows].map((row) => row.map(esc).join(";")).join("\n");
+    const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `rich-results-bulk-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const downloadReport = () => {
     if (!report) return;
     const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
@@ -160,6 +253,13 @@ const AdminRichResultsValidator = () => {
 
   return (
     <div className="space-y-4">
+      <Tabs defaultValue="single">
+        <TabsList>
+          <TabsTrigger value="single" className="gap-2"><FileSearch className="w-4 h-4" /> Article unique</TabsTrigger>
+          <TabsTrigger value="bulk" className="gap-2"><ListChecks className="w-4 h-4" /> Validation en lot</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="single" className="space-y-4">
       <Card className="p-4 space-y-4">
         <div className="space-y-1">
           <h2 className="text-lg font-semibold flex items-center gap-2">
@@ -267,6 +367,107 @@ const AdminRichResultsValidator = () => {
           )}
         </Card>
       )}
+        </TabsContent>
+
+        <TabsContent value="bulk" className="space-y-4">
+          <Card className="p-4 space-y-4">
+            <div className="space-y-1">
+              <h2 className="text-lg font-semibold flex items-center gap-2">
+                <ListChecks className="w-5 h-5" /> Validation en lot
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                Sélectionne une ou plusieurs catégories et/ou slugs. Chaque article sera chargé en iframe et inspecté.
+              </p>
+            </div>
+
+            <div>
+              <p className="text-sm font-medium mb-2">Catégories</p>
+              <div className="flex flex-wrap gap-3">
+                {categories.map((c) => (
+                  <label key={c} className="flex items-center gap-2 cursor-pointer text-sm">
+                    <Checkbox checked={selectedCategories.includes(c)} onCheckedChange={() => toggleCategory(c)} />
+                    {c}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <p className="text-sm font-medium mb-2">Slugs ({selectedSlugs.length} sélectionné(s))</p>
+              <div className="max-h-64 overflow-auto border rounded p-2 space-y-1">
+                {blogArticles.map((a: any) => (
+                  <label key={a.slug} className="flex items-center gap-2 cursor-pointer text-xs">
+                    <Checkbox checked={selectedSlugs.includes(a.slug)} onCheckedChange={() => toggleSlug(a.slug)} />
+                    <span className="text-muted-foreground">[{a.category}]</span> {a.slug}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <Button onClick={runBulkValidation} disabled={bulkLoading} className="gap-2">
+                {bulkLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ListChecks className="w-4 h-4" />}
+                Valider {resolveBulkSlugs().length} article(s)
+              </Button>
+              {bulkReports.length > 0 && (
+                <>
+                  <Button variant="outline" onClick={downloadBulkJson}>Rapport JSON</Button>
+                  <Button variant="outline" onClick={downloadBulkCsv}>Rapport CSV</Button>
+                </>
+              )}
+            </div>
+
+            {bulkLoading && (
+              <div className="space-y-1">
+                <Progress value={(bulkProgress.done / Math.max(1, bulkProgress.total)) * 100} />
+                <p className="text-xs text-muted-foreground">{bulkProgress.done} / {bulkProgress.total}</p>
+              </div>
+            )}
+          </Card>
+
+          {bulkReports.length > 0 && (
+            <Card className="p-4 space-y-3">
+              <div className="flex flex-wrap gap-2 text-sm">
+                <Badge variant="secondary">{bulkReports.length} testé(s)</Badge>
+                <Badge variant="default">{bulkReports.filter((r) => r.hasFAQPage).length} FAQPage</Badge>
+                <Badge variant="default">{bulkReports.filter((r) => r.hasArticle).length} Article</Badge>
+                <Badge variant="default">{bulkReports.filter((r) => r.questionsMatch).length} Schema↔Visible OK</Badge>
+                <Badge variant="destructive">{bulkReports.filter((r) => r.error).length} erreur(s)</Badge>
+              </div>
+              <div className="overflow-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>URL</TableHead>
+                      <TableHead>Article</TableHead>
+                      <TableHead>FAQPage</TableHead>
+                      <TableHead>Q schema</TableHead>
+                      <TableHead>Q visibles</TableHead>
+                      <TableHead>Match</TableHead>
+                      <TableHead>Erreur</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {bulkReports.map((r, i) => (
+                      <TableRow key={i}>
+                        <TableCell className="max-w-[280px] truncate text-xs">
+                          <a href={r.url} target="_blank" rel="noopener noreferrer" className="underline">{r.url.replace(window.location.origin, "")}</a>
+                        </TableCell>
+                        <TableCell>{r.hasArticle ? <CheckCircle2 className="w-4 h-4 text-primary" /> : <XCircle className="w-4 h-4 text-destructive" />}</TableCell>
+                        <TableCell>{r.hasFAQPage ? <CheckCircle2 className="w-4 h-4 text-primary" /> : <XCircle className="w-4 h-4 text-destructive" />}</TableCell>
+                        <TableCell>{r.faqQuestions.length}</TableCell>
+                        <TableCell>{r.visibleQuestions.length}</TableCell>
+                        <TableCell>{r.hasFAQPage ? (r.questionsMatch ? <CheckCircle2 className="w-4 h-4 text-primary" /> : <XCircle className="w-4 h-4 text-destructive" />) : "—"}</TableCell>
+                        <TableCell className="text-xs text-destructive">{r.error || ""}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </Card>
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
