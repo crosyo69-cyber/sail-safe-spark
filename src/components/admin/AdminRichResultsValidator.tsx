@@ -186,14 +186,35 @@ const AdminRichResultsValidator = () => {
   };
 
   const normalizePath = (input: string): string => {
-    const raw = input.trim();
+    const raw = input.trim().replace(/\s+/g, "");
     if (!raw) return "";
+
+    const knownHosts = Array.from(
+      new Set([
+        window.location.host,
+        "www.kitesurfpassion.fr",
+        "kitesurfpassion.fr",
+        "www.kitesurfpassion.com",
+        "kitesurfpassion.com",
+      ].filter(Boolean)),
+    );
+    const escapedHosts = knownHosts.map((host) => host.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+    const leadingKnownHost = new RegExp(`^(?:https?:\\/\\/|\\/\\/)?(?:${escapedHosts})(?=\\/|https?:\\/\\/|$)`, "i");
+    let cleaned = raw;
+
+    for (let i = 0; i < 6; i += 1) {
+      const next = cleaned.replace(leadingKnownHost, "");
+      if (next === cleaned) break;
+      cleaned = next;
+    }
+
     try {
       // Handles absolute URLs (http(s)://...) — extracts only pathname + search + hash
-      const u = new URL(raw, window.location.origin);
+      const u = new URL(cleaned, window.location.origin);
       return `${u.pathname}${u.search}${u.hash}`;
     } catch {
-      return raw.startsWith("/") ? raw : `/${raw}`;
+      const withoutHost = cleaned.replace(/^(?:https?:\/\/|\/\/)[^/]+/i, "");
+      return withoutHost.startsWith("/") ? withoutHost : `/${withoutHost}`;
     }
   };
   const targetPath = normalizePath(customPath) || `/blog/${slug}`;
