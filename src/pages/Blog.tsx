@@ -65,6 +65,7 @@ import blogPumpfoilFoilPlanche from "@/assets/blog-pumpfoil-foil-planche-duotone
 import blogPumpfoilRiderPlage from "@/assets/blog-pumpfoil-rider-plage-duotone.jpg?webp";
 import blogPumpfoilVolMerCasque from "@/assets/blog-pumpfoil-vol-mer-casque.jpg?webp";
 import blogLogementStageKitesurfHyeres from "@/assets/blog-logement-stage-kitesurf-hyeres.jpg?webp";
+import blogWeekEndKitesurfHyeres from "@/assets/blog-week-end-kitesurf-hyeres-guide-complet.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -120,6 +121,7 @@ const imageMap: Record<string, string> = {
   "blog-pumpfoil-rider-plage-duotone.jpg": blogPumpfoilRiderPlage,
   "blog-pumpfoil-vol-mer-casque.jpg": blogPumpfoilVolMerCasque,
   "blog-logement-stage-kitesurf-hyeres.jpg": blogLogementStageKitesurfHyeres,
+  "blog-week-end-kitesurf-hyeres-guide-complet.jpg": blogWeekEndKitesurfHyeres,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -131,6 +133,17 @@ const breadcrumbItems = [
 ];
 
 export const blogArticles = [
+  {
+    slug: "week-end-kitesurf-hyeres-guide-complet",
+    title: "Week-end kitesurf à Hyères : le guide complet pour un séjour réussi",
+    excerpt: "Tout pour organiser votre week-end kitesurf à Hyères : le spot de l'Almanarre, les conditions de vent, les cours avec KiteSurf Passion et les bons plans du Var.",
+    category: "Le Spot",
+    date: "2026-06-03",
+    readTime: "8 min",
+    image: "blog-week-end-kitesurf-hyeres-guide-complet.jpg",
+    alt: "Week-end kitesurf à Hyères - Plage de l'Almanarre, presqu'île de Giens, école KiteSurf Passion",
+    featured: true,
+  },
   {
     slug: "pumpfoil-vs-wingfoil-lequel-choisir-hyeres",
     title: "Pumpfoil vs Wingfoil : Lequel Choisir pour Débuter à Hyères ?",
