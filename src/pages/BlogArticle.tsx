@@ -5436,6 +5436,54 @@ const BlogArticle = () => {
 
   // Custom structured data for specific articles
   const customArticleStructuredData: Record<string, object> = {
+    "pumpfoil-vs-wingfoil-lequel-choisir-hyeres": {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": "https://www.kitesurfpassion.fr/blog/pumpfoil-vs-wingfoil-lequel-choisir-hyeres#article",
+          mainEntityOfPage: "https://www.kitesurfpassion.fr/blog/pumpfoil-vs-wingfoil-lequel-choisir-hyeres",
+          headline: "Pumpfoil vs Wingfoil : Lequel Choisir pour Débuter à Hyères ?",
+          description: "Guide comparatif complet entre pumpfoil et wingfoil à l'Almanarre. Avantages, inconvénients, tarifs et conseils d'un moniteur diplômé d'État.",
+          inLanguage: "fr-FR",
+          url: "https://www.kitesurfpassion.fr/blog/pumpfoil-vs-wingfoil-lequel-choisir-hyeres",
+          author: {
+            "@type": "Organization",
+            name: "Kitesurf Passion",
+            url: "https://www.kitesurfpassion.fr/",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Kitesurf Passion",
+            url: "https://www.kitesurfpassion.fr/",
+          },
+          articleSection: "Wing Foil",
+          keywords: [
+            "pumpfoil vs wingfoil",
+            "wingfoil débutant Hyères",
+            "pumpfoil Hyères",
+            "stage wingfoil Almanarre",
+            "cours pumpfoil dock start",
+            "foil débutant Var",
+            "wingfoil sans vent",
+            "pumpfoil prix",
+            "wingfoil prix Hyères",
+            "Almanarre wingfoil",
+          ],
+          about: [
+            "Wingfoil",
+            "Pumpfoil",
+            "Hyères",
+            "Almanarre",
+          ],
+        },
+        ...(faqStructuredData ? [{
+          "@type": "FAQPage",
+          "@id": "https://www.kitesurfpassion.fr/blog/pumpfoil-vs-wingfoil-lequel-choisir-hyeres#faq",
+          mainEntity: faqStructuredData.mainEntity,
+        }] : []),
+      ],
+    },
     "apprendre-kitesurf-40-50-60-ans": {
       "@context": "https://schema.org",
       "@graph": [
