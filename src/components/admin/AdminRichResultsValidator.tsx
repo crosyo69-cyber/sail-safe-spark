@@ -135,7 +135,18 @@ const AdminRichResultsValidator = () => {
     return Array.from(new Set([...fromCats, ...selectedSlugs]));
   };
 
-  const targetPath = customPath.trim() || `/blog/${slug}`;
+  const normalizePath = (input: string): string => {
+    const raw = input.trim();
+    if (!raw) return "";
+    try {
+      // Handles absolute URLs (http(s)://...) — extracts only pathname + search + hash
+      const u = new URL(raw, window.location.origin);
+      return `${u.pathname}${u.search}${u.hash}`;
+    } catch {
+      return raw.startsWith("/") ? raw : `/${raw}`;
+    }
+  };
+  const targetPath = normalizePath(customPath) || `/blog/${slug}`;
   const targetUrl = `${window.location.origin}${targetPath}`;
 
   const runValidation = async () => {
