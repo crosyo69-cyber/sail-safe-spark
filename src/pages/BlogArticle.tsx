@@ -132,6 +132,86 @@ const getArticleImage = (imageName: string): string => {
 
 // Article content data
 const articleContent: Record<string, { content: string; tags: string[] }> = {
+  "pumpfoil-vs-wingfoil-lequel-choisir-hyeres": {
+    content: `
+## Pumpfoil vs Wingfoil : Lequel Choisir pour Débuter à Hyères ?
+
+Depuis quelques années, deux disciplines révolutionnent les sports de glisse sur l'Almanarre : le **wingfoil** et le **pumpfoil**. Les deux permettent de voler au-dessus de l'eau sur un foil hydrodynamique. Mais leurs différences sont fondamentales. Voici le guide honnête d'un moniteur diplômé d'État qui enseigne les deux activités depuis leurs débuts dans le Var.
+
+### Qu'est-ce que le wingfoil ?
+
+Le wingfoil consiste à se propulser sur un foil grâce à une aile gonflable tenue à la main — la "wing". Cette aile capte la force du vent et vous porte au-dessus de l'eau à des vitesses comprises entre **15 et 40 km/h**.
+
+**Ce qu'il vous faut :** une planche foil, un foil hydrodynamique, une aile wing, et du vent minimum **12 à 15 nœuds**.
+
+**Points forts du wingfoil :**
+
+- Accessible aux débutants complets dès la première journée
+- Sensations de liberté immédiates — pas d'attaches, pas de fil
+- Praticable dans des conditions de vent modéré à fort
+- Idéal à l'Almanarre par vent d'est ou à la Badine par mistral
+
+### Qu'est-ce que le pumpfoil ?
+
+Le pumpfoil est une discipline **sans vent, sans moteur, sans voile**. La propulsion vient uniquement du mouvement de pompage de vos jambes. En transférant votre poids d'avant en arrière de façon rythmique, vous générez une portance qui vous maintient en vol au-dessus de l'eau.
+
+**Ce qu'il vous faut :** une planche courte, un foil à haute performance, et une bonne condition physique.
+
+**Points forts du pumpfoil :**
+
+- Indépendant des conditions météo — pas besoin de vent
+- Sport complet et exigeant physiquement — excellent cross-training
+- Sensation de vol pur et silencieux
+- Discipline en plein essor, peu enseignée en France
+
+### Pumpfoil vs Wingfoil : le comparatif complet
+
+| Critère | Wingfoil | Pumpfoil |
+|---------|----------|----------|
+| **Besoin de vent** | Oui (12-15 nœuds min.) | Non |
+| **Difficulté d'apprentissage** | Modérée | Élevée |
+| **Condition physique requise** | Modérée | Élevée |
+| **Sensations** | Liberté, vitesse, légèreté | Vol pur, silence, technique |
+| **Praticable par tous** | Oui, dès 14 ans | Plutôt foilers confirmés |
+| **Sessions par semaine** | Selon la météo | Tous les jours |
+| **Matériel** | Aile + planche + foil | Planche courte + foil |
+
+### Lequel choisir si vous débutez ?
+
+**Choisissez le wingfoil si :**
+
+- Vous n'avez jamais fait de foil
+- Vous voulez progresser rapidement dès les premières sessions
+- Vous êtes en vacances à Hyères et voulez des sensations immédiates
+- Vous venez du kitesurf, de la planche à voile ou du surf
+
+**Choisissez le pumpfoil si :**
+
+- Vous avez déjà une base en wingfoil ou kitefoil
+- Vous cherchez un défi technique et physique
+- Vous voulez vous entraîner indépendamment des conditions de vent
+- Vous habitez dans le Var et pouvez pratiquer régulièrement
+
+### Peuvent-ils se compléter ?
+
+Absolument. À KiteSurf Passion, de nombreux élèves commencent par le [wingfoil en stage d'initiation](/stage-wingfoil-hyeres-almanarre), puis progressent vers le [pumpfoil](/cours-pumpfoil-dock-start-hyeres) une fois à l'aise avec le foil. Les deux disciplines utilisent le même foil hydrodynamique — les sensations acquises en wingfoil vous donnent une base solide pour le pumpfoil.
+
+### Pourquoi apprendre à l'Almanarre ?
+
+La [plage de l'Almanarre](/spot-kitesurf-almanarre-hyeres-var) à Hyères est l'un des spots les plus réputés d'Europe pour ces deux disciplines. **Eau plate par vent d'est, profondeur idéale, fond sableux** — les conditions sont parfaites pour l'apprentissage en toute sécurité.
+
+Chez KiteSurf Passion, nous sommes l'une des seules écoles du Var à proposer le pumpfoil encadré par un moniteur diplômé d'État, avec bateau d'assistance à chaque session.
+
+### Réservez votre session wingfoil ou pumpfoil à Hyères
+
+Envie de tester l'une ou l'autre discipline ? Consultez nos [tarifs cours kitesurf et wingfoil à Hyères](/tarifs-cours-kitesurf-wingfoil-hyeres) — l'acompte de réservation est de **50 € seulement**, matériel fourni et bateau d'assistance inclus.
+
+[Réservez votre cours en ligne](/contact-reservation-kitesurf-hyeres) ou appelez-nous au **06 72 71 69 05**. Nous vous conseillerons la discipline idéale selon votre profil, votre forme et la météo du jour.
+
+*École KiteSurf Passion — Plage de l'Almanarre, Hyères (83) — Moniteur diplômé d'État depuis 1999.*
+    `,
+    tags: ["Pumpfoil", "Wingfoil", "Comparatif", "Hyères", "Almanarre", "Débutant", "Foil"],
+  },
   "quelle-aile-choisir-almanarre": {
     content: `
 ## Quelle taille d'aile choisir à l'Almanarre selon le vent et votre niveau ?
@@ -5222,6 +5302,13 @@ Pour des conseils personnalisés sur **où loger pour votre stage de kitesurf à
 
 // FAQ structured data for articles with FAQ sections (FAQPage schema for Google rich snippets)
 const articleFAQData: Record<string, Array<{ question: string; answer: string }>> = {
+  "pumpfoil-vs-wingfoil-lequel-choisir-hyeres": [
+    { question: "Le pumpfoil est-il dangereux pour un débutant ?", answer: "Le pumpfoil demande une bonne maîtrise du foil avant de se lancer. Nous recommandons au minimum 5 à 8 séances de wingfoil ou kitefoil avant d'aborder le pumpfoil. Toutes nos sessions à Hyères sont encadrées par un moniteur diplômé d'État avec bateau d'assistance." },
+    { question: "Peut-on faire wingfoil et pumpfoil le même jour ?", answer: "Oui ! C'est même une excellente façon de progresser. Le matin en wingfoil pour travailler la gestion du foil quand le vent est présent, l'après-midi en pumpfoil pour affiner le pumping sans dépendre du vent." },
+    { question: "Quel est le prix d'un cours de wingfoil ou pumpfoil à Hyères ?", answer: "Consultez nos tarifs sur la page dédiée. L'acompte de réservation en ligne est de 50 € seulement, matériel fourni (planche, foil, wing, combinaison, casque) et bateau d'assistance inclus à chaque session sur l'Almanarre." },
+    { question: "Quelle discipline choisir pour débuter à Hyères, wingfoil ou pumpfoil ?", answer: "Pour la grande majorité des débutants, le wingfoil est le bon choix : progression rapide, sensations immédiates et apprentissage accessible dès la première journée. Le pumpfoil est plutôt une discipline complémentaire pour les foilers déjà à l'aise." },
+    { question: "Faut-il du vent pour faire du pumpfoil ?", answer: "Non, c'est tout l'intérêt de la discipline. Le pumpfoil se pratique sans vent, sans moteur et sans voile. La propulsion vient uniquement du mouvement rythmique de pompage des jambes qui génère la portance du foil." },
+  ],
   "quelle-aile-choisir-almanarre": [
     { question: "Quelle aile de kitesurf choisir à l'Almanarre pour 20 nœuds ?", answer: "Pour un rider moyen en twin-tip, une 9 ou 10 m² est souvent une bonne base, mais il faut aussi tenir compte du type de vent (Mistral plus rafaleux ou vent d'Est plus régulier) et de votre niveau technique." },
     { question: "Faut-il une aile plus petite en Mistral qu'en vent d'Est ?", answer: "Oui, très souvent. Le Mistral est généralement plus sec, plus fort et plus rafaleux que le vent d'Est à l'Almanarre, ce qui pousse à réduire la surface pour conserver du contrôle." },

@@ -132,6 +132,17 @@ const breadcrumbItems = [
 
 export const blogArticles = [
   {
+    slug: "pumpfoil-vs-wingfoil-lequel-choisir-hyeres",
+    title: "Pumpfoil vs Wingfoil : Lequel Choisir pour Débuter à Hyères ?",
+    excerpt: "Pumpfoil ou wingfoil à Hyères ? Comparatif honnête d'un moniteur diplômé d'État sur l'Almanarre : différences, matériel, apprentissage et conseils pour choisir.",
+    category: "Wing Foil",
+    date: "2026-06-03",
+    readTime: "9 min",
+    image: "blog-pumpfoil-vol-sunset-duotone.jpg",
+    alt: "Pumpfoil vs wingfoil Hyères - Comparatif débutant Almanarre école KiteSurf Passion",
+    featured: true,
+  },
+  {
     slug: "quelle-aile-choisir-almanarre",
     title: "Quelle taille d'aile de kitesurf choisir à l'Almanarre selon le vent ?",
     excerpt: "Mistral fort ou thermique d'Est régulier : guide pratique pour choisir la bonne taille d'aile de kitesurf à l'Almanarre (Hyères) selon le vent, votre poids, votre niveau et votre support.",
