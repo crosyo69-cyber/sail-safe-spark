@@ -5483,11 +5483,6 @@ const BlogArticle = () => {
             "Almanarre",
           ],
         },
-        ...(faqStructuredData ? [{
-          "@type": "FAQPage",
-          "@id": "https://www.kitesurfpassion.fr/blog/pumpfoil-vs-wingfoil-lequel-choisir-hyeres#faq",
-          mainEntity: faqStructuredData.mainEntity,
-        }] : []),
       ],
     },
     "apprendre-kitesurf-40-50-60-ans": {
