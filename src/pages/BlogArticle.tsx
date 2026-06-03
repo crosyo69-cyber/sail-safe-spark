@@ -5307,7 +5307,7 @@ Pour des conseils personnalisés sur **où loger pour votre stage de kitesurf à
 };
 
 // FAQ structured data for articles with FAQ sections (FAQPage schema for Google rich snippets)
-const articleFAQData: Record<string, Array<{ question: string; answer: string }>> = {
+export const articleFAQData: Record<string, Array<{ question: string; answer: string }>> = {
   "pumpfoil-vs-wingfoil-lequel-choisir-hyeres": [
     { question: "Le pumpfoil est-il dangereux pour un débutant ?", answer: "Le pumpfoil demande une bonne maîtrise du foil avant de se lancer. Nous recommandons au minimum 5 à 8 séances de wingfoil ou kitefoil avant d'aborder le pumpfoil. Toutes nos sessions à Hyères sont encadrées par un moniteur diplômé d'État avec bateau d'assistance." },
     { question: "Peut-on faire wingfoil et pumpfoil le même jour ?", answer: "Oui ! C'est même une excellente façon de progresser. Le matin en wingfoil pour travailler la gestion du foil quand le vent est présent, l'après-midi en pumpfoil pour affiner le pumping sans dépendre du vent." },
