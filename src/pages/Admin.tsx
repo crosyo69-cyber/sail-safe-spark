@@ -16,8 +16,9 @@ import AdminConversionDedupMonitor from "@/components/admin/AdminConversionDedup
 import AdminPackagesManager from "@/components/admin/AdminPackagesManager";
 import AdminConversionFunnel from "@/components/admin/AdminConversionFunnel";
 import AdminLastMinuteManager from "@/components/admin/AdminLastMinuteManager";
+import AdminRichResultsValidator from "@/components/admin/AdminRichResultsValidator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, Flame } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, Flame, FileSearch } from "lucide-react";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -114,6 +115,10 @@ const Admin = () => {
               <ShieldAlert className="w-4 h-4" />
               <span className="hidden sm:inline">Dédup</span>
             </TabsTrigger>
+            <TabsTrigger value="richresults" className="gap-2">
+              <FileSearch className="w-4 h-4" />
+              <span className="hidden sm:inline">Rich Results</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
@@ -166,6 +171,10 @@ const Admin = () => {
 
           <TabsContent value="dedup">
             <AdminConversionDedupMonitor />
+          </TabsContent>
+
+          <TabsContent value="richresults">
+            <AdminRichResultsValidator />
           </TabsContent>
         </Tabs>
       </main>
