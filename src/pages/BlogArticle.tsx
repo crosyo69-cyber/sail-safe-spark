@@ -5525,11 +5525,6 @@ const BlogArticle = () => {
             "Almanarre",
           ],
         },
-        ...(faqStructuredData ? [{
-          "@type": "FAQPage",
-          "@id": "https://www.kitesurfpassion.fr/blog/apprendre-kitesurf-40-50-60-ans#faq",
-          mainEntity: faqStructuredData.mainEntity,
-        }] : []),
       ],
     },
   };
