@@ -15,11 +15,12 @@ export function registerServiceWorker() {
           if ('serviceWorker' in navigator) {
             navigator.serviceWorker.getRegistrations().then((regs: readonly ServiceWorkerRegistration[]) => {
               regs.forEach((r) => r.unregister());
+              const reload = () => location.reload();
               if ('caches' in window) {
                 caches.keys().then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
-                  .finally(() => window.location.reload());
+                  .finally(reload);
               } else {
-                window.location.reload();
+                reload();
               }
             });
           } else {
