@@ -13,7 +13,7 @@ export function registerServiceWorker() {
         if (!sessionStorage.getItem(RELOAD_KEY)) {
           sessionStorage.setItem(RELOAD_KEY, '1');
           if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then((regs) => {
+            navigator.serviceWorker.getRegistrations().then((regs: readonly ServiceWorkerRegistration[]) => {
               regs.forEach((r) => r.unregister());
               if ('caches' in window) {
                 caches.keys().then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
