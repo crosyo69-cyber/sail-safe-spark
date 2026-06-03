@@ -85,27 +85,77 @@ const loadInIframe = (url: string): Promise<Document> =>
     iframe.src = url;
     let settled = false;
     const cleanup = () => iframe.remove();
-    const timer = setTimeout(() => {
+
+    const MAX_WAIT = 15000;
+    const POLL_INTERVAL = 250;
+    const startedAt = Date.now();
+
+    const hasRichSchema = (doc: Document): boolean => {
+      const scripts = Array.from(doc.querySelectorAll('script[type="application/ld+json"]'));
+      for (const s of scripts) {
+        try {
+          const json = JSON.parse(s.textContent || "");
+          const nodes: any[] = [];
+          const walk = (n: any) => {
+            if (!n) return;
+            if (Array.isArray(n)) return n.forEach(walk);
+            nodes.push(n);
+            if (n["@graph"]) walk(n["@graph"]);
+          };
+          walk(json);
+          if (
+            nodes.some(
+              (n) =>
+                n["@type"] === "Article" ||
+                n["@type"] === "BlogPosting" ||
+                n["@type"] === "FAQPage",
+            )
+          ) {
+            return true;
+          }
+        } catch {
+          /* ignore */
+        }
+      }
+      return false;
+    };
+
+    const settle = (action: () => void) => {
       if (settled) return;
       settled = true;
+      action();
+      setTimeout(cleanup, 100);
+    };
+
+    const poll = () => {
+      if (settled) return;
       try {
         const doc = iframe.contentDocument;
-        if (doc) resolve(doc);
-        else reject(new Error("Pas d'accès au document iframe"));
+        if (doc && hasRichSchema(doc)) {
+          settle(() => resolve(doc));
+          return;
+        }
+        if (Date.now() - startedAt >= MAX_WAIT) {
+          if (doc) settle(() => resolve(doc));
+          else settle(() => reject(new Error("Pas d'accès au document iframe")));
+          return;
+        }
       } catch (e: any) {
-        reject(e);
-      } finally {
-        // Defer cleanup so caller can read DOM
-        setTimeout(cleanup, 100);
+        settle(() => reject(e));
+        return;
       }
-    }, 3500);
-    iframe.onerror = () => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
-      cleanup();
-      reject(new Error("Échec du chargement de la page"));
+      setTimeout(poll, POLL_INTERVAL);
     };
+
+    iframe.onload = () => {
+      // Give React + JSON-LD injection a moment, then poll
+      setTimeout(poll, 500);
+    };
+    iframe.onerror = () => {
+      settle(() => reject(new Error("Échec du chargement de la page")));
+    };
+    // Hard ceiling in case onload never fires
+    setTimeout(poll, 2000);
     document.body.appendChild(iframe);
   });
 
