@@ -61,7 +61,7 @@ async function sendEmailAlert(
     const unsubscribeUrl = `https://kitesurfpassion.fr/desabonnement-alertes?token=${unsubscribeToken}`;
 
     const emailResponse = await resend.emails.send({
-      from: "Kitesurf Passion <onboarding@resend.dev>",
+      from: "Kitesurf Passion <noreply@kitesurfpassion.fr>",
       to: [email],
       subject: "🪁 Conditions idéales pour le kitesurf à l'Almanarre !",
       html: `
@@ -135,7 +135,13 @@ async function sendEmailAlert(
       `,
     });
 
-    console.log("Weather alert email sent successfully", { status: emailResponse?.id ? "ok" : "unknown" });
+    const sentId = (emailResponse as any)?.data?.id ?? (emailResponse as any)?.id;
+    const sendErr = (emailResponse as any)?.error;
+    if (sendErr) {
+      console.error("Resend rejected email", { email, error: sendErr });
+      return false;
+    }
+    console.log("Weather alert email sent successfully", { email, id: sentId ?? "unknown" });
     return true;
   } catch (error) {
     console.error("Error sending weather alert email", error);
