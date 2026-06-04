@@ -23,6 +23,12 @@ import { toast } from "sonner";
 import CalendarAddReservation from "./CalendarAddReservation";
 import CalendarReservationActions from "./CalendarReservationActions";
 import CalendarQuickSession from "./CalendarQuickSession";
+import { XCircle } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 
@@ -84,6 +90,9 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
   const [statusFilter, setStatusFilter] = useState<"all" | "confirmed" | "pending">("all");
   const [addingToSession, setAddingToSession] = useState<string | null>(null);
   const [creatingSession, setCreatingSession] = useState(false);
+  const [cancelTarget, setCancelTarget] = useState<SessionSummary | null>(null);
+  const [cancelReason, setCancelReason] = useState("");
+  const [cancelling, setCancelling] = useState(false);
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
@@ -164,6 +173,28 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
     await supabase.from("sessions").update({ status: newStatus }).eq("id", sessionId);
     refreshSessions();
   }, [refreshSessions]);
+
+  const confirmCancelSession = useCallback(async () => {
+    if (!cancelTarget) return;
+    setCancelling(true);
+    const reason = cancelReason.trim();
+    const { error } = await supabase
+      .from("sessions")
+      .update({ status: "cancelled", cancellation_reason: reason || null })
+      .eq("id", cancelTarget.id);
+    setCancelling(false);
+    if (error) {
+      toast.error("Annulation impossible", { description: error.message });
+      return;
+    }
+    const count = cancelTarget.reservations.filter(r => r.status === "confirmed" || r.status === "pending").length;
+    toast.success("Session annulée", {
+      description: `${count} élève(s) recrédité(s) et notifié(s) par email.`,
+    });
+    setCancelTarget(null);
+    setCancelReason("");
+    refreshSessions();
+  }, [cancelTarget, cancelReason, refreshSessions]);
 
   const filteredSessions = useMemo(() => {
     return sessions
@@ -599,6 +630,18 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
                         >
                           <UserPlus className="w-4 h-4" />
                         </Button>
+                        {s.status !== "cancelled" && (
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="h-11 w-11 p-0 shrink-0"
+                            onClick={() => { setCancelReason(""); setCancelTarget(s); }}
+                            title="Annuler la session"
+                            aria-label="Annuler la session"
+                          >
+                            <XCircle className="w-5 h-5" />
+                          </Button>
+                        )}
                         <div className="text-right">
                           <div className="flex items-center gap-1">
                             <Users className="w-3 h-3 text-muted-foreground" />
@@ -684,6 +727,56 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
       {loading && (
         <p className="text-center text-sm text-muted-foreground mt-4">Chargement…</p>
       )}
+
+      <AlertDialog open={!!cancelTarget} onOpenChange={(v) => !v && !cancelling && (setCancelTarget(null), setCancelReason(""))}>
+        <AlertDialogContent className="max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Annuler cette session ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {cancelTarget && (
+                <>
+                  Les <strong className="text-destructive">
+                    {cancelTarget.reservations.filter(r => r.status === "confirmed" || r.status === "pending").length} élève(s) inscrit(s)
+                  </strong> seront automatiquement recrédité(s) et notifié(s) par email.
+                </>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="space-y-2">
+            <div className="flex flex-wrap gap-2">
+              {["Vent insuffisant", "Conditions météo", "Mer agitée"].map((preset) => (
+                <Button
+                  key={preset}
+                  type="button"
+                  size="sm"
+                  variant={cancelReason === preset ? "default" : "outline"}
+                  className="h-9 text-xs"
+                  onClick={() => setCancelReason(preset)}
+                >
+                  {preset}
+                </Button>
+              ))}
+            </div>
+            <Textarea
+              placeholder="Motif (optionnel) — visible dans l'email aux élèves"
+              value={cancelReason}
+              onChange={(e) => setCancelReason(e.target.value)}
+              className="min-h-[80px] text-sm"
+              maxLength={200}
+            />
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={cancelling}>Retour</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => { e.preventDefault(); confirmCancelSession(); }}
+              disabled={cancelling}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {cancelling ? "Annulation…" : "Confirmer l'annulation"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 };
