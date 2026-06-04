@@ -12,8 +12,9 @@ import { cn } from "@/lib/utils";
 import { format, addDays } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
-  CalendarIcon, Plus, Trash2, Wind, CloudRain, Sun, Edit2, Users, X, Mail, Phone, Sparkles,
+  CalendarIcon, Plus, Trash2, Wind, CloudRain, Sun, Edit2, Users, X, Mail, Phone, Sparkles, Eye,
 } from "lucide-react";
+import SessionDetailPanel, { type SessionDetail } from "./SessionDetailPanel";
 import BulkSessionGenerator from "./BulkSessionGenerator";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
@@ -35,6 +36,23 @@ interface Reservation {
   status: string;
 }
 
+interface NestedClientPackage {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  package_code: string;
+  package_type: string;
+  total_sessions: number;
+  used_sessions: number;
+}
+
+interface PackageBooking {
+  id: string;
+  status: string;
+  client_packages: NestedClientPackage | null;
+}
+
 interface Session {
   id: string;
   date: string;
@@ -46,6 +64,7 @@ interface Session {
   weather_condition: string | null;
   reservation_count?: number;
   reservations?: Reservation[];
+  package_bookings?: PackageBooking[];
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -122,6 +141,8 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
   const [newWeather, setNewWeather] = useState<string>("");
   const [newNotes, setNewNotes] = useState("");
 
+  const [detailSession, setDetailSession] = useState<Session | null>(null);
+
   const fetchSessions = async () => {
     if (!selectedDate) return;
     setLoading(true);
@@ -129,7 +150,9 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
 
     const { data, error } = await supabase
       .from("sessions")
-      .select("*, reservations(id, first_name, last_name, email, phone, skill_level, participants, status)")
+      .select(
+        "*, reservations(id, first_name, last_name, email, phone, skill_level, participants, status), package_bookings(id, status, client_packages(id, first_name, last_name, email, package_code, package_type, total_sessions, used_sessions))"
+      )
       .eq("date", dateStr)
       .order("time_slot");
 
@@ -139,7 +162,9 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
       setSessions(
         (data || []).map((s: any) => ({
           ...s,
-          reservation_count: s.reservations?.length || 0,
+          reservation_count:
+            (s.reservations?.filter((r: any) => r.status !== "cancelled").reduce((sum: number, r: any) => sum + (r.participants || 1), 0) || 0) +
+            (s.package_bookings?.filter((b: any) => b.status === "confirmed").length || 0),
         }))
       );
     }
@@ -428,6 +453,14 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
                         )}
 
                         <div className="flex gap-1 mt-3">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-8 text-xs gap-1"
+                            onClick={() => setDetailSession(session)}
+                          >
+                            <Eye className="w-3 h-3" /> Détail
+                          </Button>
                           <Select
                             value={session.activity}
                             onValueChange={(v) => handleChangeActivity(session.id, v as Activity)}
@@ -660,6 +693,16 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
           </div>
         </Card>
       )}
+
+      <SessionDetailPanel
+        session={detailSession as SessionDetail | null}
+        open={!!detailSession}
+        onClose={() => setDetailSession(null)}
+        onRefresh={() => {
+          fetchSessions();
+          setDetailSession(null);
+        }}
+      />
     </div>
   );
 };
