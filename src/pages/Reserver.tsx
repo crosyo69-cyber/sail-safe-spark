@@ -16,13 +16,14 @@ import { fr } from "date-fns/locale";
 import { Calendar as CalendarIcon, Loader2, Ticket, Wind, Waves, Anchor, Plane } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
+type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
 
 const ACTIVITIES: { value: Activity; label: string; icon: any }[] = [
   { value: "kitesurf", label: "Kitesurf", icon: Wind },
   { value: "wingfoil", label: "Wingfoil", icon: Waves },
   { value: "pumpfoil", label: "Pumpfoil", icon: Anchor },
   { value: "foil_tracte", label: "Foil tracté", icon: Plane },
+  { value: "stage_100_glisse", label: "Stage 100% Glisse (5 jours)", icon: Wind },
 ];
 
 const SLOT_LABELS: Record<string, string> = {
@@ -52,30 +53,55 @@ const ReserverPage = () => {
   const loadSessions = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
     const today = new Date().toISOString().slice(0, 10);
+    // Fetch ALL open sessions in the window (any activity) so we can compute
+    // shared-slot occupancy (Stage 100% Glisse + Cours à la carte + crédits météo).
     let query = supabase
       .from("sessions")
       .select("id, date, time_slot, activity, max_participants")
-      .eq("activity", activity as any)
       .eq("status", "open")
       .gte("date", date ? format(date, "yyyy-MM-dd") : today)
       .order("date", { ascending: true })
-      .limit(60);
+      .limit(200);
     if (date) query = query.lte("date", format(date, "yyyy-MM-dd"));
-    const { data: raw } = await query;
+    const { data: rawAll } = await query;
     if (!silent) setLoading(false);
-    if (!raw || raw.length === 0) {
+    if (!rawAll || rawAll.length === 0) {
       setSessions([]);
       return;
     }
-    const ids = raw.map((s) => s.id);
+    const ids = rawAll.map((s) => s.id);
     const [{ data: resv }, { data: pb }] = await Promise.all([
       supabase.from("reservations").select("session_id, participants, status").in("session_id", ids).neq("status", "cancelled"),
       supabase.from("package_bookings").select("session_id, status").in("session_id", ids).eq("status", "confirmed"),
     ]);
-    const taken: Record<string, number> = {};
-    (resv || []).forEach((r: any) => { taken[r.session_id] = (taken[r.session_id] || 0) + (r.participants || 1); });
-    (pb || []).forEach((b: any) => { taken[b.session_id] = (taken[b.session_id] || 0) + 1; });
-    setSessions(raw.map((s: any) => ({ ...s, taken: taken[s.id] || 0 })));
+    // Group sessions by (date, time_slot) and compute shared occupancy
+    const slotTaken: Record<string, number> = {};
+    const slotCapacity: Record<string, number> = {};
+    const sessionToSlot: Record<string, string> = {};
+    rawAll.forEach((s: any) => {
+      const key = `${s.date}|${s.time_slot}`;
+      sessionToSlot[s.id] = key;
+      slotCapacity[key] = Math.min(slotCapacity[key] ?? Infinity, s.max_participants);
+    });
+    (resv || []).forEach((r: any) => {
+      const k = sessionToSlot[r.session_id];
+      if (k) slotTaken[k] = (slotTaken[k] || 0) + (r.participants || 1);
+    });
+    (pb || []).forEach((b: any) => {
+      const k = sessionToSlot[b.session_id];
+      if (k) slotTaken[k] = (slotTaken[k] || 0) + 1;
+    });
+    const visible = rawAll
+      .filter((s: any) => s.activity === activity)
+      .map((s: any) => {
+        const key = `${s.date}|${s.time_slot}`;
+        return {
+          ...s,
+          max_participants: slotCapacity[key] ?? s.max_participants,
+          taken: slotTaken[key] || 0,
+        };
+      });
+    setSessions(visible as AvailableSession[]);
   }, [activity, date]);
 
   useEffect(() => { loadSessions(); }, [loadSessions]);
@@ -95,9 +121,19 @@ const ReserverPage = () => {
       return;
     }
     setBooking(sessionId);
-    const { data, error } = await supabase.rpc("book_session_with_code", {
-      p_code: clean, p_session_id: sessionId,
-    });
+    // For Stage 100% Glisse, find the session row to get the start date and book 5 consecutive days
+    let data: any, error: any;
+    if (activity === "stage_100_glisse") {
+      const s = sessions.find(x => x.id === sessionId);
+      if (!s) { setBooking(null); return toast.error("Session introuvable"); }
+      ({ data, error } = await supabase.rpc("book_stage_100_glisse", {
+        p_code: clean, p_start_date: s.date, p_time_slot: s.time_slot as any,
+      }));
+    } else {
+      ({ data, error } = await supabase.rpc("book_session_with_code", {
+        p_code: clean, p_session_id: sessionId,
+      }));
+    }
     setBooking(null);
     if (error) return toast.error("Erreur : " + error.message);
     const res = data as any;
@@ -107,15 +143,24 @@ const ReserverPage = () => {
         package_not_active: "Pack inactif",
         package_expired: "Pack expiré",
         no_credits_left: "Plus de crédits disponibles sur ce pack",
+        not_enough_credits: "Pas assez de crédits pour réserver les 5 jours du stage",
+        not_a_stage_package: "Ce code ne correspond pas à un Stage 100% Glisse",
+        start_in_past: "Date de début passée",
         session_not_found: "Session introuvable",
         activity_mismatch: "Ce pack ne couvre pas cette activité",
         session_closed: "Session fermée",
         session_in_past: "Session passée",
         session_full: "Session complète",
       };
-      return toast.error(messages[res?.error] || "Réservation impossible");
+      const errKey = String(res?.error || "");
+      if (errKey.startsWith("day_full:")) {
+        return toast.error(`Journée complète : ${errKey.replace("day_full:", "")}`);
+      }
+      return toast.error(messages[errKey] || "Réservation impossible");
     }
-    toast.success("Session réservée ! Email de confirmation envoyé.");
+    toast.success(activity === "stage_100_glisse"
+      ? "Stage 100% Glisse réservé sur 5 jours consécutifs !"
+      : "Session réservée ! Email de confirmation envoyé.");
     navigate(`/mon-espace/${clean}`);
   };
 
