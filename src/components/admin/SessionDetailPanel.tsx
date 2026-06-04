@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import {
@@ -54,7 +54,7 @@ import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 
-type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
+type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
 
 interface Reservation {
@@ -103,6 +103,7 @@ const ACTIVITY_LABELS: Record<Activity, string> = {
   wingfoil: "Wingfoil",
   pumpfoil: "Pumpfoil",
   foil_tracte: "Foil tracté",
+  stage_100_glisse: "Stage 100% Glisse",
 };
 
 const SLOT_LABELS: Record<TimeSlot, string> = {
@@ -154,6 +155,21 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
   const [recreditReason, setRecreditReason] = useState("");
   const [recrediting, setRecrediting] = useState(false);
   const [cancelling, setCancelling] = useState(false);
+  const [slotOccupancy, setSlotOccupancy] = useState<{
+    capacity: number; stage: number; a_la_carte: number; weather: number; taken: number;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!session || !open) { setSlotOccupancy(null); return; }
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase.rpc("get_slot_occupancy", {
+        p_date: session.date, p_slot: session.time_slot as any,
+      });
+      if (!cancelled && data) setSlotOccupancy(data as any);
+    })();
+    return () => { cancelled = true; };
+  }, [session, open]);
 
   if (!session) return null;
 
@@ -243,6 +259,16 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
                   <span className="text-muted-foreground">
                     {occupied} / {session.max_participants} places occupées
                   </span>
+                  {slotOccupancy && (
+                    <span className="ml-2 inline-flex flex-wrap gap-1.5 text-[10px]">
+                      <Badge variant="outline" className="bg-primary/5">Stage : {slotOccupancy.stage}</Badge>
+                      <Badge variant="outline" className="bg-secondary">Carte : {slotOccupancy.a_la_carte}</Badge>
+                      <Badge variant="outline" className="bg-amber-50 text-amber-800 border-amber-200">Météo : {slotOccupancy.weather}</Badge>
+                      <Badge variant={slotOccupancy.taken >= slotOccupancy.capacity ? "destructive" : "default"}>
+                        Restantes : {Math.max(0, slotOccupancy.capacity - slotOccupancy.taken)} / {slotOccupancy.capacity}
+                      </Badge>
+                    </span>
+                  )}
                   {session.notes && (
                     <span className="text-muted-foreground flex items-center gap-1">
                       <Info className="w-3 h-3" /> {session.notes}
