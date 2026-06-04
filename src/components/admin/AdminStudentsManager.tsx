@@ -5,6 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Table,
   TableBody,
   TableCell,
@@ -13,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Loader2, RefreshCw } from "lucide-react";
+import { Loader2, RefreshCw, X } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -50,6 +57,8 @@ const AdminStudentsManager = () => {
   const [packages, setPackages] = useState<Pkg[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
+  const [activityFilter, setActivityFilter] = useState<string>("all");
+  const [packStatusFilter, setPackStatusFilter] = useState<string>("all");
 
   const load = async () => {
     setLoading(true);
@@ -107,14 +116,32 @@ const AdminStudentsManager = () => {
     );
   }, [packages]);
 
+  const activities = useMemo(() => {
+    const set = new Set<string>();
+    for (const p of packages) {
+      if (p.activity) set.add(p.activity);
+    }
+    return Array.from(set).sort();
+  }, [packages]);
+
   const filtered = students.filter((s) => {
-    if (!filter.trim()) return true;
-    const q = filter.toLowerCase();
-    return (
+    const q = filter.toLowerCase().trim();
+    const textMatch =
+      !q ||
       s.email.toLowerCase().includes(q) ||
       `${s.firstName} ${s.lastName}`.toLowerCase().includes(q) ||
-      (s.phone || "").toLowerCase().includes(q)
-    );
+      (s.phone || "").toLowerCase().includes(q);
+
+    const activityMatch =
+      activityFilter === "all" ||
+      s.activePackages.some((p) => p.activity === activityFilter);
+
+    const statusMatch =
+      packStatusFilter === "all" ||
+      (packStatusFilter === "active" && s.totalRemaining > 0) ||
+      (packStatusFilter === "expired" && s.totalRemaining === 0);
+
+    return textMatch && activityMatch && statusMatch;
   });
 
   const totalActiveCredits = students.reduce((acc, s) => acc + s.totalRemaining, 0);
@@ -146,11 +173,47 @@ const AdminStudentsManager = () => {
 
         <div className="flex flex-wrap items-center gap-2">
           <Input
-            placeholder="Filtrer par nom, email, téléphone…"
+            placeholder="Rechercher par nom, email, téléphone…"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             className="max-w-sm"
           />
+          <Select value={activityFilter} onValueChange={setActivityFilter}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Activité" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Toutes les activités</SelectItem>
+              {activities.map((act) => (
+                <SelectItem key={act} value={act}>
+                  {act}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={packStatusFilter} onValueChange={setPackStatusFilter}>
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="Statut pack" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous les packs</SelectItem>
+              <SelectItem value="active">Pack actif</SelectItem>
+              <SelectItem value="expired">Pack expiré</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              setFilter("");
+              setActivityFilter("all");
+              setPackStatusFilter("all");
+            }}
+            disabled={!filter && activityFilter === "all" && packStatusFilter === "all"}
+          >
+            <X className="w-4 h-4 mr-1" />
+            Réinitialiser
+          </Button>
           <Button variant="outline" size="sm" onClick={load} disabled={loading}>
             <RefreshCw className={`w-4 h-4 mr-1 ${loading ? "animate-spin" : ""}`} />
             Actualiser
