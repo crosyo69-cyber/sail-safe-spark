@@ -257,6 +257,8 @@ const AdminStudentsManager = () => {
               <SelectItem value="name">Nom</SelectItem>
               <SelectItem value="remaining">Solde restant</SelectItem>
               <SelectItem value="updated">Date mise à jour</SelectItem>
+              <SelectItem value="pack">Pack actif</SelectItem>
+              <SelectItem value="activity">Activité</SelectItem>
             </SelectContent>
           </Select>
           <Button
