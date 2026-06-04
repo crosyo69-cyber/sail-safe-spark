@@ -145,6 +145,30 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_slot_capacity: {
+        Row: {
+          created_at: string
+          date: string
+          max_participants: number
+          time_slot: Database["public"]["Enums"]["time_slot"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          max_participants?: number
+          time_slot: Database["public"]["Enums"]["time_slot"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          max_participants?: number
+          time_slot?: Database["public"]["Enums"]["time_slot"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       email_send_log: {
         Row: {
           created_at: string
@@ -273,6 +297,7 @@ export type Database = {
       }
       package_bookings: {
         Row: {
+          booking_kind: string
           created_at: string
           id: string
           package_id: string
@@ -281,6 +306,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          booking_kind?: string
           created_at?: string
           id?: string
           package_id: string
@@ -289,6 +315,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          booking_kind?: string
           created_at?: string
           id?: string
           package_id?: string
@@ -486,6 +513,7 @@ export type Database = {
           max_participants: number
           notes: string | null
           published_at: string | null
+          stage_group_id: string | null
           status: string
           time_slot: Database["public"]["Enums"]["time_slot"]
           updated_at: string
@@ -503,6 +531,7 @@ export type Database = {
           max_participants?: number
           notes?: string | null
           published_at?: string | null
+          stage_group_id?: string | null
           status?: string
           time_slot: Database["public"]["Enums"]["time_slot"]
           updated_at?: string
@@ -520,6 +549,7 @@ export type Database = {
           max_participants?: number
           notes?: string | null
           published_at?: string | null
+          stage_group_id?: string | null
           status?: string
           time_slot?: Database["public"]["Enums"]["time_slot"]
           updated_at?: string
@@ -632,8 +662,20 @@ export type Database = {
         Args: { p_delta: number; p_package_id: string; p_reason: string }
         Returns: Json
       }
+      admin_grant_weather_credit_booking: {
+        Args: { p_package_id: string; p_session_id: string }
+        Returns: Json
+      }
       book_session_with_code: {
         Args: { p_code: string; p_session_id: string }
+        Returns: Json
+      }
+      book_stage_100_glisse: {
+        Args: {
+          p_code: string
+          p_start_date: string
+          p_time_slot?: Database["public"]["Enums"]["time_slot"]
+        }
         Returns: Json
       }
       cancel_booking_with_code: {
@@ -683,6 +725,20 @@ export type Database = {
         }[]
       }
       get_package_by_code: { Args: { p_code: string }; Returns: Json }
+      get_slot_capacity: {
+        Args: {
+          p_date: string
+          p_slot: Database["public"]["Enums"]["time_slot"]
+        }
+        Returns: number
+      }
+      get_slot_occupancy: {
+        Args: {
+          p_date: string
+          p_slot: Database["public"]["Enums"]["time_slot"]
+        }
+        Returns: Json
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
