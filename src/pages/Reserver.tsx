@@ -309,9 +309,7 @@ const ReserverPage = () => {
                             >
                               {booking === s.id ? (
                                 <Loader2 className="w-4 h-4 animate-spin" />
-                              ) : activity === "stage_100_glisse"
-                                ? "Réserver les 5 jours à partir de cette date"
-                                : "Réserver avec mon code"}
+                              ) : "Réserver avec mon code"}
                             </Button>
                           )}
                         </CardContent>
