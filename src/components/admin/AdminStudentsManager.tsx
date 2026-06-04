@@ -160,6 +160,16 @@ const AdminStudentsManager = () => {
       if (sortField === "remaining") {
         return (a.totalRemaining - b.totalRemaining) * dir;
       }
+      if (sortField === "pack") {
+        const pa = a.activePackages.map((p) => p.package_type).sort()[0] || "";
+        const pb = b.activePackages.map((p) => p.package_type).sort()[0] || "";
+        return pa.localeCompare(pb) * dir;
+      }
+      if (sortField === "activity") {
+        const aa = Object.keys(a.remainingByActivity).sort()[0] || "";
+        const ab = Object.keys(b.remainingByActivity).sort()[0] || "";
+        return aa.localeCompare(ab) * dir;
+      }
       return (a.lastUpdated.localeCompare(b.lastUpdated)) * dir;
     });
   }, [filtered, sortField, sortDir]);
