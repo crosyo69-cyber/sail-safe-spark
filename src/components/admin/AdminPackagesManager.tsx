@@ -13,9 +13,26 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Loader2, RefreshCw, Plus, Minus } from "lucide-react";
+import { Loader2, RefreshCw, Plus, Minus, History } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Pkg {
   id: string;
@@ -35,6 +52,15 @@ interface Pkg {
   created_at: string;
 }
 
+interface HistoryEntry {
+  id: string;
+  delta: number;
+  kind: string;
+  reason: string;
+  balance_after: number;
+  created_at: string;
+}
+
 const STATUS_VARIANT: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
   active: "default",
   completed: "secondary",
@@ -47,6 +73,14 @@ const AdminPackagesManager = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [adjustPkg, setAdjustPkg] = useState<Pkg | null>(null);
+  const [adjustDirection, setAdjustDirection] = useState<"credit" | "debit">("credit");
+  const [adjustAmount, setAdjustAmount] = useState(1);
+  const [adjustReason, setAdjustReason] = useState("");
+  const [adjusting, setAdjusting] = useState(false);
+  const [historyPkg, setHistoryPkg] = useState<Pkg | null>(null);
+  const [historyEntries, setHistoryEntries] = useState<HistoryEntry[]>([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -66,16 +100,60 @@ const AdminPackagesManager = () => {
     load();
   }, []);
 
-  const adjustSessions = async (p: Pkg, delta: number) => {
-    setBusyId(p.id);
-    const { error } = await supabase
-      .from("client_packages")
-      .update({ total_sessions: Math.max(p.used_sessions, p.total_sessions + delta) })
-      .eq("id", p.id);
-    setBusyId(null);
-    if (error) return toast.error(error.message);
-    toast.success("Crédits ajustés");
+  const openAdjustDialog = (p: Pkg, direction: "credit" | "debit") => {
+    setAdjustPkg(p);
+    setAdjustDirection(direction);
+    setAdjustAmount(1);
+    setAdjustReason("");
+  };
+
+  const submitAdjust = async () => {
+    if (!adjustPkg) return;
+    if (adjustReason.trim().length < 3) {
+      toast.error("Le motif est obligatoire (3 caractères minimum)");
+      return;
+    }
+    if (adjustAmount < 1) {
+      toast.error("La quantité doit être supérieure à 0");
+      return;
+    }
+    setAdjusting(true);
+    const delta = adjustDirection === "credit" ? adjustAmount : -adjustAmount;
+    const { data, error } = await supabase.rpc("admin_adjust_package_credits", {
+      p_package_id: adjustPkg.id,
+      p_delta: delta,
+      p_reason: adjustReason.trim(),
+    });
+    setAdjusting(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    const result = data as any;
+    toast.success(
+      adjustDirection === "credit"
+        ? `+${adjustAmount} crédit(s) ajouté(s). Solde : ${result?.remaining ?? "?"}`
+        : `-${adjustAmount} crédit(s) retiré(s). Solde : ${result?.remaining ?? "?"}`
+    );
+    setAdjustPkg(null);
     load();
+  };
+
+  const openHistory = async (p: Pkg) => {
+    setHistoryPkg(p);
+    setHistoryEntries([]);
+    setHistoryLoading(true);
+    const { data, error } = await supabase
+      .from("package_credit_history")
+      .select("id, delta, kind, reason, balance_after, created_at")
+      .eq("package_id", p.id)
+      .order("created_at", { ascending: false });
+    setHistoryLoading(false);
+    if (error) {
+      toast.error("Erreur historique : " + error.message);
+      return;
+    }
+    setHistoryEntries((data as any) || []);
   };
 
   const setStatus = async (p: Pkg, status: string) => {
@@ -161,7 +239,8 @@ const AdminPackagesManager = () => {
                           variant="ghost"
                           className="h-7 w-7 p-0"
                           disabled={busyId === p.id}
-                          onClick={() => adjustSessions(p, -1)}
+                          onClick={() => openAdjustDialog(p, "debit")}
+                          title="Retirer des crédits"
                         >
                           <Minus className="w-3 h-3" />
                         </Button>
@@ -173,9 +252,19 @@ const AdminPackagesManager = () => {
                           variant="ghost"
                           className="h-7 w-7 p-0"
                           disabled={busyId === p.id}
-                          onClick={() => adjustSessions(p, +1)}
+                          onClick={() => openAdjustDialog(p, "credit")}
+                          title="Ajouter des crédits"
                         >
                           <Plus className="w-3 h-3" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-7 w-7 p-0"
+                          onClick={() => openHistory(p)}
+                          title="Voir l'historique"
+                        >
+                          <History className="w-3 h-3" />
                         </Button>
                       </div>
                     </TableCell>
@@ -239,6 +328,147 @@ const AdminPackagesManager = () => {
             </Table>
           </div>
         )}
+
+        {/* Adjust credits dialog */}
+        <Dialog open={!!adjustPkg} onOpenChange={(o) => !o && setAdjustPkg(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                {adjustDirection === "credit" ? "Ajouter des crédits" : "Retirer des crédits"}
+              </DialogTitle>
+              <DialogDescription>
+                {adjustPkg && (
+                  <>
+                    {adjustPkg.first_name} {adjustPkg.last_name} — Pack{" "}
+                    <span className="font-mono">{adjustPkg.package_code}</span>
+                    <br />
+                    Solde actuel : {adjustPkg.total_sessions - adjustPkg.used_sessions} session(s)
+                  </>
+                )}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label>Type</Label>
+                <Select
+                  value={adjustDirection}
+                  onValueChange={(v) => setAdjustDirection(v as any)}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="credit">Crédit (+) — recréditer</SelectItem>
+                    <SelectItem value="debit">Débit (−) — retirer</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="adjust-amount">Quantité</Label>
+                <Input
+                  id="adjust-amount"
+                  type="number"
+                  min={1}
+                  value={adjustAmount}
+                  onChange={(e) => setAdjustAmount(Math.max(1, Number(e.target.value) || 1))}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="adjust-reason">
+                  Motif <span className="text-destructive">*</span>
+                </Label>
+                <Textarea
+                  id="adjust-reason"
+                  placeholder="Ex : session annulée pour cause de vent trop fort"
+                  value={adjustReason}
+                  onChange={(e) => setAdjustReason(e.target.value)}
+                  rows={3}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Le motif est obligatoire et conservé dans l'historique.
+                </p>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="ghost" onClick={() => setAdjustPkg(null)} disabled={adjusting}>
+                Annuler
+              </Button>
+              <Button onClick={submitAdjust} disabled={adjusting}>
+                {adjusting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                Confirmer
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* History dialog */}
+        <Dialog open={!!historyPkg} onOpenChange={(o) => !o && setHistoryPkg(null)}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Historique des crédits</DialogTitle>
+              <DialogDescription>
+                {historyPkg && (
+                  <>
+                    {historyPkg.first_name} {historyPkg.last_name} —{" "}
+                    <span className="font-mono">{historyPkg.package_code}</span>
+                  </>
+                )}
+              </DialogDescription>
+            </DialogHeader>
+            {historyLoading ? (
+              <div className="flex justify-center py-8">
+                <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              </div>
+            ) : historyEntries.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-8">
+                Aucun mouvement
+              </p>
+            ) : (
+              <div className="max-h-96 overflow-y-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead className="text-right">Δ</TableHead>
+                      <TableHead className="text-right">Solde</TableHead>
+                      <TableHead>Motif</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {historyEntries.map((h) => (
+                      <TableRow key={h.id}>
+                        <TableCell className="text-xs whitespace-nowrap">
+                          {format(parseISO(h.created_at), "d MMM yyyy HH:mm", { locale: fr })}
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={
+                              h.kind === "initial"
+                                ? "secondary"
+                                : h.delta > 0
+                                  ? "default"
+                                  : "outline"
+                            }
+                          >
+                            {h.kind}
+                          </Badge>
+                        </TableCell>
+                        <TableCell
+                          className={`text-right font-mono font-semibold ${h.delta > 0 ? "text-emerald-600" : "text-destructive"}`}
+                        >
+                          {h.delta > 0 ? `+${h.delta}` : h.delta}
+                        </TableCell>
+                        <TableCell className="text-right font-mono">{h.balance_after}</TableCell>
+                        <TableCell className="text-xs">{h.reason}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </CardContent>
     </Card>
   );
