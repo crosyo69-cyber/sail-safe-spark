@@ -19,6 +19,7 @@ const ACTIVITY_LABELS: Record<Activity, string> = {
   wingfoil: "Wingfoil",
   pumpfoil: "Pumpfoil",
   foil_tracte: "Foil tracté",
+  stage_100_glisse: "Stage 100% Glisse",
 };
 
 const SLOT_LABELS: Record<TimeSlot, string> = {
@@ -32,6 +33,7 @@ const MAX_PARTICIPANTS: Record<Activity, number> = {
   wingfoil: 3,
   pumpfoil: 6,
   foil_tracte: 6,
+  stage_100_glisse: 4,
 };
 
 const DAY_LABELS = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];

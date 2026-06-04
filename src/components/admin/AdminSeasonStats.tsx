@@ -31,6 +31,7 @@ const ACTIVITY_LABELS: Record<string, string> = {
   wingfoil: "Wingfoil",
   pumpfoil: "Pumpfoil",
   foil_tracte: "Foil tracté",
+  stage_100_glisse: "Stage 100% Glisse",
 };
 
 const ACTIVITY_COLORS: Record<string, string> = {
@@ -38,6 +39,7 @@ const ACTIVITY_COLORS: Record<string, string> = {
   wingfoil: "hsl(25, 95%, 53%)",
   pumpfoil: "hsl(174, 77%, 50%)",
   foil_tracte: "hsl(222, 47%, 25%)",
+  stage_100_glisse: "hsl(20, 95%, 55%)",
 };
 
 const LEVEL_LABELS: Record<string, string> = {
