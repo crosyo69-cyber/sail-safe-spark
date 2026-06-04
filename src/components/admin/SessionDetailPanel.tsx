@@ -325,6 +325,32 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
                     </span>
                   )}
                 </DialogDescription>
+                {slotOccupancy && capacityDraft != null && (
+                  <div className="mt-3 flex items-center gap-2 text-xs">
+                    <Label className="text-xs text-muted-foreground">Capacité du créneau :</Label>
+                    <Input
+                      type="number"
+                      min={Math.max(1, slotOccupancy.taken)}
+                      max={20}
+                      value={capacityDraft}
+                      onChange={(e) => setCapacityDraft(Math.max(1, parseInt(e.target.value) || 1))}
+                      className="h-7 w-20 text-sm"
+                    />
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-7 gap-1"
+                      disabled={savingCapacity || capacityDraft === slotOccupancy.capacity || capacityDraft < slotOccupancy.taken}
+                      onClick={handleSaveCapacity}
+                    >
+                      <Save className="w-3 h-3" />
+                      Enregistrer
+                    </Button>
+                    {capacityDraft < slotOccupancy.taken && (
+                      <span className="text-destructive">Min. {slotOccupancy.taken} (places occupées)</span>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </DialogHeader>
