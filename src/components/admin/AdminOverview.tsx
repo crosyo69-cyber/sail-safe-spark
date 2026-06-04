@@ -9,7 +9,7 @@ import { Users, CalendarDays, ChevronDown, ChevronUp, Mail, Phone, CreditCard, R
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 
-type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
+type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
 
 const ACTIVITY_LABELS: Record<Activity, string> = {
@@ -17,6 +17,7 @@ const ACTIVITY_LABELS: Record<Activity, string> = {
   wingfoil: "Wingfoil",
   pumpfoil: "Pumpfoil",
   foil_tracte: "Foil tracté",
+  stage_100_glisse: "Stage 100% Glisse",
 };
 
 const SLOT_LABELS: Record<TimeSlot, string> = {

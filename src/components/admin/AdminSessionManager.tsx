@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 
-type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
+type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
 
 interface Reservation {
@@ -94,6 +94,7 @@ const ACTIVITY_LABELS: Record<Activity, string> = {
   wingfoil: "Wingfoil",
   pumpfoil: "Pumpfoil",
   foil_tracte: "Foil tracté",
+  stage_100_glisse: "Stage 100% Glisse",
 };
 
 const ACTIVITY_COLORS: Record<Activity, string> = {
@@ -101,6 +102,7 @@ const ACTIVITY_COLORS: Record<Activity, string> = {
   wingfoil: "bg-accent/10 text-accent border-accent/30",
   pumpfoil: "bg-turquoise/10 text-turquoise border-turquoise/30",
   foil_tracte: "bg-ocean-dark/10 text-ocean-dark border-ocean-dark/30",
+  stage_100_glisse: "bg-sunset/10 text-sunset border-sunset/30",
 };
 
 const SLOT_LABELS: Record<TimeSlot, string> = {
@@ -121,6 +123,7 @@ const MAX_PARTICIPANTS: Record<Activity, number> = {
   wingfoil: 3,
   pumpfoil: 6,
   foil_tracte: 6,
+  stage_100_glisse: 4,
 };
 
 interface AdminSessionManagerProps {

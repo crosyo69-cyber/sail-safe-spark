@@ -11,7 +11,7 @@ import { format, eachDayOfInterval, getDay } from "date-fns";
 import { fr } from "date-fns/locale";
 import { CalendarIcon, Loader2, CalendarPlus, Sparkles } from "lucide-react";
 
-type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
+type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
 
 const ACTIVITY_LABELS: Record<Activity, string> = {
@@ -19,6 +19,7 @@ const ACTIVITY_LABELS: Record<Activity, string> = {
   wingfoil: "Wingfoil",
   pumpfoil: "Pumpfoil",
   foil_tracte: "Foil tracté",
+  stage_100_glisse: "Stage 100% Glisse",
 };
 
 const SLOT_LABELS: Record<TimeSlot, string> = {
@@ -32,6 +33,7 @@ const MAX_PARTICIPANTS: Record<Activity, number> = {
   wingfoil: 3,
   pumpfoil: 6,
   foil_tracte: 6,
+  stage_100_glisse: 4,
 };
 
 const DAY_LABELS = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];

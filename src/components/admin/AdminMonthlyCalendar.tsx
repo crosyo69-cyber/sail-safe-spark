@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Textarea } from "@/components/ui/textarea";
 
-type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
+type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
 
 interface ReservationInfo {
   id: string;
@@ -61,6 +61,7 @@ const ACTIVITY_DOT_COLORS: Record<Activity, string> = {
   wingfoil: "bg-accent",
   pumpfoil: "bg-turquoise",
   foil_tracte: "bg-ocean-dark",
+  stage_100_glisse: "bg-sunset",
 };
 
 const ACTIVITY_LABELS: Record<Activity, string> = {
@@ -68,6 +69,7 @@ const ACTIVITY_LABELS: Record<Activity, string> = {
   wingfoil: "Wingfoil",
   pumpfoil: "Pumpfoil",
   foil_tracte: "Foil tracté",
+  stage_100_glisse: "Stage 100% Glisse",
 };
 
 const SLOT_SHORT: Record<string, string> = {

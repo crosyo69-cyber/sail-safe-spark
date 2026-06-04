@@ -15,7 +15,7 @@ import { Loader2, X, Plus } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
-type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
+type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
 type SkillLevel = "debutant" | "intermediaire" | "confirme";
 
@@ -30,6 +30,7 @@ const ACTIVITY_LABELS: Record<Activity, string> = {
   wingfoil: "Wingfoil",
   pumpfoil: "Pumpfoil",
   foil_tracte: "Foil tracté",
+  stage_100_glisse: "Stage 100% Glisse",
 };
 
 const SLOT_LABELS: Record<TimeSlot, string> = {
@@ -49,6 +50,7 @@ const MAX_BY_ACTIVITY: Record<Activity, number> = {
   wingfoil: 3,
   pumpfoil: 4,
   foil_tracte: 4,
+  stage_100_glisse: 4,
 };
 
 const CalendarQuickSession = ({ date, onClose, onCreated }: CalendarQuickSessionProps) => {
