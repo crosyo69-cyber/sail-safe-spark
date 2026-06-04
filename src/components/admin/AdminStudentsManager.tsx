@@ -323,7 +323,7 @@ const AdminStudentsManager = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filtered.map((s) => (
+                {sorted.map((s) => (
                   <TableRow key={s.email}>
                     <TableCell>
                       <div className="font-medium">
