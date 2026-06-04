@@ -217,6 +217,7 @@ const ReserverPage = () => {
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {list.map((s) => {
                     const full = s.taken >= s.max_participants;
+                    const remaining = s.max_participants - s.taken;
                     return (
                       <Card key={s.id}>
                         <CardContent className="py-4 space-y-3">
@@ -227,9 +228,16 @@ const ReserverPage = () => {
                                 {ACTIVITIES.find(a => a.value === s.activity)?.label}
                               </p>
                             </div>
-                            <Badge variant={full ? "destructive" : "secondary"}>
-                              {s.taken}/{s.max_participants}
-                            </Badge>
+                            <div className="text-right">
+                              <Badge variant={full ? "destructive" : "secondary"}>
+                                {full ? "Complet" : "Ouverte"}
+                              </Badge>
+                              <p className="text-xs text-muted-foreground mt-1">
+                                {full
+                                  ? "0 place disponible"
+                                  : `${remaining} place${remaining > 1 ? "s" : ""} restante${remaining > 1 ? "s" : ""}`}
+                              </p>
+                            </div>
                           </div>
                           <Button
                             className="w-full min-h-[44px]"
