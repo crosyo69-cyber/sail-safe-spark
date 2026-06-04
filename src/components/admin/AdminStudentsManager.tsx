@@ -62,6 +62,8 @@ const AdminStudentsManager = () => {
   const [filter, setFilter] = useState("");
   const [activityFilter, setActivityFilter] = useState<string>("all");
   const [packStatusFilter, setPackStatusFilter] = useState<string>("all");
+  const [sortField, setSortField] = useState<SortField>("updated");
+  const [sortDir, setSortDir] = useState<SortDir>("desc");
 
   const load = async () => {
     setLoading(true);
