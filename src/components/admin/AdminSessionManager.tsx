@@ -693,6 +693,16 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
           </div>
         </Card>
       )}
+
+      <SessionDetailPanel
+        session={detailSession as SessionDetail | null}
+        open={!!detailSession}
+        onClose={() => setDetailSession(null)}
+        onRefresh={() => {
+          fetchSessions();
+          setDetailSession(null);
+        }}
+      />
     </div>
   );
 };
