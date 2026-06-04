@@ -11,7 +11,7 @@ import { format, eachDayOfInterval, getDay } from "date-fns";
 import { fr } from "date-fns/locale";
 import { CalendarIcon, Loader2, CalendarPlus, Sparkles } from "lucide-react";
 
-type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
+type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
 
 const ACTIVITY_LABELS: Record<Activity, string> = {
