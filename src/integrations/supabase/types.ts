@@ -725,6 +725,7 @@ export type Database = {
         }[]
       }
       get_package_by_code: { Args: { p_code: string }; Returns: Json }
+      get_package_credits_history: { Args: { p_code: string }; Returns: Json }
       get_slot_capacity: {
         Args: {
           p_date: string
