@@ -456,6 +456,21 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
                                     >
                                       <Plus className="w-3.5 h-3.5" />
                                     </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="ghost"
+                                      className="h-7 w-7 p-0 text-sky-600 hover:text-sky-700"
+                                      title="Offrir un crédit météo (+1)"
+                                      disabled={weatherCreditBusy === pkg.id}
+                                      onClick={() =>
+                                        handleGrantWeatherCredit(
+                                          pkg.id,
+                                          `${pkg.first_name} ${pkg.last_name}`,
+                                        )
+                                      }
+                                    >
+                                      <CloudRain className="w-3.5 h-3.5" />
+                                    </Button>
                                   </div>
                                 )}
                               </TableCell>
