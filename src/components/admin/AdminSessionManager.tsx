@@ -15,6 +15,11 @@ import {
   CalendarIcon, Plus, Trash2, Wind, CloudRain, Sun, Edit2, Users, X, Mail, Phone, Sparkles,
 } from "lucide-react";
 import BulkSessionGenerator from "./BulkSessionGenerator";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
@@ -201,6 +206,22 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
     if (error) {
       toast({ title: "Erreur", description: error.message, variant: "destructive" });
     } else {
+      fetchSessions();
+    }
+  };
+
+  const handleCancelSession = async (session: Session) => {
+    const { error } = await supabase
+      .from("sessions")
+      .update({ status: "cancelled" })
+      .eq("id", session.id);
+    if (error) {
+      toast({ title: "Erreur", description: error.message, variant: "destructive" });
+    } else {
+      toast({
+        title: "Session annulée ✓",
+        description: "Crédits restitués et emails d'annulation envoyés aux inscrits.",
+      });
       fetchSessions();
     }
   };
@@ -426,9 +447,43 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
                             variant={session.status === "open" ? "outline" : "default"}
                             className="h-8 text-xs"
                             onClick={() => handleToggleStatus(session)}
+                            disabled={session.status === "cancelled"}
                           >
                             {session.status === "open" ? "Fermer" : "Ouvrir"}
                           </Button>
+
+                          {session.status !== "cancelled" && (
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-8 text-xs text-destructive border-destructive/30 hover:bg-destructive/5"
+                                  title="Annuler la session (recrédite tous les inscrits)"
+                                >
+                                  <X className="w-3 h-3 mr-1" /> Annuler
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Annuler cette session ?</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Tous les inscrits ({session.reservation_count || 0}) seront notifiés par email
+                                    et leurs crédits restitués automatiquement. Cette action est irréversible.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Retour</AlertDialogCancel>
+                                  <AlertDialogAction
+                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                    onClick={() => handleCancelSession(session)}
+                                  >
+                                    Confirmer l'annulation
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          )}
 
                           <Button
                             size="sm"
