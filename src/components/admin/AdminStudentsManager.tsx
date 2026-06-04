@@ -116,14 +116,32 @@ const AdminStudentsManager = () => {
     );
   }, [packages]);
 
+  const activities = useMemo(() => {
+    const set = new Set<string>();
+    for (const p of packages) {
+      if (p.activity) set.add(p.activity);
+    }
+    return Array.from(set).sort();
+  }, [packages]);
+
   const filtered = students.filter((s) => {
-    if (!filter.trim()) return true;
-    const q = filter.toLowerCase();
-    return (
+    const q = filter.toLowerCase().trim();
+    const textMatch =
+      !q ||
       s.email.toLowerCase().includes(q) ||
       `${s.firstName} ${s.lastName}`.toLowerCase().includes(q) ||
-      (s.phone || "").toLowerCase().includes(q)
-    );
+      (s.phone || "").toLowerCase().includes(q);
+
+    const activityMatch =
+      activityFilter === "all" ||
+      s.activePackages.some((p) => p.activity === activityFilter);
+
+    const statusMatch =
+      packStatusFilter === "all" ||
+      (packStatusFilter === "active" && s.totalRemaining > 0) ||
+      (packStatusFilter === "expired" && s.totalRemaining === 0);
+
+    return textMatch && activityMatch && statusMatch;
   });
 
   const totalActiveCredits = students.reduce((acc, s) => acc + s.totalRemaining, 0);
