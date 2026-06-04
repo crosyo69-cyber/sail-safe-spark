@@ -24,7 +24,7 @@ import { ArrowUpDown, ArrowUp, ArrowDown, Loader2, RefreshCw, X } from "lucide-r
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 
-type SortField = "name" | "remaining" | "updated";
+type SortField = "name" | "remaining" | "updated" | "pack" | "activity";
 type SortDir = "asc" | "desc";
 
 interface Pkg {
