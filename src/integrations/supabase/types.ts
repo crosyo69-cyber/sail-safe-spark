@@ -477,6 +477,7 @@ export type Database = {
       sessions: {
         Row: {
           activity: Database["public"]["Enums"]["activity_type"]
+          cancellation_reason: string | null
           created_at: string
           date: string
           id: string
@@ -493,6 +494,7 @@ export type Database = {
         }
         Insert: {
           activity: Database["public"]["Enums"]["activity_type"]
+          cancellation_reason?: string | null
           created_at?: string
           date: string
           id?: string
@@ -509,6 +511,7 @@ export type Database = {
         }
         Update: {
           activity?: Database["public"]["Enums"]["activity_type"]
+          cancellation_reason?: string | null
           created_at?: string
           date?: string
           id?: string

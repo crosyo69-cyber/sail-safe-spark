@@ -21,6 +21,10 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
@@ -142,6 +146,9 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
   const [newNotes, setNewNotes] = useState("");
 
   const [detailSession, setDetailSession] = useState<Session | null>(null);
+  const [cancelSession, setCancelSession] = useState<Session | null>(null);
+  const [cancelReason, setCancelReason] = useState("");
+  const [cancelling, setCancelling] = useState(false);
 
   const fetchSessions = async () => {
     if (!selectedDate) return;
@@ -235,18 +242,27 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
     }
   };
 
-  const handleCancelSession = async (session: Session) => {
+  const handleCancelSession = async () => {
+    if (!cancelSession) return;
+    setCancelling(true);
+    const reason = cancelReason.trim();
     const { error } = await supabase
       .from("sessions")
-      .update({ status: "cancelled" })
-      .eq("id", session.id);
+      .update({
+        status: "cancelled",
+        cancellation_reason: reason || null,
+      })
+      .eq("id", cancelSession.id);
+    setCancelling(false);
     if (error) {
       toast({ title: "Erreur", description: error.message, variant: "destructive" });
     } else {
       toast({
         title: "Session annulée ✓",
-        description: "Crédits restitués et emails d'annulation envoyés aux inscrits.",
+        description: `${cancelSession.reservation_count || 0} inscrit(s) recrédité(s) et notifié(s) par email.`,
       });
+      setCancelSession(null);
+      setCancelReason("");
       fetchSessions();
     }
   };
@@ -486,36 +502,17 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
                           </Button>
 
                           {session.status !== "cancelled" && (
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="h-8 text-xs text-destructive border-destructive/30 hover:bg-destructive/5"
-                                  title="Annuler la session (recrédite tous les inscrits)"
-                                >
-                                  <X className="w-3 h-3 mr-1" /> Annuler
-                                </Button>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Annuler cette session ?</AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    Tous les inscrits ({session.reservation_count || 0}) seront notifiés par email
-                                    et leurs crédits restitués automatiquement. Cette action est irréversible.
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Retour</AlertDialogCancel>
-                                  <AlertDialogAction
-                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                    onClick={() => handleCancelSession(session)}
-                                  >
-                                    Confirmer l'annulation
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              className="h-11 sm:h-8 text-xs font-semibold flex-1 sm:flex-none"
+                              onClick={() => {
+                                setCancelReason("");
+                                setCancelSession(session);
+                              }}
+                            >
+                              <X className="w-3.5 h-3.5 mr-1" /> Annuler la session
+                            </Button>
                           )}
 
                           <Button
@@ -703,6 +700,76 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
           setDetailSession(null);
         }}
       />
+
+      <Dialog open={!!cancelSession} onOpenChange={(v) => !v && !cancelling && setCancelSession(null)}>
+        <DialogContent className="max-w-md p-5 sm:p-6">
+          <DialogHeader>
+            <DialogTitle className="text-lg">Annuler cette session ?</DialogTitle>
+            <DialogDescription className="text-sm">
+              {cancelSession && (
+                <>
+                  <strong className="text-foreground">
+                    {ACTIVITY_LABELS[cancelSession.activity]} · {SLOT_LABELS[cancelSession.time_slot]}
+                  </strong>
+                  <br />
+                  Les <strong className="text-destructive">{cancelSession.reservation_count || 0} élève(s) inscrit(s)</strong>{" "}
+                  seront recrédités et notifiés par email.
+                </>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3">
+            <label className="text-sm font-medium text-foreground block">Motif (optionnel)</label>
+            <div className="flex flex-wrap gap-2">
+              {["Vent insuffisant", "Vent trop fort", "Conditions météo", "Mer agitée", "Pluie"].map((preset) => (
+                <button
+                  key={preset}
+                  type="button"
+                  onClick={() => setCancelReason(preset)}
+                  className={cn(
+                    "min-h-[36px] px-3 rounded-full text-xs font-medium border transition-colors",
+                    cancelReason === preset
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-muted/50 text-foreground border-border hover:bg-muted"
+                  )}
+                >
+                  {preset}
+                </button>
+              ))}
+            </div>
+            <Textarea
+              value={cancelReason}
+              onChange={(e) => setCancelReason(e.target.value)}
+              placeholder="Ou écrivez un motif personnalisé…"
+              className="min-h-[72px] text-sm"
+            />
+            <p className="text-xs text-muted-foreground">
+              Le motif apparaîtra dans l'email envoyé aux élèves.
+            </p>
+          </div>
+
+          <DialogFooter className="gap-2 sm:gap-2">
+            <Button
+              variant="outline"
+              className="h-11 sm:h-10"
+              onClick={() => setCancelSession(null)}
+              disabled={cancelling}
+            >
+              Retour
+            </Button>
+            <Button
+              variant="destructive"
+              className="h-11 sm:h-10 font-semibold"
+              onClick={handleCancelSession}
+              disabled={cancelling}
+            >
+              <X className="w-4 h-4 mr-1" />
+              {cancelling ? "Annulation…" : "Confirmer l'annulation"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
