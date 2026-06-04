@@ -700,6 +700,76 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
           setDetailSession(null);
         }}
       />
+
+      <Dialog open={!!cancelSession} onOpenChange={(v) => !v && !cancelling && setCancelSession(null)}>
+        <DialogContent className="max-w-md p-5 sm:p-6">
+          <DialogHeader>
+            <DialogTitle className="text-lg">Annuler cette session ?</DialogTitle>
+            <DialogDescription className="text-sm">
+              {cancelSession && (
+                <>
+                  <strong className="text-foreground">
+                    {ACTIVITY_LABELS[cancelSession.activity]} · {SLOT_LABELS[cancelSession.time_slot]}
+                  </strong>
+                  <br />
+                  Les <strong className="text-destructive">{cancelSession.reservation_count || 0} élève(s) inscrit(s)</strong>{" "}
+                  seront recrédités et notifiés par email.
+                </>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3">
+            <label className="text-sm font-medium text-foreground block">Motif (optionnel)</label>
+            <div className="flex flex-wrap gap-2">
+              {["Vent insuffisant", "Vent trop fort", "Conditions météo", "Mer agitée", "Pluie"].map((preset) => (
+                <button
+                  key={preset}
+                  type="button"
+                  onClick={() => setCancelReason(preset)}
+                  className={cn(
+                    "min-h-[36px] px-3 rounded-full text-xs font-medium border transition-colors",
+                    cancelReason === preset
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-muted/50 text-foreground border-border hover:bg-muted"
+                  )}
+                >
+                  {preset}
+                </button>
+              ))}
+            </div>
+            <Textarea
+              value={cancelReason}
+              onChange={(e) => setCancelReason(e.target.value)}
+              placeholder="Ou écrivez un motif personnalisé…"
+              className="min-h-[72px] text-sm"
+            />
+            <p className="text-xs text-muted-foreground">
+              Le motif apparaîtra dans l'email envoyé aux élèves.
+            </p>
+          </div>
+
+          <DialogFooter className="gap-2 sm:gap-2">
+            <Button
+              variant="outline"
+              className="h-11 sm:h-10"
+              onClick={() => setCancelSession(null)}
+              disabled={cancelling}
+            >
+              Retour
+            </Button>
+            <Button
+              variant="destructive"
+              className="h-11 sm:h-10 font-semibold"
+              onClick={handleCancelSession}
+              disabled={cancelling}
+            >
+              <X className="w-4 h-4 mr-1" />
+              {cancelling ? "Annulation…" : "Confirmer l'annulation"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
