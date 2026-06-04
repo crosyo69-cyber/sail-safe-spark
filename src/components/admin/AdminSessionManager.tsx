@@ -453,6 +453,14 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
                         )}
 
                         <div className="flex gap-1 mt-3">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-8 text-xs gap-1"
+                            onClick={() => setDetailSession(session)}
+                          >
+                            <Eye className="w-3 h-3" /> Détail
+                          </Button>
                           <Select
                             value={session.activity}
                             onValueChange={(v) => handleChangeActivity(session.id, v as Activity)}
