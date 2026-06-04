@@ -164,6 +164,24 @@ const AdminStudentsManager = () => {
     });
   }, [filtered, sortField, sortDir]);
 
+  const handleSortClick = (field: SortField) => {
+    if (sortField === field) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortField(field);
+      setSortDir(field === "name" ? "asc" : "desc");
+    }
+  };
+
+  const SortIcon = ({ field }: { field: SortField }) => {
+    if (sortField !== field) return <ArrowUpDown className="w-3 h-3 ml-1 inline text-muted-foreground" />;
+    return sortDir === "asc" ? (
+      <ArrowUp className="w-3 h-3 ml-1 inline text-primary" />
+    ) : (
+      <ArrowDown className="w-3 h-3 ml-1 inline text-primary" />
+    );
+  };
+
   const totalActiveCredits = students.reduce((acc, s) => acc + s.totalRemaining, 0);
   const studentsWithCredits = students.filter((s) => s.totalRemaining > 0).length;
 
