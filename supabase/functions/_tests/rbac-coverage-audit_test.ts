@@ -57,6 +57,8 @@ function hasTokenComparison(src: string): boolean {
   return /token\s*===\s*serviceKey/.test(src) ||
          /token\s*!==\s*serviceKey/.test(src) ||
          /token\s*===\s*service_role/i.test(src) ||
+         /claims\?\.role\s*!==\s*['"]service_role['"]/.test(src) ||
+         /claims\.role\s*!==\s*['"]service_role['"]/.test(src) ||
          /has_role\(/.test(src) ||
          /auth\.getClaims\(/.test(src) ||
          /auth\.getUser\(/.test(src) ||
