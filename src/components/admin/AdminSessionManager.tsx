@@ -146,6 +146,9 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
   const [newNotes, setNewNotes] = useState("");
 
   const [detailSession, setDetailSession] = useState<Session | null>(null);
+  const [cancelSession, setCancelSession] = useState<Session | null>(null);
+  const [cancelReason, setCancelReason] = useState("");
+  const [cancelling, setCancelling] = useState(false);
 
   const fetchSessions = async () => {
     if (!selectedDate) return;
@@ -239,18 +242,27 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
     }
   };
 
-  const handleCancelSession = async (session: Session) => {
+  const handleCancelSession = async () => {
+    if (!cancelSession) return;
+    setCancelling(true);
+    const reason = cancelReason.trim();
     const { error } = await supabase
       .from("sessions")
-      .update({ status: "cancelled" })
-      .eq("id", session.id);
+      .update({
+        status: "cancelled",
+        cancellation_reason: reason || null,
+      })
+      .eq("id", cancelSession.id);
+    setCancelling(false);
     if (error) {
       toast({ title: "Erreur", description: error.message, variant: "destructive" });
     } else {
       toast({
         title: "Session annulée ✓",
-        description: "Crédits restitués et emails d'annulation envoyés aux inscrits.",
+        description: `${cancelSession.reservation_count || 0} inscrit(s) recrédité(s) et notifié(s) par email.`,
       });
+      setCancelSession(null);
+      setCancelReason("");
       fetchSessions();
     }
   };
