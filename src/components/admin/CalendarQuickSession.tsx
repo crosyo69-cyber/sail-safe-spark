@@ -50,6 +50,7 @@ const MAX_BY_ACTIVITY: Record<Activity, number> = {
   wingfoil: 3,
   pumpfoil: 4,
   foil_tracte: 4,
+  stage_100_glisse: 4,
 };
 
 const CalendarQuickSession = ({ date, onClose, onCreated }: CalendarQuickSessionProps) => {

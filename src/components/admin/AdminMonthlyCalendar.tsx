@@ -61,6 +61,7 @@ const ACTIVITY_DOT_COLORS: Record<Activity, string> = {
   wingfoil: "bg-accent",
   pumpfoil: "bg-turquoise",
   foil_tracte: "bg-ocean-dark",
+  stage_100_glisse: "bg-sunset",
 };
 
 const ACTIVITY_LABELS: Record<Activity, string> = {
