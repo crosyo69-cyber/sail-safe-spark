@@ -502,36 +502,17 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
                           </Button>
 
                           {session.status !== "cancelled" && (
-                            <AlertDialog>
-                              <AlertDialogTrigger asChild>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className="h-8 text-xs text-destructive border-destructive/30 hover:bg-destructive/5"
-                                  title="Annuler la session (recrédite tous les inscrits)"
-                                >
-                                  <X className="w-3 h-3 mr-1" /> Annuler
-                                </Button>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Annuler cette session ?</AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    Tous les inscrits ({session.reservation_count || 0}) seront notifiés par email
-                                    et leurs crédits restitués automatiquement. Cette action est irréversible.
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Retour</AlertDialogCancel>
-                                  <AlertDialogAction
-                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                    onClick={() => handleCancelSession(session)}
-                                  >
-                                    Confirmer l'annulation
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              className="h-11 sm:h-8 text-xs font-semibold flex-1 sm:flex-none"
+                              onClick={() => {
+                                setCancelReason("");
+                                setCancelSession(session);
+                              }}
+                            >
+                              <X className="w-3.5 h-3.5 mr-1" /> Annuler la session
+                            </Button>
                           )}
 
                           <Button
