@@ -149,6 +149,21 @@ const AdminStudentsManager = () => {
     return textMatch && activityMatch && statusMatch;
   });
 
+  const sorted = useMemo(() => {
+    const dir = sortDir === "asc" ? 1 : -1;
+    return [...filtered].sort((a, b) => {
+      if (sortField === "name") {
+        const na = `${a.lastName} ${a.firstName}`.toLowerCase();
+        const nb = `${b.lastName} ${b.firstName}`.toLowerCase();
+        return na.localeCompare(nb) * dir;
+      }
+      if (sortField === "remaining") {
+        return (a.totalRemaining - b.totalRemaining) * dir;
+      }
+      return (a.lastUpdated.localeCompare(b.lastUpdated)) * dir;
+    });
+  }, [filtered, sortField, sortDir]);
+
   const totalActiveCredits = students.reduce((acc, s) => acc + s.totalRemaining, 0);
   const studentsWithCredits = students.filter((s) => s.totalRemaining > 0).length;
 
