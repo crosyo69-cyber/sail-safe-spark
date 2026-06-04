@@ -20,9 +20,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Loader2, RefreshCw, X } from "lucide-react";
+import { ArrowUpDown, ArrowUp, ArrowDown, Loader2, RefreshCw, X } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
+
+type SortField = "name" | "remaining" | "updated";
+type SortDir = "asc" | "desc";
 
 interface Pkg {
   id: string;
@@ -59,6 +62,8 @@ const AdminStudentsManager = () => {
   const [filter, setFilter] = useState("");
   const [activityFilter, setActivityFilter] = useState<string>("all");
   const [packStatusFilter, setPackStatusFilter] = useState<string>("all");
+  const [sortField, setSortField] = useState<SortField>("updated");
+  const [sortDir, setSortDir] = useState<SortDir>("desc");
 
   const load = async () => {
     setLoading(true);
@@ -144,6 +149,39 @@ const AdminStudentsManager = () => {
     return textMatch && activityMatch && statusMatch;
   });
 
+  const sorted = useMemo(() => {
+    const dir = sortDir === "asc" ? 1 : -1;
+    return [...filtered].sort((a, b) => {
+      if (sortField === "name") {
+        const na = `${a.lastName} ${a.firstName}`.toLowerCase();
+        const nb = `${b.lastName} ${b.firstName}`.toLowerCase();
+        return na.localeCompare(nb) * dir;
+      }
+      if (sortField === "remaining") {
+        return (a.totalRemaining - b.totalRemaining) * dir;
+      }
+      return (a.lastUpdated.localeCompare(b.lastUpdated)) * dir;
+    });
+  }, [filtered, sortField, sortDir]);
+
+  const handleSortClick = (field: SortField) => {
+    if (sortField === field) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortField(field);
+      setSortDir(field === "name" ? "asc" : "desc");
+    }
+  };
+
+  const SortIcon = ({ field }: { field: SortField }) => {
+    if (sortField !== field) return <ArrowUpDown className="w-3 h-3 ml-1 inline text-muted-foreground" />;
+    return sortDir === "asc" ? (
+      <ArrowUp className="w-3 h-3 ml-1 inline text-primary" />
+    ) : (
+      <ArrowDown className="w-3 h-3 ml-1 inline text-primary" />
+    );
+  };
+
   const totalActiveCredits = students.reduce((acc, s) => acc + s.totalRemaining, 0);
   const studentsWithCredits = students.filter((s) => s.totalRemaining > 0).length;
 
@@ -201,6 +239,28 @@ const AdminStudentsManager = () => {
               <SelectItem value="expired">Pack expiré</SelectItem>
             </SelectContent>
           </Select>
+          <Select value={sortField} onValueChange={(v) => setSortField(v as SortField)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Trier par" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="name">Nom</SelectItem>
+              <SelectItem value="remaining">Solde restant</SelectItem>
+              <SelectItem value="updated">Date mise à jour</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSortDir((d) => (d === "asc" ? "desc" : "asc"))}
+            title={sortDir === "asc" ? "Croissant" : "Décroissant"}
+          >
+            {sortDir === "asc" ? (
+              <ArrowUp className="w-4 h-4" />
+            ) : (
+              <ArrowDown className="w-4 h-4" />
+            )}
+          </Button>
           <Button
             variant="ghost"
             size="sm"
@@ -208,8 +268,16 @@ const AdminStudentsManager = () => {
               setFilter("");
               setActivityFilter("all");
               setPackStatusFilter("all");
+              setSortField("updated");
+              setSortDir("desc");
             }}
-            disabled={!filter && activityFilter === "all" && packStatusFilter === "all"}
+            disabled={
+              !filter &&
+              activityFilter === "all" &&
+              packStatusFilter === "all" &&
+              sortField === "updated" &&
+              sortDir === "desc"
+            }
           >
             <X className="w-4 h-4 mr-1" />
             Réinitialiser
@@ -232,15 +300,30 @@ const AdminStudentsManager = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Élève</TableHead>
+                  <TableHead
+                    className="cursor-pointer select-none"
+                    onClick={() => handleSortClick("name")}
+                  >
+                    Élève <SortIcon field="name" />
+                  </TableHead>
                   <TableHead>Pack actif</TableHead>
-                  <TableHead className="text-right">Sessions restantes</TableHead>
+                  <TableHead
+                    className="text-right cursor-pointer select-none"
+                    onClick={() => handleSortClick("remaining")}
+                  >
+                    Sessions restantes <SortIcon field="remaining" />
+                  </TableHead>
                   <TableHead>Détail par activité</TableHead>
-                  <TableHead>Dernière mise à jour</TableHead>
+                  <TableHead
+                    className="cursor-pointer select-none"
+                    onClick={() => handleSortClick("updated")}
+                  >
+                    Dernière mise à jour <SortIcon field="updated" />
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filtered.map((s) => (
+                {sorted.map((s) => (
                   <TableRow key={s.email}>
                     <TableCell>
                       <div className="font-medium">
@@ -312,7 +395,7 @@ const AdminStudentsManager = () => {
                     </TableCell>
                   </TableRow>
                 ))}
-                {filtered.length === 0 && (
+                {sorted.length === 0 && (
                   <TableRow>
                     <TableCell
                       colSpan={5}
