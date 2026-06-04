@@ -447,9 +447,43 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
                             variant={session.status === "open" ? "outline" : "default"}
                             className="h-8 text-xs"
                             onClick={() => handleToggleStatus(session)}
+                            disabled={session.status === "cancelled"}
                           >
                             {session.status === "open" ? "Fermer" : "Ouvrir"}
                           </Button>
+
+                          {session.status !== "cancelled" && (
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-8 text-xs text-destructive border-destructive/30 hover:bg-destructive/5"
+                                  title="Annuler la session (recrédite tous les inscrits)"
+                                >
+                                  <X className="w-3 h-3 mr-1" /> Annuler
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Annuler cette session ?</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Tous les inscrits ({session.reservation_count || 0}) seront notifiés par email
+                                    et leurs crédits restitués automatiquement. Cette action est irréversible.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Retour</AlertDialogCancel>
+                                  <AlertDialogAction
+                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                    onClick={() => handleCancelSession(session)}
+                                  >
+                                    Confirmer l'annulation
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          )}
 
                           <Button
                             size="sm"
