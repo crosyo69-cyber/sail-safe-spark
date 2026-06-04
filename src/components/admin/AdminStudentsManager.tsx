@@ -173,11 +173,47 @@ const AdminStudentsManager = () => {
 
         <div className="flex flex-wrap items-center gap-2">
           <Input
-            placeholder="Filtrer par nom, email, téléphone…"
+            placeholder="Rechercher par nom, email, téléphone…"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             className="max-w-sm"
           />
+          <Select value={activityFilter} onValueChange={setActivityFilter}>
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Activité" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Toutes les activités</SelectItem>
+              {activities.map((act) => (
+                <SelectItem key={act} value={act}>
+                  {act}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={packStatusFilter} onValueChange={setPackStatusFilter}>
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="Statut pack" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous les packs</SelectItem>
+              <SelectItem value="active">Pack actif</SelectItem>
+              <SelectItem value="expired">Pack expiré</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              setFilter("");
+              setActivityFilter("all");
+              setPackStatusFilter("all");
+            }}
+            disabled={!filter && activityFilter === "all" && packStatusFilter === "all"}
+          >
+            <X className="w-4 h-4 mr-1" />
+            Réinitialiser
+          </Button>
           <Button variant="outline" size="sm" onClick={load} disabled={loading}>
             <RefreshCw className={`w-4 h-4 mr-1 ${loading ? "animate-spin" : ""}`} />
             Actualiser
