@@ -395,7 +395,7 @@ const AdminStudentsManager = () => {
                     </TableCell>
                   </TableRow>
                 ))}
-                {filtered.length === 0 && (
+                {sorted.length === 0 && (
                   <TableRow>
                     <TableCell
                       colSpan={5}
