@@ -221,6 +221,28 @@ const AdminStudentsManager = () => {
               <SelectItem value="expired">Pack expiré</SelectItem>
             </SelectContent>
           </Select>
+          <Select value={sortField} onValueChange={(v) => setSortField(v as SortField)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Trier par" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="name">Nom</SelectItem>
+              <SelectItem value="remaining">Solde restant</SelectItem>
+              <SelectItem value="updated">Date mise à jour</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSortDir((d) => (d === "asc" ? "desc" : "asc"))}
+            title={sortDir === "asc" ? "Croissant" : "Décroissant"}
+          >
+            {sortDir === "asc" ? (
+              <ArrowUp className="w-4 h-4" />
+            ) : (
+              <ArrowDown className="w-4 h-4" />
+            )}
+          </Button>
           <Button
             variant="ghost"
             size="sm"
@@ -228,8 +250,16 @@ const AdminStudentsManager = () => {
               setFilter("");
               setActivityFilter("all");
               setPackStatusFilter("all");
+              setSortField("updated");
+              setSortDir("desc");
             }}
-            disabled={!filter && activityFilter === "all" && packStatusFilter === "all"}
+            disabled={
+              !filter &&
+              activityFilter === "all" &&
+              packStatusFilter === "all" &&
+              sortField === "updated" &&
+              sortDir === "desc"
+            }
           >
             <X className="w-4 h-4 mr-1" />
             Réinitialiser
