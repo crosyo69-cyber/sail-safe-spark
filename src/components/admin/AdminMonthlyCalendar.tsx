@@ -23,6 +23,12 @@ import { toast } from "sonner";
 import CalendarAddReservation from "./CalendarAddReservation";
 import CalendarReservationActions from "./CalendarReservationActions";
 import CalendarQuickSession from "./CalendarQuickSession";
+import { XCircle } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 
@@ -84,6 +90,9 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
   const [statusFilter, setStatusFilter] = useState<"all" | "confirmed" | "pending">("all");
   const [addingToSession, setAddingToSession] = useState<string | null>(null);
   const [creatingSession, setCreatingSession] = useState(false);
+  const [cancelTarget, setCancelTarget] = useState<SessionSummary | null>(null);
+  const [cancelReason, setCancelReason] = useState("");
+  const [cancelling, setCancelling] = useState(false);
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
@@ -164,6 +173,28 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
     await supabase.from("sessions").update({ status: newStatus }).eq("id", sessionId);
     refreshSessions();
   }, [refreshSessions]);
+
+  const confirmCancelSession = useCallback(async () => {
+    if (!cancelTarget) return;
+    setCancelling(true);
+    const reason = cancelReason.trim();
+    const { error } = await supabase
+      .from("sessions")
+      .update({ status: "cancelled", cancellation_reason: reason || null })
+      .eq("id", cancelTarget.id);
+    setCancelling(false);
+    if (error) {
+      toast.error("Annulation impossible", { description: error.message });
+      return;
+    }
+    const count = cancelTarget.reservations.filter(r => r.status === "confirmed" || r.status === "pending").length;
+    toast.success("Session annulée", {
+      description: `${count} élève(s) recrédité(s) et notifié(s) par email.`,
+    });
+    setCancelTarget(null);
+    setCancelReason("");
+    refreshSessions();
+  }, [cancelTarget, cancelReason, refreshSessions]);
 
   const filteredSessions = useMemo(() => {
     return sessions
