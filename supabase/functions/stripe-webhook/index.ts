@@ -17,7 +17,7 @@ const LOGO_URL = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/pub
 // Map activity display names to database enum values
 const ACTIVITY_NAME_MAP: Record<string, string> = {
   "cours particulier kitesurf": "kitesurf",
-  "stage 100% glisse": "kitesurf",
+  "stage 100% glisse": "stage_100_glisse",
   "cours à la carte": "kitesurf",
   "cours wingfoil": "wingfoil",
   "location matériel": "kitesurf",
@@ -28,6 +28,7 @@ const MAX_BY_ACTIVITY: Record<string, number> = {
   wingfoil: 3,
   pumpfoil: 4,
   foil_tracte: 4,
+  stage_100_glisse: 4,
 };
 
 function generatePackageCode(): string {
@@ -93,6 +94,10 @@ async function createClientPackage(
 
 function mapActivityToEnum(activityName: string): string {
   const normalized = activityName.toLowerCase().trim();
+  // Stage 100% Glisse is a dedicated activity
+  if (normalized.includes("100% glisse") || normalized.includes("100%glisse") || normalized.includes("stage 100")) {
+    return "stage_100_glisse";
+  }
   for (const [key, value] of Object.entries(ACTIVITY_NAME_MAP)) {
     if (normalized.includes(key) || key.includes(normalized)) {
       return value;
