@@ -328,3 +328,131 @@ const ReserverPage = () => {
 };
 
 export default ReserverPage;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Stage 100% Glisse — sélection de date de début + créneau, réservation 5 jours
+// ─────────────────────────────────────────────────────────────────────────────
+function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: string) => void }) {
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [slot, setSlot] = useState<"morning" | "early_afternoon" | "late_afternoon">("morning");
+  const [submitting, setSubmitting] = useState(false);
+  const [preview, setPreview] = useState<{ date: string; taken: number; capacity: number }[]>([]);
+
+  useEffect(() => {
+    if (!startDate) { setPreview([]); return; }
+    let cancelled = false;
+    (async () => {
+      const days: { date: string; taken: number; capacity: number }[] = [];
+      for (let i = 0; i < 5; i++) {
+        const d = new Date(startDate);
+        d.setDate(d.getDate() + i);
+        const ds = format(d, "yyyy-MM-dd");
+        const { data } = await supabase.rpc("get_slot_occupancy", { p_date: ds, p_slot: slot as any });
+        const occ = (data as any) || { taken: 0, capacity: 4 };
+        days.push({ date: ds, taken: occ.taken, capacity: occ.capacity });
+      }
+      if (!cancelled) setPreview(days);
+    })();
+    return () => { cancelled = true; };
+  }, [startDate, slot]);
+
+  const handleStageBook = async () => {
+    const clean = code.trim().toUpperCase();
+    if (!clean) return toast.error("Saisissez votre code de pack Stage 100% Glisse.");
+    if (!startDate) return toast.error("Choisissez une date de début.");
+    setSubmitting(true);
+    const { data, error } = await supabase.rpc("book_stage_100_glisse", {
+      p_code: clean,
+      p_start_date: format(startDate, "yyyy-MM-dd"),
+      p_time_slot: slot as any,
+    });
+    setSubmitting(false);
+    if (error) return toast.error("Erreur : " + error.message);
+    const res = data as any;
+    if (!res?.ok) {
+      const errKey = String(res?.error || "");
+      if (errKey.startsWith("day_full:")) {
+        return toast.error(`Journée complète : ${errKey.replace("day_full:", "")}`);
+      }
+      const messages: Record<string, string> = {
+        invalid_code: "Code de pack invalide",
+        package_not_active: "Pack inactif",
+        package_expired: "Pack expiré",
+        not_enough_credits: "Pas assez de crédits pour réserver les 5 jours",
+        not_a_stage_package: "Ce code ne correspond pas à un Stage 100% Glisse",
+        start_in_past: "Date de début passée",
+      };
+      return toast.error(messages[errKey] || "Réservation impossible");
+    }
+    toast.success("Stage 100% Glisse réservé sur 5 jours consécutifs !");
+    onBooked(clean);
+  };
+
+  const anyFull = preview.some((p) => p.taken >= p.capacity);
+
+  return (
+    <Card className="p-6 space-y-5">
+      <div>
+        <h2 className="text-lg font-semibold mb-1">Stage 100% Glisse — 5 jours consécutifs</h2>
+        <p className="text-sm text-muted-foreground">
+          Choisissez la date de début du stage et le créneau. Les 5 jours seront réservés automatiquement.
+        </p>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="gap-2 min-h-[44px]">
+              <CalendarIcon className="w-4 h-4" />
+              {startDate ? format(startDate, "EEEE d MMMM yyyy", { locale: fr }) : "Date de début"}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode="single" selected={startDate} onSelect={setStartDate}
+              disabled={(d) => d < new Date(new Date().toDateString())}
+              locale={fr} className={cn("p-3 pointer-events-auto")}
+            />
+          </PopoverContent>
+        </Popover>
+
+        <div className="flex flex-wrap gap-2">
+          {(["morning","early_afternoon","late_afternoon"] as const).map((s) => (
+            <Button key={s} size="sm" variant={slot === s ? "default" : "outline"} onClick={() => setSlot(s)}>
+              {SLOT_LABELS[s]}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      {preview.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-sm font-medium">Aperçu des 5 jours :</p>
+          <ul className="space-y-1 text-sm">
+            {preview.map((p) => {
+              const remaining = Math.max(0, p.capacity - p.taken);
+              const full = remaining === 0;
+              return (
+                <li key={p.date} className="flex items-center justify-between rounded-md border px-3 py-2">
+                  <span className="capitalize">{format(parseISO(p.date), "EEEE d MMMM yyyy", { locale: fr })}</span>
+                  <Badge variant={full ? "destructive" : "secondary"}>
+                    {full ? "Complet" : `${remaining} place${remaining > 1 ? "s" : ""} restante${remaining > 1 ? "s" : ""}`}
+                  </Badge>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+
+      <Button
+        className="w-full min-h-[44px]"
+        onClick={handleStageBook}
+        disabled={submitting || !startDate || anyFull}
+      >
+        {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> :
+          anyFull ? "Au moins une journée est complète" : "Réserver les 5 jours avec mon code"}
+      </Button>
+    </Card>
+  );
+}
