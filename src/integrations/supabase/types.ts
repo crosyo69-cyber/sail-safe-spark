@@ -649,6 +649,10 @@ export type Database = {
         Args: { p_token: string }
         Returns: boolean
       }
+      enqueue_booking_confirmation: {
+        Args: { p_booking_id: string }
+        Returns: undefined
+      }
       enqueue_email: {
         Args: { payload: Json; queue_name: string }
         Returns: number
