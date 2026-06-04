@@ -41,6 +41,7 @@ const AUTH_MARKERS = [
   "STRIPE_WEBHOOK_SECRET",
   "Standard-Webhook",
   "verifyAuthHook",
+  "isServiceRoleJwt(",
 ];
 
 function hasAuthMarker(src: string): string | null {
@@ -59,6 +60,7 @@ function hasTokenComparison(src: string): boolean {
          /token\s*===\s*service_role/i.test(src) ||
          /claims\?\.role\s*!==\s*['"]service_role['"]/.test(src) ||
          /claims\.role\s*!==\s*['"]service_role['"]/.test(src) ||
+         /isServiceRoleJwt\(/.test(src) ||
          /has_role\(/.test(src) ||
          /auth\.getClaims\(/.test(src) ||
          /auth\.getUser\(/.test(src) ||
