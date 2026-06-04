@@ -141,6 +141,8 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
   const [newWeather, setNewWeather] = useState<string>("");
   const [newNotes, setNewNotes] = useState("");
 
+  const [detailSession, setDetailSession] = useState<Session | null>(null);
+
   const fetchSessions = async () => {
     if (!selectedDate) return;
     setLoading(true);
@@ -148,7 +150,9 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
 
     const { data, error } = await supabase
       .from("sessions")
-      .select("*, reservations(id, first_name, last_name, email, phone, skill_level, participants, status)")
+      .select(
+        "*, reservations(id, first_name, last_name, email, phone, skill_level, participants, status), package_bookings(id, status, client_packages(id, first_name, last_name, email, package_code, package_type, total_sessions, used_sessions))"
+      )
       .eq("date", dateStr)
       .order("time_slot");
 
@@ -158,7 +162,9 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
       setSessions(
         (data || []).map((s: any) => ({
           ...s,
-          reservation_count: s.reservations?.length || 0,
+          reservation_count:
+            (s.reservations?.filter((r: any) => r.status !== "cancelled").reduce((sum: number, r: any) => sum + (r.participants || 1), 0) || 0) +
+            (s.package_bookings?.filter((b: any) => b.status === "confirmed").length || 0),
         }))
       );
     }
