@@ -24,7 +24,7 @@ import { ArrowUpDown, ArrowUp, ArrowDown, Loader2, RefreshCw, X } from "lucide-r
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 
-type SortField = "name" | "remaining" | "updated";
+type SortField = "name" | "remaining" | "updated" | "pack" | "activity";
 type SortDir = "asc" | "desc";
 
 interface Pkg {
@@ -160,6 +160,16 @@ const AdminStudentsManager = () => {
       if (sortField === "remaining") {
         return (a.totalRemaining - b.totalRemaining) * dir;
       }
+      if (sortField === "pack") {
+        const pa = a.activePackages.map((p) => p.package_type).sort()[0] || "";
+        const pb = b.activePackages.map((p) => p.package_type).sort()[0] || "";
+        return pa.localeCompare(pb) * dir;
+      }
+      if (sortField === "activity") {
+        const aa = Object.keys(a.remainingByActivity).sort()[0] || "";
+        const ab = Object.keys(b.remainingByActivity).sort()[0] || "";
+        return aa.localeCompare(ab) * dir;
+      }
       return (a.lastUpdated.localeCompare(b.lastUpdated)) * dir;
     });
   }, [filtered, sortField, sortDir]);
@@ -247,6 +257,8 @@ const AdminStudentsManager = () => {
               <SelectItem value="name">Nom</SelectItem>
               <SelectItem value="remaining">Solde restant</SelectItem>
               <SelectItem value="updated">Date mise à jour</SelectItem>
+              <SelectItem value="pack">Pack actif</SelectItem>
+              <SelectItem value="activity">Activité</SelectItem>
             </SelectContent>
           </Select>
           <Button
