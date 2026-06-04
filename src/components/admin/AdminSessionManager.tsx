@@ -15,6 +15,11 @@ import {
   CalendarIcon, Plus, Trash2, Wind, CloudRain, Sun, Edit2, Users, X, Mail, Phone, Sparkles,
 } from "lucide-react";
 import BulkSessionGenerator from "./BulkSessionGenerator";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
@@ -201,6 +206,22 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
     if (error) {
       toast({ title: "Erreur", description: error.message, variant: "destructive" });
     } else {
+      fetchSessions();
+    }
+  };
+
+  const handleCancelSession = async (session: Session) => {
+    const { error } = await supabase
+      .from("sessions")
+      .update({ status: "cancelled" })
+      .eq("id", session.id);
+    if (error) {
+      toast({ title: "Erreur", description: error.message, variant: "destructive" });
+    } else {
+      toast({
+        title: "Session annulée ✓",
+        description: "Crédits restitués et emails d'annulation envoyés aux inscrits.",
+      });
       fetchSessions();
     }
   };
