@@ -46,6 +46,7 @@ const Admin = lazy(() => import("./pages/Admin"));
 const MonEspace = lazy(() => import("./pages/MonEspace"));
 const DernieresMinutes = lazy(() => import("./pages/DernieresMinutes"));
 const AlerteDerniereMinute = lazy(() => import("./pages/AlerteDerniereMinute"));
+const Reserver = lazy(() => import("./pages/Reserver"));
 // NotFound is handled inside LegacyRedirectHandler
 
 const queryClient = new QueryClient({
