@@ -57,6 +57,8 @@ const AdminStudentsManager = () => {
   const [packages, setPackages] = useState<Pkg[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("");
+  const [activityFilter, setActivityFilter] = useState<string>("all");
+  const [packStatusFilter, setPackStatusFilter] = useState<string>("all");
 
   const load = async () => {
     setLoading(true);
