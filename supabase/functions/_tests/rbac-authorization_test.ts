@@ -33,6 +33,8 @@ const SERVICE_ROLE_ONLY_FUNCTIONS = [
   { path: "process-email-queue", body: {} },
   { path: "send-package-reminders", body: {} },
   { path: "weekly-summary", body: {} },
+  { path: "weather-alerts", body: {} },
+  { path: "resubmit-sitemap-gsc", body: {} },
 ];
 
 async function call(path: string, init: RequestInit) {
