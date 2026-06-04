@@ -44,8 +44,6 @@ const ReservationConfirmee = lazy(() => import("./pages/ReservationConfirmee"));
 const Merci = lazy(() => import("./pages/Merci"));
 const Admin = lazy(() => import("./pages/Admin"));
 const MonEspace = lazy(() => import("./pages/MonEspace"));
-const DernieresMinutes = lazy(() => import("./pages/DernieresMinutes"));
-const AlerteDerniereMinute = lazy(() => import("./pages/AlerteDerniereMinute"));
 const Reserver = lazy(() => import("./pages/Reserver"));
 // NotFound is handled inside LegacyRedirectHandler
 
@@ -123,8 +121,9 @@ const App = () => {
                 <Route path="/mon-espace" element={<MonEspace />} />
                 <Route path="/mon-espace/:code" element={<MonEspace />} />
                 <Route path="/reserver" element={<Reserver />} />
-                <Route path="/dernieres-minutes" element={<DernieresMinutes />} />
-                <Route path="/alerte-derniere-minute" element={<AlerteDerniereMinute />} />
+                {/* Legacy "Dernière Minute" routes redirect to the unified booking calendar */}
+                <Route path="/dernieres-minutes" element={<SEORedirect to="/reserver" statusCode={301} />} />
+                <Route path="/alerte-derniere-minute" element={<SEORedirect to="/reserver" statusCode={301} />} />
                 {/* Legacy URL redirections (old .com site → new .fr routes) */}
                <Route path="*" element={<LegacyRedirectHandler />} />
              </Routes>
