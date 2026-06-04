@@ -12,8 +12,9 @@ import { cn } from "@/lib/utils";
 import { format, addDays } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
-  CalendarIcon, Plus, Trash2, Wind, CloudRain, Sun, Edit2, Users, X, Mail, Phone, Sparkles,
+  CalendarIcon, Plus, Trash2, Wind, CloudRain, Sun, Edit2, Users, X, Mail, Phone, Sparkles, Eye,
 } from "lucide-react";
+import SessionDetailPanel, { type SessionDetail } from "./SessionDetailPanel";
 import BulkSessionGenerator from "./BulkSessionGenerator";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
