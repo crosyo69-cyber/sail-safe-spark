@@ -49,6 +49,8 @@ import {
   User,
   CreditCard,
   Info,
+  CloudRain,
+  Save,
 } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -158,6 +160,9 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
   const [slotOccupancy, setSlotOccupancy] = useState<{
     capacity: number; stage: number; a_la_carte: number; weather: number; taken: number;
   } | null>(null);
+  const [capacityDraft, setCapacityDraft] = useState<number | null>(null);
+  const [savingCapacity, setSavingCapacity] = useState(false);
+  const [weatherCreditBusy, setWeatherCreditBusy] = useState<string | null>(null);
 
   useEffect(() => {
     if (!session || !open) { setSlotOccupancy(null); return; }
@@ -166,7 +171,10 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
       const { data } = await supabase.rpc("get_slot_occupancy", {
         p_date: session.date, p_slot: session.time_slot as any,
       });
-      if (!cancelled && data) setSlotOccupancy(data as any);
+      if (!cancelled && data) {
+        setSlotOccupancy(data as any);
+        setCapacityDraft((data as any).capacity);
+      }
     })();
     return () => { cancelled = true; };
   }, [session, open]);
@@ -230,6 +238,48 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
       setRecreditAmount(1);
       setRecreditReason("");
       onRefresh();
+    }
+  };
+
+  const handleGrantWeatherCredit = async (pkgId: string, pkgName: string) => {
+    if (!session) return;
+    setWeatherCreditBusy(pkgId);
+    const dateLabel = format(parseISO(session.date), "d MMMM yyyy", { locale: fr });
+    const reason = `Crédit météo — session du ${dateLabel} (${SLOT_LABELS[session.time_slot]})`;
+    const { error } = await supabase.rpc("admin_adjust_package_credits", {
+      p_package_id: pkgId,
+      p_delta: 1,
+      p_reason: reason,
+    });
+    setWeatherCreditBusy(null);
+    if (error) {
+      toast.error("Erreur crédit météo : " + error.message);
+    } else {
+      toast.success(`Crédit météo offert à ${pkgName}`);
+      onRefresh();
+    }
+  };
+
+  const handleSaveCapacity = async () => {
+    if (!session || capacityDraft == null || capacityDraft < 1) return;
+    setSavingCapacity(true);
+    const { error } = await supabase
+      .from("daily_slot_capacity")
+      .upsert(
+        { date: session.date, time_slot: session.time_slot, max_participants: capacityDraft },
+        { onConflict: "date,time_slot" },
+      );
+    setSavingCapacity(false);
+    if (error) {
+      toast.error("Erreur capacité : " + error.message);
+    } else {
+      toast.success(`Capacité du créneau mise à jour : ${capacityDraft} places`);
+      onRefresh();
+      // refresh occupancy
+      const { data } = await supabase.rpc("get_slot_occupancy", {
+        p_date: session.date, p_slot: session.time_slot as any,
+      });
+      if (data) setSlotOccupancy(data as any);
     }
   };
 
