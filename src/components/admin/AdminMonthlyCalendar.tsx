@@ -727,6 +727,56 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
       {loading && (
         <p className="text-center text-sm text-muted-foreground mt-4">Chargement…</p>
       )}
+
+      <AlertDialog open={!!cancelTarget} onOpenChange={(v) => !v && !cancelling && (setCancelTarget(null), setCancelReason(""))}>
+        <AlertDialogContent className="max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Annuler cette session ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {cancelTarget && (
+                <>
+                  Les <strong className="text-destructive">
+                    {cancelTarget.reservations.filter(r => r.status === "confirmed" || r.status === "pending").length} élève(s) inscrit(s)
+                  </strong> seront automatiquement recrédité(s) et notifié(s) par email.
+                </>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="space-y-2">
+            <div className="flex flex-wrap gap-2">
+              {["Vent insuffisant", "Conditions météo", "Mer agitée"].map((preset) => (
+                <Button
+                  key={preset}
+                  type="button"
+                  size="sm"
+                  variant={cancelReason === preset ? "default" : "outline"}
+                  className="h-9 text-xs"
+                  onClick={() => setCancelReason(preset)}
+                >
+                  {preset}
+                </Button>
+              ))}
+            </div>
+            <Textarea
+              placeholder="Motif (optionnel) — visible dans l'email aux élèves"
+              value={cancelReason}
+              onChange={(e) => setCancelReason(e.target.value)}
+              className="min-h-[80px] text-sm"
+              maxLength={200}
+            />
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={cancelling}>Retour</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => { e.preventDefault(); confirmCancelSession(); }}
+              disabled={cancelling}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {cancelling ? "Annulation…" : "Confirmer l'annulation"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 };
