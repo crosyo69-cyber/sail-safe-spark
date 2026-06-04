@@ -14,11 +14,12 @@ import AdminSeasonStats from "@/components/admin/AdminSeasonStats";
 import Admin404Monitor from "@/components/admin/Admin404Monitor";
 import AdminConversionDedupMonitor from "@/components/admin/AdminConversionDedupMonitor";
 import AdminPackagesManager from "@/components/admin/AdminPackagesManager";
+import AdminStudentsManager from "@/components/admin/AdminStudentsManager";
 import AdminConversionFunnel from "@/components/admin/AdminConversionFunnel";
 import AdminLastMinuteManager from "@/components/admin/AdminLastMinuteManager";
 import AdminRichResultsValidator from "@/components/admin/AdminRichResultsValidator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, Flame, FileSearch } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, Flame, FileSearch, Users } from "lucide-react";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -83,6 +84,10 @@ const Admin = () => {
               <Ticket className="w-4 h-4" />
               <span className="hidden sm:inline">Packs</span>
             </TabsTrigger>
+            <TabsTrigger value="students" className="gap-2">
+              <Users className="w-4 h-4" />
+              <span className="hidden sm:inline">Élèves</span>
+            </TabsTrigger>
             <TabsTrigger value="lastminute" className="gap-2">
               <Flame className="w-4 h-4" />
               <span className="hidden sm:inline">Dernière Minute</span>
@@ -139,6 +144,10 @@ const Admin = () => {
 
           <TabsContent value="packages">
             <AdminPackagesManager />
+          </TabsContent>
+
+          <TabsContent value="students">
+            <AdminStudentsManager />
           </TabsContent>
 
           <TabsContent value="lastminute">
