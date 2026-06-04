@@ -16,10 +16,9 @@ import AdminConversionDedupMonitor from "@/components/admin/AdminConversionDedup
 import AdminPackagesManager from "@/components/admin/AdminPackagesManager";
 import AdminStudentsManager from "@/components/admin/AdminStudentsManager";
 import AdminConversionFunnel from "@/components/admin/AdminConversionFunnel";
-import AdminLastMinuteManager from "@/components/admin/AdminLastMinuteManager";
 import AdminRichResultsValidator from "@/components/admin/AdminRichResultsValidator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, Flame, FileSearch, Users } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users } from "lucide-react";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -88,10 +87,6 @@ const Admin = () => {
               <Users className="w-4 h-4" />
               <span className="hidden sm:inline">Élèves</span>
             </TabsTrigger>
-            <TabsTrigger value="lastminute" className="gap-2">
-              <Flame className="w-4 h-4" />
-              <span className="hidden sm:inline">Dernière Minute</span>
-            </TabsTrigger>
             <TabsTrigger value="revenue" className="gap-2">
               <Euro className="w-4 h-4" />
               <span className="hidden sm:inline">Revenus</span>
@@ -148,10 +143,6 @@ const Admin = () => {
 
           <TabsContent value="students">
             <AdminStudentsManager />
-          </TabsContent>
-
-          <TabsContent value="lastminute">
-            <AdminLastMinuteManager />
           </TabsContent>
 
           <TabsContent value="revenue">
