@@ -630,6 +630,18 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
                         >
                           <UserPlus className="w-4 h-4" />
                         </Button>
+                        {s.status !== "cancelled" && (
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            className="h-11 w-11 p-0 shrink-0"
+                            onClick={() => { setCancelReason(""); setCancelTarget(s); }}
+                            title="Annuler la session"
+                            aria-label="Annuler la session"
+                          >
+                            <XCircle className="w-5 h-5" />
+                          </Button>
+                        )}
                         <div className="text-right">
                           <div className="flex items-center gap-1">
                             <Users className="w-3 h-3 text-muted-foreground" />
