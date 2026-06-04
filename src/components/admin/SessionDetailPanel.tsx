@@ -208,7 +208,8 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
     if (error) {
       toast.error("Erreur recrédit : " + error.message);
     } else {
-      toast.success(`Crédit recrédité · Solde restant : ${data?.remaining ?? "?"}`);
+      const result = data as { remaining?: number } | null;
+      toast.success(`Crédit recrédité · Solde restant : ${result?.remaining ?? "?"}`);
       setRecreditTarget(null);
       setRecreditAmount(1);
       setRecreditReason("");
