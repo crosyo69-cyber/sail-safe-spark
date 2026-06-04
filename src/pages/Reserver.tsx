@@ -239,15 +239,21 @@ const ReserverPage = () => {
                               </p>
                             </div>
                           </div>
-                          <Button
-                            className="w-full min-h-[44px]"
-                            disabled={full || booking === s.id}
-                            onClick={() => handleBookWithCode(s.id)}
-                          >
-                            {booking === s.id ? (
-                              <Loader2 className="w-4 h-4 animate-spin" />
-                            ) : full ? "Complet" : "Réserver avec mon code"}
-                          </Button>
+                          {full ? (
+                            <div className="w-full min-h-[44px] flex items-center justify-center rounded-md bg-muted text-muted-foreground text-sm font-medium">
+                              Session complète — aucune place disponible
+                            </div>
+                          ) : (
+                            <Button
+                              className="w-full min-h-[44px]"
+                              disabled={booking === s.id}
+                              onClick={() => handleBookWithCode(s.id)}
+                            >
+                              {booking === s.id ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                              ) : "Réserver avec mon code"}
+                            </Button>
+                          )}
                         </CardContent>
                       </Card>
                     );
