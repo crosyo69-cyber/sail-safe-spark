@@ -36,6 +36,23 @@ interface Reservation {
   status: string;
 }
 
+interface NestedClientPackage {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  package_code: string;
+  package_type: string;
+  total_sessions: number;
+  used_sessions: number;
+}
+
+interface PackageBooking {
+  id: string;
+  status: string;
+  client_packages: NestedClientPackage | null;
+}
+
 interface Session {
   id: string;
   date: string;
@@ -47,6 +64,7 @@ interface Session {
   weather_condition: string | null;
   reservation_count?: number;
   reservations?: Reservation[];
+  package_bookings?: PackageBooking[];
 }
 
 const STATUS_COLORS: Record<string, string> = {
