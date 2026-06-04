@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Loader2, Calendar as CalendarIcon, CheckCircle2, XCircle, Ticket } from "lucide-react";
+import { CloudRain, Plus } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -40,6 +41,16 @@ interface PackageInfo {
   bookings: Booking[];
 }
 
+interface CreditHistoryEntry {
+  id: string;
+  delta: number;
+  kind: string;
+  reason: string | null;
+  balance_after: number;
+  created_at: string;
+  is_weather: boolean;
+}
+
 interface AvailableSession {
   id: string;
   date: string;
@@ -61,6 +72,7 @@ const MonEspace = () => {
   const [codeInput, setCodeInput] = useState(codeParam || "");
   const [pkg, setPkg] = useState<PackageInfo | null>(null);
   const [sessions, setSessions] = useState<AvailableSession[]>([]);
+  const [history, setHistory] = useState<CreditHistoryEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [busyAction, setBusyAction] = useState(false);
 
@@ -82,6 +94,12 @@ const MonEspace = () => {
     setPkg(data as unknown as PackageInfo);
     if (codeParam !== code) navigate(`/mon-espace/${code}`, { replace: true });
     await loadSessions(data as unknown as PackageInfo);
+    await loadHistory(code);
+  };
+
+  const loadHistory = async (code: string) => {
+    const { data } = await supabase.rpc("get_package_credits_history", { p_code: code });
+    setHistory((data as unknown as CreditHistoryEntry[]) || []);
   };
 
   const loadSessions = async (p: PackageInfo) => {
