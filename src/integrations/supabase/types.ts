@@ -313,6 +313,57 @@ export type Database = {
           },
         ]
       }
+      package_credit_history: {
+        Row: {
+          balance_after: number
+          booking_id: string | null
+          created_at: string
+          delta: number
+          id: string
+          kind: string
+          package_id: string
+          performed_by: string | null
+          reason: string
+        }
+        Insert: {
+          balance_after: number
+          booking_id?: string | null
+          created_at?: string
+          delta: number
+          id?: string
+          kind: string
+          package_id: string
+          performed_by?: string | null
+          reason: string
+        }
+        Update: {
+          balance_after?: number
+          booking_id?: string | null
+          created_at?: string
+          delta?: number
+          id?: string
+          kind?: string
+          package_id?: string
+          performed_by?: string | null
+          reason?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "package_credit_history_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "package_bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "package_credit_history_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "client_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       page_404_logs: {
         Row: {
           created_at: string
@@ -574,6 +625,10 @@ export type Database = {
       }
     }
     Functions: {
+      admin_adjust_package_credits: {
+        Args: { p_delta: number; p_package_id: string; p_reason: string }
+        Returns: Json
+      }
       book_session_with_code: {
         Args: { p_code: string; p_session_id: string }
         Returns: Json
@@ -597,6 +652,10 @@ export type Database = {
       enqueue_email: {
         Args: { payload: Json; queue_name: string }
         Returns: number
+      }
+      enqueue_low_credit_warning: {
+        Args: { p_package_id: string }
+        Returns: undefined
       }
       get_email_queue_status: {
         Args: never
