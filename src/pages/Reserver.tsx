@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -49,8 +49,8 @@ const ReserverPage = () => {
   const [code, setCode] = useState("");
   const [booking, setBooking] = useState<string | null>(null);
 
-  const loadSessions = async () => {
-    setLoading(true);
+  const loadSessions = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
     const today = new Date().toISOString().slice(0, 10);
     let query = supabase
       .from("sessions")
@@ -62,7 +62,7 @@ const ReserverPage = () => {
       .limit(60);
     if (date) query = query.lte("date", format(date, "yyyy-MM-dd"));
     const { data: raw } = await query;
-    setLoading(false);
+    if (!silent) setLoading(false);
     if (!raw || raw.length === 0) {
       setSessions([]);
       return;
@@ -76,9 +76,17 @@ const ReserverPage = () => {
     (resv || []).forEach((r: any) => { taken[r.session_id] = (taken[r.session_id] || 0) + (r.participants || 1); });
     (pb || []).forEach((b: any) => { taken[b.session_id] = (taken[b.session_id] || 0) + 1; });
     setSessions(raw.map((s: any) => ({ ...s, taken: taken[s.id] || 0 })));
-  };
+  }, [activity, date]);
 
-  useEffect(() => { loadSessions(); /* eslint-disable-next-line */ }, [activity, date]);
+  useEffect(() => { loadSessions(); }, [loadSessions]);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (document.hidden || booking) return;
+      loadSessions(true);
+    }, 30000);
+    return () => clearInterval(id);
+  }, [loadSessions, booking]);
 
   const handleBookWithCode = async (sessionId: string) => {
     const clean = code.trim().toUpperCase();
