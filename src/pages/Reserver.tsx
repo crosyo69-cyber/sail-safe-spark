@@ -250,7 +250,12 @@ const ReserverPage = () => {
         </Card>
 
         {/* Sessions */}
-        {loading ? (
+        {activity === "stage_100_glisse" ? (
+          <StageBookingPanel
+            code={code}
+            onBooked={(c) => navigate(`/mon-espace/${c}`)}
+          />
+        ) : loading ? (
           <div className="flex justify-center py-12">
             <Loader2 className="w-6 h-6 animate-spin text-primary" />
           </div>
