@@ -1,0 +1,1 @@
+ALTER TYPE public.activity_type ADD VALUE IF NOT EXISTS 'stage_100_glisse';

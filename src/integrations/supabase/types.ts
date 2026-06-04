@@ -711,7 +711,12 @@ export type Database = {
       unsubscribe_weather_alert: { Args: { p_token: string }; Returns: boolean }
     }
     Enums: {
-      activity_type: "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte"
+      activity_type:
+        | "kitesurf"
+        | "wingfoil"
+        | "pumpfoil"
+        | "foil_tracte"
+        | "stage_100_glisse"
       app_role: "admin" | "moderator" | "user"
       reservation_status: "pending" | "confirmed" | "cancelled"
       skill_level: "debutant" | "intermediaire" | "confirme"
@@ -843,7 +848,13 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      activity_type: ["kitesurf", "wingfoil", "pumpfoil", "foil_tracte"],
+      activity_type: [
+        "kitesurf",
+        "wingfoil",
+        "pumpfoil",
+        "foil_tracte",
+        "stage_100_glisse",
+      ],
       app_role: ["admin", "moderator", "user"],
       reservation_status: ["pending", "confirmed", "cancelled"],
       skill_level: ["debutant", "intermediaire", "confirme"],
