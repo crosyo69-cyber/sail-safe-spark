@@ -122,6 +122,7 @@ const App = () => {
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/mon-espace" element={<MonEspace />} />
                 <Route path="/mon-espace/:code" element={<MonEspace />} />
+                <Route path="/reserver" element={<Reserver />} />
                 <Route path="/dernieres-minutes" element={<DernieresMinutes />} />
                 <Route path="/alerte-derniere-minute" element={<AlerteDerniereMinute />} />
                 {/* Legacy URL redirections (old .com site → new .fr routes) */}
