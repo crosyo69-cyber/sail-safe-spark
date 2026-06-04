@@ -20,9 +20,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Loader2, RefreshCw, X } from "lucide-react";
+import { ArrowUpDown, ArrowUp, ArrowDown, Loader2, RefreshCw, X } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
+
+type SortField = "name" | "remaining" | "updated";
+type SortDir = "asc" | "desc";
 
 interface Pkg {
   id: string;
