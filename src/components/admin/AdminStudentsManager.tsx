@@ -300,11 +300,26 @@ const AdminStudentsManager = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Élève</TableHead>
+                  <TableHead
+                    className="cursor-pointer select-none"
+                    onClick={() => handleSortClick("name")}
+                  >
+                    Élève <SortIcon field="name" />
+                  </TableHead>
                   <TableHead>Pack actif</TableHead>
-                  <TableHead className="text-right">Sessions restantes</TableHead>
+                  <TableHead
+                    className="text-right cursor-pointer select-none"
+                    onClick={() => handleSortClick("remaining")}
+                  >
+                    Sessions restantes <SortIcon field="remaining" />
+                  </TableHead>
                   <TableHead>Détail par activité</TableHead>
-                  <TableHead>Dernière mise à jour</TableHead>
+                  <TableHead
+                    className="cursor-pointer select-none"
+                    onClick={() => handleSortClick("updated")}
+                  >
+                    Dernière mise à jour <SortIcon field="updated" />
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
