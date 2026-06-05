@@ -13,7 +13,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { toast } from "sonner";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Calendar as CalendarIcon, Loader2, Ticket, Wind, Waves, Anchor, Plane } from "lucide-react";
+import { Calendar as CalendarIcon, Loader2, Ticket, Wind, Waves, Anchor, Plane, UserCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
@@ -39,6 +39,7 @@ interface AvailableSession {
   activity: Activity;
   max_participants: number;
   taken: number;
+  private_count: number;
 }
 
 const ReserverPage = () => {
@@ -71,12 +72,13 @@ const ReserverPage = () => {
     }
     const ids = rawAll.map((s) => s.id);
     const [{ data: resv }, { data: pb }] = await Promise.all([
-      supabase.from("reservations").select("session_id, participants, status").in("session_id", ids).neq("status", "cancelled"),
+      supabase.from("reservations").select("session_id, participants, status, notes").in("session_id", ids).neq("status", "cancelled"),
       supabase.from("package_bookings").select("session_id, status").in("session_id", ids).eq("status", "confirmed"),
     ]);
     // Group sessions by (date, time_slot) and compute shared occupancy
     const slotTaken: Record<string, number> = {};
     const slotCapacity: Record<string, number> = {};
+    const slotPrivate: Record<string, number> = {};
     const sessionToSlot: Record<string, string> = {};
     rawAll.forEach((s: any) => {
       const key = `${s.date}|${s.time_slot}`;
@@ -85,7 +87,12 @@ const ReserverPage = () => {
     });
     (resv || []).forEach((r: any) => {
       const k = sessionToSlot[r.session_id];
-      if (k) slotTaken[k] = (slotTaken[k] || 0) + (r.participants || 1);
+      if (!k) return;
+      const seats = r.participants || 1;
+      slotTaken[k] = (slotTaken[k] || 0) + seats;
+      if (r.status === "confirmed" && typeof r.notes === "string" && /cours\s+particulier/i.test(r.notes)) {
+        slotPrivate[k] = (slotPrivate[k] || 0) + seats;
+      }
     });
     (pb || []).forEach((b: any) => {
       const k = sessionToSlot[b.session_id];
@@ -99,6 +106,7 @@ const ReserverPage = () => {
           ...s,
           max_participants: slotCapacity[key] ?? s.max_participants,
           taken: slotTaken[key] || 0,
+          private_count: slotPrivate[key] || 0,
         };
       });
     setSessions(visible as AvailableSession[]);
@@ -297,6 +305,16 @@ const ReserverPage = () => {
                               </p>
                             </div>
                           </div>
+                          {s.private_count > 0 && (
+                            <div className="flex items-center gap-2 rounded-md bg-accent/10 border border-accent/30 px-3 py-2 text-xs text-accent-foreground">
+                              <UserCheck className="w-4 h-4 text-accent shrink-0" aria-hidden="true" />
+                              <span>
+                                {s.private_count === 1
+                                  ? "1 cours particulier confirmé"
+                                  : `${s.private_count} cours particuliers confirmés`}
+                              </span>
+                            </div>
+                          )}
                           {full ? (
                             <div className="w-full min-h-[44px] flex items-center justify-center rounded-md bg-muted text-muted-foreground text-sm font-medium">
                               Session complète — aucune place disponible
