@@ -94,7 +94,7 @@ const ReserverPage = () => {
       const seats = r.participants || 1;
       slotTaken[k] = (slotTaken[k] || 0) + seats;
       if (r.status === "confirmed" && typeof r.notes === "string" && /cours\s+particulier/i.test(r.notes)) {
-        slotPrivate[k] = (slotPrivate[k] || 0) + seats;
+        slotPrivate[k] = [...(slotPrivate[k] || []), r.first_name || "Client"];
       }
     });
     (pb || []).forEach((b: any) => {
