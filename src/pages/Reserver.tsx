@@ -81,7 +81,7 @@ const ReserverPage = () => {
     // Group sessions by (date, time_slot) and compute shared occupancy
     const slotTaken: Record<string, number> = {};
     const slotCapacity: Record<string, number> = {};
-    const slotPrivate: Record<string, number> = {};
+    const slotPrivate: Record<string, string[]> = {};
     const sessionToSlot: Record<string, string> = {};
     rawAll.forEach((s: any) => {
       const key = `${s.date}|${s.time_slot}`;
