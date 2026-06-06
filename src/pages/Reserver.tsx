@@ -109,7 +109,8 @@ const ReserverPage = () => {
           ...s,
           max_participants: slotCapacity[key] ?? s.max_participants,
           taken: slotTaken[key] || 0,
-          private_count: slotPrivate[key] || 0,
+          private_count: (slotPrivate[key] || []).length,
+          private_names: slotPrivate[key] || [],
         };
       });
     setSessions(visible as AvailableSession[]);
