@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -40,6 +41,7 @@ interface AvailableSession {
   max_participants: number;
   taken: number;
   private_count: number;
+  private_names: string[];
 }
 
 const ReserverPage = () => {
@@ -50,6 +52,7 @@ const ReserverPage = () => {
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState("");
   const [booking, setBooking] = useState<string | null>(null);
+  const [privateDialog, setPrivateDialog] = useState<{ date: string; slotLabel: string; names: string[] } | null>(null);
 
   const loadSessions = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
@@ -72,13 +75,13 @@ const ReserverPage = () => {
     }
     const ids = rawAll.map((s) => s.id);
     const [{ data: resv }, { data: pb }] = await Promise.all([
-      supabase.from("reservations").select("session_id, participants, status, notes").in("session_id", ids).neq("status", "cancelled"),
+      supabase.from("reservations").select("session_id, participants, status, notes, first_name").in("session_id", ids).neq("status", "cancelled"),
       supabase.from("package_bookings").select("session_id, status").in("session_id", ids).eq("status", "confirmed"),
     ]);
     // Group sessions by (date, time_slot) and compute shared occupancy
     const slotTaken: Record<string, number> = {};
     const slotCapacity: Record<string, number> = {};
-    const slotPrivate: Record<string, number> = {};
+    const slotPrivate: Record<string, string[]> = {};
     const sessionToSlot: Record<string, string> = {};
     rawAll.forEach((s: any) => {
       const key = `${s.date}|${s.time_slot}`;
@@ -91,7 +94,7 @@ const ReserverPage = () => {
       const seats = r.participants || 1;
       slotTaken[k] = (slotTaken[k] || 0) + seats;
       if (r.status === "confirmed" && typeof r.notes === "string" && /cours\s+particulier/i.test(r.notes)) {
-        slotPrivate[k] = (slotPrivate[k] || 0) + seats;
+        slotPrivate[k] = [...(slotPrivate[k] || []), r.first_name || "Client"];
       }
     });
     (pb || []).forEach((b: any) => {
@@ -106,7 +109,8 @@ const ReserverPage = () => {
           ...s,
           max_participants: slotCapacity[key] ?? s.max_participants,
           taken: slotTaken[key] || 0,
-          private_count: slotPrivate[key] || 0,
+          private_count: (slotPrivate[key] || []).length,
+          private_names: slotPrivate[key] || [],
         };
       });
     setSessions(visible as AvailableSession[]);
@@ -306,14 +310,18 @@ const ReserverPage = () => {
                             </div>
                           </div>
                           {s.private_count > 0 && (
-                            <div className="flex items-center gap-2 rounded-md bg-accent/10 border border-accent/30 px-3 py-2 text-xs text-accent-foreground">
+                            <button
+                              type="button"
+                              onClick={() => setPrivateDialog({ date: d, slotLabel: SLOT_LABELS[s.time_slot] || s.time_slot, names: s.private_names })}
+                              className="flex items-center gap-2 rounded-md bg-accent/10 border border-accent/30 px-3 py-2 text-xs text-accent-foreground w-full text-left hover:bg-accent/20 transition-colors cursor-pointer"
+                            >
                               <UserCheck className="w-4 h-4 text-accent shrink-0" aria-hidden="true" />
                               <span>
                                 {s.private_count === 1
                                   ? "1 cours particulier confirmé"
                                   : `${s.private_count} cours particuliers confirmés`}
                               </span>
-                            </div>
+                            </button>
                           )}
                           {full ? (
                             <div className="w-full min-h-[44px] flex items-center justify-center rounded-md bg-muted text-muted-foreground text-sm font-medium">
@@ -340,6 +348,28 @@ const ReserverPage = () => {
           </div>
         )}
       </main>
+      <Dialog open={!!privateDialog} onOpenChange={(open) => { if (!open) setPrivateDialog(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Cours particuliers confirmés</DialogTitle>
+          </DialogHeader>
+          {privateDialog && (
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                {format(parseISO(privateDialog.date), "EEEE d MMMM yyyy", { locale: fr })} — {privateDialog.slotLabel}
+              </p>
+              <ul className="space-y-2">
+                {privateDialog.names.map((name, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm">
+                    <UserCheck className="w-4 h-4 text-accent shrink-0" />
+                    <span className="font-medium">{name}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
       <Footer />
     </div>
   );
