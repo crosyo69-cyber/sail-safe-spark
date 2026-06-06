@@ -41,6 +41,7 @@ interface AvailableSession {
   max_participants: number;
   taken: number;
   private_count: number;
+  private_names: string[];
 }
 
 const ReserverPage = () => {
