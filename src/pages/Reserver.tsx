@@ -75,7 +75,7 @@ const ReserverPage = () => {
     }
     const ids = rawAll.map((s) => s.id);
     const [{ data: resv }, { data: pb }] = await Promise.all([
-      supabase.from("reservations").select("session_id, participants, status, notes").in("session_id", ids).neq("status", "cancelled"),
+      supabase.from("reservations").select("session_id, participants, status, notes, first_name").in("session_id", ids).neq("status", "cancelled"),
       supabase.from("package_bookings").select("session_id, status").in("session_id", ids).eq("status", "confirmed"),
     ]);
     // Group sessions by (date, time_slot) and compute shared occupancy
