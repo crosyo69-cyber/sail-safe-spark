@@ -310,14 +310,18 @@ const ReserverPage = () => {
                             </div>
                           </div>
                           {s.private_count > 0 && (
-                            <div className="flex items-center gap-2 rounded-md bg-accent/10 border border-accent/30 px-3 py-2 text-xs text-accent-foreground">
+                            <button
+                              type="button"
+                              onClick={() => setPrivateDialog({ date: d, slotLabel: SLOT_LABELS[s.time_slot] || s.time_slot, names: s.private_names })}
+                              className="flex items-center gap-2 rounded-md bg-accent/10 border border-accent/30 px-3 py-2 text-xs text-accent-foreground w-full text-left hover:bg-accent/20 transition-colors cursor-pointer"
+                            >
                               <UserCheck className="w-4 h-4 text-accent shrink-0" aria-hidden="true" />
                               <span>
                                 {s.private_count === 1
                                   ? "1 cours particulier confirmé"
                                   : `${s.private_count} cours particuliers confirmés`}
                               </span>
-                            </div>
+                            </button>
                           )}
                           {full ? (
                             <div className="w-full min-h-[44px] flex items-center justify-center rounded-md bg-muted text-muted-foreground text-sm font-medium">
