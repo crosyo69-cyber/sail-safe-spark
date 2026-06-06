@@ -348,6 +348,28 @@ const ReserverPage = () => {
           </div>
         )}
       </main>
+      <Dialog open={!!privateDialog} onOpenChange={(open) => { if (!open) setPrivateDialog(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Cours particuliers confirmés</DialogTitle>
+          </DialogHeader>
+          {privateDialog && (
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                {format(parseISO(privateDialog.date), "EEEE d MMMM yyyy", { locale: fr })} — {privateDialog.slotLabel}
+              </p>
+              <ul className="space-y-2">
+                {privateDialog.names.map((name, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm">
+                    <UserCheck className="w-4 h-4 text-accent shrink-0" />
+                    <span className="font-medium">{name}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
       <Footer />
     </div>
   );
