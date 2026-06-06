@@ -52,6 +52,7 @@ const ReserverPage = () => {
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState("");
   const [booking, setBooking] = useState<string | null>(null);
+  const [privateDialog, setPrivateDialog] = useState<{ date: string; slotLabel: string; names: string[] } | null>(null);
 
   const loadSessions = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
