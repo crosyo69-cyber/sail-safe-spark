@@ -664,10 +664,11 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
             </div>
           </div>
           <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => setRecreditTarget(null)}>
+            <Button type="button" variant="outline" onClick={() => setRecreditTarget(null)}>
               Annuler
             </Button>
             <Button
+              type="button"
               onClick={handleRecredit}
               disabled={!recreditReason.trim() || recrediting}
               className="gap-2"
