@@ -221,23 +221,45 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
   };
 
   const handleRecredit = async () => {
-    if (!recreditTarget || !recreditReason.trim()) return;
+    if (!recreditTarget) {
+      toast.error("Aucun pack sélectionné.");
+      return;
+    }
+    if (!recreditReason.trim() || recreditReason.trim().length < 3) {
+      toast.error("Le motif est obligatoire (3 caractères minimum).");
+      return;
+    }
     setRecrediting(true);
-    const { data, error } = await supabase.rpc("admin_adjust_package_credits", {
-      p_package_id: recreditTarget.pkgId,
-      p_delta: recreditAmount,
-      p_reason: recreditReason.trim(),
-    });
-    setRecrediting(false);
-    if (error) {
-      toast.error("Erreur recrédit : " + error.message);
-    } else {
-      const result = data as { remaining?: number } | null;
-      toast.success(`Crédit recrédité · Solde restant : ${result?.remaining ?? "?"}`);
+    try {
+      const { data, error } = await supabase.rpc("admin_adjust_package_credits", {
+        p_package_id: recreditTarget.pkgId,
+        p_delta: recreditAmount,
+        p_reason: recreditReason.trim(),
+      });
+      if (error) {
+        console.error("[recredit] RPC error", error);
+        toast.error("Erreur recrédit : " + (error.message || "inconnue"));
+        return;
+      }
+      const result = (data ?? {}) as { ok?: boolean; error?: string; remaining?: number; total?: number };
+      if (result.ok === false) {
+        toast.error("Recrédit refusé : " + (result.error ?? "inconnu"));
+        return;
+      }
+      toast.success(
+        `+${recreditAmount} crédit(s) ajouté(s) à ${recreditTarget.pkgName.split(" — ")[0]}. ` +
+          `Solde : ${result.remaining ?? "?"} / ${result.total ?? "?"}`,
+        { duration: 6000 },
+      );
       setRecreditTarget(null);
       setRecreditAmount(1);
       setRecreditReason("");
       onRefresh();
+    } catch (e: any) {
+      console.error("[recredit] exception", e);
+      toast.error("Erreur inattendue : " + (e?.message ?? String(e)));
+    } finally {
+      setRecrediting(false);
     }
   };
 
