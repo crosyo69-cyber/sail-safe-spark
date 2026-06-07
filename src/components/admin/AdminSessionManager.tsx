@@ -698,9 +698,20 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
         session={detailSession as SessionDetail | null}
         open={!!detailSession}
         onClose={() => setDetailSession(null)}
-        onRefresh={() => {
-          fetchSessions();
-          setDetailSession(null);
+        onRefresh={async () => {
+          await fetchSessions();
+          // Refresh the open panel in place so the user sees updated balances
+          // and the toast confirmation, without unmounting the dialog.
+          if (detailSession) {
+            const { data } = await supabase
+              .from("sessions")
+              .select(
+                "*, reservations(id, first_name, last_name, email, phone, skill_level, participants, status), package_bookings(id, status, client_packages(id, first_name, last_name, email, package_code, package_type, total_sessions, used_sessions))"
+              )
+              .eq("id", detailSession.id)
+              .maybeSingle();
+            if (data) setDetailSession(data as any);
+          }
         }}
       />
 

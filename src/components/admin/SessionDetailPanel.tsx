@@ -221,23 +221,45 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
   };
 
   const handleRecredit = async () => {
-    if (!recreditTarget || !recreditReason.trim()) return;
+    if (!recreditTarget) {
+      toast.error("Aucun pack sélectionné.");
+      return;
+    }
+    if (!recreditReason.trim() || recreditReason.trim().length < 3) {
+      toast.error("Le motif est obligatoire (3 caractères minimum).");
+      return;
+    }
     setRecrediting(true);
-    const { data, error } = await supabase.rpc("admin_adjust_package_credits", {
-      p_package_id: recreditTarget.pkgId,
-      p_delta: recreditAmount,
-      p_reason: recreditReason.trim(),
-    });
-    setRecrediting(false);
-    if (error) {
-      toast.error("Erreur recrédit : " + error.message);
-    } else {
-      const result = data as { remaining?: number } | null;
-      toast.success(`Crédit recrédité · Solde restant : ${result?.remaining ?? "?"}`);
+    try {
+      const { data, error } = await supabase.rpc("admin_adjust_package_credits", {
+        p_package_id: recreditTarget.pkgId,
+        p_delta: recreditAmount,
+        p_reason: recreditReason.trim(),
+      });
+      if (error) {
+        console.error("[recredit] RPC error", error);
+        toast.error("Erreur recrédit : " + (error.message || "inconnue"));
+        return;
+      }
+      const result = (data ?? {}) as { ok?: boolean; error?: string; remaining?: number; total?: number };
+      if (result.ok === false) {
+        toast.error("Recrédit refusé : " + (result.error ?? "inconnu"));
+        return;
+      }
+      toast.success(
+        `+${recreditAmount} crédit(s) ajouté(s) à ${recreditTarget.pkgName.split(" — ")[0]}. ` +
+          `Solde : ${result.remaining ?? "?"} / ${result.total ?? "?"}`,
+        { duration: 6000 },
+      );
       setRecreditTarget(null);
       setRecreditAmount(1);
       setRecreditReason("");
       onRefresh();
+    } catch (e: any) {
+      console.error("[recredit] exception", e);
+      toast.error("Erreur inattendue : " + (e?.message ?? String(e)));
+    } finally {
+      setRecrediting(false);
     }
   };
 
@@ -445,14 +467,18 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
                                     <Button
                                       size="sm"
                                       variant="ghost"
+                                      type="button"
                                       className="h-7 w-7 p-0 text-primary hover:text-primary"
                                       title="Recréditer manuellement"
-                                      onClick={() =>
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setRecreditAmount(1);
+                                        setRecreditReason("");
                                         setRecreditTarget({
                                           pkgId: pkg.id,
                                           pkgName: `${pkg.first_name} ${pkg.last_name} — ${pkg.package_code}`,
-                                        })
-                                      }
+                                        });
+                                      }}
                                     >
                                       <Plus className="w-3.5 h-3.5" />
                                     </Button>
@@ -638,10 +664,11 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
             </div>
           </div>
           <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => setRecreditTarget(null)}>
+            <Button type="button" variant="outline" onClick={() => setRecreditTarget(null)}>
               Annuler
             </Button>
             <Button
+              type="button"
               onClick={handleRecredit}
               disabled={!recreditReason.trim() || recrediting}
               className="gap-2"
