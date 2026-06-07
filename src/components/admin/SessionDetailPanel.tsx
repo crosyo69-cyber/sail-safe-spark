@@ -467,14 +467,18 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
                                     <Button
                                       size="sm"
                                       variant="ghost"
+                                      type="button"
                                       className="h-7 w-7 p-0 text-primary hover:text-primary"
                                       title="Recréditer manuellement"
-                                      onClick={() =>
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setRecreditAmount(1);
+                                        setRecreditReason("");
                                         setRecreditTarget({
                                           pkgId: pkg.id,
                                           pkgName: `${pkg.first_name} ${pkg.last_name} — ${pkg.package_code}`,
-                                        })
-                                      }
+                                        });
+                                      }}
                                     >
                                       <Plus className="w-3.5 h-3.5" />
                                     </Button>
