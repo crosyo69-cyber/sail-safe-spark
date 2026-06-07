@@ -97,7 +97,6 @@ async function syncOne(
     .select("id")
     .eq("date", sessionDate)
     .eq("activity", activityEnum)
-    .eq("status", "open")
     .limit(1);
 
   let sessionId: string | null = null;
