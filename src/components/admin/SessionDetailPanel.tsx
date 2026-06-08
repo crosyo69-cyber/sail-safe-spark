@@ -674,7 +674,14 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
             </Button>
             <Button
               type="button"
-              onClick={handleRecredit}
+              onClick={() => {
+                const reason = recreditReason.trim();
+                if (!reason || reason.length < 3) {
+                  toast.error("Le motif est obligatoire (3 caractères minimum).");
+                  return;
+                }
+                setConfirmRecreditOpen(true);
+              }}
               disabled={!recreditReason.trim() || recrediting}
               className="gap-2"
             >
