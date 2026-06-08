@@ -152,10 +152,13 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
   const [recreditTarget, setRecreditTarget] = useState<{
     pkgId: string;
     pkgName: string;
+    remaining: number;
+    total: number;
   } | null>(null);
   const [recreditAmount, setRecreditAmount] = useState(1);
   const [recreditReason, setRecreditReason] = useState("");
   const [recrediting, setRecrediting] = useState(false);
+  const [confirmRecreditOpen, setConfirmRecreditOpen] = useState(false);
   const [cancelling, setCancelling] = useState(false);
   const [slotOccupancy, setSlotOccupancy] = useState<{
     capacity: number; stage: number; a_la_carte: number; weather: number; taken: number;
@@ -239,11 +242,13 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
       if (error) {
         console.error("[recredit] RPC error", error);
         toast.error("Erreur recrédit : " + (error.message || "inconnue"));
+        setConfirmRecreditOpen(false);
         return;
       }
       const result = (data ?? {}) as { ok?: boolean; error?: string; remaining?: number; total?: number };
       if (result.ok === false) {
         toast.error("Recrédit refusé : " + (result.error ?? "inconnu"));
+        setConfirmRecreditOpen(false);
         return;
       }
       toast.success(
@@ -251,6 +256,7 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
           `Solde : ${result.remaining ?? "?"} / ${result.total ?? "?"}`,
         { duration: 6000 },
       );
+      setConfirmRecreditOpen(false);
       setRecreditTarget(null);
       setRecreditAmount(1);
       setRecreditReason("");
@@ -258,6 +264,7 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
     } catch (e: any) {
       console.error("[recredit] exception", e);
       toast.error("Erreur inattendue : " + (e?.message ?? String(e)));
+      setConfirmRecreditOpen(false);
     } finally {
       setRecrediting(false);
     }
@@ -477,6 +484,8 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
                                         setRecreditTarget({
                                           pkgId: pkg.id,
                                           pkgName: `${pkg.first_name} ${pkg.last_name} — ${pkg.package_code}`,
+                                          remaining: pkg.total_sessions - pkg.used_sessions,
+                                          total: pkg.total_sessions,
                                         });
                                       }}
                                     >
@@ -615,7 +624,7 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
       </AlertDialog>
 
       {/* ── Dialog de recrédit manuel ── */}
-      <Dialog open={!!recreditTarget} onOpenChange={(v) => !v && setRecreditTarget(null)}>
+      <Dialog open={!!recreditTarget} onOpenChange={(v) => { if (!v) { setRecreditTarget(null); setConfirmRecreditOpen(false); } }}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Recréditer manuellement</DialogTitle>
@@ -669,7 +678,14 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
             </Button>
             <Button
               type="button"
-              onClick={handleRecredit}
+              onClick={() => {
+                const reason = recreditReason.trim();
+                if (!reason || reason.length < 3) {
+                  toast.error("Le motif est obligatoire (3 caractères minimum).");
+                  return;
+                }
+                setConfirmRecreditOpen(true);
+              }}
               disabled={!recreditReason.trim() || recrediting}
               className="gap-2"
             >
@@ -679,6 +695,43 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* ── Confirmation du recrédit manuel ── */}
+      <AlertDialog open={confirmRecreditOpen} onOpenChange={setConfirmRecreditOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmer le recrédit ?</AlertDialogTitle>
+            <AlertDialogDescription className="space-y-1">
+              <p>
+                <span className="font-medium text-foreground">Élève :</span>{" "}
+                {recreditTarget?.pkgName.split(" — ")[0]}
+              </p>
+              <p>
+                <span className="font-medium text-foreground">Montant :</span>{" "}
+                +{recreditAmount} session{recreditAmount > 1 ? "s" : ""}
+              </p>
+              <p>
+                <span className="font-medium text-foreground">Solde actuel :</span>{" "}
+                {recreditTarget?.remaining} / {recreditTarget?.total}
+              </p>
+              <p>
+                <span className="font-medium text-foreground">Nouveau solde :</span>{" "}
+                {(recreditTarget?.remaining ?? 0) + recreditAmount} / {recreditTarget?.total}
+              </p>
+              <p>
+                <span className="font-medium text-foreground">Motif :</span>{" "}
+                {recreditReason.trim()}
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setConfirmRecreditOpen(false)}>Retour</AlertDialogCancel>
+            <AlertDialogAction onClick={handleRecredit} disabled={recrediting}>
+              {recrediting ? "Traitement…" : "Confirmer le recrédit"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
