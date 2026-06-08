@@ -242,11 +242,13 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
       if (error) {
         console.error("[recredit] RPC error", error);
         toast.error("Erreur recrédit : " + (error.message || "inconnue"));
+        setConfirmRecreditOpen(false);
         return;
       }
       const result = (data ?? {}) as { ok?: boolean; error?: string; remaining?: number; total?: number };
       if (result.ok === false) {
         toast.error("Recrédit refusé : " + (result.error ?? "inconnu"));
+        setConfirmRecreditOpen(false);
         return;
       }
       toast.success(
@@ -254,6 +256,7 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
           `Solde : ${result.remaining ?? "?"} / ${result.total ?? "?"}`,
         { duration: 6000 },
       );
+      setConfirmRecreditOpen(false);
       setRecreditTarget(null);
       setRecreditAmount(1);
       setRecreditReason("");
@@ -261,6 +264,7 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
     } catch (e: any) {
       console.error("[recredit] exception", e);
       toast.error("Erreur inattendue : " + (e?.message ?? String(e)));
+      setConfirmRecreditOpen(false);
     } finally {
       setRecrediting(false);
     }
