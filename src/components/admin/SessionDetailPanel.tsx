@@ -695,6 +695,43 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* ── Confirmation du recrédit manuel ── */}
+      <AlertDialog open={confirmRecreditOpen} onOpenChange={setConfirmRecreditOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmer le recrédit ?</AlertDialogTitle>
+            <AlertDialogDescription className="space-y-1">
+              <p>
+                <span className="font-medium text-foreground">Élève :</span>{" "}
+                {recreditTarget?.pkgName.split(" — ")[0]}
+              </p>
+              <p>
+                <span className="font-medium text-foreground">Montant :</span>{" "}
+                +{recreditAmount} session{recreditAmount > 1 ? "s" : ""}
+              </p>
+              <p>
+                <span className="font-medium text-foreground">Solde actuel :</span>{" "}
+                {recreditTarget?.remaining} / {recreditTarget?.total}
+              </p>
+              <p>
+                <span className="font-medium text-foreground">Nouveau solde :</span>{" "}
+                {(recreditTarget?.remaining ?? 0) + recreditAmount} / {recreditTarget?.total}
+              </p>
+              <p>
+                <span className="font-medium text-foreground">Motif :</span>{" "}
+                {recreditReason.trim()}
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setConfirmRecreditOpen(false)}>Retour</AlertDialogCancel>
+            <AlertDialogAction onClick={handleRecredit} disabled={recrediting}>
+              {recrediting ? "Traitement…" : "Confirmer le recrédit"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
