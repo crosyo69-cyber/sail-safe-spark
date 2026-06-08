@@ -480,6 +480,8 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
                                         setRecreditTarget({
                                           pkgId: pkg.id,
                                           pkgName: `${pkg.first_name} ${pkg.last_name} — ${pkg.package_code}`,
+                                          remaining: pkg.total_sessions - pkg.used_sessions,
+                                          total: pkg.total_sessions,
                                         });
                                       }}
                                     >
