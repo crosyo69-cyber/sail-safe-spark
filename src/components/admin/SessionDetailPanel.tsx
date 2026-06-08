@@ -152,10 +152,13 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
   const [recreditTarget, setRecreditTarget] = useState<{
     pkgId: string;
     pkgName: string;
+    remaining: number;
+    total: number;
   } | null>(null);
   const [recreditAmount, setRecreditAmount] = useState(1);
   const [recreditReason, setRecreditReason] = useState("");
   const [recrediting, setRecrediting] = useState(false);
+  const [confirmRecreditOpen, setConfirmRecreditOpen] = useState(false);
   const [cancelling, setCancelling] = useState(false);
   const [slotOccupancy, setSlotOccupancy] = useState<{
     capacity: number; stage: number; a_la_carte: number; weather: number; taken: number;
