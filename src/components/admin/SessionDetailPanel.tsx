@@ -620,7 +620,7 @@ const SessionDetailPanel = ({ session, open, onClose, onRefresh }: SessionDetail
       </AlertDialog>
 
       {/* ── Dialog de recrédit manuel ── */}
-      <Dialog open={!!recreditTarget} onOpenChange={(v) => !v && setRecreditTarget(null)}>
+      <Dialog open={!!recreditTarget} onOpenChange={(v) => { if (!v) { setRecreditTarget(null); setConfirmRecreditOpen(false); } }}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Recréditer manuellement</DialogTitle>
