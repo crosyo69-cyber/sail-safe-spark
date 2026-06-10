@@ -35,6 +35,7 @@ const SERVICE_ROLE_ONLY_FUNCTIONS = [
   { path: "weekly-summary", body: {} },
   { path: "weather-alerts", body: {} },
   { path: "resubmit-sitemap-gsc", body: {} },
+  { path: "dispatch-admin-alerts", body: {} },
 ];
 
 async function call(path: string, init: RequestInit) {
