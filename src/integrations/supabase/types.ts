@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          email_sent_at: string | null
+          id: string
+          kind: string
+          metadata: Json
+          read_at: string | null
+          ref_key: string | null
+          severity: string
+          title: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          email_sent_at?: string | null
+          id?: string
+          kind: string
+          metadata?: Json
+          read_at?: string | null
+          ref_key?: string | null
+          severity?: string
+          title: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          email_sent_at?: string | null
+          id?: string
+          kind?: string
+          metadata?: Json
+          read_at?: string | null
+          ref_key?: string | null
+          severity?: string
+          title?: string
+        }
+        Relationships: []
+      }
       analytics_events: {
         Row: {
           created_at: string
@@ -693,6 +732,17 @@ export type Database = {
       delete_weather_subscription: {
         Args: { p_token: string }
         Returns: boolean
+      }
+      enqueue_admin_notification: {
+        Args: {
+          p_body: string
+          p_kind: string
+          p_metadata?: Json
+          p_ref_key?: string
+          p_severity: string
+          p_title: string
+        }
+        Returns: string
       }
       enqueue_booking_confirmation: {
         Args: { p_booking_id: string }

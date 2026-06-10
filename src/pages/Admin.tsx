@@ -17,8 +17,10 @@ import AdminPackagesManager from "@/components/admin/AdminPackagesManager";
 import AdminStudentsManager from "@/components/admin/AdminStudentsManager";
 import AdminConversionFunnel from "@/components/admin/AdminConversionFunnel";
 import AdminRichResultsValidator from "@/components/admin/AdminRichResultsValidator";
+import AdminAlertsCenter from "@/components/admin/AdminAlertsCenter";
+import AdminNotificationsBell from "@/components/admin/AdminNotificationsBell";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell } from "lucide-react";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -57,9 +59,12 @@ const Admin = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <main className="container mx-auto px-4 pt-24 pb-12">
-        <h1 className="text-3xl font-display font-bold text-foreground mb-8">
-          Administration
-        </h1>
+        <div className="flex items-center justify-between mb-8 gap-4 flex-wrap">
+          <h1 className="text-3xl font-display font-bold text-foreground">
+            Administration
+          </h1>
+          <AdminNotificationsBell onOpenCenter={() => setActiveTab("alertes")} />
+        </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="flex flex-wrap w-full max-w-6xl h-auto">
@@ -119,6 +124,10 @@ const Admin = () => {
               <FileSearch className="w-4 h-4" />
               <span className="hidden sm:inline">Rich Results</span>
             </TabsTrigger>
+            <TabsTrigger value="alertes" className="gap-2">
+              <Bell className="w-4 h-4" />
+              <span className="hidden sm:inline">Alertes</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
@@ -175,6 +184,10 @@ const Admin = () => {
 
           <TabsContent value="richresults">
             <AdminRichResultsValidator />
+          </TabsContent>
+
+          <TabsContent value="alertes">
+            <AdminAlertsCenter />
           </TabsContent>
         </Tabs>
       </main>
