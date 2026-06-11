@@ -213,6 +213,7 @@ const Auth = () => {
       <Helmet>
         <title>Connexion | Kitesurf Passion Hyères</title>
         <meta name="description" content="Connectez-vous pour commenter les articles du blog Kitesurf Passion Hyères." />
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       
       <Header />
