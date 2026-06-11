@@ -41,15 +41,9 @@ export default function AdminNotificationsBell({ onOpenCenter }: Props) {
   useEffect(() => { void load(); }, [load]);
 
   useEffect(() => {
-    const channel = supabase
-      .channel("admin_notifications_bell")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "admin_notifications" },
-        () => { void load(); },
-      )
-      .subscribe();
-    return () => { void supabase.removeChannel(channel); };
+    // Polling every 30s (table intentionally excluded from realtime publication for defense-in-depth)
+    const interval = setInterval(() => { void load(); }, 30000);
+    return () => clearInterval(interval);
   }, [load]);
 
   const markAllRead = async () => {
