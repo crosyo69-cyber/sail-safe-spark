@@ -106,6 +106,8 @@ const App = () => {
                 <Route path="/tarifs" element={<SEORedirect to="/tarifs-cours-kitesurf-wingfoil-hyeres" statusCode={301} />} />
                 <Route path="/contact" element={<SEORedirect to="/contact-reservation-kitesurf-hyeres" statusCode={301} />} />
                 <Route path="/wakeboard" element={<SEORedirect to="/wakeboard-hyeres" statusCode={301} />} />
+                {/* Legacy blog slug from old site → new article */}
+                <Route path="/blog/wingfoil-vs-kitesurf-quel-sport-choisir" element={<SEORedirect to="/blog/pumpfoil-vs-wingfoil-lequel-choisir-hyeres" statusCode={301} />} />
                <Route path="/tarifs-cours-kitesurf-wingfoil-hyeres" element={<Tarifs />} />
                <Route path="/contact-reservation-kitesurf-hyeres" element={<Contact />} />
                <Route path="/a-propos-ecole-kitesurf-hyeres" element={<APropos />} />
