@@ -64,15 +64,9 @@ export default function AdminAlertsCenter() {
   useEffect(() => { void load(); }, [load]);
 
   useEffect(() => {
-    const channel = supabase
-      .channel("admin_notifications_center")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "admin_notifications" },
-        () => { void load(); },
-      )
-      .subscribe();
-    return () => { void supabase.removeChannel(channel); };
+    // Polling every 30s (table excluded from realtime publication for defense-in-depth)
+    const interval = setInterval(() => { void load(); }, 30000);
+    return () => clearInterval(interval);
   }, [load]);
 
   const markRead = async (id: string) => {
