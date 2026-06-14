@@ -5487,6 +5487,13 @@ export const articleFAQData: Record<string, Array<{ question: string; answer: st
     { question: "Faut-il réserver son logement longtemps à l'avance pour un stage de kitesurf en été ?", answer: "Oui, pour juillet-août il faut réserver 4 à 6 mois à l'avance. En basse et moyenne saison (avril-juin, septembre-octobre), 4 à 6 semaines suffisent généralement et les prix sont 30 à 50% moins chers." },
     { question: "Y a-t-il des hôtels partenaires de l'école Kitesurf Passion ?", answer: "Nous travaillons avec plusieurs hébergeurs locaux (campings, locations, hôtels presqu'île de Giens) qui accueillent régulièrement nos stagiaires. Certains proposent des tarifs préférentiels : contactez-nous avant de réserver pour des recommandations personnalisées." },
   ],
+  "ecole-kitesurf-hyeres-almanarre-cours": [
+    { question: "Quel diplôme doit avoir un moniteur de kitesurf en France ?", answer: "En France, le moniteur de kitesurf doit être titulaire du diplôme d'État JEPS mention Cerf-volant de traction (ou BP JEPS équivalent) pour enseigner légalement contre rémunération." },
+    { question: "L'école est-elle affiliée à une fédération de kitesurf ?", answer: "Oui, notre école est agréée par la FFVL (Fédération Française de Vol Libre), qui est la fédération reconnue pour le kitesurf en France. Cette affiliation garantit un encadrement qualifié et une assurance adaptée." },
+    { question: "Quelle assurance couvre les élèves pendant les cours de kitesurf ?", answer: "Les élèves sont couverts par l'assurance responsabilité civile professionnelle de l'école. La licence FFVL inclut également une assurance individuelle accident pour chaque participant." },
+    { question: "Pourquoi le ratio de 4 élèves par moniteur est-il important ?", answer: "Ce ratio garantit une attention personnalisée et une sécurité optimale. Chaque élève bénéficie de suffisamment de temps de pratique et de corrections individualisées. Au-delà de 4 élèves, l'encadrement devient insuffisant." },
+    { question: "Pourquoi un bateau d'assistance est-il important pour apprendre le kitesurf ?", answer: "Le bateau d'assistance permet de récupérer un élève qui dérive ou se retrouve en difficulté sur l'eau. C'est un élément de sécurité indispensable, surtout pour les débutants." },
+  ],
 };
 
 const BlogArticle = () => {
