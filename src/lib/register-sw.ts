@@ -17,10 +17,12 @@ export function registerServiceWorker() {
       if (sessionStorage.getItem(RELOAD_KEY)) return;
       sessionStorage.setItem(RELOAD_KEY, '1');
       const reload = () => location.reload();
-      const clearCaches = () =>
-        'caches' in window
-          ? caches.keys().then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
-          : Promise.resolve();
+      const clearCaches = async (): Promise<void> => {
+        if ('caches' in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map((k) => caches.delete(k)));
+        }
+      };
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations()
           .then((regs) => Promise.all(regs.map((r) => r.unregister())))
@@ -42,15 +44,6 @@ export function registerServiceWorker() {
       const msg = String(reason?.message || reason || '');
       if (isChunkLoadError(msg)) handleChunkFailure();
     });
-    if (false) {
-      // legacy block removed
-    } else if (
-        msg.includes('Importing a module script failed') ||
-        msg.includes('Failed to fetch dynamically imported module') ||
-        msg.includes('error loading dynamically imported module')
-      ) {
-        // unreachable
-      }
   }
 
   if ('serviceWorker' in navigator && import.meta.env.PROD) {
