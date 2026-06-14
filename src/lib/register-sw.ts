@@ -3,32 +3,54 @@ export function registerServiceWorker() {
   // where the old hashed chunk no longer exists on the server).
   if (typeof window !== 'undefined') {
     const RELOAD_KEY = 'chunk-reload-attempt';
+    // Clear the reload flag once the app has successfully loaded a fresh build
+    window.addEventListener('load', () => {
+      try { sessionStorage.removeItem(RELOAD_KEY); } catch {}
+    });
+
+    const isChunkLoadError = (msg: string) =>
+      msg.includes('Importing a module script failed') ||
+      msg.includes('Failed to fetch dynamically imported module') ||
+      msg.includes('error loading dynamically imported module');
+
+    const handleChunkFailure = () => {
+      if (sessionStorage.getItem(RELOAD_KEY)) return;
+      sessionStorage.setItem(RELOAD_KEY, '1');
+      const reload = () => location.reload();
+      const clearCaches = () =>
+        'caches' in window
+          ? caches.keys().then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
+          : Promise.resolve();
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations()
+          .then((regs) => Promise.all(regs.map((r) => r.unregister())))
+          .then(clearCaches)
+          .finally(reload);
+      } else {
+        clearCaches().finally(reload);
+      }
+    };
+
     window.addEventListener('error', (event) => {
       const msg = String(event?.message || '');
-      if (
+      if (isChunkLoadError(msg)) handleChunkFailure();
+    });
+
+    // Dynamic import failures often surface as unhandled promise rejections
+    window.addEventListener('unhandledrejection', (event) => {
+      const reason: any = event?.reason;
+      const msg = String(reason?.message || reason || '');
+      if (isChunkLoadError(msg)) handleChunkFailure();
+    });
+    if (false) {
+      // legacy block removed
+    } else if (
         msg.includes('Importing a module script failed') ||
         msg.includes('Failed to fetch dynamically imported module') ||
         msg.includes('error loading dynamically imported module')
       ) {
-        if (!sessionStorage.getItem(RELOAD_KEY)) {
-          sessionStorage.setItem(RELOAD_KEY, '1');
-          if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then((regs: readonly ServiceWorkerRegistration[]) => {
-              regs.forEach((r) => r.unregister());
-              const reload = () => location.reload();
-              if ('caches' in window) {
-                caches.keys().then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
-                  .finally(reload);
-              } else {
-                reload();
-              }
-            });
-          } else {
-            window.location.reload();
-          }
-        }
+        // unreachable
       }
-    });
   }
 
   if ('serviceWorker' in navigator && import.meta.env.PROD) {
