@@ -179,8 +179,8 @@ export const blogArticles = [
   },
   {
     slug: "regles-securite-kitesurf-wingfoil",
-    title: "Règles de Sécurité en Kitesurf et Wingfoil : Le Guide Complet",
-    excerpt: "La sécurité est notre priorité. Découvrez toutes les règles essentielles pour pratiquer le kitesurf et le wingfoil en toute sérénité à Hyères.",
+    title: "Règles de Sécurité Kitesurf et Wingfoil à Hyères : Le Guide Complet",
+    excerpt: "Règles de sécurité kitesurf et wingfoil à Hyères : matériel, largage rapide, priorités, distances. Le guide complet par l'école Kitesurf Passion.",
     category: "Sécurité",
     date: "2025-01-08",
     readTime: "8 min",
