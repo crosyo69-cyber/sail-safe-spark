@@ -1,52 +1,36 @@
+import {
+  cleanupServiceWorkersAndCaches,
+  clearChunkReloadAttempt,
+  isChunkLoadError,
+  isLovablePreviewHost,
+  recoverFromChunkLoadError,
+} from "./chunk-recovery";
+
 export function registerServiceWorker() {
   // Auto-reload once when a lazy chunk fails to load (typically after a new deploy
   // where the old hashed chunk no longer exists on the server).
   if (typeof window !== 'undefined') {
-    const RELOAD_KEY = 'chunk-reload-attempt';
     // Clear the reload flag once the app has successfully loaded a fresh build
     window.addEventListener('load', () => {
-      try { sessionStorage.removeItem(RELOAD_KEY); } catch {}
+      clearChunkReloadAttempt();
     });
 
-    const isChunkLoadError = (msg: string) =>
-      msg.includes('Importing a module script failed') ||
-      msg.includes('Failed to fetch dynamically imported module') ||
-      msg.includes('error loading dynamically imported module');
-
-    const handleChunkFailure = () => {
-      if (sessionStorage.getItem(RELOAD_KEY)) return;
-      sessionStorage.setItem(RELOAD_KEY, '1');
-      const reload = () => location.reload();
-      const clearCaches = async (): Promise<void> => {
-        if ('caches' in window) {
-          const keys = await caches.keys();
-          await Promise.all(keys.map((k) => caches.delete(k)));
-        }
-      };
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations()
-          .then((regs) => Promise.all(regs.map((r) => r.unregister())))
-          .then(clearCaches)
-          .finally(reload);
-      } else {
-        clearCaches().finally(reload);
-      }
-    };
-
     window.addEventListener('error', (event) => {
-      const msg = String(event?.message || '');
-      if (isChunkLoadError(msg)) handleChunkFailure();
+      if (isChunkLoadError(event?.error || event?.message)) {
+        void recoverFromChunkLoadError(event?.error || event?.message);
+      }
     });
 
     // Dynamic import failures often surface as unhandled promise rejections
     window.addEventListener('unhandledrejection', (event) => {
-      const reason: any = event?.reason;
-      const msg = String(reason?.message || reason || '');
-      if (isChunkLoadError(msg)) handleChunkFailure();
+      if (isChunkLoadError(event?.reason)) {
+        event.preventDefault();
+        void recoverFromChunkLoadError(event?.reason);
+      }
     });
   }
 
-  if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  if ('serviceWorker' in navigator && import.meta.env.PROD && !isLovablePreviewHost()) {
     window.addEventListener('load', async () => {
       try {
         const registration = await navigator.serviceWorker.register('/sw.js', {
@@ -70,6 +54,10 @@ export function registerServiceWorker() {
       } catch (error) {
         console.error('Service Worker registration failed:', error);
       }
+    });
+  } else if ('serviceWorker' in navigator && isLovablePreviewHost()) {
+    window.addEventListener('load', () => {
+      void cleanupServiceWorkersAndCaches();
     });
   }
 }
