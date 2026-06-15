@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from "react";
+import { useEffect, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,36 +15,37 @@ import { initGA4 } from "@/lib/analytics";
 import { initMetaPixel } from "@/lib/meta-pixel";
 import { SEORedirect } from "@/components/SEORedirect";
 import { LegacyRedirectHandler } from "@/components/LegacyRedirectHandler";
+import { ChunkErrorBoundary, lazyWithChunkRecovery } from "@/lib/chunk-recovery";
 
 // Only homepage loaded eagerly — all other pages lazy loaded
 import Index from "./pages/Index";
 
 // All other pages lazy loaded to prevent dev server overload
-const CoursKitesurf = lazy(() => import("./pages/CoursKitesurf"));
-const Tarifs = lazy(() => import("./pages/Tarifs"));
-const Contact = lazy(() => import("./pages/Contact"));
-const Stage100Glisse = lazy(() => import("./pages/Stage100Glisse"));
-const SessionCarte = lazy(() => import("./pages/SessionCarte"));
-const CoursParticulier = lazy(() => import("./pages/CoursParticulier"));
-const StageWingfoil = lazy(() => import("./pages/StageWingfoil"));
-const CoursPumpfoil = lazy(() => import("./pages/CoursPumpfoil"));
-const SpotAlmanarre = lazy(() => import("./pages/SpotAlmanarre"));
-const LocationMateriel = lazy(() => import("./pages/LocationMateriel"));
-const DeposesMer = lazy(() => import("./pages/DeposesMer"));
-const FoilTracte = lazy(() => import("./pages/FoilTracte"));
-const Wakeboard = lazy(() => import("./pages/Wakeboard"));
-const APropos = lazy(() => import("./pages/APropos"));
-const Blog = lazy(() => import("./pages/Blog"));
-const BlogArticle = lazy(() => import("./pages/BlogArticle"));
-const Auth = lazy(() => import("./pages/Auth"));
-const UnsubscribeAlerts = lazy(() => import("./pages/UnsubscribeAlerts"));
-const MentionsLegales = lazy(() => import("./pages/MentionsLegales"));
-const PolitiqueConfidentialite = lazy(() => import("./pages/PolitiqueConfidentialite"));
-const ReservationConfirmee = lazy(() => import("./pages/ReservationConfirmee"));
-const Merci = lazy(() => import("./pages/Merci"));
-const Admin = lazy(() => import("./pages/Admin"));
-const MonEspace = lazy(() => import("./pages/MonEspace"));
-const Reserver = lazy(() => import("./pages/Reserver"));
+const CoursKitesurf = lazyWithChunkRecovery(() => import("./pages/CoursKitesurf"));
+const Tarifs = lazyWithChunkRecovery(() => import("./pages/Tarifs"));
+const Contact = lazyWithChunkRecovery(() => import("./pages/Contact"));
+const Stage100Glisse = lazyWithChunkRecovery(() => import("./pages/Stage100Glisse"));
+const SessionCarte = lazyWithChunkRecovery(() => import("./pages/SessionCarte"));
+const CoursParticulier = lazyWithChunkRecovery(() => import("./pages/CoursParticulier"));
+const StageWingfoil = lazyWithChunkRecovery(() => import("./pages/StageWingfoil"));
+const CoursPumpfoil = lazyWithChunkRecovery(() => import("./pages/CoursPumpfoil"));
+const SpotAlmanarre = lazyWithChunkRecovery(() => import("./pages/SpotAlmanarre"));
+const LocationMateriel = lazyWithChunkRecovery(() => import("./pages/LocationMateriel"));
+const DeposesMer = lazyWithChunkRecovery(() => import("./pages/DeposesMer"));
+const FoilTracte = lazyWithChunkRecovery(() => import("./pages/FoilTracte"));
+const Wakeboard = lazyWithChunkRecovery(() => import("./pages/Wakeboard"));
+const APropos = lazyWithChunkRecovery(() => import("./pages/APropos"));
+const Blog = lazyWithChunkRecovery(() => import("./pages/Blog"));
+const BlogArticle = lazyWithChunkRecovery(() => import("./pages/BlogArticle"));
+const Auth = lazyWithChunkRecovery(() => import("./pages/Auth"));
+const UnsubscribeAlerts = lazyWithChunkRecovery(() => import("./pages/UnsubscribeAlerts"));
+const MentionsLegales = lazyWithChunkRecovery(() => import("./pages/MentionsLegales"));
+const PolitiqueConfidentialite = lazyWithChunkRecovery(() => import("./pages/PolitiqueConfidentialite"));
+const ReservationConfirmee = lazyWithChunkRecovery(() => import("./pages/ReservationConfirmee"));
+const Merci = lazyWithChunkRecovery(() => import("./pages/Merci"));
+const Admin = lazyWithChunkRecovery(() => import("./pages/Admin"));
+const MonEspace = lazyWithChunkRecovery(() => import("./pages/MonEspace"));
+const Reserver = lazyWithChunkRecovery(() => import("./pages/Reserver"));
 // NotFound is handled inside LegacyRedirectHandler
 
 const queryClient = new QueryClient({
@@ -77,6 +78,7 @@ const App = () => {
         <BrowserRouter>
           <PageTracker />
           <StickyMobileCTA />
+           <ChunkErrorBoundary>
            <Suspense fallback={null}>
              <Routes>
                <Route path="/" element={<Index />} />
@@ -130,6 +132,7 @@ const App = () => {
                <Route path="*" element={<LegacyRedirectHandler />} />
              </Routes>
            </Suspense>
+           </ChunkErrorBoundary>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
