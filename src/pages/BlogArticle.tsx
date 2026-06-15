@@ -499,9 +499,7 @@ L'apprentissage autodidacte est risqué :
   },
   "regles-securite-kitesurf-wingfoil": {
     content: `
-## Règles de Sécurité en Kitesurf et Wingfoil : Le Guide Complet
-
-La sécurité est la base de toute pratique réussie. Chez KiteSurf Passion, nous mettons l'accent sur la sécurité depuis 1999. Voici toutes les règles essentielles à connaître.
+La sécurité est la base de toute pratique réussie du **kitesurf** et du **wingfoil** à Hyères. Sur le spot de l'Almanarre, où le vent peut monter rapidement et la fréquentation est importante en saison, maîtriser les règles de sécurité n'est pas une option. Chez **Kitesurf Passion**, école itinérante implantée à Hyères depuis 1999, la sécurité est notre priorité absolue. Voici le guide complet des règles essentielles à connaître avant chaque session.
 
 ### Avant la Session : La Préparation
 
@@ -5654,6 +5652,52 @@ const BlogArticle = () => {
           ],
           about: [
             "Kitesurf adulte débutant",
+            "Hyères",
+            "Almanarre",
+          ],
+        },
+      ],
+    },
+    "regles-securite-kitesurf-wingfoil": {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": "https://www.kitesurfpassion.fr/blog/regles-securite-kitesurf-wingfoil#article",
+          mainEntityOfPage: "https://www.kitesurfpassion.fr/blog/regles-securite-kitesurf-wingfoil",
+          headline: "Règles de Sécurité Kitesurf et Wingfoil à Hyères : Le Guide Complet",
+          description: "Règles de sécurité kitesurf et wingfoil à Hyères : matériel, largage rapide, priorités, distances. Le guide complet par l'école Kitesurf Passion.",
+          inLanguage: "fr-FR",
+          url: "https://www.kitesurfpassion.fr/blog/regles-securite-kitesurf-wingfoil",
+          datePublished: "2025-01-08T09:00:00+01:00",
+          dateModified: "2025-01-08T09:00:00+01:00",
+          author: {
+            "@type": "Person",
+            name: "Yoanne Cros",
+            jobTitle: "Moniteur Diplômé d'État",
+            url: "https://www.kitesurfpassion.fr/ecole-kitesurf-hyeres-almanarre",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Kitesurf Passion",
+            url: "https://www.kitesurfpassion.fr/",
+          },
+          articleSection: "Sécurité",
+          keywords: [
+            "règles de sécurité kitesurf",
+            "sécurité kitesurf Hyères",
+            "sécurité wingfoil Hyères",
+            "quick release kitesurf",
+            "largage rapide kitesurf",
+            "priorités kitesurf navigation",
+            "leash sécurité kitesurf",
+            "distances de sécurité kitesurf",
+            "kitesurf Almanarre sécurité",
+            "école kitesurf Hyères",
+          ],
+          about: [
+            "Sécurité kitesurf",
+            "Sécurité wingfoil",
             "Hyères",
             "Almanarre",
           ],
