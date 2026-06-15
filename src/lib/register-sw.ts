@@ -16,10 +16,14 @@ export function registerServiceWorker() {
     });
 
     window.addEventListener('error', (event) => {
-      if (isChunkLoadError(event?.error || event?.message)) {
-        void recoverFromChunkLoadError(event?.error || event?.message);
+      const target = event.target as HTMLLinkElement | HTMLScriptElement | null;
+      const resourceUrl = target && ('href' in target ? target.href : target.src);
+      const isBuildScript = Boolean(resourceUrl?.includes('/assets/') && resourceUrl.includes('.js'));
+
+      if (isBuildScript || isChunkLoadError(event?.error || event?.message)) {
+        void recoverFromChunkLoadError(event?.error || event?.message || resourceUrl);
       }
-    });
+    }, true);
 
     // Dynamic import failures often surface as unhandled promise rejections
     window.addEventListener('unhandledrejection', (event) => {
