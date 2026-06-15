@@ -499,7 +499,7 @@ L'apprentissage autodidacte est risqué :
   },
   "regles-securite-kitesurf-wingfoil": {
     content: `
-La sécurité est la base de toute pratique réussie du **kitesurf** et du **wingfoil** à Hyères. Sur le spot de l'Almanarre, où le vent peut monter rapidement et la fréquentation est importante en saison, maîtriser les règles de sécurité n'est pas une option. Chez **Kitesurf Passion**, école itinérante implantée à Hyères depuis 1999, la sécurité est notre priorité absolue. Voici le guide complet des règles essentielles à connaître avant chaque session.
+La sécurité est la base de toute pratique réussie du [**kitesurf**](/cours-kitesurf-hyeres-debutant) et du [**wingfoil**](/stage-wingfoil-hyeres-almanarre) à Hyères. Sur le [spot de l'Almanarre](/spot-kitesurf-almanarre-hyeres-var), où le vent peut monter rapidement et la fréquentation est importante en saison, maîtriser les règles de sécurité n'est pas une option. Chez **Kitesurf Passion**, école itinérante implantée à Hyères depuis 1999, la sécurité est notre priorité absolue. Voici le guide complet des règles essentielles à connaître avant chaque session.
 
 ### Avant la Session : La Préparation
 
@@ -563,9 +563,9 @@ Maintenez toujours :
 - **200 mètres** des zones de baignade balisées
 - **Distance de lignes** entre riders (2x la longueur des lignes)
 
-### Sécurité Spécifique au Wingfoil
+### Sécurité Spécifique au [Wingfoil](/stage-wingfoil-hyeres-almanarre)
 
-Le wingfoil présente des risques particuliers :
+Le [wingfoil](/stage-wingfoil-hyeres-almanarre) présente des risques particuliers :
 
 #### Le Foil
 
