@@ -5658,6 +5658,52 @@ const BlogArticle = () => {
         },
       ],
     },
+    "regles-securite-kitesurf-wingfoil": {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": "https://www.kitesurfpassion.fr/blog/regles-securite-kitesurf-wingfoil#article",
+          mainEntityOfPage: "https://www.kitesurfpassion.fr/blog/regles-securite-kitesurf-wingfoil",
+          headline: "Règles de Sécurité Kitesurf et Wingfoil à Hyères : Le Guide Complet",
+          description: "Règles de sécurité kitesurf et wingfoil à Hyères : matériel, largage rapide, priorités, distances. Le guide complet par l'école Kitesurf Passion.",
+          inLanguage: "fr-FR",
+          url: "https://www.kitesurfpassion.fr/blog/regles-securite-kitesurf-wingfoil",
+          datePublished: "2025-01-08T09:00:00+01:00",
+          dateModified: "2025-01-08T09:00:00+01:00",
+          author: {
+            "@type": "Person",
+            name: "Yoanne Cros",
+            jobTitle: "Moniteur Diplômé d'État",
+            url: "https://www.kitesurfpassion.fr/ecole-kitesurf-hyeres-almanarre",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "Kitesurf Passion",
+            url: "https://www.kitesurfpassion.fr/",
+          },
+          articleSection: "Sécurité",
+          keywords: [
+            "règles de sécurité kitesurf",
+            "sécurité kitesurf Hyères",
+            "sécurité wingfoil Hyères",
+            "quick release kitesurf",
+            "largage rapide kitesurf",
+            "priorités kitesurf navigation",
+            "leash sécurité kitesurf",
+            "distances de sécurité kitesurf",
+            "kitesurf Almanarre sécurité",
+            "école kitesurf Hyères",
+          ],
+          about: [
+            "Sécurité kitesurf",
+            "Sécurité wingfoil",
+            "Hyères",
+            "Almanarre",
+          ],
+        },
+      ],
+    },
   };
 
   const structuredData = slug && customArticleStructuredData[slug]
