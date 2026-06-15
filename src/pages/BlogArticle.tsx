@@ -563,9 +563,9 @@ Maintenez toujours :
 - **200 mètres** des zones de baignade balisées
 - **Distance de lignes** entre riders (2x la longueur des lignes)
 
-### Sécurité Spécifique au Wingfoil
+### Sécurité Spécifique au [Wingfoil](/stage-wingfoil-hyeres-almanarre)
 
-Le wingfoil présente des risques particuliers :
+Le [wingfoil](/stage-wingfoil-hyeres-almanarre) présente des risques particuliers :
 
 #### Le Foil
 
