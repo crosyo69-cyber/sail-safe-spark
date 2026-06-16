@@ -501,9 +501,9 @@ L'apprentissage autodidacte est risqué :
     content: `
 La sécurité est la base de toute pratique réussie du [**kitesurf**](/cours-kitesurf-hyeres-debutant) et du [**wingfoil**](/stage-wingfoil-hyeres-almanarre) à Hyères. Sur le [spot de l'Almanarre](/spot-kitesurf-almanarre-hyeres-var), où le vent peut monter rapidement et la fréquentation est importante en saison, maîtriser les règles de sécurité n'est pas une option. Chez **Kitesurf Passion**, école itinérante implantée à Hyères depuis 1999, la sécurité est notre priorité absolue. Voici le guide complet des règles essentielles à connaître avant chaque session.
 
-### Avant la Session : La Préparation
+## Préparation et Vérification du Matériel Avant Votre Session
 
-#### Vérification du Matériel
+### Vérification du Matériel de Kitesurf et Wingfoil
 
 Avant chaque sortie, contrôlez systématiquement :
 
@@ -513,7 +513,7 @@ Avant chaque sortie, contrôlez systématiquement :
 - **Harnais** : crochet sécurisé, pas d'usure
 - **Leash** : attache solide, longueur adaptée
 
-#### Analyse des Conditions
+### Analyse des Conditions du Spot de l'Almanarre
 
 Avant de vous mettre à l'eau :
 
@@ -525,9 +525,9 @@ Avant de vous mettre à l'eau :
 | Obstacles | Baigneurs, rochers, bouées |
 | Zone de repli | Où atterrir en cas de problème |
 
-### Les Systèmes de Sécurité
+## Systèmes de Sécurité Kitesurf : Quick Release et Leash
 
-#### Le Quick Release (Largage Rapide)
+### Le Quick Release (Largage Rapide)
 
 Le système le plus important de votre équipement :
 
@@ -537,15 +537,15 @@ Le système le plus important de votre équipement :
 
 **Exercice obligatoire** : Pratiquez le largage à sec avant chaque session.
 
-#### Le Leash de Sécurité
+### Le Leash de Sécurité
 
 - Relie le rider à l'aile après largage
 - Permet de ne pas perdre le matériel
 - **Attention** : savoir le larguer aussi en cas d'urgence
 
-### Les Règles de Navigation
+## Règles de Navigation et Priorités sur l'Eau à Hyères
 
-#### Priorités sur l'Eau
+### Priorités sur l'Eau
 
 Les règles internationales s'appliquent :
 
@@ -554,7 +554,7 @@ Les règles internationales s'appliquent :
 3. **Le rider en l'air** doit avoir l'espace libre sous lui
 4. **Le débutant** doit céder le passage aux autres
 
-#### Distances de Sécurité
+### Distances de Sécurité à Respecter sur le Spot
 
 Maintenez toujours :
 
@@ -563,26 +563,26 @@ Maintenez toujours :
 - **200 mètres** des zones de baignade balisées
 - **Distance de lignes** entre riders (2x la longueur des lignes)
 
-### Sécurité Spécifique au [Wingfoil](/stage-wingfoil-hyeres-almanarre)
+## Sécurité Wingfoil Spécifique à l'Almanarre : Foil et Chutes
 
 Le [wingfoil](/stage-wingfoil-hyeres-almanarre) présente des risques particuliers :
 
-#### Le Foil
+### Le Foil : Risques et Précautions
 
 - **Bords tranchants** : attention lors des manipulations
 - **Mât rigide** : danger en cas de chute
 - **Casque obligatoire** : protège des impacts
 
-#### La Chute
+### La Chute en Wingfoil
 
 - **Lâchez la wing** immédiatement
 - **Éloignez-vous** du matériel en tombant
 - **Protégez votre tête** avec les bras
 - **Localisez le foil** avant de remonter sur la planche
 
-### Les Conditions Dangereuses à Éviter
+## Conditions Dangereuses à Éviter en Kitesurf et Wingfoil
 
-#### Ne naviguez JAMAIS :
+### Situations Prohibées en Mer
 
 ❌ **Vent offshore** (qui pousse vers le large)
 ❌ **Orage** à proximité (risque de foudre)
@@ -590,24 +590,15 @@ Le [wingfoil](/stage-wingfoil-hyeres-almanarre) présente des risques particulie
 ❌ **Visibilité réduite** (brouillard, nuit)
 ❌ **Seul** sans surveillance
 
-#### Conditions Limites
+### Conditions Limites pour Débutants
 
 - **Vent > 25 nœuds** pour débutants : à éviter
 - **Courant fort** : risque de dérive
 - **Eau froide** : risque d'hypothermie
 
-### L'Importance du Bateau d'Assistance
+## Auto-Sauvetage et Équipements de Sécurité Obligatoires
 
-    Notre [bateau d'assistance](/blog/pourquoi-bateau-assistance-essentiel) fait la différence :
-
-| Sans Bateau | Avec Bateau |
-|------------|-------------|
-| Récupération longue | Intervention en 2 min |
-| Fatigue importante | Énergie préservée |
-| Zone limitée | Toute la baie accessible |
-| Stress en cas de problème | Sérénité totale |
-
-### Auto-Sauvetage
+### Technique d'Auto-Sauvetage en Kitesurf
 
 Si vous êtes loin du bord, maîtrisez l'auto-sauvetage :
 
@@ -618,7 +609,7 @@ Si vous êtes loin du bord, maîtrisez l'auto-sauvetage :
 
 **Notre conseil** : Pratiquez cette technique régulièrement en conditions calmes.
 
-### Équipements de Sécurité Obligatoires
+### Équipements de Protection Obligatoires
 
 Pour toute session :
 
@@ -627,7 +618,9 @@ Pour toute session :
 - ✅ **Combinaison** : adaptée à la température
 - ✅ **Leash** : connexion avec le matériel
 
-### Communication et Signaux
+## Communication et Check-list Avant Chaque Session
+
+### Signaux de Communication Entre Riders
 
 Connaissez les signaux de base :
 
@@ -645,7 +638,18 @@ Connaissez les signaux de base :
 ✅ Quelqu'un sait où vous êtes
 ✅ Téléphone étanche ou VHF
 
-### Notre Engagement Sécurité
+## L'Importance du Bateau d'Assistance pour Votre Sécurité à Hyères
+
+    Notre [bateau d'assistance](/blog/pourquoi-bateau-assistance-essentiel) fait la différence :
+
+| Sans Bateau | Avec Bateau |
+|------------|-------------|
+| Récupération longue | Intervention en 2 min |
+| Fatigue importante | Énergie préservée |
+| Zone limitée | Toute la baie accessible |
+| Stress en cas de problème | Sérénité totale |
+
+## Notre Engagement Sécurité à Hyères
 
 Chez KiteSurf Passion, la sécurité n'est pas négociable :
 
