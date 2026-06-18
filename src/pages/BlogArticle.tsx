@@ -5683,7 +5683,7 @@ const BlogArticle = () => {
           inLanguage: "fr-FR",
           url: "https://www.kitesurfpassion.fr/blog/regles-securite-kitesurf-wingfoil",
           datePublished: "2025-01-08T09:00:00+01:00",
-          dateModified: "2025-01-08T09:00:00+01:00",
+          dateModified: "2026-06-18T09:00:00+02:00",
           author: {
             "@type": "Person",
             name: "Yoanne Cros",
