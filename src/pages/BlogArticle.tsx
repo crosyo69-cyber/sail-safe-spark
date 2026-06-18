@@ -5682,6 +5682,7 @@ const BlogArticle = () => {
           description: "Règles de sécurité kitesurf et wingfoil à Hyères : matériel, largage rapide, priorités, distances. Le guide complet par l'école Kitesurf Passion.",
           inLanguage: "fr-FR",
           url: "https://www.kitesurfpassion.fr/blog/regles-securite-kitesurf-wingfoil",
+          image: "https://www.kitesurfpassion.fr/og-image.jpg",
           datePublished: "2025-01-08T09:00:00+01:00",
           dateModified: "2026-06-18T09:00:00+02:00",
           author: {
