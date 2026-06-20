@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Loader2, Calendar as CalendarIcon, CheckCircle2, XCircle, Ticket } from "lucide-react";
+import { Loader2, Calendar as CalendarIcon, CheckCircle2, XCircle, Ticket, AlertCircle } from "lucide-react";
 import { CloudRain, Plus } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -154,6 +154,25 @@ const MonEspace = () => {
     () => new Set((pkg?.bookings || []).filter((b) => b.status === "confirmed").map((b) => b.session_id)),
     [pkg],
   );
+
+  const packageExpired = useMemo(() => {
+    if (!pkg?.expires_at) return false;
+    return new Date(pkg.expires_at) < new Date();
+  }, [pkg]);
+
+  const packageInactive = useMemo(() => {
+    return !!pkg && pkg.status !== "active";
+  }, [pkg]);
+
+  const getUnbookableReason = (s: AvailableSession): string | null => {
+    if (!pkg) return null;
+    if (packageInactive) return "Pack inactif";
+    if (packageExpired) return "Pack expiré";
+    if (pkg.remaining_sessions <= 0) return "Crédits épuisés";
+    if (pkg.activity !== s.activity) return `Activité incompatible (pack ${pkg.activity})`;
+    if (s.taken >= s.max_participants) return "Capacité atteinte";
+    return null;
+  };
 
   const handleBook = async (sessionId: string) => {
     if (!pkg) return;
@@ -342,8 +361,9 @@ const MonEspace = () => {
               ) : (
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {sessions.map((s) => {
-                    const full = s.taken >= s.max_participants;
                     const already = bookedSessionIds.has(s.id);
+                    const reason = already ? null : getUnbookableReason(s);
+                    const disabled = busyAction || already || !!reason;
                     return (
                       <Card
                         key={s.id}
@@ -361,17 +381,28 @@ const MonEspace = () => {
                                 {SLOT_LABELS[s.time_slot] || s.time_slot}
                               </div>
                             </div>
-                            <Badge variant={full ? "destructive" : "secondary"}>
+                            <Badge variant={s.taken >= s.max_participants ? "destructive" : "secondary"}>
                               {s.taken}/{s.max_participants}
                             </Badge>
                           </div>
+                          {reason && (
+                            <div
+                              className="flex items-start gap-1.5 text-xs text-destructive mb-2"
+                              role="status"
+                              aria-live="polite"
+                            >
+                              <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+                              <span>{reason}</span>
+                            </div>
+                          )}
                           <Button
                             size="sm"
                             className="w-full min-h-[44px]"
-                            disabled={busyAction || full || already}
+                            disabled={disabled}
                             onClick={() => handleBook(s.id)}
+                            title={reason || undefined}
                           >
-                            {already ? "Déjà réservée" : full ? "Complet" : "Réserver"}
+                            {already ? "Déjà réservée" : reason ? "Indisponible" : "Réserver"}
                           </Button>
                         </CardContent>
                       </Card>
