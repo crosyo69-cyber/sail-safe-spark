@@ -165,6 +165,19 @@ const MonEspace = () => {
     return !!pkg && pkg.status !== "active";
   }, [pkg]);
 
+  const getUnbookableTooltip = (reason: string): string => {
+    const tips: Record<string, string> = {
+      "Pack inactif": "Contactez l'école au 06 72 71 69 05 pour réactiver votre pack.",
+      "Pack expiré": "Votre pack a dépassé sa date de validité. Contactez-nous pour le renouveler.",
+      "Crédits épuisés": "Vous avez utilisé toutes vos sessions. Achetez un nouveau pack pour continuer.",
+      "Capacité atteinte": "Le groupe est complet. Essayez une autre date ou contactez-nous.",
+    };
+    if (reason.startsWith("Activité incompatible")) {
+      return "Ce créneau est pour une autre activité. Choisissez une session correspondant à votre pack.";
+    }
+    return tips[reason] || "Cette session n'est pas réservable pour le moment.";
+  };
+
   const getUnbookableReason = (s: AvailableSession): string | null => {
     if (!pkg) return null;
     if (packageInactive) return "Pack inactif";
