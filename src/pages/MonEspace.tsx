@@ -9,7 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Loader2, Calendar as CalendarIcon, CheckCircle2, XCircle, Ticket, AlertCircle } from "lucide-react";
+import { Loader2, Calendar as CalendarIcon, CheckCircle2, XCircle, Ticket, AlertCircle, Info } from "lucide-react";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { CloudRain, Plus } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -163,6 +164,19 @@ const MonEspace = () => {
   const packageInactive = useMemo(() => {
     return !!pkg && pkg.status !== "active";
   }, [pkg]);
+
+  const getUnbookableTooltip = (reason: string): string => {
+    const tips: Record<string, string> = {
+      "Pack inactif": "Contactez l'école au 06 72 71 69 05 pour réactiver votre pack.",
+      "Pack expiré": "Votre pack a dépassé sa date de validité. Contactez-nous pour le renouveler.",
+      "Crédits épuisés": "Vous avez utilisé toutes vos sessions. Achetez un nouveau pack pour continuer.",
+      "Capacité atteinte": "Le groupe est complet. Essayez une autre date ou contactez-nous.",
+    };
+    if (reason.startsWith("Activité incompatible")) {
+      return "Ce créneau est pour une autre activité. Choisissez une session correspondant à votre pack.";
+    }
+    return tips[reason] || "Cette session n'est pas réservable pour le moment.";
+  };
 
   const getUnbookableReason = (s: AvailableSession): string | null => {
     if (!pkg) return null;
@@ -386,14 +400,21 @@ const MonEspace = () => {
                             </Badge>
                           </div>
                           {reason && (
-                            <div
-                              className="flex items-start gap-1.5 text-xs text-destructive mb-2"
-                              role="status"
-                              aria-live="polite"
-                            >
-                              <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-                              <span>{reason}</span>
-                            </div>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div
+                                  className="flex items-start gap-1.5 text-xs text-destructive mb-2 cursor-help"
+                                  role="status"
+                                  aria-live="polite"
+                                >
+                                  <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+                                  <span>{reason}</span>
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent side="top" className="max-w-[240px]">
+                                <p className="text-xs">{getUnbookableTooltip(reason)}</p>
+                              </TooltipContent>
+                            </Tooltip>
                           )}
                           <Button
                             size="sm"
