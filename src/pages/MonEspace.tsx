@@ -400,14 +400,21 @@ const MonEspace = () => {
                             </Badge>
                           </div>
                           {reason && (
-                            <div
-                              className="flex items-start gap-1.5 text-xs text-destructive mb-2"
-                              role="status"
-                              aria-live="polite"
-                            >
-                              <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-                              <span>{reason}</span>
-                            </div>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div
+                                  className="flex items-start gap-1.5 text-xs text-destructive mb-2 cursor-help"
+                                  role="status"
+                                  aria-live="polite"
+                                >
+                                  <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+                                  <span>{reason}</span>
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent side="top" className="max-w-[240px]">
+                                <p className="text-xs">{getUnbookableTooltip(reason)}</p>
+                              </TooltipContent>
+                            </Tooltip>
                           )}
                           <Button
                             size="sm"
