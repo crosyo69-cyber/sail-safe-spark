@@ -444,8 +444,8 @@ const MonEspace = () => {
                             </Badge>
                           </div>
                           {reason && (
-                            <Tooltip>
-                              <TooltipTrigger asChild>
+                            <HoverCard openDelay={100} closeDelay={200}>
+                              <HoverCardTrigger asChild>
                                 <div
                                   className="flex items-start gap-1.5 text-xs text-destructive mb-2 cursor-help"
                                   role="status"
@@ -454,11 +454,11 @@ const MonEspace = () => {
                                   <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
                                   <span>{reason}</span>
                                 </div>
-                              </TooltipTrigger>
-                              <TooltipContent side="top" className="max-w-[240px]">
-                                <p className="text-xs">{getUnbookableTooltip(reason)}</p>
-                              </TooltipContent>
-                            </Tooltip>
+                              </HoverCardTrigger>
+                              <HoverCardContent side="top" className="max-w-[260px] text-xs">
+                                {getUnbookableTooltip(reason)}
+                              </HoverCardContent>
+                            </HoverCard>
                           )}
                           <Button
                             size="sm"
