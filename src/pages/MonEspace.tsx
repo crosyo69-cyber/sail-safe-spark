@@ -165,17 +165,61 @@ const MonEspace = () => {
     return !!pkg && pkg.status !== "active";
   }, [pkg]);
 
-  const getUnbookableTooltip = (reason: string): string => {
-    const tips: Record<string, string> = {
-      "Pack inactif": "Contactez l'école au 06 72 71 69 05 pour réactiver votre pack.",
-      "Pack expiré": "Votre pack a dépassé sa date de validité. Contactez-nous pour le renouveler.",
-      "Crédits épuisés": "Vous avez utilisé toutes vos sessions. Achetez un nouveau pack pour continuer.",
-      "Capacité atteinte": "Le groupe est complet. Essayez une autre date ou contactez-nous.",
-    };
-    if (reason.startsWith("Activité incompatible")) {
-      return "Ce créneau est pour une autre activité. Choisissez une session correspondant à votre pack.";
+  const getUnbookableTooltip = (reason: string): React.ReactNode => {
+    const phone = "06 72 71 69 05";
+    const phoneLink = <a href="tel:0672716905" className="underline text-primary hover:text-primary/80">{phone}</a>;
+
+    switch (reason) {
+      case "Pack inactif":
+        return (
+          <>
+            Contactez l'école au {phoneLink} pour réactiver votre pack.
+          </>
+        );
+      case "Pack expiré":
+        return (
+          <>
+            Votre pack a dépassé sa date de validité. {" "}
+            <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres" className="underline text-primary hover:text-primary/80">
+              Renouveler mon pack
+            </Link>{" "}
+            ou appelez-nous au {phoneLink}.
+          </>
+        );
+      case "Crédits épuisés":
+        return (
+          <>
+            Vous avez utilisé toutes vos sessions. {" "}
+            <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres" className="underline text-primary hover:text-primary/80">
+              Acheter un nouveau pack
+            </Link>{" "}
+            pour continuer.
+          </>
+        );
+      case "Capacité atteinte":
+        return (
+          <>
+            Le groupe est complet. {" "}
+            <Link to="/reserver" className="underline text-primary hover:text-primary/80">
+              Voir d'autres dates
+            </Link>{" "}
+            ou contactez-nous au {phoneLink}.
+          </>
+        );
+      default:
+        if (reason.startsWith("Activité incompatible")) {
+          return (
+            <>
+              Ce créneau est pour une autre activité. {" "}
+              <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres" className="underline text-primary hover:text-primary/80">
+                Acheter un pack pour cette activité
+              </Link>{" "}
+              ou choisissez une session correspondant à votre pack actuel.
+            </>
+          );
+        }
+        return "Cette session n'est pas réservable pour le moment.";
     }
-    return tips[reason] || "Cette session n'est pas réservable pour le moment.";
   };
 
   const getUnbookableReason = (s: AvailableSession): string | null => {
