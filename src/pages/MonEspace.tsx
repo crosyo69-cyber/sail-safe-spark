@@ -407,11 +407,16 @@ const MonEspace = () => {
               <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
                 <CalendarIcon className="w-5 h-5 text-accent" /> Journées disponibles
               </h3>
-              {pkg.remaining_sessions <= 0 ? (
-                <p className="text-muted-foreground text-sm">
-                  Vous avez utilisé toutes vos sessions. Contactez-nous pour ajouter du crédit.
+              {pkg.remaining_sessions <= 0 && (
+                <p className="text-muted-foreground text-sm mb-3">
+                  Vous avez utilisé toutes vos sessions.{" "}
+                  <Link to="/tarifs-cours-kours-kitesurf-wingfoil-hyeres" className="underline text-primary hover:text-primary/80">
+                    Acheter un nouveau pack
+                  </Link>{" "}
+                  pour réserver à nouveau.
                 </p>
-              ) : sessions.length === 0 ? (
+              )}
+              {sessions.length === 0 ? (
                 <p className="text-muted-foreground text-sm">
                   Aucune session ouverte pour le moment. Contactez-nous au 06 72 71 69 05 pour ouvrir une date.
                 </p>
@@ -443,21 +448,21 @@ const MonEspace = () => {
                             </Badge>
                           </div>
                           {reason && (
-                            <HoverCard openDelay={100} closeDelay={200}>
-                              <HoverCardTrigger asChild>
-                                <div
-                                  className="flex items-start gap-1.5 text-xs text-destructive mb-2 cursor-help"
-                                  role="status"
-                                  aria-live="polite"
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <button
+                                  type="button"
+                                  className="flex items-start gap-1.5 text-xs text-destructive mb-2 cursor-pointer text-left w-full"
+                                  aria-label={`${reason} - Cliquez pour les options`}
                                 >
                                   <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-                                  <span>{reason}</span>
-                                </div>
-                              </HoverCardTrigger>
-                              <HoverCardContent side="top" className="max-w-[260px] text-xs">
+                                  <span className="underline decoration-dotted">{reason}</span>
+                                </button>
+                              </PopoverTrigger>
+                              <PopoverContent side="top" className="w-[260px] max-w-[260px] text-xs">
                                 {getUnbookableTooltip(reason)}
-                              </HoverCardContent>
-                            </HoverCard>
+                              </PopoverContent>
+                            </Popover>
                           )}
                           <Button
                             size="sm"
