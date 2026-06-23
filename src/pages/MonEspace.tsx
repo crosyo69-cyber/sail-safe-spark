@@ -410,7 +410,7 @@ const MonEspace = () => {
               {pkg.remaining_sessions <= 0 && (
                 <p className="text-muted-foreground text-sm mb-3">
                   Vous avez utilisé toutes vos sessions.{" "}
-                  <Link to="/tarifs-cours-kours-kitesurf-wingfoil-hyeres" className="underline text-primary hover:text-primary/80">
+                  <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres" className="underline text-primary hover:text-primary/80">
                     Acheter un nouveau pack
                   </Link>{" "}
                   pour réserver à nouveau.
