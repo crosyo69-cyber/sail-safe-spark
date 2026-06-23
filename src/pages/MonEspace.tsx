@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Loader2, Calendar as CalendarIcon, CheckCircle2, XCircle, Ticket, AlertCircle, Info } from "lucide-react";
-import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { CloudRain, Plus } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
