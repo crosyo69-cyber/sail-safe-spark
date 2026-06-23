@@ -108,7 +108,6 @@ const MonEspace = () => {
     const { data: rawSessions } = await supabase
       .from("sessions")
       .select("id, date, time_slot, activity, max_participants")
-      .eq("activity", p.activity as any)
       .eq("status", "open")
       .gte("date", today)
       .order("date", { ascending: true })
