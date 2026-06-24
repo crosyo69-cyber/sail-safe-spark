@@ -158,7 +158,12 @@ const handler = async (req: Request): Promise<Response> => {
   const authHeader = req.headers.get("Authorization") ?? "";
   const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7).trim() : "";
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-  if (!token || !isServiceRoleJwt(token)) {
+  // Compare the raw bearer to the configured service-role key. The previous
+  // `isServiceRoleJwt` check only decoded the JWT payload without verifying
+  // the signature, allowing forged tokens with `role: service_role` to invoke
+  // this function and trigger bulk emails. Direct equality with the secret
+  // key avoids that bypass entirely.
+  if (!token || !serviceKey || token !== serviceKey) {
     return new Response(JSON.stringify({ error: "Forbidden" }), {
       status: 403,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
