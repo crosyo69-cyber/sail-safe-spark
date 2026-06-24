@@ -169,9 +169,22 @@ const AdminSessionManager = ({ initialDate }: AdminSessionManagerProps = {}) => 
     if (error) {
       console.error("Error fetching sessions:", error);
     } else {
+      const ids = (data || []).map((s: any) => s.id);
+      let extrasById: Record<string, { notes: string | null; weather_note: string | null; cancellation_reason: string | null }> = {};
+      if (ids.length > 0) {
+        const { data: extras } = await supabase.rpc("admin_get_session_extras", { p_session_ids: ids });
+        for (const e of extras || []) {
+          extrasById[e.id] = {
+            notes: e.notes,
+            weather_note: e.weather_note,
+            cancellation_reason: e.cancellation_reason,
+          };
+        }
+      }
       setSessions(
         (data || []).map((s: any) => ({
           ...s,
+          ...(extrasById[s.id] || {}),
           reservation_count:
             (s.reservations?.filter((r: any) => r.status !== "cancelled").reduce((sum: number, r: any) => sum + (r.participants || 1), 0) || 0) +
             (s.package_bookings?.filter((b: any) => b.status === "confirmed").length || 0),

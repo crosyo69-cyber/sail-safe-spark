@@ -704,6 +704,15 @@ export type Database = {
         Args: { p_delta: number; p_package_id: string; p_reason: string }
         Returns: Json
       }
+      admin_get_session_extras: {
+        Args: { p_session_ids: string[] }
+        Returns: {
+          cancellation_reason: string
+          id: string
+          notes: string
+          weather_note: string
+        }[]
+      }
       admin_grant_weather_credit_booking: {
         Args: { p_package_id: string; p_session_id: string }
         Returns: Json
