@@ -138,7 +138,10 @@ const DepositPaymentSection = () => {
     }
   };
 
+  // Démarre à minuit local pour que le composant Calendar (qui fournit des
+  // dates à 00:00) considère bien "demain" comme sélectionnable.
   const tomorrow = new Date();
+  tomorrow.setHours(0, 0, 0, 0);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
   return (
