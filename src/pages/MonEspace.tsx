@@ -14,6 +14,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover
 import { CloudRain, Plus } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
+import { parisToday } from "@/lib/booking-dates";
 
 interface Booking {
   id: string;
