@@ -14,6 +14,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover
 import { CloudRain, Plus } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
+import { parisToday } from "@/lib/booking-dates";
 
 interface Booking {
   id: string;
@@ -104,7 +105,7 @@ const MonEspace = () => {
   };
 
   const loadSessions = async (p: PackageInfo) => {
-    const today = new Date().toISOString().slice(0, 10);
+    const today = parisToday();
     const { data: rawSessions } = await supabase
       .from("sessions")
       .select("id, date, time_slot, activity, max_participants")

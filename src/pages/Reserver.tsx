@@ -16,6 +16,7 @@ import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Calendar as CalendarIcon, Loader2, Ticket, Wind, Waves, Anchor, Plane, UserCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { parisToday, parisStartOfToday, toParisDateOnly } from "@/lib/booking-dates";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
 
@@ -56,17 +57,17 @@ const ReserverPage = () => {
 
   const loadSessions = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
-    const today = new Date().toISOString().slice(0, 10);
+    const today = parisToday();
     // Fetch ALL open sessions in the window (any activity) so we can compute
     // shared-slot occupancy (Stage 100% Glisse + Cours à la carte + crédits météo).
     let query = supabase
       .from("sessions")
       .select("id, date, time_slot, activity, max_participants")
       .eq("status", "open")
-      .gte("date", date ? format(date, "yyyy-MM-dd") : today)
+      .gte("date", date ? toParisDateOnly(date) : today)
       .order("date", { ascending: true })
       .limit(200);
-    if (date) query = query.lte("date", format(date, "yyyy-MM-dd"));
+    if (date) query = query.lte("date", toParisDateOnly(date));
     const { data: rawAll } = await query;
     if (!silent) setLoading(false);
     if (!rawAll || rawAll.length === 0) {
@@ -227,7 +228,7 @@ const ReserverPage = () => {
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
                 mode="single" selected={date} onSelect={setDate}
-                disabled={(d) => d < new Date(new Date().toDateString())}
+                disabled={(d) => d < parisStartOfToday()}
                 locale={fr} className={cn("p-3 pointer-events-auto")}
               />
             </PopoverContent>
@@ -394,7 +395,7 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
       for (let i = 0; i < 5; i++) {
         const d = new Date(startDate);
         d.setDate(d.getDate() + i);
-        const ds = format(d, "yyyy-MM-dd");
+        const ds = toParisDateOnly(d);
         const { data } = await supabase.rpc("get_slot_occupancy", { p_date: ds, p_slot: slot as any });
         const occ = (data as any) || { taken: 0, capacity: 4 };
         days.push({ date: ds, taken: occ.taken, capacity: occ.capacity });
@@ -411,7 +412,7 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
     setSubmitting(true);
     const { data, error } = await supabase.rpc("book_stage_100_glisse", {
       p_code: clean,
-      p_start_date: format(startDate, "yyyy-MM-dd"),
+      p_start_date: toParisDateOnly(startDate),
       p_time_slot: slot as any,
     });
     setSubmitting(false);
@@ -458,7 +459,7 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
               mode="single" selected={startDate} onSelect={setStartDate}
-              disabled={(d) => d < new Date(new Date().toDateString())}
+              disabled={(d) => d < parisStartOfToday()}
               locale={fr} className={cn("p-3 pointer-events-auto")}
             />
           </PopoverContent>
