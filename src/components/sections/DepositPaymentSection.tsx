@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import { parisStartOfTomorrow, toParisDateOnly } from "@/lib/booking-dates";
 
 const activities = [
   {
@@ -108,7 +109,7 @@ const DepositPaymentSection = () => {
         body: {
           activityName,
           participants: count,
-          preferredDate: format(date, "yyyy-MM-dd"),
+          preferredDate: toParisDateOnly(date),
           phone,
           customerName: name,
           totalSessions: totalSessions ?? count,
@@ -138,11 +139,9 @@ const DepositPaymentSection = () => {
     }
   };
 
-  // Démarre à minuit local pour que le composant Calendar (qui fournit des
-  // dates à 00:00) considère bien "demain" comme sélectionnable.
-  const tomorrow = new Date();
-  tomorrow.setHours(0, 0, 0, 0);
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  // "Demain" calculé en Europe/Paris (timezone serveur), normalisé à minuit
+  // local pour aligner avec les dates émises par <Calendar />.
+  const tomorrow = parisStartOfTomorrow();
 
   return (
     <section className="py-20 bg-muted/30">
