@@ -228,7 +228,7 @@ const ReserverPage = () => {
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
                 mode="single" selected={date} onSelect={setDate}
-                disabled={(d) => d < new Date(new Date().toDateString())}
+                disabled={(d) => d < parisStartOfToday()}
                 locale={fr} className={cn("p-3 pointer-events-auto")}
               />
             </PopoverContent>
