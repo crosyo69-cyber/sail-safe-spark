@@ -412,7 +412,7 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
     setSubmitting(true);
     const { data, error } = await supabase.rpc("book_stage_100_glisse", {
       p_code: clean,
-      p_start_date: format(startDate, "yyyy-MM-dd"),
+      p_start_date: toParisDateOnly(startDate),
       p_time_slot: slot as any,
     });
     setSubmitting(false);
@@ -459,7 +459,7 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
               mode="single" selected={startDate} onSelect={setStartDate}
-              disabled={(d) => d < new Date(new Date().toDateString())}
+              disabled={(d) => d < parisStartOfToday()}
               locale={fr} className={cn("p-3 pointer-events-auto")}
             />
           </PopoverContent>
