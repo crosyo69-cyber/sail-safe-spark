@@ -16,6 +16,7 @@ import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Calendar as CalendarIcon, Loader2, Ticket, Wind, Waves, Anchor, Plane, UserCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { parisToday, parisStartOfToday, toParisDateOnly } from "@/lib/booking-dates";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
 
@@ -56,17 +57,17 @@ const ReserverPage = () => {
 
   const loadSessions = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
-    const today = new Date().toISOString().slice(0, 10);
+    const today = parisToday();
     // Fetch ALL open sessions in the window (any activity) so we can compute
     // shared-slot occupancy (Stage 100% Glisse + Cours à la carte + crédits météo).
     let query = supabase
       .from("sessions")
       .select("id, date, time_slot, activity, max_participants")
       .eq("status", "open")
-      .gte("date", date ? format(date, "yyyy-MM-dd") : today)
+      .gte("date", date ? toParisDateOnly(date) : today)
       .order("date", { ascending: true })
       .limit(200);
-    if (date) query = query.lte("date", format(date, "yyyy-MM-dd"));
+    if (date) query = query.lte("date", toParisDateOnly(date));
     const { data: rawAll } = await query;
     if (!silent) setLoading(false);
     if (!rawAll || rawAll.length === 0) {
