@@ -395,7 +395,7 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
       for (let i = 0; i < 5; i++) {
         const d = new Date(startDate);
         d.setDate(d.getDate() + i);
-        const ds = format(d, "yyyy-MM-dd");
+        const ds = toParisDateOnly(d);
         const { data } = await supabase.rpc("get_slot_occupancy", { p_date: ds, p_slot: slot as any });
         const occ = (data as any) || { taken: 0, capacity: 4 };
         days.push({ date: ds, taken: occ.taken, capacity: occ.capacity });
