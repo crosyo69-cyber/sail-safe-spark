@@ -93,9 +93,7 @@ serve(async (req) => {
 
     // Input validation: prevent token-burn abuse and prompt injection via roles
     if (!Array.isArray(messages) || messages.length === 0) {
-      return new Response(JSON.stringify({ error: "Messages requis" }), {
-        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return errorResponse(400, "bad_request", "Messages requis");
     }
     if (messages.length > 20) {
       return new Response(JSON.stringify({ error: "Conversation trop longue" }), {
