@@ -109,10 +109,18 @@ export function ChatBot() {
           }
         }
       }
-    } catch {
+    } catch (err) {
+      const error = err as ChatError;
+      const errorContent = error.type === "credits_exhausted"
+        ? "⚠️ L'assistant est temporairement indisponible : crédits IA épuisés. Rechargez les crédits ou contactez-nous directement."
+        : error.type === "rate_limit"
+          ? "⏳ Trop de messages envoyés. Veuillez patienter quelques instants et réessayer."
+          : error.type === "bad_request"
+            ? "❌ Votre message n'a pas été accepté. Vérifiez sa longueur ou sa formulation."
+            : "Désolé, je rencontre un problème technique. N'hésitez pas à nous contacter directement ! 📞";
       setMessages(prev => [
         ...prev,
-        { role: "assistant", content: "Désolé, je rencontre un problème technique. N'hésitez pas à nous contacter directement ! 📞" },
+        { role: "assistant", content: errorContent },
       ]);
     } finally {
       setIsLoading(false);
