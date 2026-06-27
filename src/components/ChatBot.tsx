@@ -54,9 +54,19 @@ export function ChatBot() {
         body: JSON.stringify({ messages: allMessages }),
       });
 
-      if (!resp.ok || !resp.body) {
-        throw new Error("Erreur de connexion");
+      if (!resp.ok) {
+        let type: ChatErrorType = "technical_error";
+        let message = "Erreur de connexion";
+        try {
+          const data = await resp.json();
+          if (data.type && typeof data.type === "string") type = data.type as ChatErrorType;
+          if (data.error && typeof data.error === "string") message = data.error;
+        } catch {
+          message = resp.statusText || "Erreur de connexion";
+        }
+        throw { status: resp.status, type, message } as ChatError;
       }
+      if (!resp.body) throw { status: resp.status, type: "technical_error", message: "Réponse vide" } as ChatError;
 
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
