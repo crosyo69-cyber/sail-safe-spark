@@ -5,6 +5,13 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const errorResponse = (status: number, type: string, message: string) =>
+  new Response(JSON.stringify({ error: message, type }), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+
+
 const SYSTEM_PROMPT = `Tu es l'assistant virtuel de Kitesurf Passion, école de kitesurf à Hyères-les-Palmiers (plage de l'Almanarre), Var (83), dirigée par Yohan Cros, moniteur diplômé d'État BPJEPS depuis 2001.
 
 ## Activités proposées
@@ -86,31 +93,21 @@ serve(async (req) => {
 
     // Input validation: prevent token-burn abuse and prompt injection via roles
     if (!Array.isArray(messages) || messages.length === 0) {
-      return new Response(JSON.stringify({ error: "Messages requis" }), {
-        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return errorResponse(400, "bad_request", "Messages requis");
     }
     if (messages.length > 20) {
-      return new Response(JSON.stringify({ error: "Conversation trop longue" }), {
-        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return errorResponse(400, "bad_request", "Conversation trop longue");
     }
     const sanitized: Array<{ role: string; content: string }> = [];
     for (const m of messages) {
       if (!m || typeof m !== "object") {
-        return new Response(JSON.stringify({ error: "Format de message invalide" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return errorResponse(400, "bad_request", "Format de message invalide");
       }
       if (m.role !== "user" && m.role !== "assistant") {
-        return new Response(JSON.stringify({ error: "Rôle non autorisé" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return errorResponse(400, "bad_request", "Rôle non autorisé");
       }
       if (typeof m.content !== "string" || m.content.length === 0 || m.content.length > 2000) {
-        return new Response(JSON.stringify({ error: "Contenu de message invalide" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return errorResponse(400, "bad_request", "Contenu de message invalide");
       }
       sanitized.push({ role: m.role, content: m.content });
     }
@@ -136,20 +133,14 @@ serve(async (req) => {
 
     if (!response.ok) {
       if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Trop de demandes, réessayez dans quelques instants." }), {
-          status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return errorResponse(429, "rate_limit", "Trop de demandes, réessayez dans quelques instants.");
       }
       if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "Service temporairement indisponible." }), {
-          status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return errorResponse(402, "credits_exhausted", "Crédits IA épuisés");
       }
       const t = await response.text();
       console.error("AI gateway error:", response.status, t);
-      return new Response(JSON.stringify({ error: "Erreur du service IA" }), {
-        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return errorResponse(500, "service_error", "Erreur du service IA");
     }
 
     return new Response(response.body, {
@@ -157,8 +148,10 @@ serve(async (req) => {
     });
   } catch (e) {
     console.error("chatbot error:", e);
-    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Erreur inconnue" }), {
-      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return errorResponse(
+      500,
+      "technical_error",
+      e instanceof Error ? e.message : "Erreur inconnue",
+    );
   }
 });
