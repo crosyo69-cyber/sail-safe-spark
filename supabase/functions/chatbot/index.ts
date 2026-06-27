@@ -148,8 +148,10 @@ serve(async (req) => {
     });
   } catch (e) {
     console.error("chatbot error:", e);
-    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Erreur inconnue" }), {
-      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return errorResponse(
+      500,
+      "technical_error",
+      e instanceof Error ? e.message : "Erreur inconnue",
+    );
   }
 });
