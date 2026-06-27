@@ -5,6 +5,13 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const errorResponse = (status: number, type: string, message: string) =>
+  new Response(JSON.stringify({ error: message, type }), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+
+
 const SYSTEM_PROMPT = `Tu es l'assistant virtuel de Kitesurf Passion, école de kitesurf à Hyères-les-Palmiers (plage de l'Almanarre), Var (83), dirigée par Yohan Cros, moniteur diplômé d'État BPJEPS depuis 2001.
 
 ## Activités proposées
