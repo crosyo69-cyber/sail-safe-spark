@@ -5,6 +5,8 @@ import { marked } from "marked";
 import DOMPurify from "dompurify";
 
 type Message = { role: "user" | "assistant"; content: string };
+type ChatErrorType = "credits_exhausted" | "rate_limit" | "service_error" | "technical_error" | "bad_request";
+type ChatError = { status: number; type: ChatErrorType; message: string };
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chatbot`;
 
