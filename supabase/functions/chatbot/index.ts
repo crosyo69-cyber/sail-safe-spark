@@ -133,20 +133,14 @@ serve(async (req) => {
 
     if (!response.ok) {
       if (response.status === 429) {
-        return new Response(JSON.stringify({ error: "Trop de demandes, réessayez dans quelques instants." }), {
-          status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return errorResponse(429, "rate_limit", "Trop de demandes, réessayez dans quelques instants.");
       }
       if (response.status === 402) {
-        return new Response(JSON.stringify({ error: "Service temporairement indisponible." }), {
-          status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return errorResponse(402, "credits_exhausted", "Crédits IA épuisés");
       }
       const t = await response.text();
       console.error("AI gateway error:", response.status, t);
-      return new Response(JSON.stringify({ error: "Erreur du service IA" }), {
-        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return errorResponse(500, "service_error", "Erreur du service IA");
     }
 
     return new Response(response.body, {
