@@ -96,26 +96,18 @@ serve(async (req) => {
       return errorResponse(400, "bad_request", "Messages requis");
     }
     if (messages.length > 20) {
-      return new Response(JSON.stringify({ error: "Conversation trop longue" }), {
-        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return errorResponse(400, "bad_request", "Conversation trop longue");
     }
     const sanitized: Array<{ role: string; content: string }> = [];
     for (const m of messages) {
       if (!m || typeof m !== "object") {
-        return new Response(JSON.stringify({ error: "Format de message invalide" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return errorResponse(400, "bad_request", "Format de message invalide");
       }
       if (m.role !== "user" && m.role !== "assistant") {
-        return new Response(JSON.stringify({ error: "Rôle non autorisé" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return errorResponse(400, "bad_request", "Rôle non autorisé");
       }
       if (typeof m.content !== "string" || m.content.length === 0 || m.content.length > 2000) {
-        return new Response(JSON.stringify({ error: "Contenu de message invalide" }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        return errorResponse(400, "bad_request", "Contenu de message invalide");
       }
       sanitized.push({ role: m.role, content: m.content });
     }
