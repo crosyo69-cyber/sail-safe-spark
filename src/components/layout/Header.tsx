@@ -33,6 +33,7 @@ const navigation = [
     submenu: [
       { name: "Location Matériel", href: "/location-materiel-kitesurf-hyeres" },
       { name: "Déposes en Mer", href: "/deposes-mer-kitesurf-hyeres" },
+      { name: "E-Foil & Assist Foil", href: "/efoil-assist-foil-hyeres" },
     ]
   },
   { name: "Tarifs", href: "/tarifs-cours-kitesurf-wingfoil-hyeres" },

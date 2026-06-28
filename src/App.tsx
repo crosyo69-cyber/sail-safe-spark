@@ -32,6 +32,7 @@ const CoursPumpfoil = lazyWithChunkRecovery(() => import("./pages/CoursPumpfoil"
 const SpotAlmanarre = lazyWithChunkRecovery(() => import("./pages/SpotAlmanarre"));
 const LocationMateriel = lazyWithChunkRecovery(() => import("./pages/LocationMateriel"));
 const DeposesMer = lazyWithChunkRecovery(() => import("./pages/DeposesMer"));
+const EfoilAssistFoil = lazyWithChunkRecovery(() => import("./pages/EfoilAssistFoil"));
 const FoilTracte = lazyWithChunkRecovery(() => import("./pages/FoilTracte"));
 const Wakeboard = lazyWithChunkRecovery(() => import("./pages/Wakeboard"));
 const APropos = lazyWithChunkRecovery(() => import("./pages/APropos"));
@@ -91,6 +92,7 @@ const App = () => {
                <Route path="/spot-kitesurf-almanarre-hyeres-var" element={<SpotAlmanarre />} />
                <Route path="/location-materiel-kitesurf-hyeres" element={<LocationMateriel />} />
                <Route path="/deposes-mer-kitesurf-hyeres" element={<DeposesMer />} />
+               <Route path="/efoil-assist-foil-hyeres" element={<EfoilAssistFoil />} />
                <Route path="/foil-tracte-hyeres" element={<FoilTracte />} />
                <Route path="/wakeboard-hyeres" element={<Wakeboard />} />
                 {/* SEO-friendly redirections with noindex for Google Search Console */}
