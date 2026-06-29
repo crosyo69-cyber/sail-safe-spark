@@ -13,6 +13,10 @@ import { Zap, Battery, Wind, Check, Phone, Send, AlertTriangle } from "lucide-re
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { trackPhoneClick } from "@/lib/analytics";
+import { OptimizedImage } from "@/components/ui/optimized-image";
+import efoilRider from "@/assets/efoil-rider-hyeres.jpg.asset.json";
+import efoilRemote from "@/assets/efoil-telecommande-hyeres.jpg.asset.json";
+import efoilBoard from "@/assets/efoil-board-foil-hyeres.jpg.asset.json";
 
 const breadcrumbItems = [
   { label: "Location", href: "/location-materiel-kitesurf-hyeres" },
@@ -136,22 +140,33 @@ const EfoilAssistFoil = () => {
       <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
 
       <main className="pt-24">
-        {/* Hero / Section 1 — Présentation */}
+        {/* Hero visuel */}
+        <section className="relative h-[60vh] min-h-[420px] w-full overflow-hidden">
+          <OptimizedImage
+            src={efoilRider.url}
+            alt="Rider en e-foil Hyères glissant au-dessus de la Méditerranée — Kitesurf Passion Hyères"
+            priority
+            className="absolute inset-0 w-full h-full object-cover"
+            wrapperClassName="absolute inset-0 w-full h-full"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/20 to-background" />
+          <div className="relative z-10 h-full flex flex-col items-center justify-end pb-12 text-center px-4 animate-fade-in">
+            <span className="inline-block px-4 py-2 bg-background/90 backdrop-blur text-primary rounded-full text-sm font-medium mb-4">
+              Nouveauté · Sans vent
+            </span>
+            <h1 className="font-display text-4xl sm:text-6xl font-bold text-white drop-shadow-lg mb-3">
+              E-Foil & Assist Foil <span className="text-transparent bg-clip-text bg-gradient-to-r from-turquoise to-sunset">Hyères</span>
+            </h1>
+            <p className="text-white/90 max-w-2xl mx-auto text-lg drop-shadow">
+              Volez au-dessus de l'eau, en silence, même sans vent — sur la baie d'Hyères.
+            </p>
+          </div>
+        </section>
+
+        {/* Section 1 — Présentation */}
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4 max-w-6xl">
-            <div className="text-center mb-12">
-              <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
-                Nouveauté · Sans vent
-              </span>
-              <h1 className="font-display text-4xl sm:text-5xl font-bold text-foreground mb-4">
-                E-Foil & Assist Foil <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">Hyères</span>
-              </h1>
-              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-                Volez au-dessus de l'eau, en silence, même sans vent. Deux disciplines accessibles à tous, encadrées par notre équipe sur la baie d'Hyères.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-8 animate-fade-in">
               <div className="bg-card p-8 rounded-2xl border border-border hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
                 <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-5">
                   <Battery className="w-7 h-7 text-primary" />
@@ -186,6 +201,37 @@ const EfoilAssistFoil = () => {
                     </li>
                   ))}
                 </ul>
+              </div>
+            </div>
+
+            {/* Mosaïque immersive */}
+            <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-4 animate-fade-in">
+              <div className="md:col-span-2 md:row-span-2 group overflow-hidden rounded-2xl shadow-lg">
+                <OptimizedImage
+                  src={efoilRider.url}
+                  alt="Initiation e-foil sur la baie d'Hyères, glisse silencieuse au-dessus de l'eau"
+                  aspectRatio="4/3"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  wrapperClassName="w-full h-full"
+                />
+              </div>
+              <div className="group overflow-hidden rounded-2xl shadow-lg">
+                <OptimizedImage
+                  src={efoilRemote.url}
+                  alt="Télécommande e-foil et planche Duotone — cours e-foil Hyères"
+                  aspectRatio="4/3"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  wrapperClassName="w-full h-full"
+                />
+              </div>
+              <div className="group overflow-hidden rounded-2xl shadow-lg">
+                <OptimizedImage
+                  src={efoilBoard.url}
+                  alt="Planche et foil électrique Méditerranée — matériel premium Kitesurf Passion Hyères"
+                  aspectRatio="4/3"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  wrapperClassName="w-full h-full"
+                />
               </div>
             </div>
           </div>
