@@ -17,6 +17,7 @@ import { OptimizedImage } from "@/components/ui/optimized-image";
 import efoilRider from "@/assets/efoil-rider-hyeres.jpg.asset.json";
 import efoilRemote from "@/assets/efoil-telecommande-hyeres.jpg.asset.json";
 import efoilBoard from "@/assets/efoil-board-foil-hyeres.jpg.asset.json";
+import efoilActionDuotone from "@/assets/efoil-action-duotone-hyeres.jpg.asset.json";
 
 const breadcrumbItems = [
   { label: "Location", href: "/location-materiel-kitesurf-hyeres" },
