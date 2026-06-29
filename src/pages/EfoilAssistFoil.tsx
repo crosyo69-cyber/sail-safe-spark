@@ -17,6 +17,7 @@ import { OptimizedImage } from "@/components/ui/optimized-image";
 import efoilRider from "@/assets/efoil-rider-hyeres.jpg.asset.json";
 import efoilRemote from "@/assets/efoil-telecommande-hyeres.jpg.asset.json";
 import efoilBoard from "@/assets/efoil-board-foil-hyeres.jpg.asset.json";
+import efoilActionDuotone from "@/assets/efoil-action-duotone-hyeres.jpg.asset.json";
 
 const breadcrumbItems = [
   { label: "Location", href: "/location-materiel-kitesurf-hyeres" },
@@ -233,6 +234,17 @@ const EfoilAssistFoil = () => {
                   wrapperClassName="w-full h-full"
                 />
               </div>
+            </div>
+
+            {/* Grande image action */}
+            <div className="mt-8 overflow-hidden rounded-2xl shadow-xl group animate-fade-in">
+              <OptimizedImage
+                src={efoilActionDuotone.url}
+                alt="Rider en action sur un e-foil Duotone au-dessus des vagues — sessions E-Foil et Assist Foil à Hyères"
+                aspectRatio="21/9"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                wrapperClassName="w-full h-full"
+              />
             </div>
           </div>
         </section>
