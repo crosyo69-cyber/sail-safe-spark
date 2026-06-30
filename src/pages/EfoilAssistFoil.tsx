@@ -150,16 +150,16 @@ const EfoilAssistFoil = () => {
             className="absolute inset-0 w-full h-full object-cover"
             wrapperClassName="absolute inset-0 w-full h-full"
           />
-          <div className="absolute inset-0 bg-black/60" />
-          <div className="absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/20 to-background" />
+          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-b from-navy/20 via-transparent to-background/80" />
           <div className="relative z-10 h-full flex flex-col items-center justify-end pb-12 text-center px-4 animate-fade-in">
             <span className="inline-block px-4 py-2 bg-background/95 backdrop-blur text-primary rounded-full text-sm font-semibold mb-4 shadow-lg">
               Nouveauté · Sans vent
             </span>
-            <h1 className="font-display text-4xl sm:text-6xl font-bold text-white drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] mb-3">
+            <h1 className="font-display text-4xl sm:text-6xl font-bold text-white drop-shadow-[0_3px_6px_rgba(0,0,0,0.6)] mb-3">
               E-Foil & Assist Foil Hyères
             </h1>
-            <p className="text-white max-w-2xl mx-auto text-lg drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+            <p className="text-white max-w-2xl mx-auto text-lg drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
               Volez au-dessus de l'eau, en silence, même sans vent — sur la baie d'Hyères.
             </p>
           </div>
