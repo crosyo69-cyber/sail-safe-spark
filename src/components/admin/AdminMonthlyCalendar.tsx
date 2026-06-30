@@ -493,6 +493,7 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
               onClick={() => { setSelectedDay(isSelected ? null : dateStr); setCreatingSession(false); setAddingToSession(null); }}
               className={cn(
                 "bg-card p-1.5 min-h-[70px] md:min-h-[90px] text-left transition-colors hover:bg-muted/30 relative",
+                !isCurrentMonth && "bg-muted/20",
                 isSelected && "ring-2 ring-primary ring-inset bg-primary/5"
               )}
             >
@@ -500,10 +501,11 @@ const AdminMonthlyCalendar = ({ onNavigateToSession }: AdminMonthlyCalendarProps
                 <span
                   className={cn(
                     "text-xs font-medium leading-none",
-                    isToday && "bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center"
+                    isToday && "bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center",
+                    !isCurrentMonth && !isToday && "text-muted-foreground/60"
                   )}
                 >
-                  {format(day, "d")}
+                  {!isCurrentMonth ? format(day, "d MMM", { locale: fr }) : format(day, "d")}
                 </span>
                 {daySessions.length > 0 && (
                   <span className={cn("text-[10px] font-bold", getFillColor(fillRate))}>
