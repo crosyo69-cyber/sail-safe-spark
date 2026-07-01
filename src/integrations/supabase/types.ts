@@ -745,6 +745,7 @@ export type Database = {
         Args: { p_token: string }
         Returns: boolean
       }
+      email_queue_dispatch: { Args: never; Returns: undefined }
       enqueue_admin_notification: {
         Args: {
           p_body: string
