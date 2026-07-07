@@ -66,6 +66,7 @@ import blogPumpfoilRiderPlage from "@/assets/blog-pumpfoil-rider-plage-duotone.j
 import blogPumpfoilVolMerCasque from "@/assets/blog-pumpfoil-vol-mer-casque.jpg?webp";
 import blogLogementStageKitesurfHyeres from "@/assets/blog-logement-stage-kitesurf-hyeres.jpg?webp";
 import blogWeekEndKitesurfHyeres from "@/assets/blog-week-end-kitesurf-hyeres-guide-complet.jpg?webp";
+import blogEfoilHyeresVolEau from "@/assets/blog-efoil-hyeres-vol-eau.jpg?webp";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
@@ -122,6 +123,7 @@ const imageMap: Record<string, string> = {
   "blog-pumpfoil-vol-mer-casque.jpg": blogPumpfoilVolMerCasque,
   "blog-logement-stage-kitesurf-hyeres.jpg": blogLogementStageKitesurfHyeres,
   "blog-week-end-kitesurf-hyeres-guide-complet.jpg": blogWeekEndKitesurfHyeres,
+  "blog-efoil-hyeres-vol-eau.jpg": blogEfoilHyeresVolEau,
 };
 
 const getArticleImage = (imageName: string): string => {
@@ -133,6 +135,17 @@ const breadcrumbItems = [
 ];
 
 export const blogArticles = [
+  {
+    slug: "efoil-hyeres-voler-sur-eau-sans-vent",
+    title: "E-Foil à Hyères : volez au-dessus de l'eau même sans vent",
+    excerpt: "Découvrez l'e-foil à Hyères sur la Presqu'île de Giens : sensations de vol au-dessus de l'eau, accessible à tous, même les jours sans vent. KiteSurf Passion depuis 1999.",
+    category: "Location",
+    date: "2026-07-07",
+    readTime: "7 min",
+    image: "blog-efoil-hyeres-vol-eau.jpg",
+    alt: "E-Foil à Hyères — rider en vol silencieux au-dessus de la Méditerranée, presqu'île de Giens, KiteSurf Passion",
+    featured: true,
+  },
   {
     slug: "week-end-kitesurf-hyeres-guide-complet",
     title: "Week-end kitesurf à Hyères : le guide complet pour un séjour réussi",
