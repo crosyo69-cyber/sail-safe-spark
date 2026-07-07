@@ -5569,6 +5569,12 @@ export const articleFAQData: Record<string, Array<{ question: string; answer: st
     { question: "Que faire si son aile s'envole à l'Almanarre à cause d'une rafale ?", answer: "Lâchez immédiatement la barre et actionnez le quick release si nécessaire. Ne tentez pas de récupérer l'aile en nageant contre le vent : signaléz-vous avec un bras levé et attendez l'intervention du bateau d'assistance. Chez Kitesurf Passion, ce scénario est préparé dès la première séance de sécurité à Hyères." },
     { question: "Quels équipements de sécurité sont vérifiés avant chaque cours à Hyères ?", answer: "Avant chaque session, notre équipe contrôle l'état des ailes et des wings, l'intégrité des lignes, le fonctionnement des quick release et des leashes, ainsi que l'état des harnais et des casques. Cette vérification systématique garantit la sécurité des élèves sur le spot de l'Almanarre." },
   ],
+  "efoil-hyeres-voler-sur-eau-sans-vent": [
+    { question: "Quel âge minimum pour l'e-foil ?", answer: "L'e-foil est accessible dès 12 ans à Hyères, avec un poids minimum d'environ 40 kg pour bien lester la planche. Aucun prérequis sportif particulier n'est demandé : des enfants comme des seniors pratiquent l'e-foil dès la première session, toujours encadrés par un moniteur diplômé d'État." },
+    { question: "Faut-il savoir nager pour faire de l'e-foil ?", answer: "Oui, savoir nager est obligatoire pour pratiquer l'e-foil, comme pour toutes les activités nautiques encadrées à Hyères. Un niveau basique suffit — vous portez un gilet d'aide à la flottabilité, un casque, et l'e-foil se pratique en zone protégée et peu profonde sur la baie de la Presqu'île de Giens." },
+    { question: "Combien coûte une session e-foil à Hyères ?", answer: "Chez KiteSurf Passion, l'initiation découverte est à 49 €, la session solo d'1 heure à 119 €, la session sunset premium à 139 € et la formule duo 2 planches 1h à 219 €. Des packs progression sont disponibles : 330 € les 3 séances, 525 € les 5 séances et 990 € les 10 séances." },
+    { question: "L'e-foil se pratique-t-il par vent fort ?", answer: "Non, l'e-foil se pratique uniquement par vent inférieur à 10 nœuds pour garantir votre sécurité et un vol de qualité. Au-delà, la mer devient trop formée et le vol trop instable. En cas de dépassement le jour J, la session est annulée et un avoir ou remboursement vous est proposé." },
+  ],
 };
 
 const BlogArticle = () => {
