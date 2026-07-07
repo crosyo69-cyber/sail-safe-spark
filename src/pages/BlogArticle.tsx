@@ -75,6 +75,7 @@ import blogPumpfoilRiderPlage from "@/assets/blog-pumpfoil-rider-plage-duotone.j
 import blogPumpfoilVolMerCasque from "@/assets/blog-pumpfoil-vol-mer-casque.jpg?webp";
 import blogLogementStageKitesurfHyeres from "@/assets/blog-logement-stage-kitesurf-hyeres.jpg?webp";
 import blogWeekEndKitesurfHyeres from "@/assets/blog-week-end-kitesurf-hyeres-guide-complet.jpg?webp";
+import blogEfoilHyeresVolEau from "@/assets/blog-efoil-hyeres-vol-eau.jpg?webp";
 
 const imageMap: Record<string, string> = {
   "blog-kitesurf-debut.jpg": blogKitesurfDebut,
@@ -132,6 +133,7 @@ const imageMap: Record<string, string> = {
   "blog-pumpfoil-vol-mer-casque.jpg": blogPumpfoilVolMerCasque,
   "blog-logement-stage-kitesurf-hyeres.jpg": blogLogementStageKitesurfHyeres,
   "blog-week-end-kitesurf-hyeres-guide-complet.jpg": blogWeekEndKitesurfHyeres,
+  "blog-efoil-hyeres-vol-eau.jpg": blogEfoilHyeresVolEau,
 };
 
 const getArticleImage = (imageName: string): string => {
