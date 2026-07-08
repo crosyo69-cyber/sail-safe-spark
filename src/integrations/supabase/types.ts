@@ -819,6 +819,10 @@ export type Database = {
         }
         Returns: number
       }
+      purge_stale_dlq_messages: {
+        Args: { p_dlq: string; p_limit?: number; p_max_age_days?: number }
+        Returns: Json
+      }
       read_email_batch: {
         Args: { batch_size: number; queue_name: string; vt: number }
         Returns: {
@@ -827,6 +831,18 @@ export type Database = {
           read_ct: number
         }[]
       }
+      retry_dlq_messages: {
+        Args: {
+          p_dlq: string
+          p_limit?: number
+          p_max_age_hours?: number
+          p_max_retries?: number
+          p_target: string
+        }
+        Returns: Json
+      }
+      run_dlq_purge_cycle: { Args: never; Returns: Json }
+      run_dlq_retry_cycle: { Args: never; Returns: Json }
       unsubscribe_last_minute: { Args: { p_token: string }; Returns: boolean }
       unsubscribe_weather_alert: { Args: { p_token: string }; Returns: boolean }
     }
