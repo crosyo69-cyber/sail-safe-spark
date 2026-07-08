@@ -5432,7 +5432,7 @@ Sessions disponibles **de 10h à 19h**, uniquement par **vent inférieur à 10 n
 
 Le **[kitesurf](/cours-kitesurf-hyeres-debutant)** nécessite du vent (12 nœuds minimum) et un apprentissage plus technique, étalé sur plusieurs jours. L'**e-foil**, lui, s'apprend en une seule session et se pratique par tous les temps.
 
-Les deux disciplines sont **complémentaires** : de nombreux kitesurfeurs et [wingfoileurs](/stage-wingfoil-hyeres-almanarre) utilisent l'e-foil les jours sans vent pour **maintenir leurs sensations de vol** et travailler leur équilibre sur foil. C'est aussi une porte d'entrée idéale vers le [foil tracté](/foil-tracte-hyeres) ou le [pumpfoil](/cours-pumpfoil-dock-start-hyeres). Si vous hésitez, consultez notre comparatif des [disciplines de glisse à Hyères](/location-materiel-kitesurf-hyeres) ou réservez directement un [cours de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant).
+Les deux disciplines sont **complémentaires** : de nombreux kitesurfeurs et [wingfoileurs](/stage-wingfoil-hyeres-almanarre) utilisent l'e-foil les jours sans vent pour **maintenir leurs sensations de vol** et travailler leur équilibre sur foil. C'est aussi une porte d'entrée idéale vers le [foil tracté](/foil-tracte-hyeres) ou le [pumpfoil](/cours-pumpfoil-dock-start-hyeres).
 
 
 ## Réservez votre session e-foil à Hyères
