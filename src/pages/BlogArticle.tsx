@@ -5384,7 +5384,7 @@ Pour des conseils personnalisés sur **où loger pour votre stage de kitesurf à
     content: `
 ## E-Foil à Hyères : volez au-dessus de l'eau même sans vent
 
-L'**e-foil** révolutionne la glisse nautique. Pas besoin de vent, pas besoin de vagues — un moteur électrique silencieux propulse la planche, et vous **volez littéralement au-dessus de l'eau**. À Hyères, sur la baie de la Presqu'île de Giens, les conditions sont idéales pour découvrir cette sensation unique avec **KiteSurf Passion**, école implantée sur le spot depuis 1999.
+L'**e-foil** révolutionne la glisse nautique. Pas besoin de vent, pas besoin de vagues — un moteur électrique silencieux propulse la planche, et vous **volez littéralement au-dessus de l'eau**. À Hyères, sur la baie de la Presqu'île de Giens, les conditions sont idéales pour découvrir cette sensation unique avec **KiteSurf Passion**, école implantée sur le spot depuis 1999. Découvrez toutes les [formules e-foil à Hyères](/efoil-assist-foil-hyeres) ou [réservez directement votre créneau](/reserver).
 
 ## Qu'est-ce qu'un e-foil ?
 
@@ -5398,9 +5398,10 @@ La baie de l'Almanarre et la Presqu'île de Giens offrent un plan d'eau exceptio
 
 - Une **eau plate, peu profonde et protégée** — idéale pour l'apprentissage.
 - Le **2ème bassin du port de Hyères**, calme et abrité, parfait pour les premières sessions.
-- Contrairement au [kitesurf](/cours-kitesurf-hyeres-almanarre) ou au [wingfoil](/stage-wingfoil-hyeres-almanarre), l'**e-foil se pratique par tous les temps**, y compris les jours sans vent.
+- Contrairement au [kitesurf](/cours-kitesurf-hyeres-debutant) ou au [wingfoil](/stage-wingfoil-hyeres-almanarre), l'**e-foil se pratique par tous les temps**, y compris les jours sans vent.
 
-C'est le complément idéal aux disciplines à voile : quand le vent manque, l'e-foil prend le relais.
+C'est le complément idéal aux disciplines à voile : quand le vent manque, l'e-foil prend le relais. C'est aussi une excellente alternative pour les riders qui suivent un [stage de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant) et veulent glisser sans attendre les bonnes conditions.
+
 
 ## À partir de quel niveau peut-on commencer ?
 
