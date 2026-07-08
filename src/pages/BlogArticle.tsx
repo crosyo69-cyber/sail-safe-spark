@@ -5384,7 +5384,7 @@ Pour des conseils personnalisés sur **où loger pour votre stage de kitesurf à
     content: `
 ## E-Foil à Hyères : volez au-dessus de l'eau même sans vent
 
-L'**e-foil** révolutionne la glisse nautique. Pas besoin de vent, pas besoin de vagues — un moteur électrique silencieux propulse la planche, et vous **volez littéralement au-dessus de l'eau**. À Hyères, sur la baie de la Presqu'île de Giens, les conditions sont idéales pour découvrir cette sensation unique avec **KiteSurf Passion**, école implantée sur le spot depuis 1999.
+L'**e-foil** révolutionne la glisse nautique. Pas besoin de vent, pas besoin de vagues — un moteur électrique silencieux propulse la planche, et vous **volez littéralement au-dessus de l'eau**. À Hyères, sur la baie de la Presqu'île de Giens, les conditions sont idéales pour découvrir cette sensation unique avec **KiteSurf Passion**, école implantée sur le spot depuis 1999. Découvrez toutes les [formules e-foil à Hyères](/efoil-assist-foil-hyeres) ou [réservez directement votre créneau](/reserver).
 
 ## Qu'est-ce qu'un e-foil ?
 
@@ -5398,9 +5398,10 @@ La baie de l'Almanarre et la Presqu'île de Giens offrent un plan d'eau exceptio
 
 - Une **eau plate, peu profonde et protégée** — idéale pour l'apprentissage.
 - Le **2ème bassin du port de Hyères**, calme et abrité, parfait pour les premières sessions.
-- Contrairement au [kitesurf](/cours-kitesurf-hyeres-almanarre) ou au [wingfoil](/stage-wingfoil-hyeres-almanarre), l'**e-foil se pratique par tous les temps**, y compris les jours sans vent.
+- Contrairement au [kitesurf](/cours-kitesurf-hyeres-debutant) ou au [wingfoil](/stage-wingfoil-hyeres-almanarre), l'**e-foil se pratique par tous les temps**, y compris les jours sans vent.
 
-C'est le complément idéal aux disciplines à voile : quand le vent manque, l'e-foil prend le relais.
+C'est le complément idéal aux disciplines à voile : quand le vent manque, l'e-foil prend le relais. C'est aussi une excellente alternative pour les riders qui suivent un [stage de kitesurf à Hyères](/cours-kitesurf-hyeres-debutant) et veulent glisser sans attendre les bonnes conditions.
+
 
 ## À partir de quel niveau peut-on commencer ?
 
@@ -5410,7 +5411,7 @@ En général, les **premières sensations de vol arrivent en 20 à 30 minutes**.
 
 ## Les formules e-foil proposées par KiteSurf Passion
 
-Nous proposons une gamme complète pour découvrir, progresser ou offrir l'e-foil à Hyères :
+Nous proposons une gamme complète pour découvrir, progresser ou offrir [l'e-foil à Hyères](/efoil-assist-foil-hyeres) :
 
 - **Initiation découverte** (briefing + essai) — **49 €**
 - **Session 30 min** — **69 €**
@@ -5424,21 +5425,26 @@ Nous proposons une gamme complète pour découvrir, progresser ou offrir l'e-foi
 - Pack 5 séances (5×1h) — **525 €**
 - Pack 10 séances (10×1h) — **990 €**
 
-Sessions disponibles **de 10h à 19h**, uniquement par **vent inférieur à 10 nœuds** pour garantir votre sécurité et un vol de qualité. En cas de dépassement, un avoir ou un remboursement vous est proposé.
+Sessions disponibles **de 10h à 19h**, uniquement par **vent inférieur à 10 nœuds** pour garantir votre sécurité et un vol de qualité. En cas de dépassement, un avoir ou un remboursement vous est proposé. Consultez le détail des tarifs et options sur la page [E-Foil & Assist Foil Hyères](/efoil-assist-foil-hyeres).
+
 
 ## E-foil ou kitesurf : lequel choisir ?
 
-Le **kitesurf** nécessite du vent (12 nœuds minimum) et un apprentissage plus technique, étalé sur plusieurs jours. L'**e-foil**, lui, s'apprend en une seule session et se pratique par tous les temps.
+Le **[kitesurf](/cours-kitesurf-hyeres-debutant)** nécessite du vent (12 nœuds minimum) et un apprentissage plus technique, étalé sur plusieurs jours. L'**e-foil**, lui, s'apprend en une seule session et se pratique par tous les temps.
 
 Les deux disciplines sont **complémentaires** : de nombreux kitesurfeurs et [wingfoileurs](/stage-wingfoil-hyeres-almanarre) utilisent l'e-foil les jours sans vent pour **maintenir leurs sensations de vol** et travailler leur équilibre sur foil. C'est aussi une porte d'entrée idéale vers le [foil tracté](/foil-tracte-hyeres) ou le [pumpfoil](/cours-pumpfoil-dock-start-hyeres).
 
+
 ## Réservez votre session e-foil à Hyères
 
-Envie de tester la sensation de vol silencieux au-dessus de la Méditerranée ? Notre équipe vous accueille sur la Presqu'île de Giens, matériel premium fourni, encadrement diplômé d'État inclus.
+Envie de tester la sensation de vol silencieux au-dessus de la Méditerranée ? Notre équipe vous accueille sur la Presqu'île de Giens, matériel premium fourni, encadrement diplômé d'État inclus. Vous pouvez [réserver votre session en ligne](/reserver) ou directement depuis la page dédiée.
 
 <a href="/efoil-assist-foil-hyeres" class="inline-block bg-sunset text-white font-bold px-6 py-3 rounded-lg hover:bg-sunset/90 transition-colors mt-4">Réserver ma session e-foil</a>
 
+Pour les groupes, les entreprises ou les événements privés, contactez-nous pour une [prestation personnalisée](/contact-reservation-kitesurf-hyeres).
+
 *KiteSurf Passion — École itinérante, Presqu'île de Giens, Hyères (83) — 06 72 71 69 05 — kitesurfpassion.fr*
+
 `,
     tags: ["E-Foil", "Hyères", "Almanarre", "Presqu'île de Giens", "Sans vent", "Foil électrique", "Location", "Glisse", "Var"],
   },
