@@ -5805,7 +5805,7 @@ const BlogArticle = () => {
           description: "Découvrez l'e-foil à Hyères sur la Presqu'île de Giens : sensations de vol au-dessus de l'eau, accessible à tous, même les jours sans vent. KiteSurf Passion depuis 1999.",
           inLanguage: "fr-FR",
           url: "https://www.kitesurfpassion.fr/blog/efoil-hyeres-voler-sur-eau-sans-vent",
-          image: "https://www.kitesurfpassion.fr/images/blog-efoil-hyeres-vol-eau.jpg",
+          image: "https://www.kitesurfpassion.fr/__l5e/assets-v1/688a69a7-dcbc-4ff9-95a3-471e884ce2ee/efoil-duotone-midfish-hyeres-hero.jpg",
           datePublished: "2026-07-07T09:00:00+02:00",
           dateModified: "2026-07-07T09:00:00+02:00",
           author: {
