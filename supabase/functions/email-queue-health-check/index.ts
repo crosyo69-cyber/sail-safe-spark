@@ -7,6 +7,7 @@ const ALERT_FROM = 'Kitesurf Passion <notify@kitesurfpassion.fr>'
 const MAX_QUEUE_DEPTH = 20            // pending messages in a live queue
 const MAX_PENDING_AGE_MIN = 15        // oldest unresolved pending > 15 min = stuck
 const NEW_DLQ_THRESHOLD = 1           // any new DLQ message in the last hour triggers alert
+const LIVE_QUEUES = ['auth_emails', 'transactional_emails']
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -76,8 +77,16 @@ Deno.serve(async (req) => {
     if (qErr) issues.push(`Lecture file email impossible: ${qErr.message}`)
     report.queues = queueRows || []
 
-    for (const q of (queueRows || []) as Array<{ queue_name: string; queue_length: number; oldest_msg_age_sec: number | null }>) {
-      if (['auth_emails', 'transactional_emails'].includes(q.queue_name)) {
+    const liveQueueRows = (queueRows || []) as Array<{
+      queue_name: string
+      queue_length: number
+      oldest_msg_age_sec: number | null
+    }>
+
+    let liveQueueDepth = 0
+    for (const q of liveQueueRows) {
+      if (LIVE_QUEUES.includes(q.queue_name)) {
+        liveQueueDepth += q.queue_length ?? 0
         if ((q.queue_length ?? 0) > MAX_QUEUE_DEPTH) {
           issues.push(`File "${q.queue_name}" engorgée: ${q.queue_length} messages en attente.`)
         }
@@ -132,15 +141,21 @@ Deno.serve(async (req) => {
       issues.push(`${dlqRows.length} email(s) tombé(s) en DLQ dans la dernière heure.`)
     }
 
-    // 4. Verify cron job exists & active
-    const { data: cronRows } = await supabase
-      .from('cron_job_status')
-      .select('*')
-    if (cronRows) {
-      const job = (cronRows as any[]).find((c) => c.jobname === 'process-email-queue')
-      report.cronJob = job
-      if (!job) issues.push('Cron "process-email-queue" introuvable.')
-      else if (!job.active) issues.push('Cron "process-email-queue" désactivé.')
+    // 4. Verify cron job exists & active only while there are live messages to process.
+    // Lovable Emails schedules the processor on demand; when queues are empty,
+    // the cron job may be absent and that is a healthy idle state.
+    if (liveQueueDepth > 0) {
+      const { data: cronRows } = await supabase
+        .from('cron_job_status')
+        .select('*')
+      if (cronRows) {
+        const job = (cronRows as any[]).find((c) => c.jobname === 'process-email-queue')
+        report.cronJob = job
+        if (!job) issues.push('Cron "process-email-queue" introuvable alors que des emails sont en attente.')
+        else if (!job.active) issues.push('Cron "process-email-queue" désactivé alors que des emails sont en attente.')
+      }
+    } else {
+      report.cronJob = 'idle_not_required'
     }
 
     // 5. Send alert if any issue
