@@ -140,6 +140,12 @@ const getArticleImage = (imageName: string): string => {
   return imageMap[imageName] || blogKitesurfAction;
 };
 
+const getArticleOgImage = (imageName: string): string => {
+  const src = getArticleImage(imageName);
+  if (src.startsWith("http")) return src;
+  return `https://www.kitesurfpassion.fr${src}`;
+};
+
 // Article content data
 const articleContent: Record<string, { content: string; tags: string[] }> = {
   "week-end-kitesurf-hyeres-guide-complet": {
