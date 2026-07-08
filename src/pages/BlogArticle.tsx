@@ -5436,11 +5436,14 @@ Les deux disciplines sont **complémentaires** : de nombreux kitesurfeurs et [wi
 
 ## Réservez votre session e-foil à Hyères
 
-Envie de tester la sensation de vol silencieux au-dessus de la Méditerranée ? Notre équipe vous accueille sur la Presqu'île de Giens, matériel premium fourni, encadrement diplômé d'État inclus.
+Envie de tester la sensation de vol silencieux au-dessus de la Méditerranée ? Notre équipe vous accueille sur la Presqu'île de Giens, matériel premium fourni, encadrement diplômé d'État inclus. Vous pouvez [réserver votre session en ligne](/reserver) ou directement depuis la page dédiée.
 
 <a href="/efoil-assist-foil-hyeres" class="inline-block bg-sunset text-white font-bold px-6 py-3 rounded-lg hover:bg-sunset/90 transition-colors mt-4">Réserver ma session e-foil</a>
 
+Pour les groupes, les entreprises ou les événements privés, contactez-nous pour une [prestation personnalisée](/contact-reservation-kitesurf-hyeres).
+
 *KiteSurf Passion — École itinérante, Presqu'île de Giens, Hyères (83) — 06 72 71 69 05 — kitesurfpassion.fr*
+
 `,
     tags: ["E-Foil", "Hyères", "Almanarre", "Presqu'île de Giens", "Sans vent", "Foil électrique", "Location", "Glisse", "Var"],
   },
