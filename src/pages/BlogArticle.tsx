@@ -133,7 +133,7 @@ const imageMap: Record<string, string> = {
   "blog-pumpfoil-vol-mer-casque.jpg": blogPumpfoilVolMerCasque,
   "blog-logement-stage-kitesurf-hyeres.jpg": blogLogementStageKitesurfHyeres,
   "blog-week-end-kitesurf-hyeres-guide-complet.jpg": blogWeekEndKitesurfHyeres,
-  "blog-efoil-hyeres-vol-eau.jpg": blogEfoilHyeresVolEau,
+  "blog-efoil-hyeres-vol-eau.jpg": blogEfoilHyeresVolEau.url,
 };
 
 const getArticleImage = (imageName: string): string => {
