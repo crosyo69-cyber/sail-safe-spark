@@ -5411,7 +5411,7 @@ En général, les **premières sensations de vol arrivent en 20 à 30 minutes**.
 
 ## Les formules e-foil proposées par KiteSurf Passion
 
-Nous proposons une gamme complète pour découvrir, progresser ou offrir l'e-foil à Hyères :
+Nous proposons une gamme complète pour découvrir, progresser ou offrir [l'e-foil à Hyères](/efoil-assist-foil-hyeres) :
 
 - **Initiation découverte** (briefing + essai) — **49 €**
 - **Session 30 min** — **69 €**
@@ -5425,7 +5425,8 @@ Nous proposons une gamme complète pour découvrir, progresser ou offrir l'e-foi
 - Pack 5 séances (5×1h) — **525 €**
 - Pack 10 séances (10×1h) — **990 €**
 
-Sessions disponibles **de 10h à 19h**, uniquement par **vent inférieur à 10 nœuds** pour garantir votre sécurité et un vol de qualité. En cas de dépassement, un avoir ou un remboursement vous est proposé.
+Sessions disponibles **de 10h à 19h**, uniquement par **vent inférieur à 10 nœuds** pour garantir votre sécurité et un vol de qualité. En cas de dépassement, un avoir ou un remboursement vous est proposé. Consultez le détail des tarifs et options sur la page [E-Foil & Assist Foil Hyères](/efoil-assist-foil-hyeres).
+
 
 ## E-foil ou kitesurf : lequel choisir ?
 
