@@ -66,7 +66,7 @@ import blogPumpfoilRiderPlage from "@/assets/blog-pumpfoil-rider-plage-duotone.j
 import blogPumpfoilVolMerCasque from "@/assets/blog-pumpfoil-vol-mer-casque.jpg?webp";
 import blogLogementStageKitesurfHyeres from "@/assets/blog-logement-stage-kitesurf-hyeres.jpg?webp";
 import blogWeekEndKitesurfHyeres from "@/assets/blog-week-end-kitesurf-hyeres-guide-complet.jpg?webp";
-import blogEfoilHyeresVolEau from "@/assets/blog-efoil-hyeres-vol-eau.jpg?webp";
+import blogEfoilHyeresVolEau from "@/assets/efoil-duotone-midfish-hyeres-hero.jpg.asset.json";
 
 // Image mapping for dynamic resolution
 const imageMap: Record<string, string> = {
