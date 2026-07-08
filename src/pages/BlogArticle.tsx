@@ -140,6 +140,12 @@ const getArticleImage = (imageName: string): string => {
   return imageMap[imageName] || blogKitesurfAction;
 };
 
+const getArticleOgImage = (imageName: string): string => {
+  const src = getArticleImage(imageName);
+  if (src.startsWith("http")) return src;
+  return `https://www.kitesurfpassion.fr${src}`;
+};
+
 // Article content data
 const articleContent: Record<string, { content: string; tags: string[] }> = {
   "week-end-kitesurf-hyeres-guide-complet": {
@@ -5935,10 +5941,10 @@ const BlogArticle = () => {
         <meta property="og:description" content={article.excerpt} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`https://www.kitesurfpassion.fr/blog/${slug}`} />
-        <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
+        <meta property="og:image" content={getArticleOgImage(article.image)} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content={article.title} />
+        <meta property="og:image:alt" content={article.alt || article.title} />
         <meta property="og:site_name" content="KiteSurf Passion" />
         <meta property="og:locale" content="fr_FR" />
         <meta property="article:published_time" content={`${article.date}T08:00:00+01:00`} />
@@ -5948,8 +5954,8 @@ const BlogArticle = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${article.title} | KiteSurf Passion`} />
         <meta name="twitter:description" content={article.excerpt} />
-        <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
-        <meta name="twitter:image:alt" content={article.title} />
+        <meta name="twitter:image" content={getArticleOgImage(article.image)} />
+        <meta name="twitter:image:alt" content={article.alt || article.title} />
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
