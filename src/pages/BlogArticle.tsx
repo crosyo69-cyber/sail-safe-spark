@@ -5600,18 +5600,6 @@ const BlogArticle = () => {
   ];
 
   const faqData = slug ? articleFAQData[slug] : null;
-  const faqStructuredData = faqData ? {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqData.map(faq => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer,
-      },
-    })),
-  } : null;
 
   // Custom structured data for specific articles
   const customArticleStructuredData: Record<string, object> = {
@@ -5853,6 +5841,34 @@ const BlogArticle = () => {
       ],
     },
   };
+
+  const structuredDataContainsFAQPage = (data: object | null): boolean => {
+    if (!data) return false;
+    const nodes: any[] = [];
+    const walk = (node: any) => {
+      if (!node) return;
+      if (Array.isArray(node)) return node.forEach(walk);
+      nodes.push(node);
+      if (node["@graph"]) walk(node["@graph"]);
+    };
+    walk(data);
+    return nodes.some((n) => n?.["@type"] === "FAQPage");
+  };
+
+  const faqStructuredData = faqData && !structuredDataContainsFAQPage(slug && customArticleStructuredData[slug] ? customArticleStructuredData[slug] : null)
+    ? {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqData.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer,
+        },
+      })),
+    }
+    : null;
 
   const structuredData = slug && customArticleStructuredData[slug]
     ? customArticleStructuredData[slug]
