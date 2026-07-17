@@ -47,6 +47,7 @@ const Merci = lazyWithChunkRecovery(() => import("./pages/Merci"));
 const Admin = lazyWithChunkRecovery(() => import("./pages/Admin"));
 const MonEspace = lazyWithChunkRecovery(() => import("./pages/MonEspace"));
 const Reserver = lazyWithChunkRecovery(() => import("./pages/Reserver"));
+const OAuthConsent = lazyWithChunkRecovery(() => import("./pages/OAuthConsent"));
 // NotFound is handled inside LegacyRedirectHandler
 
 const queryClient = new QueryClient({
@@ -127,6 +128,7 @@ const App = () => {
                 <Route path="/mon-espace" element={<MonEspace />} />
                 <Route path="/mon-espace/:code" element={<MonEspace />} />
                 <Route path="/reserver" element={<Reserver />} />
+                 <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
                 {/* Legacy "Dernière Minute" routes redirect to the unified booking calendar */}
                 <Route path="/dernieres-minutes" element={<SEORedirect to="/reserver" statusCode={301} />} />
                 <Route path="/alerte-derniere-minute" element={<SEORedirect to="/reserver" statusCode={301} />} />
