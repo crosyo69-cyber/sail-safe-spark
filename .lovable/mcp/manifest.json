@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "sdk_version": "0.23.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://unqxudbxxzzmmbwwxwcr.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "kitesurf-passion-mcp",
+      "version": "0.1.0",
+      "title": "Kitesurf Passion"
+    },
+    "tools": [
+      {
+        "name": "get_school_info",
+        "title": "Get school info",
+        "description": "Return public information about Kitesurf Passion: school name, location, contact details, and the disciplines taught.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_my_reservations",
+        "title": "List my reservations",
+        "description": "List the signed-in user's Kitesurf Passion reservations (id, session, participants, skill level, status, dates).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
