@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Loader2, MailCheck, RefreshCw, CheckCircle2, Clock, AlertTriangle } from "lucide-react";
@@ -32,6 +32,10 @@ const Auth = () => {
   } | null>(null);
   const [statusLoading, setStatusLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  // Same-origin relative path only, to avoid open-redirect abuse.
+  const rawNext = searchParams.get("next") ?? "";
+  const nextTarget = rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "/";
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -39,18 +43,18 @@ const Auth = () => {
       // avec INITIAL_SESSION / TOKEN_REFRESHED qui renvoyait immédiatement
       // l'utilisateur en arrière, faisant "repartir" le formulaire).
       if (event === "SIGNED_IN" && session?.user) {
-        navigate("/", { replace: true });
+        navigate(nextTarget, { replace: true });
       }
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        navigate("/", { replace: true });
+        navigate(nextTarget, { replace: true });
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, nextTarget]);
 
   // Cooldown ticker (30s) pour éviter le spam Supabase rate-limit
   useEffect(() => {
