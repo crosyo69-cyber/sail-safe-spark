@@ -1,6 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
 import { defineTool, type ToolContext } from "@lovable.dev/mcp-js";
 
+// This module is bundled into a Deno edge function at build time; `process.env`
+// is provided by Deno at runtime. Declare it here so the app's TS config
+// (no @types/node) still typechecks.
+declare const process: { env: Record<string, string | undefined> };
+
 function supabaseForUser(ctx: ToolContext) {
   return createClient(
     process.env.SUPABASE_URL!,
