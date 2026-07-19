@@ -717,6 +717,7 @@ export type Database = {
         Args: { p_package_id: string; p_session_id: string }
         Returns: Json
       }
+      auto_generate_sessions: { Args: { p_days?: number }; Returns: Json }
       book_session_with_code: {
         Args: { p_code: string; p_session_id: string }
         Returns: Json
