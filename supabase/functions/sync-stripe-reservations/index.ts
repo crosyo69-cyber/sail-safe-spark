@@ -188,8 +188,25 @@ Deno.serve(async (req) => {
     const report: SyncEntry[] = [];
     for (const s of paid) {
       try {
-        report.push(await syncOne(supabase, s));
+        const entry = await syncOne(supabase, s);
+        if (entry.status === "error") {
+          console.error("sync-stripe-reservations syncOne failed", {
+            stripe_session_id: entry.stripe_session_id,
+            email: entry.email,
+            activity_name: entry.activity_name,
+            preferred_date: entry.preferred_date,
+            detail: entry.detail,
+          });
+        }
+        report.push(entry);
       } catch (e: any) {
+        console.error("sync-stripe-reservations syncOne threw", {
+          stripe_session_id: s.id,
+          email: s.customer_details?.email ?? null,
+          activity_name: s.metadata?.activity_name ?? null,
+          preferred_date: s.metadata?.preferred_date ?? null,
+          message: String(e?.message || e),
+        });
         report.push({
           stripe_session_id: s.id,
           email: s.customer_details?.email ?? null,
