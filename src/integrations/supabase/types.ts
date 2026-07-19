@@ -543,6 +543,36 @@ export type Database = {
           },
         ]
       }
+      session_generation_runs: {
+        Row: {
+          created_count: number
+          error_message: string | null
+          expected_min: number
+          id: string
+          metadata: Json
+          ok: boolean
+          ran_at: string
+        }
+        Insert: {
+          created_count?: number
+          error_message?: string | null
+          expected_min?: number
+          id?: string
+          metadata?: Json
+          ok: boolean
+          ran_at?: string
+        }
+        Update: {
+          created_count?: number
+          error_message?: string | null
+          expected_min?: number
+          id?: string
+          metadata?: Json
+          ok?: boolean
+          ran_at?: string
+        }
+        Relationships: []
+      }
       sessions: {
         Row: {
           activity: Database["public"]["Enums"]["activity_type"]
@@ -718,6 +748,10 @@ export type Database = {
         Returns: Json
       }
       auto_generate_sessions: { Args: { p_days?: number }; Returns: Json }
+      auto_generate_sessions_monitored: {
+        Args: { p_days?: number; p_expected_min?: number }
+        Returns: Json
+      }
       book_session_with_code: {
         Args: { p_code: string; p_session_id: string }
         Returns: Json
