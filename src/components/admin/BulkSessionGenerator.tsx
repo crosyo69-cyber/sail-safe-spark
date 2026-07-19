@@ -50,7 +50,7 @@ const BulkSessionGenerator = ({ onComplete }: BulkSessionGeneratorProps) => {
     d.setDate(d.getDate() + 14);
     return d;
   });
-  const [selectedDays, setSelectedDays] = useState<number[]>([1, 2, 3, 4, 5]); // Lun-Ven
+  const [selectedDays, setSelectedDays] = useState<number[]>([0, 1, 2, 3, 4, 5, 6]); // Tous les jours
   const [selectedSlots, setSelectedSlots] = useState<TimeSlot[]>(["morning", "early_afternoon"]);
   const [selectedActivities, setSelectedActivities] = useState<Activity[]>(["kitesurf"]);
   const [loading, setLoading] = useState(false);
