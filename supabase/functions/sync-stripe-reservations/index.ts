@@ -97,7 +97,6 @@ async function syncOne(
     .select("id")
     .eq("date", sessionDate)
     .eq("activity", activityEnum)
-    .eq("status", "open")
     .eq("time_slot", "morning")
     .limit(1);
 
@@ -118,9 +117,22 @@ async function syncOne(
       .select("id")
       .single();
     if (sErr || !created) {
-      return { ...base, status: "error", detail: `session create failed: ${sErr?.message}` };
+      // Race / pre-existing row with non-open status: fetch it regardless of status.
+      const { data: fallback } = await supabase
+        .from("sessions")
+        .select("id")
+        .eq("date", sessionDate)
+        .eq("activity", activityEnum)
+        .eq("time_slot", "morning")
+        .maybeSingle();
+      if (fallback?.id) {
+        sessionId = fallback.id;
+      } else {
+        return { ...base, status: "error", detail: `session create failed: ${sErr?.message}` };
+      }
+    } else {
+      sessionId = created.id;
     }
-    sessionId = created.id;
   }
 
   const { data: insRes, error: resErr } = await supabase
