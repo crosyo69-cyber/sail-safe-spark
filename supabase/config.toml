@@ -27,3 +27,5 @@ project_id = "unqxudbxxzzmmbwwxwcr"
     verify_jwt = true
   [functions.dispatch-admin-alerts]
     verify_jwt = true
+  [functions.sync-stripe-reservations]
+    verify_jwt = false
