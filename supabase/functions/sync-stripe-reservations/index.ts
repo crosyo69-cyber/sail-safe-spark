@@ -91,24 +91,26 @@ async function syncOne(
   const maxParticipants = MAX_BY_ACTIVITY[activityEnum] || 4;
   const sessionDate = preferredDate || new Date().toISOString().split("T")[0];
 
-  // Find or create session for that date + activity
-  const { data: existingSessions } = await supabase
-    .from("sessions")
-    .select("id")
-    .eq("date", sessionDate)
-    .eq("activity", activityEnum)
-    .eq("time_slot", "morning")
-    .limit(1);
+  // Try each time_slot in order — if morning is closed/full, fall back to
+  // afternoon slots so paid customers don't stay stuck forever.
+  const SLOTS: Array<"morning" | "early_afternoon" | "late_afternoon"> = [
+    "morning", "early_afternoon", "late_afternoon",
+  ];
 
-  let sessionId: string | null = null;
-  if (existingSessions && existingSessions.length > 0) {
-    sessionId = existingSessions[0].id;
-  } else {
+  async function findOrCreateSession(slot: string): Promise<{ id: string | null; err?: string }> {
+    const { data: existing } = await supabase
+      .from("sessions")
+      .select("id, status")
+      .eq("date", sessionDate)
+      .eq("activity", activityEnum)
+      .eq("time_slot", slot)
+      .maybeSingle();
+    if (existing?.id) return { id: existing.id };
     const { data: created, error: sErr } = await supabase
       .from("sessions")
       .insert({
         date: sessionDate,
-        time_slot: "morning",
+        time_slot: slot,
         activity: activityEnum,
         max_participants: maxParticipants,
         status: "open",
@@ -116,53 +118,69 @@ async function syncOne(
       })
       .select("id")
       .single();
-    if (sErr || !created) {
-      // Race / pre-existing row with non-open status: fetch it regardless of status.
-      const { data: fallback } = await supabase
-        .from("sessions")
-        .select("id")
-        .eq("date", sessionDate)
-        .eq("activity", activityEnum)
-        .eq("time_slot", "morning")
-        .maybeSingle();
-      if (fallback?.id) {
-        sessionId = fallback.id;
-      } else {
-        return { ...base, status: "error", detail: `session create failed: ${sErr?.message}` };
-      }
-    } else {
-      sessionId = created.id;
-    }
+    if (created?.id) return { id: created.id };
+    // Race: someone inserted it concurrently
+    const { data: fb } = await supabase
+      .from("sessions").select("id")
+      .eq("date", sessionDate).eq("activity", activityEnum).eq("time_slot", slot)
+      .maybeSingle();
+    return { id: fb?.id ?? null, err: sErr?.message };
   }
 
-  const { data: insRes, error: resErr } = await supabase
-    .from("reservations")
-    .insert({
-      session_id: sessionId,
-      first_name: firstName,
-      last_name: lastName,
-      email: customerEmail,
-      phone,
-      skill_level: "debutant",
-      participants,
-      status: "confirmed",
-      stripe_session_id: session.id,
-      notes: `Acompte ${participants * 50}€ payé via Stripe – ${activityName || activityEnum} (sync auto)`,
-    })
-    .select("id")
-    .single();
+  let lastErr = "";
+  for (const slot of SLOTS) {
+    const { id: sessionId, err: findErr } = await findOrCreateSession(slot);
+    if (!sessionId) { lastErr = findErr || "session lookup failed"; continue; }
 
-  if (resErr) {
-    // Race condition: another worker just inserted the same one
-    if (String(resErr.message || "").toLowerCase().includes("duplicate")) {
+    const { data: insRes, error: resErr } = await supabase
+      .from("reservations")
+      .insert({
+        session_id: sessionId,
+        first_name: firstName,
+        last_name: lastName,
+        email: customerEmail,
+        phone,
+        skill_level: "debutant",
+        participants,
+        status: "confirmed",
+        stripe_session_id: session.id,
+        notes: `Acompte ${participants * 50}€ payé via Stripe – ${activityName || activityEnum} (sync auto${slot !== "morning" ? `, créneau ${slot}` : ""})`,
+      })
+      .select("id")
+      .single();
+
+    if (!resErr) return { ...base, status: "inserted", reservation_id: insRes?.id };
+
+    const msg = String(resErr.message || "").toLowerCase();
+    if (msg.includes("duplicate")) {
       const { data: ex2 } = await supabase
         .from("reservations").select("id").eq("stripe_session_id", session.id).maybeSingle();
       return { ...base, status: "already_synced", reservation_id: ex2?.id };
     }
-    return { ...base, status: "error", detail: `reservation insert failed: ${resErr.message}` };
+    lastErr = resErr.message;
+    // Only fall through to next slot when the session/slot is unavailable.
+    if (!msg.includes("session_closed") && !msg.includes("slot_full")) break;
   }
 
-  return { ...base, status: "inserted", reservation_id: insRes?.id };
+  // All slots exhausted — notify admins once (idempotent via ref_key) so a
+  // human can manually reopen a session, refund, or contact the customer,
+  // instead of the cron retrying and error-logging forever.
+  await supabase.rpc("enqueue_admin_notification", {
+    p_kind: "stripe_webhook_error",
+    p_severity: "warning",
+    p_title: "Réservation Stripe bloquée — session complète",
+    p_body: `Paiement Stripe reçu mais aucune session disponible pour ${activityName || activityEnum} le ${sessionDate}. Rouvrir un créneau ou contacter ${customerEmail} (${phone}).`,
+    p_metadata: {
+      stripe_session_id: session.id,
+      email: customerEmail,
+      activity: activityEnum,
+      date: sessionDate,
+      participants,
+    },
+    p_ref_key: `stripe_stuck:${session.id}`,
+  }).catch(() => { /* best-effort — notification signature may differ */ });
+
+  return { ...base, status: "error", detail: `reservation insert failed: ${lastErr || "all slots closed"}` };
 }
 
 Deno.serve(async (req) => {
