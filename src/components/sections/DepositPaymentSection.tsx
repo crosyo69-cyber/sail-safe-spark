@@ -210,6 +210,7 @@ const DepositPaymentSection = () => {
               return (
                 <div
                   key={activity.id}
+                  id={`deposit-${activity.id}`}
                   className="bg-card border border-border rounded-2xl p-6 flex flex-col hover:border-primary/50 transition-colors"
                 >
                   <div className="w-12 h-12 mb-4 bg-gradient-to-br from-primary/20 to-turquoise/20 rounded-xl flex items-center justify-center">
