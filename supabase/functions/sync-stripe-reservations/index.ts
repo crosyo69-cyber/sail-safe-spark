@@ -130,9 +130,38 @@ async function syncOne(
   let lastErr = "";
   let preferredClosed = false;
   let preferredClosedReason = "";
+  const slotAttempts: Array<{
+    slot: string;
+    session_id: string | null;
+    outcome: "assigned" | "closed" | "full" | "lookup_failed" | "error";
+    detail?: string;
+    occupancy?: any;
+  }> = [];
+
+  const SLOT_LABEL: Record<string, string> = {
+    morning: "Matin",
+    early_afternoon: "Début d'après-midi",
+    late_afternoon: "Fin d'après-midi",
+  };
+  const fullName = `${firstName} ${lastName}`.trim();
+  const amountEuros = ((session.amount_total ?? participants * 5000) / 100).toFixed(2);
+
   for (const slot of SLOTS) {
     const { id: sessionId, err: findErr } = await findOrCreateSession(slot);
-    if (!sessionId) { lastErr = findErr || "session lookup failed"; continue; }
+    if (!sessionId) {
+      lastErr = findErr || "session lookup failed";
+      slotAttempts.push({ slot, session_id: null, outcome: "lookup_failed", detail: lastErr });
+      continue;
+    }
+
+    // Snapshot occupancy for diagnostics (best-effort).
+    let occupancy: any = undefined;
+    try {
+      const { data: occ } = await supabase.rpc("get_slot_occupancy", {
+        p_date: sessionDate, p_slot: slot,
+      });
+      occupancy = occ;
+    } catch { /* ignore */ }
 
     const { data: insRes, error: resErr } = await supabase
       .from("reservations")
@@ -152,24 +181,40 @@ async function syncOne(
       .single();
 
     if (!resErr) {
+      slotAttempts.push({ slot, session_id: sessionId, outcome: "assigned", occupancy });
       // If the customer's preferred (morning) slot was closed/full and we
       // silently placed them on an afternoon fallback, still alert admins so
       // they can confirm the schedule change with the customer.
       if (preferredClosed && slot !== "morning") {
+        const alternativesTried = slotAttempts
+          .filter(a => a.slot !== slot)
+          .map(a => `${SLOT_LABEL[a.slot] || a.slot} → ${a.outcome}`).join(" · ");
         await supabase.rpc("enqueue_admin_notification", {
           p_kind: "stripe_webhook_error",
           p_severity: "info",
-          p_title: "Réservation Stripe basculée — créneau initial complet",
-          p_body: `Le créneau du matin étant complet pour ${activityName || activityEnum} le ${sessionDate}, la réservation de ${customerEmail} (${phone}) a été placée sur "${slot}". Confirmez le changement avec le client.`,
+          p_title: `Basculement créneau — ${fullName || customerEmail} (${activityName || activityEnum})`,
+          p_body:
+            `👤 ${fullName || "?"} · ${customerEmail} · ${phone}\n` +
+            `🪁 ${activityName || activityEnum} · ${participants} pers · ${amountEuros}€\n` +
+            `📅 ${sessionDate} — créneau demandé : Matin (${preferredClosedReason})\n` +
+            `✅ Placé sur : ${SLOT_LABEL[slot] || slot}\n` +
+            `🔎 Créneaux testés : ${alternativesTried || "—"}\n` +
+            `🔗 Stripe : ${session.id}`,
           p_metadata: {
             stripe_session_id: session.id,
+            customer_name: fullName,
+            phone,
             email: customerEmail,
+            activity_name: activityName,
             activity: activityEnum,
             date: sessionDate,
             preferred_slot: "morning",
             assigned_slot: slot,
+            assigned_session_id: sessionId,
             participants,
+            amount_eur: Number(amountEuros),
             reason: preferredClosedReason,
+            slot_attempts: slotAttempts,
           },
           p_ref_key: `stripe_slot_shift:${session.id}`,
         }).catch(() => {});
@@ -184,6 +229,11 @@ async function syncOne(
       return { ...base, status: "already_synced", reservation_id: ex2?.id };
     }
     lastErr = resErr.message;
+    const outcome: "closed" | "full" | "error" =
+      msg.includes("slot_full") ? "full"
+      : msg.includes("session_closed") ? "closed"
+      : "error";
+    slotAttempts.push({ slot, session_id: sessionId, outcome, detail: resErr.message, occupancy });
     // Only fall through to next slot when the session/slot is unavailable.
     if (!msg.includes("session_closed") && !msg.includes("slot_full")) break;
     if (slot === "morning") {
@@ -195,17 +245,33 @@ async function syncOne(
   // All slots exhausted — notify admins once (idempotent via ref_key) so a
   // human can manually reopen a session, refund, or contact the customer,
   // instead of the cron retrying and error-logging forever.
+  const attemptsSummary = slotAttempts
+    .map(a => `${SLOT_LABEL[a.slot] || a.slot} → ${a.outcome}`).join(" · ");
   await supabase.rpc("enqueue_admin_notification", {
     p_kind: "stripe_webhook_error",
     p_severity: "warning",
-    p_title: "Réservation Stripe bloquée — session complète",
-    p_body: `Paiement Stripe reçu mais aucune session disponible pour ${activityName || activityEnum} le ${sessionDate}. Rouvrir un créneau ou contacter ${customerEmail} (${phone}).`,
+    p_title: `Réservation Stripe bloquée — ${fullName || customerEmail} (${activityName || activityEnum})`,
+    p_body:
+      `👤 ${fullName || "?"} · ${customerEmail} · ${phone}\n` +
+      `🪁 ${activityName || activityEnum} · ${participants} pers · ${amountEuros}€\n` +
+      `📅 ${sessionDate} — tous les créneaux indisponibles\n` +
+      `🔎 Créneaux testés : ${attemptsSummary || "—"}\n` +
+      `⚠️  Dernière erreur : ${lastErr || "all slots closed"}\n` +
+      `➡️  Action : rouvrir un créneau, contacter le client ou rembourser.\n` +
+      `🔗 Stripe : ${session.id}`,
     p_metadata: {
       stripe_session_id: session.id,
+      customer_name: fullName,
+      phone,
       email: customerEmail,
+      activity_name: activityName,
       activity: activityEnum,
       date: sessionDate,
+      preferred_slot: "morning",
       participants,
+      amount_eur: Number(amountEuros),
+      last_error: lastErr,
+      slot_attempts: slotAttempts,
     },
     p_ref_key: `stripe_stuck:${session.id}`,
   }).catch(() => { /* best-effort — notification signature may differ */ });
