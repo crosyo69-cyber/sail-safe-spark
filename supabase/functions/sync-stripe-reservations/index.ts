@@ -247,6 +247,124 @@ async function syncOne(
   // instead of the cron retrying and error-logging forever.
   const attemptsSummary = slotAttempts
     .map(a => `${SLOT_LABEL[a.slot] || a.slot} → ${a.outcome}`).join(" · ");
+
+  // Find real availabilities in the next 14 days for the same activity so the
+  // customer email can propose concrete alternatives instead of a generic
+  // "contact us" message.
+  type Alt = { date: string; time_slot: string; taken: number; capacity: number };
+  const alternatives: Alt[] = [];
+  try {
+    const from = sessionDate;
+    const toDate = new Date(sessionDate + "T00:00:00Z");
+    toDate.setUTCDate(toDate.getUTCDate() + 14);
+    const to = toDate.toISOString().split("T")[0];
+    const { data: candidates } = await supabase
+      .from("sessions")
+      .select("date, time_slot, status")
+      .eq("activity", activityEnum)
+      .eq("status", "open")
+      .gte("date", from)
+      .lte("date", to)
+      .order("date", { ascending: true })
+      .limit(50);
+    for (const c of (candidates || [])) {
+      if (c.date === sessionDate) continue; // same day already tried
+      const { data: occ } = await supabase.rpc("get_slot_occupancy", {
+        p_date: c.date, p_slot: c.time_slot,
+      });
+      const capacity = Number((occ as any)?.capacity ?? 0);
+      const taken = Number((occ as any)?.taken ?? 0);
+      if (capacity > 0 && taken < capacity) {
+        alternatives.push({ date: c.date, time_slot: c.time_slot, taken, capacity });
+        if (alternatives.length >= 6) break;
+      }
+    }
+  } catch { /* best-effort */ }
+
+  // Send customer email once (idempotent via deterministic message_id).
+  try {
+    const msgId = `stripe-stuck-${session.id}`;
+    const { data: already } = await supabase
+      .from("email_send_log")
+      .select("message_id")
+      .eq("message_id", msgId)
+      .maybeSingle();
+    if (!already && customerEmail) {
+      const fmtDate = (d: string) => {
+        const [y, m, day] = d.split("-");
+        return `${day}/${m}/${y}`;
+      };
+      const activityLabel = activityName || activityEnum;
+      const altRows = alternatives.length
+        ? alternatives.map(a => `
+            <tr><td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;color:#0F172A;font-size:14px;">
+              <strong>${fmtDate(a.date)}</strong> · ${SLOT_LABEL[a.time_slot] || a.time_slot}
+              <span style="color:#64748B;">— ${a.capacity - a.taken} place(s)</span>
+            </td></tr>`).join("")
+        : `<tr><td style="padding:12px;color:#64748B;font-size:14px;">Aucun créneau libre dans les 14 prochains jours — contactez-nous au 06 72 71 69 05.</td></tr>`;
+
+      const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#fff;font-family:Montserrat,Inter,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;">
+<tr><td style="background:#0F172A;padding:24px;text-align:center;">
+<img src="https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png" alt="KiteSurf Passion" width="180"/></td></tr>
+<tr><td style="padding:32px 25px 0;">
+<h1 style="font-size:22px;color:#0F172A;margin:0 0 12px;">Bonjour ${firstName},</h1>
+<p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 12px;">
+Nous avons bien reçu votre acompte pour <strong>${activityLabel}</strong> le <strong>${fmtDate(sessionDate)}</strong>.
+Malheureusement, tous les créneaux de cette journée sont désormais complets — nous ne pouvons pas confirmer cette date.
+</p>
+<p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 16px;">
+✅ <strong>Votre acompte est conservé.</strong> Choisissez ci-dessous un créneau alternatif, ou répondez à cet email pour un remboursement.
+</p>
+</td></tr>
+<tr><td style="padding:0 25px 16px;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;border-radius:12px;overflow:hidden;">
+<tr><td style="padding:12px;background:#0891B2;color:#fff;font-weight:bold;font-size:13px;letter-spacing:1px;text-transform:uppercase;">
+Créneaux disponibles</td></tr>
+${altRows}
+</table></td></tr>
+<tr><td style="padding:0 25px 24px;">
+<a href="https://www.kitesurfpassion.fr/reserver" style="display:inline-block;background:#F97316;color:#fff;font-weight:bold;border-radius:10px;padding:12px 24px;text-decoration:none;">Voir tous les créneaux</a>
+<p style="font-size:13px;color:#64748B;margin:16px 0 0;">Ou appelez-nous au <strong>06 72 71 69 05</strong> — nous replacerons votre acompte manuellement.</p>
+</td></tr>
+<tr><td style="background:#0F172A;padding:16px 25px;text-align:center;">
+<p style="font-size:12px;color:#94a3b8;margin:0;">📍 Spot de l'Almanarre, Hyères · Kitesurf Passion depuis 1999</p>
+</td></tr></table></body></html>`;
+
+      const text = `Bonjour ${firstName},\n\nVotre acompte pour ${activityLabel} le ${fmtDate(sessionDate)} est bien reçu, mais tous les créneaux de la journée sont complets.\n\n` +
+        (alternatives.length
+          ? `Créneaux alternatifs :\n${alternatives.map(a => `- ${fmtDate(a.date)} ${SLOT_LABEL[a.time_slot] || a.time_slot} (${a.capacity - a.taken} place(s))`).join("\n")}\n\nRéservez sur https://www.kitesurfpassion.fr/reserver`
+          : `Aucun créneau libre sous 14 jours — appelez-nous au 06 72 71 69 05.`) +
+        `\n\nVotre acompte est conservé.`;
+
+      await supabase.rpc("enqueue_email", {
+        queue_name: "transactional_emails",
+        payload: {
+          run_id: crypto.randomUUID(),
+          message_id: msgId,
+          to: customerEmail,
+          from: "KiteSurf Passion <noreply@kitesurfpassion.fr>",
+          sender_domain: "kitesurfpassion.fr",
+          subject: `Session complète — alternatives pour votre ${activityLabel}`,
+          html,
+          text,
+          purpose: "transactional",
+          label: "stripe-stuck-alternatives",
+          queued_at: new Date().toISOString(),
+        },
+      });
+      await supabase.from("email_send_log").insert({
+        message_id: msgId,
+        template_name: "stripe-stuck-alternatives",
+        recipient_email: customerEmail,
+        status: "pending",
+      });
+    }
+  } catch (e) {
+    console.error("stripe-stuck customer email failed", { stripe_session_id: session.id, err: String((e as any)?.message || e) });
+  }
+
   await supabase.rpc("enqueue_admin_notification", {
     p_kind: "stripe_webhook_error",
     p_severity: "warning",
