@@ -295,11 +295,27 @@ async function syncOne(
         return `${day}/${m}/${y}`;
       };
       const activityLabel = activityName || activityEnum;
+      const resumeBase = "https://www.kitesurfpassion.fr/contact";
+      const resumeParams = (extra: Record<string, string> = {}) => {
+        const p = new URLSearchParams({
+          activity: activityEnum,
+          participants: String(participants),
+          email: customerEmail,
+          name: fullName,
+          ref: session.id.slice(-8),
+          ...extra,
+        });
+        return `${resumeBase}?${p.toString()}`;
+      };
+      const resumeUrl = resumeParams();
       const altRows = alternatives.length
         ? alternatives.map(a => `
-            <tr><td style="padding:8px 12px;border-bottom:1px solid #e2e8f0;color:#0F172A;font-size:14px;">
-              <strong>${fmtDate(a.date)}</strong> · ${SLOT_LABEL[a.time_slot] || a.time_slot}
-              <span style="color:#64748B;">— ${a.capacity - a.taken} place(s)</span>
+            <tr><td style="padding:0;border-bottom:1px solid #e2e8f0;">
+              <a href="${resumeParams({ date: a.date, slot: a.time_slot })}" style="display:block;padding:10px 12px;color:#0F172A;font-size:14px;text-decoration:none;">
+                <strong>${fmtDate(a.date)}</strong> · ${SLOT_LABEL[a.time_slot] || a.time_slot}
+                <span style="color:#64748B;">— ${a.capacity - a.taken} place(s)</span>
+                <span style="float:right;color:#0891B2;font-weight:bold;">Réserver →</span>
+              </a>
             </td></tr>`).join("")
         : `<tr><td style="padding:12px;color:#64748B;font-size:14px;">Aucun créneau libre dans les 14 prochains jours — contactez-nous au 06 72 71 69 05.</td></tr>`;
 
@@ -315,26 +331,30 @@ Nous avons bien reçu votre acompte pour <strong>${activityLabel}</strong> le <s
 Malheureusement, tous les créneaux de cette journée sont désormais complets — nous ne pouvons pas confirmer cette date.
 </p>
 <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 16px;">
-✅ <strong>Votre acompte est conservé.</strong> Choisissez ci-dessous un créneau alternatif, ou répondez à cet email pour un remboursement.
+✅ <strong>Votre acompte est conservé.</strong> Cliquez sur le bouton ci-dessous pour reprendre votre réservation en un clic — vos informations sont pré-remplies.
 </p>
+<div style="text-align:center;margin:0 0 8px;">
+<a href="${resumeUrl}" style="display:inline-block;background:#F97316;color:#fff;font-weight:bold;border-radius:10px;padding:14px 28px;text-decoration:none;font-size:15px;">🔄 Reprendre ma réservation</a>
+</div>
+<p style="font-size:12px;color:#94a3b8;text-align:center;margin:0 0 8px;">Réf. paiement : ${session.id.slice(-8)}</p>
 </td></tr>
 <tr><td style="padding:0 25px 16px;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;border-radius:12px;overflow:hidden;">
 <tr><td style="padding:12px;background:#0891B2;color:#fff;font-weight:bold;font-size:13px;letter-spacing:1px;text-transform:uppercase;">
-Créneaux disponibles</td></tr>
+Créneaux disponibles (cliquez pour réserver)</td></tr>
 ${altRows}
 </table></td></tr>
 <tr><td style="padding:0 25px 24px;">
-<a href="https://www.kitesurfpassion.fr/reserver" style="display:inline-block;background:#F97316;color:#fff;font-weight:bold;border-radius:10px;padding:12px 24px;text-decoration:none;">Voir tous les créneaux</a>
-<p style="font-size:13px;color:#64748B;margin:16px 0 0;">Ou appelez-nous au <strong>06 72 71 69 05</strong> — nous replacerons votre acompte manuellement.</p>
+<p style="font-size:13px;color:#64748B;margin:0;">Une question ? Appelez-nous au <strong>06 72 71 69 05</strong> — nous replacerons votre acompte manuellement.</p>
 </td></tr>
 <tr><td style="background:#0F172A;padding:16px 25px;text-align:center;">
 <p style="font-size:12px;color:#94a3b8;margin:0;">📍 Spot de l'Almanarre, Hyères · Kitesurf Passion depuis 1999</p>
 </td></tr></table></body></html>`;
 
       const text = `Bonjour ${firstName},\n\nVotre acompte pour ${activityLabel} le ${fmtDate(sessionDate)} est bien reçu, mais tous les créneaux de la journée sont complets.\n\n` +
+        `🔄 Reprendre ma réservation : ${resumeUrl}\n\n` +
         (alternatives.length
-          ? `Créneaux alternatifs :\n${alternatives.map(a => `- ${fmtDate(a.date)} ${SLOT_LABEL[a.time_slot] || a.time_slot} (${a.capacity - a.taken} place(s))`).join("\n")}\n\nRéservez sur https://www.kitesurfpassion.fr/reserver`
+          ? `Créneaux alternatifs (liens directs) :\n${alternatives.map(a => `- ${fmtDate(a.date)} ${SLOT_LABEL[a.time_slot] || a.time_slot} (${a.capacity - a.taken} place(s)) : ${resumeParams({ date: a.date, slot: a.time_slot })}`).join("\n")}`
           : `Aucun créneau libre sous 14 jours — appelez-nous au 06 72 71 69 05.`) +
         `\n\nVotre acompte est conservé.`;
 

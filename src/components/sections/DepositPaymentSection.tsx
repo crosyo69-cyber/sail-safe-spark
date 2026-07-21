@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -68,6 +68,44 @@ const DepositPaymentSection = () => {
   const [phones, setPhones] = useState<Record<string, string>>({});
   const [names, setNames] = useState<Record<string, string>>({});
   const [packSessions, setPackSessions] = useState<Record<string, number>>({});
+
+  // Resume link from admin/customer email after a stuck Stripe payment:
+  // /contact?activity=kitesurf&date=YYYY-MM-DD&participants=2&name=…&email=…&ref=…#reservation
+  useEffect(() => {
+    const qp = new URLSearchParams(window.location.search);
+    const activityEnum = qp.get("activity");
+    if (!activityEnum) return;
+    const ENUM_TO_ID: Record<string, string> = {
+      kitesurf: "cours-particulier",
+      wingfoil: "stage-wingfoil",
+      stage_100_glisse: "stage-100-glisse",
+      foil_tracte: "foil-tracte",
+      pumpfoil: "foil-tracte",
+    };
+    const id = ENUM_TO_ID[activityEnum];
+    if (!id) return;
+    const name = qp.get("name") || "";
+    const dateStr = qp.get("date");
+    const p = parseInt(qp.get("participants") || "", 10);
+    setNames((prev) => (prev[id] ? prev : { ...prev, [id]: name }));
+    if (Number.isFinite(p) && p >= 1) {
+      setParticipants((prev) => ({ ...prev, [id]: Math.min(6, Math.max(1, p)) }));
+    }
+    if (dateStr) {
+      const [y, m, d] = dateStr.split("-").map((n) => parseInt(n, 10));
+      if (y && m && d) {
+        const dt = new Date(y, m - 1, d);
+        if (!isNaN(dt.getTime())) {
+          setSelectedDates((prev) => ({ ...prev, [id]: dt }));
+        }
+      }
+    }
+    // Scroll to the matching activity card once mounted
+    requestAnimationFrame(() => {
+      const el = document.getElementById(`deposit-${id}`);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }, []);
 
   const getCount = (id: string) => participants[id] || 1;
 
@@ -172,6 +210,7 @@ const DepositPaymentSection = () => {
               return (
                 <div
                   key={activity.id}
+                  id={`deposit-${activity.id}`}
                   className="bg-card border border-border rounded-2xl p-6 flex flex-col hover:border-primary/50 transition-colors"
                 >
                   <div className="w-12 h-12 mb-4 bg-gradient-to-br from-primary/20 to-turquoise/20 rounded-xl flex items-center justify-center">
