@@ -295,7 +295,7 @@ async function syncOne(
         return `${day}/${m}/${y}`;
       };
       const activityLabel = activityName || activityEnum;
-      const resumeBase = "https://www.kitesurfpassion.fr/reserver";
+      const resumeBase = "https://www.kitesurfpassion.fr/contact";
       const resumeParams = (extra: Record<string, string> = {}) => {
         const p = new URLSearchParams({
           activity: activityEnum,
