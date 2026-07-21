@@ -128,6 +128,8 @@ async function syncOne(
   }
 
   let lastErr = "";
+  let preferredClosed = false;
+  let preferredClosedReason = "";
   for (const slot of SLOTS) {
     const { id: sessionId, err: findErr } = await findOrCreateSession(slot);
     if (!sessionId) { lastErr = findErr || "session lookup failed"; continue; }
@@ -149,7 +151,31 @@ async function syncOne(
       .select("id")
       .single();
 
-    if (!resErr) return { ...base, status: "inserted", reservation_id: insRes?.id };
+    if (!resErr) {
+      // If the customer's preferred (morning) slot was closed/full and we
+      // silently placed them on an afternoon fallback, still alert admins so
+      // they can confirm the schedule change with the customer.
+      if (preferredClosed && slot !== "morning") {
+        await supabase.rpc("enqueue_admin_notification", {
+          p_kind: "stripe_webhook_error",
+          p_severity: "info",
+          p_title: "Réservation Stripe basculée — créneau initial complet",
+          p_body: `Le créneau du matin étant complet pour ${activityName || activityEnum} le ${sessionDate}, la réservation de ${customerEmail} (${phone}) a été placée sur "${slot}". Confirmez le changement avec le client.`,
+          p_metadata: {
+            stripe_session_id: session.id,
+            email: customerEmail,
+            activity: activityEnum,
+            date: sessionDate,
+            preferred_slot: "morning",
+            assigned_slot: slot,
+            participants,
+            reason: preferredClosedReason,
+          },
+          p_ref_key: `stripe_slot_shift:${session.id}`,
+        }).catch(() => {});
+      }
+      return { ...base, status: "inserted", reservation_id: insRes?.id };
+    }
 
     const msg = String(resErr.message || "").toLowerCase();
     if (msg.includes("duplicate")) {
@@ -160,6 +186,10 @@ async function syncOne(
     lastErr = resErr.message;
     // Only fall through to next slot when the session/slot is unavailable.
     if (!msg.includes("session_closed") && !msg.includes("slot_full")) break;
+    if (slot === "morning") {
+      preferredClosed = true;
+      preferredClosedReason = msg.includes("slot_full") ? "slot_full" : "session_closed";
+    }
   }
 
   // All slots exhausted — notify admins once (idempotent via ref_key) so a
