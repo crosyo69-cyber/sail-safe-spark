@@ -73,8 +73,21 @@ const DepositPaymentSection = () => {
   // /contact?activity=kitesurf&date=YYYY-MM-DD&participants=2&name=…&email=…&ref=…#reservation
   useEffect(() => {
     const qp = new URLSearchParams(window.location.search);
-    const activityEnum = qp.get("activity");
-    if (!activityEnum) return;
+    const activityParam = qp.get("activity");
+    if (!activityParam) return;
+    // Accept both the card id (new links, unambiguous) and the legacy DB enum
+    // (older resume emails still in inboxes). The card-id form is preferred
+    // because the DB enum is many-to-one and would otherwise land rental /
+    // sea-drop customers on the Cours Particulier card.
+    const VALID_IDS = new Set([
+      "cours-particulier",
+      "stage-100-glisse",
+      "cours-carte",
+      "stage-wingfoil",
+      "location-materiel",
+      "foil-tracte",
+      "deposes-mer",
+    ]);
     const ENUM_TO_ID: Record<string, string> = {
       kitesurf: "cours-particulier",
       wingfoil: "stage-wingfoil",
@@ -82,7 +95,7 @@ const DepositPaymentSection = () => {
       foil_tracte: "foil-tracte",
       pumpfoil: "foil-tracte",
     };
-    const id = ENUM_TO_ID[activityEnum];
+    const id = VALID_IDS.has(activityParam) ? activityParam : ENUM_TO_ID[activityParam];
     if (!id) return;
     const name = qp.get("name") || "";
     const dateStr = qp.get("date");
