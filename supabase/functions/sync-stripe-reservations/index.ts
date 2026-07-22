@@ -38,6 +38,23 @@ function mapActivityToEnum(activityName: string): string {
   return "kitesurf";
 }
 
+// Maps the human-readable Stripe activity name back to the DepositPaymentSection
+// card id (see `activities` in src/components/sections/DepositPaymentSection.tsx).
+// This is intentionally separate from `mapActivityToEnum` because the DB `activity`
+// enum is many-to-one (e.g. "location matériel" → "kitesurf") and would otherwise
+// send a rental customer back to the wrong product card.
+function mapActivityToResumeId(activityName: string): string {
+  const n = (activityName || "").toLowerCase().trim();
+  if (n.includes("100% glisse") || n.includes("100%glisse") || n.includes("stage 100")) return "stage-100-glisse";
+  if (n.includes("à la carte") || n.includes("a la carte") || n.includes("carte")) return "cours-carte";
+  if (n.includes("wing")) return "stage-wingfoil";
+  if (n.includes("location")) return "location-materiel";
+  if (n.includes("dépose") || n.includes("depose")) return "deposes-mer";
+  if (n.includes("foil trac") || n.includes("tracté") || n.includes("tracte")) return "foil-tracte";
+  if (n.includes("particulier") || n.includes("kite")) return "cours-particulier";
+  return "cours-particulier";
+}
+
 type SyncEntry = {
   stripe_session_id: string;
   email: string | null;
@@ -295,10 +312,11 @@ async function syncOne(
         return `${day}/${m}/${y}`;
       };
       const activityLabel = activityName || activityEnum;
+      const resumeActivityId = mapActivityToResumeId(activityName || "");
       const resumeBase = "https://www.kitesurfpassion.fr/contact";
       const resumeParams = (extra: Record<string, string> = {}) => {
         const p = new URLSearchParams({
-          activity: activityEnum,
+          activity: resumeActivityId,
           participants: String(participants),
           email: customerEmail,
           name: fullName,
