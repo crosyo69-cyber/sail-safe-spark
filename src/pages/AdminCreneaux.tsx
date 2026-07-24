@@ -49,9 +49,19 @@ const ACTIVITY_MAX: Partial<Record<Activity, number>> = {
 };
 const STATUS_LABEL: Record<string, string> = {
   open: "Ouverte",
-  closed: "Complète",
+  closed: "Fermée",
   cancelled: "Annulée",
 };
+
+// Libellé calculé à partir des données réelles (statut + occupation)
+function effectiveStatus(s: { status: string; max_participants: number }, occ: number):
+  { key: "cancelled" | "full" | "empty_closed" | "closed" | "open"; label: string } {
+  if (s.status === "cancelled") return { key: "cancelled", label: "Annulée" };
+  if (occ >= s.max_participants && s.max_participants > 0) return { key: "full", label: "Complète" };
+  if (s.status === "closed" && occ === 0) return { key: "empty_closed", label: "Fermée (vide)" };
+  if (s.status === "closed") return { key: "closed", label: "Fermée" };
+  return { key: "open", label: "Ouverte" };
+}
 
 interface Reservation {
   id: string;
@@ -166,43 +176,45 @@ const AdminCreneaux = () => {
 
   const anomalies = useMemo(() => {
     const overCap: Session[] = [];
-    const dualActivity: string[] = [];
     const staleAuto: Session[] = [];
+    const emptyClosed: Session[] = [];
     const now = Date.now();
-    const allByKey = new Map<string, Session[]>();
     for (const s of sessions) {
-      if (occupancy(s) > s.max_participants) overCap.push(s);
+      const occ = occupancy(s);
+      if (occ > s.max_participants) overCap.push(s);
       const isAuto = (s.notes || "").toLowerCase().includes("auto-créée");
       const ageDays = (now - new Date(s.created_at).getTime()) / 86400000;
-      if (isAuto && ageDays > 7 && occupancy(s) === 0) staleAuto.push(s);
-      const k = slotKey(s.date, s.time_slot);
-      const arr = allByKey.get(k) || [];
-      arr.push(s);
-      allByKey.set(k, arr);
+      if (isAuto && ageDays > 7 && occ === 0) staleAuto.push(s);
+      if (s.status === "closed" && occ === 0 && s.date >= format(new Date(), "yyyy-MM-dd")) {
+        emptyClosed.push(s);
+      }
     }
-    for (const [k, arr] of allByKey) {
-      const activeActs = new Set(arr.filter(s => s.status !== "cancelled").map(s => s.activity));
-      if (activeActs.size > 1) dualActivity.push(k);
-    }
-    return { overCap, dualActivity, staleAuto };
+    return { overCap, staleAuto, emptyClosed };
   }, [sessions]);
 
   const [stuckCount, setStuckCount] = useState<number | null>(null);
   useEffect(() => {
-    // Best-effort: count paid reservations in the last 14 days with session_id null or missing.
-    // We simply expose 0 if the query is not permitted.
+    // Signal fiable : notifications admin non lues du webhook Stripe (14 derniers jours).
     (async () => {
       const since = new Date(Date.now() - 14 * 86400000).toISOString();
       const { count, error } = await supabase
-        .from("reservations")
+        .from("admin_notifications")
         .select("id", { count: "exact", head: true })
-        .not("stripe_session_id", "is", null)
-        .eq("status", "cancelled")
+        .eq("kind", "stripe_webhook_error")
+        .is("read_at", null)
         .gte("created_at", since);
       if (!error) setStuckCount(count ?? 0);
       else setStuckCount(0);
     })();
   }, []);
+
+  const reopenEmptyClosed = async () => {
+    const ids = anomalies.emptyClosed.map(s => s.id);
+    if (!ids.length) return;
+    const { error } = await supabase.from("sessions").update({ status: "open" }).in("id", ids);
+    if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
+    else { toast({ title: `${ids.length} session(s) rouverte(s)` }); load(); }
+  };
 
   const changeStatus = async (s: Session, status: string) => {
     const { error } = await supabase.from("sessions").update({ status }).eq("id", s.id);
@@ -286,14 +298,21 @@ const AdminCreneaux = () => {
         </div>
 
         {/* Anomalies */}
-        {(anomalies.overCap.length > 0 || anomalies.dualActivity.length > 0 || anomalies.staleAuto.length > 0 || (stuckCount ?? 0) > 0) && (
+        {(anomalies.overCap.length > 0 || anomalies.emptyClosed.length > 0 || anomalies.staleAuto.length > 0 || (stuckCount ?? 0) > 0) && (
           <Card className="p-4 mb-6 border-destructive/40 bg-destructive/5">
             <div className="flex items-center gap-2 mb-3 text-destructive font-semibold">
               <AlertTriangle className="w-5 h-5" /> Anomalies détectées
             </div>
             <ul className="space-y-1 text-sm">
               {anomalies.overCap.length > 0 && <li>• {anomalies.overCap.length} session(s) en dépassement de capacité</li>}
-              {anomalies.dualActivity.length > 0 && <li>• {anomalies.dualActivity.length} créneau(x) avec 2 activités actives (violation "1 activité / créneau")</li>}
+              {anomalies.emptyClosed.length > 0 && (
+                <li className="flex items-center gap-2 flex-wrap">
+                  • {anomalies.emptyClosed.length} session(s) fermée(s) sans aucune inscription (affichées à tort comme « Complète »)
+                  <Button size="sm" variant="outline" className="h-6 px-2 text-xs" onClick={reopenEmptyClosed}>
+                    Rouvrir automatiquement
+                  </Button>
+                </li>
+              )}
               {(stuckCount ?? 0) > 0 && <li>• {stuckCount} paiement(s) Stripe potentiellement bloqué(s) (14 derniers jours)</li>}
               {anomalies.staleAuto.length > 0 && <li>• {anomalies.staleAuto.length} session(s) auto-créée(s) &gt; 7 jours sans inscription</li>}
             </ul>
@@ -372,17 +391,18 @@ const AdminCreneaux = () => {
                           {items.map(s => {
                             const occ = occupancy(s);
                             const over = occ > s.max_participants;
+                            const eff = effectiveStatus(s, occ);
                             const reservations = s.reservations.filter(r => r.status !== "cancelled");
                             const pkgBookings = s.package_bookings.filter(b => b.status === "confirmed");
                             return (
                               <div key={s.id} className={cn("rounded-md p-2 mb-1 text-xs", over ? "bg-destructive/10 border border-destructive/40" : "bg-card border border-border")}>
                                 <div className="flex items-center justify-between gap-1 mb-1">
-                                  <Badge variant={s.status === "cancelled" ? "destructive" : s.status === "closed" ? "secondary" : "default"} className="text-[10px]">
+                                  <Badge variant={eff.key === "cancelled" ? "destructive" : eff.key === "full" ? "secondary" : eff.key === "empty_closed" || eff.key === "closed" ? "outline" : "default"} className="text-[10px]">
                                     {ACTIVITY_LABEL[s.activity]}
                                   </Badge>
                                   <span className={cn("font-semibold", over && "text-destructive")}>{occ}/{s.max_participants}</span>
                                 </div>
-                                <div className="text-[10px] text-muted-foreground mb-1">{STATUS_LABEL[s.status] || s.status}</div>
+                                <div className={cn("text-[10px] mb-1", eff.key === "empty_closed" ? "text-amber-600 font-medium" : "text-muted-foreground")}>{eff.label}</div>
                                 {over && <Badge variant="destructive" className="text-[10px] mb-1">Capacité dépassée</Badge>}
                                 {(reservations.length + pkgBookings.length) > 0 && (
                                   <ul className="space-y-0.5 mb-2 max-h-32 overflow-y-auto">
