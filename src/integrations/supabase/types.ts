@@ -790,6 +790,10 @@ export type Database = {
         Args: { p_delta: number; p_package_id: string; p_reason: string }
         Returns: Json
       }
+      admin_cancel_daily_group: {
+        Args: { p_group_id: string; p_reason?: string }
+        Returns: Json
+      }
       admin_get_session_extras: {
         Args: { p_session_ids: string[] }
         Returns: {
@@ -804,6 +808,27 @@ export type Database = {
         Returns: Json
       }
       admin_list_daily_groups: { Args: { p_date: string }; Returns: Json }
+      admin_list_daily_groups_range: {
+        Args: { p_end: string; p_start: string }
+        Returns: Json
+      }
+      admin_move_group_member: {
+        Args: { p_id: string; p_kind: string; p_new_date: string }
+        Returns: Json
+      }
+      admin_remove_group_member: {
+        Args: { p_id: string; p_kind: string }
+        Returns: Json
+      }
+      admin_update_daily_group: {
+        Args: {
+          p_group_id: string
+          p_max_participants?: number
+          p_notes?: string
+          p_status?: string
+        }
+        Returns: Json
+      }
       auto_generate_sessions: { Args: { p_days?: number }; Returns: Json }
       auto_generate_sessions_monitored: {
         Args: { p_days?: number; p_expected_min?: number }
