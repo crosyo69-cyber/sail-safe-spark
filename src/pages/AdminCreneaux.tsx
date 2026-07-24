@@ -414,7 +414,7 @@ const AdminCreneaux = () => {
         else if (it.fixable === "delete") toDelete.add(it.id);
       }
     }
-    const ops: Promise<any>[] = [];
+    const ops: any[] = [];
     if (toOpen.size) ops.push(supabase.from("sessions").update({ status: "open" }).in("id", Array.from(toOpen)));
     if (toClose.size) ops.push(supabase.from("sessions").update({ status: "closed" }).in("id", Array.from(toClose)));
     if (toDelete.size) ops.push(supabase.from("sessions").delete().in("id", Array.from(toDelete)));
