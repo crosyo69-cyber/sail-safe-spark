@@ -277,9 +277,8 @@ export default ReserverPage;
 // ─────────────────────────────────────────────────────────────────────────────
 function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: string) => void }) {
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
-  const [slot, setSlot] = useState<"morning" | "early_afternoon" | "late_afternoon">("morning");
   const [submitting, setSubmitting] = useState(false);
-  const [preview, setPreview] = useState<{ date: string; taken: number; capacity: number }[]>([]);
+  const [preview, setPreview] = useState<{ date: string; places: number; groupes: number }[]>([]);
 
   useEffect(() => {
     if (!startDate) {
@@ -288,21 +287,26 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
     }
     let cancelled = false;
     (async () => {
-      const days: { date: string; taken: number; capacity: number }[] = [];
+      const days: { date: string; places: number; groupes: number }[] = [];
       for (let i = 0; i < 5; i++) {
         const d = new Date(startDate);
         d.setDate(d.getDate() + i);
         const ds = toParisDateOnly(d);
-        const { data } = await supabase.rpc("get_slot_occupancy", { p_date: ds, p_slot: slot as any });
-        const occ = (data as any) || { taken: 0, capacity: 4 };
-        days.push({ date: ds, taken: occ.taken, capacity: occ.capacity });
+        const { data } = await supabase.rpc("get_daily_availability", { p_date: ds });
+        const avail: any = data || {};
+        // Un stage utilise l'activité stage_100_glisse ; on affiche la place disponible
+        // dans le premier groupe stage ouvert, ou la capacité potentielle sinon.
+        const stage = avail?.stage_100_glisse;
+        const places = stage?.places_restantes ?? 4;
+        const groupes = stage?.groupes ?? 0;
+        days.push({ date: ds, places, groupes });
       }
       if (!cancelled) setPreview(days);
     })();
     return () => {
       cancelled = true;
     };
-  }, [startDate, slot]);
+  }, [startDate]);
 
   const handleStageBook = async () => {
     const clean = code.trim().toUpperCase();
@@ -312,7 +316,6 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
     const { data, error } = await supabase.rpc("book_stage_100_glisse", {
       p_code: clean,
       p_start_date: toParisDateOnly(startDate),
-      p_time_slot: slot as any,
     });
     setSubmitting(false);
     if (error) return toast.error("Erreur : " + error.message);
@@ -336,14 +339,15 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
     onBooked(clean);
   };
 
-  const anyFull = preview.some((p) => p.taken >= p.capacity);
+  const anyFull = preview.some((p) => p.places <= 0 && p.groupes > 0);
 
   return (
     <Card className="p-6 space-y-5">
       <div>
         <h2 className="text-lg font-semibold mb-1">Stage 100% Glisse — 5 jours consécutifs</h2>
         <p className="text-sm text-muted-foreground">
-          Choisissez la date de début du stage et le créneau. Les 5 jours seront réservés automatiquement.
+          Choisissez la date de début. Les 5 jours seront réservés automatiquement.
+          Les horaires seront communiqués la veille par téléphone en fonction des conditions météorologiques.
         </p>
       </div>
 
@@ -366,19 +370,6 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
             />
           </PopoverContent>
         </Popover>
-
-        <div className="flex flex-wrap gap-2">
-          {(["morning", "early_afternoon", "late_afternoon"] as const).map((s) => (
-            <Button
-              key={s}
-              size="sm"
-              variant={slot === s ? "default" : "outline"}
-              onClick={() => setSlot(s)}
-            >
-              {SLOT_LABELS[s]}
-            </Button>
-          ))}
-        </div>
       </div>
 
       {preview.length > 0 && (
@@ -386,8 +377,8 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
           <p className="text-sm font-medium">Aperçu des 5 jours :</p>
           <ul className="space-y-1 text-sm">
             {preview.map((p) => {
-              const remaining = Math.max(0, p.capacity - p.taken);
-              const full = remaining === 0;
+              const full = p.places <= 0 && p.groupes > 0;
+              const remaining = Math.max(0, p.places);
               return (
                 <li
                   key={p.date}
@@ -399,7 +390,9 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
                   <Badge variant={full ? "destructive" : "secondary"}>
                     {full
                       ? "Complet"
-                      : `${remaining} place${remaining > 1 ? "s" : ""} restante${remaining > 1 ? "s" : ""}`}
+                      : p.groupes > 0
+                        ? `${remaining} place${remaining > 1 ? "s" : ""} restante${remaining > 1 ? "s" : ""}`
+                        : "Disponible"}
                   </Badge>
                 </li>
               );
