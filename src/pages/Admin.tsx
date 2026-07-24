@@ -72,6 +72,9 @@ const Admin = () => {
           </h1>
           <div className="flex items-center gap-2">
             <Button asChild variant="outline" size="sm">
+              <Link to="/admin/journees"><CalendarDays className="w-4 h-4 mr-2" />Gestion des journées</Link>
+            </Button>
+            <Button asChild variant="outline" size="sm">
               <Link to="/admin/creneaux"><Grid3x3 className="w-4 h-4 mr-2" />Gestion des créneaux</Link>
             </Button>
             <AdminNotificationsBell onOpenCenter={() => setActiveTab("alertes")} />
