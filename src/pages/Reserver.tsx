@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,13 +10,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Calendar as CalendarIcon, Loader2, Ticket, Wind, Waves, Anchor, Plane, UserCheck } from "lucide-react";
+import {
+  Calendar as CalendarIcon,
+  Loader2,
+  Ticket,
+  Wind,
+  Waves,
+  Anchor,
+  Plane,
+  Info,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { parisToday, parisStartOfToday, toParisDateOnly } from "@/lib/booking-dates";
+import { parisStartOfToday, toParisDateOnly } from "@/lib/booking-dates";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
 
@@ -34,131 +42,61 @@ const SLOT_LABELS: Record<string, string> = {
   late_afternoon: "Fin d'après-midi",
 };
 
-interface AvailableSession {
-  id: string;
+interface DayAvailability {
   date: string;
-  time_slot: string;
-  activity: Activity;
-  max_participants: number;
-  taken: number;
-  private_count: number;
-  private_names: string[];
+  kite: { places: number; groupes: number };
+  wing: { places: number; groupes: number };
 }
-
-// Tous les créneaux d'un jour + qui les occupe (activité sélectionnée, autre activité, ou libre).
-type SlotState =
-  | { kind: "self"; session: AvailableSession }
-  | { kind: "other"; activity: Activity }
-  | { kind: "free" };
-
-const ALL_SLOTS: Array<"morning" | "early_afternoon" | "late_afternoon"> = [
-  "morning",
-  "early_afternoon",
-  "late_afternoon",
-];
 
 const ReserverPage = () => {
   const navigate = useNavigate();
   const [activity, setActivity] = useState<Activity>("kitesurf");
-  const [date, setDate] = useState<Date | undefined>(undefined);
-  const [sessions, setSessions] = useState<AvailableSession[]>([]);
-  // Créneaux occupés par une AUTRE activité que celle sélectionnée
-  // (pour signaler visuellement qu'ils ne sont plus attribuables).
-  const [otherActivitySlots, setOtherActivitySlots] = useState<
-    Array<{ date: string; time_slot: string; activity: Activity }>
-  >([]);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [availability, setAvailability] = useState<DayAvailability | null>(null);
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState("");
-  const [booking, setBooking] = useState<string | null>(null);
-  const [privateDialog, setPrivateDialog] = useState<{ date: string; slotLabel: string; names: string[] } | null>(null);
+  const [booking, setBooking] = useState(false);
 
-  const loadSessions = useCallback(async (silent = false) => {
-    if (!silent) setLoading(true);
-    const today = parisToday();
-    // Capacity is per-session (per-activity per-slot). On récupère TOUTES les
-    // sessions (toutes activités) sur la plage visible : celles de l'activité
-    // sélectionnée pour l'affichage principal, les autres pour signaler les
-    // créneaux déjà pris par une autre activité (règle "1 activité par créneau").
-    let query = supabase
-      .from("sessions")
-      .select("id, date, time_slot, activity, max_participants, status")
-      .in("status", ["open", "closed"])
-      .gte("date", date ? toParisDateOnly(date) : today)
-      .order("date", { ascending: true })
-      .limit(400);
-    if (date) query = query.lte("date", toParisDateOnly(date));
-    const { data: rawAll } = await query;
-    const rawSessions = (rawAll || []).filter(
-      (s: any) => s.activity === activity && s.status === "open",
-    );
-    setOtherActivitySlots(
-      (rawAll || [])
-        .filter((s: any) => s.activity !== activity)
-        .map((s: any) => ({ date: s.date, time_slot: s.time_slot, activity: s.activity })),
-    );
-    if (!silent) setLoading(false);
-    if (!rawSessions || rawSessions.length === 0) {
-      setSessions([]);
-      return;
-    }
-    const ids = rawSessions.map((s) => s.id);
-    const [{ data: resv }, { data: pb }] = await Promise.all([
-      supabase.from("reservations").select("session_id, participants, status, notes, first_name").in("session_id", ids).neq("status", "cancelled"),
-      supabase.from("package_bookings").select("session_id, status").in("session_id", ids).eq("status", "confirmed"),
-    ]);
-    // Per-session aggregation
-    const taken: Record<string, number> = {};
-    const privates: Record<string, string[]> = {};
-    (resv || []).forEach((r: any) => {
-      const seats = r.participants || 1;
-      taken[r.session_id] = (taken[r.session_id] || 0) + seats;
-      if (r.status === "confirmed" && typeof r.notes === "string" && /cours\s+particulier/i.test(r.notes)) {
-        privates[r.session_id] = [...(privates[r.session_id] || []), r.first_name || "Client"];
-      }
+  const loadAvailability = useCallback(async (d: Date) => {
+    setLoading(true);
+    const dateStr = toParisDateOnly(d);
+    const { data } = await supabase.rpc("get_daily_availability", { p_date: dateStr });
+    setLoading(false);
+    const res = (data as any) || {};
+    setAvailability({
+      date: dateStr,
+      kite: {
+        places: res?.kitesurf?.places_restantes ?? (res?.kitesurf?.capacite_potentielle ?? 4),
+        groupes: res?.kitesurf?.groupes ?? 0,
+      },
+      wing: {
+        places: res?.wingfoil?.places_restantes ?? (res?.wingfoil?.capacite_potentielle ?? 3),
+        groupes: res?.wingfoil?.groupes ?? 0,
+      },
     });
-    (pb || []).forEach((b: any) => {
-      taken[b.session_id] = (taken[b.session_id] || 0) + 1;
-    });
-    const visible = rawSessions.map((s: any) => ({
-      ...s,
-      taken: taken[s.id] || 0,
-      private_count: (privates[s.id] || []).length,
-      private_names: privates[s.id] || [],
-    }));
-    setSessions(visible as AvailableSession[]);
-  }, [activity, date]);
-
-  useEffect(() => { loadSessions(); }, [loadSessions]);
+  }, []);
 
   useEffect(() => {
-    const id = setInterval(() => {
-      if (document.hidden || booking) return;
-      loadSessions(true);
-    }, 30000);
-    return () => clearInterval(id);
-  }, [loadSessions, booking]);
+    if (selectedDate) loadAvailability(selectedDate);
+    else setAvailability(null);
+  }, [selectedDate, loadAvailability]);
 
-  const handleBookWithCode = async (sessionId: string) => {
+  const handleBookWithCode = async () => {
     const clean = code.trim().toUpperCase();
     if (!clean) {
       toast.error("Saisissez votre code de pack ci-dessous, ou achetez un pack.");
       return;
     }
-    setBooking(sessionId);
-    // For Stage 100% Glisse, find the session row to get the start date and book 5 consecutive days
-    let data: any, error: any;
-    if (activity === "stage_100_glisse") {
-      const s = sessions.find(x => x.id === sessionId);
-      if (!s) { setBooking(null); return toast.error("Session introuvable"); }
-      ({ data, error } = await supabase.rpc("book_stage_100_glisse", {
-        p_code: clean, p_start_date: s.date, p_time_slot: s.time_slot as any,
-      }));
-    } else {
-      ({ data, error } = await supabase.rpc("book_session_with_code", {
-        p_code: clean, p_session_id: sessionId,
-      }));
+    if (!selectedDate) {
+      toast.error("Choisissez une date.");
+      return;
     }
-    setBooking(null);
+    setBooking(true);
+    const { data, error } = await supabase.rpc("book_daily_with_code", {
+      p_code: clean,
+      p_date: toParisDateOnly(selectedDate),
+    });
+    setBooking(false);
     if (error) return toast.error("Erreur : " + error.message);
     const res = data as any;
     if (!res?.ok) {
@@ -167,66 +105,43 @@ const ReserverPage = () => {
         package_not_active: "Pack inactif",
         package_expired: "Pack expiré",
         no_credits_left: "Plus de crédits disponibles sur ce pack",
-        not_enough_credits: "Pas assez de crédits pour réserver les 5 jours du stage",
-        not_a_stage_package: "Ce code ne correspond pas à un Stage 100% Glisse",
-        start_in_past: "Date de début passée",
-        session_not_found: "Session introuvable",
-        activity_mismatch: "Ce pack ne couvre pas cette activité",
-        session_closed: "Session fermée",
-        session_in_past: "Session passée",
-        session_full: "Session complète",
-        slot_taken_by_other_activity: "Créneau déjà attribué à une autre activité (1 seule activité par créneau)",
+        date_in_past: "Date passée",
+        already_booked_this_date: "Vous avez déjà réservé cette date",
       };
-      const errKey = String(res?.error || "");
-      if (errKey.startsWith("day_full:")) {
-        return toast.error(`Journée complète : ${errKey.replace("day_full:", "")}`);
-      }
-      return toast.error(messages[errKey] || "Réservation impossible");
+      return toast.error(messages[String(res?.error || "")] || "Réservation impossible");
     }
-    toast.success(activity === "stage_100_glisse"
-      ? "Stage 100% Glisse réservé sur 5 jours consécutifs !"
-      : "Session réservée ! Email de confirmation envoyé.");
+    toast.success("Journée réservée ✅ — horaire communiqué la veille selon les conditions météo.");
     navigate(`/mon-espace/${clean}`);
   };
 
-  // Groupé par date, avec l'état de CHAQUE créneau (self / other / free).
-  const grouped = useMemo(() => {
-    const dates = new Set<string>();
-    sessions.forEach((s) => dates.add(s.date));
-    otherActivitySlots.forEach((o) => dates.add(o.date));
-    const map: Record<string, Record<string, SlotState>> = {};
-    dates.forEach((d) => {
-      map[d] = { morning: { kind: "free" }, early_afternoon: { kind: "free" }, late_afternoon: { kind: "free" } };
-    });
-    sessions.forEach((s) => {
-      if (map[s.date]) map[s.date][s.time_slot] = { kind: "self", session: s };
-    });
-    otherActivitySlots.forEach((o) => {
-      // Ne pas écraser un créneau déjà attribué à l'activité sélectionnée.
-      if (map[o.date] && map[o.date][o.time_slot].kind !== "self") {
-        map[o.date][o.time_slot] = { kind: "other", activity: o.activity };
-      }
-    });
-    return Object.entries(map).sort(([a], [b]) => a.localeCompare(b));
-  }, [sessions, otherActivitySlots]);
+  const activityAvail = availability
+    ? activity === "wingfoil"
+      ? availability.wing
+      : availability.kite
+    : null;
+  const activityUsesGroups = activity === "kitesurf" || activity === "wingfoil";
+  const isFull = !!activityAvail && activityUsesGroups && activityAvail.places <= 0;
 
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Réserver une session – Kitesurf Passion Hyères</title>
-        <meta name="description" content="Réservez votre session kitesurf, wingfoil, pumpfoil ou foil tracté à Hyères. Choisissez votre activité et votre date." />
+        <meta
+          name="description"
+          content="Réservez votre session kitesurf, wingfoil, pumpfoil ou foil tracté à Hyères. Choisissez votre activité et votre date."
+        />
         <meta name="robots" content="noindex,nofollow" />
       </Helmet>
       <Header />
-      <main className="container mx-auto px-4 pt-24 pb-16 max-w-5xl">
+      <main className="container mx-auto px-4 pt-24 pb-16 max-w-3xl">
         <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-2">
-          Réserver une session
+          Réserver une journée
         </h1>
         <p className="text-muted-foreground mb-8">
-          Choisissez votre activité et votre date. La décision d'ouverture selon le vent reste à la discrétion de l'école.
+          Choisissez votre activité et votre date. L'horaire précis est communiqué la veille selon les
+          conditions météo.
         </p>
 
-        {/* Activity filter */}
         <div className="flex flex-wrap gap-2 mb-6">
           {ACTIVITIES.map((a) => (
             <Button
@@ -240,31 +155,6 @@ const ReserverPage = () => {
           ))}
         </div>
 
-        {/* Date filter */}
-        <div className="flex flex-wrap gap-2 mb-8 items-center">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" className="gap-2 min-h-[44px]">
-                <CalendarIcon className="w-4 h-4" />
-                {date ? format(date, "EEEE d MMMM yyyy", { locale: fr }) : "Toutes les dates à venir"}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single" selected={date} onSelect={setDate}
-                disabled={(d) => d < parisStartOfToday()}
-                locale={fr} className={cn("p-3 pointer-events-auto")}
-              />
-            </PopoverContent>
-          </Popover>
-          {date && (
-            <Button variant="ghost" size="sm" onClick={() => setDate(undefined)}>
-              Effacer
-            </Button>
-          )}
-        </div>
-
-        {/* Code input (sticky-ish) */}
         <Card className="mb-8 border-primary/30">
           <CardContent className="py-4 flex flex-col sm:flex-row gap-3 sm:items-center">
             <div className="flex items-center gap-2 text-sm font-medium">
@@ -286,156 +176,94 @@ const ReserverPage = () => {
           </CardContent>
         </Card>
 
-        {/* Sessions */}
         {activity === "stage_100_glisse" ? (
-          <StageBookingPanel
-            code={code}
-            onBooked={(c) => navigate(`/mon-espace/${c}`)}
-          />
-        ) : loading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="w-6 h-6 animate-spin text-primary" />
-          </div>
-        ) : grouped.length === 0 ? (
-          <Card className="p-8 text-center">
-            <p className="text-muted-foreground">
-              Aucun créneau planifié à venir. Le calendrier se remplira dès qu'un élève réservera. Contactez-nous au 06 72 71 69 05 pour toute question.
-            </p>
-          </Card>
+          <StageBookingPanel code={code} onBooked={(c) => navigate(`/mon-espace/${c}`)} />
         ) : (
-          <div className="space-y-6">
-            <p className="text-xs text-muted-foreground">
-              Règle : 1 activité par créneau. Un créneau déjà attribué à une autre activité n'est pas réservable pour l'activité sélectionnée.
-            </p>
-            {grouped.map(([d, slotMap]) => (
-              <section key={d}>
-                <h2 className="text-lg font-semibold mb-3 capitalize">
-                  {format(parseISO(d), "EEEE d MMMM yyyy", { locale: fr })}
-                </h2>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {ALL_SLOTS.map((slotKey) => {
-                    const state = slotMap[slotKey];
-                    const slotLabel = SLOT_LABELS[slotKey];
-                    if (state.kind === "other") {
-                      const otherLabel = ACTIVITIES.find(a => a.value === state.activity)?.label || state.activity;
-                      return (
-                        <Card key={slotKey} className="opacity-70 border-dashed">
-                          <CardContent className="py-4 space-y-2">
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <p className="font-semibold">{slotLabel}</p>
-                                <p className="text-xs text-muted-foreground">Créneau attribué à une autre activité</p>
-                              </div>
-                              <Badge variant="outline" className="capitalize">{otherLabel}</Badge>
-                            </div>
-                            <div className="w-full min-h-[44px] flex items-center justify-center rounded-md bg-muted text-muted-foreground text-xs font-medium px-3 text-center">
-                              Indisponible pour {ACTIVITIES.find(a => a.value === activity)?.label} sur ce créneau
-                            </div>
-                          </CardContent>
-                        </Card>
-                      );
-                    }
-                    if (state.kind === "free") {
-                      return (
-                        <Card key={slotKey} className="border-dashed">
-                          <CardContent className="py-4 space-y-2">
-                            <div className="flex items-center justify-between">
-                              <p className="font-semibold">{slotLabel}</p>
-                              <Badge variant="outline">Libre</Badge>
-                            </div>
-                            <p className="text-xs text-muted-foreground">
-                              Créneau non encore ouvert — sera attribué à la 1ʳᵉ activité réservée.
-                            </p>
-                          </CardContent>
-                        </Card>
-                      );
-                    }
-                    const s = state.session;
-                    const full = s.taken >= s.max_participants;
-                    const remaining = s.max_participants - s.taken;
-                    return (
-                      <Card key={s.id}>
-                        <CardContent className="py-4 space-y-3">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <p className="font-semibold">{SLOT_LABELS[s.time_slot] || s.time_slot}</p>
-                              <p className="text-xs text-muted-foreground capitalize">
-                                {ACTIVITIES.find(a => a.value === s.activity)?.label}
-                                <span className="ml-1">· max {s.max_participants}</span>
-                              </p>
-                            </div>
-                            <div className="text-right">
-                              <Badge variant={full ? "destructive" : "secondary"}>
-                                {full ? "Complet" : "Ouverte"}
-                              </Badge>
-                              <p className="text-xs text-muted-foreground mt-1">
-                                {full
-                                  ? "0 place disponible"
-                                  : `${remaining} place${remaining > 1 ? "s" : ""} restante${remaining > 1 ? "s" : ""}`}
-                              </p>
-                            </div>
-                          </div>
-                          {s.private_count > 0 && (
-                            <button
-                              type="button"
-                              onClick={() => setPrivateDialog({ date: d, slotLabel: SLOT_LABELS[s.time_slot] || s.time_slot, names: s.private_names })}
-                              className="flex items-center gap-2 rounded-md bg-accent/10 border border-accent/30 px-3 py-2 text-xs text-accent-foreground w-full text-left hover:bg-accent/20 transition-colors cursor-pointer"
-                            >
-                              <UserCheck className="w-4 h-4 text-accent shrink-0" aria-hidden="true" />
-                              <span>
-                                {s.private_count === 1
-                                  ? "1 cours particulier confirmé"
-                                  : `${s.private_count} cours particuliers confirmés`}
-                              </span>
-                            </button>
-                          )}
-                          {full ? (
-                            <div className="w-full min-h-[44px] flex items-center justify-center rounded-md bg-muted text-muted-foreground text-sm font-medium">
-                              Session complète — aucune place disponible
-                            </div>
-                          ) : (
-                            <Button
-                              className="w-full min-h-[44px]"
-                              disabled={booking === s.id}
-                              onClick={() => handleBookWithCode(s.id)}
-                            >
-                              {booking === s.id ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
-                              ) : "Réserver avec mon code"}
-                            </Button>
-                          )}
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              </section>
-            ))}
-          </div>
+          <Card className="p-6 space-y-5">
+            <div>
+              <h2 className="text-lg font-semibold mb-1">Choisissez votre date</h2>
+              <p className="text-sm text-muted-foreground">
+                Toutes les dates à venir sont ouvertes. Nous formons des groupes dynamiques : max 4 en
+                kitesurf, max 3 en wingfoil.
+              </p>
+            </div>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="gap-2 min-h-[44px] w-full sm:w-auto">
+                  <CalendarIcon className="w-4 h-4" />
+                  {selectedDate
+                    ? format(selectedDate, "EEEE d MMMM yyyy", { locale: fr })
+                    : "Sélectionner une date"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
+                  disabled={(d) => d < parisStartOfToday()}
+                  locale={fr}
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+
+            {loading && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Loader2 className="w-4 h-4 animate-spin" /> Chargement de la disponibilité…
+              </div>
+            )}
+
+            {activityAvail && !loading && (
+              <div className="rounded-md border p-4 space-y-2">
+                <p className="text-sm font-medium capitalize">
+                  {format(parseISO(availability!.date), "EEEE d MMMM yyyy", { locale: fr })}
+                </p>
+                {activityUsesGroups ? (
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Badge variant={isFull ? "destructive" : "secondary"}>
+                      {isFull
+                        ? "Complet"
+                        : `${activityAvail.places} place${activityAvail.places > 1 ? "s" : ""} restante${activityAvail.places > 1 ? "s" : ""}`}
+                    </Badge>
+                    {activityAvail.groupes > 0 && (
+                      <span className="text-xs text-muted-foreground">
+                        {activityAvail.groupes} groupe{activityAvail.groupes > 1 ? "s" : ""} déjà formé
+                        {activityAvail.groupes > 1 ? "s" : ""}
+                      </span>
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-xs text-muted-foreground">
+                    Disponibilité confirmée directement par l'école selon les conditions.
+                  </p>
+                )}
+              </div>
+            )}
+
+            <div className="rounded-md border border-amber-500/30 bg-amber-500/5 p-3 flex gap-2 text-xs text-muted-foreground">
+              <Info className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+              <span>
+                L'horaire de rendez-vous et le spot sont communiqués <strong>la veille</strong> selon les
+                conditions météo (vent, mer, sécurité).
+              </span>
+            </div>
+
+            <Button
+              className="w-full min-h-[44px]"
+              disabled={booking || !selectedDate || isFull}
+              onClick={handleBookWithCode}
+            >
+              {booking ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                "Réserver cette journée avec mon code"
+              )}
+            </Button>
+          </Card>
         )}
       </main>
-      <Dialog open={!!privateDialog} onOpenChange={(open) => { if (!open) setPrivateDialog(null); }}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Cours particuliers confirmés</DialogTitle>
-          </DialogHeader>
-          {privateDialog && (
-            <div className="space-y-3">
-              <p className="text-sm text-muted-foreground">
-                {format(parseISO(privateDialog.date), "EEEE d MMMM yyyy", { locale: fr })} — {privateDialog.slotLabel}
-              </p>
-              <ul className="space-y-2">
-                {privateDialog.names.map((name, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm">
-                    <UserCheck className="w-4 h-4 text-accent shrink-0" />
-                    <span className="font-medium">{name}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
       <Footer />
     </div>
   );
@@ -444,7 +272,8 @@ const ReserverPage = () => {
 export default ReserverPage;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Stage 100% Glisse — sélection de date de début + créneau, réservation 5 jours
+// Stage 100% Glisse — conserve son propre RPC historique (5 jours consécutifs).
+// À migrer dans une phase ultérieure vers le modèle daily_groups.
 // ─────────────────────────────────────────────────────────────────────────────
 function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: string) => void }) {
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
@@ -453,7 +282,10 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
   const [preview, setPreview] = useState<{ date: string; taken: number; capacity: number }[]>([]);
 
   useEffect(() => {
-    if (!startDate) { setPreview([]); return; }
+    if (!startDate) {
+      setPreview([]);
+      return;
+    }
     let cancelled = false;
     (async () => {
       const days: { date: string; taken: number; capacity: number }[] = [];
@@ -467,7 +299,9 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
       }
       if (!cancelled) setPreview(days);
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [startDate, slot]);
 
   const handleStageBook = async () => {
@@ -523,16 +357,24 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
-              mode="single" selected={startDate} onSelect={setStartDate}
+              mode="single"
+              selected={startDate}
+              onSelect={setStartDate}
               disabled={(d) => d < parisStartOfToday()}
-              locale={fr} className={cn("p-3 pointer-events-auto")}
+              locale={fr}
+              className={cn("p-3 pointer-events-auto")}
             />
           </PopoverContent>
         </Popover>
 
         <div className="flex flex-wrap gap-2">
-          {(["morning","early_afternoon","late_afternoon"] as const).map((s) => (
-            <Button key={s} size="sm" variant={slot === s ? "default" : "outline"} onClick={() => setSlot(s)}>
+          {(["morning", "early_afternoon", "late_afternoon"] as const).map((s) => (
+            <Button
+              key={s}
+              size="sm"
+              variant={slot === s ? "default" : "outline"}
+              onClick={() => setSlot(s)}
+            >
               {SLOT_LABELS[s]}
             </Button>
           ))}
@@ -547,10 +389,17 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
               const remaining = Math.max(0, p.capacity - p.taken);
               const full = remaining === 0;
               return (
-                <li key={p.date} className="flex items-center justify-between rounded-md border px-3 py-2">
-                  <span className="capitalize">{format(parseISO(p.date), "EEEE d MMMM yyyy", { locale: fr })}</span>
+                <li
+                  key={p.date}
+                  className="flex items-center justify-between rounded-md border px-3 py-2"
+                >
+                  <span className="capitalize">
+                    {format(parseISO(p.date), "EEEE d MMMM yyyy", { locale: fr })}
+                  </span>
                   <Badge variant={full ? "destructive" : "secondary"}>
-                    {full ? "Complet" : `${remaining} place${remaining > 1 ? "s" : ""} restante${remaining > 1 ? "s" : ""}`}
+                    {full
+                      ? "Complet"
+                      : `${remaining} place${remaining > 1 ? "s" : ""} restante${remaining > 1 ? "s" : ""}`}
                   </Badge>
                 </li>
               );
@@ -564,8 +413,13 @@ function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: 
         onClick={handleStageBook}
         disabled={submitting || !startDate || anyFull}
       >
-        {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> :
-          anyFull ? "Au moins une journée est complète" : "Réserver les 5 jours avec mon code"}
+        {submitting ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : anyFull ? (
+          "Au moins une journée est complète"
+        ) : (
+          "Réserver les 5 jours avec mon code"
+        )}
       </Button>
     </Card>
   );

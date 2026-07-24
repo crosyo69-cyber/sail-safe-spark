@@ -112,7 +112,7 @@ function mapActivityToEnum(activityName: string): string {
 }
 
 // Auto-enroll a 5-day consecutive stage starting from preferredDate.
-// Creates missing sessions and inserts confirmed package_bookings on each day.
+// Uses daily_groups via find_or_create_daily_group RPC (new model).
 async function autoEnrollConsecutiveStage(
   supabase: any,
   packageCode: string,
@@ -136,7 +136,6 @@ async function autoEnrollConsecutiveStage(
   if (!pkg) return;
 
   const activityEnum = pkg.activity;
-  const maxParticipants = MAX_BY_ACTIVITY[activityEnum] || 4;
   const start = new Date(`${preferredDate}T00:00:00Z`);
 
   for (let i = 0; i < totalSessions; i++) {
@@ -144,43 +143,28 @@ async function autoEnrollConsecutiveStage(
     d.setUTCDate(start.getUTCDate() + i);
     const dateStr = d.toISOString().split("T")[0];
 
-    // Find or create an open session for this day + activity (morning slot)
-    let sessionId: string | null = null;
-    const { data: existing } = await supabase
-      .from("sessions")
-      .select("id")
-      .eq("date", dateStr)
-      .eq("activity", activityEnum)
-      .eq("status", "open")
-      .limit(1);
-    if (existing && existing.length > 0) {
-      sessionId = existing[0].id;
-    } else {
-      const { data: created, error: sErr } = await supabase
-        .from("sessions")
-        .insert({
-          date: dateStr,
-          time_slot: "morning",
-          activity: activityEnum,
-          max_participants: maxParticipants,
-          status: "open",
-          notes: `Stage auto-créé – ${activityName}`,
-        })
-        .select("id")
-        .single();
-      if (sErr) {
-        console.error(`autoEnrollConsecutiveStage: session ${dateStr} error`, sErr);
-        continue;
-      }
-      sessionId = created.id;
+    const { data: groupId, error: gErr } = await supabase.rpc("find_or_create_daily_group", {
+      p_date: dateStr,
+      p_activity: activityEnum,
+      p_seats: 1,
+    });
+    if (gErr || !groupId) {
+      console.error(`autoEnrollConsecutiveStage: group ${dateStr} error`, gErr);
+      continue;
     }
+
+    const { data: existingBooking } = await supabase
+      .from("package_bookings")
+      .select("id")
+      .eq("package_id", pkg.id)
+      .eq("daily_group_id", groupId)
+      .eq("status", "confirmed")
+      .maybeSingle();
+    if (existingBooking) continue;
 
     const { error: bErr } = await supabase
       .from("package_bookings")
-      .upsert(
-        { package_id: pkg.id, session_id: sessionId, status: "confirmed" },
-        { onConflict: "package_id,session_id" },
-      );
+      .insert({ package_id: pkg.id, daily_group_id: groupId, status: "confirmed", booking_kind: "regular" });
     if (bErr) {
       console.error(`autoEnrollConsecutiveStage: booking ${dateStr} error`, bErr);
     }
@@ -379,74 +363,35 @@ async function createReservationFromCheckout(
     return;
   }
 
-  // Parse name into first/last
   const nameParts = customerName.trim().split(/\s+/);
   const firstName = nameParts[0] || 'Client';
   const lastName = nameParts.slice(1).join(' ') || 'Stripe';
 
-  // Map activity name to enum
   const activityEnum = mapActivityToEnum(activityName);
-  const maxParticipants = MAX_BY_ACTIVITY[activityEnum] || 4;
-
-  // Determine the date for the session
   const sessionDate = preferredDate || new Date().toISOString().split('T')[0];
 
-  // Try to find an existing open session for this date + activity
-  const { data: existingSessions } = await supabase
-    .from('sessions')
-    .select('id, reservation_count:reservations(count)')
-    .eq('date', sessionDate)
-    .eq('activity', activityEnum)
-    .eq('status', 'open')
-    .limit(1);
+  // New model: single RPC that resolves-or-creates a daily group and books the visitor.
+  const { data: rpcRes, error: rpcErr } = await supabase.rpc('book_daily_visitor', {
+    p_date: sessionDate,
+    p_activity: activityEnum,
+    p_first_name: firstName,
+    p_last_name: lastName,
+    p_email: customerEmail,
+    p_phone: phone,
+    p_participants: participants,
+    p_stripe_session_id: session.id,
+    p_notes: `Acompte ${participants * 50}€ payé via Stripe – ${activityName}`,
+  });
 
-  let sessionId: string;
-
-  if (existingSessions && existingSessions.length > 0) {
-    sessionId = existingSessions[0].id;
-  } else {
-    // Create a session for the preferred date with the correct activity
-    const { data: newSession, error: sessionError } = await supabase
-      .from('sessions')
-      .insert({
-        date: sessionDate,
-        time_slot: 'morning',
-        activity: activityEnum,
-        max_participants: maxParticipants,
-        status: 'open',
-        notes: `Session auto-créée via réservation Stripe – ${activityName}`,
-      })
-      .select('id')
-      .single();
-
-    if (sessionError) {
-      console.error('Failed to create session:', sessionError);
-      return;
-    }
-    sessionId = newSession.id;
+  if (rpcErr) {
+    console.error('book_daily_visitor failed:', rpcErr);
+    return;
   }
-
-  // Insert the reservation
-  const { error: reservationError } = await supabase
-    .from('reservations')
-    .insert({
-      session_id: sessionId,
-      first_name: firstName,
-      last_name: lastName,
-      email: customerEmail,
-      phone,
-      skill_level: 'debutant',
-      participants,
-      status: 'confirmed',
-      stripe_session_id: session.id,
-      notes: `Acompte ${participants * 50}€ payé via Stripe – ${activityName}`,
-    });
-
-  if (reservationError) {
-    console.error('Failed to create reservation:', reservationError);
-  } else {
-    console.log(`Reservation created for ${customerEmail} on ${sessionDate} (${activityName} → ${activityEnum})`);
+  if (rpcRes && (rpcRes as any).ok === false) {
+    console.error('book_daily_visitor rejected:', rpcRes);
+    return;
   }
+  console.log(`Reservation created for ${customerEmail} on ${sessionDate} (${activityName} → ${activityEnum})`);
 }
 
 Deno.serve(async (req) => {
