@@ -715,6 +715,87 @@ const AdminCreneaux = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Audit report */}
+      <Dialog open={auditOpen} onOpenChange={(o) => { if (!o) { setAuditOpen(false); setAuditReport(null); } }}>
+        <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2"><ClipboardCheck className="w-5 h-5" /> Rapport d'audit</DialogTitle>
+            <DialogDescription>
+              {auditReport
+                ? `Analyse de ${auditReport.totalSessions} session(s) sur les 30 derniers jours + à venir · ${format(new Date(auditReport.generatedAt), "d MMM HH:mm", { locale: fr })}`
+                : "Analyse en cours…"}
+            </DialogDescription>
+          </DialogHeader>
+          {auditRunning && !auditReport && (
+            <div className="flex items-center justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
+          )}
+          {auditReport && (
+            <div className="space-y-4">
+              {(() => {
+                const totalIssues = auditReport.groups.reduce((n, g) => n + g.items.length, 0);
+                const fixable = auditReport.groups.reduce((n, g) => n + g.items.filter(i => i.fixable).length, 0);
+                if (totalIssues === 0) {
+                  return (
+                    <div className="flex items-center gap-2 p-4 rounded-md bg-green-500/10 text-green-700 dark:text-green-400">
+                      <CheckCircle2 className="w-5 h-5" />
+                      <span className="font-medium">Aucune incohérence détectée. Tout est propre 🎉</span>
+                    </div>
+                  );
+                }
+                return (
+                  <div className="flex items-center justify-between gap-2 p-3 rounded-md bg-muted">
+                    <div className="text-sm">
+                      <span className="font-semibold">{totalIssues}</span> incohérence(s) détectée(s) · <span className="font-semibold">{fixable}</span> auto-corrigeable(s)
+                    </div>
+                    {fixable > 0 && (
+                      <Button size="sm" onClick={applyAuditFixes}>Appliquer les corrections</Button>
+                    )}
+                  </div>
+                );
+              })()}
+              {auditReport.groups.filter(g => g.items.length > 0).map(g => (
+                <div key={g.key} className={cn(
+                  "rounded-md border p-3",
+                  g.severity === "critical" && "border-destructive/40 bg-destructive/5",
+                  g.severity === "warning" && "border-amber-500/40 bg-amber-500/5",
+                  g.severity === "info" && "border-border bg-muted/30",
+                )}>
+                  <div className="flex items-center gap-2 mb-2 font-semibold text-sm">
+                    {g.severity === "critical" ? <XCircle className="w-4 h-4 text-destructive" /> : <AlertTriangle className={cn("w-4 h-4", g.severity === "warning" ? "text-amber-600" : "text-muted-foreground")} />}
+                    {g.title}
+                    <Badge variant="outline" className="ml-auto">{g.items.length}</Badge>
+                  </div>
+                  <ul className="space-y-1 text-xs">
+                    {g.items.slice(0, 20).map(it => (
+                      <li key={it.id} className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <div className="font-medium truncate">{it.label}</div>
+                          <div className="text-muted-foreground">{it.detail}</div>
+                        </div>
+                        {it.fixable && (
+                          <Badge variant="secondary" className="text-[10px] shrink-0">
+                            {it.fixable === "reopen" ? "Rouvrir" : it.fixable === "close" ? "Fermer" : "Supprimer"}
+                          </Badge>
+                        )}
+                      </li>
+                    ))}
+                    {g.items.length > 20 && (
+                      <li className="text-muted-foreground italic">… et {g.items.length - 20} autre(s)</li>
+                    )}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setAuditOpen(false); setAuditReport(null); }}>Fermer</Button>
+            <Button variant="secondary" onClick={runAudit} disabled={auditRunning}>
+              {auditRunning ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : null}Relancer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
