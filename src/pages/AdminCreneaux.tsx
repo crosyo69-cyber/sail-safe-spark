@@ -30,6 +30,11 @@ import {
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
 
+type AuditFix = "reopen" | "close" | "delete";
+interface AuditIssue { id: string; label: string; detail: string; fixable?: AuditFix; }
+interface AuditGroup { key: string; title: string; severity: "critical" | "warning" | "info"; items: AuditIssue[]; }
+interface AuditReport { generatedAt: string; totalSessions: number; groups: AuditGroup[]; }
+
 const SLOTS: TimeSlot[] = ["morning", "early_afternoon", "late_afternoon"];
 const SLOT_LABEL: Record<TimeSlot, string> = {
   morning: "Matin",
@@ -295,17 +300,17 @@ const AdminCreneaux = () => {
       const since = new Date(Date.now() - 30 * 86400000).toISOString();
       const sinceDate = format(addDays(new Date(), -30), "yyyy-MM-dd");
 
-      const [sessRes, notifRes, resvRes, pkgRes] = await Promise.all([
-        supabase.from("sessions").select(`
+      const sessRes = await supabase.from("sessions").select(`
           id, date, time_slot, activity, max_participants, status, notes, created_at,
           reservations(id, participants, status),
           package_bookings(id, status)
-        `).gte("date", sinceDate).order("date"),
-        supabase.from("admin_notifications").select("id, kind, title, body, created_at, read_at")
-          .in("kind", ["stripe_webhook_error", "session_generation"]).is("read_at", null).gte("created_at", since),
-        supabase.from("reservations").select("id, session_id, status, created_at").is("session_id", null).gte("created_at", since),
-        supabase.from("package_bookings").select("id, session_id, status, created_at").is("session_id", null).gte("created_at", since),
-      ]);
+        `).gte("date", sinceDate).order("date");
+      const notifRes = await supabase.from("admin_notifications").select("id, kind, title, body, created_at, read_at")
+        .in("kind", ["stripe_webhook_error", "session_generation"]).is("read_at", null).gte("created_at", since);
+      const resvRes = await supabase.from("reservations").select("id, session_id, status, created_at")
+        .is("session_id", null).gte("created_at", since);
+      const pkgRes = await supabase.from("package_bookings").select("id, session_id, status, created_at")
+        .is("session_id", null).gte("created_at", since);
 
       const all = ((sessRes.data as any) || []) as Session[];
       const overCap: AuditIssue[] = [];
