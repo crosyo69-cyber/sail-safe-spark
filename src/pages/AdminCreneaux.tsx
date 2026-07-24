@@ -391,17 +391,18 @@ const AdminCreneaux = () => {
                           {items.map(s => {
                             const occ = occupancy(s);
                             const over = occ > s.max_participants;
+                            const eff = effectiveStatus(s, occ);
                             const reservations = s.reservations.filter(r => r.status !== "cancelled");
                             const pkgBookings = s.package_bookings.filter(b => b.status === "confirmed");
                             return (
                               <div key={s.id} className={cn("rounded-md p-2 mb-1 text-xs", over ? "bg-destructive/10 border border-destructive/40" : "bg-card border border-border")}>
                                 <div className="flex items-center justify-between gap-1 mb-1">
-                                  <Badge variant={s.status === "cancelled" ? "destructive" : s.status === "closed" ? "secondary" : "default"} className="text-[10px]">
+                                  <Badge variant={eff.key === "cancelled" ? "destructive" : eff.key === "full" ? "secondary" : eff.key === "empty_closed" || eff.key === "closed" ? "outline" : "default"} className="text-[10px]">
                                     {ACTIVITY_LABEL[s.activity]}
                                   </Badge>
                                   <span className={cn("font-semibold", over && "text-destructive")}>{occ}/{s.max_participants}</span>
                                 </div>
-                                <div className="text-[10px] text-muted-foreground mb-1">{STATUS_LABEL[s.status] || s.status}</div>
+                                <div className={cn("text-[10px] mb-1", eff.key === "empty_closed" ? "text-amber-600 font-medium" : "text-muted-foreground")}>{eff.label}</div>
                                 {over && <Badge variant="destructive" className="text-[10px] mb-1">Capacité dépassée</Badge>}
                                 {(reservations.length + pkgBookings.length) > 0 && (
                                   <ul className="space-y-0.5 mb-2 max-h-32 overflow-y-auto">
