@@ -298,14 +298,21 @@ const AdminCreneaux = () => {
         </div>
 
         {/* Anomalies */}
-        {(anomalies.overCap.length > 0 || anomalies.dualActivity.length > 0 || anomalies.staleAuto.length > 0 || (stuckCount ?? 0) > 0) && (
+        {(anomalies.overCap.length > 0 || anomalies.emptyClosed.length > 0 || anomalies.staleAuto.length > 0 || (stuckCount ?? 0) > 0) && (
           <Card className="p-4 mb-6 border-destructive/40 bg-destructive/5">
             <div className="flex items-center gap-2 mb-3 text-destructive font-semibold">
               <AlertTriangle className="w-5 h-5" /> Anomalies détectées
             </div>
             <ul className="space-y-1 text-sm">
               {anomalies.overCap.length > 0 && <li>• {anomalies.overCap.length} session(s) en dépassement de capacité</li>}
-              {anomalies.dualActivity.length > 0 && <li>• {anomalies.dualActivity.length} créneau(x) avec 2 activités actives (violation "1 activité / créneau")</li>}
+              {anomalies.emptyClosed.length > 0 && (
+                <li className="flex items-center gap-2 flex-wrap">
+                  • {anomalies.emptyClosed.length} session(s) fermée(s) sans aucune inscription (affichées à tort comme « Complète »)
+                  <Button size="sm" variant="outline" className="h-6 px-2 text-xs" onClick={reopenEmptyClosed}>
+                    Rouvrir automatiquement
+                  </Button>
+                </li>
+              )}
               {(stuckCount ?? 0) > 0 && <li>• {stuckCount} paiement(s) Stripe potentiellement bloqué(s) (14 derniers jours)</li>}
               {anomalies.staleAuto.length > 0 && <li>• {anomalies.staleAuto.length} session(s) auto-créée(s) &gt; 7 jours sans inscription</li>}
             </ul>
