@@ -187,6 +187,42 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_groups: {
+        Row: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          created_at: string
+          date: string
+          group_index: number
+          id: string
+          max_participants: number
+          notes: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          created_at?: string
+          date: string
+          group_index: number
+          id?: string
+          max_participants: number
+          notes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          activity?: Database["public"]["Enums"]["activity_type"]
+          created_at?: string
+          date?: string
+          group_index?: number
+          id?: string
+          max_participants?: number
+          notes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       daily_slot_capacity: {
         Row: {
           created_at: string
@@ -341,31 +377,41 @@ export type Database = {
         Row: {
           booking_kind: string
           created_at: string
+          daily_group_id: string | null
           id: string
           package_id: string
-          session_id: string
+          session_id: string | null
           status: string
           updated_at: string
         }
         Insert: {
           booking_kind?: string
           created_at?: string
+          daily_group_id?: string | null
           id?: string
           package_id: string
-          session_id: string
+          session_id?: string | null
           status?: string
           updated_at?: string
         }
         Update: {
           booking_kind?: string
           created_at?: string
+          daily_group_id?: string | null
           id?: string
           package_id?: string
-          session_id?: string
+          session_id?: string | null
           status?: string
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "package_bookings_daily_group_id_fkey"
+            columns: ["daily_group_id"]
+            isOneToOne: false
+            referencedRelation: "daily_groups"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "package_bookings_package_id_fkey"
             columns: ["package_id"]
@@ -487,6 +533,7 @@ export type Database = {
       reservations: {
         Row: {
           created_at: string
+          daily_group_id: string | null
           email: string
           first_name: string
           id: string
@@ -494,7 +541,7 @@ export type Database = {
           notes: string | null
           participants: number
           phone: string
-          session_id: string
+          session_id: string | null
           skill_level: Database["public"]["Enums"]["skill_level"]
           status: Database["public"]["Enums"]["reservation_status"]
           stripe_session_id: string | null
@@ -503,6 +550,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          daily_group_id?: string | null
           email: string
           first_name: string
           id?: string
@@ -510,7 +558,7 @@ export type Database = {
           notes?: string | null
           participants?: number
           phone: string
-          session_id: string
+          session_id?: string | null
           skill_level?: Database["public"]["Enums"]["skill_level"]
           status?: Database["public"]["Enums"]["reservation_status"]
           stripe_session_id?: string | null
@@ -519,6 +567,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          daily_group_id?: string | null
           email?: string
           first_name?: string
           id?: string
@@ -526,7 +575,7 @@ export type Database = {
           notes?: string | null
           participants?: number
           phone?: string
-          session_id?: string
+          session_id?: string | null
           skill_level?: Database["public"]["Enums"]["skill_level"]
           status?: Database["public"]["Enums"]["reservation_status"]
           stripe_session_id?: string | null
@@ -534,6 +583,13 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "reservations_daily_group_id_fkey"
+            columns: ["daily_group_id"]
+            isOneToOne: false
+            referencedRelation: "daily_groups"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "reservations_session_id_fkey"
             columns: ["session_id"]
@@ -747,9 +803,28 @@ export type Database = {
         Args: { p_package_id: string; p_session_id: string }
         Returns: Json
       }
+      admin_list_daily_groups: { Args: { p_date: string }; Returns: Json }
       auto_generate_sessions: { Args: { p_days?: number }; Returns: Json }
       auto_generate_sessions_monitored: {
         Args: { p_days?: number; p_expected_min?: number }
+        Returns: Json
+      }
+      book_daily_visitor: {
+        Args: {
+          p_activity: Database["public"]["Enums"]["activity_type"]
+          p_date: string
+          p_email: string
+          p_first_name: string
+          p_last_name: string
+          p_notes?: string
+          p_participants: number
+          p_phone: string
+          p_stripe_session_id: string
+        }
+        Returns: Json
+      }
+      book_daily_with_code: {
+        Args: { p_code: string; p_date: string }
         Returns: Json
       }
       book_session_with_code: {
@@ -771,6 +846,10 @@ export type Database = {
       confirm_last_minute_subscription: {
         Args: { p_token: string }
         Returns: boolean
+      }
+      default_max_participants: {
+        Args: { _activity: Database["public"]["Enums"]["activity_type"] }
+        Returns: number
       }
       delete_email: {
         Args: { message_id: number; queue_name: string }
@@ -804,6 +883,15 @@ export type Database = {
         Args: { p_package_id: string }
         Returns: undefined
       }
+      find_or_create_daily_group: {
+        Args: {
+          p_activity: Database["public"]["Enums"]["activity_type"]
+          p_date: string
+          p_seats?: number
+        }
+        Returns: string
+      }
+      get_daily_availability: { Args: { p_date: string }; Returns: Json }
       get_email_queue_status: {
         Args: never
         Returns: {
