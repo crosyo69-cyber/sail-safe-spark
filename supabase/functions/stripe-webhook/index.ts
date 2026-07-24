@@ -153,12 +153,18 @@ async function autoEnrollConsecutiveStage(
       continue;
     }
 
+    const { data: existingBooking } = await supabase
+      .from("package_bookings")
+      .select("id")
+      .eq("package_id", pkg.id)
+      .eq("daily_group_id", groupId)
+      .eq("status", "confirmed")
+      .maybeSingle();
+    if (existingBooking) continue;
+
     const { error: bErr } = await supabase
       .from("package_bookings")
-      .upsert(
-        { package_id: pkg.id, daily_group_id: groupId, status: "confirmed", booking_kind: "regular" },
-        { onConflict: "package_id,daily_group_id" },
-      );
+      .insert({ package_id: pkg.id, daily_group_id: groupId, status: "confirmed", booking_kind: "regular" });
     if (bErr) {
       console.error(`autoEnrollConsecutiveStage: booking ${dateStr} error`, bErr);
     }
