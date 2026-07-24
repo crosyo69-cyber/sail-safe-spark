@@ -175,6 +175,7 @@ const ReserverPage = () => {
         session_closed: "Session fermée",
         session_in_past: "Session passée",
         session_full: "Session complète",
+        slot_taken_by_other_activity: "Créneau déjà attribué à une autre activité (1 seule activité par créneau)",
       };
       const errKey = String(res?.error || "");
       if (errKey.startsWith("day_full:")) {
