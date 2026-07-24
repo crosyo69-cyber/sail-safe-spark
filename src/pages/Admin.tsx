@@ -5,11 +5,9 @@ import { useAdmin } from "@/hooks/useAdmin";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import AdminOverview from "@/components/admin/AdminOverview";
-import AdminSessionManager from "@/components/admin/AdminSessionManager";
 import AdminReservationList from "@/components/admin/AdminReservationList";
 import AdminEmailDashboard from "@/components/admin/AdminEmailDashboard";
 import AdminEmailQueueMonitor from "@/components/admin/AdminEmailQueueMonitor";
-import AdminMonthlyCalendar from "@/components/admin/AdminMonthlyCalendar";
 import AdminRevenueDashboard from "@/components/admin/AdminRevenueDashboard";
 import AdminSeasonStats from "@/components/admin/AdminSeasonStats";
 import Admin404Monitor from "@/components/admin/Admin404Monitor";
@@ -21,19 +19,13 @@ import AdminRichResultsValidator from "@/components/admin/AdminRichResultsValida
 import AdminAlertsCenter from "@/components/admin/AdminAlertsCenter";
 import AdminNotificationsBell from "@/components/admin/AdminNotificationsBell";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell, Grid3x3 } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell, Grid3x3 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
   const [activeTab, setActiveTab] = useState("overview");
-  const [sessionDate, setSessionDate] = useState<Date>(new Date());
-
-  const handleNavigateToSession = (date: Date) => {
-    setSessionDate(date);
-    setActiveTab("sessions");
-  };
 
   if (isLoading) {
     return (
@@ -87,14 +79,6 @@ const Admin = () => {
               <LayoutDashboard className="w-4 h-4" />
               <span className="hidden sm:inline">Vue d'ensemble</span>
             </TabsTrigger>
-            <TabsTrigger value="calendar" className="gap-2">
-              <Calendar className="w-4 h-4" />
-              <span className="hidden sm:inline">Calendrier</span>
-            </TabsTrigger>
-            <TabsTrigger value="sessions" className="gap-2">
-              <CalendarDays className="w-4 h-4" />
-              <span className="hidden sm:inline">Sessions</span>
-            </TabsTrigger>
             <TabsTrigger value="reservations" className="gap-2">
               <ClipboardList className="w-4 h-4" />
               <span className="hidden sm:inline">Réservations</span>
@@ -147,14 +131,6 @@ const Admin = () => {
 
           <TabsContent value="overview">
             <AdminOverview />
-          </TabsContent>
-
-          <TabsContent value="calendar">
-            <AdminMonthlyCalendar onNavigateToSession={handleNavigateToSession} />
-          </TabsContent>
-
-          <TabsContent value="sessions">
-            <AdminSessionManager initialDate={sessionDate} />
           </TabsContent>
 
           <TabsContent value="reservations">
