@@ -452,11 +452,23 @@ const AdminCreneaux = () => {
         <div className="flex items-center gap-3 mb-6 flex-wrap">
           <Button asChild variant="ghost" size="sm"><Link to="/admin"><ArrowLeft className="w-4 h-4 mr-1" />Admin</Link></Button>
           <h1 className="text-3xl font-display font-bold text-foreground">Gestion des créneaux</h1>
+          <Badge variant="secondary" className="uppercase tracking-wide">Lecture seule — audit</Badge>
           <Button size="sm" variant="default" className="ml-auto" onClick={runAudit} disabled={auditRunning}>
             {auditRunning ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <ClipboardCheck className="w-4 h-4 mr-1" />}
             Lancer l'audit
           </Button>
         </div>
+
+        <Card className="p-4 mb-6 border-amber-500/40 bg-amber-500/5">
+          <div className="flex items-start gap-2 text-sm">
+            <AlertTriangle className="w-4 h-4 mt-0.5 text-amber-600 shrink-0" />
+            <div>
+              <strong>Mode audit :</strong> cette page est conservée en lecture seule pour l'audit historique du modèle par créneaux fixes.
+              La planification active est désormais gérée dans <Link to="/admin/journees" className="underline font-medium">Gestion des journées</Link>.
+              Les actions d'édition ne sont plus effectives ici.
+            </div>
+          </div>
+        </Card>
 
         {/* Anomalies */}
         {(anomalies.overCap.length > 0 || anomalies.emptyClosed.length > 0 || anomalies.staleAuto.length > 0 || (stuckCount ?? 0) > 0) && (
