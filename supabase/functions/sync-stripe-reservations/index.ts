@@ -261,15 +261,17 @@ async function syncOne(
     }
     lastErr = resErr.message;
     const outcome: "closed" | "full" | "error" =
-      msg.includes("slot_full") ? "full"
+      (msg.includes("session_full") || msg.includes("slot_full")) ? "full"
       : msg.includes("session_closed") ? "closed"
       : "error";
     slotAttempts.push({ slot, session_id: sessionId, outcome, detail: resErr.message, occupancy });
     // Only fall through to next slot when the session/slot is unavailable.
-    if (!msg.includes("session_closed") && !msg.includes("slot_full")) break;
+    if (!msg.includes("session_closed") && !msg.includes("slot_full") && !msg.includes("session_full")) break;
     if (slot === "morning") {
       preferredClosed = true;
-      preferredClosedReason = msg.includes("slot_full") ? "slot_full" : "session_closed";
+      preferredClosedReason = (msg.includes("session_full") || msg.includes("slot_full"))
+        ? "session_full"
+        : "session_closed";
     }
   }
 
