@@ -110,6 +110,7 @@ const MonEspace = () => {
       .from("sessions")
       .select("id, date, time_slot, activity, max_participants")
       .eq("status", "open")
+      .eq("activity", p.activity as any)
       .gte("date", today)
       .order("date", { ascending: true })
       .limit(60);
