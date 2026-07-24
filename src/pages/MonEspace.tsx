@@ -106,24 +106,21 @@ const MonEspace = () => {
 
   const loadSessions = async (p: PackageInfo) => {
     const today = parisToday();
-    // Fetch ALL open sessions in the window (any activity) so we can compute
-    // shared-slot occupancy: get_slot_capacity uses MIN(max_participants) across
-    // activities on the same (date, time_slot) and counts reservations from all
-    // activities. Filtering by activity here would understate `taken` and show
-    // sessions as available when book_session_with_code will actually reject
-    // them for `session_full`.
-    const { data: rawAll } = await supabase
+    // Capacity is per-session (per-activity per-slot). Filter to the pack's
+    // activity and count occupancy on that session only.
+    const { data: rawSessions } = await supabase
       .from("sessions")
       .select("id, date, time_slot, activity, max_participants")
       .eq("status", "open")
+      .eq("activity", p.activity as any)
       .gte("date", today)
       .order("date", { ascending: true })
-      .limit(400);
-    if (!rawAll || rawAll.length === 0) {
+      .limit(120);
+    if (!rawSessions || rawSessions.length === 0) {
       setSessions([]);
       return;
     }
-    const ids = rawAll.map((s) => s.id);
+    const ids = rawSessions.map((s) => s.id);
     const [{ data: resv }, { data: pb }] = await Promise.all([
       supabase
         .from("reservations")
@@ -136,35 +133,16 @@ const MonEspace = () => {
         .in("session_id", ids)
         .eq("status", "confirmed"),
     ]);
-    // Aggregate per shared slot (date|time_slot) across activities.
-    const slotTaken: Record<string, number> = {};
-    const slotCapacity: Record<string, number> = {};
-    const sessionToSlot: Record<string, string> = {};
-    rawAll.forEach((s: any) => {
-      const key = `${s.date}|${s.time_slot}`;
-      sessionToSlot[s.id] = key;
-      slotCapacity[key] = Math.min(slotCapacity[key] ?? Infinity, s.max_participants);
-    });
+    const taken: Record<string, number> = {};
     (resv || []).forEach((r: any) => {
-      const k = sessionToSlot[r.session_id];
-      if (k) slotTaken[k] = (slotTaken[k] || 0) + (r.participants || 1);
+      taken[r.session_id] = (taken[r.session_id] || 0) + (r.participants || 1);
     });
     (pb || []).forEach((b: any) => {
-      const k = sessionToSlot[b.session_id];
-      if (k) slotTaken[k] = (slotTaken[k] || 0) + 1;
+      taken[b.session_id] = (taken[b.session_id] || 0) + 1;
     });
-    // Only show sessions matching the pack activity, but with shared-slot occupancy.
-    const visible = rawAll
-      .filter((s: any) => s.activity === p.activity)
-      .map((s: any) => {
-        const key = `${s.date}|${s.time_slot}`;
-        return {
-          ...s,
-          max_participants: slotCapacity[key] ?? s.max_participants,
-          taken: slotTaken[key] || 0,
-        };
-      });
-    setSessions(visible as AvailableSession[]);
+    setSessions(
+      rawSessions.map((s: any) => ({ ...s, taken: taken[s.id] || 0 })) as AvailableSession[],
+    );
   };
 
   useEffect(() => {
