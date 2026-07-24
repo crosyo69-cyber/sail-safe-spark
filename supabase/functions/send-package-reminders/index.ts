@@ -28,10 +28,9 @@ function buildReminderEmail(opts: {
   firstName: string;
   activity: string;
   dateLabel: string;
-  timeSlot: string;
   packageCode: string;
 }) {
-  const { firstName, activity, dateLabel, timeSlot, packageCode } = opts;
+  const { firstName, activity, dateLabel, packageCode } = opts;
   return `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"></head>
 <body style="margin:0;padding:0;background:#fff;font-family:Montserrat,Inter,Arial,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;">
@@ -41,10 +40,10 @@ function buildReminderEmail(opts: {
   <tr><td style="padding:32px 25px 0;">
     <h1 style="font-size:22px;color:#0F172A;margin:0 0 16px;">Rappel : votre session ${escapeHtml(activity)} dans 2 jours 🪁</h1>
     <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 16px;">
-      Bonjour ${escapeHtml(firstName)}, votre session est programmée le <strong>${escapeHtml(dateLabel)}</strong> (${escapeHtml(timeSlot)}).
+      Bonjour ${escapeHtml(firstName)}, votre journée est programmée le <strong>${escapeHtml(dateLabel)}</strong>.
     </p>
     <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 20px;">
-      📞 Appelez-nous la veille au <a href="tel:0672716905" style="color:#0891B2;font-weight:bold;">06 72 71 69 05</a> pour confirmer le créneau selon la météo.
+      📞 Les horaires seront communiqués la veille par téléphone au <a href="tel:0672716905" style="color:#0891B2;font-weight:bold;">06 72 71 69 05</a> en fonction des conditions météorologiques.
     </p>
   </td></tr>
   <tr><td style="padding:0 25px 24px;">
@@ -151,7 +150,7 @@ Deno.serve(async (req) => {
   const { data: bookings, error } = await supabase
     .from("package_bookings")
     .select(
-      "id, status, sessions:session_id (date, time_slot, activity), package:package_id (package_code, first_name, email)",
+      "id, status, daily_group:daily_group_id (date, activity), sessions:session_id (date, activity), package:package_id (package_code, first_name, email)",
     )
     .eq("status", "confirmed");
 
@@ -164,14 +163,11 @@ Deno.serve(async (req) => {
   }
 
   let sent = 0;
-  const slotLabels: Record<string, string> = {
-    morning: "Matin",
-    afternoon: "Après-midi",
-    fullday: "Journée complète",
-  };
 
   for (const b of bookings || []) {
-    const s = (b as any).sessions;
+    const dg = (b as any).daily_group;
+    const legacy = (b as any).sessions;
+    const s = dg || legacy;
     const p = (b as any).package;
     if (!s || !p?.email || s.date !== targetDate) continue;
 
@@ -193,7 +189,6 @@ Deno.serve(async (req) => {
         day: "numeric",
         month: "long",
       }),
-      timeSlot: slotLabels[s.time_slot] || s.time_slot,
       packageCode: p.package_code,
     });
 
