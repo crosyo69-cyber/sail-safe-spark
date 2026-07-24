@@ -48,6 +48,7 @@ const Admin = lazyWithChunkRecovery(() => import("./pages/Admin"));
 const MonEspace = lazyWithChunkRecovery(() => import("./pages/MonEspace"));
 const Reserver = lazyWithChunkRecovery(() => import("./pages/Reserver"));
 const OAuthConsent = lazyWithChunkRecovery(() => import("./pages/OAuthConsent"));
+const AdminCreneaux = lazyWithChunkRecovery(() => import("./pages/AdminCreneaux"));
 // NotFound is handled inside LegacyRedirectHandler
 
 const queryClient = new QueryClient({
@@ -125,6 +126,7 @@ const App = () => {
                 <Route path="/reservation-confirmee" element={<ReservationConfirmee />} />
                 <Route path="/merci" element={<Merci />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/admin/creneaux" element={<AdminCreneaux />} />
                 <Route path="/mon-espace" element={<MonEspace />} />
                 <Route path="/mon-espace/:code" element={<MonEspace />} />
                 <Route path="/reserver" element={<Reserver />} />
