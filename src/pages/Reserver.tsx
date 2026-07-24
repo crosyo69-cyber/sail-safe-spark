@@ -45,11 +45,28 @@ interface AvailableSession {
   private_names: string[];
 }
 
+// Tous les créneaux d'un jour + qui les occupe (activité sélectionnée, autre activité, ou libre).
+type SlotState =
+  | { kind: "self"; session: AvailableSession }
+  | { kind: "other"; activity: Activity }
+  | { kind: "free" };
+
+const ALL_SLOTS: Array<"morning" | "early_afternoon" | "late_afternoon"> = [
+  "morning",
+  "early_afternoon",
+  "late_afternoon",
+];
+
 const ReserverPage = () => {
   const navigate = useNavigate();
   const [activity, setActivity] = useState<Activity>("kitesurf");
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [sessions, setSessions] = useState<AvailableSession[]>([]);
+  // Créneaux occupés par une AUTRE activité que celle sélectionnée
+  // (pour signaler visuellement qu'ils ne sont plus attribuables).
+  const [otherActivitySlots, setOtherActivitySlots] = useState<
+    Array<{ date: string; time_slot: string; activity: Activity }>
+  >([]);
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState("");
   const [booking, setBooking] = useState<string | null>(null);
@@ -58,18 +75,27 @@ const ReserverPage = () => {
   const loadSessions = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
     const today = parisToday();
-    // Capacity is per-session (per-activity per-slot). Fetch only sessions for
-    // the selected activity.
+    // Capacity is per-session (per-activity per-slot). On récupère TOUTES les
+    // sessions (toutes activités) sur la plage visible : celles de l'activité
+    // sélectionnée pour l'affichage principal, les autres pour signaler les
+    // créneaux déjà pris par une autre activité (règle "1 activité par créneau").
     let query = supabase
       .from("sessions")
-      .select("id, date, time_slot, activity, max_participants")
-      .eq("status", "open")
-      .eq("activity", activity as any)
+      .select("id, date, time_slot, activity, max_participants, status")
+      .in("status", ["open", "closed"])
       .gte("date", date ? toParisDateOnly(date) : today)
       .order("date", { ascending: true })
-      .limit(200);
+      .limit(400);
     if (date) query = query.lte("date", toParisDateOnly(date));
-    const { data: rawSessions } = await query;
+    const { data: rawAll } = await query;
+    const rawSessions = (rawAll || []).filter(
+      (s: any) => s.activity === activity && s.status === "open",
+    );
+    setOtherActivitySlots(
+      (rawAll || [])
+        .filter((s: any) => s.activity !== activity)
+        .map((s: any) => ({ date: s.date, time_slot: s.time_slot, activity: s.activity })),
+    );
     if (!silent) setLoading(false);
     if (!rawSessions || rawSessions.length === 0) {
       setSessions([]);
@@ -162,14 +188,26 @@ const ReserverPage = () => {
     navigate(`/mon-espace/${clean}`);
   };
 
+  // Groupé par date, avec l'état de CHAQUE créneau (self / other / free).
   const grouped = useMemo(() => {
-    const map: Record<string, AvailableSession[]> = {};
+    const dates = new Set<string>();
+    sessions.forEach((s) => dates.add(s.date));
+    otherActivitySlots.forEach((o) => dates.add(o.date));
+    const map: Record<string, Record<string, SlotState>> = {};
+    dates.forEach((d) => {
+      map[d] = { morning: { kind: "free" }, early_afternoon: { kind: "free" }, late_afternoon: { kind: "free" } };
+    });
     sessions.forEach((s) => {
-      if (!map[s.date]) map[s.date] = [];
-      map[s.date].push(s);
+      if (map[s.date]) map[s.date][s.time_slot] = { kind: "self", session: s };
+    });
+    otherActivitySlots.forEach((o) => {
+      // Ne pas écraser un créneau déjà attribué à l'activité sélectionnée.
+      if (map[o.date] && map[o.date][o.time_slot].kind !== "self") {
+        map[o.date][o.time_slot] = { kind: "other", activity: o.activity };
+      }
     });
     return Object.entries(map).sort(([a], [b]) => a.localeCompare(b));
-  }, [sessions]);
+  }, [sessions, otherActivitySlots]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -260,18 +298,58 @@ const ReserverPage = () => {
         ) : grouped.length === 0 ? (
           <Card className="p-8 text-center">
             <p className="text-muted-foreground">
-              Aucune session disponible pour ce choix. Essayez une autre date ou contactez-nous au 06 72 71 69 05.
+              Aucun créneau planifié à venir. Le calendrier se remplira dès qu'un élève réservera. Contactez-nous au 06 72 71 69 05 pour toute question.
             </p>
           </Card>
         ) : (
           <div className="space-y-6">
-            {grouped.map(([d, list]) => (
+            <p className="text-xs text-muted-foreground">
+              Règle : 1 activité par créneau. Un créneau déjà attribué à une autre activité n'est pas réservable pour l'activité sélectionnée.
+            </p>
+            {grouped.map(([d, slotMap]) => (
               <section key={d}>
                 <h2 className="text-lg font-semibold mb-3 capitalize">
                   {format(parseISO(d), "EEEE d MMMM yyyy", { locale: fr })}
                 </h2>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {list.map((s) => {
+                  {ALL_SLOTS.map((slotKey) => {
+                    const state = slotMap[slotKey];
+                    const slotLabel = SLOT_LABELS[slotKey];
+                    if (state.kind === "other") {
+                      const otherLabel = ACTIVITIES.find(a => a.value === state.activity)?.label || state.activity;
+                      return (
+                        <Card key={slotKey} className="opacity-70 border-dashed">
+                          <CardContent className="py-4 space-y-2">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="font-semibold">{slotLabel}</p>
+                                <p className="text-xs text-muted-foreground">Créneau attribué à une autre activité</p>
+                              </div>
+                              <Badge variant="outline" className="capitalize">{otherLabel}</Badge>
+                            </div>
+                            <div className="w-full min-h-[44px] flex items-center justify-center rounded-md bg-muted text-muted-foreground text-xs font-medium px-3 text-center">
+                              Indisponible pour {ACTIVITIES.find(a => a.value === activity)?.label} sur ce créneau
+                            </div>
+                          </CardContent>
+                        </Card>
+                      );
+                    }
+                    if (state.kind === "free") {
+                      return (
+                        <Card key={slotKey} className="border-dashed">
+                          <CardContent className="py-4 space-y-2">
+                            <div className="flex items-center justify-between">
+                              <p className="font-semibold">{slotLabel}</p>
+                              <Badge variant="outline">Libre</Badge>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              Créneau non encore ouvert — sera attribué à la 1ʳᵉ activité réservée.
+                            </p>
+                          </CardContent>
+                        </Card>
+                      );
+                    }
+                    const s = state.session;
                     const full = s.taken >= s.max_participants;
                     const remaining = s.max_participants - s.taken;
                     return (
@@ -282,6 +360,7 @@ const ReserverPage = () => {
                               <p className="font-semibold">{SLOT_LABELS[s.time_slot] || s.time_slot}</p>
                               <p className="text-xs text-muted-foreground capitalize">
                                 {ACTIVITIES.find(a => a.value === s.activity)?.label}
+                                <span className="ml-1">· max {s.max_participants}</span>
                               </p>
                             </div>
                             <div className="text-right">
