@@ -1,96 +1,69 @@
-## Objectif
+# Refonte : suppression des créneaux horaires, gestion par groupes dynamiques
 
-Mettre en place un système d'alertes unifié pour le back-office Kitesurf Passion couvrant :
-1. **Alertes admin métier** — nouvelle réservation Stripe, session pleine, paiement échoué, recrédit manuel
-2. **Alertes last-minute** — notifier les abonnés `last_minute_subscribers` quand une place se libère sur une session passée en `closed`/`cancelled` puis rouverte
-3. **Alertes techniques** — emails en DLQ, échecs webhook Stripe, pic anormal de 404, erreurs edge functions
+## Nouveau modèle métier
 
-Canaux : **email** (vers `crosyo69@gmail.com` pour admin/tech) + **centre de notifications dans l'admin** (badge cloche + liste).
+- Le client choisit uniquement : **activité** (Kitesurf/Wingfoil), **date**, **nombre de participants**.
+- Aucun horaire n'apparaît nulle part côté client ni admin (l'horaire est communiqué par téléphone la veille).
+- Les groupes sont créés dynamiquement à la volée selon les réservations :
+  - Kitesurf → max 4 par groupe
+  - Wingfoil → max 3 par groupe
+- Aucune limite « 3 créneaux/jour ». Autant de groupes que nécessaire, dans n'importe quelle combinaison d'activités.
 
----
+## Changements base de données
 
-## 1. Modèle de données
+Migration Supabase :
 
-Nouvelle table `admin_notifications` :
-- `kind` (text) — `booking_new`, `session_full`, `payment_failed`, `admin_credit`, `email_dlq`, `stripe_webhook_error`, `404_spike`, `last_minute_freed`
-- `severity` (text) — `info`, `warning`, `critical`
-- `title`, `body` (text)
-- `metadata` (jsonb) — IDs liés (session_id, reservation_id, message_id…)
-- `read_at` (timestamptz, nullable)
-- `email_sent_at` (timestamptz, nullable)
-- `created_at`
+1. **Ajout `daily_groups`** (remplace la logique de `sessions` liée aux time_slots) :
+   - `date`, `activity` (kitesurf|wingfoil), `group_index` (1,2,3…), `max_participants`, `status`.
+   - Unique `(date, activity, group_index)`.
+2. **`package_bookings` et `reservations`** : ajout `daily_group_id` (nullable pendant transition), garder `session_id` pour compat historique.
+3. **Nouvelles RPC** :
+   - `book_daily_with_code(p_code, p_date, p_participants=1)` : trouve ou crée le premier groupe non plein de l'activité du pack pour cette date.
+   - `book_daily_visitor(...)` : équivalent pour paiement Stripe.
+   - `get_daily_availability(p_date)` : renvoie `{ kitesurf: {inscrits, groupes, places_restantes}, wingfoil: {…} }`.
+4. **Neutraliser** les triggers/RPC basés sur `time_slot` (les garder mais non appelés).
+5. **Migrer** les réservations futures : chaque `sessions` future devient un `daily_group` correspondant.
 
-RLS : admin-only (SELECT/UPDATE/DELETE via `has_role`), `service_role` full access, INSERT autorisé via SECURITY DEFINER `enqueue_admin_notification(kind, severity, title, body, metadata)`.
+## Changements code
 
-Realtime activé pour push live du badge.
+### Frontend client
+- `DepositPaymentSection.tsx` : retirer sélection de créneau, ne demander que date + activité + nb participants.
+- `MonEspace.tsx` : le calendrier affiche par jour un simple bouton « Réserver » par activité, avec le nombre de places dispo cumulées de la journée. Suppression des 3 slots.
+- `Reserver.tsx` : idem, vue jour → une seule action de réservation.
+- Emails de confirmation (`enqueue_booking_confirmation`) : remplacer horaire par le message « les horaires seront communiqués la veille ».
 
----
+### Sync Stripe
+- `sync-stripe-reservations` : remplacer toute la logique multi-slot par un simple appel à la nouvelle RPC visitor (activité + date). Suppression des SLOTS, de `findOrCreateSession`, des emails de bascule.
 
-## 2. Sources d'alertes (triggers + edge functions)
+### Admin
+- `AdminCreneaux.tsx` → renommé « Gestion des journées » : vue par date avec, pour chaque activité, `inscrits / groupes / places restantes` + liste des groupes.
+- `AdminMonthlyCalendar.tsx` / `AdminSessionManager.tsx` : adapter à la vue journée.
+- `AdminReservationList.tsx` : retirer colonne horaire.
 
-| Alerte | Source | Implémentation |
-|---|---|---|
-| Nouvelle réservation Stripe | trigger AFTER INSERT sur `reservations` (status='confirmed', stripe_session_id IS NOT NULL) | trigger DB → `enqueue_admin_notification` |
-| Session pleine | dans `enforce_session_capacity` quand v_count+v_new_seats = capacity | ajout PERFORM enqueue |
-| Recrédit manuel | dans `admin_adjust_package_credits` | ajout PERFORM enqueue (info) |
-| Email DLQ | edge function `email-queue-health-check` (cron déjà existant) | enqueue si DLQ > seuil |
-| Last-minute freed | trigger sync_package_used_sessions quand delta=+1 et reservations existantes pour ce slot avec `last_minute_subscribers` matching | enqueue + invoke `last-minute-notify` |
-| Stripe webhook error | dans `stripe-webhook/index.ts` catch | appel direct `enqueue_admin_notification` via service role |
-| 404 spike | nouvelle edge function cron `monitor-404-spike` (toutes les 30min) | si > N événements /h → enqueue |
+### Suppression / dépréciation
+- Suppression cron `auto_generate_sessions` (déjà désarmé).
+- Retrait UI des time_slots partout.
 
----
+## Migration des données existantes
 
-## 3. Envoi email admin
+- Sessions futures (`date >= today`) : convertir chaque session en `daily_group` (activity conservée, `group_index` = ordre chronologique dans la journée).
+- Bookings/reservations : rattachement au `daily_group` correspondant.
+- Sessions passées : conservées telles quelles pour l'historique/reporting.
 
-Nouvelle edge function cron `dispatch-admin-alerts` (toutes les 2 min) :
-- lit `admin_notifications WHERE email_sent_at IS NULL AND severity IN ('warning','critical')`
-- regroupe par batch (anti-spam : max 1 email/5min sur même `kind`)
-- enqueue email via `transactional_emails` queue (template HTML Navy/Orange existant) à `crosyo69@gmail.com`
-- marque `email_sent_at = now()`
+## Livraison en 3 étapes
 
-Les alertes `info` (ex : recrédit manuel, nouvelle résa) restent visibles dans l'admin sans spam mail.
+1. **Migration DB** (tables, RPC, backfill des données futures).
+2. **Frontend client + emails** (le client ne voit plus les horaires).
+3. **Admin** (nouvelle vue journée + audit adapté).
 
----
+## Points d'attention
 
-## 4. UI Admin — Centre de notifications
+- Cette refonte casse des contrats d'API existants (edge functions, e2e tests). Les tests Playwright liés aux time_slots devront être mis à jour dans un second temps.
+- Les packs Stage 100% Glisse (5 jours consécutifs) restent basés sur `book_stage_100_glisse` : à adapter aussi pour utiliser `daily_group` au lieu de `session_id` + `time_slot`.
+- Les crédits météo (`admin_grant_weather_credit_booking`) : à adapter.
 
-Nouveau composant `AdminNotificationsBell` dans `Header` admin :
-- icône cloche avec badge `unread_count`
-- popover : 20 dernières notifications, groupées par jour
-- couleurs par sévérité (badge), icône par `kind`
-- actions : "Marquer comme lue", "Tout marquer comme lu", lien vers ressource liée si applicable
-- abonnement Realtime sur `admin_notifications` pour incrément live
-- nouvelle page `/admin/alertes` : vue complète paginée + filtres (kind, severity, période, read/unread)
+## Confirmation demandée avant implémentation
 
----
-
-## 5. Configuration
-
-Section dans `AdminOverview` : "Paramètres d'alertes" :
-- seuils : DLQ count, 404/h, sessions complètes par jour
-- toggle par `kind` : envoyer email oui/non
-- stockés dans nouvelle table `admin_alert_settings` (single row, admin-only)
-
----
-
-## Détails techniques
-
-- Tous les triggers utilisent `SECURITY DEFINER` avec `search_path = public`
-- La fonction `enqueue_admin_notification` est appelée depuis triggers DB et edge functions (service role)
-- Realtime : `ALTER PUBLICATION supabase_realtime ADD TABLE public.admin_notifications`
-- Template email réutilise la charte Navy `#0F172A` + Orange `#F97316` + logo bucket
-- Anti-doublon : index unique partiel sur `(kind, metadata->>'ref_id', date_trunc('hour', created_at))` pour éviter de réinsérer la même alerte critique en boucle
-- `dispatch-admin-alerts` planifié via `pg_cron` (insert manuel, contient anon_key projet)
-
----
-
-## Livrables
-
-1. Migration : table `admin_notifications`, table `admin_alert_settings`, RLS, fonction `enqueue_admin_notification`, ajouts dans triggers existants (`enforce_session_capacity`, `admin_adjust_package_credits`, nouveau trigger `reservations`), publication realtime
-2. Edge function `dispatch-admin-alerts` + cron 2min
-3. Edge function `monitor-404-spike` + cron 30min
-4. Hooks dans `stripe-webhook` et `email-queue-health-check` pour enqueue d'alertes
-5. UI : `AdminNotificationsBell` (popover Header), page `/admin/alertes`, section paramètres dans `AdminOverview`
-6. Lien vers `last-minute-notify` déclenché automatiquement par trigger sur libération de place
-
-Confirme et je code l'ensemble, ou dis-moi quels modules retirer/prioriser.
+1. OK pour supprimer complètement la notion de time_slot côté client ET admin (plus aucun affichage matin/après-midi) ?
+2. OK pour conserver la table `sessions` en lecture seule pour l'historique et créer une nouvelle table `daily_groups` (approche plus sûre qu'un ALTER destructif) ?
+3. Stage 100% Glisse : on garde le principe « 5 jours consécutifs » mais sans time_slot (une réservation par jour) ?
