@@ -18,12 +18,6 @@ const ACTIVITY_LABELS: Record<string, string> = {
   foil_tracte: "Foil tracté",
 };
 
-const SLOT_LABELS: Record<string, string> = {
-  morning: "Matin",
-  early_afternoon: "Début d'après-midi",
-  late_afternoon: "Fin d'après-midi",
-};
-
 const ACTIVITY_COLORS: Record<string, string> = {
   kitesurf: "#0891B2",
   wingfoil: "#F97316",
@@ -40,41 +34,35 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 }
 
-interface SessionData {
+interface GroupData {
   id: string;
   date: string;
   activity: string;
-  time_slot: string;
   max_participants: number;
   status: string;
-  reservations: { id: string; status: string; participants: number; first_name: string; last_name: string }[];
+  booked: number;
 }
 
 function buildSummaryHtml(
-  sessions: SessionData[],
+  groups: GroupData[],
   weekStart: string,
   weekEnd: string,
 ): string {
   // Global stats
-  const totalSessions = sessions.length;
-  const openSessions = sessions.filter((s) => s.status === "open").length;
+  const totalSessions = groups.length;
+  const openSessions = groups.filter((s) => s.status === "open").length;
   const closedSessions = totalSessions - openSessions;
-
-  const totalCapacity = sessions.reduce((a, s) => a + s.max_participants, 0);
-  const totalBooked = sessions.reduce((a, s) => {
-    const active = s.reservations.filter((r) => r.status === "confirmed" || r.status === "pending");
-    return a + active.reduce((b, r) => b + r.participants, 0);
-  }, 0);
+  const totalCapacity = groups.reduce((a, s) => a + s.max_participants, 0);
+  const totalBooked = groups.reduce((a, s) => a + s.booked, 0);
   const globalRate = totalCapacity > 0 ? Math.round((totalBooked / totalCapacity) * 100) : 0;
 
   // Per-activity stats
   const activityStats: Record<string, { capacity: number; booked: number; sessions: number }> = {};
-  for (const s of sessions) {
+  for (const s of groups) {
     if (!activityStats[s.activity]) activityStats[s.activity] = { capacity: 0, booked: 0, sessions: 0 };
     activityStats[s.activity].capacity += s.max_participants;
     activityStats[s.activity].sessions += 1;
-    const active = s.reservations.filter((r) => r.status === "confirmed" || r.status === "pending");
-    activityStats[s.activity].booked += active.reduce((b, r) => b + r.participants, 0);
+    activityStats[s.activity].booked += s.booked;
   }
 
   const activityRows = Object.entries(activityStats)
@@ -101,8 +89,8 @@ function buildSummaryHtml(
     .join("");
 
   // Daily breakdown
-  const sessionsByDate: Record<string, SessionData[]> = {};
-  for (const s of sessions) {
+  const sessionsByDate: Record<string, GroupData[]> = {};
+  for (const s of groups) {
     if (!sessionsByDate[s.date]) sessionsByDate[s.date] = [];
     sessionsByDate[s.date].push(s);
   }
@@ -111,25 +99,21 @@ function buildSummaryHtml(
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([date, daySessions]) => {
       const dayCap = daySessions.reduce((a, s) => a + s.max_participants, 0);
-      const dayBooked = daySessions.reduce((a, s) => {
-        const active = s.reservations.filter((r) => r.status === "confirmed" || r.status === "pending");
-        return a + active.reduce((b, r) => b + r.participants, 0);
-      }, 0);
+      const dayBooked = daySessions.reduce((a, s) => a + s.booked, 0);
       const dayRate = dayCap > 0 ? Math.round((dayBooked / dayCap) * 100) : 0;
       const barColor = dayRate < 50 ? "#EAB308" : dayRate < 80 ? "#0891B2" : "#22C55E";
 
       const sessionDetails = daySessions
-        .sort((a, b) => a.time_slot.localeCompare(b.time_slot))
+        .sort((a, b) => a.activity.localeCompare(b.activity))
         .map((s) => {
-          const active = s.reservations.filter((r) => r.status === "confirmed" || r.status === "pending");
-          const booked = active.reduce((b, r) => b + r.participants, 0);
+          const booked = s.booked;
           const color = ACTIVITY_COLORS[s.activity] || "#666";
           const statusBadge = s.status === "closed"
             ? `<span style="background:#FEE2E2;color:#DC2626;font-size:10px;padding:2px 6px;border-radius:4px;margin-left:6px;">Fermée</span>`
             : "";
           return `<span style="display:inline-block;margin:2px 4px;font-size:12px;color:#64748B;">
             <span style="color:${color};font-weight:bold;">${ACTIVITY_LABELS[s.activity] || s.activity}</span>
-            ${SLOT_LABELS[s.time_slot] || s.time_slot} ${booked}/${s.max_participants}${statusBadge}
+            ${booked}/${s.max_participants}${statusBadge}
           </span>`;
         })
         .join(" · ");
@@ -161,6 +145,7 @@ function buildSummaryHtml(
     <tr><td style="padding:28px 25px 0;">
       <h1 style="font-size:22px;font-weight:bold;color:#0F172A;margin:0 0 6px;">📊 Résumé hebdomadaire</h1>
       <p style="font-size:14px;color:#64748B;margin:0 0 24px;">Semaine du ${formatDate(weekStart)} au ${formatDate(weekEnd)}</p>
+      <p style="font-size:12px;color:#94A3B8;margin:-16px 0 24px;font-style:italic;">Journées dynamiques — les horaires sont communiqués la veille par téléphone selon la météo.</p>
     </td></tr>
 
     <!-- Global Stats -->
@@ -275,26 +260,32 @@ Deno.serve(async (req) => {
 
     console.log(`Generating weekly summary for ${from} to ${to}`);
 
-    const { data: sessions, error } = await supabase
-      .from("sessions")
-      .select("id, date, activity, time_slot, max_participants, status, reservations(id, status, participants, first_name, last_name)")
+    const { data: groups, error } = await supabase
+      .from("daily_groups")
+      .select("id, date, activity, max_participants, status, reservations:reservations(participants,status), package_bookings:package_bookings(status)")
       .gte("date", from)
       .lte("date", to);
 
     if (error) {
-      console.error("Error fetching sessions:", error);
+      console.error("Error fetching daily_groups:", error);
       throw error;
     }
 
-    const sessionData: SessionData[] = (sessions || []).map((s: any) => ({
-      id: s.id,
-      date: s.date,
-      activity: s.activity,
-      time_slot: s.time_slot,
-      max_participants: s.max_participants,
-      status: s.status,
-      reservations: s.reservations || [],
-    }));
+    const sessionData: GroupData[] = (groups || []).map((g: any) => {
+      const resvBooked = (g.reservations || [])
+        .filter((r: any) => r.status !== "cancelled")
+        .reduce((sum: number, r: any) => sum + (r.participants || 1), 0);
+      const pkgBooked = (g.package_bookings || [])
+        .filter((p: any) => p.status === "confirmed").length;
+      return {
+        id: g.id,
+        date: g.date,
+        activity: g.activity,
+        max_participants: g.max_participants,
+        status: g.status,
+        booked: resvBooked + pkgBooked,
+      };
+    });
 
     const html = buildSummaryHtml(sessionData, from, to);
     const messageId = crypto.randomUUID();
