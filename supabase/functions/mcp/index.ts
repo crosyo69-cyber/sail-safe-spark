@@ -57,10 +57,32 @@ function supabaseForUser(ctx) {
     }
   );
 }
+var ACTIVITY_LABEL = {
+  kitesurf: "Kitesurf",
+  wingfoil: "Wingfoil",
+  pumpfoil: "Pumpfoil",
+  foil_tracte: "Foil tract\xE9",
+  stage_100_glisse: "Stage 100% Glisse"
+};
+var SCHEDULE_NOTICE = "Les horaires seront communiqu\xE9s la veille par t\xE9l\xE9phone en fonction des conditions m\xE9t\xE9orologiques.";
+function formatDateFR(iso) {
+  try {
+    const [y, m, d] = iso.split("-").map(Number);
+    const dt = new Date(Date.UTC(y, (m ?? 1) - 1, d ?? 1));
+    return new Intl.DateTimeFormat("fr-FR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      timeZone: "UTC"
+    }).format(dt);
+  } catch {
+    return iso;
+  }
+}
 var list_my_reservations_default = defineTool2({
   name: "list_my_reservations",
   title: "List my reservations",
-  description: "List the signed-in user's Kitesurf Passion reservations (id, session, participants, skill level, status, dates).",
+  description: "Liste les r\xE9servations Kitesurf Passion de l'utilisateur connect\xE9 : activit\xE9, date, nombre de participants, statut. Les horaires ne sont pas planifi\xE9s \xE0 l'avance : ils sont communiqu\xE9s la veille par t\xE9l\xE9phone selon les conditions m\xE9t\xE9orologiques.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (_input, ctx) => {
@@ -70,18 +92,96 @@ var list_my_reservations_default = defineTool2({
         isError: true
       };
     }
-    const { data, error } = await supabaseForUser(ctx).from("reservations").select(
-      "id, participants, skill_level, status, notes, created_at, updated_at, session_id, sessions ( starts_at, ends_at, discipline, location )"
-    ).eq("user_id", ctx.getUserId()).order("created_at", { ascending: false });
-    if (error) {
-      return {
-        content: [{ type: "text", text: error.message }],
-        isError: true
-      };
+    const sb = supabaseForUser(ctx);
+    const userId = ctx.getUserId();
+    const [resvRes, pkgRes] = await Promise.all([
+      sb.from("reservations").select(
+        `id, participants, skill_level, status, notes, created_at,
+           daily_group_id, session_id,
+           daily_groups ( date, activity ),
+           sessions ( date, activity, time_slot )`
+      ).eq("user_id", userId).order("created_at", { ascending: false }),
+      sb.from("package_bookings").select(
+        `id, status, booking_kind, created_at,
+           daily_group_id, session_id,
+           daily_groups ( date, activity ),
+           sessions ( date, activity, time_slot ),
+           client_packages!inner ( id, user_id, package_code, activity )`
+      ).eq("client_packages.user_id", userId).order("created_at", { ascending: false })
+    ]);
+    if (resvRes.error) {
+      return { content: [{ type: "text", text: resvRes.error.message }], isError: true };
+    }
+    if (pkgRes.error) {
+      return { content: [{ type: "text", text: pkgRes.error.message }], isError: true };
+    }
+    const items = [];
+    for (const r of resvRes.data ?? []) {
+      const dg = r.daily_groups;
+      const s = r.sessions;
+      const date = dg?.date ?? s?.date ?? null;
+      const activity = dg?.activity ?? s?.activity ?? "kitesurf";
+      items.push({
+        id: r.id,
+        kind: "reservation",
+        activity,
+        activity_label: ACTIVITY_LABEL[activity] ?? activity,
+        date,
+        date_label: date ? formatDateFR(date) : null,
+        participants: r.participants ?? 1,
+        status: r.status,
+        legacy_time_slot: dg ? null : s?.time_slot ?? null
+      });
+    }
+    for (const b of pkgRes.data ?? []) {
+      const dg = b.daily_groups;
+      const s = b.sessions;
+      const date = dg?.date ?? s?.date ?? null;
+      const activity = dg?.activity ?? s?.activity ?? b.client_packages?.activity ?? "kitesurf";
+      items.push({
+        id: b.id,
+        kind: "package_booking",
+        activity,
+        activity_label: ACTIVITY_LABEL[activity] ?? activity,
+        date,
+        date_label: date ? formatDateFR(date) : null,
+        participants: 1,
+        status: b.status,
+        package_code: b.client_packages?.package_code ?? null,
+        legacy_time_slot: dg ? null : s?.time_slot ?? null
+      });
+    }
+    const today = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);
+    items.sort((a, b) => {
+      const aFuture = (a.date ?? "") >= today;
+      const bFuture = (b.date ?? "") >= today;
+      if (aFuture !== bFuture) return aFuture ? -1 : 1;
+      if (aFuture) return (a.date ?? "").localeCompare(b.date ?? "");
+      return (b.date ?? "").localeCompare(a.date ?? "");
+    });
+    const lines = [];
+    if (items.length === 0) {
+      lines.push("Aucune r\xE9servation trouv\xE9e pour ce compte.");
+    } else {
+      lines.push(`${items.length} r\xE9servation(s) :`);
+      for (const it of items) {
+        const kindLabel = it.kind === "package_booking" ? "Pack" : "R\xE9servation";
+        const dateLabel = it.date_label ?? "date inconnue";
+        const extra = it.package_code ? ` (code ${it.package_code})` : "";
+        const legacy = it.legacy_time_slot ? " [cr\xE9neau historique]" : "";
+        lines.push(
+          `- ${kindLabel} \u2014 ${it.activity_label} \u2014 ${dateLabel}${extra} \u2014 ${it.participants} participant(s) \u2014 statut ${it.status}${legacy}`
+        );
+      }
+      lines.push("");
+      lines.push(SCHEDULE_NOTICE);
     }
     return {
-      content: [{ type: "text", text: JSON.stringify(data ?? [], null, 2) }],
-      structuredContent: { reservations: data ?? [] }
+      content: [{ type: "text", text: lines.join("\n") }],
+      structuredContent: {
+        reservations: items,
+        schedule_notice: SCHEDULE_NOTICE
+      }
     };
   }
 });
