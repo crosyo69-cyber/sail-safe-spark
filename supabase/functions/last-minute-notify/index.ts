@@ -14,27 +14,19 @@ const ACTIVITY_LABELS: Record<string, string> = {
   wingfoil: "Wingfoil",
   pumpfoil: "Kitefoil / Pumpfoil",
 };
-const SLOT_LABELS: Record<string, string> = {
-  morning: "Matin",
-  early_afternoon: "Début d'après-midi",
-  late_afternoon: "Fin d'après-midi",
-};
 
-function buildHtml(opts: { activity: string; date: string; slot: string; note: string | null; label: string | null; bookUrl: string; unsubscribeUrl: string }) {
-  const badge =
-    opts.label === "wind"
-      ? `<span style="background:#0891B2;color:#fff;padding:6px 12px;border-radius:999px;font-size:13px;">🌬️ Conditions exceptionnelles</span>`
-      : `<span style="background:#F97316;color:#fff;padding:6px 12px;border-radius:999px;font-size:13px;">🔥 Session Dernière Minute</span>`;
+function buildHtml(opts: { activity: string; date: string; note: string | null; bookUrl: string; unsubscribeUrl: string }) {
+  const badge = `<span style="background:#F97316;color:#fff;padding:6px 12px;border-radius:999px;font-size:13px;">🔥 Journée Dernière Minute</span>`;
   return `<!DOCTYPE html><html lang="fr"><body style="margin:0;background:#fff;font-family:Inter,Arial,sans-serif;">
     <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;">
       <tr><td style="background:#0F172A;color:#fff;padding:20px 24px;font-family:Montserrat,Arial,sans-serif;">
-        <h1 style="margin:0;font-size:20px;">Nouveau créneau ouvert !</h1>
+        <h1 style="margin:0;font-size:20px;">Nouvelle journée ouverte !</h1>
       </td></tr>
       <tr><td style="padding:24px;color:#0F172A;">
         <p style="margin:0 0 12px;">${badge}</p>
         <h2 style="margin:8px 0;font-size:22px;">${ACTIVITY_LABELS[opts.activity] || opts.activity} — ${opts.date}</h2>
-        <p style="margin:0 0 8px;"><strong>Créneau :</strong> ${SLOT_LABELS[opts.slot] || opts.slot}</p>
         ${opts.note ? `<p style="margin:0 0 8px;"><strong>Météo :</strong> ${opts.note}</p>` : ""}
+        <p style="margin:0 0 8px;color:#64748B;font-size:13px;">Les horaires seront communiqués la veille par téléphone en fonction des conditions météorologiques.</p>
         <p style="text-align:center;margin:28px 0;">
           <a href="${opts.bookUrl}" style="background:#F97316;color:#fff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:bold;">Je réserve ma place</a>
         </p>
@@ -80,21 +72,37 @@ Deno.serve(async (req) => {
       });
     }
 
-    const { sessionId } = await req.json();
-    if (!sessionId) return new Response(JSON.stringify({ error: "sessionId required" }), { status: 400, headers: corsHeaders });
+    const body = await req.json().catch(() => ({} as any));
+    const groupId: string | undefined = body.groupId ?? body.dailyGroupId;
+    const legacySessionId: string | undefined = body.sessionId;
+    if (!groupId && !legacySessionId) {
+      return new Response(JSON.stringify({ error: "groupId required" }), { status: 400, headers: corsHeaders });
+    }
 
     const supabase = createClient(supabaseUrl, serviceKey);
-    const { data: session, error: sErr } = await supabase
-      .from("sessions")
-      .select("id,date,time_slot,activity,weather_note,last_minute_label,is_last_minute")
-      .eq("id", sessionId)
-      .single();
-    if (sErr || !session) return new Response(JSON.stringify({ error: "Session not found" }), { status: 404, headers: corsHeaders });
+    let source: { date: string; activity: string; note: string | null };
+    if (groupId) {
+      const { data: group, error: gErr } = await supabase
+        .from("daily_groups")
+        .select("id,date,activity,notes")
+        .eq("id", groupId)
+        .single();
+      if (gErr || !group) return new Response(JSON.stringify({ error: "Group not found" }), { status: 404, headers: corsHeaders });
+      source = { date: group.date, activity: group.activity as string, note: group.notes };
+    } else {
+      const { data: session, error: sErr } = await supabase
+        .from("sessions")
+        .select("id,date,activity,weather_note")
+        .eq("id", legacySessionId!)
+        .single();
+      if (sErr || !session) return new Response(JSON.stringify({ error: "Session not found" }), { status: 404, headers: corsHeaders });
+      source = { date: session.date, activity: session.activity as string, note: session.weather_note };
+    }
 
-    // map session activity to subscriber activity keys
+    // map activity to subscriber activity keys
     const targetKey =
-      session.activity === "pumpfoil" ? "kitefoil" :
-      session.activity === "wingfoil" ? "wingfoil" : "kitesurf";
+      source.activity === "pumpfoil" ? "kitefoil" :
+      source.activity === "wingfoil" ? "wingfoil" : "kitesurf";
 
     const { data: subs } = await supabase
       .from("last_minute_subscribers")
@@ -122,17 +130,15 @@ Deno.serve(async (req) => {
           to: sub.email,
           from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
           sender_domain: FROM_DOMAIN,
-          subject: `🔥 Nouveau créneau ${ACTIVITY_LABELS[session.activity] || session.activity} dispo !`,
+          subject: `🔥 Nouvelle journée ${ACTIVITY_LABELS[source.activity] || source.activity} dispo !`,
           html: buildHtml({
-            activity: session.activity,
-            date: session.date,
-            slot: session.time_slot,
-            note: session.weather_note,
-            label: session.last_minute_label,
+            activity: source.activity,
+            date: source.date,
+            note: source.note,
             bookUrl,
             unsubscribeUrl,
           }),
-          text: `Nouveau créneau ${session.activity} le ${session.date} — ${bookUrl}`,
+          text: `Nouvelle journée ${source.activity} le ${source.date} — horaires communiqués la veille selon la météo — ${bookUrl}`,
           purpose: "transactional",
           label: "last_minute_alert",
           queued_at: new Date().toISOString(),
