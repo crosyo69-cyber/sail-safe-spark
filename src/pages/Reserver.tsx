@@ -36,12 +36,6 @@ const ACTIVITIES: { value: Activity; label: string; icon: any }[] = [
   { value: "stage_100_glisse", label: "Stage 100% Glisse (5 jours)", icon: Wind },
 ];
 
-const SLOT_LABELS: Record<string, string> = {
-  morning: "Matin",
-  early_afternoon: "Début d'après-midi",
-  late_afternoon: "Fin d'après-midi",
-};
-
 interface DayAvailability {
   date: string;
   kite: { places: number; groupes: number };
