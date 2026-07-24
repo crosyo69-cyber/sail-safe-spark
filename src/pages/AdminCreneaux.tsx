@@ -24,11 +24,16 @@ import { format, addDays, startOfWeek } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
   ChevronLeft, ChevronRight, Loader2, AlertTriangle, Plus, Trash2, Edit3,
-  ArrowRightLeft, UserPlus, Ban, Unlock, Lock, ArrowLeft,
+  ArrowRightLeft, UserPlus, Ban, Unlock, Lock, ArrowLeft, ClipboardCheck, CheckCircle2, XCircle,
 } from "lucide-react";
 
 type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
+
+type AuditFix = "reopen" | "close" | "delete";
+interface AuditIssue { id: string; label: string; detail: string; fixable?: AuditFix; }
+interface AuditGroup { key: string; title: string; severity: "critical" | "warning" | "info"; items: AuditIssue[]; }
+interface AuditReport { generatedAt: string; totalSessions: number; groups: AuditGroup[]; }
 
 const SLOTS: TimeSlot[] = ["morning", "early_afternoon", "late_afternoon"];
 const SLOT_LABEL: Record<TimeSlot, string> = {
@@ -124,6 +129,9 @@ const AdminCreneaux = () => {
   const [moveBooking, setMoveBooking] = useState<{ bookingId: string; kind: "reservation" | "package"; currentSessionId: string } | null>(null);
   const [moveTarget, setMoveTarget] = useState<string>("");
   const [deleteConfirm, setDeleteConfirm] = useState<Session | null>(null);
+  const [auditOpen, setAuditOpen] = useState(false);
+  const [auditRunning, setAuditRunning] = useState(false);
+  const [auditReport, setAuditReport] = useState<AuditReport | null>(null);
 
   const weekDays = useMemo(
     () => Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)),
@@ -284,6 +292,144 @@ const AdminCreneaux = () => {
 
   const activeSessionsForMove = sessions.filter(s => s.status !== "cancelled" && s.id !== moveBooking?.currentSessionId);
 
+  const runAudit = async () => {
+    setAuditRunning(true);
+    setAuditOpen(true);
+    try {
+      const today = format(new Date(), "yyyy-MM-dd");
+      const since = new Date(Date.now() - 30 * 86400000).toISOString();
+      const sinceDate = format(addDays(new Date(), -30), "yyyy-MM-dd");
+
+      const sessRes = await supabase.from("sessions").select(`
+          id, date, time_slot, activity, max_participants, status, notes, created_at,
+          reservations(id, participants, status),
+          package_bookings(id, status)
+        `).gte("date", sinceDate).order("date");
+      const notifRes = await supabase.from("admin_notifications").select("id, kind, title, body, created_at, read_at")
+        .in("kind", ["stripe_webhook_error", "session_generation"]).is("read_at", null).gte("created_at", since);
+      const resvRes = await supabase.from("reservations").select("id, session_id, status, created_at")
+        .is("session_id", null).gte("created_at", since);
+      const pkgRes = await supabase.from("package_bookings").select("id, session_id, status, created_at")
+        .is("session_id", null).gte("created_at", since);
+
+      const all = ((sessRes.data as any) || []) as Session[];
+      const overCap: AuditIssue[] = [];
+      const emptyClosed: AuditIssue[] = [];
+      const openButFull: AuditIssue[] = [];
+      const closedButAvailable: AuditIssue[] = [];
+      const badCapacity: AuditIssue[] = [];
+      const staleAuto: AuditIssue[] = [];
+      const duplicateSlot: AuditIssue[] = [];
+      const cancelledWithBookings: AuditIssue[] = [];
+
+      const now = Date.now();
+      const seen = new Map<string, Session[]>();
+
+      for (const s of all) {
+        const occ = occupancy(s);
+        const isFuture = s.date >= today;
+        const isAuto = (s.notes || "").toLowerCase().includes("auto-créée");
+        const ageDays = (now - new Date(s.created_at).getTime()) / 86400000;
+        const label = `${format(new Date(s.date), "d MMM", { locale: fr })} · ${SLOT_LABEL[s.time_slot]} · ${ACTIVITY_LABEL[s.activity]}`;
+
+        if (occ > s.max_participants) overCap.push({ id: s.id, label, detail: `${occ}/${s.max_participants} inscrits` });
+        if (isFuture && s.status === "closed" && occ === 0) emptyClosed.push({ id: s.id, label, detail: "Fermée sans inscription", fixable: "reopen" });
+        if (isFuture && s.status === "open" && occ >= s.max_participants && s.max_participants > 0)
+          openButFull.push({ id: s.id, label, detail: `Complète (${occ}/${s.max_participants}) mais toujours « ouverte »`, fixable: "close" });
+        if (isFuture && s.status === "closed" && occ > 0 && occ < s.max_participants)
+          closedButAvailable.push({ id: s.id, label, detail: `${occ}/${s.max_participants} — place(s) libre(s) mais fermée`, fixable: "reopen" });
+
+        const expectedMax = ACTIVITY_MAX[s.activity];
+        if (expectedMax && s.max_participants !== expectedMax)
+          badCapacity.push({ id: s.id, label, detail: `Capacité ${s.max_participants} au lieu de ${expectedMax}` });
+
+        if (isFuture && isAuto && ageDays > 7 && occ === 0)
+          staleAuto.push({ id: s.id, label, detail: `Auto-créée il y a ${Math.round(ageDays)}j, aucune inscription`, fixable: "delete" });
+
+        if (s.status === "cancelled" && occ > 0)
+          cancelledWithBookings.push({ id: s.id, label, detail: `Annulée mais ${occ} inscription(s) encore actives` });
+
+        const k = `${s.date}__${s.time_slot}__${s.activity}`;
+        const arr = seen.get(k) || [];
+        arr.push(s); seen.set(k, arr);
+      }
+      for (const [k, arr] of seen) {
+        if (arr.length > 1) {
+          const s = arr[0];
+          duplicateSlot.push({
+            id: s.id,
+            label: `${format(new Date(s.date), "d MMM", { locale: fr })} · ${SLOT_LABEL[s.time_slot]} · ${ACTIVITY_LABEL[s.activity]}`,
+            detail: `${arr.length} sessions identiques (doublon)`,
+          });
+        }
+      }
+
+      const stripeStuck: AuditIssue[] = ((notifRes.data as any) || [])
+        .filter((n: any) => n.kind === "stripe_webhook_error")
+        .map((n: any) => ({ id: n.id, label: n.title || "Erreur Stripe", detail: n.body || "" }));
+      const genAlerts: AuditIssue[] = ((notifRes.data as any) || [])
+        .filter((n: any) => n.kind === "session_generation")
+        .map((n: any) => ({ id: n.id, label: n.title, detail: n.body || "" }));
+
+      const orphanResv: AuditIssue[] = ((resvRes.data as any) || [])
+        .map((r: any) => ({ id: r.id, label: `Réservation ${r.id.slice(0, 8)}`, detail: `Sans session (${r.status})` }));
+      const orphanPkg: AuditIssue[] = ((pkgRes.data as any) || [])
+        .map((b: any) => ({ id: b.id, label: `Booking pack ${b.id.slice(0, 8)}`, detail: `Sans session (${b.status})` }));
+
+      const report: AuditReport = {
+        generatedAt: new Date().toISOString(),
+        totalSessions: all.length,
+        groups: [
+          { key: "overCap", title: "Capacité dépassée", severity: "critical", items: overCap },
+          { key: "cancelledWithBookings", title: "Sessions annulées avec inscriptions actives", severity: "critical", items: cancelledWithBookings },
+          { key: "duplicateSlot", title: "Doublons (même date/créneau/activité)", severity: "critical", items: duplicateSlot },
+          { key: "orphanResv", title: "Réservations orphelines (sans session)", severity: "critical", items: orphanResv },
+          { key: "orphanPkg", title: "Bookings pack orphelins (sans session)", severity: "critical", items: orphanPkg },
+          { key: "stripeStuck", title: "Paiements Stripe non convertis", severity: "critical", items: stripeStuck },
+          { key: "emptyClosed", title: "Fermées sans inscription (à rouvrir)", severity: "warning", items: emptyClosed },
+          { key: "openButFull", title: "Ouvertes alors que complètes", severity: "warning", items: openButFull },
+          { key: "closedButAvailable", title: "Fermées avec places libres", severity: "warning", items: closedButAvailable },
+          { key: "badCapacity", title: "Capacité incohérente avec l'activité", severity: "warning", items: badCapacity },
+          { key: "staleAuto", title: "Sessions auto-créées obsolètes", severity: "info", items: staleAuto },
+          { key: "genAlerts", title: "Alertes de génération de sessions", severity: "info", items: genAlerts },
+        ],
+      };
+      setAuditReport(report);
+    } catch (e: any) {
+      toast({ title: "Erreur audit", description: e?.message || String(e), variant: "destructive" });
+    } finally {
+      setAuditRunning(false);
+    }
+  };
+
+  const applyAuditFixes = async () => {
+    if (!auditReport) return;
+    const toOpen = new Set<string>();
+    const toClose = new Set<string>();
+    const toDelete = new Set<string>();
+    for (const g of auditReport.groups) {
+      for (const it of g.items) {
+        if (it.fixable === "reopen") toOpen.add(it.id);
+        else if (it.fixable === "close") toClose.add(it.id);
+        else if (it.fixable === "delete") toDelete.add(it.id);
+      }
+    }
+    const ops: any[] = [];
+    if (toOpen.size) ops.push(supabase.from("sessions").update({ status: "open" }).in("id", Array.from(toOpen)));
+    if (toClose.size) ops.push(supabase.from("sessions").update({ status: "closed" }).in("id", Array.from(toClose)));
+    if (toDelete.size) ops.push(supabase.from("sessions").delete().in("id", Array.from(toDelete)));
+    const results = await Promise.all(ops);
+    const err = results.find((r: any) => r?.error);
+    if (err?.error) toast({ title: "Erreur", description: err.error.message, variant: "destructive" });
+    else {
+      toast({ title: "Corrections appliquées", description: `${toOpen.size} rouverte(s) · ${toClose.size} fermée(s) · ${toDelete.size} supprimée(s)` });
+      setAuditOpen(false);
+      setAuditReport(null);
+      load();
+      runAudit();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
@@ -295,6 +441,10 @@ const AdminCreneaux = () => {
         <div className="flex items-center gap-3 mb-6 flex-wrap">
           <Button asChild variant="ghost" size="sm"><Link to="/admin"><ArrowLeft className="w-4 h-4 mr-1" />Admin</Link></Button>
           <h1 className="text-3xl font-display font-bold text-foreground">Gestion des créneaux</h1>
+          <Button size="sm" variant="default" className="ml-auto" onClick={runAudit} disabled={auditRunning}>
+            {auditRunning ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <ClipboardCheck className="w-4 h-4 mr-1" />}
+            Lancer l'audit
+          </Button>
         </div>
 
         {/* Anomalies */}
@@ -565,6 +715,87 @@ const AdminCreneaux = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Audit report */}
+      <Dialog open={auditOpen} onOpenChange={(o) => { if (!o) { setAuditOpen(false); setAuditReport(null); } }}>
+        <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2"><ClipboardCheck className="w-5 h-5" /> Rapport d'audit</DialogTitle>
+            <DialogDescription>
+              {auditReport
+                ? `Analyse de ${auditReport.totalSessions} session(s) sur les 30 derniers jours + à venir · ${format(new Date(auditReport.generatedAt), "d MMM HH:mm", { locale: fr })}`
+                : "Analyse en cours…"}
+            </DialogDescription>
+          </DialogHeader>
+          {auditRunning && !auditReport && (
+            <div className="flex items-center justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
+          )}
+          {auditReport && (
+            <div className="space-y-4">
+              {(() => {
+                const totalIssues = auditReport.groups.reduce((n, g) => n + g.items.length, 0);
+                const fixable = auditReport.groups.reduce((n, g) => n + g.items.filter(i => i.fixable).length, 0);
+                if (totalIssues === 0) {
+                  return (
+                    <div className="flex items-center gap-2 p-4 rounded-md bg-green-500/10 text-green-700 dark:text-green-400">
+                      <CheckCircle2 className="w-5 h-5" />
+                      <span className="font-medium">Aucune incohérence détectée. Tout est propre 🎉</span>
+                    </div>
+                  );
+                }
+                return (
+                  <div className="flex items-center justify-between gap-2 p-3 rounded-md bg-muted">
+                    <div className="text-sm">
+                      <span className="font-semibold">{totalIssues}</span> incohérence(s) détectée(s) · <span className="font-semibold">{fixable}</span> auto-corrigeable(s)
+                    </div>
+                    {fixable > 0 && (
+                      <Button size="sm" onClick={applyAuditFixes}>Appliquer les corrections</Button>
+                    )}
+                  </div>
+                );
+              })()}
+              {auditReport.groups.filter(g => g.items.length > 0).map(g => (
+                <div key={g.key} className={cn(
+                  "rounded-md border p-3",
+                  g.severity === "critical" && "border-destructive/40 bg-destructive/5",
+                  g.severity === "warning" && "border-amber-500/40 bg-amber-500/5",
+                  g.severity === "info" && "border-border bg-muted/30",
+                )}>
+                  <div className="flex items-center gap-2 mb-2 font-semibold text-sm">
+                    {g.severity === "critical" ? <XCircle className="w-4 h-4 text-destructive" /> : <AlertTriangle className={cn("w-4 h-4", g.severity === "warning" ? "text-amber-600" : "text-muted-foreground")} />}
+                    {g.title}
+                    <Badge variant="outline" className="ml-auto">{g.items.length}</Badge>
+                  </div>
+                  <ul className="space-y-1 text-xs">
+                    {g.items.slice(0, 20).map(it => (
+                      <li key={it.id} className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <div className="font-medium truncate">{it.label}</div>
+                          <div className="text-muted-foreground">{it.detail}</div>
+                        </div>
+                        {it.fixable && (
+                          <Badge variant="secondary" className="text-[10px] shrink-0">
+                            {it.fixable === "reopen" ? "Rouvrir" : it.fixable === "close" ? "Fermer" : "Supprimer"}
+                          </Badge>
+                        )}
+                      </li>
+                    ))}
+                    {g.items.length > 20 && (
+                      <li className="text-muted-foreground italic">… et {g.items.length - 20} autre(s)</li>
+                    )}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setAuditOpen(false); setAuditReport(null); }}>Fermer</Button>
+            <Button variant="secondary" onClick={runAudit} disabled={auditRunning}>
+              {auditRunning ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : null}Relancer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
