@@ -857,11 +857,7 @@ export type Database = {
         Returns: Json
       }
       book_stage_100_glisse: {
-        Args: {
-          p_code: string
-          p_start_date: string
-          p_time_slot?: Database["public"]["Enums"]["time_slot"]
-        }
+        Args: { p_code: string; p_start_date: string }
         Returns: Json
       }
       cancel_booking_with_code: {
