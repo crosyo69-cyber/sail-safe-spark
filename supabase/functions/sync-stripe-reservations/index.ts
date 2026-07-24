@@ -123,6 +123,20 @@ async function syncOne(
       .eq("time_slot", slot)
       .maybeSingle();
     if (existing?.id) return { id: existing.id };
+    // Règle : 1 seule activité par créneau (max 3 sessions/jour = 1 par time_slot).
+    // Si un autre type d'activité occupe déjà ce créneau, on ne crée pas de session
+    // concurrente ici — l'appelant essaiera le créneau suivant.
+    const { data: slotTaken } = await supabase
+      .from("sessions")
+      .select("id, activity")
+      .eq("date", sessionDate)
+      .eq("time_slot", slot)
+      .neq("activity", activityEnum)
+      .limit(1)
+      .maybeSingle();
+    if (slotTaken?.id) {
+      return { id: null, err: `slot_reserved_for_${slotTaken.activity}` };
+    }
     const { data: created, error: sErr } = await supabase
       .from("sessions")
       .insert({
