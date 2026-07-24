@@ -58,62 +58,47 @@ const ReserverPage = () => {
   const loadSessions = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
     const today = parisToday();
-    // Fetch ALL open sessions in the window (any activity) so we can compute
-    // shared-slot occupancy (Stage 100% Glisse + Cours à la carte + crédits météo).
+    // Capacity is per-session (per-activity per-slot). Fetch only sessions for
+    // the selected activity.
     let query = supabase
       .from("sessions")
       .select("id, date, time_slot, activity, max_participants")
       .eq("status", "open")
+      .eq("activity", activity as any)
       .gte("date", date ? toParisDateOnly(date) : today)
       .order("date", { ascending: true })
       .limit(200);
     if (date) query = query.lte("date", toParisDateOnly(date));
-    const { data: rawAll } = await query;
+    const { data: rawSessions } = await query;
     if (!silent) setLoading(false);
-    if (!rawAll || rawAll.length === 0) {
+    if (!rawSessions || rawSessions.length === 0) {
       setSessions([]);
       return;
     }
-    const ids = rawAll.map((s) => s.id);
+    const ids = rawSessions.map((s) => s.id);
     const [{ data: resv }, { data: pb }] = await Promise.all([
       supabase.from("reservations").select("session_id, participants, status, notes, first_name").in("session_id", ids).neq("status", "cancelled"),
       supabase.from("package_bookings").select("session_id, status").in("session_id", ids).eq("status", "confirmed"),
     ]);
-    // Group sessions by (date, time_slot) and compute shared occupancy
-    const slotTaken: Record<string, number> = {};
-    const slotCapacity: Record<string, number> = {};
-    const slotPrivate: Record<string, string[]> = {};
-    const sessionToSlot: Record<string, string> = {};
-    rawAll.forEach((s: any) => {
-      const key = `${s.date}|${s.time_slot}`;
-      sessionToSlot[s.id] = key;
-      slotCapacity[key] = Math.min(slotCapacity[key] ?? Infinity, s.max_participants);
-    });
+    // Per-session aggregation
+    const taken: Record<string, number> = {};
+    const privates: Record<string, string[]> = {};
     (resv || []).forEach((r: any) => {
-      const k = sessionToSlot[r.session_id];
-      if (!k) return;
       const seats = r.participants || 1;
-      slotTaken[k] = (slotTaken[k] || 0) + seats;
+      taken[r.session_id] = (taken[r.session_id] || 0) + seats;
       if (r.status === "confirmed" && typeof r.notes === "string" && /cours\s+particulier/i.test(r.notes)) {
-        slotPrivate[k] = [...(slotPrivate[k] || []), r.first_name || "Client"];
+        privates[r.session_id] = [...(privates[r.session_id] || []), r.first_name || "Client"];
       }
     });
     (pb || []).forEach((b: any) => {
-      const k = sessionToSlot[b.session_id];
-      if (k) slotTaken[k] = (slotTaken[k] || 0) + 1;
+      taken[b.session_id] = (taken[b.session_id] || 0) + 1;
     });
-    const visible = rawAll
-      .filter((s: any) => s.activity === activity)
-      .map((s: any) => {
-        const key = `${s.date}|${s.time_slot}`;
-        return {
-          ...s,
-          max_participants: slotCapacity[key] ?? s.max_participants,
-          taken: slotTaken[key] || 0,
-          private_count: (slotPrivate[key] || []).length,
-          private_names: slotPrivate[key] || [],
-        };
-      });
+    const visible = rawSessions.map((s: any) => ({
+      ...s,
+      taken: taken[s.id] || 0,
+      private_count: (privates[s.id] || []).length,
+      private_names: privates[s.id] || [],
+    }));
     setSessions(visible as AvailableSession[]);
   }, [activity, date]);
 
