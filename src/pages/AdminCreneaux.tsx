@@ -58,6 +58,10 @@ const STATUS_LABEL: Record<string, string> = {
   cancelled: "Annulée",
 };
 
+// Mode audit (lecture seule) — la planification est désormais gérée par /admin/journees.
+// Cette page est conservée temporairement pour audit historique du modèle time_slots.
+const READ_ONLY = true;
+
 // Libellé calculé à partir des données réelles (statut + occupation)
 function effectiveStatus(s: { status: string; max_participants: number }, occ: number):
   { key: "cancelled" | "full" | "empty_closed" | "closed" | "open"; label: string } {
@@ -217,6 +221,7 @@ const AdminCreneaux = () => {
   }, []);
 
   const reopenEmptyClosed = async () => {
+    if (READ_ONLY) { toast({ title: "Lecture seule", description: "Cette page est en mode audit. Utilisez /admin/journees.", variant: "destructive" }); return; }
     const ids = anomalies.emptyClosed.map(s => s.id);
     if (!ids.length) return;
     const { error } = await supabase.from("sessions").update({ status: "open" }).in("id", ids);
@@ -225,17 +230,20 @@ const AdminCreneaux = () => {
   };
 
   const changeStatus = async (s: Session, status: string) => {
+    if (READ_ONLY) { toast({ title: "Lecture seule", description: "Cette page est en mode audit. Utilisez /admin/journees.", variant: "destructive" }); return; }
     const { error } = await supabase.from("sessions").update({ status }).eq("id", s.id);
     if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
     else { toast({ title: "Statut mis à jour" }); load(); }
   };
   const saveCapacity = async () => {
+    if (READ_ONLY) { toast({ title: "Lecture seule", description: "Cette page est en mode audit. Utilisez /admin/journees.", variant: "destructive" }); return; }
     if (!editSession) return;
     const { error } = await supabase.from("sessions").update({ max_participants: newCapacity }).eq("id", editSession.id);
     if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
     else { toast({ title: "Capacité mise à jour" }); setEditSession(null); load(); }
   };
   const deleteSession = async () => {
+    if (READ_ONLY) { toast({ title: "Lecture seule", description: "Cette page est en mode audit. Utilisez /admin/journees.", variant: "destructive" }); return; }
     if (!deleteConfirm) return;
     if (occupancy(deleteConfirm) > 0) {
       toast({ title: "Impossible", description: "La session contient des inscriptions.", variant: "destructive" });
@@ -247,6 +255,7 @@ const AdminCreneaux = () => {
     else { toast({ title: "Session supprimée" }); setDeleteConfirm(null); load(); }
   };
   const createSession = async () => {
+    if (READ_ONLY) { toast({ title: "Lecture seule", description: "Cette page est en mode audit. Utilisez /admin/journees.", variant: "destructive" }); return; }
     if (!createSlot) return;
     const { error } = await supabase.from("sessions").insert({
       date: createSlot.date,
@@ -259,6 +268,7 @@ const AdminCreneaux = () => {
     else { toast({ title: "Session créée" }); setCreateSlot(null); load(); }
   };
   const addStudentByCode = async () => {
+    if (READ_ONLY) { toast({ title: "Lecture seule", description: "Cette page est en mode audit. Utilisez /admin/journees.", variant: "destructive" }); return; }
     if (!addStudentSession || !addCode.trim()) return;
     const { data, error } = await supabase.rpc("book_session_with_code", {
       p_code: addCode.trim(), p_session_id: addStudentSession.id,
@@ -268,6 +278,7 @@ const AdminCreneaux = () => {
     else { toast({ title: "Élève inscrit" }); setAddStudentSession(null); setAddCode(""); load(); }
   };
   const moveStudent = async () => {
+    if (READ_ONLY) { toast({ title: "Lecture seule", description: "Cette page est en mode audit. Utilisez /admin/journees.", variant: "destructive" }); return; }
     if (!moveBooking || !moveTarget) return;
     const table = moveBooking.kind === "reservation" ? "reservations" : "package_bookings";
     const { error } = await supabase.from(table as any).update({ session_id: moveTarget }).eq("id", moveBooking.bookingId);
