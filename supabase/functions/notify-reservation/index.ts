@@ -18,12 +18,6 @@ const ACTIVITY_LABELS: Record<string, string> = {
   foil_tracte: "Foil tracté",
 };
 
-const SLOT_LABELS: Record<string, string> = {
-  morning: "Matin",
-  early_afternoon: "Début d'après-midi",
-  late_afternoon: "Fin d'après-midi",
-};
-
 const LEVEL_LABELS: Record<string, string> = {
   debutant: "Débutant",
   intermediaire: "Intermédiaire",
@@ -51,7 +45,6 @@ interface ReservationNotification {
   participants: number;
   skill_level: string;
   activity: string;
-  time_slot: string;
   date: string;
   source: string;
   type?: "new" | "cancelled";
@@ -112,8 +105,8 @@ function buildNotificationHtml(data: ReservationNotification): string {
           <td style="padding:10px 16px;font-size:14px;font-weight:bold;color:#0F172A;border-bottom:1px solid #E2E8F0;">${escapeHtml(ACTIVITY_LABELS[data.activity] || data.activity)}</td>
         </tr>
         <tr>
-          <td style="padding:10px 16px;font-size:14px;color:#64748B;border-bottom:1px solid #E2E8F0;">Créneau</td>
-          <td style="padding:10px 16px;font-size:14px;color:#0F172A;border-bottom:1px solid #E2E8F0;">${formattedDate} — ${escapeHtml(SLOT_LABELS[data.time_slot] || data.time_slot)}</td>
+          <td style="padding:10px 16px;font-size:14px;color:#64748B;border-bottom:1px solid #E2E8F0;">Journée</td>
+          <td style="padding:10px 16px;font-size:14px;color:#0F172A;border-bottom:1px solid #E2E8F0;">${formattedDate}<br><span style="font-size:12px;color:#64748B;">Horaire communiqué la veille par téléphone selon la météo.</span></td>
         </tr>
         <tr>
           <td style="padding:10px 16px;font-size:14px;color:#64748B;border-bottom:1px solid #E2E8F0;">Participants</td>
@@ -206,7 +199,6 @@ Deno.serve(async (req) => {
       !maxLen(data.email, 254) ||
       !maxLen(data.phone, 40) ||
       !maxLen(data.activity, 50) ||
-      !maxLen(data.time_slot, 50) ||
       !maxLen(data.skill_level, 50) ||
       !maxLen(data.source, 50) ||
       !/^\d{4}-\d{2}-\d{2}$/.test(data.date) ||
