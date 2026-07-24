@@ -35,7 +35,7 @@
       {
         "name": "list_my_reservations",
         "title": "List my reservations",
-        "description": "List the signed-in user's Kitesurf Passion reservations (id, session, participants, skill level, status, dates).",
+        "description": "Liste les réservations Kitesurf Passion de l'utilisateur connecté : activité, date, nombre de participants, statut. Les horaires ne sont pas planifiés à l'avance : ils sont communiqués la veille par téléphone selon les conditions météorologiques.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
