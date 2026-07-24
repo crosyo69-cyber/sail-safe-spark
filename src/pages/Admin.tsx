@@ -21,7 +21,9 @@ import AdminRichResultsValidator from "@/components/admin/AdminRichResultsValida
 import AdminAlertsCenter from "@/components/admin/AdminAlertsCenter";
 import AdminNotificationsBell from "@/components/admin/AdminNotificationsBell";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Calendar, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell, Grid3x3 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const Admin = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -68,7 +70,12 @@ const Admin = () => {
           <h1 className="text-3xl font-display font-bold text-foreground">
             Administration
           </h1>
-          <AdminNotificationsBell onOpenCenter={() => setActiveTab("alertes")} />
+          <div className="flex items-center gap-2">
+            <Button asChild variant="outline" size="sm">
+              <Link to="/admin/creneaux"><Grid3x3 className="w-4 h-4 mr-2" />Gestion des créneaux</Link>
+            </Button>
+            <AdminNotificationsBell onOpenCenter={() => setActiveTab("alertes")} />
+          </div>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
