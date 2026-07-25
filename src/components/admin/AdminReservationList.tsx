@@ -49,11 +49,17 @@ interface Reservation {
   created_at: string;
   notes: string | null;
   stripe_session_id: string | null;
+  daily_group_id: string | null;
+  session_id: string | null;
+  daily_groups: {
+    date: string;
+    activity: string;
+  } | null;
   sessions: {
     date: string;
     time_slot: string;
     activity: string;
-  };
+  } | null;
 }
 
 const AdminReservationList = () => {
@@ -66,7 +72,7 @@ const AdminReservationList = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("reservations")
-      .select("*, sessions(date, time_slot, activity)")
+      .select("*, daily_groups(date, activity), sessions(date, time_slot, activity)")
       .order("created_at", { ascending: false })
       .limit(100);
 
@@ -157,15 +163,26 @@ const AdminReservationList = () => {
                     </span>
                   </div>
 
-                  {r.sessions && (
-                    <p className="text-sm text-foreground">
-                      <strong>{ACTIVITY_LABELS[r.sessions.activity] || r.sessions.activity}</strong>
-                      {" — "}
-                      {format(new Date(r.sessions.date), "d MMMM yyyy", { locale: fr })}
-                      {" • "}
-                      {SLOT_LABELS[r.sessions.time_slot] || r.sessions.time_slot}
-                    </p>
-                  )}
+                  {(() => {
+                    const date = r.daily_groups?.date ?? r.sessions?.date ?? null;
+                    const activity = r.daily_groups?.activity ?? r.sessions?.activity ?? null;
+                    if (!date || !activity) return null;
+                    const isHistorical = !r.daily_groups && !!r.sessions;
+                    return (
+                      <p className="text-sm text-foreground">
+                        <strong>{ACTIVITY_LABELS[activity] || activity}</strong>
+                        {" — "}
+                        {format(new Date(date), "d MMMM yyyy", { locale: fr })}
+                        {isHistorical && r.sessions?.time_slot && (
+                          <span className="text-xs text-muted-foreground">
+                            {" • "}
+                            {SLOT_LABELS[r.sessions.time_slot] || r.sessions.time_slot}
+                            {" (historique)"}
+                          </span>
+                        )}
+                      </p>
+                    );
+                  })()}
 
                   {r.stripe_session_id && (
                     <p className="text-xs text-muted-foreground font-mono">

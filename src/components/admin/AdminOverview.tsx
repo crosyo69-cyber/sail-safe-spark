@@ -62,20 +62,20 @@ interface Reservation {
   stripe_session_id: string | null;
 }
 
-interface SessionWithReservations {
+interface GroupRow {
   id: string;
   date: string;
-  time_slot: TimeSlot;
+  time_slot?: TimeSlot;
   activity: Activity;
   max_participants: number;
   status: string;
   notes: string | null;
-  weather_condition: string | null;
+  source: "daily_group" | "session";
   reservations: Reservation[];
 }
 
 const AdminOverview = () => {
-  const [sessions, setSessions] = useState<SessionWithReservations[]>([]);
+  const [sessions, setSessions] = useState<GroupRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedSessions, setExpandedSessions] = useState<Set<string>>(new Set());
   const [showPast, setShowPast] = useState(false);
@@ -121,29 +121,56 @@ const AdminOverview = () => {
   const fetchAll = async () => {
     setLoading(true);
 
-    const query = supabase
+    const today = format(new Date(), "yyyy-MM-dd");
+    const resFields = "id, first_name, last_name, email, phone, skill_level, participants, status, stripe_session_id";
+
+    const groupsQ = supabase
+      .from("daily_groups")
+      .select(`id, date, activity, max_participants, status, notes, reservations(${resFields})`)
+      .order("date", { ascending: true });
+    const sessionsQ = supabase
       .from("sessions")
-      .select("*, reservations(id, first_name, last_name, email, phone, skill_level, participants, status, stripe_session_id)")
-      .order("date", { ascending: true })
-      .order("time_slot", { ascending: true });
-
+      .select(`id, date, time_slot, activity, max_participants, status, notes, reservations(${resFields})`)
+      .order("date", { ascending: true });
     if (!showPast) {
-      const today = format(new Date(), "yyyy-MM-dd");
-      query.gte("date", today);
+      groupsQ.gte("date", today);
+      sessionsQ.gte("date", today);
     }
 
-    const { data, error } = await query.limit(200);
+    const [groupsRes, sessionsRes] = await Promise.all([groupsQ.limit(200), sessionsQ.limit(200)]);
+    if (groupsRes.error) console.error("Error fetching daily_groups:", groupsRes.error);
+    if (sessionsRes.error) console.error("Error fetching sessions:", sessionsRes.error);
 
-    if (error) {
-      console.error("Error fetching overview:", error);
-    } else {
-      const sorted = (data || []).sort((a: any, b: any) => {
-        const dateCmp = a.date.localeCompare(b.date);
-        if (dateCmp !== 0) return dateCmp;
-        return (SLOT_ORDER[a.time_slot] ?? 0) - (SLOT_ORDER[b.time_slot] ?? 0);
-      });
-      setSessions(sorted as SessionWithReservations[]);
-    }
+    const rows: GroupRow[] = [
+      ...((groupsRes.data as any[]) || []).map((g) => ({
+        id: g.id,
+        date: g.date,
+        activity: g.activity as Activity,
+        max_participants: g.max_participants,
+        status: g.status,
+        notes: g.notes,
+        source: "daily_group" as const,
+        reservations: g.reservations || [],
+      })),
+      ...((sessionsRes.data as any[]) || []).map((s) => ({
+        id: s.id,
+        date: s.date,
+        time_slot: s.time_slot as TimeSlot,
+        activity: s.activity as Activity,
+        max_participants: s.max_participants,
+        status: s.status,
+        notes: s.notes,
+        source: "session" as const,
+        reservations: s.reservations || [],
+      })),
+    ];
+
+    rows.sort((a, b) => {
+      const d = a.date.localeCompare(b.date);
+      if (d !== 0) return d;
+      return (SLOT_ORDER[a.time_slot ?? ""] ?? -1) - (SLOT_ORDER[b.time_slot ?? ""] ?? -1);
+    });
+    setSessions(rows);
     setLoading(false);
   };
 
@@ -161,7 +188,7 @@ const AdminOverview = () => {
   };
 
   // Group sessions by date
-  const grouped = sessions.reduce<Record<string, SessionWithReservations[]>>((acc, s) => {
+  const grouped = sessions.reduce<Record<string, GroupRow[]>>((acc, s) => {
     if (!acc[s.date]) acc[s.date] = [];
     acc[s.date].push(s);
     return acc;
@@ -182,7 +209,7 @@ const AdminOverview = () => {
       s.reservations.forEach((r) => {
         rows.push([
           format(new Date(s.date), "dd/MM/yyyy"),
-          SLOT_LABELS[s.time_slot],
+          s.time_slot ? SLOT_LABELS[s.time_slot] : "—",
           ACTIVITY_LABELS[s.activity],
           r.first_name,
           r.last_name,
@@ -325,7 +352,14 @@ const AdminOverview = () => {
                           >
                             {ACTIVITY_LABELS[session.activity]}
                           </Badge>
-                          <span className="text-sm text-foreground">{SLOT_LABELS[session.time_slot]}</span>
+                          {session.time_slot ? (
+                            <span className="text-sm text-foreground">
+                              {SLOT_LABELS[session.time_slot]}
+                              <span className="text-xs text-muted-foreground ml-1">(historique)</span>
+                            </span>
+                          ) : (
+                            <span className="text-xs text-muted-foreground">horaire communiqué la veille</span>
+                          )}
                           {session.status === "closed" && (
                             <Badge variant="outline" className="text-xs bg-muted">Fermée</Badge>
                           )}
