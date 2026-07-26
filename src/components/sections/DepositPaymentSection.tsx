@@ -207,19 +207,23 @@ const DepositPaymentSection = () => {
               Réservez en Ligne
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Versez un acompte de 50€ par personne pour confirmer votre réservation. Le solde sera à régler le jour de votre cours.
+              Versez un acompte de 50€ par séance réservée pour confirmer votre réservation. Le solde sera à régler le jour de votre cours.
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {activities.map((activity) => {
               const count = getCount(activity.id);
-              const total = count * 50;
               const date = selectedDates[activity.id];
               const packOptions = (activity as any).packOptions as number[] | undefined;
               const defaultSessions = (activity as any).defaultSessions as number | undefined;
               const selectedPack =
                 packSessions[activity.id] ?? packOptions?.[0] ?? defaultSessions ?? count;
+              // Acompte = 50 € × nombre de séances (packs, stages ou activités
+              // par participant où sessions == participants).
+              const sessionsForDeposit =
+                packOptions ? selectedPack : defaultSessions ?? count;
+              const total = sessionsForDeposit * 50;
               return (
                 <div
                   key={activity.id}
@@ -344,7 +348,12 @@ const DepositPaymentSection = () => {
 
                   <div className="bg-muted/50 rounded-lg p-3 mb-4 text-center">
                     <p className="text-sm font-semibold text-foreground">
-                      Acompte : {total}€ {count > 1 && <span className="font-normal text-muted-foreground">({count} × 50€)</span>}
+                      Acompte : {total}€{" "}
+                      {sessionsForDeposit > 1 && (
+                        <span className="font-normal text-muted-foreground">
+                          ({sessionsForDeposit} × 50€)
+                        </span>
+                      )}
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {packOptions
