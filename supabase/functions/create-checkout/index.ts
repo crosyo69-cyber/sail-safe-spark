@@ -126,7 +126,13 @@ export function createHandler(
       line_items: [
         {
           price: PRICE_ID,
-          quantity: count,
+          // Acompte = nombre de séances × 50 €. Pour les activités facturées
+          // par participant (cours particulier, location, foil tracté,
+          // déposes en mer), packSessions == count donc le montant reste
+          // identique. Pour les packs (Cours à la Carte, Wingfoil) et le
+          // Stage 100 % Glisse, l'acompte suit désormais le nombre de
+          // séances réservées (ex. 5 jours de stage → 250 €).
+          quantity: packSessions,
         },
       ],
       metadata: {
