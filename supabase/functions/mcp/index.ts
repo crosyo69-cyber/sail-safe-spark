@@ -97,15 +97,13 @@ var list_my_reservations_default = defineTool2({
     const [resvRes, pkgRes] = await Promise.all([
       sb.from("reservations").select(
         `id, participants, skill_level, status, notes, created_at,
-           daily_group_id, session_id,
-           daily_groups ( date, activity ),
-           sessions ( date, activity, time_slot )`
+           daily_group_id,
+           daily_groups ( date, activity )`
       ).eq("user_id", userId).order("created_at", { ascending: false }),
       sb.from("package_bookings").select(
         `id, status, booking_kind, created_at,
-           daily_group_id, session_id,
+           daily_group_id,
            daily_groups ( date, activity ),
-           sessions ( date, activity, time_slot ),
            client_packages!inner ( id, user_id, package_code, activity )`
       ).eq("client_packages.user_id", userId).order("created_at", { ascending: false })
     ]);
@@ -118,9 +116,8 @@ var list_my_reservations_default = defineTool2({
     const items = [];
     for (const r of resvRes.data ?? []) {
       const dg = r.daily_groups;
-      const s = r.sessions;
-      const date = dg?.date ?? s?.date ?? null;
-      const activity = dg?.activity ?? s?.activity ?? "kitesurf";
+      const date = dg?.date ?? null;
+      const activity = dg?.activity ?? "kitesurf";
       items.push({
         id: r.id,
         kind: "reservation",
@@ -129,15 +126,13 @@ var list_my_reservations_default = defineTool2({
         date,
         date_label: date ? formatDateFR(date) : null,
         participants: r.participants ?? 1,
-        status: r.status,
-        legacy_time_slot: dg ? null : s?.time_slot ?? null
+        status: r.status
       });
     }
     for (const b of pkgRes.data ?? []) {
       const dg = b.daily_groups;
-      const s = b.sessions;
-      const date = dg?.date ?? s?.date ?? null;
-      const activity = dg?.activity ?? s?.activity ?? b.client_packages?.activity ?? "kitesurf";
+      const date = dg?.date ?? null;
+      const activity = dg?.activity ?? b.client_packages?.activity ?? "kitesurf";
       items.push({
         id: b.id,
         kind: "package_booking",
@@ -147,8 +142,7 @@ var list_my_reservations_default = defineTool2({
         date_label: date ? formatDateFR(date) : null,
         participants: 1,
         status: b.status,
-        package_code: b.client_packages?.package_code ?? null,
-        legacy_time_slot: dg ? null : s?.time_slot ?? null
+        package_code: b.client_packages?.package_code ?? null
       });
     }
     const today = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);
@@ -168,9 +162,8 @@ var list_my_reservations_default = defineTool2({
         const kindLabel = it.kind === "package_booking" ? "Pack" : "R\xE9servation";
         const dateLabel = it.date_label ?? "date inconnue";
         const extra = it.package_code ? ` (code ${it.package_code})` : "";
-        const legacy = it.legacy_time_slot ? " [cr\xE9neau historique]" : "";
         lines.push(
-          `- ${kindLabel} \u2014 ${it.activity_label} \u2014 ${dateLabel}${extra} \u2014 ${it.participants} participant(s) \u2014 statut ${it.status}${legacy}`
+          `- ${kindLabel} \u2014 ${it.activity_label} \u2014 ${dateLabel}${extra} \u2014 ${it.participants} participant(s) \u2014 statut ${it.status}`
         );
       }
       lines.push("");

@@ -61,16 +61,15 @@ export default defineTool({
     const sb = supabaseForUser(ctx);
     const userId = ctx.getUserId();
 
-    // Nouveau modèle : réservations rattachées à un daily_group + réservations pack
-    // Ancien modèle (historique) : réservations rattachées à une session horodatée
+    // Toutes les réservations (nouvelles + historiques après backfill) sont
+    // rattachées à un daily_group.
     const [resvRes, pkgRes] = await Promise.all([
       sb
         .from("reservations")
         .select(
           `id, participants, skill_level, status, notes, created_at,
-           daily_group_id, session_id,
-           daily_groups ( date, activity ),
-           sessions ( date, activity, time_slot )`,
+           daily_group_id,
+           daily_groups ( date, activity )`,
         )
         .eq("user_id", userId)
         .order("created_at", { ascending: false }),
@@ -78,9 +77,8 @@ export default defineTool({
         .from("package_bookings")
         .select(
           `id, status, booking_kind, created_at,
-           daily_group_id, session_id,
+           daily_group_id,
            daily_groups ( date, activity ),
-           sessions ( date, activity, time_slot ),
            client_packages!inner ( id, user_id, package_code, activity )`,
         )
         .eq("client_packages.user_id", userId)
@@ -104,16 +102,14 @@ export default defineTool({
       participants: number;
       status: string;
       package_code?: string | null;
-      legacy_time_slot?: string | null;
     };
 
     const items: Item[] = [];
 
     for (const r of (resvRes.data ?? []) as any[]) {
       const dg = r.daily_groups;
-      const s = r.sessions;
-      const date: string | null = dg?.date ?? s?.date ?? null;
-      const activity: string = dg?.activity ?? s?.activity ?? "kitesurf";
+      const date: string | null = dg?.date ?? null;
+      const activity: string = dg?.activity ?? "kitesurf";
       items.push({
         id: r.id,
         kind: "reservation",
@@ -123,16 +119,14 @@ export default defineTool({
         date_label: date ? formatDateFR(date) : null,
         participants: r.participants ?? 1,
         status: r.status,
-        legacy_time_slot: dg ? null : s?.time_slot ?? null,
       });
     }
 
     for (const b of (pkgRes.data ?? []) as any[]) {
       const dg = b.daily_groups;
-      const s = b.sessions;
-      const date: string | null = dg?.date ?? s?.date ?? null;
+      const date: string | null = dg?.date ?? null;
       const activity: string =
-        dg?.activity ?? s?.activity ?? b.client_packages?.activity ?? "kitesurf";
+        dg?.activity ?? b.client_packages?.activity ?? "kitesurf";
       items.push({
         id: b.id,
         kind: "package_booking",
@@ -143,7 +137,6 @@ export default defineTool({
         participants: 1,
         status: b.status,
         package_code: b.client_packages?.package_code ?? null,
-        legacy_time_slot: dg ? null : s?.time_slot ?? null,
       });
     }
 
@@ -167,9 +160,8 @@ export default defineTool({
         const kindLabel = it.kind === "package_booking" ? "Pack" : "Réservation";
         const dateLabel = it.date_label ?? "date inconnue";
         const extra = it.package_code ? ` (code ${it.package_code})` : "";
-        const legacy = it.legacy_time_slot ? " [créneau historique]" : "";
         lines.push(
-          `- ${kindLabel} — ${it.activity_label} — ${dateLabel}${extra} — ${it.participants} participant(s) — statut ${it.status}${legacy}`,
+          `- ${kindLabel} — ${it.activity_label} — ${dateLabel}${extra} — ${it.participants} participant(s) — statut ${it.status}`,
         );
       }
       lines.push("");
