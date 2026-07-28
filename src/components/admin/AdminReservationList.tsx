@@ -25,12 +25,6 @@ const ACTIVITY_LABELS: Record<string, string> = {
   stage_100_glisse: "Stage 100% Glisse",
 };
 
-const SLOT_LABELS: Record<string, string> = {
-  morning: "Matin",
-  early_afternoon: "Début d'après-midi",
-  late_afternoon: "Fin d'après-midi",
-};
-
 const LEVEL_LABELS: Record<string, string> = {
   debutant: "Débutant",
   intermediaire: "Intermédiaire",
@@ -50,14 +44,8 @@ interface Reservation {
   notes: string | null;
   stripe_session_id: string | null;
   daily_group_id: string | null;
-  session_id: string | null;
   daily_groups: {
     date: string;
-    activity: string;
-  } | null;
-  sessions: {
-    date: string;
-    time_slot: string;
     activity: string;
   } | null;
 }
@@ -72,7 +60,7 @@ const AdminReservationList = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("reservations")
-      .select("*, daily_groups(date, activity), sessions(date, time_slot, activity)")
+      .select("*, daily_groups(date, activity)")
       .order("created_at", { ascending: false })
       .limit(100);
 
@@ -164,22 +152,14 @@ const AdminReservationList = () => {
                   </div>
 
                   {(() => {
-                    const date = r.daily_groups?.date ?? r.sessions?.date ?? null;
-                    const activity = r.daily_groups?.activity ?? r.sessions?.activity ?? null;
+                    const date = r.daily_groups?.date ?? null;
+                    const activity = r.daily_groups?.activity ?? null;
                     if (!date || !activity) return null;
-                    const isHistorical = !r.daily_groups && !!r.sessions;
                     return (
                       <p className="text-sm text-foreground">
                         <strong>{ACTIVITY_LABELS[activity] || activity}</strong>
                         {" — "}
                         {format(new Date(date), "d MMMM yyyy", { locale: fr })}
-                        {isHistorical && r.sessions?.time_slot && (
-                          <span className="text-xs text-muted-foreground">
-                            {" • "}
-                            {SLOT_LABELS[r.sessions.time_slot] || r.sessions.time_slot}
-                            {" (historique)"}
-                          </span>
-                        )}
                       </p>
                     );
                   })()}
