@@ -150,7 +150,7 @@ Deno.serve(async (req) => {
   const { data: bookings, error } = await supabase
     .from("package_bookings")
     .select(
-      "id, status, daily_group:daily_group_id (date, activity), sessions:session_id (date, activity), package:package_id (package_code, first_name, email)",
+      "id, status, daily_group:daily_group_id (date, activity), package:package_id (package_code, first_name, email)",
     )
     .eq("status", "confirmed");
 
@@ -166,8 +166,7 @@ Deno.serve(async (req) => {
 
   for (const b of bookings || []) {
     const dg = (b as any).daily_group;
-    const legacy = (b as any).sessions;
-    const s = dg || legacy;
+    const s = dg;
     const p = (b as any).package;
     if (!s || !p?.email || s.date !== targetDate) continue;
 

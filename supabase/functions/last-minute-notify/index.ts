@@ -74,30 +74,22 @@ Deno.serve(async (req) => {
 
     const body = await req.json().catch(() => ({} as any));
     const groupId: string | undefined = body.groupId ?? body.dailyGroupId;
-    const legacySessionId: string | undefined = body.sessionId;
-    if (!groupId && !legacySessionId) {
+    if (!groupId) {
       return new Response(JSON.stringify({ error: "groupId required" }), { status: 400, headers: corsHeaders });
     }
 
     const supabase = createClient(supabaseUrl, serviceKey);
-    let source: { date: string; activity: string; note: string | null };
-    if (groupId) {
-      const { data: group, error: gErr } = await supabase
-        .from("daily_groups")
-        .select("id,date,activity,notes")
-        .eq("id", groupId)
-        .single();
-      if (gErr || !group) return new Response(JSON.stringify({ error: "Group not found" }), { status: 404, headers: corsHeaders });
-      source = { date: group.date, activity: group.activity as string, note: group.notes };
-    } else {
-      const { data: session, error: sErr } = await supabase
-        .from("sessions")
-        .select("id,date,activity,weather_note")
-        .eq("id", legacySessionId!)
-        .single();
-      if (sErr || !session) return new Response(JSON.stringify({ error: "Session not found" }), { status: 404, headers: corsHeaders });
-      source = { date: session.date, activity: session.activity as string, note: session.weather_note };
-    }
+    const { data: group, error: gErr } = await supabase
+      .from("daily_groups")
+      .select("id,date,activity,notes")
+      .eq("id", groupId)
+      .single();
+    if (gErr || !group) return new Response(JSON.stringify({ error: "Group not found" }), { status: 404, headers: corsHeaders });
+    const source: { date: string; activity: string; note: string | null } = {
+      date: group.date,
+      activity: group.activity as string,
+      note: group.notes,
+    };
 
     // map activity to subscriber activity keys
     const targetKey =

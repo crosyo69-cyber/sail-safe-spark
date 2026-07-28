@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
-type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
 
 const ACTIVITY_LABELS: Record<Activity, string> = {
   kitesurf: "Kitesurf",
@@ -18,18 +17,6 @@ const ACTIVITY_LABELS: Record<Activity, string> = {
   pumpfoil: "Pumpfoil",
   foil_tracte: "Foil tracté",
   stage_100_glisse: "Stage 100% Glisse",
-};
-
-const SLOT_LABELS: Record<TimeSlot, string> = {
-  morning: "Matin",
-  early_afternoon: "Début d'après-midi",
-  late_afternoon: "Fin d'après-midi",
-};
-
-const SLOT_ORDER: Record<string, number> = {
-  morning: 0,
-  early_afternoon: 1,
-  late_afternoon: 2,
 };
 
 const LEVEL_LABELS: Record<string, string> = {
@@ -65,12 +52,10 @@ interface Reservation {
 interface GroupRow {
   id: string;
   date: string;
-  time_slot?: TimeSlot;
   activity: Activity;
   max_participants: number;
   status: string;
   notes: string | null;
-  source: "daily_group" | "session";
   reservations: Reservation[];
 }
 
@@ -128,48 +113,24 @@ const AdminOverview = () => {
       .from("daily_groups")
       .select(`id, date, activity, max_participants, status, notes, reservations(${resFields})`)
       .order("date", { ascending: true });
-    const sessionsQ = supabase
-      .from("sessions")
-      .select(`id, date, time_slot, activity, max_participants, status, notes, reservations(${resFields})`)
-      .order("date", { ascending: true });
     if (!showPast) {
       groupsQ.gte("date", today);
-      sessionsQ.gte("date", today);
     }
 
-    const [groupsRes, sessionsRes] = await Promise.all([groupsQ.limit(200), sessionsQ.limit(200)]);
+    const groupsRes = await groupsQ.limit(200);
     if (groupsRes.error) console.error("Error fetching daily_groups:", groupsRes.error);
-    if (sessionsRes.error) console.error("Error fetching sessions:", sessionsRes.error);
 
-    const rows: GroupRow[] = [
-      ...((groupsRes.data as any[]) || []).map((g) => ({
-        id: g.id,
-        date: g.date,
-        activity: g.activity as Activity,
-        max_participants: g.max_participants,
-        status: g.status,
-        notes: g.notes,
-        source: "daily_group" as const,
-        reservations: g.reservations || [],
-      })),
-      ...((sessionsRes.data as any[]) || []).map((s) => ({
-        id: s.id,
-        date: s.date,
-        time_slot: s.time_slot as TimeSlot,
-        activity: s.activity as Activity,
-        max_participants: s.max_participants,
-        status: s.status,
-        notes: s.notes,
-        source: "session" as const,
-        reservations: s.reservations || [],
-      })),
-    ];
+    const rows: GroupRow[] = ((groupsRes.data as any[]) || []).map((g) => ({
+      id: g.id,
+      date: g.date,
+      activity: g.activity as Activity,
+      max_participants: g.max_participants,
+      status: g.status,
+      notes: g.notes,
+      reservations: g.reservations || [],
+    }));
 
-    rows.sort((a, b) => {
-      const d = a.date.localeCompare(b.date);
-      if (d !== 0) return d;
-      return (SLOT_ORDER[a.time_slot ?? ""] ?? -1) - (SLOT_ORDER[b.time_slot ?? ""] ?? -1);
-    });
+    rows.sort((a, b) => a.date.localeCompare(b.date));
     setSessions(rows);
     setLoading(false);
   };
@@ -209,7 +170,7 @@ const AdminOverview = () => {
       s.reservations.forEach((r) => {
         rows.push([
           format(new Date(s.date), "dd/MM/yyyy"),
-          s.time_slot ? SLOT_LABELS[s.time_slot] : "—",
+          "—",
           ACTIVITY_LABELS[s.activity],
           r.first_name,
           r.last_name,
@@ -352,14 +313,7 @@ const AdminOverview = () => {
                           >
                             {ACTIVITY_LABELS[session.activity]}
                           </Badge>
-                          {session.time_slot ? (
-                            <span className="text-sm text-foreground">
-                              {SLOT_LABELS[session.time_slot]}
-                              <span className="text-xs text-muted-foreground ml-1">(historique)</span>
-                            </span>
-                          ) : (
-                            <span className="text-xs text-muted-foreground">horaire communiqué la veille</span>
-                          )}
+                          <span className="text-xs text-muted-foreground">horaire communiqué la veille</span>
                           {session.status === "closed" && (
                             <Badge variant="outline" className="text-xs bg-muted">Fermée</Badge>
                           )}
