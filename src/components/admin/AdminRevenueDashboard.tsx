@@ -78,7 +78,6 @@ interface Reservation {
   status: string;
   created_at: string;
   stripe_session_id: string | null;
-  session_id: string | null;
   daily_group_id: string | null;
 }
 
@@ -86,12 +85,10 @@ interface SessionInfo {
   id: string;
   activity: string;
   date: string;
-  time_slot?: string;
 }
 
 const AdminRevenueDashboard = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
-  const [sessions, setSessions] = useState<SessionInfo[]>([]);
   const [groups, setGroups] = useState<SessionInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState<Period>("month");
@@ -99,18 +96,16 @@ const AdminRevenueDashboard = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    const [resResult, sessResult, groupResult] = await Promise.all([
+    const [resResult, groupResult] = await Promise.all([
       supabase
         .from("reservations")
-        .select("id, participants, status, created_at, stripe_session_id, session_id, daily_group_id")
+        .select("id, participants, status, created_at, stripe_session_id, daily_group_id")
         .eq("status", "confirmed")
         .not("stripe_session_id", "is", null),
-      supabase.from("sessions").select("id, activity, date, time_slot"),
       supabase.from("daily_groups").select("id, activity, date"),
     ]);
 
     if (resResult.data) setReservations(resResult.data);
-    if (sessResult.data) setSessions(sessResult.data);
     if (groupResult.data) setGroups(groupResult.data);
     setLoading(false);
   };
@@ -118,12 +113,6 @@ const AdminRevenueDashboard = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
-  const sessionMap = useMemo(() => {
-    const map: Record<string, SessionInfo> = {};
-    sessions.forEach((s) => (map[s.id] = s));
-    return map;
-  }, [sessions]);
 
   const groupMap = useMemo(() => {
     const map: Record<string, SessionInfo> = {};
@@ -133,7 +122,6 @@ const AdminRevenueDashboard = () => {
 
   const resolve = (r: Reservation): SessionInfo | undefined => {
     if (r.daily_group_id && groupMap[r.daily_group_id]) return groupMap[r.daily_group_id];
-    if (r.session_id && sessionMap[r.session_id]) return sessionMap[r.session_id];
     return undefined;
   };
 
@@ -161,7 +149,7 @@ const AdminRevenueDashboard = () => {
       }
       return true;
     });
-  }, [reservations, dateRange, activityFilter, sessionMap, groupMap]);
+  }, [reservations, dateRange, activityFilter, groupMap]);
 
   // Previous period for comparison
   const prevDateRange = useMemo(() => {
@@ -182,7 +170,7 @@ const AdminRevenueDashboard = () => {
       }
       return true;
     });
-  }, [reservations, prevDateRange, activityFilter, sessionMap, groupMap]);
+  }, [reservations, prevDateRange, activityFilter, groupMap]);
 
   // Stats
   const totalRevenue = filteredReservations.reduce((a, r) => a + r.participants * DEPOSIT_PER_PERSON, 0);
@@ -216,7 +204,7 @@ const AdminRevenueDashboard = () => {
         activity,
       }))
       .sort((a, b) => b.value - a.value);
-  }, [filteredReservations, sessionMap, groupMap]);
+  }, [filteredReservations, groupMap]);
 
   // Revenue over time (bar chart)
   const revenueOverTime = useMemo(() => {
@@ -275,7 +263,7 @@ const AdminRevenueDashboard = () => {
           amount: r.participants * DEPOSIT_PER_PERSON,
         };
       });
-  }, [filteredReservations, sessionMap, groupMap]);
+  }, [filteredReservations, groupMap]);
 
   const periodLabels: Record<Period, string> = {
     month: "Ce mois",

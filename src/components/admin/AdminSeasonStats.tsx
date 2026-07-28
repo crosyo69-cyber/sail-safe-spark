@@ -71,14 +71,12 @@ interface SessionData {
   id: string;
   date: string;
   activity: string;
-  time_slot?: string;
   max_participants: number;
   status: string;
 }
 
 interface ReservationData {
   id: string;
-  session_id: string | null;
   daily_group_id: string | null;
   participants: number;
   status: string;
@@ -95,21 +93,17 @@ const AdminSeasonStats = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    const [sessRes, groupRes, resRes] = await Promise.all([
-      supabase.from("sessions").select("id, date, activity, time_slot, max_participants, status"),
+    const [groupRes, resRes] = await Promise.all([
       supabase.from("daily_groups").select("id, date, activity, max_participants, status"),
-      supabase.from("reservations").select("id, session_id, daily_group_id, participants, status, skill_level, first_name, last_name").in("status", ["confirmed", "pending"]),
+      supabase.from("reservations").select("id, daily_group_id, participants, status, skill_level, first_name, last_name").in("status", ["confirmed", "pending"]),
     ]);
-    const combined: SessionData[] = [
-      ...(sessRes.data || []),
-      ...((groupRes.data || []).map((g: any) => ({
-        id: g.id,
-        date: g.date,
-        activity: g.activity,
-        max_participants: g.max_participants,
-        status: g.status,
-      }))),
-    ];
+    const combined: SessionData[] = (groupRes.data || []).map((g: any) => ({
+      id: g.id,
+      date: g.date,
+      activity: g.activity,
+      max_participants: g.max_participants,
+      status: g.status,
+    }));
     setSessions(combined);
     if (resRes.data) setReservations(resRes.data);
     setLoading(false);
@@ -133,10 +127,7 @@ const AdminSeasonStats = () => {
   const yearSessions = useMemo(() => sessions.filter((s) => s.date.startsWith(selectedYear)), [sessions, selectedYear]);
   const yearReservations = useMemo(() => {
     const ids = new Set(yearSessions.map((s) => s.id));
-    return reservations.filter((r) =>
-      (r.daily_group_id && ids.has(r.daily_group_id)) ||
-      (r.session_id && ids.has(r.session_id))
-    );
+    return reservations.filter((r) => r.daily_group_id && ids.has(r.daily_group_id));
   }, [reservations, yearSessions]);
 
   // Season breakdown
@@ -160,7 +151,7 @@ const AdminSeasonStats = () => {
     });
 
     yearReservations.forEach((r) => {
-      const session = sessionMap[r.daily_group_id || ""] || sessionMap[r.session_id || ""];
+      const session = sessionMap[r.daily_group_id || ""];
       if (!session) return;
       const season = getSeason(session.date);
       result[season].participants += r.participants;
@@ -185,7 +176,7 @@ const AdminSeasonStats = () => {
     });
 
     yearReservations.forEach((r) => {
-      const session = sessionMap[r.daily_group_id || ""] || sessionMap[r.session_id || ""];
+      const session = sessionMap[r.daily_group_id || ""];
       if (!session) return;
       const month = new Date(session.date + "T12:00:00").getMonth();
       months[`${month}`].participants += r.participants;
@@ -203,7 +194,7 @@ const AdminSeasonStats = () => {
   const activityData = useMemo(() => {
     const map: Record<string, { haute: number; basse: number }> = {};
     yearReservations.forEach((r) => {
-      const session = sessionMap[r.daily_group_id || ""] || sessionMap[r.session_id || ""];
+      const session = sessionMap[r.daily_group_id || ""];
       if (!session) return;
       const act = session.activity;
       const season = getSeason(session.date);
@@ -277,7 +268,7 @@ const AdminSeasonStats = () => {
               .map(([act, count]) => {
                 const actParticipants = yearReservations
                   .filter((r) => {
-                    const s = sessionMap[r.daily_group_id || ""] || sessionMap[r.session_id || ""];
+                    const s = sessionMap[r.daily_group_id || ""];
                     return s && s.activity === act && getSeason(s.date) === season;
                   })
                   .reduce((a, r) => a + r.participants, 0);
