@@ -794,19 +794,6 @@ export type Database = {
         Args: { p_group_id: string; p_reason?: string }
         Returns: Json
       }
-      admin_get_session_extras: {
-        Args: { p_session_ids: string[] }
-        Returns: {
-          cancellation_reason: string
-          id: string
-          notes: string
-          weather_note: string
-        }[]
-      }
-      admin_grant_weather_credit_booking: {
-        Args: { p_package_id: string; p_session_id: string }
-        Returns: Json
-      }
       admin_list_daily_groups: { Args: { p_date: string }; Returns: Json }
       admin_list_daily_groups_range: {
         Args: { p_end: string; p_start: string }
@@ -829,11 +816,6 @@ export type Database = {
         }
         Returns: Json
       }
-      auto_generate_sessions: { Args: { p_days?: number }; Returns: Json }
-      auto_generate_sessions_monitored: {
-        Args: { p_days?: number; p_expected_min?: number }
-        Returns: Json
-      }
       book_daily_visitor: {
         Args: {
           p_activity: Database["public"]["Enums"]["activity_type"]
@@ -850,10 +832,6 @@ export type Database = {
       }
       book_daily_with_code: {
         Args: { p_code: string; p_date: string }
-        Returns: Json
-      }
-      book_session_with_code: {
-        Args: { p_code: string; p_session_id: string }
         Returns: Json
       }
       book_stage_100_glisse: {
@@ -933,20 +911,6 @@ export type Database = {
       }
       get_package_by_code: { Args: { p_code: string }; Returns: Json }
       get_package_credits_history: { Args: { p_code: string }; Returns: Json }
-      get_slot_capacity: {
-        Args: {
-          p_date: string
-          p_slot: Database["public"]["Enums"]["time_slot"]
-        }
-        Returns: number
-      }
-      get_slot_occupancy: {
-        Args: {
-          p_date: string
-          p_slot: Database["public"]["Enums"]["time_slot"]
-        }
-        Returns: Json
-      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
