@@ -223,30 +223,6 @@ export type Database = {
         }
         Relationships: []
       }
-      daily_slot_capacity: {
-        Row: {
-          created_at: string
-          date: string
-          max_participants: number
-          time_slot: Database["public"]["Enums"]["time_slot"]
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          date: string
-          max_participants?: number
-          time_slot: Database["public"]["Enums"]["time_slot"]
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          date?: string
-          max_participants?: number
-          time_slot?: Database["public"]["Enums"]["time_slot"]
-          updated_at?: string
-        }
-        Relationships: []
-      }
       email_send_log: {
         Row: {
           created_at: string
@@ -380,7 +356,6 @@ export type Database = {
           daily_group_id: string | null
           id: string
           package_id: string
-          session_id: string | null
           status: string
           updated_at: string
         }
@@ -390,7 +365,6 @@ export type Database = {
           daily_group_id?: string | null
           id?: string
           package_id: string
-          session_id?: string | null
           status?: string
           updated_at?: string
         }
@@ -400,7 +374,6 @@ export type Database = {
           daily_group_id?: string | null
           id?: string
           package_id?: string
-          session_id?: string | null
           status?: string
           updated_at?: string
         }
@@ -417,13 +390,6 @@ export type Database = {
             columns: ["package_id"]
             isOneToOne: false
             referencedRelation: "client_packages"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "package_bookings_session_id_fkey"
-            columns: ["session_id"]
-            isOneToOne: false
-            referencedRelation: "sessions"
             referencedColumns: ["id"]
           },
         ]
@@ -541,7 +507,6 @@ export type Database = {
           notes: string | null
           participants: number
           phone: string
-          session_id: string | null
           skill_level: Database["public"]["Enums"]["skill_level"]
           status: Database["public"]["Enums"]["reservation_status"]
           stripe_session_id: string | null
@@ -558,7 +523,6 @@ export type Database = {
           notes?: string | null
           participants?: number
           phone: string
-          session_id?: string | null
           skill_level?: Database["public"]["Enums"]["skill_level"]
           status?: Database["public"]["Enums"]["reservation_status"]
           stripe_session_id?: string | null
@@ -575,7 +539,6 @@ export type Database = {
           notes?: string | null
           participants?: number
           phone?: string
-          session_id?: string | null
           skill_level?: Database["public"]["Enums"]["skill_level"]
           status?: Database["public"]["Enums"]["reservation_status"]
           stripe_session_id?: string | null
@@ -588,13 +551,6 @@ export type Database = {
             columns: ["daily_group_id"]
             isOneToOne: false
             referencedRelation: "daily_groups"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "reservations_session_id_fkey"
-            columns: ["session_id"]
-            isOneToOne: false
-            referencedRelation: "sessions"
             referencedColumns: ["id"]
           },
         ]
@@ -626,63 +582,6 @@ export type Database = {
           metadata?: Json
           ok?: boolean
           ran_at?: string
-        }
-        Relationships: []
-      }
-      sessions: {
-        Row: {
-          activity: Database["public"]["Enums"]["activity_type"]
-          cancellation_reason: string | null
-          created_at: string
-          date: string
-          id: string
-          is_last_minute: boolean
-          last_minute_label: string | null
-          max_participants: number
-          notes: string | null
-          published_at: string | null
-          stage_group_id: string | null
-          status: string
-          time_slot: Database["public"]["Enums"]["time_slot"]
-          updated_at: string
-          weather_condition: string | null
-          weather_note: string | null
-        }
-        Insert: {
-          activity: Database["public"]["Enums"]["activity_type"]
-          cancellation_reason?: string | null
-          created_at?: string
-          date: string
-          id?: string
-          is_last_minute?: boolean
-          last_minute_label?: string | null
-          max_participants?: number
-          notes?: string | null
-          published_at?: string | null
-          stage_group_id?: string | null
-          status?: string
-          time_slot: Database["public"]["Enums"]["time_slot"]
-          updated_at?: string
-          weather_condition?: string | null
-          weather_note?: string | null
-        }
-        Update: {
-          activity?: Database["public"]["Enums"]["activity_type"]
-          cancellation_reason?: string | null
-          created_at?: string
-          date?: string
-          id?: string
-          is_last_minute?: boolean
-          last_minute_label?: string | null
-          max_participants?: number
-          notes?: string | null
-          published_at?: string | null
-          stage_group_id?: string | null
-          status?: string
-          time_slot?: Database["public"]["Enums"]["time_slot"]
-          updated_at?: string
-          weather_condition?: string | null
-          weather_note?: string | null
         }
         Relationships: []
       }
@@ -964,7 +863,6 @@ export type Database = {
       app_role: "admin" | "moderator" | "user"
       reservation_status: "pending" | "confirmed" | "cancelled"
       skill_level: "debutant" | "intermediaire" | "confirme"
-      time_slot: "morning" | "early_afternoon" | "late_afternoon"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1102,7 +1000,6 @@ export const Constants = {
       app_role: ["admin", "moderator", "user"],
       reservation_status: ["pending", "confirmed", "cancelled"],
       skill_level: ["debutant", "intermediaire", "confirme"],
-      time_slot: ["morning", "early_afternoon", "late_afternoon"],
     },
   },
 } as const
