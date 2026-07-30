@@ -1066,6 +1066,7 @@ export type Database = {
         Args: { p_booking_id: string }
         Returns: undefined
       }
+      enqueue_credit_expiry_notices: { Args: never; Returns: Json }
       enqueue_day_cancelled_notification: {
         Args: {
           p_activity: string
@@ -1216,6 +1217,7 @@ export type Database = {
         }
         Returns: Json
       }
+      run_credit_maintenance: { Args: never; Returns: Json }
       run_dlq_purge_cycle: { Args: never; Returns: Json }
       run_dlq_retry_cycle: { Args: never; Returns: Json }
       run_waitlist_cycle: { Args: never; Returns: Json }
