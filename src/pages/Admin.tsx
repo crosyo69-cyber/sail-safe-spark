@@ -13,13 +13,14 @@ import AdminSeasonStats from "@/components/admin/AdminSeasonStats";
 import Admin404Monitor from "@/components/admin/Admin404Monitor";
 import AdminConversionDedupMonitor from "@/components/admin/AdminConversionDedupMonitor";
 import AdminPackagesManager from "@/components/admin/AdminPackagesManager";
+import AdminCreditStats from "@/components/admin/AdminCreditStats";
 import AdminStudentsManager from "@/components/admin/AdminStudentsManager";
 import AdminConversionFunnel from "@/components/admin/AdminConversionFunnel";
 import AdminRichResultsValidator from "@/components/admin/AdminRichResultsValidator";
 import AdminAlertsCenter from "@/components/admin/AdminAlertsCenter";
 import AdminNotificationsBell from "@/components/admin/AdminNotificationsBell";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -66,6 +67,9 @@ const Admin = () => {
             <Button asChild variant="outline" size="sm">
               <Link to="/admin/journees"><CalendarDays className="w-4 h-4 mr-2" />Gestion des journées</Link>
             </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/admin/credits"><Wallet className="w-4 h-4 mr-2" />Gestion des crédits</Link>
+            </Button>
             <AdminNotificationsBell onOpenCenter={() => setActiveTab("alertes")} />
           </div>
         </div>
@@ -83,6 +87,10 @@ const Admin = () => {
             <TabsTrigger value="packages" className="gap-2">
               <Ticket className="w-4 h-4" />
               <span className="hidden sm:inline">Packs</span>
+            </TabsTrigger>
+            <TabsTrigger value="credits" className="gap-2">
+              <Wallet className="w-4 h-4" />
+              <span className="hidden sm:inline">Crédits</span>
             </TabsTrigger>
             <TabsTrigger value="students" className="gap-2">
               <Users className="w-4 h-4" />
@@ -136,6 +144,10 @@ const Admin = () => {
 
           <TabsContent value="packages">
             <AdminPackagesManager />
+          </TabsContent>
+
+          <TabsContent value="credits">
+            <AdminCreditStats />
           </TabsContent>
 
           <TabsContent value="students">
