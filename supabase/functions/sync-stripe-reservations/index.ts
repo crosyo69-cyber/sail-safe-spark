@@ -136,6 +136,8 @@ Deno.serve(async (req) => {
 
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     let authorized = token === serviceRoleKey;
+    let callerKind = authorized ? "service_role" : "unknown";
+    let callerId: string | null = null;
 
     if (!authorized) {
       const authClient = createClient(
@@ -150,15 +152,22 @@ Deno.serve(async (req) => {
           _role: "admin",
         });
         authorized = isAdmin === true;
+        if (authorized) {
+          callerKind = "admin";
+          callerId = userData.user.id;
+        }
       }
     }
 
     if (!authorized) {
+      console.warn("sync-stripe-reservations unauthorized call rejected");
       return new Response(JSON.stringify({ ok: false, error: "Forbidden" }), {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    console.log("sync-stripe-reservations authorized call", { caller: callerKind, caller_id: callerId });
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, { apiVersion: "2023-10-16" });
     const supabase = createClient(
