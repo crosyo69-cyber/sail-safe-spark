@@ -84,7 +84,7 @@ const CampaignEditor = ({ open, campaign, onOpenChange, onSaved }: Props) => {
   const estimate = useCallback(async (aud: CampaignAudience) => {
     setEstimating(true);
     const { data, error } = await supabase.rpc("marketing_estimate_audience", {
-      p_audience: aud as unknown as Record<string, unknown>,
+      p_audience: aud as unknown as never,
     });
     setEstimating(false);
     if (error) {
@@ -133,7 +133,7 @@ const CampaignEditor = ({ open, campaign, onOpenChange, onSaved }: Props) => {
       cta_url: ctaUrl.trim() || null,
       status,
       scheduled_at: status === "scheduled" && scheduledAt ? new Date(scheduledAt).toISOString() : null,
-      audience: audience as unknown as Record<string, unknown>,
+      audience: audience as unknown as never,
       recipients_count: recipients ?? 0,
       updated_by: userData.user?.id ?? null,
       updated_by_email: userData.user?.email ?? null,
