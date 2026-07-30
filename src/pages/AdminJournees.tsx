@@ -520,7 +520,7 @@ const ActivityColumn = ({
                   >
                     <RotateCcw className="w-4 h-4 text-primary" />
                   </Button>
-                  <Button variant="ghost" size="icon" onClick={() => onMove(m, g)} title="Déplacer">
+                  <Button variant="ghost" size="icon" onClick={() => onMove(m, g)} title="Reporter à une autre date">
                     <ArrowRightLeft className="w-4 h-4" />
                   </Button>
                   <Button variant="ghost" size="icon" onClick={() => onRemove(m)} title="Retirer">
