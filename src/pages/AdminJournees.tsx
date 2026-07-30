@@ -271,6 +271,38 @@ const AdminJournees = () => {
       </main>
       <Footer />
 
+      <RecreditDialog
+        open={!!recreditMember}
+        onOpenChange={(o) => !o && setRecreditMember(null)}
+        title="Annuler et recréditer"
+        fixedSessions={1}
+        confirmLabel="Annuler et recréditer"
+        description={recreditMember && (
+          <>
+            {recreditMember.name}
+            {recreditMember.kind === "package"
+              ? <> — Pack <span className="font-mono">{recreditMember.package_code}</span>. La place sera libérée et 1 séance recréditée.</>
+              : " — visiteur sans pack : l'inscription sera annulée, aucun crédit n'est ajouté."}
+          </>
+        )}
+        onConfirm={async ({ reason }) => { await handleCancelAndRecredit(reason); }}
+      />
+
+      <RecreditDialog
+        open={!!recreditGroup}
+        onOpenChange={(o) => !o && setRecreditGroup(null)}
+        title="Annuler la journée et recréditer"
+        fixedSessions={1}
+        confirmLabel="Annuler et recréditer le groupe"
+        description={recreditGroup && (
+          <>
+            {ACTIVITY_LABEL[recreditGroup.activity]} · Groupe #{recreditGroup.group_index} —
+            {" "}tous les clients avec pack seront recrédités d'une séance et prévenus par email.
+          </>
+        )}
+        onConfirm={async ({ reason }) => { await handleCancelGroupAndRecredit(reason); }}
+      />
+
       {/* Dialog édition groupe */}
       <Dialog open={!!editGroup} onOpenChange={(o) => !o && setEditGroup(null)}>
         <DialogContent>
