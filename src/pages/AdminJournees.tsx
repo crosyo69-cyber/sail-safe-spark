@@ -339,7 +339,7 @@ const AdminJournees = () => {
 };
 
 const ActivityColumn = ({
-  title, icon, groups, onEdit, onCancel, onRemove, onMove,
+  title, icon, groups, onEdit, onCancel, onRemove, onMove, onRecredit, onCancelGroupRecredit,
 }: {
   title: string;
   icon: JSX.Element;
@@ -348,6 +348,8 @@ const ActivityColumn = ({
   onCancel: (g: DailyGroup) => void;
   onRemove: (m: Member) => void;
   onMove: (m: Member, g: DailyGroup) => void;
+  onRecredit: (m: Member) => void;
+  onCancelGroupRecredit: (g: DailyGroup) => void;
 }) => (
   <div className="space-y-3">
     <div className="flex items-center gap-2">
@@ -378,9 +380,19 @@ const ActivityColumn = ({
               <Settings2 className="w-4 h-4" />
             </Button>
             {g.status !== "cancelled" && (
-              <Button variant="ghost" size="icon" onClick={() => onCancel(g)} title="Annuler le groupe">
-                <Ban className="w-4 h-4 text-rose-600" />
-              </Button>
+              <>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => onCancelGroupRecredit(g)}
+                  title="Annuler la journée et recréditer tous les clients"
+                >
+                  <RotateCcw className="w-4 h-4 text-primary" />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={() => onCancel(g)} title="Annuler le groupe">
+                  <Ban className="w-4 h-4 text-rose-600" />
+                </Button>
+              </>
             )}
           </div>
         </div>
@@ -402,6 +414,14 @@ const ActivityColumn = ({
                   </div>
                 </div>
                 <div className="flex gap-1 flex-shrink-0">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => onRecredit(m)}
+                    title="Annuler et recréditer"
+                  >
+                    <RotateCcw className="w-4 h-4 text-primary" />
+                  </Button>
                   <Button variant="ghost" size="icon" onClick={() => onMove(m, g)} title="Déplacer">
                     <ArrowRightLeft className="w-4 h-4" />
                   </Button>
