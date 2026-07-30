@@ -270,6 +270,51 @@ const MonEspace = () => {
 
         {pkg && (
           <div className="space-y-8">
+            {/* Notification in-app d'expiration */}
+            {(() => {
+              const avail = credits.filter((c) => c.status === "available");
+              const days = (c: { expires_at: string }) =>
+                Math.floor((parseISO(c.expires_at).getTime() - Date.now()) / 86400000);
+              const today = avail.filter((c) => days(c) <= 0);
+              const week = avail.filter((c) => days(c) > 0 && days(c) <= 7);
+              const month = avail.filter((c) => days(c) > 7 && days(c) <= 30);
+              if (today.length + week.length + month.length === 0) return null;
+              const urgent = today.length + week.length > 0;
+              return (
+                <div
+                  role="status"
+                  className={`rounded-lg border p-4 flex gap-3 ${
+                    urgent
+                      ? "border-destructive/40 bg-destructive/10"
+                      : "border-primary/30 bg-primary/5"
+                  }`}
+                >
+                  <AlertTriangle
+                    className={`w-5 h-5 shrink-0 mt-0.5 ${urgent ? "text-destructive" : "text-primary"}`}
+                  />
+                  <div className="text-sm space-y-1">
+                    <p className="font-semibold">
+                      {urgent ? "Séances bientôt perdues" : "Séances à utiliser prochainement"}
+                    </p>
+                    <ul className="text-muted-foreground space-y-0.5">
+                      {today.length > 0 && (
+                        <li>• {today.length} séance{today.length > 1 ? "s" : ""} expire{today.length > 1 ? "nt" : ""} aujourd'hui</li>
+                      )}
+                      {week.length > 0 && (
+                        <li>• {week.length} séance{week.length > 1 ? "s" : ""} dans les 7 prochains jours</li>
+                      )}
+                      {month.length > 0 && (
+                        <li>• {month.length} séance{month.length > 1 ? "s" : ""} dans les 30 prochains jours</li>
+                      )}
+                    </ul>
+                    <a href="#rappels" className="text-xs underline text-muted-foreground">
+                      Gérer mes rappels par email
+                    </a>
+                  </div>
+                </div>
+              );
+            })()}
+
             {/* Summary */}
             <Card className="overflow-hidden">
               <div className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground p-6">
