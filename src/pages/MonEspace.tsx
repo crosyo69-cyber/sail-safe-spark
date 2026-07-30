@@ -10,10 +10,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import {
   Loader2, Calendar as CalendarIcon, CheckCircle2, XCircle, Ticket,
-  CloudRain, Plus, Info,
+  CloudRain, Plus, Info, Bell, BellOff, AlertTriangle,
 } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -86,6 +88,8 @@ const MonEspace = () => {
     { id: string; activity: string; origin: string; status: string; expires_at: string }[]
   >([]);
   const [loading, setLoading] = useState(false);
+  const [reminders, setReminders] = useState({ remind_30: true, remind_7: true, remind_0: true });
+  const [savingReminders, setSavingReminders] = useState(false);
   const [busyAction, setBusyAction] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
@@ -115,6 +119,28 @@ const MonEspace = () => {
     const { data: w } = await supabase.rpc("get_wallet_by_code", { p_code: code });
     setWallet(((w as any)?.wallet as WalletEntry[]) || []);
     setCredits(((w as any)?.credits as typeof credits) || []);
+    const { data: r } = await supabase.rpc("get_credit_reminders", { p_code: code });
+    if (r) setReminders(r as unknown as typeof reminders);
+  };
+
+  const updateReminders = async (next: typeof reminders) => {
+    if (!pkg) return;
+    const prev = reminders;
+    setReminders(next);
+    setSavingReminders(true);
+    const { data, error } = await supabase.rpc("set_credit_reminders", {
+      p_code: pkg.package_code,
+      p_remind_30: next.remind_30,
+      p_remind_7: next.remind_7,
+      p_remind_0: next.remind_0,
+    });
+    setSavingReminders(false);
+    if (error || !(data as any)?.ok) {
+      setReminders(prev);
+      toast.error("Impossible d'enregistrer vos préférences");
+      return;
+    }
+    toast.success("Préférences de rappel enregistrées");
   };
 
   useEffect(() => {
