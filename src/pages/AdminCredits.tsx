@@ -494,6 +494,37 @@ const AdminCredits = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <Dialog open={!!editCredit} onOpenChange={(o) => !o && !busy && setEditCredit(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {editCredit?.mode === "extend" ? "Prolonger l'expiration" : "Réactiver un crédit expiré"}
+            </DialogTitle>
+            <DialogDescription>
+              {editCredit &&
+                `${ACTIVITY_LABEL[editCredit.credit.activity] || editCredit.credit.activity} — expire actuellement le ${format(parseISO(editCredit.credit.expires_at), "d MMM yyyy", { locale: fr })}`}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="newdate">Nouvelle date d'expiration</Label>
+              <Input id="newdate" type="date" value={editDate} onChange={(e) => setEditDate(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="editreason">Motif (journalisé)</Label>
+              <Input id="editreason" value={editReason} onChange={(e) => setEditReason(e.target.value)}
+                placeholder="Ex : geste commercial, saison sans vent…" />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setEditCredit(null)} disabled={busy}>Annuler</Button>
+            <Button onClick={submitCreditEdit} disabled={busy || editReason.trim().length < 3 || !editDate}>
+              {busy && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}Valider
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
