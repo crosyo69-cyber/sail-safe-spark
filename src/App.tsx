@@ -50,6 +50,7 @@ const Reserver = lazyWithChunkRecovery(() => import("./pages/Reserver"));
 const OAuthConsent = lazyWithChunkRecovery(() => import("./pages/OAuthConsent"));
 const AdminJournees = lazyWithChunkRecovery(() => import("./pages/AdminJournees"));
 const AdminCredits = lazyWithChunkRecovery(() => import("./pages/AdminCredits"));
+const AdminCRM = lazyWithChunkRecovery(() => import("./pages/AdminCRM"));
 const WaitlistConfirm = lazyWithChunkRecovery(() => import("./pages/WaitlistConfirm"));
 // NotFound is handled inside LegacyRedirectHandler
 
@@ -130,6 +131,7 @@ const App = () => {
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/admin/journees" element={<AdminJournees />} />
                 <Route path="/admin/credits" element={<AdminCredits />} />
+                <Route path="/admin/crm" element={<AdminCRM />} />
                 <Route path="/liste-attente/:token" element={<WaitlistConfirm />} />
                 <Route path="/mon-espace" element={<MonEspace />} />
                 <Route path="/mon-espace/:code" element={<MonEspace />} />
