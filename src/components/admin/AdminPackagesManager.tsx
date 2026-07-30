@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Loader2, RefreshCw, Plus, Minus, History } from "lucide-react";
+import { Loader2, RefreshCw, Plus, Minus, History, RotateCcw } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
@@ -33,6 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { RecreditDialog } from "@/components/admin/RecreditDialog";
 
 interface Pkg {
   id: string;
@@ -81,6 +82,7 @@ const AdminPackagesManager = () => {
   const [historyPkg, setHistoryPkg] = useState<Pkg | null>(null);
   const [historyEntries, setHistoryEntries] = useState<HistoryEntry[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [recreditPkg, setRecreditPkg] = useState<Pkg | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -266,6 +268,15 @@ const AdminPackagesManager = () => {
                         >
                           <History className="w-3 h-3" />
                         </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-7 w-7 p-0"
+                          onClick={() => setRecreditPkg(p)}
+                          title="Recréditer une séance (annulation école)"
+                        >
+                          <RotateCcw className="w-3 h-3 text-primary" />
+                        </Button>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -330,6 +341,36 @@ const AdminPackagesManager = () => {
         )}
 
         {/* Adjust credits dialog */}
+        <RecreditDialog
+          open={!!recreditPkg}
+          onOpenChange={(o) => !o && setRecreditPkg(null)}
+          description={recreditPkg && (
+            <>
+              {recreditPkg.first_name} {recreditPkg.last_name} — Pack{" "}
+              <span className="font-mono">{recreditPkg.package_code}</span>
+              <br />
+              Solde actuel : {recreditPkg.total_sessions - recreditPkg.used_sessions} séance(s)
+            </>
+          )}
+          onConfirm={async ({ reason, sessions }) => {
+            if (!recreditPkg) return;
+            const { data, error } = await supabase.rpc("admin_recredit_package", {
+              p_package_id: recreditPkg.id,
+              p_sessions: sessions,
+              p_reason: reason,
+            });
+            if (error) {
+              toast.error(error.message);
+              return;
+            }
+            toast.success(
+              `+${sessions} séance(s) recréditée(s) — solde : ${(data as any)?.remaining ?? "?"} · email envoyé`
+            );
+            setRecreditPkg(null);
+            load();
+          }}
+        />
+
         <Dialog open={!!adjustPkg} onOpenChange={(o) => !o && setAdjustPkg(null)}>
           <DialogContent>
             <DialogHeader>

@@ -689,8 +689,16 @@ export type Database = {
         Args: { p_delta: number; p_package_id: string; p_reason: string }
         Returns: Json
       }
+      admin_cancel_and_recredit: {
+        Args: { p_id: string; p_kind: string; p_reason: string }
+        Returns: Json
+      }
       admin_cancel_daily_group: {
         Args: { p_group_id: string; p_reason?: string }
+        Returns: Json
+      }
+      admin_cancel_group_and_recredit: {
+        Args: { p_group_id: string; p_reason: string }
         Returns: Json
       }
       admin_list_daily_groups: { Args: { p_date: string }; Returns: Json }
@@ -700,6 +708,15 @@ export type Database = {
       }
       admin_move_group_member: {
         Args: { p_id: string; p_kind: string; p_new_date: string }
+        Returns: Json
+      }
+      admin_recredit_package: {
+        Args: {
+          p_notify?: boolean
+          p_package_id: string
+          p_reason: string
+          p_sessions: number
+        }
         Returns: Json
       }
       admin_remove_group_member: {
@@ -779,6 +796,10 @@ export type Database = {
       }
       enqueue_low_credit_warning: {
         Args: { p_package_id: string }
+        Returns: undefined
+      }
+      enqueue_recredit_notification: {
+        Args: { p_package_id: string; p_reason: string; p_sessions: number }
         Returns: undefined
       }
       find_or_create_daily_group: {

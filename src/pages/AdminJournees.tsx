@@ -17,10 +17,11 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
-import { Loader2, ChevronLeft, ChevronRight, Wind, Waves, Users, Trash2, ArrowRightLeft, Ban, Settings2, RefreshCw, CalendarIcon } from "lucide-react";
+import { Loader2, ChevronLeft, ChevronRight, Wind, Waves, Users, Trash2, ArrowRightLeft, Ban, Settings2, RefreshCw, CalendarIcon, RotateCcw } from "lucide-react";
 import { format, addDays, startOfWeek, isSameDay } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import { RecreditDialog } from "@/components/admin/RecreditDialog";
 
 type Member = {
   kind: "visitor" | "package";
@@ -70,6 +71,8 @@ const AdminJournees = () => {
   const [editGroup, setEditGroup] = useState<DailyGroup | null>(null);
   const [moveMember, setMoveMember] = useState<{ member: Member; group: DailyGroup } | null>(null);
   const [moveDate, setMoveDate] = useState<Date | undefined>(undefined);
+  const [recreditMember, setRecreditMember] = useState<Member | null>(null);
+  const [recreditGroup, setRecreditGroup] = useState<DailyGroup | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -103,6 +106,36 @@ const AdminJournees = () => {
     const { error } = await supabase.rpc("admin_remove_group_member", { p_kind: m.kind, p_id: m.id });
     if (error) return toast.error(error.message);
     toast.success("Inscription retirée");
+    load();
+  };
+
+  const handleCancelAndRecredit = async (reason: string) => {
+    if (!recreditMember) return;
+    const { error } = await supabase.rpc("admin_cancel_and_recredit", {
+      p_kind: recreditMember.kind,
+      p_id: recreditMember.id,
+      p_reason: reason,
+    });
+    if (error) return toast.error(error.message);
+    toast.success(
+      recreditMember.kind === "package"
+        ? "Inscription annulée et séance recréditée — email envoyé"
+        : "Inscription visiteur annulée"
+    );
+    setRecreditMember(null);
+    load();
+  };
+
+  const handleCancelGroupAndRecredit = async (reason: string) => {
+    if (!recreditGroup) return;
+    const { data, error } = await supabase.rpc("admin_cancel_group_and_recredit", {
+      p_group_id: recreditGroup.id,
+      p_reason: reason,
+    });
+    if (error) return toast.error(error.message);
+    const n = (data as any)?.recredited ?? 0;
+    toast.success(`Journée annulée — ${n} séance(s) recréditée(s), emails envoyés`);
+    setRecreditGroup(null);
     load();
   };
 
@@ -216,21 +249,59 @@ const AdminJournees = () => {
             <ActivityColumn title="Kitesurf" icon={<Wind className="w-5 h-5" />} groups={kiteGroups}
               onEdit={setEditGroup} onCancel={handleCancelGroup}
               onRemove={handleRemoveMember}
+              onRecredit={setRecreditMember}
+              onCancelGroupRecredit={setRecreditGroup}
               onMove={(m, g) => { setMoveMember({ member: m, group: g }); setMoveDate(undefined); }} />
             <ActivityColumn title="Wingfoil" icon={<Waves className="w-5 h-5" />} groups={wingGroups}
               onEdit={setEditGroup} onCancel={handleCancelGroup}
               onRemove={handleRemoveMember}
+              onRecredit={setRecreditMember}
+              onCancelGroupRecredit={setRecreditGroup}
               onMove={(m, g) => { setMoveMember({ member: m, group: g }); setMoveDate(undefined); }} />
             {otherGroups.length > 0 && (
               <ActivityColumn title="Autres activités" icon={<Users className="w-5 h-5" />} groups={otherGroups}
                 onEdit={setEditGroup} onCancel={handleCancelGroup}
                 onRemove={handleRemoveMember}
+                onRecredit={setRecreditMember}
+                onCancelGroupRecredit={setRecreditGroup}
                 onMove={(m, g) => { setMoveMember({ member: m, group: g }); setMoveDate(undefined); }} />
             )}
           </div>
         )}
       </main>
       <Footer />
+
+      <RecreditDialog
+        open={!!recreditMember}
+        onOpenChange={(o) => !o && setRecreditMember(null)}
+        title="Annuler et recréditer"
+        fixedSessions={1}
+        confirmLabel="Annuler et recréditer"
+        description={recreditMember && (
+          <>
+            {recreditMember.name}
+            {recreditMember.kind === "package"
+              ? <> — Pack <span className="font-mono">{recreditMember.package_code}</span>. La place sera libérée et 1 séance recréditée.</>
+              : " — visiteur sans pack : l'inscription sera annulée, aucun crédit n'est ajouté."}
+          </>
+        )}
+        onConfirm={async ({ reason }) => { await handleCancelAndRecredit(reason); }}
+      />
+
+      <RecreditDialog
+        open={!!recreditGroup}
+        onOpenChange={(o) => !o && setRecreditGroup(null)}
+        title="Annuler la journée et recréditer"
+        fixedSessions={1}
+        confirmLabel="Annuler et recréditer le groupe"
+        description={recreditGroup && (
+          <>
+            {ACTIVITY_LABEL[recreditGroup.activity]} · Groupe #{recreditGroup.group_index} —
+            {" "}tous les clients avec pack seront recrédités d'une séance et prévenus par email.
+          </>
+        )}
+        onConfirm={async ({ reason }) => { await handleCancelGroupAndRecredit(reason); }}
+      />
 
       {/* Dialog édition groupe */}
       <Dialog open={!!editGroup} onOpenChange={(o) => !o && setEditGroup(null)}>
@@ -300,7 +371,7 @@ const AdminJournees = () => {
 };
 
 const ActivityColumn = ({
-  title, icon, groups, onEdit, onCancel, onRemove, onMove,
+  title, icon, groups, onEdit, onCancel, onRemove, onMove, onRecredit, onCancelGroupRecredit,
 }: {
   title: string;
   icon: JSX.Element;
@@ -309,6 +380,8 @@ const ActivityColumn = ({
   onCancel: (g: DailyGroup) => void;
   onRemove: (m: Member) => void;
   onMove: (m: Member, g: DailyGroup) => void;
+  onRecredit: (m: Member) => void;
+  onCancelGroupRecredit: (g: DailyGroup) => void;
 }) => (
   <div className="space-y-3">
     <div className="flex items-center gap-2">
@@ -339,9 +412,19 @@ const ActivityColumn = ({
               <Settings2 className="w-4 h-4" />
             </Button>
             {g.status !== "cancelled" && (
-              <Button variant="ghost" size="icon" onClick={() => onCancel(g)} title="Annuler le groupe">
-                <Ban className="w-4 h-4 text-rose-600" />
-              </Button>
+              <>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => onCancelGroupRecredit(g)}
+                  title="Annuler la journée et recréditer tous les clients"
+                >
+                  <RotateCcw className="w-4 h-4 text-primary" />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={() => onCancel(g)} title="Annuler le groupe">
+                  <Ban className="w-4 h-4 text-rose-600" />
+                </Button>
+              </>
             )}
           </div>
         </div>
@@ -363,6 +446,14 @@ const ActivityColumn = ({
                   </div>
                 </div>
                 <div className="flex gap-1 flex-shrink-0">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => onRecredit(m)}
+                    title="Annuler et recréditer"
+                  >
+                    <RotateCcw className="w-4 h-4 text-primary" />
+                  </Button>
                   <Button variant="ghost" size="icon" onClick={() => onMove(m, g)} title="Déplacer">
                     <ArrowRightLeft className="w-4 h-4" />
                   </Button>
