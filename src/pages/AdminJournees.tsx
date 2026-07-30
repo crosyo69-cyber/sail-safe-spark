@@ -17,11 +17,14 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
-import { Loader2, ChevronLeft, ChevronRight, Wind, Waves, Users, Trash2, ArrowRightLeft, Ban, Settings2, RefreshCw, CalendarIcon, RotateCcw } from "lucide-react";
+import { Loader2, ChevronLeft, ChevronRight, Wind, Waves, Users, Trash2, ArrowRightLeft, Ban, Settings2, RefreshCw, CalendarIcon, RotateCcw, CalendarX } from "lucide-react";
 import { format, addDays, startOfWeek, isSameDay } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
-import { RecreditDialog } from "@/components/admin/RecreditDialog";
+import { RecreditDialog, RECREDIT_REASONS } from "@/components/admin/RecreditDialog";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
 
 type Member = {
   kind: "visitor" | "package";
@@ -73,6 +76,9 @@ const AdminJournees = () => {
   const [moveDate, setMoveDate] = useState<Date | undefined>(undefined);
   const [recreditMember, setRecreditMember] = useState<Member | null>(null);
   const [recreditGroup, setRecreditGroup] = useState<DailyGroup | null>(null);
+  const [moveReason, setMoveReason] = useState(RECREDIT_REASONS[0].value);
+  const [cancelDayOpen, setCancelDayOpen] = useState(false);
+  const [busyDay, setBusyDay] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -141,14 +147,31 @@ const AdminJournees = () => {
 
   const handleMove = async () => {
     if (!moveMember || !moveDate) return;
-    const { error } = await supabase.rpc("admin_move_group_member", {
+    const { error } = await supabase.rpc("admin_reschedule_booking", {
       p_kind: moveMember.member.kind,
       p_id: moveMember.member.id,
       p_new_date: format(moveDate, "yyyy-MM-dd"),
+      p_reason: moveReason,
     });
     if (error) return toast.error(error.message);
-    toast.success("Membre déplacé");
+    toast.success("Réservation reportée — email de confirmation envoyé");
     setMoveMember(null); setMoveDate(undefined);
+    load();
+  };
+
+  const handleCancelDay = async (reason: string) => {
+    setBusyDay(true);
+    const { data, error } = await supabase.rpc("admin_cancel_day", {
+      p_date: format(date, "yyyy-MM-dd"),
+      p_reason: reason,
+    });
+    setBusyDay(false);
+    if (error) return toast.error(error.message);
+    const res = data as any;
+    toast.success(
+      `Journée annulée — ${res?.packages_recredited ?? 0} pack(s) recrédité(s), ${res?.visitors_cancelled ?? 0} visiteur(s) prévenu(s)`,
+    );
+    setCancelDayOpen(false);
     load();
   };
 
@@ -195,10 +218,21 @@ const AdminJournees = () => {
             <h1 className="text-3xl font-display font-bold">Gestion des journées</h1>
             <p className="text-sm text-muted-foreground">Vue par jour · groupes dynamiques Kite (4) / Wing (3)</p>
           </div>
-          <Button variant="outline" size="sm" onClick={load} disabled={loading}>
-            <RefreshCw className={cn("w-4 h-4 mr-2", loading && "animate-spin")} />
-            Rafraîchir
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={load} disabled={loading}>
+              <RefreshCw className={cn("w-4 h-4 mr-2", loading && "animate-spin")} />
+              Rafraîchir
+            </Button>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={() => setCancelDayOpen(true)}
+              disabled={busyDay || groups.length === 0}
+            >
+              <CalendarX className="w-4 h-4 mr-2" />
+              Annuler cette journée
+            </Button>
+          </div>
         </div>
 
         {/* Sélecteur de jour (semaine glissante) */}
@@ -303,6 +337,21 @@ const AdminJournees = () => {
         onConfirm={async ({ reason }) => { await handleCancelGroupAndRecredit(reason); }}
       />
 
+      <RecreditDialog
+        open={cancelDayOpen}
+        onOpenChange={(o) => !o && setCancelDayOpen(false)}
+        title={`Annuler la journée du ${format(date, "dd/MM/yyyy")}`}
+        fixedSessions={1}
+        confirmLabel="Annuler toute la journée"
+        description={
+          <>
+            Tous les groupes de la journée seront annulés : chaque client avec pack sera recrédité,
+            les visiteurs seront prévenus, et toutes les places seront libérées.
+          </>
+        }
+        onConfirm={async ({ reason }) => { await handleCancelDay(reason); }}
+      />
+
       {/* Dialog édition groupe */}
       <Dialog open={!!editGroup} onOpenChange={(o) => !o && setEditGroup(null)}>
         <DialogContent>
@@ -351,18 +400,35 @@ const AdminJournees = () => {
       <Dialog open={!!moveMember} onOpenChange={(o) => !o && setMoveMember(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Déplacer une inscription</DialogTitle>
+            <DialogTitle>Reporter une réservation</DialogTitle>
             <DialogDescription>
               {moveMember && `${moveMember.member.name} — ${ACTIVITY_LABEL[moveMember.group.activity]}`}
             </DialogDescription>
           </DialogHeader>
-          <div className="flex justify-center">
-            <Calendar mode="single" selected={moveDate} onSelect={setMoveDate} locale={fr}
-              disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))} initialFocus />
+          <div className="space-y-4">
+            <div className="flex justify-center">
+              <Calendar mode="single" selected={moveDate} onSelect={setMoveDate} locale={fr}
+                disabled={(d) => d < new Date(new Date().setHours(0, 0, 0, 0))} initialFocus />
+            </div>
+            <div className="space-y-2">
+              <Label>Motif du report</Label>
+              <Select value={moveReason} onValueChange={setMoveReason}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {RECREDIT_REASONS.map((r) => (
+                    <SelectItem key={r.value} value={r.value}>{r.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Le paiement et les crédits restent inchangés. Le client reçoit un email avec la nouvelle
+              date et le rappel que les horaires sont communiqués la veille par téléphone.
+            </p>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setMoveMember(null)}>Annuler</Button>
-            <Button onClick={handleMove} disabled={!moveDate}>Déplacer</Button>
+            <Button onClick={handleMove} disabled={!moveDate}>Reporter</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -454,7 +520,7 @@ const ActivityColumn = ({
                   >
                     <RotateCcw className="w-4 h-4 text-primary" />
                   </Button>
-                  <Button variant="ghost" size="icon" onClick={() => onMove(m, g)} title="Déplacer">
+                  <Button variant="ghost" size="icon" onClick={() => onMove(m, g)} title="Reporter à une autre date">
                     <ArrowRightLeft className="w-4 h-4" />
                   </Button>
                   <Button variant="ghost" size="icon" onClick={() => onRemove(m)} title="Retirer">

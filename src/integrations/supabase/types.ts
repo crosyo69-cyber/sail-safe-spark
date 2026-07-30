@@ -223,6 +223,57 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_waitlist: {
+        Row: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          created_at: string
+          date: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          offer_expires_at: string | null
+          offer_token: string
+          offered_at: string | null
+          participants: number
+          phone: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          created_at?: string
+          date: string
+          email: string
+          first_name: string
+          id?: string
+          last_name: string
+          offer_expires_at?: string | null
+          offer_token?: string
+          offered_at?: string | null
+          participants?: number
+          phone?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          activity?: Database["public"]["Enums"]["activity_type"]
+          created_at?: string
+          date?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          offer_expires_at?: string | null
+          offer_token?: string
+          offered_at?: string | null
+          participants?: number
+          phone?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       email_send_log: {
         Row: {
           created_at: string
@@ -389,6 +440,13 @@ export type Database = {
             foreignKeyName: "package_bookings_package_id_fkey"
             columns: ["package_id"]
             isOneToOne: false
+            referencedRelation: "client_credit_wallet"
+            referencedColumns: ["package_id"]
+          },
+          {
+            foreignKeyName: "package_bookings_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
             referencedRelation: "client_packages"
             referencedColumns: ["id"]
           },
@@ -396,9 +454,12 @@ export type Database = {
       }
       package_credit_history: {
         Row: {
+          action: string | null
+          activity: Database["public"]["Enums"]["activity_type"] | null
           balance_after: number
           booking_id: string | null
           created_at: string
+          daily_group_id: string | null
           delta: number
           id: string
           kind: string
@@ -407,9 +468,12 @@ export type Database = {
           reason: string
         }
         Insert: {
+          action?: string | null
+          activity?: Database["public"]["Enums"]["activity_type"] | null
           balance_after: number
           booking_id?: string | null
           created_at?: string
+          daily_group_id?: string | null
           delta: number
           id?: string
           kind: string
@@ -418,9 +482,12 @@ export type Database = {
           reason: string
         }
         Update: {
+          action?: string | null
+          activity?: Database["public"]["Enums"]["activity_type"] | null
           balance_after?: number
           booking_id?: string | null
           created_at?: string
+          daily_group_id?: string | null
           delta?: number
           id?: string
           kind?: string
@@ -435,6 +502,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "package_bookings"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "package_credit_history_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "client_credit_wallet"
+            referencedColumns: ["package_id"]
           },
           {
             foreignKeyName: "package_credit_history_package_id_fkey"
@@ -662,6 +736,60 @@ export type Database = {
       }
     }
     Views: {
+      client_credit_wallet: {
+        Row: {
+          activity: Database["public"]["Enums"]["activity_type"] | null
+          consumed: number | null
+          created_at: string | null
+          email: string | null
+          expires_at: string | null
+          first_name: string | null
+          last_name: string | null
+          package_code: string | null
+          package_id: string | null
+          package_type: string | null
+          purchased: number | null
+          recredited: number | null
+          remaining: number | null
+          status: string | null
+          total_sessions: number | null
+        }
+        Insert: {
+          activity?: Database["public"]["Enums"]["activity_type"] | null
+          consumed?: number | null
+          created_at?: string | null
+          email?: string | null
+          expires_at?: string | null
+          first_name?: string | null
+          last_name?: string | null
+          package_code?: string | null
+          package_id?: string | null
+          package_type?: string | null
+          purchased?: never
+          recredited?: never
+          remaining?: never
+          status?: string | null
+          total_sessions?: number | null
+        }
+        Update: {
+          activity?: Database["public"]["Enums"]["activity_type"] | null
+          consumed?: number | null
+          created_at?: string | null
+          email?: string | null
+          expires_at?: string | null
+          first_name?: string | null
+          last_name?: string | null
+          package_code?: string | null
+          package_id?: string | null
+          package_type?: string | null
+          purchased?: never
+          recredited?: never
+          remaining?: never
+          status?: string | null
+          total_sessions?: number | null
+        }
+        Relationships: []
+      }
       cron_job_status: {
         Row: {
           active: boolean | null
@@ -697,8 +825,16 @@ export type Database = {
         Args: { p_group_id: string; p_reason?: string }
         Returns: Json
       }
+      admin_cancel_day: {
+        Args: { p_date: string; p_reason: string }
+        Returns: Json
+      }
       admin_cancel_group_and_recredit: {
         Args: { p_group_id: string; p_reason: string }
+        Returns: Json
+      }
+      admin_credit_stats: {
+        Args: { p_end: string; p_start: string }
         Returns: Json
       }
       admin_list_daily_groups: { Args: { p_date: string }; Returns: Json }
@@ -721,6 +857,19 @@ export type Database = {
       }
       admin_remove_group_member: {
         Args: { p_id: string; p_kind: string }
+        Returns: Json
+      }
+      admin_reschedule_booking: {
+        Args: {
+          p_id: string
+          p_kind: string
+          p_new_date: string
+          p_reason?: string
+        }
+        Returns: Json
+      }
+      admin_search_wallets: {
+        Args: { p_activity?: string; p_query?: string; p_season?: string }
         Returns: Json
       }
       admin_update_daily_group: {
@@ -762,6 +911,7 @@ export type Database = {
         Args: { p_token: string }
         Returns: boolean
       }
+      confirm_waitlist_offer: { Args: { p_token: string }; Returns: Json }
       default_max_participants: {
         Args: { _activity: Database["public"]["Enums"]["activity_type"] }
         Returns: number
@@ -790,6 +940,18 @@ export type Database = {
         Args: { p_booking_id: string }
         Returns: undefined
       }
+      enqueue_day_cancelled_notification: {
+        Args: {
+          p_activity: string
+          p_code?: string
+          p_date: string
+          p_email: string
+          p_first_name: string
+          p_reason: string
+          p_recredited: boolean
+        }
+        Returns: undefined
+      }
       enqueue_email: {
         Args: { payload: Json; queue_name: string }
         Returns: number
@@ -800,6 +962,18 @@ export type Database = {
       }
       enqueue_recredit_notification: {
         Args: { p_package_id: string; p_reason: string; p_sessions: number }
+        Returns: undefined
+      }
+      enqueue_reschedule_notification: {
+        Args: {
+          p_activity: string
+          p_email: string
+          p_first_name: string
+          p_kind: string
+          p_new_date: string
+          p_old_date: string
+          p_reason: string
+        }
         Returns: undefined
       }
       find_or_create_daily_group: {
@@ -831,12 +1005,26 @@ export type Database = {
       }
       get_package_by_code: { Args: { p_code: string }; Returns: Json }
       get_package_credits_history: { Args: { p_code: string }; Returns: Json }
+      get_waitlist_offer: { Args: { p_token: string }; Returns: Json }
+      get_wallet_by_code: { Args: { p_code: string }; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      join_waitlist: {
+        Args: {
+          p_activity: Database["public"]["Enums"]["activity_type"]
+          p_date: string
+          p_email: string
+          p_first_name: string
+          p_last_name: string
+          p_participants?: number
+          p_phone: string
+        }
+        Returns: Json
       }
       move_to_dlq: {
         Args: {
@@ -846,6 +1034,13 @@ export type Database = {
           source_queue: string
         }
         Returns: number
+      }
+      offer_waitlist_spot: {
+        Args: {
+          p_activity: Database["public"]["Enums"]["activity_type"]
+          p_date: string
+        }
+        Returns: Json
       }
       purge_stale_dlq_messages: {
         Args: { p_dlq: string; p_limit?: number; p_max_age_days?: number }
@@ -871,6 +1066,7 @@ export type Database = {
       }
       run_dlq_purge_cycle: { Args: never; Returns: Json }
       run_dlq_retry_cycle: { Args: never; Returns: Json }
+      run_waitlist_cycle: { Args: never; Returns: Json }
       unsubscribe_last_minute: { Args: { p_token: string }; Returns: boolean }
       unsubscribe_weather_alert: { Args: { p_token: string }; Returns: boolean }
     }
