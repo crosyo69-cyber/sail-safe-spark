@@ -54,9 +54,8 @@ interface GroupRow {
   date: string;
   activity: Activity;
   max_participants: number;
-  status: string;
-  notes: string | null;
   reservations: Reservation[];
+  status: string;
 }
 
 const AdminOverview = () => {
