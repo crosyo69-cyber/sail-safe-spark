@@ -265,6 +265,114 @@ export type Database = {
           },
         ]
       }
+      crm_client_documents: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          doc_type: string
+          email: string
+          id: string
+          title: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          doc_type?: string
+          email: string
+          id?: string
+          title: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          doc_type?: string
+          email?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      crm_client_levels: {
+        Row: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          created_at: string
+          email: string
+          id: string
+          level: Database["public"]["Enums"]["skill_level"]
+          notes: string | null
+          updated_at: string
+        }
+        Insert: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          created_at?: string
+          email: string
+          id?: string
+          level?: Database["public"]["Enums"]["skill_level"]
+          notes?: string | null
+          updated_at?: string
+        }
+        Update: {
+          activity?: Database["public"]["Enums"]["activity_type"]
+          created_at?: string
+          email?: string
+          id?: string
+          level?: Database["public"]["Enums"]["skill_level"]
+          notes?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      crm_client_profiles: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          marketing_consent: boolean
+          marketing_consent_at: string | null
+          observations: string | null
+          phone: string | null
+          recommended_gear: string | null
+          tags: string[]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          marketing_consent?: boolean
+          marketing_consent_at?: string | null
+          observations?: string | null
+          phone?: string | null
+          recommended_gear?: string | null
+          tags?: string[]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          marketing_consent?: boolean
+          marketing_consent_at?: string | null
+          observations?: string | null
+          phone?: string | null
+          recommended_gear?: string | null
+          tags?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       daily_groups: {
         Row: {
           activity: Database["public"]["Enums"]["activity_type"]
@@ -1082,6 +1190,74 @@ export type Database = {
       credit_origin_from_reason: {
         Args: { p_kind: string; p_reason: string }
         Returns: string
+      }
+      crm_add_document: {
+        Args: {
+          p_doc_type?: string
+          p_email: string
+          p_title: string
+          p_url: string
+        }
+        Returns: Json
+      }
+      crm_client_base: {
+        Args: never
+        Returns: {
+          activities: string[]
+          credits_consumed: number
+          credits_expired: number
+          credits_remaining: number
+          email: string
+          first_date: string
+          first_name: string
+          first_seen: string
+          last_date: string
+          last_name: string
+          marketing_consent: boolean
+          next_expiry: string
+          packages_count: number
+          participants_count: number
+          phone: string
+          reservations_count: number
+          revenue: number
+          sessions_purchased: number
+          sessions_used: number
+        }[]
+      }
+      crm_client_detail: { Args: { p_email: string }; Returns: Json }
+      crm_dashboard: { Args: never; Returns: Json }
+      crm_delete_document: { Args: { p_id: string }; Returns: Json }
+      crm_list_clients: {
+        Args: {
+          p_activity?: string
+          p_consent?: string
+          p_limit?: number
+          p_query?: string
+          p_status?: string
+        }
+        Returns: Json
+      }
+      crm_set_level: {
+        Args: {
+          p_activity: Database["public"]["Enums"]["activity_type"]
+          p_email: string
+          p_level: Database["public"]["Enums"]["skill_level"]
+          p_notes?: string
+        }
+        Returns: Json
+      }
+      crm_upsert_profile: {
+        Args: {
+          p_email: string
+          p_first_name?: string
+          p_last_name?: string
+          p_marketing_consent?: boolean
+          p_observations?: string
+          p_phone?: string
+          p_recommended_gear?: string
+          p_tags?: string[]
+        }
+        Returns: Json
       }
       default_max_participants: {
         Args: { _activity: Database["public"]["Enums"]["activity_type"] }
