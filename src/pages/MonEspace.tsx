@@ -427,6 +427,50 @@ const MonEspace = () => {
               </section>
             )}
 
+            {/* Préférences de rappel */}
+            <section id="rappels" className="scroll-mt-24">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Bell className="w-5 h-5 text-primary" /> Rappels d'expiration par email
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-muted-foreground">
+                    Choisissez quand nous devons vous prévenir avant l'expiration de vos séances.
+                    Vous pouvez tout désactiver à tout moment.
+                  </p>
+                  {[
+                    { key: "remind_30" as const, label: "30 jours avant l'expiration" },
+                    { key: "remind_7" as const, label: "7 jours avant l'expiration" },
+                    { key: "remind_0" as const, label: "Le jour de l'expiration" },
+                  ].map((row) => (
+                    <div
+                      key={row.key}
+                      className="flex items-center justify-between gap-4 rounded-md border p-3"
+                    >
+                      <Label htmlFor={row.key} className="text-sm font-normal cursor-pointer">
+                        {row.label}
+                      </Label>
+                      <Switch
+                        id={row.key}
+                        checked={reminders[row.key]}
+                        disabled={savingReminders}
+                        onCheckedChange={(v) => updateReminders({ ...reminders, [row.key]: v })}
+                      />
+                    </div>
+                  ))}
+                  {!reminders.remind_30 && !reminders.remind_7 && !reminders.remind_0 && (
+                    <p className="text-xs flex items-center gap-2 rounded-md bg-muted px-3 py-2 text-muted-foreground">
+                      <BellOff className="w-4 h-4 shrink-0" />
+                      Tous les rappels sont désactivés : vos séances peuvent expirer sans
+                      avertissement.
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            </section>
+
             <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 flex gap-3">
               <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
               <div className="text-sm text-foreground">
