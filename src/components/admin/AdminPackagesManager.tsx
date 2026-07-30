@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Loader2, RefreshCw, Plus, Minus, History } from "lucide-react";
+import { Loader2, RefreshCw, Plus, Minus, History, RotateCcw } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
@@ -33,6 +33,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { RecreditDialog } from "@/components/admin/RecreditDialog";
 
 interface Pkg {
   id: string;
@@ -81,6 +82,7 @@ const AdminPackagesManager = () => {
   const [historyPkg, setHistoryPkg] = useState<Pkg | null>(null);
   const [historyEntries, setHistoryEntries] = useState<HistoryEntry[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [recreditPkg, setRecreditPkg] = useState<Pkg | null>(null);
 
   const load = async () => {
     setLoading(true);
