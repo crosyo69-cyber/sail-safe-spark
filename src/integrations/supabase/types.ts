@@ -586,6 +586,69 @@ export type Database = {
         }
         Relationships: []
       }
+      marketing_campaigns: {
+        Row: {
+          audience: Json
+          content_html: string
+          created_at: string
+          created_by: string | null
+          created_by_email: string | null
+          cta_label: string | null
+          cta_url: string | null
+          hero_image_url: string | null
+          id: string
+          name: string
+          preheader: string | null
+          recipients_count: number
+          scheduled_at: string | null
+          status: string
+          subject: string
+          updated_at: string
+          updated_by: string | null
+          updated_by_email: string | null
+        }
+        Insert: {
+          audience?: Json
+          content_html?: string
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          cta_label?: string | null
+          cta_url?: string | null
+          hero_image_url?: string | null
+          id?: string
+          name: string
+          preheader?: string | null
+          recipients_count?: number
+          scheduled_at?: string | null
+          status?: string
+          subject?: string
+          updated_at?: string
+          updated_by?: string | null
+          updated_by_email?: string | null
+        }
+        Update: {
+          audience?: Json
+          content_html?: string
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          cta_label?: string | null
+          cta_url?: string | null
+          hero_image_url?: string | null
+          id?: string
+          name?: string
+          preheader?: string | null
+          recipients_count?: number
+          scheduled_at?: string | null
+          status?: string
+          subject?: string
+          updated_at?: string
+          updated_by?: string | null
+          updated_by_email?: string | null
+        }
+        Relationships: []
+      }
       package_bookings: {
         Row: {
           booking_kind: string
@@ -1386,6 +1449,13 @@ export type Database = {
           p_reason?: string
         }
         Returns: undefined
+      }
+      marketing_estimate_audience: {
+        Args: { p_audience: Json }
+        Returns: {
+          emails: string[]
+          recipients: number
+        }[]
       }
       mint_session_credits: {
         Args: {

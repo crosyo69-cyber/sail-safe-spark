@@ -20,7 +20,7 @@ import AdminRichResultsValidator from "@/components/admin/AdminRichResultsValida
 import AdminAlertsCenter from "@/components/admin/AdminAlertsCenter";
 import AdminNotificationsBell from "@/components/admin/AdminNotificationsBell";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell, Wallet } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell, Wallet, Megaphone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -72,6 +72,9 @@ const Admin = () => {
             </Button>
             <Button asChild variant="outline" size="sm">
               <Link to="/admin/crm"><Users className="w-4 h-4 mr-2" />CRM Client</Link>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/admin/campagnes"><Megaphone className="w-4 h-4 mr-2" />Campagnes</Link>
             </Button>
             <AdminNotificationsBell onOpenCenter={() => setActiveTab("alertes")} />
           </div>
