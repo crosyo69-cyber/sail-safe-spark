@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { parisStartOfToday, toParisDateOnly } from "@/lib/booking-dates";
+import { WaitlistDialog } from "@/components/WaitlistDialog";
 
 type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
 
@@ -50,6 +51,7 @@ const ReserverPage = () => {
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState("");
   const [booking, setBooking] = useState(false);
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
 
   const loadAvailability = useCallback(async (d: Date) => {
     setLoading(true);
@@ -255,10 +257,35 @@ const ReserverPage = () => {
                 "Réserver cette journée avec mon code"
               )}
             </Button>
+
+            {isFull && (
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  Cette journée est complète en {activity === "wingfoil" ? "wingfoil" : "kitesurf"}.
+                  Inscrivez-vous sur la liste d'attente : vous serez prévenu par email dès qu'une place
+                  se libère.
+                </p>
+                <Button
+                  variant="outline"
+                  className="w-full min-h-[44px]"
+                  onClick={() => setWaitlistOpen(true)}
+                >
+                  Rejoindre la liste d'attente
+                </Button>
+              </div>
+            )}
           </Card>
         )}
       </main>
       <Footer />
+
+      <WaitlistDialog
+        open={waitlistOpen}
+        onOpenChange={setWaitlistOpen}
+        date={selectedDate ? toParisDateOnly(selectedDate) : null}
+        activity={activity}
+        activityLabel={ACTIVITIES.find((a) => a.value === activity)?.label || activity}
+      />
     </div>
   );
 };
