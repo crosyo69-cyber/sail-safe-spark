@@ -350,6 +350,69 @@ const AdminCredits = () => {
           </div>
 
           <div>
+            {selected && (
+              <Card className="p-4 mb-4">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                  <h2 className="font-semibold">Crédits individuels (FIFO)</h2>
+                  <div className="flex gap-2">
+                    <Select value={creditFilter} onValueChange={setCreditFilter}>
+                      <SelectTrigger className="w-[150px] h-9"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Tous</SelectItem>
+                        <SelectItem value="available">Disponibles</SelectItem>
+                        <SelectItem value="consumed">Consommées</SelectItem>
+                        <SelectItem value="expired">Expirées</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button size="sm" variant="outline" onClick={exportCreditsCsv} disabled={!credits.length}>
+                      <Download className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+                {credits.filter((c) => creditFilter === "all" || c.status === creditFilter).length === 0 ? (
+                  <p className="text-sm text-muted-foreground">Aucun crédit.</p>
+                ) : (
+                  <div className="space-y-2 max-h-[40vh] overflow-y-auto pr-1">
+                    {credits
+                      .filter((c) => creditFilter === "all" || c.status === creditFilter)
+                      .map((c) => (
+                        <div key={c.id} className="rounded-md border p-2 text-sm">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <Badge variant="secondary" className={ORIGIN_BADGE[c.origin]?.className}>
+                              {ORIGIN_BADGE[c.origin]?.label || c.origin}
+                            </Badge>
+                            <Badge variant="outline" className="text-xs">
+                              {CREDIT_STATUS[c.status] || c.status}
+                            </Badge>
+                            <span className="text-xs text-muted-foreground">
+                              {ACTIVITY_LABEL[c.activity] || c.activity}
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Expire le {format(parseISO(c.expires_at), "d MMM yyyy", { locale: fr })}
+                            {c.consumed_at
+                              ? ` · consommée le ${format(parseISO(c.consumed_at), "d MMM yyyy", { locale: fr })}`
+                              : ""}
+                            {c.reason ? ` · ${c.reason}` : ""}
+                          </p>
+                          {c.status !== "consumed" && (
+                            <div className="flex gap-2 mt-2">
+                              <Button size="sm" variant="outline"
+                                onClick={() => {
+                                  setEditCredit({ credit: c, mode: c.status === "expired" ? "reactivate" : "extend" });
+                                  setEditDate(format(new Date(Date.now() + 180 * 86400000), "yyyy-MM-dd"));
+                                  setEditReason("");
+                                }}>
+                                {c.status === "expired" ? "Réactiver" : "Prolonger"}
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </Card>
+            )}
             <Card className="p-4 sticky top-24">
               <h2 className="font-semibold mb-3">
                 {selected ? `Historique — ${selected.first_name} ${selected.last_name}` : "Historique"}
