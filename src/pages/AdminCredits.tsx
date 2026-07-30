@@ -103,6 +103,11 @@ const AdminCredits = () => {
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<Wallet | null>(null);
   const [history, setHistory] = useState<HistoryRow[]>([]);
+  const [credits, setCredits] = useState<Credit[]>([]);
+  const [creditFilter, setCreditFilter] = useState("all");
+  const [editCredit, setEditCredit] = useState<{ credit: Credit; mode: "extend" | "reactivate" } | null>(null);
+  const [editDate, setEditDate] = useState("");
+  const [editReason, setEditReason] = useState("");
   const [adjust, setAdjust] = useState<{ wallet: Wallet; sign: 1 | -1 } | null>(null);
   const [adjustQty, setAdjustQty] = useState(1);
   const [adjustReason, setAdjustReason] = useState(RECREDIT_REASONS[0].value);
@@ -128,6 +133,47 @@ const AdminCredits = () => {
     const { data } = await supabase.rpc("get_wallet_by_code", { p_code: w.package_code });
     const res = data as any;
     setHistory((res?.history as HistoryRow[]) || []);
+    const { data: c } = await supabase.rpc("admin_list_credits", { p_package_id: w.package_id });
+    setCredits((c as unknown as Credit[]) || []);
+  };
+
+  const submitCreditEdit = async () => {
+    if (!editCredit || editReason.trim().length < 3 || !editDate) return;
+    setBusy(true);
+    const iso = new Date(`${editDate}T12:00:00`).toISOString();
+    const { error } = await supabase.rpc(
+      editCredit.mode === "extend" ? "admin_extend_credit" : "admin_reactivate_credit",
+      { p_credit_id: editCredit.credit.id, p_new_expires_at: iso, p_reason: editReason.trim() },
+    );
+    setBusy(false);
+    if (error) return toast.error(error.message);
+    toast.success(editCredit.mode === "extend" ? "Expiration prolongée" : "Crédit réactivé");
+    setEditCredit(null);
+    if (selected) await openWallet(selected);
+  };
+
+  const exportCreditsCsv = () => {
+    if (!selected) return;
+    const header = ["Code pack", "Client", "Activité", "Origine", "Statut", "Créé le", "Expire le", "Consommé le", "Motif"];
+    const rows = credits.map((c) => [
+      selected.package_code, `${selected.first_name} ${selected.last_name}`,
+      ACTIVITY_LABEL[c.activity] || c.activity,
+      (ORIGIN_BADGE[c.origin]?.label || c.origin).replace(/^\S+\s/, ""),
+      CREDIT_STATUS[c.status] || c.status,
+      format(parseISO(c.created_at), "dd/MM/yyyy"),
+      format(parseISO(c.expires_at), "dd/MM/yyyy"),
+      c.consumed_at ? format(parseISO(c.consumed_at), "dd/MM/yyyy") : "",
+      c.reason || "",
+    ]);
+    const csv = "\uFEFF" + [header, ...rows]
+      .map((r) => r.map((x) => `"${String(x ?? "").replace(/"/g, '""')}"`).join(";"))
+      .join("\r\n");
+    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `credits-${selected.package_code}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const finalReason = adjustReason === "Autre" ? adjustCustom.trim() : adjustReason;
