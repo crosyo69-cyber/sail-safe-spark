@@ -220,6 +220,51 @@ export type Database = {
         }
         Relationships: []
       }
+      credit_reminder_preferences: {
+        Row: {
+          created_at: string
+          id: string
+          package_id: string
+          remind_0: boolean
+          remind_30: boolean
+          remind_7: boolean
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          package_id: string
+          remind_0?: boolean
+          remind_30?: boolean
+          remind_7?: boolean
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          package_id?: string
+          remind_0?: boolean
+          remind_30?: boolean
+          remind_7?: boolean
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credit_reminder_preferences_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: true
+            referencedRelation: "client_credit_wallet"
+            referencedColumns: ["package_id"]
+          },
+          {
+            foreignKeyName: "credit_reminder_preferences_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: true
+            referencedRelation: "client_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       daily_groups: {
         Row: {
           activity: Database["public"]["Enums"]["activity_type"]
@@ -1112,6 +1157,7 @@ export type Database = {
         }
         Returns: string
       }
+      get_credit_reminders: { Args: { p_code: string }; Returns: Json }
       get_credits_by_code: { Args: { p_code: string }; Returns: Json }
       get_daily_availability: { Args: { p_date: string }; Returns: Json }
       get_email_queue_status: {
@@ -1221,6 +1267,15 @@ export type Database = {
       run_dlq_purge_cycle: { Args: never; Returns: Json }
       run_dlq_retry_cycle: { Args: never; Returns: Json }
       run_waitlist_cycle: { Args: never; Returns: Json }
+      set_credit_reminders: {
+        Args: {
+          p_code: string
+          p_remind_0: boolean
+          p_remind_30: boolean
+          p_remind_7: boolean
+        }
+        Returns: Json
+      }
       unsubscribe_last_minute: { Args: { p_token: string }; Returns: boolean }
       unsubscribe_weather_alert: { Args: { p_token: string }; Returns: boolean }
     }
