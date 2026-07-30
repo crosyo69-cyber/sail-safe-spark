@@ -48,7 +48,6 @@ const Admin = lazyWithChunkRecovery(() => import("./pages/Admin"));
 const MonEspace = lazyWithChunkRecovery(() => import("./pages/MonEspace"));
 const Reserver = lazyWithChunkRecovery(() => import("./pages/Reserver"));
 const OAuthConsent = lazyWithChunkRecovery(() => import("./pages/OAuthConsent"));
-const AdminCreneaux = lazyWithChunkRecovery(() => import("./pages/AdminCreneaux"));
 const AdminJournees = lazyWithChunkRecovery(() => import("./pages/AdminJournees"));
 // NotFound is handled inside LegacyRedirectHandler
 
@@ -127,7 +126,6 @@ const App = () => {
                 <Route path="/reservation-confirmee" element={<ReservationConfirmee />} />
                 <Route path="/merci" element={<Merci />} />
                 <Route path="/admin" element={<Admin />} />
-                <Route path="/admin/creneaux" element={<AdminCreneaux />} />
                 <Route path="/admin/journees" element={<AdminJournees />} />
                 <Route path="/mon-espace" element={<MonEspace />} />
                 <Route path="/mon-espace/:code" element={<MonEspace />} />
