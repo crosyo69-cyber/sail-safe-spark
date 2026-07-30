@@ -51,6 +51,31 @@ type HistoryRow = {
   created_at: string;
 };
 
+type Credit = {
+  id: string;
+  activity: string;
+  origin: string;
+  status: string;
+  reason: string | null;
+  created_at: string;
+  expires_at: string;
+  consumed_at: string | null;
+};
+
+const ORIGIN_BADGE: Record<string, { label: string; className: string }> = {
+  purchase: { label: "🟢 Achat", className: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400" },
+  weather_recredit: { label: "🔵 Recrédit météo", className: "bg-sky-500/15 text-sky-700 dark:text-sky-400" },
+  commercial: { label: "🟠 Geste commercial", className: "bg-orange-500/15 text-orange-700 dark:text-orange-400" },
+  reschedule: { label: "🟣 Report", className: "bg-purple-500/15 text-purple-700 dark:text-purple-400" },
+  admin: { label: "⚪ Ajustement", className: "bg-muted text-muted-foreground" },
+};
+
+const CREDIT_STATUS: Record<string, string> = {
+  available: "Disponible",
+  consumed: "Consommée",
+  expired: "🔴 Expirée",
+};
+
 const ACTIVITY_LABEL: Record<string, string> = {
   kitesurf: "Kitesurf",
   wingfoil: "Wingfoil",
@@ -78,6 +103,11 @@ const AdminCredits = () => {
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<Wallet | null>(null);
   const [history, setHistory] = useState<HistoryRow[]>([]);
+  const [credits, setCredits] = useState<Credit[]>([]);
+  const [creditFilter, setCreditFilter] = useState("all");
+  const [editCredit, setEditCredit] = useState<{ credit: Credit; mode: "extend" | "reactivate" } | null>(null);
+  const [editDate, setEditDate] = useState("");
+  const [editReason, setEditReason] = useState("");
   const [adjust, setAdjust] = useState<{ wallet: Wallet; sign: 1 | -1 } | null>(null);
   const [adjustQty, setAdjustQty] = useState(1);
   const [adjustReason, setAdjustReason] = useState(RECREDIT_REASONS[0].value);
@@ -103,6 +133,47 @@ const AdminCredits = () => {
     const { data } = await supabase.rpc("get_wallet_by_code", { p_code: w.package_code });
     const res = data as any;
     setHistory((res?.history as HistoryRow[]) || []);
+    const { data: c } = await supabase.rpc("admin_list_credits", { p_package_id: w.package_id });
+    setCredits((c as unknown as Credit[]) || []);
+  };
+
+  const submitCreditEdit = async () => {
+    if (!editCredit || editReason.trim().length < 3 || !editDate) return;
+    setBusy(true);
+    const iso = new Date(`${editDate}T12:00:00`).toISOString();
+    const { error } = await supabase.rpc(
+      editCredit.mode === "extend" ? "admin_extend_credit" : "admin_reactivate_credit",
+      { p_credit_id: editCredit.credit.id, p_new_expires_at: iso, p_reason: editReason.trim() },
+    );
+    setBusy(false);
+    if (error) return toast.error(error.message);
+    toast.success(editCredit.mode === "extend" ? "Expiration prolongée" : "Crédit réactivé");
+    setEditCredit(null);
+    if (selected) await openWallet(selected);
+  };
+
+  const exportCreditsCsv = () => {
+    if (!selected) return;
+    const header = ["Code pack", "Client", "Activité", "Origine", "Statut", "Créé le", "Expire le", "Consommé le", "Motif"];
+    const rows = credits.map((c) => [
+      selected.package_code, `${selected.first_name} ${selected.last_name}`,
+      ACTIVITY_LABEL[c.activity] || c.activity,
+      (ORIGIN_BADGE[c.origin]?.label || c.origin).replace(/^\S+\s/, ""),
+      CREDIT_STATUS[c.status] || c.status,
+      format(parseISO(c.created_at), "dd/MM/yyyy"),
+      format(parseISO(c.expires_at), "dd/MM/yyyy"),
+      c.consumed_at ? format(parseISO(c.consumed_at), "dd/MM/yyyy") : "",
+      c.reason || "",
+    ]);
+    const csv = "\uFEFF" + [header, ...rows]
+      .map((r) => r.map((x) => `"${String(x ?? "").replace(/"/g, '""')}"`).join(";"))
+      .join("\r\n");
+    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `credits-${selected.package_code}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const finalReason = adjustReason === "Autre" ? adjustCustom.trim() : adjustReason;
@@ -279,6 +350,69 @@ const AdminCredits = () => {
           </div>
 
           <div>
+            {selected && (
+              <Card className="p-4 mb-4">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                  <h2 className="font-semibold">Crédits individuels (FIFO)</h2>
+                  <div className="flex gap-2">
+                    <Select value={creditFilter} onValueChange={setCreditFilter}>
+                      <SelectTrigger className="w-[150px] h-9"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Tous</SelectItem>
+                        <SelectItem value="available">Disponibles</SelectItem>
+                        <SelectItem value="consumed">Consommées</SelectItem>
+                        <SelectItem value="expired">Expirées</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button size="sm" variant="outline" onClick={exportCreditsCsv} disabled={!credits.length}>
+                      <Download className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+                {credits.filter((c) => creditFilter === "all" || c.status === creditFilter).length === 0 ? (
+                  <p className="text-sm text-muted-foreground">Aucun crédit.</p>
+                ) : (
+                  <div className="space-y-2 max-h-[40vh] overflow-y-auto pr-1">
+                    {credits
+                      .filter((c) => creditFilter === "all" || c.status === creditFilter)
+                      .map((c) => (
+                        <div key={c.id} className="rounded-md border p-2 text-sm">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <Badge variant="secondary" className={ORIGIN_BADGE[c.origin]?.className}>
+                              {ORIGIN_BADGE[c.origin]?.label || c.origin}
+                            </Badge>
+                            <Badge variant="outline" className="text-xs">
+                              {CREDIT_STATUS[c.status] || c.status}
+                            </Badge>
+                            <span className="text-xs text-muted-foreground">
+                              {ACTIVITY_LABEL[c.activity] || c.activity}
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Expire le {format(parseISO(c.expires_at), "d MMM yyyy", { locale: fr })}
+                            {c.consumed_at
+                              ? ` · consommée le ${format(parseISO(c.consumed_at), "d MMM yyyy", { locale: fr })}`
+                              : ""}
+                            {c.reason ? ` · ${c.reason}` : ""}
+                          </p>
+                          {c.status !== "consumed" && (
+                            <div className="flex gap-2 mt-2">
+                              <Button size="sm" variant="outline"
+                                onClick={() => {
+                                  setEditCredit({ credit: c, mode: c.status === "expired" ? "reactivate" : "extend" });
+                                  setEditDate(format(new Date(Date.now() + 180 * 86400000), "yyyy-MM-dd"));
+                                  setEditReason("");
+                                }}>
+                                {c.status === "expired" ? "Réactiver" : "Prolonger"}
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </Card>
+            )}
             <Card className="p-4 sticky top-24">
               <h2 className="font-semibold mb-3">
                 {selected ? `Historique — ${selected.first_name} ${selected.last_name}` : "Historique"}
@@ -355,6 +489,37 @@ const AdminCredits = () => {
           <DialogFooter>
             <Button variant="ghost" onClick={() => setAdjust(null)} disabled={busy}>Annuler</Button>
             <Button onClick={submitAdjust} disabled={busy || finalReason.length < 3}>
+              {busy && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}Valider
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!editCredit} onOpenChange={(o) => !o && !busy && setEditCredit(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {editCredit?.mode === "extend" ? "Prolonger l'expiration" : "Réactiver un crédit expiré"}
+            </DialogTitle>
+            <DialogDescription>
+              {editCredit &&
+                `${ACTIVITY_LABEL[editCredit.credit.activity] || editCredit.credit.activity} — expire actuellement le ${format(parseISO(editCredit.credit.expires_at), "d MMM yyyy", { locale: fr })}`}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="newdate">Nouvelle date d'expiration</Label>
+              <Input id="newdate" type="date" value={editDate} onChange={(e) => setEditDate(e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="editreason">Motif (journalisé)</Label>
+              <Input id="editreason" value={editReason} onChange={(e) => setEditReason(e.target.value)}
+                placeholder="Ex : geste commercial, saison sans vent…" />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setEditCredit(null)} disabled={busy}>Annuler</Button>
+            <Button onClick={submitCreditEdit} disabled={busy || editReason.trim().length < 3 || !editDate}>
               {busy && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}Valider
             </Button>
           </DialogFooter>

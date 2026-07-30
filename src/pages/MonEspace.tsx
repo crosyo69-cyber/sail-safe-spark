@@ -82,6 +82,9 @@ const MonEspace = () => {
   const [pkg, setPkg] = useState<PackageInfo | null>(null);
   const [history, setHistory] = useState<CreditHistoryEntry[]>([]);
   const [wallet, setWallet] = useState<WalletEntry[]>([]);
+  const [credits, setCredits] = useState<
+    { id: string; activity: string; origin: string; status: string; expires_at: string }[]
+  >([]);
   const [loading, setLoading] = useState(false);
   const [busyAction, setBusyAction] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
@@ -111,6 +114,7 @@ const MonEspace = () => {
     setHistory((data as unknown as CreditHistoryEntry[]) || []);
     const { data: w } = await supabase.rpc("get_wallet_by_code", { p_code: code });
     setWallet(((w as any)?.wallet as WalletEntry[]) || []);
+    setCredits(((w as any)?.credits as typeof credits) || []);
   };
 
   useEffect(() => {
@@ -159,6 +163,7 @@ const MonEspace = () => {
         package_not_active: "Pack inactif",
         package_expired: "Pack expiré",
         no_credits_left: "Plus de crédits disponibles",
+        credits_expired: "Vos séances restantes ont expiré — contactez l'école",
         date_in_past: "Date passée",
         already_booked_this_date: "Vous avez déjà réservé cette date",
       };
@@ -310,6 +315,40 @@ const MonEspace = () => {
                             <div className="font-bold text-sm">{w.recredited}</div>recréditées
                           </div>
                         </div>
+                        {(() => {
+                          const avail = credits
+                            .filter((c) => c.status === "available" && c.activity === w.activity)
+                            .sort((a, b) => a.expires_at.localeCompare(b.expires_at));
+                          if (avail.length === 0) return null;
+                          const soon = avail.filter(
+                            (c) =>
+                              (parseISO(c.expires_at).getTime() - Date.now()) / 86400000 < 30,
+                          );
+                          return (
+                            <div className="mt-3 border-t pt-3">
+                              <p className="text-xs font-medium text-muted-foreground mb-1">
+                                Validité de vos séances
+                              </p>
+                              <ul className="space-y-0.5">
+                                {avail.map((c) => (
+                                  <li key={c.id} className="text-xs text-muted-foreground">
+                                    • expire le{" "}
+                                    <span className="text-foreground">
+                                      {format(parseISO(c.expires_at), "d MMMM yyyy", { locale: fr })}
+                                    </span>
+                                  </li>
+                                ))}
+                              </ul>
+                              {soon.length > 0 && (
+                                <p className="mt-2 text-xs rounded-md bg-destructive/10 text-destructive px-2 py-1.5">
+                                  ⚠️ {soon.length} séance{soon.length > 1 ? "s" : ""} expire
+                                  {soon.length > 1 ? "nt" : ""} dans moins de 30 jours — pensez à
+                                  réserver une date.
+                                </p>
+                              )}
+                            </div>
+                          );
+                        })()}
                       </CardContent>
                     </Card>
                   ))}

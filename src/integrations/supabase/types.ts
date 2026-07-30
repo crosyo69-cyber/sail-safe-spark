@@ -187,6 +187,39 @@ export type Database = {
         }
         Relationships: []
       }
+      credit_audit_log: {
+        Row: {
+          action: string
+          created_at: string
+          credit_id: string | null
+          details: Json
+          id: string
+          package_id: string | null
+          performed_by: string | null
+          reason: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          credit_id?: string | null
+          details?: Json
+          id?: string
+          package_id?: string | null
+          performed_by?: string | null
+          reason?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          credit_id?: string | null
+          details?: Json
+          id?: string
+          package_id?: string | null
+          performed_by?: string | null
+          reason?: string | null
+        }
+        Relationships: []
+      }
       daily_groups: {
         Row: {
           activity: Database["public"]["Enums"]["activity_type"]
@@ -629,6 +662,73 @@ export type Database = {
           },
         ]
       }
+      session_credits: {
+        Row: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          booking_id: string | null
+          consumed_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          origin: string
+          package_id: string
+          performed_by: string | null
+          reason: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          booking_id?: string | null
+          consumed_at?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          origin?: string
+          package_id: string
+          performed_by?: string | null
+          reason?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          activity?: Database["public"]["Enums"]["activity_type"]
+          booking_id?: string | null
+          consumed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          origin?: string
+          package_id?: string
+          performed_by?: string | null
+          reason?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_credits_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "package_bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "session_credits_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "client_credit_wallet"
+            referencedColumns: ["package_id"]
+          },
+          {
+            foreignKeyName: "session_credits_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "client_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       session_generation_runs: {
         Row: {
           created_count: number
@@ -833,10 +933,20 @@ export type Database = {
         Args: { p_group_id: string; p_reason: string }
         Returns: Json
       }
+      admin_credit_audit: { Args: { p_package_id: string }; Returns: Json }
       admin_credit_stats: {
         Args: { p_end: string; p_start: string }
         Returns: Json
       }
+      admin_extend_credit: {
+        Args: {
+          p_credit_id: string
+          p_new_expires_at: string
+          p_reason: string
+        }
+        Returns: Json
+      }
+      admin_list_credits: { Args: { p_package_id: string }; Returns: Json }
       admin_list_daily_groups: { Args: { p_date: string }; Returns: Json }
       admin_list_daily_groups_range: {
         Args: { p_end: string; p_start: string }
@@ -844,6 +954,14 @@ export type Database = {
       }
       admin_move_group_member: {
         Args: { p_id: string; p_kind: string; p_new_date: string }
+        Returns: Json
+      }
+      admin_reactivate_credit: {
+        Args: {
+          p_credit_id: string
+          p_new_expires_at: string
+          p_reason: string
+        }
         Returns: Json
       }
       admin_recredit_package: {
@@ -912,6 +1030,14 @@ export type Database = {
         Returns: boolean
       }
       confirm_waitlist_offer: { Args: { p_token: string }; Returns: Json }
+      consume_credit_fifo: {
+        Args: { p_booking_id: string; p_package_id: string }
+        Returns: string
+      }
+      credit_origin_from_reason: {
+        Args: { p_kind: string; p_reason: string }
+        Returns: string
+      }
       default_max_participants: {
         Args: { _activity: Database["public"]["Enums"]["activity_type"] }
         Returns: number
@@ -940,6 +1066,7 @@ export type Database = {
         Args: { p_booking_id: string }
         Returns: undefined
       }
+      enqueue_credit_expiry_notices: { Args: never; Returns: Json }
       enqueue_day_cancelled_notification: {
         Args: {
           p_activity: string
@@ -976,6 +1103,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      expire_session_credits: { Args: never; Returns: Json }
       find_or_create_daily_group: {
         Args: {
           p_activity: Database["public"]["Enums"]["activity_type"]
@@ -984,6 +1112,7 @@ export type Database = {
         }
         Returns: string
       }
+      get_credits_by_code: { Args: { p_code: string }; Returns: Json }
       get_daily_availability: { Args: { p_date: string }; Returns: Json }
       get_email_queue_status: {
         Args: never
@@ -1026,6 +1155,26 @@ export type Database = {
         }
         Returns: Json
       }
+      log_credit_action: {
+        Args: {
+          p_action: string
+          p_credit_id: string
+          p_details?: Json
+          p_package_id: string
+          p_reason?: string
+        }
+        Returns: undefined
+      }
+      mint_session_credits: {
+        Args: {
+          p_count: number
+          p_expires_at?: string
+          p_origin: string
+          p_package_id: string
+          p_reason?: string
+        }
+        Returns: number
+      }
       move_to_dlq: {
         Args: {
           dlq_name: string
@@ -1054,6 +1203,10 @@ export type Database = {
           read_ct: number
         }[]
       }
+      restore_credit_fifo: {
+        Args: { p_booking_id: string; p_package_id: string }
+        Returns: string
+      }
       retry_dlq_messages: {
         Args: {
           p_dlq: string
@@ -1064,6 +1217,7 @@ export type Database = {
         }
         Returns: Json
       }
+      run_credit_maintenance: { Args: never; Returns: Json }
       run_dlq_purge_cycle: { Args: never; Returns: Json }
       run_dlq_retry_cycle: { Args: never; Returns: Json }
       run_waitlist_cycle: { Args: never; Returns: Json }

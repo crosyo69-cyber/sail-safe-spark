@@ -101,6 +101,7 @@ const ReserverPage = () => {
         package_not_active: "Pack inactif",
         package_expired: "Pack expiré",
         no_credits_left: "Plus de crédits disponibles sur ce pack",
+        credits_expired: "Vos séances restantes ont expiré — contactez l'école",
         date_in_past: "Date passée",
         already_booked_this_date: "Vous avez déjà réservé cette date",
       };
