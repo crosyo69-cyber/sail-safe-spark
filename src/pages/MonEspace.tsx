@@ -10,10 +10,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import {
   Loader2, Calendar as CalendarIcon, CheckCircle2, XCircle, Ticket,
-  CloudRain, Plus, Info,
+  CloudRain, Plus, Info, Bell, BellOff, AlertTriangle,
 } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -86,6 +88,8 @@ const MonEspace = () => {
     { id: string; activity: string; origin: string; status: string; expires_at: string }[]
   >([]);
   const [loading, setLoading] = useState(false);
+  const [reminders, setReminders] = useState({ remind_30: true, remind_7: true, remind_0: true });
+  const [savingReminders, setSavingReminders] = useState(false);
   const [busyAction, setBusyAction] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
@@ -115,6 +119,28 @@ const MonEspace = () => {
     const { data: w } = await supabase.rpc("get_wallet_by_code", { p_code: code });
     setWallet(((w as any)?.wallet as WalletEntry[]) || []);
     setCredits(((w as any)?.credits as typeof credits) || []);
+    const { data: r } = await supabase.rpc("get_credit_reminders", { p_code: code });
+    if (r) setReminders(r as unknown as typeof reminders);
+  };
+
+  const updateReminders = async (next: typeof reminders) => {
+    if (!pkg) return;
+    const prev = reminders;
+    setReminders(next);
+    setSavingReminders(true);
+    const { data, error } = await supabase.rpc("set_credit_reminders", {
+      p_code: pkg.package_code,
+      p_remind_30: next.remind_30,
+      p_remind_7: next.remind_7,
+      p_remind_0: next.remind_0,
+    });
+    setSavingReminders(false);
+    if (error || !(data as any)?.ok) {
+      setReminders(prev);
+      toast.error("Impossible d'enregistrer vos préférences");
+      return;
+    }
+    toast.success("Préférences de rappel enregistrées");
   };
 
   useEffect(() => {
@@ -244,6 +270,51 @@ const MonEspace = () => {
 
         {pkg && (
           <div className="space-y-8">
+            {/* Notification in-app d'expiration */}
+            {(() => {
+              const avail = credits.filter((c) => c.status === "available");
+              const days = (c: { expires_at: string }) =>
+                Math.floor((parseISO(c.expires_at).getTime() - Date.now()) / 86400000);
+              const today = avail.filter((c) => days(c) <= 0);
+              const week = avail.filter((c) => days(c) > 0 && days(c) <= 7);
+              const month = avail.filter((c) => days(c) > 7 && days(c) <= 30);
+              if (today.length + week.length + month.length === 0) return null;
+              const urgent = today.length + week.length > 0;
+              return (
+                <div
+                  role="status"
+                  className={`rounded-lg border p-4 flex gap-3 ${
+                    urgent
+                      ? "border-destructive/40 bg-destructive/10"
+                      : "border-primary/30 bg-primary/5"
+                  }`}
+                >
+                  <AlertTriangle
+                    className={`w-5 h-5 shrink-0 mt-0.5 ${urgent ? "text-destructive" : "text-primary"}`}
+                  />
+                  <div className="text-sm space-y-1">
+                    <p className="font-semibold">
+                      {urgent ? "Séances bientôt perdues" : "Séances à utiliser prochainement"}
+                    </p>
+                    <ul className="text-muted-foreground space-y-0.5">
+                      {today.length > 0 && (
+                        <li>• {today.length} séance{today.length > 1 ? "s" : ""} expire{today.length > 1 ? "nt" : ""} aujourd'hui</li>
+                      )}
+                      {week.length > 0 && (
+                        <li>• {week.length} séance{week.length > 1 ? "s" : ""} dans les 7 prochains jours</li>
+                      )}
+                      {month.length > 0 && (
+                        <li>• {month.length} séance{month.length > 1 ? "s" : ""} dans les 30 prochains jours</li>
+                      )}
+                    </ul>
+                    <a href="#rappels" className="text-xs underline text-muted-foreground">
+                      Gérer mes rappels par email
+                    </a>
+                  </div>
+                </div>
+              );
+            })()}
+
             {/* Summary */}
             <Card className="overflow-hidden">
               <div className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground p-6">
@@ -355,6 +426,50 @@ const MonEspace = () => {
                 </div>
               </section>
             )}
+
+            {/* Préférences de rappel */}
+            <section id="rappels" className="scroll-mt-24">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Bell className="w-5 h-5 text-primary" /> Rappels d'expiration par email
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-muted-foreground">
+                    Choisissez quand nous devons vous prévenir avant l'expiration de vos séances.
+                    Vous pouvez tout désactiver à tout moment.
+                  </p>
+                  {[
+                    { key: "remind_30" as const, label: "30 jours avant l'expiration" },
+                    { key: "remind_7" as const, label: "7 jours avant l'expiration" },
+                    { key: "remind_0" as const, label: "Le jour de l'expiration" },
+                  ].map((row) => (
+                    <div
+                      key={row.key}
+                      className="flex items-center justify-between gap-4 rounded-md border p-3"
+                    >
+                      <Label htmlFor={row.key} className="text-sm font-normal cursor-pointer">
+                        {row.label}
+                      </Label>
+                      <Switch
+                        id={row.key}
+                        checked={reminders[row.key]}
+                        disabled={savingReminders}
+                        onCheckedChange={(v) => updateReminders({ ...reminders, [row.key]: v })}
+                      />
+                    </div>
+                  ))}
+                  {!reminders.remind_30 && !reminders.remind_7 && !reminders.remind_0 && (
+                    <p className="text-xs flex items-center gap-2 rounded-md bg-muted px-3 py-2 text-muted-foreground">
+                      <BellOff className="w-4 h-4 shrink-0" />
+                      Tous les rappels sont désactivés : vos séances peuvent expirer sans
+                      avertissement.
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            </section>
 
             <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 flex gap-3">
               <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
