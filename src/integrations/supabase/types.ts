@@ -649,6 +649,84 @@ export type Database = {
         }
         Relationships: []
       }
+      marketing_settings: {
+        Row: {
+          brevo_list_id: number | null
+          created_at: string
+          id: number
+          last_sync_at: string | null
+          mode: string
+          updated_at: string
+        }
+        Insert: {
+          brevo_list_id?: number | null
+          created_at?: string
+          id?: number
+          last_sync_at?: string | null
+          mode?: string
+          updated_at?: string
+        }
+        Update: {
+          brevo_list_id?: number | null
+          created_at?: string
+          id?: number
+          last_sync_at?: string | null
+          mode?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      marketing_sync_logs: {
+        Row: {
+          created_at: string
+          created_count: number
+          details: Json
+          duration_ms: number
+          error_count: number
+          finished_at: string | null
+          id: string
+          mode: string
+          performed_by: string | null
+          performed_by_email: string | null
+          skipped_count: number
+          started_at: string
+          total_candidates: number
+          updated_count: number
+        }
+        Insert: {
+          created_at?: string
+          created_count?: number
+          details?: Json
+          duration_ms?: number
+          error_count?: number
+          finished_at?: string | null
+          id?: string
+          mode?: string
+          performed_by?: string | null
+          performed_by_email?: string | null
+          skipped_count?: number
+          started_at?: string
+          total_candidates?: number
+          updated_count?: number
+        }
+        Update: {
+          created_at?: string
+          created_count?: number
+          details?: Json
+          duration_ms?: number
+          error_count?: number
+          finished_at?: string | null
+          id?: string
+          mode?: string
+          performed_by?: string | null
+          performed_by_email?: string | null
+          skipped_count?: number
+          started_at?: string
+          total_candidates?: number
+          updated_count?: number
+        }
+        Relationships: []
+      }
       package_bookings: {
         Row: {
           booking_kind: string
