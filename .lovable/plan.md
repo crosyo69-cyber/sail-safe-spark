@@ -1,74 +1,64 @@
+## Point de départ
 
-# Phase 5 — Dépréciation du modèle `sessions` / `time_slot`
+Une partie de la demande est déjà en place depuis la dernière itération :
+- table `package_credit_history` (journal des mouvements : date, delta, motif, admin, solde après)
+- recrédit manuel avec motifs (`RecreditDialog`), sur un pack ou un participant
+- annulation + recrédit d'un participant ou d'un groupe d'activité
+- email « séance recréditée »
 
-Objectif : faire de `daily_groups` la seule source de vérité pour la planification, en retirant progressivement `sessions` / `time_slot` du code applicatif, sans casser l'historique de réservations ni les factures Stripe déjà émises.
+Le plan ci-dessous complète ce qui manque.
 
-## Principes
+## Phase A — Portefeuille et historique (base)
 
-- **Pas de suppression SQL immédiate.** La table `sessions` contient des mois d'historique (rapports, revenus, factures). On la garde en base, mais on la traite comme un **journal en lecture seule** côté application. La suppression physique arrivera dans une phase 6 après export.
-- **Un seul chemin d'écriture** : `book_daily_visitor` / `book_daily_with_code` / RPC admin `daily_groups`. Toutes les insertions dans `sessions` / `reservations.session_id` / `package_bookings.session_id` disparaissent du code.
-- **Compatibilité historique** : les composants admin qui affichent des réservations passées lisent `sessions` en lecture seule tant qu'il reste des `reservations` avec `session_id` non nul.
+1. Vue `client_credit_wallet` : par pack et par activité → achetées, consommées, recréditées, restantes (calcul automatique depuis `client_packages` + `package_credit_history`).
+2. Enrichir `package_credit_history` : colonnes `activity`, `daily_group_id`, `action` (booking / cancellation / recredit / report / group_cancel). Historique en append-only (aucune suppression, politique RLS lecture admin + lecture par code pack).
+3. RPC `get_wallet_by_code(p_code)` pour l'espace client et `admin_search_wallets(p_query)` pour l'admin.
 
-## Périmètre
+## Phase B — Report d'une réservation
 
-### 1. Edge Functions à migrer (écritures encore basées sur `sessions.time_slot`)
+- RPC `admin_reschedule_booking(p_kind, p_id, p_new_date, p_reason)` : transaction unique — vérifie la place dans le `daily_group` cible (crée le groupe si besoin via `find_or_create_daily_group`), déplace la réservation, ne touche ni au paiement Stripe ni aux crédits, écrit une ligne d'historique `report`, envoie l'email « réservation reportée ».
+- Bouton « Reporter » (sélecteur de date + motif) sur chaque participant dans `/admin/journees`.
 
-| Fichier | Action |
-|---|---|
-| `stripe-webhook/index.ts` | Retirer le fallback qui insère dans `sessions` avec `time_slot: 'morning'`. Router 100 % vers `book_daily_visitor` (déjà utilisé par `sync-stripe-reservations`). |
-| `sync-stripe-reservations/index.ts` | Nettoyer les commentaires « New model » et supprimer les branches mortes qui référencent encore `time_slot`. |
-| `notify-reservation/index.ts` | Remplacer le champ `time_slot` du payload par un champ `group_label` (ex : « Groupe Kitesurf ») ; l'horaire précis n'est plus exposé. |
-| `last-minute-notify/index.ts` | Lire les groupes du jour depuis `daily_groups` au lieu de `sessions`. La colonne `time_slot` disparaît du SELECT. |
-| `send-package-reminders/index.ts` | Lire les prochaines réservations via `package_bookings` joint à `daily_groups` (nouvelle colonne `group_id` — voir migration). |
-| `weekly-summary/index.ts` | Récupérer les groupes de la semaine depuis `daily_groups` + agrégation par activité. Retirer le tri par `time_slot`. |
+## Phase C — Annulation d'une journée entière
 
-### 2. Frontend à migrer
+- RPC `admin_cancel_day(p_date, p_reason)` : annule tous les groupes de la journée, recrédite chaque client pack, annule les réservations visiteurs, libère les places, journalise, envoie un email personnalisé par client. Idempotent (ne recrédite pas deux fois un même booking déjà annulé).
+- Bouton « Annuler cette journée » en tête de journée dans `/admin/journees`.
 
-| Fichier | Action |
-|---|---|
-| `src/pages/Reserver.tsx` | Cette page publique affiche encore une grille 3-créneaux/jour. La refondre en sélecteur date + activité (aligné sur `MonEspace.tsx`), en utilisant `get_daily_availability`. |
-| `src/components/admin/AdminOverview.tsx` | Remplacer la liste « sessions du jour » par la liste des `daily_groups` du jour (deux colonnes Kite/Wing). |
-| `src/components/admin/AdminReservationList.tsx` | Joindre `daily_groups` au lieu de `sessions`. Afficher la date + activité, sans créneau horaire. |
-| `src/components/admin/AdminRevenueDashboard.tsx` | Grouper le CA par `daily_groups.activity` + date. Fallback lecture `sessions` si `group_id` est null (données historiques). |
-| `src/components/admin/AdminSeasonStats.tsx` | Idem : agréger par `daily_groups` avec fallback historique. |
+## Phase D — Emails
 
-### 3. Base de données
+Trois templates cohérents avec l'identité (Navy/Orange, logo) :
+- séance recréditée (existant, à harmoniser)
+- réservation reportée (nouvelle date + rappel horaires)
+- journée annulée (motif + invitation à reprendre une date)
 
-Une migration unique :
+Tous rappellent : « Les horaires seront communiqués la veille par téléphone selon les conditions météorologiques. »
 
-- Ajouter `reservations.group_id UUID NULL REFERENCES public.daily_groups(id)` + index.
-- Ajouter `package_bookings.group_id UUID NULL REFERENCES public.daily_groups(id)` + index.
-- Mettre à jour les RPC `book_daily_visitor` et `book_daily_with_code` pour renseigner `group_id` en plus de `session_id` (double écriture pour la transition).
-- Backfill : `UPDATE reservations SET group_id = ...` en joignant `sessions` → `daily_groups` sur `(date, activity)` quand un seul groupe existe.
-- Aucune colonne supprimée (`session_id`, `time_slot`, `sessions.*` restent en place).
+## Phase E — Espace client
 
-### 4. Suppression de la page `/admin/creneaux`
+Dans `/mon-espace/:code` : bloc « Mes crédits disponibles » par activité (Kitesurf / Wingfoil / Pumpfoil…), avec achetées / consommées / recréditées / restantes, puis un historique chronologique des mouvements.
 
-Elle reste en mode audit lecture seule. **Non supprimée** dans cette phase — le user a demandé de valider d'abord la nouvelle architecture en production sur plusieurs jours de réservation.
+## Phase F — Tableau de bord admin
+
+Nouvel onglet d'indicateurs : crédits utilisés, recrédités, restants, annulations météo, reports, journées annulées — filtrable par période.
+
+## Phase G — Page « Gestion des crédits » (/admin/credits)
+
+Recherche client (nom, email, code pack), portefeuille détaillé, ajout/retrait de crédits avec motif obligatoire, historique complet, filtres activité et saison, export CSV (séparateur `;`, UTF-8 BOM).
+
+## Phase H — Liste d'attente
+
+1. Table `daily_waitlist` (date, activité, nom, email, téléphone, participants, statut, token, expiration) + RLS (insertion publique, lecture admin) + GRANTs.
+2. Bouton « Rejoindre la liste d'attente » sur `/reserver` quand la date+activité est complète.
+3. Trigger sur annulation/libération de place → email au premier de la liste avec un lien de confirmation valable 24 h ; la place est bloquée pour lui pendant ce délai, puis passe au suivant (Edge Function `waitlist-confirm` + job de relance horaire).
 
 ## Détails techniques
 
-- Les emails ne mentionnent plus « matin/après-midi ». Nouveau libellé : « Groupe Kitesurf du {date} — horaire confirmé la veille par SMS ».
-- `Reserver.tsx` : nouveau composant `<DailyGroupPicker>` réutilisable, partagé avec `MonEspace.tsx`.
-- Backfill : loguer le nombre de `reservations` non résolues (dates avec 2+ groupes même activité). Ces cas restent liés uniquement à `session_id` — les rapports historiques les lisent via `sessions` en fallback.
-- Tests : mettre à jour `_tests/concurrent-booking_test.ts` et `_tests/rbac-authorization_test.ts` pour cibler `daily_groups`.
+- Toutes les opérations passent par des RPC `SECURITY DEFINER` avec contrôle `has_role(auth.uid(),'admin')`, en transaction unique, avec clés d'idempotence.
+- Aucun appel Stripe : les paiements et l'historique de réservation restent intacts, seules les colonnes de statut et de crédits bougent.
+- GRANTs explicites sur chaque nouvelle table/vue, RLS activée.
+- Emails via la file existante (`enqueue_email` + `transactional_emails`).
+- Vérification TypeScript à chaque phase.
 
-## Séquencement (2 tours)
+## Ordre de livraison proposé
 
-```text
-Tour 1 — SQL + Edge Functions
-  ├── migration : group_id + backfill + RPCs mises à jour
-  └── refonte des 6 Edge Functions
-
-Tour 2 — Frontend
-  ├── Reserver.tsx (refonte publique)
-  └── 4 composants admin (Overview, ReservationList, Revenue, SeasonStats)
-```
-
-Typecheck + déploiement Edge Functions à chaque tour. Rapport final listant fichiers modifiés, colonnes ajoutées, lignes backfillées.
-
-## Hors périmètre
-
-- Suppression physique de `sessions.time_slot` / de la table `sessions` (phase 6, après export CSV et validation prod).
-- Suppression de `/admin/creneaux` (phase 6).
-- Refonte visuelle de `Reserver.tsx` au-delà du remplacement de la grille (design identique à `MonEspace.tsx`).
+A → B → C → D → E → F → G → H, avec validation de votre part après C (cœur métier) et après G.
