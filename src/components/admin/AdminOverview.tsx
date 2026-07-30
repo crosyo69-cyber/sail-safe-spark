@@ -54,9 +54,8 @@ interface GroupRow {
   date: string;
   activity: Activity;
   max_participants: number;
-  status: string;
-  notes: string | null;
   reservations: Reservation[];
+  status: string;
 }
 
 const AdminOverview = () => {
@@ -111,7 +110,7 @@ const AdminOverview = () => {
 
     const groupsQ = supabase
       .from("daily_groups")
-      .select(`id, date, activity, max_participants, status, notes, reservations(${resFields})`)
+      .select(`id, date, activity, max_participants, status, reservations(${resFields})`)
       .order("date", { ascending: true });
     if (!showPast) {
       groupsQ.gte("date", today);
@@ -126,7 +125,6 @@ const AdminOverview = () => {
       activity: g.activity as Activity,
       max_participants: g.max_participants,
       status: g.status,
-      notes: g.notes,
       reservations: g.reservations || [],
     }));
 
