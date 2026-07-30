@@ -70,6 +70,9 @@ const Admin = () => {
             <Button asChild variant="outline" size="sm">
               <Link to="/admin/credits"><Wallet className="w-4 h-4 mr-2" />Gestion des crédits</Link>
             </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/admin/crm"><Users className="w-4 h-4 mr-2" />CRM Client</Link>
+            </Button>
             <AdminNotificationsBell onOpenCenter={() => setActiveTab("alertes")} />
           </div>
         </div>
