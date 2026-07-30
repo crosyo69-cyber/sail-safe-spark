@@ -51,6 +51,31 @@ type HistoryRow = {
   created_at: string;
 };
 
+type Credit = {
+  id: string;
+  activity: string;
+  origin: string;
+  status: string;
+  reason: string | null;
+  created_at: string;
+  expires_at: string;
+  consumed_at: string | null;
+};
+
+const ORIGIN_BADGE: Record<string, { label: string; className: string }> = {
+  purchase: { label: "🟢 Achat", className: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400" },
+  weather_recredit: { label: "🔵 Recrédit météo", className: "bg-sky-500/15 text-sky-700 dark:text-sky-400" },
+  commercial: { label: "🟠 Geste commercial", className: "bg-orange-500/15 text-orange-700 dark:text-orange-400" },
+  reschedule: { label: "🟣 Report", className: "bg-purple-500/15 text-purple-700 dark:text-purple-400" },
+  admin: { label: "⚪ Ajustement", className: "bg-muted text-muted-foreground" },
+};
+
+const CREDIT_STATUS: Record<string, string> = {
+  available: "Disponible",
+  consumed: "Consommée",
+  expired: "🔴 Expirée",
+};
+
 const ACTIVITY_LABEL: Record<string, string> = {
   kitesurf: "Kitesurf",
   wingfoil: "Wingfoil",
