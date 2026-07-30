@@ -82,6 +82,9 @@ const MonEspace = () => {
   const [pkg, setPkg] = useState<PackageInfo | null>(null);
   const [history, setHistory] = useState<CreditHistoryEntry[]>([]);
   const [wallet, setWallet] = useState<WalletEntry[]>([]);
+  const [credits, setCredits] = useState<
+    { id: string; activity: string; origin: string; status: string; expires_at: string }[]
+  >([]);
   const [loading, setLoading] = useState(false);
   const [busyAction, setBusyAction] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
@@ -111,6 +114,7 @@ const MonEspace = () => {
     setHistory((data as unknown as CreditHistoryEntry[]) || []);
     const { data: w } = await supabase.rpc("get_wallet_by_code", { p_code: code });
     setWallet(((w as any)?.wallet as WalletEntry[]) || []);
+    setCredits(((w as any)?.credits as typeof credits) || []);
   };
 
   useEffect(() => {
