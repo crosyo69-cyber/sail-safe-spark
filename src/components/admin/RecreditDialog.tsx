@@ -14,9 +14,11 @@ import { Loader2, RotateCcw } from "lucide-react";
 export const RECREDIT_REASONS = [
   { value: "Pas de vent", label: "🌬️ Pas de vent" },
   { value: "Trop de vent", label: "💨 Trop de vent" },
-  { value: "Mauvaise météo", label: "⛈️ Mauvaise météo" },
-  { value: "Panne bateau", label: "🚤 Panne bateau" },
-  { value: "Annulation école", label: "👨‍🏫 Annulation école" },
+  { value: "Orage", label: "⛈️ Orage" },
+  { value: "Problème matériel", label: "🛠️ Problème matériel" },
+  { value: "Problème bateau", label: "🚤 Problème bateau" },
+  { value: "Décision de l'école", label: "👨‍🏫 Décision de l'école" },
+  { value: "Geste commercial", label: "🎁 Geste commercial" },
   { value: "Autre", label: "✍️ Autre" },
 ];
 
