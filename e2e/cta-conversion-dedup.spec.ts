@@ -1,4 +1,7 @@
-import { test, expect, type Page } from '@playwright/test';
+import { type Page } from '@playwright/test';
+// retry-filter = hook global (nettoyage des flags de dédup + consentement semé).
+import { test, expect } from './utils/retry-filter';
+import { installGtagRecorder, readGtagCalls, countAdsConversions } from './utils/conversion-readers';
 import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL, SUBMIT_BUTTON_TESTID, getSubmitButton } from './utils/submit-button';
 
 /**
@@ -19,35 +22,11 @@ import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL, SU
 const ADS_LABEL = 's2n0CL3puI4cEIW4u9AD';
 const ADS_ID = 'AW-974052357';
 
-type GtagCall = [string, string, Record<string, unknown>?];
-
 async function installInstrumentation(page: Page) {
-  // Pre-script init: define a counting gtag BEFORE the app loads.
-  await page.addInitScript(() => {
-    const calls: GtagCall[] = [];
-    (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls = calls;
-    (window as unknown as { dataLayer: unknown[] }).dataLayer = [];
-    // Replace gtag with a recorder. analytics.ts assigns its own gtag at init,
-    // so we re-wrap after a microtask to capture calls regardless of init order.
-    const recorder = (...args: unknown[]) => {
-      calls.push(args as GtagCall);
-    };
-    (window as unknown as { gtag: typeof recorder }).gtag = recorder;
-
-    // Re-install after the app's analytics.ts overwrites window.gtag during initGA4()
-    const reinstall = () => {
-      const original = (window as unknown as { gtag: (...a: unknown[]) => void }).gtag;
-      (window as unknown as { gtag: typeof recorder }).gtag = (...args: unknown[]) => {
-        calls.push(args as GtagCall);
-        try { original?.(...args); } catch { /* ignore */ }
-      };
-    };
-    // Wrap on next ticks to win the race against initGA4()
-    setTimeout(reinstall, 0);
-    setTimeout(reinstall, 100);
-    setTimeout(reinstall, 500);
-    setTimeout(reinstall, 1500);
-  });
+  // Recorder partagé (Object.defineProperty, idempotent). L'ancien recorder
+  // local ré-enveloppait window.gtag via une échelle de setTimeout : chaque
+  // ré-installation empilait un wrapper, donc UN fire était compté N fois.
+  await installGtagRecorder(page);
 
   // Stub the Supabase edge function call so we don't actually send an email
   // and the success branch fires immediately.
@@ -91,27 +70,21 @@ test.describe('CTA homepage — double-click conversion dedup', () => {
     await page.waitForTimeout(500);
 
     // Read recorded gtag calls
-    const calls = await page.evaluate(
-      () => (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls
-    );
+    const calls = await readGtagCalls(page);
 
     const formSubmits = calls.filter(
       (c) => c[0] === 'event' && c[1] === 'form_submit'
         && (c[2] as Record<string, unknown>)?.form_name === 'cta_reservation'
     );
-    const adsConversions = calls.filter(
-      (c) => c[0] === 'event' && c[1] === 'conversion'
-        && typeof (c[2] as Record<string, unknown>)?.send_to === 'string'
-        && ((c[2] as Record<string, unknown>).send_to as string) === `${ADS_ID}/${ADS_LABEL}`
-    );
+    const adsConversionCount = countAdsConversions(calls, `${ADS_ID}/${ADS_LABEL}`);
 
     console.log(
       `[Test] gtag calls captured: ${calls.length} | ` +
       `form_submit(cta_reservation): ${formSubmits.length} | ` +
-      `conversion(${ADS_LABEL}): ${adsConversions.length}`
+      `conversion(${ADS_LABEL}): ${adsConversionCount}`
     );
 
     expect(formSubmits.length, 'GA4 form_submit must fire exactly once').toBe(1);
-    expect(adsConversions.length, 'Google Ads conversion must fire exactly once').toBe(1);
+    expect(adsConversionCount, 'Google Ads conversion must fire exactly once').toBe(1);
   });
 });
