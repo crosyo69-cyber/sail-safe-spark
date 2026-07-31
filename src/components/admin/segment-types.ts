@@ -40,10 +40,10 @@ export const ACTIVITY_OPTIONS = [
 ];
 
 export const TOPIC_OPTIONS = [
-  { value: "meteo", label: "Alertes météo" },
-  { value: "promos", label: "Promotions" },
-  { value: "nouveautes", label: "Nouveautés" },
-  { value: "evenements", label: "Événements" },
+  { value: "weather", label: "Alertes météo" },
+  { value: "promotions", label: "Promotions" },
+  { value: "news", label: "Nouveautés" },
+  { value: "events", label: "Événements" },
 ];
 
 export const LEVEL_OPTIONS = [
