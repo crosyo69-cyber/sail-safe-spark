@@ -667,6 +667,45 @@ export type Database = {
         }
         Relationships: []
       }
+      marketing_preferences: {
+        Row: {
+          activities: string[]
+          consent: boolean
+          consent_at: string | null
+          consent_source: string | null
+          created_at: string
+          email: string
+          id: string
+          token: string
+          topics: string[]
+          updated_at: string
+        }
+        Insert: {
+          activities?: string[]
+          consent?: boolean
+          consent_at?: string | null
+          consent_source?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          token?: string
+          topics?: string[]
+          updated_at?: string
+        }
+        Update: {
+          activities?: string[]
+          consent?: boolean
+          consent_at?: string | null
+          consent_source?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          token?: string
+          topics?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       marketing_settings: {
         Row: {
           brevo_list_id: number | null
@@ -1513,6 +1552,10 @@ export type Database = {
           template_name: string
         }[]
       }
+      get_marketing_preferences: {
+        Args: { p_code?: string; p_token?: string }
+        Returns: Json
+      }
       get_package_by_code: { Args: { p_code: string }; Returns: Json }
       get_package_credits_history: { Args: { p_code: string }; Returns: Json }
       get_waitlist_offer: { Args: { p_token: string }; Returns: Json }
@@ -1591,6 +1634,10 @@ export type Database = {
           read_ct: number
         }[]
       }
+      resolve_marketing_email: {
+        Args: { p_code: string; p_token: string }
+        Returns: string
+      }
       restore_credit_fifo: {
         Args: { p_booking_id: string; p_package_id: string }
         Returns: string
@@ -1609,6 +1656,16 @@ export type Database = {
       run_dlq_purge_cycle: { Args: never; Returns: Json }
       run_dlq_retry_cycle: { Args: never; Returns: Json }
       run_waitlist_cycle: { Args: never; Returns: Json }
+      save_marketing_preferences: {
+        Args: {
+          p_activities?: string[]
+          p_code?: string
+          p_consent: boolean
+          p_token?: string
+          p_topics?: string[]
+        }
+        Returns: Json
+      }
       set_credit_reminders: {
         Args: {
           p_code: string

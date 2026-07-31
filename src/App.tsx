@@ -46,6 +46,7 @@ const ReservationConfirmee = lazyWithChunkRecovery(() => import("./pages/Reserva
 const Merci = lazyWithChunkRecovery(() => import("./pages/Merci"));
 const Admin = lazyWithChunkRecovery(() => import("./pages/Admin"));
 const MonEspace = lazyWithChunkRecovery(() => import("./pages/MonEspace"));
+const PreferencesMarketing = lazyWithChunkRecovery(() => import("./pages/PreferencesMarketing"));
 const Reserver = lazyWithChunkRecovery(() => import("./pages/Reserver"));
 const OAuthConsent = lazyWithChunkRecovery(() => import("./pages/OAuthConsent"));
 const AdminJournees = lazyWithChunkRecovery(() => import("./pages/AdminJournees"));
@@ -139,6 +140,8 @@ const App = () => {
                 <Route path="/liste-attente/:token" element={<WaitlistConfirm />} />
                 <Route path="/mon-espace" element={<MonEspace />} />
                 <Route path="/mon-espace/:code" element={<MonEspace />} />
+                <Route path="/preferences-marketing" element={<PreferencesMarketing />} />
+                <Route path="/preferences-marketing/:token" element={<PreferencesMarketing />} />
                 <Route path="/reserver" element={<Reserver />} />
                  <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
                 {/* Legacy "Dernière Minute" routes redirect to the unified booking calendar */}

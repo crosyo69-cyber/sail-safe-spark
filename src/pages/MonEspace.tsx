@@ -467,6 +467,18 @@ const MonEspace = () => {
                       avertissement.
                     </p>
                   )}
+                  <div className="rounded-md border p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <p className="text-sm text-muted-foreground">
+                      Gérez aussi les informations que vous souhaitez recevoir (activités, météo,
+                      promotions, événements).
+                    </p>
+                    <Link
+                      to={`/preferences-marketing?code=${encodeURIComponent(pkg?.package_code || codeInput)}`}
+                      className="inline-flex items-center justify-center min-h-[44px] px-4 rounded-md border text-sm font-medium hover:bg-muted"
+                    >
+                      Mes préférences marketing
+                    </Link>
+                  </div>
                 </CardContent>
               </Card>
             </section>
