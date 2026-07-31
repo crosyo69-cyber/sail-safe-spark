@@ -126,6 +126,26 @@ Deno.serve(async (req) => {
     }
 
     // --- Candidates --------------------------------------------------------
+    // --- Verify: read-back of TEST_VALIDATION contacts from Brevo ----------
+    if (body.action === "verify") {
+      const { data: testProfiles } = await admin
+        .from("crm_client_profiles")
+        .select("email")
+        .eq("is_test", true)
+        .eq("marketing_consent_source", "TEST_VALIDATION")
+        .order("email");
+      const results: Array<Record<string, unknown>> = [];
+      for (const p of testProfiles ?? []) {
+        const res = await brevo(apiKey, `/contacts/${encodeURIComponent(p.email)}`);
+        results.push(
+          res.ok
+            ? { email: p.email, found: true, attributes: JSON.parse(res.body).attributes }
+            : { email: p.email, found: false, status: res.status, error: res.body.slice(0, 200) },
+        );
+      }
+      return json({ action: "verify", count: results.length, results });
+    }
+
     const { data: clients, error: clientsError } = await admin.rpc("crm_client_base");
     if (clientsError) throw new Error(`crm_client_base: ${clientsError.message}`);
 
@@ -140,6 +160,8 @@ Deno.serve(async (req) => {
 
     const details: Array<Record<string, unknown>> = [];
     let skipped = 0;
+
+    const testOnly = body.test_only === true;
 
     let candidates = ((clients ?? []) as Client[]).filter((c) => {
       const email = (c.email ?? "").trim().toLowerCase();
@@ -156,6 +178,31 @@ Deno.serve(async (req) => {
       }
       return true;
     });
+
+    // --- Test-validation mode: only TEST_VALIDATION profiles ----------------
+    if (testOnly) {
+      skipped = 0;
+      details.length = 0;
+      const { data: testProfiles, error: testError } = await admin
+        .from("crm_client_profiles")
+        .select("email, first_name, last_name, phone, marketing_consent, test_activities, test_credits, test_first_date, test_last_date")
+        .eq("is_test", true)
+        .eq("marketing_consent_source", "TEST_VALIDATION")
+        .eq("marketing_consent", true)
+        .order("email");
+      if (testError) throw new Error(`profils de test: ${testError.message}`);
+      candidates = (testProfiles ?? []).map((p) => ({
+        email: p.email,
+        first_name: p.first_name,
+        last_name: p.last_name,
+        phone: p.phone,
+        first_date: p.test_first_date,
+        last_date: p.test_last_date,
+        credits_remaining: p.test_credits,
+        activities: p.test_activities,
+        marketing_consent: true,
+      })) as Client[];
+    }
 
     if (limit) candidates = candidates.slice(0, limit);
 

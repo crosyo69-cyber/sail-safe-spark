@@ -334,13 +334,19 @@ export type Database = {
           email: string
           first_name: string | null
           id: string
+          is_test: boolean
           last_name: string | null
           marketing_consent: boolean
           marketing_consent_at: string | null
+          marketing_consent_source: string | null
           observations: string | null
           phone: string | null
           recommended_gear: string | null
           tags: string[]
+          test_activities: string[] | null
+          test_credits: number | null
+          test_first_date: string | null
+          test_last_date: string | null
           updated_at: string
         }
         Insert: {
@@ -348,13 +354,19 @@ export type Database = {
           email: string
           first_name?: string | null
           id?: string
+          is_test?: boolean
           last_name?: string | null
           marketing_consent?: boolean
           marketing_consent_at?: string | null
+          marketing_consent_source?: string | null
           observations?: string | null
           phone?: string | null
           recommended_gear?: string | null
           tags?: string[]
+          test_activities?: string[] | null
+          test_credits?: number | null
+          test_first_date?: string | null
+          test_last_date?: string | null
           updated_at?: string
         }
         Update: {
@@ -362,13 +374,19 @@ export type Database = {
           email?: string
           first_name?: string | null
           id?: string
+          is_test?: boolean
           last_name?: string | null
           marketing_consent?: boolean
           marketing_consent_at?: string | null
+          marketing_consent_source?: string | null
           observations?: string | null
           phone?: string | null
           recommended_gear?: string | null
           tags?: string[]
+          test_activities?: string[] | null
+          test_credits?: number | null
+          test_first_date?: string | null
+          test_last_date?: string | null
           updated_at?: string
         }
         Relationships: []
