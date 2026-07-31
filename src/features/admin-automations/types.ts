@@ -1,4 +1,6 @@
-import type { SegmentDefinition } from "./segment-types";
+import { format, parseISO } from "date-fns";
+import { fr } from "date-fns/locale";
+import type { SegmentDefinition } from "@/components/admin/segment-types";
 
 export type AutomationTrigger =
   | "credit_expiring"
@@ -89,3 +91,16 @@ export const EMPTY_AUTOMATION: Omit<Automation, "id" | "created_at" | "updated_a
   dedupe_window_days: 30,
   max_recipients: 500,
 };
+
+export type SegmentRow = { id: string; name: string };
+
+export const STATUS_BADGE: Record<string, string> = {
+  success: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+  error: "bg-destructive/15 text-destructive",
+  skipped: "bg-muted text-muted-foreground",
+  running: "bg-sky-500/15 text-sky-700 dark:text-sky-400",
+};
+
+/** Formatage d'une date ISO pour l'affichage admin. */
+export const fmtDateTime = (d?: string | null) =>
+  d ? format(parseISO(d), "dd/MM/yyyy HH:mm", { locale: fr }) : "—";
