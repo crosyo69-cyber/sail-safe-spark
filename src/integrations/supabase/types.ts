@@ -1657,6 +1657,7 @@ export type Database = {
         Args: { p_id: string; p_kind: string; p_new_date: string }
         Returns: Json
       }
+      admin_platform_health: { Args: never; Returns: Json }
       admin_reactivate_credit: {
         Args: {
           p_credit_id: string
