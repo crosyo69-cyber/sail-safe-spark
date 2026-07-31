@@ -126,6 +126,26 @@ Deno.serve(async (req) => {
     }
 
     // --- Candidates --------------------------------------------------------
+    // --- Verify: read-back of TEST_VALIDATION contacts from Brevo ----------
+    if (body.action === "verify") {
+      const { data: testProfiles } = await admin
+        .from("crm_client_profiles")
+        .select("email")
+        .eq("is_test", true)
+        .eq("marketing_consent_source", "TEST_VALIDATION")
+        .order("email");
+      const results: Array<Record<string, unknown>> = [];
+      for (const p of testProfiles ?? []) {
+        const res = await brevo(apiKey, `/contacts/${encodeURIComponent(p.email)}`);
+        results.push(
+          res.ok
+            ? { email: p.email, found: true, attributes: JSON.parse(res.body).attributes }
+            : { email: p.email, found: false, status: res.status, error: res.body.slice(0, 200) },
+        );
+      }
+      return json({ action: "verify", count: results.length, results });
+    }
+
     const { data: clients, error: clientsError } = await admin.rpc("crm_client_base");
     if (clientsError) throw new Error(`crm_client_base: ${clientsError.message}`);
 
