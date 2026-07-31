@@ -1,5 +1,5 @@
 import { type Page } from '@playwright/test';
-import { test, expect } from './utils/retry-filter';
+import { test, expect } from './fixtures';
 
 /**
  * E2E: Google Ads conversion on /merci fires EXACTLY ONCE even when the user

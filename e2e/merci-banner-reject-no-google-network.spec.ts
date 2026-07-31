@@ -1,5 +1,5 @@
 import { type Page, type Request } from '@playwright/test';
-import { test, expect } from './utils/retry-filter';
+import { test, expect } from './fixtures';
 
 /**
  * E2E: when the visitor refuses analytics + marketing via the cookie banner
