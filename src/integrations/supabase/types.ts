@@ -1826,6 +1826,10 @@ export type Database = {
         }
         Returns: Json
       }
+      cron_invoke_edge_function: {
+        Args: { p_body?: Json; p_function_name: string }
+        Returns: number
+      }
       default_max_participants: {
         Args: { _activity: Database["public"]["Enums"]["activity_type"] }
         Returns: number
@@ -2094,6 +2098,13 @@ export type Database = {
         Args: {
           p_activity: Database["public"]["Enums"]["activity_type"]
           p_date: string
+        }
+        Returns: Json
+      }
+      purge_cron_run_details: {
+        Args: {
+          p_error_retention_days?: number
+          p_success_retention_days?: number
         }
         Returns: Json
       }
