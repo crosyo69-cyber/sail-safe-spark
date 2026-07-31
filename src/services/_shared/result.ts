@@ -25,9 +25,9 @@ export const attempt = async <T,>(fn: () => Promise<T>): Promise<Result<T>> => {
  * Keeps the current UX: hooks surface the same messages as before.
  */
 export const unwrap = <T,>(r: Result<T>): T => {
-  if (r.ok) return r.data;
-  throw r.error;
+  if (r.ok) return (r as Ok<T>).data;
+  throw (r as Err).error;
 };
 
 export const mapResult = <T, U>(r: Result<T>, fn: (v: T) => U): Result<U> =>
-  r.ok ? ok(fn(r.data)) : r;
+  r.ok ? ok(fn((r as Ok<T>).data)) : (r as Err);
