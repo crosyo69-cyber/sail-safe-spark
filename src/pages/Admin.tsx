@@ -19,8 +19,9 @@ import AdminConversionFunnel from "@/components/admin/AdminConversionFunnel";
 import AdminRichResultsValidator from "@/components/admin/AdminRichResultsValidator";
 import AdminAlertsCenter from "@/components/admin/AdminAlertsCenter";
 import AdminNotificationsBell from "@/components/admin/AdminNotificationsBell";
+import AdminPlatformHealth from "@/components/admin/AdminPlatformHealth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell, Wallet, Megaphone, Settings, Bot } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell, Wallet, Megaphone, Settings, Bot, Activity } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -144,6 +145,10 @@ const Admin = () => {
               <Bell className="w-4 h-4" />
               <span className="hidden sm:inline">Alertes</span>
             </TabsTrigger>
+            <TabsTrigger value="sante" className="gap-2">
+              <Activity className="w-4 h-4" />
+              <span className="hidden sm:inline">Santé</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
@@ -200,6 +205,10 @@ const Admin = () => {
 
           <TabsContent value="alertes">
             <AdminAlertsCenter />
+          </TabsContent>
+
+          <TabsContent value="sante">
+            <AdminPlatformHealth />
           </TabsContent>
         </Tabs>
       </main>
