@@ -79,6 +79,18 @@ Deno.serve(async (req) => {
     if (token === serviceKey) {
       userEmail = "service-role";
     } else {
+      // Accept any valid service-role key (legacy or rotated) by probing an admin-only endpoint.
+      let isServiceRole = false;
+      try {
+        const probeClient = createClient(supabaseUrl, token);
+        const { error: probeError } = await probeClient.auth.admin.listUsers({ page: 1, perPage: 1 });
+        isServiceRole = !probeError;
+      } catch (_) {
+        isServiceRole = false;
+      }
+      if (isServiceRole) {
+        userEmail = "service-role";
+      } else {
       const authClient = createClient(supabaseUrl, anonKey);
       const { data: claimsData, error: claimsError } = await authClient.auth.getClaims(token);
       if (claimsError || !claimsData?.claims?.sub) return json({ error: "Unauthorized" }, 401);
@@ -91,6 +103,7 @@ Deno.serve(async (req) => {
         _role: "admin",
       });
       if (roleError || !isAdmin) return json({ error: "Forbidden" }, 403);
+      }
     }
 
     const apiKey = Deno.env.get("BREVO_API_KEY");
