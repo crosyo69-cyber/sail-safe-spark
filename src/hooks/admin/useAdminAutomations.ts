@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useMarketing } from "@/hooks/services/useMarketing";
 import type { AutomationDraft } from "@/services/marketing.service";
@@ -33,10 +33,10 @@ export const useAdminAutomations = (enabled: boolean) => {
   const saving = saveMutation.isPending;
 
   const loadError = automationsQuery.error;
-  if (loadError && !automationsQuery.isFetching) {
+  useEffect(() => {
     // Même message qu'avant la migration.
-    toast.error("Chargement impossible", { description: msg(loadError) });
-  }
+    if (loadError) toast.error("Chargement impossible", { description: msg(loadError) });
+  }, [loadError]);
 
   const upcoming = useMemo(
     () => automations.filter((a) => a.active)
