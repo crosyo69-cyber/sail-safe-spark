@@ -1,5 +1,5 @@
 import { type Page, type Request } from '@playwright/test';
-import { test, expect } from './utils/retry-filter';
+import { test, expect } from './fixtures';
 import { skipDedupAutoReset } from './utils/dedup-storage';
 
 /**

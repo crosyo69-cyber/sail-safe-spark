@@ -3,7 +3,7 @@ import { type Page } from '@playwright/test';
 // hook global qui nettoie les flags de dédup ET sème le consentement marketing.
 // Sans lui, la conversion Ads/Meta reste différée par le gate de consentement
 // et les mirrors `conversion_fired_*` ne sont jamais armés.
-import { test, expect } from './utils/retry-filter';
+import { test, expect } from './fixtures';
 import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL, SUBMIT_BUTTON_TESTID, getSubmitButton } from './utils/submit-button';
 import { installFbqMarkerStub } from './utils/fbq-markers';
 import {

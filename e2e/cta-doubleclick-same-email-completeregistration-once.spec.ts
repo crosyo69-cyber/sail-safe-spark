@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test';
+import { type Page } from '@playwright/test';
+import { test, expect } from './fixtures';
 import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL, SUBMIT_BUTTON_TESTID, getSubmitButton } from './utils/submit-button';
 import {
   waitForFbqMarkerCount,

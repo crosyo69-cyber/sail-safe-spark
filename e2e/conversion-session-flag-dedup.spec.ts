@@ -1,6 +1,6 @@
 import { type Page } from '@playwright/test';
 // retry-filter : hook global (nettoyage flags dédup + consentement marketing).
-import { test, expect } from './utils/retry-filter';
+import { test, expect } from './fixtures';
 import { installGtagRecorder, readGtagCalls } from './utils/conversion-readers';
 import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL, SUBMIT_BUTTON_TESTID, getSubmitButton } from './utils/submit-button';
 

@@ -1,5 +1,5 @@
 import { type Page } from '@playwright/test';
-import { test, expect } from './utils/retry-filter';
+import { test, expect } from './fixtures';
 
 /**
  * E2E QA: simule l'acceptation / refus du consentement marketing sur /merci
