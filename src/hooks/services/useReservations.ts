@@ -52,5 +52,55 @@ export const useReservations = () => {
         mutationFn: async (args: Record<string, unknown>) =>
           unwrap(await reservationService.joinWaitlist(args)),
       }),
+
+    /** Admin — daily groups management. */
+    useUpdateDailyGroup: () =>
+      useMutation({
+        mutationFn: async (args: Record<string, unknown>) =>
+          unwrap(await reservationService.updateDailyGroup(args)),
+        onSuccess: invalidate,
+      }),
+
+    useCancelDailyGroup: () =>
+      useMutation({
+        mutationFn: async (args: Record<string, unknown>) =>
+          unwrap(await reservationService.cancelDailyGroup(args)),
+        onSuccess: invalidate,
+      }),
+
+    useCancelGroupAndRecredit: () =>
+      useMutation({
+        mutationFn: async (args: Record<string, unknown>) =>
+          unwrap(await reservationService.cancelGroupAndRecredit(args)),
+        onSuccess: invalidate,
+      }),
+
+    useCancelAndRecredit: () =>
+      useMutation({
+        mutationFn: async (args: Record<string, unknown>) =>
+          unwrap(await reservationService.cancelAndRecredit(args)),
+        onSuccess: invalidate,
+      }),
+
+    useCancelDay: () =>
+      useMutation({
+        mutationFn: async (args: Record<string, unknown>) =>
+          unwrap(await reservationService.cancelDay(args)),
+        onSuccess: invalidate,
+      }),
+
+    useRemoveGroupMember: () =>
+      useMutation({
+        mutationFn: async (args: Record<string, unknown>) =>
+          unwrap(await reservationService.removeGroupMember(args)),
+        onSuccess: invalidate,
+      }),
+
+    useRescheduleBooking: () =>
+      useMutation({
+        mutationFn: async (args: Record<string, unknown>) =>
+          unwrap(await reservationService.rescheduleBooking(args)),
+        onSuccess: invalidate,
+      }),
   };
 };
