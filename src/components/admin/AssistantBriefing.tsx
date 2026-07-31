@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { eur, ACTIVITY_LABEL } from "@/components/admin/crm-types";
 import type { Briefing, BriefingOpportunity, BriefingSeverity } from "@/components/admin/briefing-types";
+import { ACTION_META, PRIORITY_META, opportunityAction } from "@/components/admin/action-types";
 import {
   AlertTriangle, ArrowDownRight, ArrowUpRight, CalendarDays, CheckCircle2, CloudSun,
   Lightbulb, Megaphone, RefreshCw, TrendingUp, Users, Wallet,
