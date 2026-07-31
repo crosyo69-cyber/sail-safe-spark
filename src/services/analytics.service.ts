@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- transport layer bridges untyped Supabase generics */
 import { createApiClient } from "./_shared/api";
 
 const api = createApiClient({ scope: "analytics" });

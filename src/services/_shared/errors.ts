@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- transport layer bridges untyped Supabase generics */
 /**
  * Typed error taxonomy shared by every service.
  * Purely additive: no runtime behaviour of the app changes.

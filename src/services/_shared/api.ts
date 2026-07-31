@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- transport layer bridges untyped Supabase generics */
 import { supabase } from "@/integrations/supabase/client";
 import { ServiceError, toServiceError } from "./errors";
 import { attempt, type Err, type Result } from "./result";
@@ -75,7 +76,6 @@ export const createApiClient = (options: ApiClientOptions): ApiClient => {
 
   const log = (event: string, payload: Record<string, unknown>) => {
     if (!debug) return;
-    // eslint-disable-next-line no-console
     console.debug(`[api:${cfg.scope}] ${event}`, payload);
   };
 
