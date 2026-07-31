@@ -1615,6 +1615,7 @@ export type Database = {
           department: string
           distance_km: number
           email: string
+          first_date: string
           first_name: string
           last_date: string
           last_name: string
