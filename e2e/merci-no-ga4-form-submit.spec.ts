@@ -1,4 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
+import { installGtagRecorder, readGtagCalls } from './utils/conversion-readers';
+import { clearDedupStorage } from './utils/dedup-storage';
 
 /**
  * E2E: verify that loading /merci does NOT re-fire the GA4 `form_submit`
@@ -26,35 +28,15 @@ const GA4_FORM_DEDUP_KEY = '__ga4_form_submit_cta_reservation';
 
 type GtagCall = [string, string, Record<string, unknown>?];
 
-async function installGtagRecorder(page: Page) {
-  await page.addInitScript(() => {
-    const calls: GtagCall[] = [];
-    (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls = calls;
-    (window as unknown as { dataLayer: unknown[] }).dataLayer = [];
-
-    const recorder = (...args: unknown[]) => {
-      calls.push(args as GtagCall);
-    };
-    (window as unknown as { gtag: typeof recorder }).gtag = recorder;
-
-    const reinstall = () => {
-      const original = (window as unknown as { gtag: (...a: unknown[]) => void }).gtag;
-      (window as unknown as { gtag: typeof recorder }).gtag = (...args: unknown[]) => {
-        calls.push(args as GtagCall);
-        try { original?.(...args); } catch { /* ignore */ }
-      };
-    };
-    setTimeout(reinstall, 0);
-    setTimeout(reinstall, 100);
-    setTimeout(reinstall, 500);
-    setTimeout(reinstall, 1500);
-  });
-}
-
+/**
+ * Root cause of the historical "3x form_submit" failure: the previous inline
+ * recorder re-wrapped `window.gtag` on a setTimeout ladder, so ONE real gtag
+ * call was pushed once per wrapper layer. We now use the shared idempotent
+ * recorder (Object.defineProperty + __isGtagRecorder guard) which records
+ * exactly once per fire.
+ */
 async function getFormSubmitCount(page: Page, formName: string): Promise<number> {
-  const calls = await page.evaluate(
-    () => (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls
-  );
+  const calls = (await readGtagCalls(page)) as GtagCall[];
   return calls.filter(
     (c) => c[0] === 'event' && c[1] === 'form_submit'
       && (c[2] as Record<string, unknown>)?.form_name === formName
@@ -68,6 +50,7 @@ test.describe('/merci page — GA4 form_submit must NOT re-fire', () => {
     // Same-origin context first, then seed BOTH dedup keys to simulate a
     // submission that just happened in CTASection 1 second ago.
     await page.goto('/');
+    await clearDedupStorage(page);
     await page.evaluate(({ adsKey, ga4Key }) => {
       const now = String(Date.now() - 1_000);
       sessionStorage.setItem(adsKey, now);
@@ -77,6 +60,7 @@ test.describe('/merci page — GA4 form_submit must NOT re-fire', () => {
     // Reset capture so we count only what /merci emits.
     await page.evaluate(() => {
       (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls.length = 0;
+      try { sessionStorage.removeItem('__gtagCallsStash'); } catch { /* ignore */ }
     });
 
     await page.goto('/merci');
@@ -95,6 +79,7 @@ test.describe('/merci page — GA4 form_submit must NOT re-fire', () => {
     await installGtagRecorder(page);
 
     await page.goto('/');
+    await clearDedupStorage(page);
     await page.evaluate(({ adsKey, ga4Key }) => {
       sessionStorage.removeItem(adsKey);
       sessionStorage.removeItem(ga4Key);
@@ -102,6 +87,7 @@ test.describe('/merci page — GA4 form_submit must NOT re-fire', () => {
 
     await page.evaluate(() => {
       (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls.length = 0;
+      try { sessionStorage.removeItem('__gtagCallsStash'); } catch { /* ignore */ }
     });
 
     await page.goto('/merci');

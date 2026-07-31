@@ -87,21 +87,37 @@ export async function installGtagRecorder(page: Page): Promise<void> {
         (v as unknown as { __isGtagRecorder?: boolean }).__isGtagRecorder === true;
 
       let current: unknown = wrap((window as unknown as { gtag?: unknown }).gtag);
-      try {
-        Object.defineProperty(window, 'gtag', {
-          configurable: true,
-          get() {
-            return current;
-          },
-          set(v: unknown) {
-            current = isWrapped(v) ? v : wrap(v);
-          },
-        });
-      } catch {
-        // If a previous defineProperty already locked the slot, fall back to
-        // a plain assignment + re-pin loop.
-        (window as unknown as { gtag: unknown }).gtag = current;
-      }
+      const pin = () => {
+        // A classic `function gtag(){}` declaration in index.html creates the
+        // global binding with DefineOwnProperty, which REPLACES our accessor
+        // instead of calling its setter. So we re-pin the accessor a few
+        // times. `wrap()` always wraps the RAW function (never a wrapper),
+        // and `isWrapped` short-circuits, so a call is recorded EXACTLY once
+        // no matter how many times we re-pin.
+        const existing = (window as unknown as { gtag?: unknown }).gtag;
+        if (isWrapped(existing)) {
+          current = existing;
+          return;
+        }
+        if (typeof existing === 'function') current = wrap(existing);
+        try {
+          Object.defineProperty(window, 'gtag', {
+            configurable: true,
+            get() {
+              return current;
+            },
+            set(v: unknown) {
+              current = isWrapped(v) ? v : wrap(v);
+            },
+          });
+        } catch {
+          (window as unknown as { gtag: unknown }).gtag = current;
+        }
+      };
+      pin();
+      [0, 30, 100, 300, 800, 1500, 3000].forEach((t) => setTimeout(pin, t));
+      document.addEventListener('DOMContentLoaded', pin);
+      window.addEventListener('load', pin);
     },
     { stashKey: GTAG_STASH_KEY }
   );

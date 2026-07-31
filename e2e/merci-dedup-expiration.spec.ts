@@ -3,6 +3,7 @@ import {
   installGtagRecorder,
   waitForAdsConversionCount,
 } from './utils/conversion-readers';
+import { clearDedupStorage } from './utils/dedup-storage';
 
 /**
  * E2E: verify that the 10s dedup window for Google Ads conversions DOES expire,
@@ -28,6 +29,10 @@ test.describe('/merci page — 10s dedup window expiration', () => {
 
     // Seed both dedup stores with a timestamp 11 seconds ago (>10s window).
     await page.goto('/');
+    // Marketing consent is REQUIRED: trackGoogleAdsConversion defers the fire
+    // until consent exists. Without this seed the test measured the consent
+    // gate, not the 10s dedup window.
+    await clearDedupStorage(page);
     await page.evaluate(({ key, mirrorKey }) => {
       const stale = String(Date.now() - 11_000);
       sessionStorage.setItem(key, stale);
@@ -48,6 +53,10 @@ test.describe('/merci page — 10s dedup window expiration', () => {
 
     // At exactly 10s: Date.now() - last >= 10_000 is true (dedup window closed).
     await page.goto('/');
+    // Marketing consent is REQUIRED: trackGoogleAdsConversion defers the fire
+    // until consent exists. Without this seed the test measured the consent
+    // gate, not the 10s dedup window.
+    await clearDedupStorage(page);
     await page.evaluate(({ key, mirrorKey }) => {
       const boundary = String(Date.now() - 10_000);
       sessionStorage.setItem(key, boundary);

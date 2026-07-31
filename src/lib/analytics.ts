@@ -5,7 +5,7 @@ import {
   markSessionConversionFired,
   shouldFireWithinWindow,
 } from './conversion-dedup';
-import { hasMarketingConsent, onMarketingConsent } from './consent';
+import { hasAnalyticsConsent, hasMarketingConsent, onMarketingConsent } from './consent';
 import { logAnalyticsEvent } from './event-logger';
 
 declare global {
@@ -96,6 +96,20 @@ export function initGA4(): void {
 
   // Defer script loading to avoid React DOM conflicts
   const loadGAScript = () => {
+    // RGPD: never fetch gtag.js before analytics or marketing consent.
+    // Consent Mode v2 would otherwise emit cookieless pings to Google.
+    if (!hasAnalyticsConsent() && !hasMarketingConsent()) {
+      isInitialized = false;
+      // Retry once the visitor accepts analytics or marketing cookies.
+      const onUpdate = () => {
+        if (hasAnalyticsConsent() || hasMarketingConsent()) {
+          window.removeEventListener('ksp:consent-updated', onUpdate);
+          loadGAScript();
+        }
+      };
+      window.addEventListener('ksp:consent-updated', onUpdate);
+      return;
+    }
     const trackingId = GA_MEASUREMENT_ID || GOOGLE_ADS_ID;
     if (document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${trackingId}"]`)) {
       isInitialized = true;
