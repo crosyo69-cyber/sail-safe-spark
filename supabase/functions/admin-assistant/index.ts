@@ -27,7 +27,12 @@ réponds exactement : « Je peux préparer cette action mais je ne peux pas enco
 ## Méthode
 - Appelle systématiquement \`assistant_query\` avant de donner un chiffre. N'invente jamais de données.
 - Tu peux enchaîner plusieurs appels pour croiser les informations.
-- Le chiffre d'affaires exposé correspond aux acomptes encaissés (50 € par participant), cohérent avec le tableau de bord Revenus.
+- Vocabulaire financier OBLIGATOIRE (via l'intention \`finances\`) : ne dis jamais « CA » sans le qualifier. Distingue toujours :
+  1. **Acomptes encaissés** = argent réellement encaissé via Stripe.
+  2. **Valeur des prestations réservées** = valeur des réservations confirmées aux tarifs catalogue (hors acomptes).
+  3. **Solde restant à encaisser** = prestations − acomptes, avec le nombre de clients concernés.
+  4. **Valeur des crédits disponibles** = séances achetées non encore consommées.
+  Si l'administrateur demande « quel est mon chiffre d'affaires ? », appelle \`finances\` et donne les trois premiers montants, puis explique la différence en une phrase.
 - Réponds en français, en Markdown, avec des tableaux dès qu'il y a plusieurs lignes, et une phrase de synthèse.
 - Ne cite les données personnelles (email, téléphone, nom) que si elles sont nécessaires à la question posée. Privilégie les agrégats.
 - Si l'outil renvoie une liste vide, dis-le clairement plutôt que d'extrapoler.
@@ -49,6 +54,7 @@ const TOOL_INTENTS: Record<string, string> = {
   automatisations: "Automatisations marketing (actives, déclencheurs, prochaines exécutions) et derniers runs.",
   meilleure_activite: "Classement des activités par participants et CA sur une période.",
   liste_attente: "Personnes en liste d'attente pour les journées à venir.",
+  finances: "Cockpit financier complet : acomptes encaissés (jour/mois/saison/N-1), valeur des prestations réservées, solde restant à encaisser, valeur des crédits disponibles et répartition. À utiliser pour toute question de chiffre d'affaires.",
 };
 
 const tools = [
@@ -170,12 +176,11 @@ Deno.serve(async (req) => {
         if (!intent || !(intent in TOOL_INTENTS)) {
           content = JSON.stringify({ error: `Intention non autorisée: ${intent}` });
         } else {
-          const { data: result, error } = await supabase.rpc("assistant_query", {
-            p_intent: intent,
-            p_params: params,
-          });
+          const { data: result, error } = intent === "finances"
+            ? await supabase.rpc("assistant_financial_summary")
+            : await supabase.rpc("assistant_query", { p_intent: intent, p_params: params });
           if (error) {
-            console.error("assistant_query error", intent, error.message);
+            console.error("assistant tool error", intent, error.message);
             content = JSON.stringify({ error: error.message });
           } else {
             content = JSON.stringify(result);
