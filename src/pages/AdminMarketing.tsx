@@ -52,6 +52,7 @@ const AdminMarketing = () => {
   const { isAdmin, isLoading } = useAdmin();
   const [listId, setListId] = useState("");
   const [mode, setMode] = useState("test");
+  const [limit, setLimit] = useState("");
   const [lastSync, setLastSync] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [syncing, setSyncing] = useState(false);
@@ -91,7 +92,11 @@ const AdminMarketing = () => {
     setSyncing(true);
     setReport(null);
     const { data, error } = await supabase.functions.invoke("sync-brevo-contacts", {
-      body: { mode, listId: listId.trim() === "" ? null : Number(listId) },
+      body: {
+        mode,
+        listId: listId.trim() === "" ? null : Number(listId),
+        limit: limit.trim() === "" ? null : Number(limit),
+      },
     });
     setSyncing(false);
     if (error) {
@@ -170,6 +175,13 @@ const AdminMarketing = () => {
                     <SelectItem value="production">Production (écriture réelle dans Brevo)</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="limit">Limiter le nombre de contacts (optionnel)</Label>
+                <Input
+                  id="limit" inputMode="numeric" placeholder="ex : 5"
+                  value={limit} onChange={(e) => setLimit(e.target.value.replace(/\D/g, ""))}
+                />
               </div>
             </div>
 
