@@ -160,7 +160,7 @@ Deno.serve(async (req) => {
       let brevoDeleted = 0, brevoMissing = 0, brevoErrors = 0;
 
       for (const p of testProfiles ?? []) {
-        const res = await brevo(apiKey, `/contacts/${encodeURIComponent(p.email)}`, "DELETE");
+        const res = await brevo(apiKey, `/contacts/${encodeURIComponent(p.email)}`, { method: "DELETE" });
         if (res.ok || res.status === 204) {
           brevoDeleted++;
           results.push({ email: p.email, brevo: "supprimé" });
