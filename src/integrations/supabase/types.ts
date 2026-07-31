@@ -330,6 +330,7 @@ export type Database = {
       }
       crm_client_profiles: {
         Row: {
+          birth_date: string | null
           city: string | null
           country: string | null
           created_at: string
@@ -355,6 +356,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          birth_date?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
@@ -380,6 +382,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          birth_date?: string | null
           city?: string | null
           country?: string | null
           created_at?: string
@@ -618,6 +621,200 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      marketing_automation_runs: {
+        Row: {
+          automation_id: string
+          campaign_id: string | null
+          created_at: string
+          error: string | null
+          finished_at: string | null
+          id: string
+          mode: string
+          recipients_count: number
+          result: Json
+          skipped_count: number
+          started_at: string
+          status: string
+          triggered_by: string | null
+          updated_at: string
+        }
+        Insert: {
+          automation_id: string
+          campaign_id?: string | null
+          created_at?: string
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          mode?: string
+          recipients_count?: number
+          result?: Json
+          skipped_count?: number
+          started_at?: string
+          status?: string
+          triggered_by?: string | null
+          updated_at?: string
+        }
+        Update: {
+          automation_id?: string
+          campaign_id?: string | null
+          created_at?: string
+          error?: string | null
+          finished_at?: string | null
+          id?: string
+          mode?: string
+          recipients_count?: number
+          result?: Json
+          skipped_count?: number
+          started_at?: string
+          status?: string
+          triggered_by?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketing_automation_runs_automation_id_fkey"
+            columns: ["automation_id"]
+            isOneToOne: false
+            referencedRelation: "marketing_automations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketing_automation_runs_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "marketing_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketing_automation_sends: {
+        Row: {
+          automation_id: string
+          created_at: string
+          dedupe_key: string
+          email: string
+          id: string
+          run_id: string | null
+          sent_at: string
+        }
+        Insert: {
+          automation_id: string
+          created_at?: string
+          dedupe_key?: string
+          email: string
+          id?: string
+          run_id?: string | null
+          sent_at?: string
+        }
+        Update: {
+          automation_id?: string
+          created_at?: string
+          dedupe_key?: string
+          email?: string
+          id?: string
+          run_id?: string | null
+          sent_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketing_automation_sends_automation_id_fkey"
+            columns: ["automation_id"]
+            isOneToOne: false
+            referencedRelation: "marketing_automations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "marketing_automation_sends_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "marketing_automation_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketing_automations: {
+        Row: {
+          active: boolean
+          created_at: string
+          created_by_email: string | null
+          dedupe_window_days: number
+          delay_days: number
+          description: string | null
+          email_cta_label: string | null
+          email_cta_url: string | null
+          email_html: string
+          email_subject: string
+          id: string
+          last_run_at: string | null
+          max_recipients: number
+          name: string
+          next_run_at: string
+          priority: number
+          required_topic: string | null
+          segment_definition: Json
+          segment_id: string | null
+          trigger_config: Json
+          trigger_type: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          created_by_email?: string | null
+          dedupe_window_days?: number
+          delay_days?: number
+          description?: string | null
+          email_cta_label?: string | null
+          email_cta_url?: string | null
+          email_html?: string
+          email_subject?: string
+          id?: string
+          last_run_at?: string | null
+          max_recipients?: number
+          name: string
+          next_run_at?: string
+          priority?: number
+          required_topic?: string | null
+          segment_definition?: Json
+          segment_id?: string | null
+          trigger_config?: Json
+          trigger_type: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          created_by_email?: string | null
+          dedupe_window_days?: number
+          delay_days?: number
+          description?: string | null
+          email_cta_label?: string | null
+          email_cta_url?: string | null
+          email_html?: string
+          email_subject?: string
+          id?: string
+          last_run_at?: string | null
+          max_recipients?: number
+          name?: string
+          next_run_at?: string
+          priority?: number
+          required_topic?: string | null
+          segment_definition?: Json
+          segment_id?: string | null
+          trigger_config?: Json
+          trigger_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketing_automations_segment_id_fkey"
+            columns: ["segment_id"]
+            isOneToOne: false
+            referencedRelation: "marketing_segments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       marketing_campaigns: {
         Row: {
@@ -1661,6 +1858,53 @@ export type Database = {
           p_reason?: string
         }
         Returns: undefined
+      }
+      marketing_automation_candidates: {
+        Args: { p_automation_id: string; p_limit?: number }
+        Returns: {
+          context: Json
+          dedupe_key: string
+          email: string
+          first_name: string
+          last_name: string
+        }[]
+      }
+      marketing_automation_schedule_next: {
+        Args: { p_automation_id: string }
+        Returns: string
+      }
+      marketing_automations_due: {
+        Args: never
+        Returns: {
+          active: boolean
+          created_at: string
+          created_by_email: string | null
+          dedupe_window_days: number
+          delay_days: number
+          description: string | null
+          email_cta_label: string | null
+          email_cta_url: string | null
+          email_html: string
+          email_subject: string
+          id: string
+          last_run_at: string | null
+          max_recipients: number
+          name: string
+          next_run_at: string
+          priority: number
+          required_topic: string | null
+          segment_definition: Json
+          segment_id: string | null
+          trigger_config: Json
+          trigger_type: string
+          updated_at: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "marketing_automations"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       marketing_estimate_audience: {
         Args: { p_audience: Json }
