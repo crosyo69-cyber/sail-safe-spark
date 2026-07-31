@@ -1,5 +1,6 @@
 import { type Page, type Request } from '@playwright/test';
 import { test, expect } from './utils/retry-filter';
+import { skipDedupAutoReset } from './utils/dedup-storage';
 
 /**
  * E2E: when the visitor rejects BOTH analytics and marketing on /merci,
@@ -31,9 +32,19 @@ async function rejectAllNonEssential(page: Page) {
 }
 
 test.describe('/merci — no Google Ads / GTM network calls when analytics+marketing refused', () => {
-  test('no requests reach Google Ads/GTM endpoints with reject-all consent', async ({ page }) => {
+  test('no requests reach Google Ads/GTM endpoints with reject-all consent', async ({ page }, testInfo) => {
+    // The global dedup auto-reset SEEDS full marketing consent (so conversion
+    // specs are not blocked by the consent gate). That is exactly what this
+    // spec must NOT have: with consent granted, gtag.js loads on '/' and the
+    // later rejection cannot un-send its remarketing ping. Opt out.
+    skipDedupAutoReset(testInfo, 'consent-refusal spec must start without consent');
+
     // 1. Set reject-all consent BEFORE navigating to /merci.
     await page.goto('/');
+    await page.evaluate(() => {
+      localStorage.removeItem('cookie-consent');
+      localStorage.removeItem('cookie-preferences');
+    });
     await rejectAllNonEssential(page);
 
     // 2. Start network capture only after consent is persisted, so we don't

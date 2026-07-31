@@ -42,7 +42,7 @@ test.describe('/merci — banner "Tout refuser" blocks all Google measurement hi
     await page.reload();
 
     // 2. Wait for the banner (1.5s delay in CookieConsent.tsx) and click "Tout refuser".
-    const rejectBtn = page.getByRole('button', { name: /tout refuser/i });
+    const rejectBtn = page.getByRole('button', { name: /refuser les cookies non essentiels/i });
     await expect(rejectBtn).toBeVisible({ timeout: 5000 });
     await rejectBtn.click();
     await expect(rejectBtn).toBeHidden();

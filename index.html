@@ -108,7 +108,6 @@
     <!-- End Google Tag Manager -->
 
     <!-- Google tag (gtag.js) — canonical Ads tag for Tag Assistant -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-974052357"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -124,6 +123,41 @@
       });
       gtag('js', new Date());
       gtag('config', 'AW-974052357');
+    </script>
+    <script>
+      /**
+       * Consent-gated loader for gtag.js.
+       * Consent Mode v2 alone still emits cookieless pings to
+       * pagead2.googlesyndication.com / googletagmanager.com. To guarantee
+       * ZERO Google network traffic before the visitor opts in, the tag
+       * script itself is only injected once analytics OR marketing consent
+       * is stored. Queued gtag() calls stay in dataLayer and replay on load.
+       */
+      (function () {
+        var loaded = false;
+        function hasConsent() {
+          try {
+            var raw = localStorage.getItem('cookie-preferences');
+            if (!raw) return false;
+            var p = JSON.parse(raw);
+            return p && (p.analytics === true || p.marketing === true);
+          } catch (e) { return false; }
+        }
+        function loadGtag() {
+          if (loaded || !hasConsent()) return;
+          loaded = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=AW-974052357';
+          document.head.appendChild(s);
+        }
+        window.__kspLoadGtag = loadGtag;
+        window.addEventListener('ksp:consent-updated', loadGtag);
+        window.addEventListener('storage', function (e) {
+          if (e.key === 'cookie-preferences') loadGtag();
+        });
+        loadGtag();
+      })();
     </script>
     <!-- End Google tag -->
     
