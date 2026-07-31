@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { ServiceError, toServiceError } from "./errors";
-import { attempt, type Result } from "./result";
+import { attempt, type Err, type Result } from "./result";
 
 export interface ApiClientOptions {
   /** Label used in logs, e.g. "reservation". */
@@ -101,13 +101,14 @@ export const createApiClient = (options: ApiClientOptions): ApiClient => {
         return res;
       }
 
-      lastError = res.error;
-      const canRetry = res.error.retryable && i < Math.max(1, retries) - 1;
+      const failure = res as Err;
+      lastError = failure.error;
+      const canRetry = failure.error.retryable && i < Math.max(1, retries) - 1;
       log(canRetry ? "retry" : "error", {
         label,
         attempt: i + 1,
-        kind: res.error.kind,
-        message: res.error.message,
+        kind: failure.error.kind,
+        message: failure.error.message,
       });
       if (!canRetry) return res;
       await sleep(backoff(i, cfg.baseDelayMs, cfg.maxDelayMs));
