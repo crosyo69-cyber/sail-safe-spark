@@ -146,6 +146,55 @@ Deno.serve(async (req) => {
       return json({ action: "verify", count: results.length, results });
     }
 
+    // --- Cleanup: remove TEST_VALIDATION contacts from Brevo + database -----
+    if (body.action === "cleanup_test") {
+      const { data: testProfiles, error: cleanupError } = await admin
+        .from("crm_client_profiles")
+        .select("id, email")
+        .eq("is_test", true)
+        .eq("marketing_consent_source", "TEST_VALIDATION")
+        .order("email");
+      if (cleanupError) throw new Error(`profils de test: ${cleanupError.message}`);
+
+      const results: Array<Record<string, unknown>> = [];
+      let brevoDeleted = 0, brevoMissing = 0, brevoErrors = 0;
+
+      for (const p of testProfiles ?? []) {
+        const res = await brevo(apiKey, `/contacts/${encodeURIComponent(p.email)}`, "DELETE");
+        if (res.ok || res.status === 204) {
+          brevoDeleted++;
+          results.push({ email: p.email, brevo: "supprimé" });
+        } else if (res.status === 404) {
+          brevoMissing++;
+          results.push({ email: p.email, brevo: "introuvable" });
+        } else {
+          brevoErrors++;
+          results.push({ email: p.email, brevo: "erreur", status: res.status, error: res.body.slice(0, 200) });
+        }
+      }
+
+      let dbDeleted = 0;
+      if ((testProfiles ?? []).length > 0) {
+        const { data: deletedRows, error: delError } = await admin
+          .from("crm_client_profiles")
+          .delete()
+          .eq("is_test", true)
+          .eq("marketing_consent_source", "TEST_VALIDATION")
+          .select("id");
+        if (delError) throw new Error(`suppression base: ${delError.message}`);
+        dbDeleted = (deletedRows ?? []).length;
+      }
+
+      return json({
+        action: "cleanup_test",
+        db_deleted: dbDeleted,
+        brevo_deleted: brevoDeleted,
+        brevo_not_found: brevoMissing,
+        brevo_errors: brevoErrors,
+        results,
+      });
+    }
+
     const { data: clients, error: clientsError } = await admin.rpc("crm_client_base");
     if (clientsError) throw new Error(`crm_client_base: ${clientsError.message}`);
 
