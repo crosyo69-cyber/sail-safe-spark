@@ -1628,6 +1628,7 @@ export type Database = {
         }
         Returns: Json
       }
+      assistant_briefing: { Args: never; Returns: Json }
       assistant_query: {
         Args: { p_intent: string; p_params?: Json }
         Returns: Json
