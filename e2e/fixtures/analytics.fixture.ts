@@ -33,7 +33,10 @@ export interface AnalyticsHelper {
   expectMeta(eventName: string, expected: number, opts?: { timeout?: number; message?: string }): Promise<void>;
   expectGa4(eventName: string, expected: number, opts?: { timeout?: number; message?: string }): Promise<void>;
   /** Assert a count does not move over a settle window (no late double-fire). */
-  expectAdsStable(expected: number, opts?: { convId?: string; duration?: number }): Promise<void>;
+  expectAdsStable(
+    expected: number,
+    opts?: { convId?: string; windowMs?: number; message?: string },
+  ): Promise<void>;
 }
 
 export function createAnalyticsHelper(page: Page): AnalyticsHelper {
@@ -67,7 +70,7 @@ export function createAnalyticsHelper(page: Page): AnalyticsHelper {
       expectCountStable(
         async () => countAdsConversions(await readGtagCalls(page), opts.convId ?? ADS_CONVERSION_ID),
         expected,
-        { duration: opts.duration },
+        { windowMs: opts.windowMs, message: opts.message },
       ),
   };
 }
