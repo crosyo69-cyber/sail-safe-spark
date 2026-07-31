@@ -32,41 +32,53 @@ const ERROR_DIR = join(process.cwd(), '.playwright-last-errors');
 const STATS_DIR = join(process.cwd(), '.playwright-retry-stats');
 const STOPPED_LOG = join(STATS_DIR, 'stopped.log');
 
-export const test = base.extend({});
-
 /**
- * TEMPORARY (LOT 0.5 diagnostic): full browser-state snapshot before/after
- * each test, with automatic diff. Active only when DEDUP_DIAG=1.
+ * IMPORTANT (LOT 0.5): everything below is implemented as Playwright `auto`
+ * FIXTURES, never as module-level `test.beforeEach(...)` hooks.
+ *
+ * `beforeEach` registered at module scope only attaches to the spec file that
+ * happens to trigger the first import of this module inside a worker; every
+ * later file reuses the cached module and silently loses the hooks. Auto
+ * fixtures are carried by the `test` object itself, so they run for every test
+ * of every file regardless of module load order.
  */
-const diagBefore = new WeakMap<object, FullStateSnapshot | null>();
-
-if (DIAG_ENABLED) {
-  test.beforeEach(async ({ page }, testInfo) => {
-    try {
-      const url = page.url();
-      if (!url || url === 'about:blank') await page.goto('/');
-    } catch { /* ignore */ }
-    const snap = await captureFullState(page);
-    diagBefore.set(testInfo as unknown as object, snap);
-    recordDiag(testInfo, 'before', snap);
-  });
-
-  test.afterEach(async ({ page }, testInfo) => {
-    const after = await captureFullState(page);
-    const before = diagBefore.get(testInfo as unknown as object) ?? null;
-    recordDiag(testInfo, 'after', after, {
-      diff: {
-        localStorage: diffMaps(before?.localStorage, after?.localStorage),
-        sessionStorage: diffMaps(before?.sessionStorage, after?.sessionStorage),
-      },
-      failed: testInfo.status !== testInfo.expectedStatus,
-      errors: (testInfo.errors ?? []).map((e) => (e.message ?? '').slice(0, 400)),
-    });
-  });
-}
 
 /**
- * GLOBAL dedup-storage auto-reset.
+ * TEMPORARY (LOT 0.5 diagnostic), disabled by default: full browser-state
+ * snapshot before/after each test with automatic diff. Opt in with DEDUP_DIAG=1.
+ */
+const diagnosticsFixture = async (
+  { page }: { page: import('@playwright/test').Page },
+  use: (v: void) => Promise<void>,
+  testInfo: import('@playwright/test').TestInfo,
+) => {
+  if (!DIAG_ENABLED) {
+    await use();
+    return;
+  }
+  let before: FullStateSnapshot | null = null;
+  try {
+    const url = page.url();
+    if (!url || url === 'about:blank') await page.goto('/');
+  } catch { /* ignore */ }
+  before = await captureFullState(page);
+  recordDiag(testInfo, 'before', before);
+
+  await use();
+
+  const after = await captureFullState(page);
+  recordDiag(testInfo, 'after', after, {
+    diff: {
+      localStorage: diffMaps(before?.localStorage, after?.localStorage),
+      sessionStorage: diffMaps(before?.sessionStorage, after?.sessionStorage),
+    },
+    failed: testInfo.status !== testInfo.expectedStatus,
+    errors: (testInfo.errors ?? []).map((e) => (e.message ?? '').slice(0, 400)),
+  });
+};
+
+/**
+ * GLOBAL dedup-storage auto-reset + marketing consent seed.
  *
  * Every test that imports `test` from `./utils/retry-filter` automatically
  * gets sessionStorage + localStorage wiped of all conversion-dedup keys
@@ -78,14 +90,18 @@ if (DIAG_ENABLED) {
  * mirror written by test N can no longer block the conversion fire
  * expected by test N+1.
  *
- * Specs that still import directly from `@playwright/test` keep their
- * old behavior; migrate them to `./utils/retry-filter` to opt in.
+ * `clearDedupStorage` also seeds the cookie-consent keys, so conversion specs
+ * start from the same state they had with the previous hook implementation.
  *
  * Opt-out (rare): set the test annotation `dedupAutoReset: false` via
  * `test.info().annotations.push({ type: 'dedupAutoReset', description: 'false' })`
  * inside the test before any navigation.
  */
-test.beforeEach(async ({ page }, testInfo) => {
+const dedupAutoResetFixture = async (
+  { page }: { page: import('@playwright/test').Page },
+  use: (v: void) => Promise<void>,
+  testInfo: import('@playwright/test').TestInfo,
+) => {
   if (hasDedupAutoResetSkip(testInfo)) {
     // Debug trace: when a test opts out of the auto-reset, dump what dedup
     // state is currently sitting in the browser context. A later "conversion
@@ -145,6 +161,7 @@ test.beforeEach(async ({ page }, testInfo) => {
       // eslint-disable-next-line no-console
       console.log(`[dedup-reset SKIPPED] snapshot → ${attachmentUrl}`);
     }
+    await use();
     return;
   }
   try {
@@ -154,31 +171,49 @@ test.beforeEach(async ({ page }, testInfo) => {
     // page may not be navigable yet (e.g. webServer still warming up on
     // the very first test) — clearDedupStorage itself tolerates this.
   }
-});
+  await use();
+};
 
-test.beforeEach(async ({}, testInfo) => {
-  if (testInfo.retry === 0) return;
-
-  const file = join(ERROR_DIR, `${encodeURIComponent(testInfo.testId)}.txt`);
-  if (!existsSync(file)) return;
-
-  const lastError = readFileSync(file, 'utf8');
-  if (!isRetryable(lastError)) {
-    try {
-      mkdirSync(STATS_DIR, { recursive: true });
-      appendFileSync(
-        STOPPED_LOG,
-        `${testInfo.testId}\t${(testInfo.titlePath || []).join(' › ')}\n`,
-      );
-    } catch {
-      // ignore
+/** Retry policy: skip retries whose previous failure was deterministic. */
+const retryFilterFixture = async (
+  {}: Record<string, never>,
+  use: (v: void) => Promise<void>,
+  testInfo: import('@playwright/test').TestInfo,
+) => {
+  if (testInfo.retry > 0) {
+    const file = join(ERROR_DIR, `${encodeURIComponent(testInfo.testId)}.txt`);
+    if (existsSync(file)) {
+      const lastError = readFileSync(file, 'utf8');
+      if (!isRetryable(lastError)) {
+        try {
+          mkdirSync(STATS_DIR, { recursive: true });
+          appendFileSync(
+            STOPPED_LOG,
+            `${testInfo.testId}\t${(testInfo.titlePath || []).join(' › ')}\n`,
+          );
+        } catch {
+          // ignore
+        }
+        testInfo.skip(
+          true,
+          `Retry ignoré : l'échec précédent n'est pas une erreur réseau/timeout.\n` +
+            `Erreur d'origine :\n${lastError.slice(0, 500)}`,
+        );
+      }
     }
-    testInfo.skip(
-      true,
-      `Retry ignoré : l'échec précédent n'est pas une erreur réseau/timeout.\n` +
-        `Erreur d'origine :\n${lastError.slice(0, 500)}`,
-    );
   }
+  await use();
+};
+
+export const test = base.extend<{
+  _diagnostics: void;
+  _dedupAutoReset: void;
+  _retryFilter: void;
+}>({
+  // Declaration order = execution order for auto fixtures.
+  _diagnostics: [diagnosticsFixture, { auto: true }],
+  _dedupAutoReset: [dedupAutoResetFixture, { auto: true }],
+  _retryFilter: [retryFilterFixture, { auto: true }],
 });
 
 export { expect } from '@playwright/test';
