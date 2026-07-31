@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { ArrowLeft, Bot, Loader2, Send, ShieldCheck, Sparkles, Trash2, User } from "lucide-react";
 import { AssistantBriefing } from "@/components/admin/AssistantBriefing";
+import { AssistantFinances } from "@/components/admin/AssistantFinances";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -124,8 +125,12 @@ const AdminAssistant = () => {
           </Badge>
         </div>
 
-        <div className="mb-8">
+        <div className="mb-6">
           <AssistantBriefing onAsk={(q) => void ask(q)} onSuggestions={handleSuggestions} />
+        </div>
+
+        <div className="mb-8">
+          <AssistantFinances onAsk={(q) => void ask(q)} />
         </div>
 
         <Card className="flex h-[70vh] flex-col">
