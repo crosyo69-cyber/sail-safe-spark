@@ -1629,6 +1629,7 @@ export type Database = {
         Returns: Json
       }
       assistant_briefing: { Args: never; Returns: Json }
+      assistant_financial_summary: { Args: never; Returns: Json }
       assistant_query: {
         Args: { p_intent: string; p_params?: Json }
         Returns: Json
@@ -2063,6 +2064,10 @@ export type Database = {
           p_remind_7: boolean
         }
         Returns: Json
+      }
+      unit_price_eur: {
+        Args: { p_activity: string; p_date?: string; p_package_type: string }
+        Returns: number
       }
       unsubscribe_last_minute: { Args: { p_token: string }; Returns: boolean }
       unsubscribe_weather_alert: { Args: { p_token: string }; Returns: boolean }
