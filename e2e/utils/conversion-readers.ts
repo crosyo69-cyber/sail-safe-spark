@@ -68,14 +68,22 @@ export async function installGtagRecorder(page: Page): Promise<void> {
         persist();
       };
 
+      // True while our wrapper delegates to the underlying gtag: any
+      // dataLayer.push triggered by that delegation is the SAME call we just
+      // recorded and must not be counted twice.
+      let inWrapper = false;
+
       const wrap = (orig: unknown): ((...a: unknown[]) => void) => {
         const fn = typeof orig === 'function' ? (orig as (...a: unknown[]) => void) : undefined;
         const wrapped = (...args: unknown[]) => {
           record(...args);
+          inWrapper = true;
           try {
             fn?.(...args);
           } catch {
             /* ignore — we already recorded */
+          } finally {
+            inWrapper = false;
           }
         };
         (wrapped as unknown as { __isGtagRecorder?: boolean }).__isGtagRecorder = true;
@@ -85,6 +93,50 @@ export async function installGtagRecorder(page: Page): Promise<void> {
       const isWrapped = (v: unknown) =>
         typeof v === 'function' &&
         (v as unknown as { __isGtagRecorder?: boolean }).__isGtagRecorder === true;
+
+      /**
+       * Safety net for the accessor-clobber race.
+       *
+       * `index.html` declares `function gtag(){ dataLayer.push(arguments) }`.
+       * A global function declaration is a DefineOwnProperty, so it REPLACES
+       * our accessor instead of going through its setter. Between that moment
+       * and the next `pin()` tick, a `gtag('event', 'conversion', …)` fired by
+       * the app bypasses the recorder entirely → "0 conversions" flake.
+       *
+       * So we also tap `dataLayer.push`: any gtag-shaped entry (first item is
+       * a string command) pushed while our wrapper is NOT executing is a call
+       * that bypassed us, and is recorded exactly once here. Object pushes
+       * (GTM events) are ignored — they are not gtag calls.
+       */
+      const pinDataLayer = () => {
+        const dl = (window as unknown as { dataLayer?: unknown[] }).dataLayer;
+        if (!dl || typeof dl.push !== 'function') return;
+        if ((dl.push as unknown as { __isGtagRecorder?: boolean }).__isGtagRecorder) return;
+        const origPush = dl.push.bind(dl) as (...items: unknown[]) => number;
+        const patched = (...items: unknown[]): number => {
+          if (!inWrapper) {
+            for (const item of items) {
+              try {
+                const arr =
+                  Array.isArray(item) ||
+                  Object.prototype.toString.call(item) === '[object Arguments]'
+                    ? Array.from(item as ArrayLike<unknown>)
+                    : null;
+                if (arr && arr.length > 0 && typeof arr[0] === 'string') record(...arr);
+              } catch {
+                /* ignore malformed entries */
+              }
+            }
+          }
+          return origPush(...items);
+        };
+        (patched as unknown as { __isGtagRecorder?: boolean }).__isGtagRecorder = true;
+        try {
+          dl.push = patched as typeof dl.push;
+        } catch {
+          /* frozen dataLayer — nothing we can do */
+        }
+      };
 
       let current: unknown = wrap((window as unknown as { gtag?: unknown }).gtag);
       const pin = () => {
@@ -97,6 +149,7 @@ export async function installGtagRecorder(page: Page): Promise<void> {
         const existing = (window as unknown as { gtag?: unknown }).gtag;
         if (isWrapped(existing)) {
           current = existing;
+          pinDataLayer();
           return;
         }
         if (typeof existing === 'function') current = wrap(existing);
@@ -113,9 +166,14 @@ export async function installGtagRecorder(page: Page): Promise<void> {
         } catch {
           (window as unknown as { gtag: unknown }).gtag = current;
         }
+        pinDataLayer();
       };
       pin();
-      [0, 30, 100, 300, 800, 1500, 3000].forEach((t) => setTimeout(pin, t));
+      [0, 5, 15, 30, 60, 100, 200, 300, 500, 800, 1200, 1500, 2000, 3000].forEach((t) =>
+        setTimeout(pin, t),
+      );
+      const fastPin = setInterval(pin, 25);
+      setTimeout(() => clearInterval(fastPin), 5000);
       document.addEventListener('DOMContentLoaded', pin);
       window.addEventListener('load', pin);
     },
