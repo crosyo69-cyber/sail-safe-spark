@@ -1668,6 +1668,7 @@ export type Database = {
           recipients: number
         }[]
       }
+      marketing_is_internal_caller: { Args: never; Returns: boolean }
       marketing_segment_base: {
         Args: never
         Returns: {
