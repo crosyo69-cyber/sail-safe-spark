@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { articleFAQData } from '../src/pages/BlogArticle';
+import { articleFAQData } from '../src/data/blog-faq';
 
 /**
  * Pour chaque article disposant d'une FAQ, vérifie qu'un bloc JSON-LD

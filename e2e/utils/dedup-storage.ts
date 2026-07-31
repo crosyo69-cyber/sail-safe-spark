@@ -26,6 +26,9 @@ export const DEDUP_STORAGE_PREFIXES = [
   '__meta_pixel_lead',
   'conversion_fired_',
   'ksp_conv_',
+  'conversion_once_',
+  '__gtm_merci_',
+  '__ksp_merci_gtag_count',
 ] as const;
 
 /**

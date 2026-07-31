@@ -7,11 +7,10 @@
  * the /merci page, which must fire even on direct navigation (no submit).
  */
 import {
-  hasSessionConversionFired,
   markFired,
-  markSessionConversionFired,
   shouldFireWithinWindow,
 } from './conversion-dedup';
+import { hasMarketingConsent, onMarketingConsent } from './consent';
 
 declare global {
   interface Window {
@@ -51,26 +50,17 @@ export function pushMerciConversion(conversionLabel = 's2n0CL3puI4cEIW4u9AD'): v
   const dedupKey = `__gtm_merci_${conversionId}`;
   const mirrorKey = `conversion_fired_gtm_merci_${conversionId}`;
 
-  // NOTE: Consent gate intentionally removed for merci_conversion.
-  // RGPD compliance is delegated to Google Consent Mode v2 (default 'denied'
-  // set in index.html, updated via updateConsentMode). Google Ads will
-  // receive the event but respect ad_storage/ad_user_data consent signals
-  // server-side. This ensures the conversion tag fires reliably in tests
-  // and for users who never interact with the cookie banner.
-
-  // Session-once guard: if this conversion already fired via ANY path
-  // (Contact form → gtag direct, or earlier GTM push, or previous /merci
-  // visit in this session), refuse to push it again. Protects against
-  // double counting when the user is routed Contact → /merci or when
-  // GTM triggers multiple times for the same hit.
-  if (hasSessionConversionFired(conversionId)) {
+  // RGPD: never push the Ads conversion event before marketing consent.
+  // The push is replayed once the visitor accepts marketing cookies.
+  if (!hasMarketingConsent()) {
     if (import.meta.env.DEV) {
       // eslint-disable-next-line no-console
       console.log(
-        `%c[GTM] merci_conversion SKIPPED (session-once): ${conversionId}`,
+        `%c[GTM] merci_conversion DEFERRED (no marketing consent): ${conversionId}`,
         'color:#f59e0b;font-weight:bold'
       );
     }
+    onMarketingConsent(() => pushMerciConversion(conversionLabel));
     return;
   }
 
@@ -85,7 +75,6 @@ export function pushMerciConversion(conversionLabel = 's2n0CL3puI4cEIW4u9AD'): v
     return;
   }
   markFired(dedupKey, mirrorKey);
-  markSessionConversionFired(conversionId);
 
   pushDataLayer({
     event: 'merci_conversion',
