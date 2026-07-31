@@ -67,24 +67,31 @@ Deno.serve(async (req) => {
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
 
-    // --- Auth: admins only -------------------------------------------------
+    // --- Auth: admins only (or service-role for automated validation) ------
     const authHeader = req.headers.get("Authorization") ?? "";
     if (!authHeader.startsWith("Bearer ")) return json({ error: "Unauthorized" }, 401);
     const token = authHeader.replace("Bearer ", "");
 
-    const authClient = createClient(supabaseUrl, anonKey);
-    const { data: claimsData, error: claimsError } = await authClient.auth.getClaims(token);
-    if (claimsError || !claimsData?.claims?.sub) return json({ error: "Unauthorized" }, 401);
-
-    const userId = claimsData.claims.sub as string;
-    const userEmail = (claimsData.claims.email as string | undefined) ?? null;
-
     const admin = createClient(supabaseUrl, serviceKey);
-    const { data: isAdmin, error: roleError } = await admin.rpc("has_role", {
-      _user_id: userId,
-      _role: "admin",
-    });
-    if (roleError || !isAdmin) return json({ error: "Forbidden" }, 403);
+    let userId: string | null = null;
+    let userEmail: string | null = null;
+
+    if (token === serviceKey) {
+      userEmail = "service-role";
+    } else {
+      const authClient = createClient(supabaseUrl, anonKey);
+      const { data: claimsData, error: claimsError } = await authClient.auth.getClaims(token);
+      if (claimsError || !claimsData?.claims?.sub) return json({ error: "Unauthorized" }, 401);
+
+      userId = claimsData.claims.sub as string;
+      userEmail = (claimsData.claims.email as string | undefined) ?? null;
+
+      const { data: isAdmin, error: roleError } = await admin.rpc("has_role", {
+        _user_id: userId,
+        _role: "admin",
+      });
+      if (roleError || !isAdmin) return json({ error: "Forbidden" }, 403);
+    }
 
     const apiKey = Deno.env.get("BREVO_API_KEY");
     if (!apiKey) return json({ error: "BREVO_API_KEY non configurée" }, 400);
@@ -100,6 +107,23 @@ Deno.serve(async (req) => {
     const mode: string = body.mode ?? settings?.mode ?? "test";
     const listId: number | null = body.listId ?? settings?.brevo_list_id ?? null;
     const dryRun = mode !== "production";
+    const rawLimit = Number(body.limit);
+    const limit = Number.isFinite(rawLimit) && rawLimit > 0 ? Math.floor(rawLimit) : null;
+
+    // --- Probe: read-only check of Brevo credentials + attribute schema ----
+    if (body.action === "probe") {
+      const account = await brevo(apiKey, "/account");
+      const attrs = await brevo(apiKey, "/contacts/attributes");
+      return json({
+        action: "probe",
+        api_key_configured: true,
+        account_ok: account.ok,
+        account_status: account.status,
+        attributes_ok: attrs.ok,
+        attributes_status: attrs.status,
+        attributes: attrs.ok ? JSON.parse(attrs.body) : attrs.body.slice(0, 500),
+      });
+    }
 
     // --- Candidates --------------------------------------------------------
     const { data: clients, error: clientsError } = await admin.rpc("crm_client_base");
@@ -117,7 +141,7 @@ Deno.serve(async (req) => {
     const details: Array<Record<string, unknown>> = [];
     let skipped = 0;
 
-    const candidates = ((clients ?? []) as Client[]).filter((c) => {
+    let candidates = ((clients ?? []) as Client[]).filter((c) => {
       const email = (c.email ?? "").trim().toLowerCase();
       if (!c.marketing_consent) { skipped++; return false; }
       if (!EMAIL_RE.test(email)) {
@@ -132,6 +156,8 @@ Deno.serve(async (req) => {
       }
       return true;
     });
+
+    if (limit) candidates = candidates.slice(0, limit);
 
     let created = 0, updated = 0, errors = 0;
 
