@@ -42,6 +42,7 @@ const AUTH_MARKERS = [
   "Standard-Webhook",
   "verifyAuthHook",
   "isServiceRoleJwt(",
+  "auth.oauth.issuer",
 ];
 
 function hasAuthMarker(src: string): string | null {
@@ -65,7 +66,8 @@ function hasTokenComparison(src: string): boolean {
          /auth\.getClaims\(/.test(src) ||
          /auth\.getUser\(/.test(src) ||
          /STRIPE_WEBHOOK_SECRET/.test(src) ||
-         /Standard-Webhook/.test(src);
+         /Standard-Webhook/.test(src) ||
+         /auth\.oauth\.issuer/.test(src);
 }
 
 Deno.test("RBAC audit — chaque endpoint sensible vérifie l'appelant", async () => {
