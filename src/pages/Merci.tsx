@@ -34,32 +34,8 @@ const Merci = () => {
     if (debug)
       console.log(`[Merci Debug] START — reqId ${reqId} : première exécution`);
 
-    // Direct, unconditional Google Ads conversion call.
-    // Fires at mount without any consent gate — RGPD is handled by
-    // Google Consent Mode v2 (ad_storage / ad_user_data signals).
-    try {
-      const key = '__ksp_merci_gtag_count';
-      const prev = Number(sessionStorage.getItem(key) || '0');
-      const next = prev + 1;
-      sessionStorage.setItem(key, String(next));
-      if (debug)
-        console.log(`[Merci Conversion] #${next} — gtag direct AW-974052357/s2n0CL3puI4cEIW4u9AD`);
-
-      const w = window as unknown as { gtag?: (...args: unknown[]) => void };
-      if (typeof w.gtag === 'function') {
-        w.gtag('event', 'conversion', {
-          send_to: 'AW-974052357/s2n0CL3puI4cEIW4u9AD',
-        });
-        if (debug)
-          console.log(`[Merci Conversion] #${next} — gtag event SENT`);
-      } else {
-        if (debug)
-          console.warn(`[Merci Conversion] #${next} — gtag NOT AVAILABLE`);
-      }
-    } catch {
-      /* never let analytics break the page */
-    }
-
+    // NOTE: no unconditional direct gtag conversion here — it bypassed the
+    // cookie-consent gate and double-counted alongside the paths below.
     // GTM-driven trigger (preferred): fires even on direct navigation, and
     // works independently of GA4/Ads init order. GTM must have a Custom
     // Event trigger on `merci_conversion` wired to the Ads conversion tag.
