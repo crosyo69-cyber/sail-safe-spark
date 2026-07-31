@@ -42,6 +42,7 @@ const AUTH_MARKERS = [
   "Standard-Webhook",
   "verifyAuthHook",
   "isServiceRoleJwt(",
+  "auth.oauth.issuer",
 ];
 
 function hasAuthMarker(src: string): string | null {
