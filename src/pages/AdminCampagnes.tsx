@@ -20,6 +20,8 @@ import { Loader2, Plus, Search, ArrowLeft, Megaphone, Archive, Copy } from "luci
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 import CampaignEditor from "@/components/admin/CampaignEditor";
+import SegmentBuilder from "@/components/admin/SegmentBuilder";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Campaign, CampaignStatus, EMPTY_AUDIENCE, STATUS_META, audienceSummary,
 } from "@/components/admin/campaign-types";
@@ -131,6 +133,12 @@ const AdminCampagnes = () => {
           </div>
         </div>
 
+        <Tabs defaultValue="campagnes">
+          <TabsList className="mb-6">
+            <TabsTrigger value="campagnes">Campagnes</TabsTrigger>
+            <TabsTrigger value="segments">Segments</TabsTrigger>
+          </TabsList>
+          <TabsContent value="campagnes">
         <Card className="mb-6">
           <CardContent className="flex flex-wrap gap-3 py-4">
             <div className="relative min-w-[220px] flex-1">
@@ -217,6 +225,11 @@ const AdminCampagnes = () => {
             )}
           </CardContent>
         </Card>
+          </TabsContent>
+          <TabsContent value="segments">
+            <SegmentBuilder />
+          </TabsContent>
+        </Tabs>
       </main>
       <Footer />
 
