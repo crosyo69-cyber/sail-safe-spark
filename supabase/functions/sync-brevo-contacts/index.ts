@@ -208,16 +208,18 @@ Deno.serve(async (req) => {
       });
     }
 
-    const { data: clients, error: clientsError } = await admin.rpc("crm_client_base");
-    if (clientsError) throw new Error(`crm_client_base: ${clientsError.message}`);
-
-    const { data: suppressed } = await admin.from("suppressed_emails").select("email");
-    const blocked = new Set((suppressed ?? []).map((s: { email: string }) => s.email.toLowerCase()));
+    // Single source of truth: the marketing segment engine.
+    // It already excludes non-consenting, test and suppressed contacts.
+    const segmentDefinition = (body.segment ?? {}) as Record<string, unknown>;
+    const { data: clients, error: clientsError } = await admin.rpc("get_marketing_segment", {
+      p_definition: { consent: "yes", ...segmentDefinition },
+    });
+    if (clientsError) throw new Error(`get_marketing_segment: ${clientsError.message}`);
 
     type Client = {
       email: string; first_name: string | null; last_name: string | null; phone: string | null;
       first_date: string | null; last_date: string | null; credits_remaining: number | null;
-      activities: string[] | null; marketing_consent: boolean | null;
+      activities: string[] | null; consent: boolean | null;
     };
 
     const details: Array<Record<string, unknown>> = [];
@@ -227,15 +229,9 @@ Deno.serve(async (req) => {
 
     let candidates = ((clients ?? []) as Client[]).filter((c) => {
       const email = (c.email ?? "").trim().toLowerCase();
-      if (!c.marketing_consent) { skipped++; return false; }
       if (!EMAIL_RE.test(email)) {
         skipped++;
         details.push({ email, status: "ignoré", reason: "email invalide" });
-        return false;
-      }
-      if (blocked.has(email)) {
-        skipped++;
-        details.push({ email, status: "ignoré", reason: "email supprimé / en liste de suppression" });
         return false;
       }
       return true;

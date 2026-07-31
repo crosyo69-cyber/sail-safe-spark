@@ -330,17 +330,22 @@ export type Database = {
       }
       crm_client_profiles: {
         Row: {
+          city: string | null
+          country: string | null
           created_at: string
+          distance_km: number | null
           email: string
           first_name: string | null
           id: string
           is_test: boolean
           last_name: string | null
+          level: string | null
           marketing_consent: boolean
           marketing_consent_at: string | null
           marketing_consent_source: string | null
           observations: string | null
           phone: string | null
+          postal_code: string | null
           recommended_gear: string | null
           tags: string[]
           test_activities: string[] | null
@@ -350,17 +355,22 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          city?: string | null
+          country?: string | null
           created_at?: string
+          distance_km?: number | null
           email: string
           first_name?: string | null
           id?: string
           is_test?: boolean
           last_name?: string | null
+          level?: string | null
           marketing_consent?: boolean
           marketing_consent_at?: string | null
           marketing_consent_source?: string | null
           observations?: string | null
           phone?: string | null
+          postal_code?: string | null
           recommended_gear?: string | null
           tags?: string[]
           test_activities?: string[] | null
@@ -370,17 +380,22 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          city?: string | null
+          country?: string | null
           created_at?: string
+          distance_km?: number | null
           email?: string
           first_name?: string | null
           id?: string
           is_test?: boolean
           last_name?: string | null
+          level?: string | null
           marketing_consent?: boolean
           marketing_consent_at?: string | null
           marketing_consent_source?: string | null
           observations?: string | null
           phone?: string | null
+          postal_code?: string | null
           recommended_gear?: string | null
           tags?: string[]
           test_activities?: string[] | null
@@ -702,6 +717,39 @@ export type Database = {
           id?: string
           token?: string
           topics?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      marketing_segments: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          created_by_email: string | null
+          definition: Json
+          description: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          definition?: Json
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          created_by_email?: string | null
+          definition?: Json
+          description?: string | null
+          id?: string
+          name?: string
           updated_at?: string
         }
         Relationships: []
@@ -1556,6 +1604,31 @@ export type Database = {
         Args: { p_code?: string; p_token?: string }
         Returns: Json
       }
+      get_marketing_segment: {
+        Args: { p_definition?: Json; p_limit?: number }
+        Returns: {
+          activities: string[]
+          avg_basket: number
+          consent: boolean
+          country: string
+          credits_remaining: number
+          department: string
+          distance_km: number
+          email: string
+          first_date: string
+          first_name: string
+          last_date: string
+          last_name: string
+          level: string
+          lifecycle: string
+          next_expiry: string
+          packages_count: number
+          phone: string
+          reservations_count: number
+          revenue: number
+          topics: string[]
+        }[]
+      }
       get_package_by_code: { Args: { p_code: string }; Returns: Json }
       get_package_credits_history: { Args: { p_code: string }; Returns: Json }
       get_waitlist_offer: { Args: { p_token: string }; Returns: Json }
@@ -1595,6 +1668,40 @@ export type Database = {
           emails: string[]
           recipients: number
         }[]
+      }
+      marketing_is_internal_caller: { Args: never; Returns: boolean }
+      marketing_segment_base: {
+        Args: never
+        Returns: {
+          activities: string[]
+          avg_basket: number
+          consent: boolean
+          country: string
+          credits_remaining: number
+          department: string
+          distance_km: number
+          email: string
+          first_date: string
+          first_name: string
+          first_seen: string
+          is_test: boolean
+          last_date: string
+          last_name: string
+          level: string
+          lifecycle: string
+          next_expiry: string
+          packages_count: number
+          phone: string
+          postal_code: string
+          reservations_count: number
+          revenue: number
+          suppressed: boolean
+          topics: string[]
+        }[]
+      }
+      marketing_segment_estimate: {
+        Args: { p_definition?: Json }
+        Returns: Json
       }
       mint_session_credits: {
         Args: {
