@@ -13,10 +13,11 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { ArrowLeft, Bot, Loader2, Send, ShieldCheck, Sparkles, Trash2, User } from "lucide-react";
+import { AssistantBriefing } from "@/components/admin/AssistantBriefing";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
-const SUGGESTIONS = [
+const DEFAULT_SUGGESTIONS = [
   "Combien de réservations aujourd'hui ?",
   "Quel est le CA du mois ?",
   "Quels crédits expirent bientôt ?",
@@ -35,11 +36,16 @@ const AdminAssistant = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [suggestions, setSuggestions] = useState<string[]>(DEFAULT_SUGGESTIONS);
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messages.length > 0 || busy) endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, busy]);
+
+  const handleSuggestions = useCallback((questions: string[]) => {
+    if (questions.length > 0) setSuggestions(questions.slice(0, 6));
+  }, []);
 
   const ask = useCallback(
     async (text: string) => {
@@ -107,7 +113,7 @@ const AdminAssistant = () => {
               </Link>
             </Button>
             <h1 className="flex items-center gap-2 text-3xl font-bold">
-              <Bot className="h-7 w-7 text-primary" /> Assistant du Directeur
+              <Bot className="h-7 w-7 text-primary" /> Cockpit IA du Directeur
             </h1>
             <p className="text-muted-foreground">
               Interrogez vos données en langage naturel : réservations, CRM, crédits, marketing, chiffre d'affaires.
@@ -116,6 +122,10 @@ const AdminAssistant = () => {
           <Badge variant="outline" className="gap-1 border-emerald-500/40 text-emerald-700 dark:text-emerald-400">
             <ShieldCheck className="h-3.5 w-3.5" /> Lecture seule
           </Badge>
+        </div>
+
+        <div className="mb-8">
+          <AssistantBriefing onAsk={(q) => void ask(q)} onSuggestions={handleSuggestions} />
         </div>
 
         <Card className="flex h-[70vh] flex-col">
@@ -143,7 +153,7 @@ const AdminAssistant = () => {
                     <Sparkles className="h-4 w-4 text-primary" /> Questions suggérées
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {SUGGESTIONS.map((q) => (
+                    {suggestions.map((q) => (
                       <button
                         key={q}
                         onClick={() => ask(q)}
