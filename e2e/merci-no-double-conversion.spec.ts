@@ -1,5 +1,6 @@
 import { type Page } from '@playwright/test';
 import { test, expect } from './utils/retry-filter';
+import { installGtagRecorder, readGtagCalls, countAdsConversions, waitForAdsConversionCount } from './utils/conversion-readers';
 
 /**
  * E2E: verify that loading /merci AFTER a successful CTA submission does NOT
@@ -25,43 +26,8 @@ const ADS_LABEL = 's2n0CL3puI4cEIW4u9AD';
 const ADS_ID = 'AW-974052357';
 const DEDUP_KEY = `__gads_conv_${ADS_ID}/${ADS_LABEL}`;
 
-type GtagCall = [string, string, Record<string, unknown>?];
-
-async function installGtagRecorder(page: Page) {
-  await page.addInitScript(() => {
-    const calls: GtagCall[] = [];
-    (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls = calls;
-    (window as unknown as { dataLayer: unknown[] }).dataLayer = [];
-
-    const recorder = (...args: unknown[]) => {
-      calls.push(args as GtagCall);
-    };
-    (window as unknown as { gtag: typeof recorder }).gtag = recorder;
-
-    // Re-install after analytics.ts overwrites window.gtag during initGA4()
-    const reinstall = () => {
-      const original = (window as unknown as { gtag: (...a: unknown[]) => void }).gtag;
-      (window as unknown as { gtag: typeof recorder }).gtag = (...args: unknown[]) => {
-        calls.push(args as GtagCall);
-        try { original?.(...args); } catch { /* ignore */ }
-      };
-    };
-    setTimeout(reinstall, 0);
-    setTimeout(reinstall, 100);
-    setTimeout(reinstall, 500);
-    setTimeout(reinstall, 1500);
-  });
-}
-
 async function getConversionCount(page: Page): Promise<number> {
-  const calls = await page.evaluate(
-    () => (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls
-  );
-  return calls.filter(
-    (c) => c[0] === 'event' && c[1] === 'conversion'
-      && typeof (c[2] as Record<string, unknown>)?.send_to === 'string'
-      && ((c[2] as Record<string, unknown>).send_to as string) === `${ADS_ID}/${ADS_LABEL}`
-  ).length;
+  return countAdsConversions(await readGtagCalls(page), `${ADS_ID}/${ADS_LABEL}`);
 }
 
 test.describe('/merci page — conversion dedup after CTA submission', () => {
@@ -81,7 +47,9 @@ test.describe('/merci page — conversion dedup after CTA submission', () => {
 
     // Reset captured calls so we only count what happens on /merci.
     await page.evaluate(() => {
-      (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls.length = 0;
+      const w = window as unknown as { __gtagCalls?: unknown[][] };
+      if (w.__gtagCalls) w.__gtagCalls.length = 0;
+      try { sessionStorage.removeItem('__gtagCallsStash'); } catch { /* ignore */ }
     });
 
     // Navigate to /merci — this triggers Merci.tsx's useEffect that calls
@@ -109,12 +77,17 @@ test.describe('/merci page — conversion dedup after CTA submission', () => {
 
     // Reset capture.
     await page.evaluate(() => {
-      (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls.length = 0;
+      const w = window as unknown as { __gtagCalls?: unknown[][] };
+      if (w.__gtagCalls) w.__gtagCalls.length = 0;
+      try { sessionStorage.removeItem('__gtagCallsStash'); } catch { /* ignore */ }
     });
 
     await page.goto('/merci');
     await expect(page.getByRole('heading', { name: /merci pour votre demande/i })).toBeVisible();
-    await page.waitForTimeout(1_000);
+
+    // Attente déterministe (expect.poll) au lieu d'un sleep fixe : sur worker
+    // lent, la conversion peut arriver après 1s → faux négatif intermittent.
+    await waitForAdsConversionCount(page, `${ADS_ID}/${ADS_LABEL}`, 1);
 
     const conversions = await getConversionCount(page);
     console.log(`[Test] /merci conversions captured (should be 1): ${conversions}`);
