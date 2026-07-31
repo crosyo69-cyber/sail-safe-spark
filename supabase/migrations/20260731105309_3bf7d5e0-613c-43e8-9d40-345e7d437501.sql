@@ -1,0 +1,1 @@
+GRANT EXECUTE ON FUNCTION public.assistant_query(text, jsonb) TO supabase_read_only_user;
