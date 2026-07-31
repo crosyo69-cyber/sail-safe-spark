@@ -64,6 +64,9 @@ const Admin = () => {
             Administration
           </h1>
           <div className="flex items-center gap-2">
+            <Button asChild variant="default" size="sm">
+              <Link to="/admin/assistant"><Bot className="w-4 h-4 mr-2" />Assistant IA</Link>
+            </Button>
             <Button asChild variant="outline" size="sm">
               <Link to="/admin/journees"><CalendarDays className="w-4 h-4 mr-2" />Gestion des journées</Link>
             </Button>
