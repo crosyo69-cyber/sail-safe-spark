@@ -2,25 +2,23 @@ import { test, expect } from './fixtures';
 import { installGtagRecorder, readGtagCalls } from './utils/conversion-readers';
 
 test('debug recorder', async ({ page }) => {
-  page.on('console', (m) => console.log('APP>', m.text().slice(0,140)));
+  page.on('console', (m) => console.log('APP>', Date.now() % 100000, m.text().slice(0, 120)));
   await installGtagRecorder(page);
+  await page.addInitScript(() => {
+    (window as any).__probe = [];
+    window.addEventListener('ksp:gads-conversion', (e: any) => {
+      (window as any).__probe.push(['event', e.detail?.status, typeof (window as any).gtag, !!(window as any).gtag?.__isGtagRecorder]);
+    });
+  });
   await page.goto('/');
   await page.evaluate(() => {
-    const w = window as unknown as { __gtagCalls?: unknown[][] };
+    const w = window as any;
     if (w.__gtagCalls) w.__gtagCalls.length = 0;
     try { sessionStorage.removeItem('__gtagCallsStash'); } catch { /* ignore */ }
   });
   await page.goto('/merci');
   await page.waitForTimeout(6000);
-  const dbg = await page.evaluate(() => ({
-    win: ((window as any).__gtagCalls || []).length,
-    stash: (sessionStorage.getItem('__gtagCallsStash') || '').slice(0, 200),
-    wrapped: !!((window as any).gtag && (window as any).gtag.__isGtagRecorder),
-    url: location.href,
-  }));
-  console.log('DBG', JSON.stringify(dbg));
-  const calls = await readGtagCalls(page);
-  console.log('CALLS', JSON.stringify(calls));
-  console.log('CONSENT', JSON.stringify(await page.evaluate(() => ({ c: localStorage.getItem('cookie-consent'), p: localStorage.getItem('cookie-preferences'), dl: (window as any).dataLayer?.length, g: typeof (window as any).gtag }))));
+  console.log('PROBE', JSON.stringify(await page.evaluate(() => (window as any).__probe)));
+  console.log('CALLS', JSON.stringify((await readGtagCalls(page)).map((c) => c.slice(0, 2))));
   expect(true).toBe(true);
 });
