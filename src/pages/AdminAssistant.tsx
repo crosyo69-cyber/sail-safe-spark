@@ -15,6 +15,9 @@ import { toast } from "sonner";
 import { ArrowLeft, Bot, Loader2, Send, ShieldCheck, Sparkles, Trash2, User } from "lucide-react";
 import { AssistantBriefing } from "@/components/admin/AssistantBriefing";
 import { AssistantFinances } from "@/components/admin/AssistantFinances";
+import { AssistantActions, type AssistantActionsHandle } from "@/components/admin/AssistantActions";
+import { opportunityAction } from "@/components/admin/action-types";
+import type { BriefingOpportunity } from "@/components/admin/briefing-types";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -39,6 +42,7 @@ const AdminAssistant = () => {
   const [busy, setBusy] = useState(false);
   const [suggestions, setSuggestions] = useState<string[]>(DEFAULT_SUGGESTIONS);
   const endRef = useRef<HTMLDivElement>(null);
+  const actionsRef = useRef<AssistantActionsHandle>(null);
 
   useEffect(() => {
     if (messages.length > 0 || busy) endRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -46,6 +50,22 @@ const AdminAssistant = () => {
 
   const handleSuggestions = useCallback((questions: string[]) => {
     if (questions.length > 0) setSuggestions(questions.slice(0, 6));
+  }, []);
+
+  const handlePrepare = useCallback((o: BriefingOpportunity) => {
+    const mapped = opportunityAction(o.type);
+    void actionsRef.current?.prepare(
+      mapped.type,
+      {
+        priority: mapped.priority,
+        activity: o.action?.activity ?? null,
+        date: o.action?.date ?? null,
+        days: o.action?.days ?? null,
+        title: o.titre,
+        justification: o.pourquoi,
+      },
+      `${o.titre} — ${o.pourquoi}`,
+    );
   }, []);
 
   const ask = useCallback(
@@ -126,11 +146,15 @@ const AdminAssistant = () => {
         </div>
 
         <div className="mb-6">
-          <AssistantBriefing onAsk={(q) => void ask(q)} onSuggestions={handleSuggestions} />
+          <AssistantBriefing onAsk={(q) => void ask(q)} onSuggestions={handleSuggestions} onPrepare={handlePrepare} />
+        </div>
+
+        <div className="mb-6">
+          <AssistantFinances onAsk={(q) => void ask(q)} />
         </div>
 
         <div className="mb-8">
-          <AssistantFinances onAsk={(q) => void ask(q)} />
+          <AssistantActions ref={actionsRef} onAsk={(q) => void ask(q)} />
         </div>
 
         <Card className="flex h-[70vh] flex-col">

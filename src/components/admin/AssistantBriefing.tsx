@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { eur, ACTIVITY_LABEL } from "@/components/admin/crm-types";
 import type { Briefing, BriefingOpportunity, BriefingSeverity } from "@/components/admin/briefing-types";
+import { ACTION_META, PRIORITY_META, opportunityAction } from "@/components/admin/action-types";
 import {
   AlertTriangle, ArrowDownRight, ArrowUpRight, CalendarDays, CheckCircle2, CloudSun,
   Lightbulb, Megaphone, RefreshCw, TrendingUp, Users, Wallet,
@@ -44,9 +45,11 @@ type Props = {
   onAsk: (question: string) => void;
   /** Remonte les questions contextuelles calculées côté serveur. */
   onSuggestions?: (questions: string[]) => void;
+  /** ÉTAPE IA 3 : prépare un brouillon d'action à partir d'une opportunité (aucun envoi). */
+  onPrepare?: (opportunity: BriefingOpportunity) => void;
 };
 
-export const AssistantBriefing = ({ onAsk, onSuggestions }: Props) => {
+export const AssistantBriefing = ({ onAsk, onSuggestions, onPrepare }: Props) => {
   const [briefing, setBriefing] = useState<Briefing | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -225,14 +228,30 @@ export const AssistantBriefing = ({ onAsk, onSuggestions }: Props) => {
             ) : (
               briefing.opportunites.map((o: BriefingOpportunity) => (
                 <div key={o.id} className="rounded-lg border bg-primary/5 p-3">
-                  <p className="text-sm font-medium">{o.titre}</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="text-sm font-medium">{o.titre}</p>
+                    <Badge variant="outline" className="text-xs">{o.type}</Badge>
+                    <Badge variant="outline" className={`text-xs ${PRIORITY_META[opportunityAction(o.type).priority] ?? ""}`}>
+                      priorité {opportunityAction(o.type).priority}
+                    </Badge>
+                  </div>
                   <p className="mt-0.5 text-xs text-muted-foreground">{o.pourquoi}</p>
+                  <p className="mt-1 text-xs">
+                    Action proposée :{" "}
+                    <span className="font-medium">
+                      {ACTION_META[opportunityAction(o.type).type].emoji} {ACTION_META[opportunityAction(o.type).type].label}
+                    </span>
+                  </p>
                   <div className="mt-2 flex flex-wrap items-center gap-2">
-                    {/* ÉTAPE IA 3 : ce bouton deviendra « Préparer » puis « Envoyer » */}
+                    {onPrepare && (
+                      <Button size="sm" className="min-h-[44px]" onClick={() => onPrepare(o)}>
+                        Préparer
+                      </Button>
+                    )}
                     <Button size="sm" variant="outline" className="min-h-[44px]" onClick={() => onAsk(o.prompt)}>
                       Analyser avec l'assistant
                     </Button>
-                    <Badge variant="outline" className="text-xs">Suggestion — aucune action exécutée</Badge>
+                    <Badge variant="outline" className="text-xs">Brouillon uniquement — aucun envoi</Badge>
                   </div>
                 </div>
               ))

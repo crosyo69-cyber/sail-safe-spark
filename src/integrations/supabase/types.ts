@@ -116,6 +116,78 @@ export type Database = {
         }
         Relationships: []
       }
+      assistant_prepared_actions: {
+        Row: {
+          action_type: string
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decided_by_email: string | null
+          expires_at: string
+          id: string
+          justification: string
+          payload: Json
+          prepared_by: string | null
+          prepared_by_email: string | null
+          priority: string
+          recipients_count: number
+          recipients_preview: Json
+          result: Json
+          segment_definition: Json
+          segment_summary: string | null
+          source: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decided_by_email?: string | null
+          expires_at?: string
+          id?: string
+          justification?: string
+          payload?: Json
+          prepared_by?: string | null
+          prepared_by_email?: string | null
+          priority?: string
+          recipients_count?: number
+          recipients_preview?: Json
+          result?: Json
+          segment_definition?: Json
+          segment_summary?: string | null
+          source?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decided_by_email?: string | null
+          expires_at?: string
+          id?: string
+          justification?: string
+          payload?: Json
+          prepared_by?: string | null
+          prepared_by_email?: string | null
+          priority?: string
+          recipients_count?: number
+          recipients_preview?: Json
+          result?: Json
+          segment_definition?: Json
+          segment_summary?: string | null
+          source?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       blog_comments: {
         Row: {
           article_slug: string
@@ -1629,11 +1701,24 @@ export type Database = {
         Returns: Json
       }
       assistant_briefing: { Args: never; Returns: Json }
+      assistant_cancel_action: {
+        Args: { p_id: string; p_reason?: string }
+        Returns: Json
+      }
       assistant_financial_summary: { Args: never; Returns: Json }
+      assistant_list_actions: {
+        Args: { p_limit?: number; p_status?: string }
+        Returns: Json
+      }
+      assistant_prepare_action: {
+        Args: { p_action_type: string; p_params?: Json }
+        Returns: Json
+      }
       assistant_query: {
         Args: { p_intent: string; p_params?: Json }
         Returns: Json
       }
+      assistant_validate_action: { Args: { p_id: string }; Returns: Json }
       book_daily_visitor: {
         Args: {
           p_activity: Database["public"]["Enums"]["activity_type"]
