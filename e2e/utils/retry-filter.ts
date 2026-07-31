@@ -9,6 +9,13 @@ import {
   hasDedupAutoResetSkip,
   snapshotDedupStorage,
 } from './dedup-storage';
+import {
+  DIAG_ENABLED,
+  captureFullState,
+  diffMaps,
+  recordDiag,
+  type FullStateSnapshot,
+} from './state-diagnostics';
 
 /**
  * Filtre les retries Playwright : on n'autorise un retry QUE si l'échec
@@ -26,6 +33,37 @@ const STATS_DIR = join(process.cwd(), '.playwright-retry-stats');
 const STOPPED_LOG = join(STATS_DIR, 'stopped.log');
 
 export const test = base.extend({});
+
+/**
+ * TEMPORARY (LOT 0.5 diagnostic): full browser-state snapshot before/after
+ * each test, with automatic diff. Active only when DEDUP_DIAG=1.
+ */
+const diagBefore = new WeakMap<object, FullStateSnapshot | null>();
+
+if (DIAG_ENABLED) {
+  test.beforeEach(async ({ page }, testInfo) => {
+    try {
+      const url = page.url();
+      if (!url || url === 'about:blank') await page.goto('/');
+    } catch { /* ignore */ }
+    const snap = await captureFullState(page);
+    diagBefore.set(testInfo as unknown as object, snap);
+    recordDiag(testInfo, 'before', snap);
+  });
+
+  test.afterEach(async ({ page }, testInfo) => {
+    const after = await captureFullState(page);
+    const before = diagBefore.get(testInfo as unknown as object) ?? null;
+    recordDiag(testInfo, 'after', after, {
+      diff: {
+        localStorage: diffMaps(before?.localStorage, after?.localStorage),
+        sessionStorage: diffMaps(before?.sessionStorage, after?.sessionStorage),
+      },
+      failed: testInfo.status !== testInfo.expectedStatus,
+      errors: (testInfo.errors ?? []).map((e) => (e.message ?? '').slice(0, 400)),
+    });
+  });
+}
 
 /**
  * GLOBAL dedup-storage auto-reset.
