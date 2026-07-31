@@ -25,9 +25,12 @@ export const useAdminAutomations = (enabled: boolean) => {
   const [running, setRunning] = useState<string | null>(null);
   const [testResult, setTestResult] = useState<Record<string, unknown> | null>(null);
 
-  const automations = (automationsQuery.data as Automation[] | undefined) ?? [];
-  const runs = (runsQuery.data as AutomationRun[] | undefined) ?? [];
-  const segments = (segmentsQuery.data as SegmentRow[] | undefined) ?? [];
+  const automationsData = automationsQuery.data as Automation[] | undefined;
+  const runsData = runsQuery.data as AutomationRun[] | undefined;
+  const segmentsData = segmentsQuery.data as SegmentRow[] | undefined;
+  const automations = useMemo(() => automationsData ?? [], [automationsData]);
+  const runs = useMemo(() => runsData ?? [], [runsData]);
+  const segments = useMemo(() => segmentsData ?? [], [segmentsData]);
 
   const loading = automationsQuery.isPending || runsQuery.isPending || segmentsQuery.isPending;
   const saving = saveMutation.isPending;
