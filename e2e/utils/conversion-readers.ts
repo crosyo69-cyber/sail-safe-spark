@@ -39,6 +39,17 @@ const FBQ_STASH_KEY = '__fbqCallsStash';
 export async function installGtagRecorder(page: Page): Promise<void> {
   await page.addInitScript(
     ({ stashKey }) => {
+      // The recorder can legitimately be installed twice (the auto analytics
+      // fixture installs it, and legacy specs call installGtagRecorder again).
+      // Each init script runs in the SAME document, so a second installation
+      // must reuse the FIRST closure's array — otherwise the wrapper keeps
+      // writing into the now-orphaned array while `window.__gtagCalls` points
+      // at a fresh empty one ("0 conversions recorded").
+      const already = (window as unknown as { __gtagRecorderInstalled?: boolean })
+        .__gtagRecorderInstalled;
+      if (already) return;
+      (window as unknown as { __gtagRecorderInstalled: boolean }).__gtagRecorderInstalled = true;
+
       const prior = (() => {
         try {
           const raw = sessionStorage.getItem(stashKey);
@@ -47,7 +58,8 @@ export async function installGtagRecorder(page: Page): Promise<void> {
           return [];
         }
       })();
-      const calls: unknown[][] = prior;
+      const existing = (window as unknown as { __gtagCalls?: unknown[][] }).__gtagCalls;
+      const calls: unknown[][] = Array.isArray(existing) ? existing : prior;
       (window as unknown as { __gtagCalls: unknown[][] }).__gtagCalls = calls;
       // Seed dataLayer so production code that probes `window.dataLayer`
       // does not crash. We never READ from it.
