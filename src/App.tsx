@@ -55,6 +55,7 @@ const AdminCRM = lazyWithChunkRecovery(() => import("./pages/AdminCRM"));
 const AdminCampagnes = lazyWithChunkRecovery(() => import("./pages/AdminCampagnes"));
 const AdminAutomations = lazyWithChunkRecovery(() => import("./pages/AdminAutomations"));
 const AdminMarketing = lazyWithChunkRecovery(() => import("./pages/AdminMarketing"));
+const AdminAssistant = lazyWithChunkRecovery(() => import("./pages/AdminAssistant"));
 const WaitlistConfirm = lazyWithChunkRecovery(() => import("./pages/WaitlistConfirm"));
 // NotFound is handled inside LegacyRedirectHandler
 
@@ -139,6 +140,7 @@ const App = () => {
                 <Route path="/admin/campagnes" element={<AdminCampagnes />} />
                 <Route path="/admin/automations" element={<AdminAutomations />} />
                 <Route path="/admin/marketing" element={<AdminMarketing />} />
+                <Route path="/admin/assistant" element={<AdminAssistant />} />
                 <Route path="/liste-attente/:token" element={<WaitlistConfirm />} />
                 <Route path="/mon-espace" element={<MonEspace />} />
                 <Route path="/mon-espace/:code" element={<MonEspace />} />
