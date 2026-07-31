@@ -5705,16 +5705,8 @@ const BlogArticle = () => {
             "Presqu'île de Giens",
           ],
         },
-        {
-          "@type": "FAQPage",
-          "@id": "https://www.kitesurfpassion.fr/blog/efoil-hyeres-voler-sur-eau-sans-vent#faq",
-          mainEntity: [
-            { "@type": "Question", name: "Quel âge minimum pour l'e-foil ?", acceptedAnswer: { "@type": "Answer", text: "L'e-foil est accessible dès 12 ans à Hyères, avec un poids minimum d'environ 40 kg. Aucun prérequis sportif particulier n'est demandé : enfants comme seniors pratiquent l'e-foil dès la première session, toujours encadrés par un moniteur diplômé d'État." } },
-            { "@type": "Question", name: "Faut-il savoir nager pour faire de l'e-foil ?", acceptedAnswer: { "@type": "Answer", text: "Oui, savoir nager est obligatoire. Un niveau basique suffit — vous portez un gilet d'aide à la flottabilité, un casque, et l'e-foil se pratique en zone protégée et peu profonde sur la baie de la Presqu'île de Giens." } },
-            { "@type": "Question", name: "Combien coûte une session e-foil à Hyères ?", acceptedAnswer: { "@type": "Answer", text: "Chez KiteSurf Passion, l'initiation découverte est à 49 €, la session solo 1h à 119 €, la sunset premium à 139 € et le duo 2 planches 1h à 219 €. Packs progression : 330 € les 3 séances, 525 € les 5, 990 € les 10." } },
-            { "@type": "Question", name: "L'e-foil se pratique-t-il par vent fort ?", acceptedAnswer: { "@type": "Answer", text: "Non, l'e-foil se pratique uniquement par vent inférieur à 10 nœuds. Au-delà, la mer devient trop formée et le vol trop instable. En cas de dépassement le jour J, un avoir ou remboursement est proposé." } },
-          ],
-        },
+        // FAQPage volontairement absent du @graph : il est émis comme bloc
+        // JSON-LD standalone depuis articleFAQData (évite le doublon FAQPage).
       ],
     },
   };
