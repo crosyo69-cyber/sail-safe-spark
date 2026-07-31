@@ -12,10 +12,22 @@ test.describe('Blog – JSON-LD FAQPage séparé', () => {
   for (const slug of slugs) {
     test(`article "${slug}" expose un script FAQPage standalone`, async ({ page }) => {
       await page.goto(`/blog/${slug}`, { waitUntil: 'domcontentloaded' });
-      // Attend qu'au moins un JSON-LD soit injecté par React
+      // L'index.html contient déjà des JSON-LD statiques (WebSite/Organization) :
+      // attendre "au moins un" ne prouve rien. On attend que react-helmet ait
+      // injecté le JSON-LD spécifique à l'article (Article/BlogPosting ou @graph).
+      await page.getByRole('heading', { level: 1 }).first().waitFor({ timeout: 15_000 });
       await page.waitForFunction(
-        () => document.querySelectorAll('script[type="application/ld+json"]').length > 0,
-        { timeout: 10_000 },
+        () =>
+          Array.from(document.querySelectorAll('script[type="application/ld+json"]')).some((n) => {
+            try {
+              const d = JSON.parse(n.textContent || '');
+              const types = Array.isArray(d?.['@graph'])
+                ? d['@graph'].map((x: any) => x?.['@type'])
+                : [d?.['@type']];
+              return types.includes('Article') || types.includes('BlogPosting');
+            } catch { return false; }
+          }),
+        { timeout: 15_000 },
       );
 
       const blocks = await page.$$eval('script[type="application/ld+json"]', (nodes) =>
