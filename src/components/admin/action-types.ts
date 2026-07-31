@@ -68,3 +68,20 @@ export const PRIORITY_META: Record<string, string> = {
   normale: "border-primary/40 text-primary",
   basse: "border-muted-foreground/30 text-muted-foreground",
 };
+
+/** Correspondance opportunité du briefing → action préparable + priorité affichée. */
+export const OPPORTUNITY_ACTION: Record<string, { type: PreparedActionType; priority: string }> = {
+  credits_expirants: { type: "relance_credits", priority: "haute" },
+  credits: { type: "relance_credits", priority: "haute" },
+  inactifs: { type: "relance_inactifs", priority: "normale" },
+  reactivation: { type: "relance_inactifs", priority: "normale" },
+  meteo: { type: "campagne_meteo", priority: "haute" },
+  vent: { type: "campagne_meteo", priority: "haute" },
+  stage: { type: "promo_stage", priority: "normale" },
+  places_libres: { type: "derniere_minute", priority: "haute" },
+  derniere_minute: { type: "derniere_minute", priority: "haute" },
+  remplissage: { type: "derniere_minute", priority: "haute" },
+};
+
+export const opportunityAction = (type: string): { type: PreparedActionType; priority: string } =>
+  OPPORTUNITY_ACTION[type] ?? { type: "campagne_brevo", priority: "normale" };
