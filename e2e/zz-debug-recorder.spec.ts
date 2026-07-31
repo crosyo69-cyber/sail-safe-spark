@@ -7,7 +7,7 @@ test('debug recorder', async ({ page }) => {
   await page.addInitScript(() => {
     (window as any).__probe = [];
     window.addEventListener('ksp:gads-conversion', (e: any) => {
-      (window as any).__probe.push(['event', e.detail?.status, typeof (window as any).gtag, !!(window as any).gtag?.__isGtagRecorder]);
+      const w = window as any; w.__probe.push(['event', e.detail?.status, w.__gtagCalls?.length, JSON.stringify((w.__gtagCalls||[]).slice(-2).map((c:any)=>[c[0],c[1]])), String(w.gtag).slice(0,60)]);
     });
   });
   await page.goto('/');
