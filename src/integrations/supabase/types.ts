@@ -83,6 +83,39 @@ export type Database = {
         }
         Relationships: []
       }
+      assistant_conversations: {
+        Row: {
+          answer: string | null
+          created_at: string
+          error: string | null
+          id: string
+          intents: Json
+          question: string
+          user_email: string | null
+          user_id: string
+        }
+        Insert: {
+          answer?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          intents?: Json
+          question: string
+          user_email?: string | null
+          user_id: string
+        }
+        Update: {
+          answer?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          intents?: Json
+          question?: string
+          user_email?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       blog_comments: {
         Row: {
           article_slug: string
@@ -1593,6 +1626,10 @@ export type Database = {
           p_notes?: string
           p_status?: string
         }
+        Returns: Json
+      }
+      assistant_query: {
+        Args: { p_intent: string; p_params?: Json }
         Returns: Json
       }
       book_daily_visitor: {

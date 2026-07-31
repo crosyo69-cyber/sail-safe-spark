@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.assistant_query(text, jsonb) FROM supabase_read_only_user;

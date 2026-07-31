@@ -20,7 +20,7 @@ import AdminRichResultsValidator from "@/components/admin/AdminRichResultsValida
 import AdminAlertsCenter from "@/components/admin/AdminAlertsCenter";
 import AdminNotificationsBell from "@/components/admin/AdminNotificationsBell";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell, Wallet, Megaphone, Settings } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell, Wallet, Megaphone, Settings, Bot } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -64,6 +64,9 @@ const Admin = () => {
             Administration
           </h1>
           <div className="flex items-center gap-2">
+            <Button asChild variant="default" size="sm">
+              <Link to="/admin/assistant"><Bot className="w-4 h-4 mr-2" />Assistant IA</Link>
+            </Button>
             <Button asChild variant="outline" size="sm">
               <Link to="/admin/journees"><CalendarDays className="w-4 h-4 mr-2" />Gestion des journées</Link>
             </Button>
