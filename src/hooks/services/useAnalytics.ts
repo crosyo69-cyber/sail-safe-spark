@@ -6,6 +6,7 @@ export const analyticsKeys = {
   all: ["analytics"] as const,
   health: () => [...analyticsKeys.all, "platform-health"] as const,
   notFound: (limit: number) => [...analyticsKeys.all, "404", limit] as const,
+  conversionEvents: (hours: number) => [...analyticsKeys.all, "conversion-events", hours] as const,
 };
 
 export const useAnalytics = () => ({
@@ -23,5 +24,12 @@ export const useAnalytics = () => ({
       queryKey: analyticsKeys.notFound(limit),
       enabled,
       queryFn: async () => unwrap(await analyticsService.page404Logs(limit)),
+    }),
+
+  useConversionEvents: (hours: number, enabled = true) =>
+    useQuery({
+      queryKey: analyticsKeys.conversionEvents(hours),
+      enabled,
+      queryFn: async () => unwrap(await analyticsService.conversionEvents(hours)) ?? [],
     }),
 });
