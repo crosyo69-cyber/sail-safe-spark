@@ -90,3 +90,55 @@ Les composants sont migrés par étapes (services d'abord, puis composants
 `BlogArticle` fait l'objet d'un lot dédié.
 
 Après chaque extraction : TypeScript, ESLint, Playwright — zéro régression.
+
+## Standard obligatoire (LOT 2)
+
+### Flux imposé
+
+```text
+src/pages/           Composition, état d'URL, aucun appel réseau
+   ↓
+src/hooks/admin/     État d'UI, orchestration, toasts, confirmations
+   ↓
+src/hooks/services/  React Query : cache, clés, invalidation, unwrap()
+   ↓
+src/services/        Règles d'accès au domaine, Result<T>, jamais d'exception
+   ↓
+createApiClient      Timeout, retry + jitter, erreurs typées, idempotence
+   ↓
+Supabase             RPC / tables / Edge Functions
+```
+
+### Responsabilités
+
+| Couche | Autorisé | Interdit |
+| --- | --- | --- |
+| `pages/` | JSX, composition, un hook admin | Supabase, `fetch`, RPC, logique métier |
+| `components/` | Props in / JSX out | Supabase, `fetch`, RPC, requêtes |
+| `hooks/admin/` | État local, toasts, orchestration | Supabase, `fetch`, RPC |
+| `hooks/services/` | React Query, clés, invalidation | `supabase.*` en direct, toasts |
+| `services/` | `createApiClient`, mapping du domaine | React, `toast`, JSX |
+| `features/<m>/types.ts` | Types, calculs purs | React, réseau |
+
+### Règles appliquées automatiquement (ESLint)
+
+Dans `src/pages/**`, `src/components/**`, `src/hooks/admin/**` :
+
+| Règle | Effet |
+| --- | --- |
+| `no-restricted-imports` | Interdit `@/integrations/supabase/client` et `@supabase/supabase-js` |
+| `no-restricted-syntax` (`fetch`) | Interdit `fetch()` et `window.fetch` |
+| `no-restricted-syntax` (`.rpc`) | Interdit tout appel `*.rpc(...)` |
+| `no-restricted-syntax` (`functions.invoke`) | Interdit l'appel direct d'Edge Functions |
+
+Une violation dans un fichier neuf fait échouer `npm run lint`. Les fichiers
+antérieurs au standard sont listés explicitement dans `eslint.config.js`
+(`LEGACY_DIRECT_SUPABASE`) et rétrogradés en avertissement : cette liste ne doit
+jamais s'allonger, uniquement se réduire au fil des migrations.
+
+### Template de module
+
+`src/features/_template/` contient un module complet de référence (types, service,
+hook React Query, hook admin, composant, page, index). Voir
+[docs/development-guide.md](./development-guide.md) pour la procédure et la
+checklist de validation obligatoire.
