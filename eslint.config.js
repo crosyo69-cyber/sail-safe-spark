@@ -43,7 +43,6 @@ const LEGACY_DIRECT_SUPABASE = [
   "src/pages/Auth.tsx",
   "src/pages/Contact.tsx",
   "src/pages/EfoilAssistFoil.tsx",
-  "src/pages/MonEspace.tsx",
   "src/pages/NotFound.tsx",
   "src/pages/OAuthConsent.tsx",
   "src/pages/PreferencesMarketing.tsx",
@@ -57,6 +56,7 @@ const REACT_LAYER = [
   "src/pages/**/*.{ts,tsx}",
   "src/components/**/*.{ts,tsx}",
   "src/hooks/admin/**/*.{ts,tsx}",
+  "src/hooks/client/**/*.{ts,tsx}",
 ];
 
 const ARCHITECTURE_RULES = {
