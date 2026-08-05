@@ -12,7 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { blogArticles } from "./Blog";
+import { blogArticles } from "@/features/blog";
 import DOMPurify from "dompurify";
 import { marked } from "marked";
 
