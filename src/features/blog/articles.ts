@@ -546,3 +546,5 @@ export const blogArticles = [
     featured: true,
   },
 ];
+
+export type BlogArticle = (typeof blogArticles)[number];
