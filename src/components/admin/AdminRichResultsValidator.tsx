@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { blogArticles } from "@/pages/Blog";
+import { blogArticles } from "@/features/blog";
 import { CheckCircle2, XCircle, ExternalLink, Loader2, FileSearch, ListChecks } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
