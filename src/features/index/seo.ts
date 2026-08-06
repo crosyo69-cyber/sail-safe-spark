@@ -9,6 +9,7 @@ const sellerInfo = {
 };
 
 // Price validity date (end of current season)
+const priceValidUntil = "2026-11-30";
 
 // SportsSchool structured data with extended offers
 export const homeStructuredData = {
