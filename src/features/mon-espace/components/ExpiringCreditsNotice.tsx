@@ -1,5 +1,6 @@
 import { AlertTriangle } from "lucide-react";
-import { bucketExpiringCredits, type CreditEntry } from "@/features/mon-espace/types";
+import { bucketExpiringCredits } from "../helpers";
+import type { CreditEntry } from "../types";
 
 export const ExpiringCreditsNotice = ({ credits }: { credits: CreditEntry[] }) => {
   const { today, week, month, total, urgent } = bucketExpiringCredits(credits);

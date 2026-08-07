@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Bell, BellOff } from "lucide-react";
-import { REMINDER_ROWS, type ReminderPrefs } from "@/features/mon-espace/types";
+import { REMINDER_ROWS } from "../constants";
+import type { ReminderPrefs } from "../types";
 
 interface Props {
   reminders: ReminderPrefs;

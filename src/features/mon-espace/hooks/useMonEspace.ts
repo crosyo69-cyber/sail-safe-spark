@@ -4,21 +4,21 @@ import { toast } from "sonner";
 import { useCredits } from "@/hooks/services/useCredits";
 import { useReservations } from "@/hooks/services/useReservations";
 import { parisStartOfTomorrow, toParisDateOnly } from "@/lib/booking-dates";
+import { BOOKING_ERRORS, CANCEL_ERRORS, DEFAULT_REMINDERS } from "../constants";
 import {
-  BOOKING_ERRORS,
-  CANCEL_ERRORS,
-  DEFAULT_REMINDERS,
   activityTitle,
   bookedDatesOf,
   confirmedBookings,
   groupCapacity,
   packageFlags,
-  type CreditEntry,
-  type CreditHistoryEntry,
-  type PackageInfo,
-  type ReminderPrefs,
-  type WalletEntry,
-} from "@/features/mon-espace/types";
+} from "../helpers";
+import type {
+  CreditEntry,
+  CreditHistoryEntry,
+  PackageInfo,
+  ReminderPrefs,
+  WalletEntry,
+} from "../types";
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- RPC payloads are untyped JSON */
 

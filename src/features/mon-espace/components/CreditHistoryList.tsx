@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle2, CloudRain, Plus } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import type { CreditHistoryEntry } from "@/features/mon-espace/types";
+import type { CreditHistoryEntry } from "../types";
 
 export const CreditHistoryList = ({ history }: { history: CreditHistoryEntry[] }) => {
   if (history.length === 0) return null;
