@@ -2,13 +2,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Ticket } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import {
-  ACTIVITY_LABEL,
-  availableCreditsFor,
-  expiringSoon,
-  type CreditEntry,
-  type WalletEntry,
-} from "@/features/mon-espace/types";
+import { ACTIVITY_LABEL } from "../constants";
+import { availableCreditsFor, expiringSoon } from "../helpers";
+import type { CreditEntry, WalletEntry } from "../types";
 
 interface Props {
   wallet: WalletEntry[];

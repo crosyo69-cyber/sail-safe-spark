@@ -3,15 +3,17 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
-import { useMonEspace } from "@/hooks/client/useMonEspace";
-import { CodeForm } from "@/components/mon-espace/CodeForm";
-import { ExpiringCreditsNotice } from "@/components/mon-espace/ExpiringCreditsNotice";
-import { PackageSummary } from "@/components/mon-espace/PackageSummary";
-import { WalletGrid } from "@/components/mon-espace/WalletGrid";
-import { ReminderPreferences } from "@/components/mon-espace/ReminderPreferences";
-import { BookedDays } from "@/components/mon-espace/BookedDays";
-import { BookingSection } from "@/components/mon-espace/BookingSection";
-import { CreditHistoryList } from "@/components/mon-espace/CreditHistoryList";
+import {
+  useMonEspace,
+  CodeForm,
+  ExpiringCreditsNotice,
+  PackageSummary,
+  WalletGrid,
+  ReminderPreferences,
+  BookedDays,
+  BookingSection,
+  CreditHistoryList,
+} from "@/features/mon-espace";
 
 const MonEspace = () => {
   const ctrl = useMonEspace();

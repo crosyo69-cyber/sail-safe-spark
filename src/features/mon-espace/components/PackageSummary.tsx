@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import type { PackageInfo } from "@/features/mon-espace/types";
+import type { PackageInfo } from "../types";
 
 interface Props {
   pkg: PackageInfo;

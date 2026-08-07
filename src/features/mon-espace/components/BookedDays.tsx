@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import type { Booking } from "@/features/mon-espace/types";
+import type { Booking } from "../types";
 
 interface Props {
   bookings: Booking[];
