@@ -1,8 +1,6 @@
 export * from "./types";
 export * from "./constants";
 export * from "./helpers";
-export { useMonEspace } from "./hooks/useMonEspace";
-export type { MonEspaceController } from "./hooks/useMonEspace";
 export { CodeForm } from "./components/CodeForm";
 export { ExpiringCreditsNotice } from "./components/ExpiringCreditsNotice";
 export { PackageSummary } from "./components/PackageSummary";

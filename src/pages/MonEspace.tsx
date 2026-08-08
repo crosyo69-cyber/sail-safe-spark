@@ -3,8 +3,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
+import { useMonEspace } from "@/hooks/client/useMonEspace";
 import {
-  useMonEspace,
   CodeForm,
   ExpiringCreditsNotice,
   PackageSummary,

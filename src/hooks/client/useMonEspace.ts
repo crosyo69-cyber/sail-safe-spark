@@ -1,24 +1,23 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { useCredits } from "@/hooks/services/useCredits";
-import { useReservations } from "@/hooks/services/useReservations";
+import { useClientSpace } from "@/hooks/services/useClientSpace";
 import { parisStartOfTomorrow, toParisDateOnly } from "@/lib/booking-dates";
-import { BOOKING_ERRORS, CANCEL_ERRORS, DEFAULT_REMINDERS } from "../constants";
+import { BOOKING_ERRORS, CANCEL_ERRORS, DEFAULT_REMINDERS } from "@/features/mon-espace/constants";
 import {
   activityTitle,
   bookedDatesOf,
   confirmedBookings,
   groupCapacity,
   packageFlags,
-} from "../helpers";
+} from "@/features/mon-espace/helpers";
 import type {
   CreditEntry,
   CreditHistoryEntry,
   PackageInfo,
   ReminderPrefs,
   WalletEntry,
-} from "../types";
+} from "@/features/mon-espace/types";
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- RPC payloads are untyped JSON */
 
@@ -33,16 +32,15 @@ export const useMonEspace = () => {
   const [reminders, setReminders] = useState<ReminderPrefs>(DEFAULT_REMINDERS);
   const [notFound, setNotFound] = useState(false);
 
-  const credits = useCredits();
-  const reservations = useReservations();
+  const clientSpace = useClientSpace();
 
-  const packageQuery = credits.usePackage(activeCode);
-  const historyQuery = credits.useHistory(activeCode);
-  const walletQuery = credits.useWallet(activeCode);
-  const remindersQuery = credits.useReminders(activeCode);
-  const setRemindersMutation = credits.useSetReminders();
-  const bookDaily = reservations.useBookDaily();
-  const cancelBooking = reservations.useCancelBooking();
+  const packageQuery = clientSpace.usePackage(activeCode);
+  const historyQuery = clientSpace.useHistory(activeCode);
+  const walletQuery = clientSpace.useWallet(activeCode);
+  const remindersQuery = clientSpace.useReminders(activeCode);
+  const setRemindersMutation = clientSpace.useSetReminders();
+  const bookDaily = clientSpace.useBookDaily();
+  const cancelBooking = clientSpace.useCancelBooking();
 
   const pkg = (notFound ? null : (packageQuery.data as PackageInfo | null)) ?? null;
   const history = (historyQuery.data as CreditHistoryEntry[] | null) || [];
