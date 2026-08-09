@@ -236,12 +236,13 @@ export const customArticleStructuredData: Record<string, object> = {
 /** Détecte un FAQPage déjà présent (y compris dans un @graph). */
 export const structuredDataContainsFAQPage = (data: object | null): boolean => {
   if (!data) return false;
-  const nodes: any[] = [];
-  const walk = (node: any) => {
+  const nodes: Record<string, unknown>[] = [];
+  const walk = (node: unknown) => {
     if (!node) return;
     if (Array.isArray(node)) return node.forEach(walk);
-    nodes.push(node);
-    if (node["@graph"]) walk(node["@graph"]);
+    const record = node as Record<string, unknown>;
+    nodes.push(record);
+    if (record["@graph"]) walk(record["@graph"]);
   };
   walk(data);
   return nodes.some((n) => n?.["@type"] === "FAQPage");

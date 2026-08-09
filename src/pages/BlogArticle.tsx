@@ -22,9 +22,6 @@ import {
 
 import NotFound from "./NotFound";
 
-// Ré-export conservé pour compatibilité (FAQ structured data des articles).
-export { articleFAQData } from "@/data/blog-faq";
-
 const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
 
