@@ -5,7 +5,6 @@ import type { Database } from "@/integrations/supabase/types";
 const api = createApiClient({ scope: "reservation" });
 
 type Fn = Database["public"]["Functions"];
-type Json = Database["public"]["Tables"] extends never ? unknown : unknown;
 export type ActivityType = Database["public"]["Enums"]["activity_type"];
 
 /**
