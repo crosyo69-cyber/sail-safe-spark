@@ -1,27 +1,22 @@
-Error: browserType.launch: Executable doesn't exist at /opt/ms-playwright/chromium_headless_shell-1217/chrome-headless-shell-linux64/chrome-headless-shell
-╔════════════════════════════════════════════════════════════╗
-║ Looks like Playwright was just installed or updated.       ║
-║ Please run the following command to download new browsers: ║
-║                                                            ║
-║     npx playwright install                                 ║
-║                                                            ║
-║ <3 Playwright Team                                         ║
-╚════════════════════════════════════════════════════════════╝
-Error: browserType.launch: Executable doesn't exist at /opt/ms-playwright/chromium_headless_shell-1217/chrome-headless-shell-linux64/chrome-headless-shell
-╔════════════════════════════════════════════════════════════╗
-║ Looks like Playwright was just installed or updated.       ║
-║ Please run the following command to download new browsers: ║
-║                                                            ║
-║     npx playwright install                                 ║
-║                                                            ║
-║ <3 Playwright Team                                         ║
-╚════════════════════════════════════════════════════════════╝
-Error: browserType.launch: Executable doesn't exist at /opt/ms-playwright/chromium_headless_shell-1217/chrome-headless-shell-linux64/chrome-headless-shell
-╔════════════════════════════════════════════════════════════╗
-║ Looks like Playwright was just installed or updated.       ║
-║ Please run the following command to download new browsers: ║
-║                                                            ║
-║     npx playwright install                                 ║
-║                                                            ║
-║ <3 Playwright Team                                         ║
-╚════════════════════════════════════════════════════════════╝
+Error: locator.fill: Error: strict mode violation: getByLabel('Email') resolved to 2 elements:
+    1) <input value="" type="email" aria-label="Email newsletter" placeholder="Email newsletter" data-testid="newsletter-email-footer" class="flex h-10 w-full rounded-md border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm bg-background/10 border-border/30 text-foregroun…/> aka getByTestId('newsletter-email-footer')
+    2) <input value="" type="email" id="wl-email" maxlength="255" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"/> aka getByRole('textbox', { name: 'Email' })
+
+Call log:
+[2m  - waiting for getByLabel('Email')[22m
+
+Error: locator.fill: Error: strict mode violation: getByLabel('Email') resolved to 2 elements:
+    1) <input value="" type="email" aria-label="Email newsletter" placeholder="Email newsletter" data-testid="newsletter-email-footer" class="flex h-10 w-full rounded-md border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm bg-background/10 border-border/30 text-foregroun…/> aka getByTestId('newsletter-email-footer')
+    2) <input value="" type="email" id="wl-email" maxlength="255" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"/> aka getByRole('textbox', { name: 'Email' })
+
+Call log:
+[2m  - waiting for getByLabel('Email')[22m
+
+Error: locator.fill: Error: strict mode violation: getByLabel('Email') resolved to 2 elements:
+    1) <input value="" type="email" aria-label="Email newsletter" placeholder="Email newsletter" data-testid="newsletter-email-footer" class="flex h-10 w-full rounded-md border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm bg-background/10 border-border/30 text-foregroun…/> aka getByTestId('newsletter-email-footer')
+    2) <input value="" type="email" id="wl-email" maxlength="255" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"/> aka getByRole('textbox', { name: 'Email' })
+
+Call log:
+[2m  - waiting for getByLabel('Email')[22m
+
+    at /dev-server/e2e/reservation-payment-contracts.spec.ts:201:36
