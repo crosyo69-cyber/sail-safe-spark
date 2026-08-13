@@ -196,12 +196,14 @@ test.describe('Contrats réservation / paiement', () => {
     await expect(page.getByText('Complet')).toBeVisible({ timeout: 15_000 });
     await page.getByRole('button', { name: /Rejoindre la liste d'attente/i }).click();
 
-    await page.getByLabel('Prénom').fill('Jean');
-    await page.getByLabel('Nom', { exact: true }).fill('Testeur');
-    await page.getByLabel('Email').fill('E2E@Kitesurfpassion.TEST');
-    await page.getByLabel(/Téléphone/).fill('0612345678');
+    const dialog = page.getByRole('dialog');
+    await expect(dialog).toBeVisible();
+    await dialog.locator('#wl-first').fill('Jean');
+    await dialog.locator('#wl-last').fill('Testeur');
+    await dialog.locator('#wl-email').fill('E2E@Kitesurfpassion.TEST');
+    await dialog.locator('#wl-phone').fill('0612345678');
 
-    await page.getByRole('button', { name: /^M'inscrire|Rejoindre|Confirmer/i }).last().click();
+    await dialog.getByRole('button', { name: /inscrire|Rejoindre|Confirmer|Valider/i }).last().click();
 
     await expect.poll(() => wlArgs, { timeout: 15_000 }).toBeTruthy();
     expect(wlArgs).toEqual({

@@ -1,22 +1,37 @@
-Error: locator.fill: Error: strict mode violation: getByLabel('Email') resolved to 2 elements:
-    1) <input value="" type="email" aria-label="Email newsletter" placeholder="Email newsletter" data-testid="newsletter-email-footer" class="flex h-10 w-full rounded-md border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm bg-background/10 border-border/30 text-foregroun…/> aka getByTestId('newsletter-email-footer')
-    2) <input value="" type="email" id="wl-email" maxlength="255" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"/> aka getByRole('textbox', { name: 'Email' })
+Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+Locator: getByRole('dialog')
+Expected: visible
+Error: strict mode violation: getByRole('dialog') resolved to 2 elements:
+    1) <div role="dialog" tabindex="-1" id="radix-:r3:" data-side="bottom" data-align="start" data-state="closed" class="z-50 rounded-md border bg-popover text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side…>…</div> aka getByRole('dialog').first()
+    2) <div role="dialog" tabindex="-1" id="radix-:r4:" data-state="open" aria-labelledby="radix-:r5:" aria-describedby="radix-:r6:" class="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 da…>…</div> aka getByRole('dialog', { name: 'Rejoindre la liste d\'attente' })
 
 Call log:
-[2m  - waiting for getByLabel('Email')[22m
+[2m  - Expect "toBeVisible" with timeout 5000ms[22m
+[2m  - waiting for getByRole('dialog')[22m
 
-Error: locator.fill: Error: strict mode violation: getByLabel('Email') resolved to 2 elements:
-    1) <input value="" type="email" aria-label="Email newsletter" placeholder="Email newsletter" data-testid="newsletter-email-footer" class="flex h-10 w-full rounded-md border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm bg-background/10 border-border/30 text-foregroun…/> aka getByTestId('newsletter-email-footer')
-    2) <input value="" type="email" id="wl-email" maxlength="255" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"/> aka getByRole('textbox', { name: 'Email' })
+Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
 
-Call log:
-[2m  - waiting for getByLabel('Email')[22m
-
-Error: locator.fill: Error: strict mode violation: getByLabel('Email') resolved to 2 elements:
-    1) <input value="" type="email" aria-label="Email newsletter" placeholder="Email newsletter" data-testid="newsletter-email-footer" class="flex h-10 w-full rounded-md border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm bg-background/10 border-border/30 text-foregroun…/> aka getByTestId('newsletter-email-footer')
-    2) <input value="" type="email" id="wl-email" maxlength="255" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"/> aka getByRole('textbox', { name: 'Email' })
+Locator: getByRole('dialog')
+Expected: visible
+Error: strict mode violation: getByRole('dialog') resolved to 2 elements:
+    1) <div role="dialog" tabindex="-1" id="radix-:r3:" data-side="bottom" data-align="start" data-state="closed" class="z-50 rounded-md border bg-popover text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side…>…</div> aka getByRole('dialog').first()
+    2) <div role="dialog" tabindex="-1" id="radix-:r4:" data-state="open" aria-labelledby="radix-:r5:" aria-describedby="radix-:r6:" class="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 da…>…</div> aka getByRole('dialog', { name: 'Rejoindre la liste d\'attente' })
 
 Call log:
-[2m  - waiting for getByLabel('Email')[22m
+[2m  - Expect "toBeVisible" with timeout 5000ms[22m
+[2m  - waiting for getByRole('dialog')[22m
 
-    at /dev-server/e2e/reservation-payment-contracts.spec.ts:201:36
+Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+Locator: getByRole('dialog')
+Expected: visible
+Error: strict mode violation: getByRole('dialog') resolved to 2 elements:
+    1) <div role="dialog" tabindex="-1" id="radix-:r3:" data-side="bottom" data-align="start" data-state="closed" class="z-50 rounded-md border bg-popover text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side…>…</div> aka getByRole('dialog').first()
+    2) <div role="dialog" tabindex="-1" id="radix-:r4:" data-state="open" aria-labelledby="radix-:r5:" aria-describedby="radix-:r6:" class="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 da…>…</div> aka getByRole('dialog', { name: 'Rejoindre la liste d\'attente' })
+
+Call log:
+[2m  - Expect "toBeVisible" with timeout 5000ms[22m
+[2m  - waiting for getByRole('dialog')[22m
+
+    at /dev-server/e2e/reservation-payment-contracts.spec.ts:200:26
