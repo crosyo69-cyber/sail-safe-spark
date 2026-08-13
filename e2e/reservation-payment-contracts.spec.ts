@@ -196,7 +196,7 @@ test.describe('Contrats réservation / paiement', () => {
     await expect(page.getByText('Complet')).toBeVisible({ timeout: 15_000 });
     await page.getByRole('button', { name: /Rejoindre la liste d'attente/i }).click();
 
-    const dialog = page.getByRole('dialog');
+    const dialog = page.getByRole('dialog', { name: /liste d'attente/i });
     await expect(dialog).toBeVisible();
     await dialog.locator('#wl-first').fill('Jean');
     await dialog.locator('#wl-last').fill('Testeur');
