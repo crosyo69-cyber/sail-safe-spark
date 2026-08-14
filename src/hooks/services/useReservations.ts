@@ -28,6 +28,12 @@ export const useReservations = () => {
       useQuery({
         queryKey: reservationKeys.availability(date),
         enabled: enabled && !!date,
+        // ISO-COMPORTEMENT : l'ancien code refaisait un appel à chaque
+        // sélection de date, sans cache ni refetch au focus.
+        retry: false,
+        staleTime: 0,
+        gcTime: 0,
+        refetchOnWindowFocus: false,
         queryFn: async () =>
           unwrap(await reservationService.getDailyAvailability({ p_date: date })),
       }),
