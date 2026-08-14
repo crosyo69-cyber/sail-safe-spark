@@ -9,6 +9,8 @@ export const reservationKeys = {
   all: ["reservations"] as const,
   /** One key per day — mirrors `get_daily_availability(p_date)`. */
   availability: (date: string) => [...reservationKeys.all, "availability", date] as const,
+  availabilityDays: (dates: string[]) =>
+    [...reservationKeys.all, "availability-days", dates.join(",")] as const,
   adminGroups: (date: string) => [...reservationKeys.all, "admin-groups", date] as const,
   adminGroupsRange: (start: string, end: string) =>
     [...reservationKeys.all, "admin-groups-range", start, end] as const,
