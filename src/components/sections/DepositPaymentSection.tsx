@@ -5,8 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CreditCard, Ship, Award, Settings, Repeat, MapPin, Minus, Plus, CalendarIcon } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useDepositCheckout } from "@/hooks/client/useDepositCheckout";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -62,7 +62,7 @@ const activities = [
 
 const DepositPaymentSection = () => {
   const { toast } = useToast();
-  const [loadingId, setLoadingId] = useState<string | null>(null);
+  const { loadingId, start } = useDepositCheckout();
   const [participants, setParticipants] = useState<Record<string, number>>({});
   const [selectedDates, setSelectedDates] = useState<Record<string, Date | undefined>>({});
   const [phones, setPhones] = useState<Record<string, string>>({});
