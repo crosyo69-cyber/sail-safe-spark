@@ -47,6 +47,36 @@ export const useReservations = () => {
         queryFn: async () => unwrap(await reservationService.listDailyGroups(args)),
       }),
 
+    /**
+     * Disponibilité de plusieurs journées consécutives (Stage 100% Glisse).
+     * ISO-COMPORTEMENT : les appels restent SÉQUENTIELS, un `get_daily_availability`
+     * par date, exactement comme la boucle d'origine. Aucune parallélisation ici.
+     */
+    useAvailabilityDays: (dates: string[], enabled = true) =>
+      useQuery({
+        queryKey: reservationKeys.availabilityDays(dates),
+        enabled: enabled && dates.length > 0,
+        retry: false,
+        staleTime: 0,
+        gcTime: 0,
+        refetchOnWindowFocus: false,
+        queryFn: async () => {
+          const out: unknown[] = [];
+          for (const date of dates) {
+            const res = await reservationService.getDailyAvailability({ p_date: date });
+            out.push(res.ok ? res.data : null);
+          }
+          return out;
+        },
+      }),
+
+    useAdminGroupsLegacy: (args: Fn["admin_list_daily_groups"]["Args"], enabled = true) =>
+      useQuery({
+        queryKey: reservationKeys.adminGroups(args.p_date),
+        enabled,
+        queryFn: async () => unwrap(await reservationService.listDailyGroups(args)),
+      }),
+
     useAdminGroupsRange: (args: Fn["admin_list_daily_groups_range"]["Args"], enabled = true) =>
       useQuery({
         queryKey: reservationKeys.adminGroupsRange(args.p_start, args.p_end),
