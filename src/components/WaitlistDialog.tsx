@@ -5,9 +5,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useJoinWaitlist } from "@/hooks/client/useWaitlist";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -20,42 +19,16 @@ interface Props {
 }
 
 export const WaitlistDialog = ({ open, onOpenChange, date, activity, activityLabel }: Props) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [participants, setParticipants] = useState(1);
-  const [busy, setBusy] = useState(false);
-
-  const valid =
-    firstName.trim().length >= 2 &&
-    lastName.trim().length >= 2 &&
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) &&
-    !!date;
-
-  const submit = async () => {
-    if (!valid || !date) return;
-    setBusy(true);
-    const { data, error } = await supabase.rpc("join_waitlist", {
-      p_date: date,
-      p_activity: activity as any,
-      p_first_name: firstName.trim().slice(0, 100),
-      p_last_name: lastName.trim().slice(0, 100),
-      p_email: email.trim().toLowerCase().slice(0, 255),
-      p_phone: phone.trim().slice(0, 30) || null,
-      p_participants: participants,
-    });
-    setBusy(false);
-    if (error) return toast.error("Erreur : " + error.message);
-    const res = data as any;
-    if (!res?.ok) return toast.error("Inscription impossible");
-    toast.success(
-      res?.already
-        ? "Vous êtes déjà sur la liste d'attente pour cette journée."
-        : "Vous êtes inscrit sur la liste d'attente — nous vous préviendrons par email dès qu'une place se libère.",
-    );
-    onOpenChange(false);
-  };
+  const {
+    firstName, setFirstName,
+    lastName, setLastName,
+    email, setEmail,
+    phone, setPhone,
+    participants, setParticipants,
+    valid,
+    busy,
+    submit,
+  } = useJoinWaitlist(date, activity, () => onOpenChange(false));
 
   return (
     <Dialog open={open} onOpenChange={(o) => !busy && onOpenChange(o)}>
