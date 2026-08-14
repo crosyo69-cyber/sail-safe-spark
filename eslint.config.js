@@ -13,7 +13,6 @@ import tseslint from "typescript-eslint";
 const LEGACY_DIRECT_SUPABASE = [
   "src/components/BlogComments.tsx",
   "src/components/ChatBot.tsx",
-  "src/components/WaitlistDialog.tsx",
   "src/components/WeatherAlertSubscription.tsx",
   "src/components/admin/Admin404Monitor.tsx",
   "src/components/admin/AdminAlertsCenter.tsx",
@@ -33,8 +32,6 @@ const LEGACY_DIRECT_SUPABASE = [
   "src/components/admin/CampaignEditor.tsx",
   "src/components/admin/CrmClientSheet.tsx",
   "src/components/admin/SegmentBuilder.tsx",
-  "src/components/sections/CTASection.tsx",
-  "src/components/sections/DepositPaymentSection.tsx",
   "src/pages/AdminAssistant.tsx",
   "src/pages/AdminCRM.tsx",
   "src/pages/AdminCampagnes.tsx",
@@ -46,9 +43,7 @@ const LEGACY_DIRECT_SUPABASE = [
   "src/pages/NotFound.tsx",
   "src/pages/OAuthConsent.tsx",
   "src/pages/PreferencesMarketing.tsx",
-  "src/pages/Reserver.tsx",
   "src/pages/UnsubscribeAlerts.tsx",
-  "src/pages/WaitlistConfirm.tsx",
 ];
 
 /** Couche React : pages, composants, hooks d'administration. */
