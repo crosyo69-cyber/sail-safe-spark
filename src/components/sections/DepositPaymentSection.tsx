@@ -152,42 +152,28 @@ const DepositPaymentSection = () => {
       return;
     }
 
-    setLoadingId(activityId);
     const count = getCount(activityId);
+    // RÈGLE ABSOLUE Safari/iOS : ouverture SYNCHRONE, avant tout await /
+    // mutation React Query / appel réseau.
     const stripeWindow = window.open("about:blank", "_blank");
-    try {
-      const { data, error } = await supabase.functions.invoke("create-checkout", {
-        body: {
-          activityName,
-          participants: count,
-          preferredDate: toParisDateOnly(date),
-          phone,
-          customerName: name,
-          totalSessions: totalSessions ?? count,
-        },
-      });
-
-      if (error) throw error;
-      if (data?.url) {
-        if (stripeWindow && !stripeWindow.closed) {
-          stripeWindow.location.href = data.url;
-        } else {
-          window.location.href = data.url;
-        }
-      } else {
-        stripeWindow?.close();
-        throw new Error("Aucune URL de paiement reçue");
-      }
-    } catch (err: any) {
-      console.error("Checkout error:", err);
-      toast({
-        title: "Erreur",
-        description: "Impossible de lancer le paiement. Veuillez réessayer ou nous appeler.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoadingId(null);
-    }
+    await start(
+      activityId,
+      {
+        activityName,
+        participants: count,
+        preferredDate: toParisDateOnly(date),
+        phone,
+        customerName: name,
+        totalSessions: totalSessions ?? count,
+      },
+      stripeWindow,
+      () =>
+        toast({
+          title: "Erreur",
+          description: "Impossible de lancer le paiement. Veuillez réessayer ou nous appeler.",
+          variant: "destructive",
+        }),
+    );
   };
 
   // "Demain" calculé en Europe/Paris (timezone serveur), normalisé à minuit
