@@ -5,8 +5,8 @@ import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CreditCard, Ship, Award, Settings, Repeat, MapPin, Minus, Plus, CalendarIcon } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useDepositCheckout } from "@/hooks/client/useDepositCheckout";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -62,7 +62,7 @@ const activities = [
 
 const DepositPaymentSection = () => {
   const { toast } = useToast();
-  const [loadingId, setLoadingId] = useState<string | null>(null);
+  const { loadingId, start } = useDepositCheckout();
   const [participants, setParticipants] = useState<Record<string, number>>({});
   const [selectedDates, setSelectedDates] = useState<Record<string, Date | undefined>>({});
   const [phones, setPhones] = useState<Record<string, string>>({});
@@ -152,42 +152,28 @@ const DepositPaymentSection = () => {
       return;
     }
 
-    setLoadingId(activityId);
     const count = getCount(activityId);
+    // RÈGLE ABSOLUE Safari/iOS : ouverture SYNCHRONE, avant tout await /
+    // mutation React Query / appel réseau.
     const stripeWindow = window.open("about:blank", "_blank");
-    try {
-      const { data, error } = await supabase.functions.invoke("create-checkout", {
-        body: {
-          activityName,
-          participants: count,
-          preferredDate: toParisDateOnly(date),
-          phone,
-          customerName: name,
-          totalSessions: totalSessions ?? count,
-        },
-      });
-
-      if (error) throw error;
-      if (data?.url) {
-        if (stripeWindow && !stripeWindow.closed) {
-          stripeWindow.location.href = data.url;
-        } else {
-          window.location.href = data.url;
-        }
-      } else {
-        stripeWindow?.close();
-        throw new Error("Aucune URL de paiement reçue");
-      }
-    } catch (err: any) {
-      console.error("Checkout error:", err);
-      toast({
-        title: "Erreur",
-        description: "Impossible de lancer le paiement. Veuillez réessayer ou nous appeler.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoadingId(null);
-    }
+    await start(
+      activityId,
+      {
+        activityName,
+        participants: count,
+        preferredDate: toParisDateOnly(date),
+        phone,
+        customerName: name,
+        totalSessions: totalSessions ?? count,
+      },
+      stripeWindow,
+      () =>
+        toast({
+          title: "Erreur",
+          description: "Impossible de lancer le paiement. Veuillez réessayer ou nous appeler.",
+          variant: "destructive",
+        }),
+    );
   };
 
   // "Demain" calculé en Europe/Paris (timezone serveur), normalisé à minuit
@@ -215,8 +201,8 @@ const DepositPaymentSection = () => {
             {activities.map((activity) => {
               const count = getCount(activity.id);
               const date = selectedDates[activity.id];
-              const packOptions = (activity as any).packOptions as number[] | undefined;
-              const defaultSessions = (activity as any).defaultSessions as number | undefined;
+              const packOptions = (activity as { packOptions?: number[] }).packOptions;
+              const defaultSessions = (activity as { defaultSessions?: number }).defaultSessions;
               const selectedPack =
                 packSessions[activity.id] ?? packOptions?.[0] ?? defaultSessions ?? count;
               // Acompte = 50 € × nombre de séances (packs, stages ou activités

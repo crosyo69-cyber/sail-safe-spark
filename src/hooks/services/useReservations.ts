@@ -9,9 +9,12 @@ export const reservationKeys = {
   all: ["reservations"] as const,
   /** One key per day — mirrors `get_daily_availability(p_date)`. */
   availability: (date: string) => [...reservationKeys.all, "availability", date] as const,
+  availabilityDays: (dates: string[]) =>
+    [...reservationKeys.all, "availability-days", dates.join(",")] as const,
   adminGroups: (date: string) => [...reservationKeys.all, "admin-groups", date] as const,
   adminGroupsRange: (start: string, end: string) =>
     [...reservationKeys.all, "admin-groups-range", start, end] as const,
+  waitlistOffer: (token: string) => [...reservationKeys.all, "waitlist-offer", token] as const,
 };
 
 export const useReservations = () => {
@@ -27,6 +30,12 @@ export const useReservations = () => {
       useQuery({
         queryKey: reservationKeys.availability(date),
         enabled: enabled && !!date,
+        // ISO-COMPORTEMENT : l'ancien code refaisait un appel à chaque
+        // sélection de date, sans cache ni refetch au focus.
+        retry: false,
+        staleTime: 0,
+        gcTime: 0,
+        refetchOnWindowFocus: false,
         queryFn: async () =>
           unwrap(await reservationService.getDailyAvailability({ p_date: date })),
       }),
@@ -36,6 +45,29 @@ export const useReservations = () => {
         queryKey: reservationKeys.adminGroups(args.p_date),
         enabled,
         queryFn: async () => unwrap(await reservationService.listDailyGroups(args)),
+      }),
+
+    /**
+     * Disponibilité de plusieurs journées consécutives (Stage 100% Glisse).
+     * ISO-COMPORTEMENT : les appels restent SÉQUENTIELS, un `get_daily_availability`
+     * par date, exactement comme la boucle d'origine. Aucune parallélisation ici.
+     */
+    useAvailabilityDays: (dates: string[], enabled = true) =>
+      useQuery({
+        queryKey: reservationKeys.availabilityDays(dates),
+        enabled: enabled && dates.length > 0,
+        retry: false,
+        staleTime: 0,
+        gcTime: 0,
+        refetchOnWindowFocus: false,
+        queryFn: async () => {
+          const out: unknown[] = [];
+          for (const date of dates) {
+            const res = await reservationService.getDailyAvailability({ p_date: date });
+            out.push(res.ok ? res.data : null);
+          }
+          return out;
+        },
       }),
 
     useAdminGroupsRange: (args: Fn["admin_list_daily_groups_range"]["Args"], enabled = true) =>
@@ -50,6 +82,32 @@ export const useReservations = () => {
         mutationFn: async (args: Fn["book_daily_with_code"]["Args"]) =>
           unwrap(await reservationService.bookDailyWithCode(args)),
         onSuccess: invalidate,
+      }),
+
+    useBookStage100Glisse: () =>
+      useMutation({
+        mutationFn: async (args: Fn["book_stage_100_glisse"]["Args"]) =>
+          unwrap(await reservationService.bookStage100Glisse(args)),
+        onSuccess: invalidate,
+      }),
+
+    /** `public.get_waitlist_offer(p_token)` — lecture ponctuelle, sans cache. */
+    useWaitlistOffer: (token: string, enabled = true) =>
+      useQuery({
+        queryKey: reservationKeys.waitlistOffer(token),
+        enabled: enabled && !!token,
+        retry: false,
+        staleTime: 0,
+        gcTime: 0,
+        refetchOnWindowFocus: false,
+        queryFn: async () =>
+          unwrap(await reservationService.getWaitlistOffer({ p_token: token })),
+      }),
+
+    useConfirmWaitlistOffer: () =>
+      useMutation({
+        mutationFn: async (args: Fn["confirm_waitlist_offer"]["Args"]) =>
+          unwrap(await reservationService.confirmWaitlistOffer(args)),
       }),
 
     useCancelBooking: () =>

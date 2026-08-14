@@ -3,13 +3,15 @@ import { Phone, Send, ShieldCheck, Clock, BadgeCheck } from "lucide-react";
 import { forwardRef, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { useContact } from "@/hooks/services/useContact";
 import { trackFormSubmit, trackPhoneClick, trackGoogleAdsConversion } from "@/lib/analytics";
 import { trackMetaLead, trackMetaContact } from "@/lib/meta-pixel";
 import sunsetImage from "@/assets/almanarre-sunset.jpg?webp";
 
 export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_, ref) {
   const navigate = useNavigate();
+  const { useSendContactEmail } = useContact();
+  const sendContactEmail = useSendContactEmail();
   const [formData, setFormData] = useState({
     firstName: "",
     email: "",
@@ -71,18 +73,14 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
     }
 
     try {
-      const { data, error } = await supabase.functions.invoke("send-contact-email", {
-        body: {
-          name: formData.firstName,
-          email: formData.email,
-          phone: formData.phone,
-          activity: activityLabels[formData.activity] || formData.activity,
-          honeypot,
-          formTimestamp,
-        },
+      await sendContactEmail.mutateAsync({
+        name: formData.firstName,
+        email: formData.email,
+        phone: formData.phone,
+        activity: activityLabels[formData.activity] || formData.activity,
+        honeypot,
+        formTimestamp,
       });
-
-      if (error) throw error;
 
       // Google Ads Contact conversion: fire only after the backend confirms
       // the form submission succeeded. This avoids counting simple clicks,

@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -9,60 +7,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, CheckCircle2, XCircle, Info } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import { toast } from "sonner";
-
-const ACTIVITY_LABEL: Record<string, string> = {
-  kitesurf: "Kitesurf",
-  wingfoil: "Wingfoil",
-  pumpfoil: "Pumpfoil",
-  foil_tracte: "Foil tracté",
-  stage_100_glisse: "Stage 100% Glisse",
-};
-
-type Offer = {
-  id: string;
-  date: string;
-  activity: string;
-  status: string;
-  first_name: string;
-  participants: number;
-  offer_expires_at: string | null;
-};
+import { ACTIVITY_LABEL } from "@/features/reservation/constants";
+import { useWaitlistOfferConfirmation } from "@/hooks/client/useWaitlist";
 
 const WaitlistConfirm = () => {
   const { token } = useParams<{ token: string }>();
-  const [offer, setOffer] = useState<Offer | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [busy, setBusy] = useState(false);
-  const [confirmed, setConfirmed] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      if (!token) return setLoading(false);
-      const { data } = await supabase.rpc("get_waitlist_offer", { p_token: token });
-      setOffer((data as unknown as Offer) || null);
-      setLoading(false);
-    })();
-  }, [token]);
-
-  const handleConfirm = async () => {
-    if (!token) return;
-    setBusy(true);
-    const { data, error } = await supabase.rpc("confirm_waitlist_offer", { p_token: token });
-    setBusy(false);
-    if (error) return toast.error("Erreur : " + error.message);
-    const res = data as any;
-    if (!res?.ok) {
-      const m: Record<string, string> = {
-        invalid_token: "Lien invalide",
-        no_active_offer: "Cette offre n'est plus active",
-        offer_expired: "Le délai de 24 h est dépassé — la place a été proposée au suivant",
-      };
-      return toast.error(m[String(res?.error || "")] || "Confirmation impossible");
-    }
-    setConfirmed(true);
-    toast.success("Place confirmée ✅");
-  };
+  const { offer, loading, busy, confirmed, handleConfirm } = useWaitlistOfferConfirmation(token);
 
   return (
     <div className="min-h-screen bg-background">
