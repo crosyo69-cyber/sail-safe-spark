@@ -12,6 +12,7 @@ export const reservationKeys = {
   adminGroups: (date: string) => [...reservationKeys.all, "admin-groups", date] as const,
   adminGroupsRange: (start: string, end: string) =>
     [...reservationKeys.all, "admin-groups-range", start, end] as const,
+  waitlistOffer: (token: string) => [...reservationKeys.all, "waitlist-offer", token] as const,
 };
 
 export const useReservations = () => {
@@ -50,6 +51,32 @@ export const useReservations = () => {
         mutationFn: async (args: Fn["book_daily_with_code"]["Args"]) =>
           unwrap(await reservationService.bookDailyWithCode(args)),
         onSuccess: invalidate,
+      }),
+
+    useBookStage100Glisse: () =>
+      useMutation({
+        mutationFn: async (args: Fn["book_stage_100_glisse"]["Args"]) =>
+          unwrap(await reservationService.bookStage100Glisse(args)),
+        onSuccess: invalidate,
+      }),
+
+    /** `public.get_waitlist_offer(p_token)` — lecture ponctuelle, sans cache. */
+    useWaitlistOffer: (token: string, enabled = true) =>
+      useQuery({
+        queryKey: reservationKeys.waitlistOffer(token),
+        enabled: enabled && !!token,
+        retry: false,
+        staleTime: 0,
+        gcTime: 0,
+        refetchOnWindowFocus: false,
+        queryFn: async () =>
+          unwrap(await reservationService.getWaitlistOffer({ p_token: token })),
+      }),
+
+    useConfirmWaitlistOffer: () =>
+      useMutation({
+        mutationFn: async (args: Fn["confirm_waitlist_offer"]["Args"]) =>
+          unwrap(await reservationService.confirmWaitlistOffer(args)),
       }),
 
     useCancelBooking: () =>
