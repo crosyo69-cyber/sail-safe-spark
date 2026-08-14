@@ -70,13 +70,6 @@ export const useReservations = () => {
         },
       }),
 
-    useAdminGroupsLegacy: (args: Fn["admin_list_daily_groups"]["Args"], enabled = true) =>
-      useQuery({
-        queryKey: reservationKeys.adminGroups(args.p_date),
-        enabled,
-        queryFn: async () => unwrap(await reservationService.listDailyGroups(args)),
-      }),
-
     useAdminGroupsRange: (args: Fn["admin_list_daily_groups_range"]["Args"], enabled = true) =>
       useQuery({
         queryKey: reservationKeys.adminGroupsRange(args.p_start, args.p_end),
