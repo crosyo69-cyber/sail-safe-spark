@@ -1,7 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -10,114 +7,35 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { toast } from "sonner";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import {
-  Calendar as CalendarIcon,
-  Loader2,
-  Ticket,
-  Wind,
-  Waves,
-  Anchor,
-  Plane,
-  Info,
-} from "lucide-react";
+import { Calendar as CalendarIcon, Loader2, Ticket, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { parisStartOfToday, toParisDateOnly } from "@/lib/booking-dates";
 import { WaitlistDialog } from "@/components/WaitlistDialog";
-
-type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
-
-const ACTIVITIES: { value: Activity; label: string; icon: any }[] = [
-  { value: "kitesurf", label: "Kitesurf", icon: Wind },
-  { value: "wingfoil", label: "Wingfoil", icon: Waves },
-  { value: "pumpfoil", label: "Pumpfoil", icon: Anchor },
-  { value: "foil_tracte", label: "Foil tracté", icon: Plane },
-  { value: "stage_100_glisse", label: "Stage 100% Glisse (5 jours)", icon: Wind },
-];
-
-interface DayAvailability {
-  date: string;
-  kite: { places: number; groupes: number };
-  wing: { places: number; groupes: number };
-}
+import { StageBookingPanel } from "@/features/reservation/components/StageBookingPanel";
+import { useReserver } from "@/hooks/client/useReserver";
 
 const ReserverPage = () => {
-  const navigate = useNavigate();
-  const [activity, setActivity] = useState<Activity>("kitesurf");
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [availability, setAvailability] = useState<DayAvailability | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [code, setCode] = useState("");
-  const [booking, setBooking] = useState(false);
-  const [waitlistOpen, setWaitlistOpen] = useState(false);
-
-  const loadAvailability = useCallback(async (d: Date) => {
-    setLoading(true);
-    const dateStr = toParisDateOnly(d);
-    const { data } = await supabase.rpc("get_daily_availability", { p_date: dateStr });
-    setLoading(false);
-    const res = (data as any) || {};
-    setAvailability({
-      date: dateStr,
-      kite: {
-        places: res?.kitesurf?.places_restantes ?? (res?.kitesurf?.capacite_potentielle ?? 4),
-        groupes: res?.kitesurf?.groupes ?? 0,
-      },
-      wing: {
-        places: res?.wingfoil?.places_restantes ?? (res?.wingfoil?.capacite_potentielle ?? 3),
-        groupes: res?.wingfoil?.groupes ?? 0,
-      },
-    });
-  }, []);
-
-  useEffect(() => {
-    if (selectedDate) loadAvailability(selectedDate);
-    else setAvailability(null);
-  }, [selectedDate, loadAvailability]);
-
-  const handleBookWithCode = async () => {
-    const clean = code.trim().toUpperCase();
-    if (!clean) {
-      toast.error("Saisissez votre code de pack ci-dessous, ou achetez un pack.");
-      return;
-    }
-    if (!selectedDate) {
-      toast.error("Choisissez une date.");
-      return;
-    }
-    setBooking(true);
-    const { data, error } = await supabase.rpc("book_daily_with_code", {
-      p_code: clean,
-      p_date: toParisDateOnly(selectedDate),
-    });
-    setBooking(false);
-    if (error) return toast.error("Erreur : " + error.message);
-    const res = data as any;
-    if (!res?.ok) {
-      const messages: Record<string, string> = {
-        invalid_code: "Code de pack invalide",
-        package_not_active: "Pack inactif",
-        package_expired: "Pack expiré",
-        no_credits_left: "Plus de crédits disponibles sur ce pack",
-        credits_expired: "Vos séances restantes ont expiré — contactez l'école",
-        date_in_past: "Date passée",
-        already_booked_this_date: "Vous avez déjà réservé cette date",
-      };
-      return toast.error(messages[String(res?.error || "")] || "Réservation impossible");
-    }
-    toast.success("Journée réservée ✅ — horaire communiqué la veille selon les conditions météo.");
-    navigate(`/mon-espace/${clean}`);
-  };
-
-  const activityAvail = availability
-    ? activity === "wingfoil"
-      ? availability.wing
-      : availability.kite
-    : null;
-  const activityUsesGroups = activity === "kitesurf" || activity === "wingfoil";
-  const isFull = !!activityAvail && activityUsesGroups && activityAvail.places <= 0;
+  const {
+    activities,
+    activity,
+    setActivity,
+    selectedDate,
+    setSelectedDate,
+    code,
+    setCode,
+    waitlistOpen,
+    setWaitlistOpen,
+    availability,
+    activityAvail,
+    activityUsesGroups,
+    isFull,
+    loading,
+    booking,
+    handleBookWithCode,
+    goToSpace,
+  } = useReserver();
 
   return (
     <div className="min-h-screen bg-background">
@@ -140,7 +58,7 @@ const ReserverPage = () => {
         </p>
 
         <div className="flex flex-wrap gap-2 mb-6">
-          {ACTIVITIES.map((a) => (
+          {activities.map((a) => (
             <Button
               key={a.value}
               variant={activity === a.value ? "default" : "outline"}
@@ -174,7 +92,7 @@ const ReserverPage = () => {
         </Card>
 
         {activity === "stage_100_glisse" ? (
-          <StageBookingPanel code={code} onBooked={(c) => navigate(`/mon-espace/${c}`)} />
+          <StageBookingPanel code={code} onBooked={goToSpace} />
         ) : (
           <Card className="p-6 space-y-5">
             <div>
@@ -285,157 +203,10 @@ const ReserverPage = () => {
         onOpenChange={setWaitlistOpen}
         date={selectedDate ? toParisDateOnly(selectedDate) : null}
         activity={activity}
-        activityLabel={ACTIVITIES.find((a) => a.value === activity)?.label || activity}
+        activityLabel={activities.find((a) => a.value === activity)?.label || activity}
       />
     </div>
   );
 };
 
 export default ReserverPage;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Stage 100% Glisse — conserve son propre RPC historique (5 jours consécutifs).
-// À migrer dans une phase ultérieure vers le modèle daily_groups.
-// ─────────────────────────────────────────────────────────────────────────────
-function StageBookingPanel({ code, onBooked }: { code: string; onBooked: (code: string) => void }) {
-  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
-  const [submitting, setSubmitting] = useState(false);
-  const [preview, setPreview] = useState<{ date: string; places: number; groupes: number }[]>([]);
-
-  useEffect(() => {
-    if (!startDate) {
-      setPreview([]);
-      return;
-    }
-    let cancelled = false;
-    (async () => {
-      const days: { date: string; places: number; groupes: number }[] = [];
-      for (let i = 0; i < 5; i++) {
-        const d = new Date(startDate);
-        d.setDate(d.getDate() + i);
-        const ds = toParisDateOnly(d);
-        const { data } = await supabase.rpc("get_daily_availability", { p_date: ds });
-        const avail: any = data || {};
-        // Un stage utilise l'activité stage_100_glisse ; on affiche la place disponible
-        // dans le premier groupe stage ouvert, ou la capacité potentielle sinon.
-        const stage = avail?.stage_100_glisse;
-        const places = stage?.places_restantes ?? 4;
-        const groupes = stage?.groupes ?? 0;
-        days.push({ date: ds, places, groupes });
-      }
-      if (!cancelled) setPreview(days);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [startDate]);
-
-  const handleStageBook = async () => {
-    const clean = code.trim().toUpperCase();
-    if (!clean) return toast.error("Saisissez votre code de pack Stage 100% Glisse.");
-    if (!startDate) return toast.error("Choisissez une date de début.");
-    setSubmitting(true);
-    const { data, error } = await supabase.rpc("book_stage_100_glisse", {
-      p_code: clean,
-      p_start_date: toParisDateOnly(startDate),
-    });
-    setSubmitting(false);
-    if (error) return toast.error("Erreur : " + error.message);
-    const res = data as any;
-    if (!res?.ok) {
-      const errKey = String(res?.error || "");
-      if (errKey.startsWith("day_full:")) {
-        return toast.error(`Journée complète : ${errKey.replace("day_full:", "")}`);
-      }
-      const messages: Record<string, string> = {
-        invalid_code: "Code de pack invalide",
-        package_not_active: "Pack inactif",
-        package_expired: "Pack expiré",
-        not_enough_credits: "Pas assez de crédits pour réserver les 5 jours",
-        not_a_stage_package: "Ce code ne correspond pas à un Stage 100% Glisse",
-        start_in_past: "Date de début passée",
-      };
-      return toast.error(messages[errKey] || "Réservation impossible");
-    }
-    toast.success("Stage 100% Glisse réservé sur 5 jours consécutifs !");
-    onBooked(clean);
-  };
-
-  const anyFull = preview.some((p) => p.places <= 0 && p.groupes > 0);
-
-  return (
-    <Card className="p-6 space-y-5">
-      <div>
-        <h2 className="text-lg font-semibold mb-1">Stage 100% Glisse — 5 jours consécutifs</h2>
-        <p className="text-sm text-muted-foreground">
-          Choisissez la date de début. Les 5 jours seront réservés automatiquement.
-          Les horaires seront communiqués la veille par téléphone en fonction des conditions météorologiques.
-        </p>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-3">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="gap-2 min-h-[44px]">
-              <CalendarIcon className="w-4 h-4" />
-              {startDate ? format(startDate, "EEEE d MMMM yyyy", { locale: fr }) : "Date de début"}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              mode="single"
-              selected={startDate}
-              onSelect={setStartDate}
-              disabled={(d) => d < parisStartOfToday()}
-              locale={fr}
-              className={cn("p-3 pointer-events-auto")}
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
-
-      {preview.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-sm font-medium">Aperçu des 5 jours :</p>
-          <ul className="space-y-1 text-sm">
-            {preview.map((p) => {
-              const full = p.places <= 0 && p.groupes > 0;
-              const remaining = Math.max(0, p.places);
-              return (
-                <li
-                  key={p.date}
-                  className="flex items-center justify-between rounded-md border px-3 py-2"
-                >
-                  <span className="capitalize">
-                    {format(parseISO(p.date), "EEEE d MMMM yyyy", { locale: fr })}
-                  </span>
-                  <Badge variant={full ? "destructive" : "secondary"}>
-                    {full
-                      ? "Complet"
-                      : p.groupes > 0
-                        ? `${remaining} place${remaining > 1 ? "s" : ""} restante${remaining > 1 ? "s" : ""}`
-                        : "Disponible"}
-                  </Badge>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
-
-      <Button
-        className="w-full min-h-[44px]"
-        onClick={handleStageBook}
-        disabled={submitting || !startDate || anyFull}
-      >
-        {submitting ? (
-          <Loader2 className="w-4 h-4 animate-spin" />
-        ) : anyFull ? (
-          "Au moins une journée est complète"
-        ) : (
-          "Réserver les 5 jours avec mon code"
-        )}
-      </Button>
-    </Card>
-  );
-}
