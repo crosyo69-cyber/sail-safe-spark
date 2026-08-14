@@ -201,8 +201,8 @@ const DepositPaymentSection = () => {
             {activities.map((activity) => {
               const count = getCount(activity.id);
               const date = selectedDates[activity.id];
-              const packOptions = (activity as any).packOptions as number[] | undefined;
-              const defaultSessions = (activity as any).defaultSessions as number | undefined;
+              const packOptions = (activity as { packOptions?: number[] }).packOptions;
+              const defaultSessions = (activity as { defaultSessions?: number }).defaultSessions;
               const selectedPack =
                 packSessions[activity.id] ?? packOptions?.[0] ?? defaultSessions ?? count;
               // Acompte = 50 € × nombre de séances (packs, stages ou activités
