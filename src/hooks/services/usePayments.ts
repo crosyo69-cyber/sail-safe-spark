@@ -6,12 +6,13 @@ export const usePayments = () => ({
   service: paymentService,
 
   /**
-   * No idempotency key by default — see the A4 note in payment.service.ts:
-   * `create-checkout` does not honour `Idempotency-Key` yet.
+   * The caller supplies the idempotency key (one per payment intention) —
+   * see `useDepositCheckout`. `create-checkout` now requires it.
    */
   useCreateCheckout: () =>
     useMutation({
-      mutationFn: async (body: CreateCheckoutBody) =>
-        unwrap(await paymentService.createCheckout(body)),
+      mutationFn: async (
+        { body, idempotencyKey }: { body: CreateCheckoutBody; idempotencyKey: string },
+      ) => unwrap(await paymentService.createCheckout(body, idempotencyKey)),
     }),
 });

@@ -27,7 +27,11 @@ function makeFakeStripe(captured: CapturedCall[], opts?: { sessionUrl?: string }
 }
 
 function makeRequest(origin: string | null, body: Record<string, unknown> = {}) {
-  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    // P0-1: every checkout call must carry an Idempotency-Key.
+    "Idempotency-Key": crypto.randomUUID(),
+  };
   if (origin !== null) headers["origin"] = origin;
   return new Request("https://example.com/create-checkout", {
     method: "POST",
@@ -181,4 +185,102 @@ Deno.test("create-checkout: returns 400 and does NOT call Stripe when resolved o
       `Stripe client factory MUST NOT be invoked for malicious origin=${JSON.stringify(malicious)}`,
     );
   }
+});
+// ─────────────────────────────────────────────────────────────
+// P0-1 — Idempotency-Key
+// ─────────────────────────────────────────────────────────────
+
+interface IdemCall {
+  params: Record<string, unknown>;
+  options?: { idempotencyKey?: string };
+}
+
+function makeIdemStripe(calls: IdemCall[]) {
+  const sessions = new Map<string, string>();
+  return (): CheckoutClient => ({
+    checkout: {
+      sessions: {
+        create(params, options) {
+          calls.push({ params, options });
+          const key = options?.idempotencyKey ?? crypto.randomUUID();
+          // Emulate Stripe: same key ⇒ same session returned.
+          if (!sessions.has(key)) {
+            sessions.set(key, `https://checkout.stripe.com/c/pay/${crypto.randomUUID()}`);
+          }
+          return Promise.resolve({ url: sessions.get(key)! });
+        },
+      },
+    },
+  });
+}
+
+function makeIdemRequest(key: string | null, body: Record<string, unknown> = {}) {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    origin: DEFAULT_ORIGIN,
+  };
+  if (key !== null) headers["Idempotency-Key"] = key;
+  return new Request("https://example.com/create-checkout", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      activityName: "Cours à la Carte",
+      participants: 1,
+      preferredDate: "2026-07-01",
+      phone: "0612345678",
+      customerName: "Jean Test",
+      totalSessions: 1,
+      ...body,
+    }),
+  });
+}
+
+const KEY_A = "11111111-2222-3333-4444-555555555555";
+const KEY_B = "99999999-8888-7777-6666-555555555555";
+
+Deno.test("create-checkout: rejects a request without Idempotency-Key", async () => {
+  const calls: IdemCall[] = [];
+  const handler = createHandler(makeIdemStripe(calls));
+  const res = await handler(makeIdemRequest(null));
+  const json = await res.json();
+  assertEquals(res.status, 400);
+  assert(String(json.error).includes("Idempotency-Key"));
+  assertEquals(calls.length, 0, "Stripe must not be called without a key");
+});
+
+Deno.test("create-checkout: rejects a malformed Idempotency-Key", async () => {
+  const calls: IdemCall[] = [];
+  const handler = createHandler(makeIdemStripe(calls));
+  const res = await handler(makeIdemRequest("short"));
+  await res.text();
+  assertEquals(res.status, 400);
+  assertEquals(calls.length, 0);
+});
+
+Deno.test("create-checkout: forwards the Idempotency-Key verbatim to Stripe", async () => {
+  const calls: IdemCall[] = [];
+  const handler = createHandler(makeIdemStripe(calls));
+  const res = await handler(makeIdemRequest(KEY_A));
+  await res.text();
+  assertEquals(res.status, 200);
+  assertEquals(calls.length, 1);
+  assertEquals(calls[0].options?.idempotencyKey, KEY_A);
+});
+
+Deno.test("create-checkout: retry with the SAME key returns the SAME session", async () => {
+  const calls: IdemCall[] = [];
+  const handler = createHandler(makeIdemStripe(calls));
+  const first = await (await handler(makeIdemRequest(KEY_A))).json();
+  const second = await (await handler(makeIdemRequest(KEY_A))).json();
+  assertEquals(calls.length, 2);
+  assertEquals(calls[0].options?.idempotencyKey, calls[1].options?.idempotencyKey);
+  assertEquals(first.url, second.url, "same key must not create a second Checkout Session");
+});
+
+Deno.test("create-checkout: a new payment intention (new key) creates a new session", async () => {
+  const calls: IdemCall[] = [];
+  const handler = createHandler(makeIdemStripe(calls));
+  const first = await (await handler(makeIdemRequest(KEY_A))).json();
+  const second = await (await handler(makeIdemRequest(KEY_B, { participants: 2, totalSessions: 2 }))).json();
+  assert(first.url !== second.url, "distinct intentions must yield distinct sessions");
 });

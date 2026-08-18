@@ -62,6 +62,18 @@ async function createClientPackage(
   const lastName = nameParts.slice(1).join(" ") || "Stripe";
   const activityEnum = mapActivityToEnum(activityName);
 
+  // Idempotence crédits (P0-2) : un paiement Stripe = AU PLUS un pack.
+  // Garantie SQL par l'index unique partiel sur client_packages(stripe_session_id).
+  const { data: existing } = await supabase
+    .from("client_packages")
+    .select("package_code")
+    .eq("stripe_session_id", session.id)
+    .maybeSingle();
+  if (existing?.package_code) {
+    console.log(`client_packages already exists for session ${session.id} — reusing code`);
+    return existing.package_code as string;
+  }
+
   // Try a few times in case of code collision
   for (let attempt = 0; attempt < 5; attempt++) {
     const code = generatePackageCode();
@@ -84,7 +96,17 @@ async function createClientPackage(
       .select("package_code")
       .single();
     if (!error && data) return data.package_code;
-    if (error && !String(error.message).includes("duplicate")) {
+    if (error && isUniqueViolation(error)) {
+      // Race: another delivery inserted the package for this Stripe session.
+      const { data: raced } = await supabase
+        .from("client_packages")
+        .select("package_code")
+        .eq("stripe_session_id", session.id)
+        .maybeSingle();
+      if (raced?.package_code) return raced.package_code as string;
+      continue; // otherwise it was a package_code collision → retry a new code
+    }
+    if (error) {
       console.error("createClientPackage error:", error);
       return null;
     }
@@ -294,6 +316,69 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
 }
 
+export function isUniqueViolation(error: unknown): boolean {
+  const e = error as { code?: string; message?: string } | null;
+  if (!e) return false;
+  return e.code === "23505" || /duplicate key value|already exists/i.test(String(e.message ?? ""));
+}
+
+/**
+ * Deterministic message id (P0-2, emails).
+ * Same Stripe event + same template + same recipient ⇒ same message_id,
+ * so a webhook replay cannot produce a second email.
+ */
+export async function deterministicMessageId(
+  eventId: string,
+  templateName: string,
+  recipient: string,
+): Promise<string> {
+  const data = new TextEncoder().encode(`${eventId}|${templateName}|${recipient.toLowerCase()}`);
+  const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", data));
+  const hex = Array.from(digest.slice(0, 16))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20, 32)}`;
+}
+
+/**
+ * Atomic event claim (P0-2).
+ * Relies on the UNIQUE constraint on stripe_webhook_events.event_id:
+ * `INSERT ... ON CONFLICT DO NOTHING RETURNING` inside the RPC. No
+ * read-then-write race is possible.
+ * Returns true when THIS invocation owns the event and must process it.
+ */
+export async function claimWebhookEvent(
+  supabase: any,
+  eventId: string,
+  eventType: string,
+): Promise<boolean> {
+  const { data, error } = await supabase.rpc("claim_stripe_webhook_event", {
+    p_event_id: eventId,
+    p_event_type: eventType,
+  });
+  if (error) {
+    console.error("claim_stripe_webhook_event failed:", error);
+    // Fail closed: do not process business logic if dedup is unavailable,
+    // Stripe will retry the delivery.
+    throw new Error("Webhook deduplication unavailable");
+  }
+  return data === true;
+}
+
+export async function markWebhookEvent(
+  supabase: any,
+  eventId: string,
+  status: "processed" | "failed",
+  errorMessage?: string,
+) {
+  const { error } = await supabase.rpc("mark_stripe_webhook_event", {
+    p_event_id: eventId,
+    p_status: status,
+    p_error_message: errorMessage ?? null,
+  });
+  if (error) console.error("mark_stripe_webhook_event failed:", error);
+}
+
 async function enqueueEmail(
   supabase: any,
   to: string,
@@ -301,16 +386,26 @@ async function enqueueEmail(
   html: string,
   templateName: string,
   replyTo?: string,
+  messageIdOverride?: string,
 ) {
-  const messageId = crypto.randomUUID();
+  const messageId = messageIdOverride ?? crypto.randomUUID();
   const runId = crypto.randomUUID();
 
-  await supabase.from('email_send_log').insert({
+  // Deterministic message_id + unique index on (message_id) WHERE status='pending'
+  // ⇒ a replayed Stripe event cannot enqueue the same email twice.
+  const { error: logError } = await supabase.from('email_send_log').insert({
     message_id: messageId,
     template_name: templateName,
     recipient_email: to,
     status: 'pending',
   });
+  if (logError) {
+    if (isUniqueViolation(logError)) {
+      console.log(`${templateName} email already enqueued (message_id=${messageId}) — skipped`);
+      return messageId;
+    }
+    console.error(`email_send_log insert failed for ${templateName}:`, logError);
+  }
 
   const { error } = await supabase.rpc('enqueue_email', {
     queue_name: 'transactional_emails',
@@ -394,38 +489,67 @@ async function createReservationFromCheckout(
   console.log(`Reservation created for ${customerEmail} on ${sessionDate} (${activityName} → ${activityEnum})`);
 }
 
-Deno.serve(async (req) => {
+export interface WebhookDeps {
+  stripe: {
+    webhooks: {
+      constructEventAsync(body: string, sig: string, secret: string): Promise<Stripe.Event>;
+    };
+  };
+  supabase: any;
+  webhookSecret: string | undefined;
+}
+
+function defaultDeps(): WebhookDeps {
+  return {
+    stripe: new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
+      apiVersion: "2023-10-16",
+    }) as unknown as WebhookDeps["stripe"],
+    supabase: createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    ),
+    webhookSecret: STRIPE_WEBHOOK_SECRET,
+  };
+}
+
+export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDeps) {
+  return async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
-      apiVersion: "2023-10-16",
-    });
-
-    const supabase = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-    );
+    const { stripe, supabase, webhookSecret } = depsFactory();
 
     const body = await req.text();
     const signature = req.headers.get("stripe-signature");
 
-    if (!signature || !STRIPE_WEBHOOK_SECRET) {
+    if (!signature || !webhookSecret) {
       console.error("Missing signature or webhook secret");
       return new Response("Missing signature", { status: 400 });
     }
 
     let event: Stripe.Event;
     try {
-      event = await stripe.webhooks.constructEventAsync(body, signature, STRIPE_WEBHOOK_SECRET);
+      event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
     } catch (err) {
       console.error("Webhook signature verification failed:", err.message);
       return new Response(`Webhook Error: ${err.message}`, { status: 400 });
     }
 
     console.log(`Received event: ${event.type}`);
+
+    // ── Déduplication atomique (P0-2) ────────────────────────────────────
+    // L'event_id est enregistré via INSERT ... ON CONFLICT DO NOTHING dans un
+    // RPC ; si l'événement a déjà été réclamé, on renvoie 2xx sans retraiter.
+    const claimed = await claimWebhookEvent(supabase, event.id, event.type);
+    if (!claimed) {
+      console.log(`Duplicate event ${event.id} (${event.type}) — already processed, skipping`);
+      return new Response(JSON.stringify({ received: true, duplicate: true }), {
+        headers: { "Content-Type": "application/json" },
+        status: 200,
+      });
+    }
 
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
@@ -482,6 +606,8 @@ Deno.serve(async (req) => {
             `Confirmation de réservation – ${activityName}`,
             buildCustomerPaymentEmailWithCode(activityName, participants, preferredDate, packageCode || undefined, totalSessions),
             'booking_confirmation',
+            undefined,
+            await deterministicMessageId(event.id, 'booking_confirmation', customerEmail),
           );
         } catch (error) {
           console.error("Customer email enqueue error:", error instanceof Error ? error.message : error);
@@ -495,12 +621,15 @@ Deno.serve(async (req) => {
             buildOwnerPaymentEmail(activityName, customerEmail, session.id, participants, customerName, phone, preferredDate),
             'booking_owner_notification',
             customerEmail,
+            await deterministicMessageId(event.id, 'booking_owner_notification', OWNER_EMAIL),
           );
         } catch (error) {
           console.error("Owner email enqueue error:", error instanceof Error ? error.message : error);
         }
       }
     }
+
+    await markWebhookEvent(supabase, event.id, "processed");
 
     return new Response(JSON.stringify({ received: true }), {
       headers: { "Content-Type": "application/json" },
@@ -513,4 +642,9 @@ Deno.serve(async (req) => {
       headers: { "Content-Type": "application/json" },
     });
   }
-});
+  };
+}
+
+if (import.meta.main) {
+  Deno.serve(createWebhookHandler());
+}

@@ -12,9 +12,35 @@ const corsHeaders = {
 export interface CheckoutClient {
   checkout: {
     sessions: {
-      create(params: Record<string, unknown>): Promise<{ url: string | null }>;
+      create(
+        params: Record<string, unknown>,
+        options?: { idempotencyKey?: string },
+      ): Promise<{ url: string | null }>;
     };
   };
+}
+
+/**
+ * Idempotency-Key contract (P0-1).
+ *
+ * The client generates ONE key per payment intention and reuses it verbatim
+ * across retries of that intention. The key is forwarded to Stripe so that
+ * duplicate requests return the SAME Checkout Session instead of creating a
+ * new one. A request without a valid key is rejected: this function is now
+ * declared idempotent and must not silently create unbounded sessions.
+ */
+const IDEMPOTENCY_KEY_RE = /^[A-Za-z0-9._:-]{16,255}$/;
+
+export function readIdempotencyKey(req: Request): string | null {
+  const raw = req.headers.get("Idempotency-Key") ?? req.headers.get("idempotency-key");
+  if (!raw) return null;
+  const key = raw.trim();
+  return IDEMPOTENCY_KEY_RE.test(key) ? key : null;
+}
+
+/** Log-safe fingerprint: never print the raw key. */
+function keyFingerprint(key: string): string {
+  return `${key.slice(0, 4)}…${key.slice(-4)} (len=${key.length})`;
 }
 
 function createStripeClient(): CheckoutClient {
@@ -33,6 +59,17 @@ export function createHandler(
   }
 
   try {
+    const idempotencyKey = readIdempotencyKey(req);
+    if (!idempotencyKey) {
+      return new Response(
+        JSON.stringify({
+          error:
+            "Idempotency-Key header is required (16-255 chars, [A-Za-z0-9._:-]).",
+        }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
     const { activityName, participants, preferredDate, phone, customerName, totalSessions } = await req.json();
 
     if (!activityName || typeof activityName !== "string") {
@@ -145,7 +182,11 @@ export function createHandler(
       },
       success_url: successUrl,
       cancel_url: cancelUrl,
-    });
+    }, { idempotencyKey });
+
+    console.log(
+      `create-checkout: session created (idempotencyKey=${keyFingerprint(idempotencyKey)}, activity="${activityName}", sessions=${packSessions})`,
+    );
 
     return new Response(JSON.stringify({ url: session.url }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
