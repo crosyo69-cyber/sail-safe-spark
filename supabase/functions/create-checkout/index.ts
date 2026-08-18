@@ -59,6 +59,17 @@ export function createHandler(
   }
 
   try {
+    const idempotencyKey = readIdempotencyKey(req);
+    if (!idempotencyKey) {
+      return new Response(
+        JSON.stringify({
+          error:
+            "Idempotency-Key header is required (16-255 chars, [A-Za-z0-9._:-]).",
+        }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
     const { activityName, participants, preferredDate, phone, customerName, totalSessions } = await req.json();
 
     if (!activityName || typeof activityName !== "string") {
@@ -171,7 +182,11 @@ export function createHandler(
       },
       success_url: successUrl,
       cancel_url: cancelUrl,
-    });
+    }, { idempotencyKey });
+
+    console.log(
+      `create-checkout: session created (idempotencyKey=${keyFingerprint(idempotencyKey)}, activity="${activityName}", sessions=${packSessions})`,
+    );
 
     return new Response(JSON.stringify({ url: session.url }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
