@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { usePayments } from "@/hooks/services/usePayments";
+import { newIdempotencyKey } from "@/services/_shared/api";
 import type { CreateCheckoutBody } from "@/services/payment.service";
 
 /**
@@ -9,13 +10,34 @@ import type { CreateCheckoutBody } from "@/services/payment.service";
  * SYNCHRONEMENT par le composant, AVANT tout await / mutation. Le hook reçoit
  * la fenêtre déjà ouverte et ne l'ouvre jamais lui-même.
  *
- * IDEMPOTENCE : aucune clé n'est envoyée (audit A4 — `create-checkout` ne lit
- * ni ne transmet `Idempotency-Key`). Aucun retry non plus.
+ * IDEMPOTENCE (P0-1) : une clé `Idempotency-Key` est générée par INTENTION de
+ * paiement. Tant que l'utilisateur ne modifie pas les paramètres de sa
+ * commande (activité, date, participants, séances, téléphone, nom), la MÊME
+ * clé est réutilisée — y compris lors d'un retry réseau ou d'un double clic —
+ * de sorte que Stripe renvoie la même Checkout Session. Toute modification du
+ * panier = nouvelle intention = nouvelle clé.
  */
 export const useDepositCheckout = () => {
   const { useCreateCheckout } = usePayments();
   const createCheckout = useCreateCheckout();
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const intentRef = useRef<{ signature: string; key: string } | null>(null);
+
+  const keyForIntent = (activityId: string, body: CreateCheckoutBody): string => {
+    const signature = JSON.stringify([
+      activityId,
+      body.activityName,
+      body.participants,
+      body.preferredDate,
+      body.phone,
+      body.customerName,
+      body.totalSessions ?? null,
+    ]);
+    if (intentRef.current?.signature === signature) return intentRef.current.key;
+    const key = newIdempotencyKey();
+    intentRef.current = { signature, key };
+    return key;
+  };
 
   const start = async (
     activityId: string,
@@ -25,7 +47,10 @@ export const useDepositCheckout = () => {
   ) => {
     setLoadingId(activityId);
     try {
-      const data = (await createCheckout.mutateAsync(body)) as { url?: string } | null;
+      const idempotencyKey = keyForIntent(activityId, body);
+      const data = (await createCheckout.mutateAsync({ body, idempotencyKey })) as
+        | { url?: string }
+        | null;
       if (data?.url) {
         if (stripeWindow && !stripeWindow.closed) {
           stripeWindow.location.href = data.url;
