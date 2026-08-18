@@ -517,6 +517,18 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
 
     console.log(`Received event: ${event.type}`);
 
+    // ── Déduplication atomique (P0-2) ────────────────────────────────────
+    // L'event_id est enregistré via INSERT ... ON CONFLICT DO NOTHING dans un
+    // RPC ; si l'événement a déjà été réclamé, on renvoie 2xx sans retraiter.
+    const claimed = await claimWebhookEvent(supabase, event.id, event.type);
+    if (!claimed) {
+      console.log(`Duplicate event ${event.id} (${event.type}) — already processed, skipping`);
+      return new Response(JSON.stringify({ received: true, duplicate: true }), {
+        headers: { "Content-Type": "application/json" },
+        status: 200,
+      });
+    }
+
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
       const customerEmail = session.customer_details?.email;
@@ -572,6 +584,8 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
             `Confirmation de réservation – ${activityName}`,
             buildCustomerPaymentEmailWithCode(activityName, participants, preferredDate, packageCode || undefined, totalSessions),
             'booking_confirmation',
+            undefined,
+            await deterministicMessageId(event.id, 'booking_confirmation', customerEmail),
           );
         } catch (error) {
           console.error("Customer email enqueue error:", error instanceof Error ? error.message : error);
@@ -585,12 +599,15 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
             buildOwnerPaymentEmail(activityName, customerEmail, session.id, participants, customerName, phone, preferredDate),
             'booking_owner_notification',
             customerEmail,
+            await deterministicMessageId(event.id, 'booking_owner_notification', OWNER_EMAIL),
           );
         } catch (error) {
           console.error("Owner email enqueue error:", error instanceof Error ? error.message : error);
         }
       }
     }
+
+    await markWebhookEvent(supabase, event.id, "processed");
 
     return new Response(JSON.stringify({ received: true }), {
       headers: { "Content-Type": "application/json" },
@@ -603,4 +620,9 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
       headers: { "Content-Type": "application/json" },
     });
   }
-});
+  };
+}
+
+if (import.meta.main) {
+  Deno.serve(createWebhookHandler());
+}
