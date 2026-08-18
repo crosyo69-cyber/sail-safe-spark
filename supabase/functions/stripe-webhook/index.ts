@@ -62,6 +62,18 @@ async function createClientPackage(
   const lastName = nameParts.slice(1).join(" ") || "Stripe";
   const activityEnum = mapActivityToEnum(activityName);
 
+  // Idempotence crédits (P0-2) : un paiement Stripe = AU PLUS un pack.
+  // Garantie SQL par l'index unique partiel sur client_packages(stripe_session_id).
+  const { data: existing } = await supabase
+    .from("client_packages")
+    .select("package_code")
+    .eq("stripe_session_id", session.id)
+    .maybeSingle();
+  if (existing?.package_code) {
+    console.log(`client_packages already exists for session ${session.id} — reusing code`);
+    return existing.package_code as string;
+  }
+
   // Try a few times in case of code collision
   for (let attempt = 0; attempt < 5; attempt++) {
     const code = generatePackageCode();
@@ -84,7 +96,17 @@ async function createClientPackage(
       .select("package_code")
       .single();
     if (!error && data) return data.package_code;
-    if (error && !String(error.message).includes("duplicate")) {
+    if (error && isUniqueViolation(error)) {
+      // Race: another delivery inserted the package for this Stripe session.
+      const { data: raced } = await supabase
+        .from("client_packages")
+        .select("package_code")
+        .eq("stripe_session_id", session.id)
+        .maybeSingle();
+      if (raced?.package_code) return raced.package_code as string;
+      continue; // otherwise it was a package_code collision → retry a new code
+    }
+    if (error) {
       console.error("createClientPackage error:", error);
       return null;
     }
