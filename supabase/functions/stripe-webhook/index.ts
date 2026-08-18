@@ -301,16 +301,26 @@ async function enqueueEmail(
   html: string,
   templateName: string,
   replyTo?: string,
+  messageIdOverride?: string,
 ) {
-  const messageId = crypto.randomUUID();
+  const messageId = messageIdOverride ?? crypto.randomUUID();
   const runId = crypto.randomUUID();
 
-  await supabase.from('email_send_log').insert({
+  // Deterministic message_id + unique index on (message_id) WHERE status='pending'
+  // ⇒ a replayed Stripe event cannot enqueue the same email twice.
+  const { error: logError } = await supabase.from('email_send_log').insert({
     message_id: messageId,
     template_name: templateName,
     recipient_email: to,
     status: 'pending',
   });
+  if (logError) {
+    if (isUniqueViolation(logError)) {
+      console.log(`${templateName} email already enqueued (message_id=${messageId}) — skipped`);
+      return messageId;
+    }
+    console.error(`email_send_log insert failed for ${templateName}:`, logError);
+  }
 
   const { error } = await supabase.rpc('enqueue_email', {
     queue_name: 'transactional_emails',
