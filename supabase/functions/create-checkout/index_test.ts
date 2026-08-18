@@ -27,7 +27,11 @@ function makeFakeStripe(captured: CapturedCall[], opts?: { sessionUrl?: string }
 }
 
 function makeRequest(origin: string | null, body: Record<string, unknown> = {}) {
-  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    // P0-1: every checkout call must carry an Idempotency-Key.
+    "Idempotency-Key": crypto.randomUUID(),
+  };
   if (origin !== null) headers["origin"] = origin;
   return new Request("https://example.com/create-checkout", {
     method: "POST",
