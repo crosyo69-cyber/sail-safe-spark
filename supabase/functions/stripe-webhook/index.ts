@@ -294,6 +294,69 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
 }
 
+export function isUniqueViolation(error: unknown): boolean {
+  const e = error as { code?: string; message?: string } | null;
+  if (!e) return false;
+  return e.code === "23505" || /duplicate key value|already exists/i.test(String(e.message ?? ""));
+}
+
+/**
+ * Deterministic message id (P0-2, emails).
+ * Same Stripe event + same template + same recipient ⇒ same message_id,
+ * so a webhook replay cannot produce a second email.
+ */
+export async function deterministicMessageId(
+  eventId: string,
+  templateName: string,
+  recipient: string,
+): Promise<string> {
+  const data = new TextEncoder().encode(`${eventId}|${templateName}|${recipient.toLowerCase()}`);
+  const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", data));
+  const hex = Array.from(digest.slice(0, 16))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20, 32)}`;
+}
+
+/**
+ * Atomic event claim (P0-2).
+ * Relies on the UNIQUE constraint on stripe_webhook_events.event_id:
+ * `INSERT ... ON CONFLICT DO NOTHING RETURNING` inside the RPC. No
+ * read-then-write race is possible.
+ * Returns true when THIS invocation owns the event and must process it.
+ */
+export async function claimWebhookEvent(
+  supabase: any,
+  eventId: string,
+  eventType: string,
+): Promise<boolean> {
+  const { data, error } = await supabase.rpc("claim_stripe_webhook_event", {
+    p_event_id: eventId,
+    p_event_type: eventType,
+  });
+  if (error) {
+    console.error("claim_stripe_webhook_event failed:", error);
+    // Fail closed: do not process business logic if dedup is unavailable,
+    // Stripe will retry the delivery.
+    throw new Error("Webhook deduplication unavailable");
+  }
+  return data === true;
+}
+
+export async function markWebhookEvent(
+  supabase: any,
+  eventId: string,
+  status: "processed" | "failed",
+  errorMessage?: string,
+) {
+  const { error } = await supabase.rpc("mark_stripe_webhook_event", {
+    p_event_id: eventId,
+    p_status: status,
+    p_error_message: errorMessage ?? null,
+  });
+  if (error) console.error("mark_stripe_webhook_event failed:", error);
+}
+
 async function enqueueEmail(
   supabase: any,
   to: string,
