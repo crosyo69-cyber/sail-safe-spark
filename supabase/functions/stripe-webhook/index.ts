@@ -467,32 +467,49 @@ async function createReservationFromCheckout(
   console.log(`Reservation created for ${customerEmail} on ${sessionDate} (${activityName} → ${activityEnum})`);
 }
 
-Deno.serve(async (req) => {
+export interface WebhookDeps {
+  stripe: {
+    webhooks: {
+      constructEventAsync(body: string, sig: string, secret: string): Promise<Stripe.Event>;
+    };
+  };
+  supabase: any;
+  webhookSecret: string | undefined;
+}
+
+function defaultDeps(): WebhookDeps {
+  return {
+    stripe: new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
+      apiVersion: "2023-10-16",
+    }) as unknown as WebhookDeps["stripe"],
+    supabase: createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    ),
+    webhookSecret: STRIPE_WEBHOOK_SECRET,
+  };
+}
+
+export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDeps) {
+  return async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
-      apiVersion: "2023-10-16",
-    });
-
-    const supabase = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-    );
+    const { stripe, supabase, webhookSecret } = depsFactory();
 
     const body = await req.text();
     const signature = req.headers.get("stripe-signature");
 
-    if (!signature || !STRIPE_WEBHOOK_SECRET) {
+    if (!signature || !webhookSecret) {
       console.error("Missing signature or webhook secret");
       return new Response("Missing signature", { status: 400 });
     }
 
     let event: Stripe.Event;
     try {
-      event = await stripe.webhooks.constructEventAsync(body, signature, STRIPE_WEBHOOK_SECRET);
+      event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
     } catch (err) {
       console.error("Webhook signature verification failed:", err.message);
       return new Response(`Webhook Error: ${err.message}`, { status: 400 });
