@@ -533,8 +533,9 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
     try {
       event = await stripe.webhooks.constructEventAsync(body, signature, webhookSecret);
     } catch (err) {
-      console.error("Webhook signature verification failed:", err.message);
-      return new Response(`Webhook Error: ${err.message}`, { status: 400 });
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error("Webhook signature verification failed:", msg);
+      return new Response(`Webhook Error: ${msg}`, { status: 400 });
     }
 
     console.log(`Received event: ${event.type}`);
@@ -637,7 +638,7 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
     });
   } catch (error) {
     console.error("Webhook error:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : String(error) }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
