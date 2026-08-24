@@ -601,6 +601,27 @@ export type Database = {
         }
         Relationships: []
       }
+      email_send_claims: {
+        Row: {
+          claimed_at: string
+          expires_at: string
+          message_id: string
+          worker_id: string | null
+        }
+        Insert: {
+          claimed_at?: string
+          expires_at: string
+          message_id: string
+          worker_id?: string | null
+        }
+        Update: {
+          claimed_at?: string
+          expires_at?: string
+          message_id?: string
+          worker_id?: string | null
+        }
+        Relationships: []
+      }
       email_send_log: {
         Row: {
           created_at: string
@@ -1773,6 +1794,14 @@ export type Database = {
         Args: { p_booking_id: string; p_code: string }
         Returns: Json
       }
+      claim_email_send: {
+        Args: {
+          _lease_seconds?: number
+          _message_id: string
+          _worker_id?: string
+        }
+        Returns: boolean
+      }
       claim_stripe_webhook_event: {
         Args: { p_event_id: string; p_event_type: string }
         Returns: boolean
@@ -2144,6 +2173,7 @@ export type Database = {
         }
         Returns: Json
       }
+      purge_expired_email_claims: { Args: never; Returns: number }
       purge_stale_dlq_messages: {
         Args: { p_dlq: string; p_limit?: number; p_max_age_days?: number }
         Returns: Json
@@ -2156,6 +2186,7 @@ export type Database = {
           read_ct: number
         }[]
       }
+      release_email_claim: { Args: { _message_id: string }; Returns: undefined }
       resolve_marketing_email: {
         Args: { p_code: string; p_token: string }
         Returns: string
