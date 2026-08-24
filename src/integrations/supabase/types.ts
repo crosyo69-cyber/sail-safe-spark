@@ -1716,6 +1716,7 @@ export type Database = {
       }
       admin_recredit_package: {
         Args: {
+          p_booking_id?: string
           p_notify?: boolean
           p_package_id: string
           p_reason: string
