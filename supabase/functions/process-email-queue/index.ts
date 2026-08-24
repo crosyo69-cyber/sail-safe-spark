@@ -36,6 +36,12 @@ async function sendViaResend(payload: any): Promise<void> {
 }
 
 const MAX_RETRIES = 5
+// Lease duration for the atomic send claim. Must be longer than the pgmq
+// visibility timeout (30s) plus the maximum provider call duration, so a live
+// worker never loses its claim mid-send; short enough that a crashed worker's
+// message is retried quickly.
+const CLAIM_LEASE_SECONDS = 120
+const workerId = crypto.randomUUID()
 const DEFAULT_BATCH_SIZE = 10
 const DEFAULT_SEND_DELAY_MS = 200
 const DEFAULT_AUTH_TTL_MINUTES = 15
