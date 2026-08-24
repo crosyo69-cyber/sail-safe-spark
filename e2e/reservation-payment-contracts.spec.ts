@@ -55,17 +55,18 @@ async function selectTestDate(page: Page, day: number) {
 
 test.describe('Contrats réservation / paiement', () => {
   // ───────────────────────────── TEST 1 — create-checkout
-  test('1. create-checkout reçoit le payload attendu et renvoie une URL Stripe', async ({ page, context }) => {
-    let payload: Record<string, unknown> | null = null;
-    let idempotencyHeader: string | undefined;
+  test('1. create-checkout reçoit le payload attendu, une Idempotency-Key valide et renvoie une URL Stripe', async ({ page, context }) => {
+    const calls: { payload: Record<string, unknown>; key?: string }[] = [];
 
     await page.route('**/functions/v1/create-checkout', async (route) => {
       if (route.request().method() === 'OPTIONS') {
         await route.fulfill({ status: 204, headers: CORS });
         return;
       }
-      payload = route.request().postDataJSON();
-      idempotencyHeader = route.request().headers()['idempotency-key'];
+      calls.push({
+        payload: route.request().postDataJSON(),
+        key: route.request().headers()['idempotency-key'],
+      });
       await jsonRoute(route, { url: 'https://checkout.stripe.com/c/pay/cs_test_E2E_FAKE' });
     });
     // Empêche toute navigation réelle vers Stripe (le composant ouvre un onglet).
@@ -81,7 +82,8 @@ test.describe('Contrats réservation / paiement', () => {
       .locator('xpath=ancestor::div[contains(@class,"bg-card")][1]');
     await expect(card).toBeVisible();
 
-    await card.getByPlaceholder('Jean Dupont').fill('E2E Tester');
+    const nameInput = card.getByPlaceholder('Jean Dupont');
+    await nameInput.fill('E2E Tester');
     await card.getByPlaceholder('06 12 34 56 78').fill('0612345678');
     await card.getByRole('button', { name: /Choisir une date/i }).click();
     await page.locator('button[name="day"]:not([disabled])').first().click();
@@ -91,8 +93,8 @@ test.describe('Contrats réservation / paiement', () => {
     await payBtn.scrollIntoViewIfNeeded();
     await payBtn.click({ force: true });
 
-    await expect.poll(() => payload, { timeout: 15_000 }).toBeTruthy();
-    expect(payload).toMatchObject({
+    await expect.poll(() => calls.length, { timeout: 15_000 }).toBe(1);
+    expect(calls[0].payload).toMatchObject({
       activityName: expect.stringContaining('Cours Particulier'),
       participants: expect.any(Number),
       preferredDate: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/),
@@ -100,9 +102,25 @@ test.describe('Contrats réservation / paiement', () => {
       customerName: 'E2E Tester',
       totalSessions: expect.any(Number),
     });
-    // Contrat A4 : le parcours production n'envoie PAS d'Idempotency-Key
-    // (create-checkout ne la lit pas et ne la transmet pas à Stripe).
-    expect(idempotencyHeader).toBeUndefined();
+
+    // Contrat A4 (post P0-1) : la clé d'idempotence est OBLIGATOIRE et doit
+    // respecter le regex serveur de create-checkout.
+    expect(calls[0].key).toBeDefined();
+    expect(calls[0].key!).toMatch(/^[A-Za-z0-9._:-]{16,255}$/);
+
+    // 2e clic, panier INCHANGÉ → même intention → MÊME clé.
+    await payBtn.click({ force: true });
+    await expect.poll(() => calls.length, { timeout: 15_000 }).toBe(2);
+    expect(calls[1].key).toBe(calls[0].key);
+    expect(calls[1].payload).toEqual(calls[0].payload);
+
+    // Panier MODIFIÉ (nom client) → nouvelle intention → clé DIFFÉRENTE.
+    await nameInput.fill('E2E Tester Bis');
+    await payBtn.click({ force: true });
+    await expect.poll(() => calls.length, { timeout: 15_000 }).toBe(3);
+    expect(calls[2].key).toMatch(/^[A-Za-z0-9._:-]{16,255}$/);
+    expect(calls[2].key).not.toBe(calls[0].key);
+    expect(calls[2].payload).toMatchObject({ customerName: 'E2E Tester Bis' });
 
     // La réponse permet bien la redirection Stripe (nouvel onglet ouvert).
     await expect
@@ -111,6 +129,7 @@ test.describe('Contrats réservation / paiement', () => {
       })
       .toBe(true);
   });
+
 
   // ───────────────────────────── TEST 3 — disponibilité (préalable aux autres)
   test('3. get_daily_availability est appelée avec p_date et alimente le calendrier', async ({ page }) => {
