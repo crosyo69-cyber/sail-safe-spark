@@ -256,30 +256,81 @@ Deno.serve(async (req) => {
         continue
       }
 
-      // Guard: skip if another worker already sent this message (VT expired race)
+      // Atomic claim (lease) + already-sent guard in a single DB round-trip.
+      // claim_email_send returns false when the message is already logged as
+      // 'sent' OR when another worker holds a non-expired lease on it.
+      // This closes the TOCTOU window between the "already sent" check and the
+      // provider call: only the lease holder may call the provider.
+      let claimedMessageId: string | null = null
       if (payload.message_id) {
-        const { data: alreadySent } = await supabase
-          .from('email_send_log')
-          .select('id')
-          .eq('message_id', payload.message_id)
-          .eq('status', 'sent')
-          .maybeSingle()
+        const { data: claimGranted, error: claimError } = await supabase.rpc('claim_email_send', {
+          _message_id: payload.message_id,
+          _worker_id: workerId,
+          _lease_seconds: CLAIM_LEASE_SECONDS,
+        })
 
-        if (alreadySent) {
-          console.warn('Skipping duplicate send (already sent)', {
+        if (claimError) {
+          // Fail closed: never send without a confirmed claim.
+          console.error('Failed to acquire send claim', {
             queue,
             msg_id: msg.msg_id,
             message_id: payload.message_id,
+            error: claimError,
           })
-          const { error: dupDelError } = await supabase.rpc('delete_email', {
-            queue_name: queue,
-            message_id: msg.msg_id,
-          })
-          if (dupDelError) {
-            console.error('Failed to delete duplicate message from queue', { queue, msg_id: msg.msg_id, error: dupDelError })
+          continue
+        }
+
+        if (!claimGranted) {
+          // Either already sent, or another worker is currently sending it.
+          const { data: alreadySent } = await supabase
+            .from('email_send_log')
+            .select('id')
+            .eq('message_id', payload.message_id)
+            .eq('status', 'sent')
+            .maybeSingle()
+
+          if (alreadySent) {
+            console.warn('Skipping duplicate send (already sent)', {
+              queue,
+              msg_id: msg.msg_id,
+              message_id: payload.message_id,
+            })
+            const { error: dupDelError } = await supabase.rpc('delete_email', {
+              queue_name: queue,
+              message_id: msg.msg_id,
+            })
+            if (dupDelError) {
+              console.error('Failed to delete duplicate message from queue', { queue, msg_id: msg.msg_id, error: dupDelError })
+            }
+          } else {
+            // Concurrent worker holds the lease: leave the message in the queue.
+            // It becomes visible again when the VT expires and will be retried.
+            console.warn('Skipping message (claim held by another worker)', {
+              queue,
+              msg_id: msg.msg_id,
+              message_id: payload.message_id,
+            })
           }
           continue
         }
+
+        claimedMessageId = payload.message_id
+      }
+
+      const releaseClaim = async () => {
+        if (!claimedMessageId) return
+        const { error: releaseError } = await supabase.rpc('release_email_claim', {
+          _message_id: claimedMessageId,
+        })
+        if (releaseError) {
+          // Non-fatal: the lease expires on its own after CLAIM_LEASE_SECONDS.
+          console.error('Failed to release send claim', {
+            queue,
+            message_id: claimedMessageId,
+            error: releaseError,
+          })
+        }
+        claimedMessageId = null
       }
 
       try {
