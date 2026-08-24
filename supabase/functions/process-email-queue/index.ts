@@ -434,6 +434,11 @@ Deno.serve(async (req) => {
         }
 
         // Non-429 errors: message stays invisible until VT expires, then retried
+      } finally {
+        // Always release the lease (success, failure, rate-limit or DLQ path).
+        // A crashed worker never reaches this point: its lease expires after
+        // CLAIM_LEASE_SECONDS and the message becomes claimable again.
+        await releaseClaim()
       }
 
       // Small delay between sends to smooth bursts
