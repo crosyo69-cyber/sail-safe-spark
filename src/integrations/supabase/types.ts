@@ -1460,6 +1460,33 @@ export type Database = {
         }
         Relationships: []
       }
+      stripe_webhook_events: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          event_id: string
+          event_type: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          event_id: string
+          event_type: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          event_id?: string
+          event_type?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string
@@ -1746,6 +1773,10 @@ export type Database = {
         Args: { p_booking_id: string; p_code: string }
         Returns: Json
       }
+      claim_stripe_webhook_event: {
+        Args: { p_event_id: string; p_event_type: string }
+        Returns: boolean
+      }
       confirm_last_minute_subscription: {
         Args: { p_token: string }
         Returns: boolean
@@ -1986,6 +2017,10 @@ export type Database = {
           p_package_id: string
           p_reason?: string
         }
+        Returns: undefined
+      }
+      mark_stripe_webhook_event: {
+        Args: { p_error_message?: string; p_event_id: string; p_status: string }
         Returns: undefined
       }
       marketing_automation_candidates: {
