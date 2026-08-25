@@ -71,7 +71,6 @@ const MonEspace = () => {
               reminders={ctrl.reminders}
               saving={ctrl.savingReminders}
               onChange={ctrl.updateReminders}
-              marketingCode={pkg.package_code || ctrl.codeInput}
             />
 
 
