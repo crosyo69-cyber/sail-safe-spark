@@ -1,31 +1,12 @@
-import { useEffect, useState, useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useAnalytics } from "@/hooks/services/useAnalytics";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, RefreshCw, Activity, Database, Clock, Inbox, ShieldCheck } from "lucide-react";
-
-interface HealthData {
-  generated_at: string;
-  database_size: string;
-  cron: {
-    active_jobs: number;
-    total_jobs: number;
-    plaintext_secret_jobs: number;
-    runs_24h: number;
-    failures_24h: number;
-    log_size: string;
-    log_rows: number;
-  };
-  queues: Record<string, number>;
-  emails: {
-    sent_24h: number;
-    failed_24h: number;
-    dlq_24h: number;
-    rate_limited_24h: number;
-    error_rate_pct: number;
-  };
-}
+import { Loader2, RefreshCw, Activity, Database, Clock, Inbox, ShieldCheck, Coins } from "lucide-react";
+import {
+  creditMaintenanceTone,
+  type PlatformHealthData,
+} from "@/features/admin-health/types";
 
 const Metric = ({ label, value, tone = "default" }: { label: string; value: string | number; tone?: "default" | "ok" | "warn" | "danger" }) => (
   <div className="rounded-lg border border-border bg-card p-4">
@@ -42,22 +23,11 @@ const Metric = ({ label, value, tone = "default" }: { label: string; value: stri
 );
 
 const AdminPlatformHealth = () => {
-  const [data, setData] = useState<HealthData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const load = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    const { data: res, error: err } = await supabase.rpc("admin_platform_health" as never);
-    if (err) setError(err.message);
-    else setData(res as unknown as HealthData);
-    setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    load();
-  }, [load]);
+  const { usePlatformHealth } = useAnalytics();
+  const { data: raw, isLoading, isFetching, error, refetch } = usePlatformHealth();
+  const data = (raw ?? null) as PlatformHealthData | null;
+  const loading = isLoading || isFetching;
+  const load = () => void refetch();
 
   if (loading && !data) {
     return (
@@ -68,7 +38,7 @@ const AdminPlatformHealth = () => {
   }
 
   if (error) {
-    return <p className="text-destructive">Erreur de chargement : {error}</p>;
+    return <p className="text-destructive">Erreur de chargement : {(error as Error).message}</p>;
   }
 
   if (!data) return null;
@@ -127,6 +97,54 @@ const AdminPlatformHealth = () => {
           />
         </CardContent>
       </Card>
+
+      {data.credit_maintenance && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Coins className="h-4 w-4" /> Maintenance crédits
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4 sm:grid-cols-4">
+              <Metric
+                label="Statut"
+                value={
+                  data.credit_maintenance.status === "ok"
+                    ? "OK"
+                    : data.credit_maintenance.status === "warning"
+                      ? "Vigilance"
+                      : "Critique"
+                }
+                tone={creditMaintenanceTone(data.credit_maintenance.status)}
+              />
+              <Metric
+                label="Dernier succès"
+                value={
+                  data.credit_maintenance.last_success_at
+                    ? new Date(data.credit_maintenance.last_success_at).toLocaleString("fr-FR")
+                    : "Inconnu"
+                }
+              />
+              <Metric
+                label="Heures écoulées"
+                value={
+                  data.credit_maintenance.hours_since_last_success === null
+                    ? "—"
+                    : `${data.credit_maintenance.hours_since_last_success} h`
+                }
+                tone={creditMaintenanceTone(data.credit_maintenance.status)}
+              />
+              <Metric
+                label="Crédits périmés en attente"
+                value={data.credit_maintenance.expired_available_count}
+                tone={data.credit_maintenance.expired_available_count > 0 ? "danger" : "ok"}
+              />
+            </div>
+            <p className="text-sm text-muted-foreground">{data.credit_maintenance.message}</p>
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader>
