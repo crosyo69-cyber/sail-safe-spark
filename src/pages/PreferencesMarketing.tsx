@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useParams, useSearchParams, Link } from "react-router-dom";
+import { useParams, useSearchParams, Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -13,6 +13,8 @@ import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Mail, ShieldCheck, ArrowLeft } from "lucide-react";
+import { useClientSession } from "@/hooks/client/useClientSession";
+import { setPendingCode } from "@/features/mon-espace/session-storage";
 
 const ACTIVITIES = [
   { key: "kitesurf", label: "Kitesurf" },
@@ -29,13 +31,20 @@ const TOPICS = [
   { key: "events", label: "Événements et sorties" },
 ];
 
+/**
+ * LOT C-2 F2 : le package_code n'est plus une autorisation.
+ * Deux accès légitimes seulement :
+ *  - le token marketing personnel (lien présent dans les e-mails) ;
+ *  - la session OTP « Mon espace » (sessionStorage, jamais dans l'URL).
+ */
 const PreferencesMarketing = () => {
   const { token: tokenParam } = useParams();
   const [searchParams] = useSearchParams();
-  const codeParam = searchParams.get("code") || "";
+  const navigate = useNavigate();
+  const session = useClientSession();
   const token = tokenParam || searchParams.get("token") || "";
 
-  const [codeInput, setCodeInput] = useState(codeParam);
+  const [codeInput, setCodeInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -45,18 +54,9 @@ const PreferencesMarketing = () => {
   const [activities, setActivities] = useState<string[]>([]);
   const [topics, setTopics] = useState<string[]>([]);
 
-  const load = useCallback(async (code: string, tok: string) => {
-    if (!code && !tok) return;
-    setLoading(true);
-    const { data, error } = await supabase.rpc("get_marketing_preferences", {
-      p_code: code || null,
-      p_token: tok || null,
-    });
-    setLoading(false);
-
-    const result = data as Record<string, unknown> | null;
-    if (error || !result || result.found !== true) {
-      toast.error("Aucun compte trouvé avec ce code ou ce lien.");
+  const applyPayload = (result: Record<string, unknown> | null) => {
+    if (!result || result.found !== true) {
+      toast.error("Lien invalide ou expiré.");
       return;
     }
     setEmail(String(result.email ?? ""));
@@ -65,24 +65,55 @@ const PreferencesMarketing = () => {
     setActivities(Array.isArray(result.activities) ? (result.activities as string[]) : []);
     setTopics(Array.isArray(result.topics) ? (result.topics as string[]) : []);
     setLoaded(true);
+  };
+
+  const load = useCallback(async (tok: string, sessionToken: string) => {
+    if (!tok && !sessionToken) return;
+    setLoading(true);
+    const { data, error } = sessionToken
+      ? await supabase.rpc("get_marketing_preferences_by_session", {
+          p_session_token: sessionToken,
+        })
+      : await supabase.rpc("get_marketing_preferences", { p_token: tok });
+    setLoading(false);
+    if (error) {
+      toast.error("Lien invalide ou expiré.");
+      return;
+    }
+    applyPayload(data as Record<string, unknown> | null);
   }, []);
 
   useEffect(() => {
-    if (codeParam || token) load(codeParam, token);
-  }, [codeParam, token, load]);
+    if (token || session.token) load(token, session.token);
+  }, [token, session.token, load]);
+
+  /** Saisie d'un code pack : on bascule vers la vérification e-mail. */
+  const goToSecureFlow = () => {
+    const clean = codeInput.trim().toUpperCase();
+    if (clean.length < 3) return;
+    setPendingCode(clean);
+    toast.info("Vérification de sécurité requise : un code vous sera envoyé par e-mail.");
+    navigate("/mon-espace");
+  };
 
   const toggle = (list: string[], setList: (v: string[]) => void, key: string) =>
     setList(list.includes(key) ? list.filter((k) => k !== key) : [...list, key]);
 
   const save = async () => {
     setSaving(true);
-    const { data, error } = await supabase.rpc("save_marketing_preferences", {
-      p_consent: consent,
-      p_activities: consent ? activities : [],
-      p_topics: consent ? topics : [],
-      p_code: codeParam || codeInput || null,
-      p_token: token || null,
-    });
+    const { data, error } = session.token
+      ? await supabase.rpc("save_marketing_preferences_by_session", {
+          p_session_token: session.token,
+          p_consent: consent,
+          p_activities: consent ? activities : [],
+          p_topics: consent ? topics : [],
+        })
+      : await supabase.rpc("save_marketing_preferences", {
+          p_consent: consent,
+          p_activities: consent ? activities : [],
+          p_topics: consent ? topics : [],
+          p_token: token || null,
+        });
     setSaving(false);
 
     const result = data as Record<string, unknown> | null;
@@ -139,7 +170,7 @@ const PreferencesMarketing = () => {
                   className="min-h-[44px]"
                 />
                 <Button
-                  onClick={() => load(codeInput.trim(), "")}
+                  onClick={goToSecureFlow}
                   disabled={loading || codeInput.trim().length < 3}
                   className="min-h-[44px]"
                 >
