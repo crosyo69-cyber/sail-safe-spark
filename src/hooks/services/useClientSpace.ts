@@ -3,12 +3,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { clientSpaceService } from "@/services/client-space.service";
 import { unwrap } from "@/services/_shared/result";
 
+/** Les clés de cache ne contiennent jamais le jeton de session (secret). */
 export const clientSpaceKeys = {
   all: ["client-space"] as const,
-  package: (code: string) => [...clientSpaceKeys.all, "package", code] as const,
-  history: (code: string) => [...clientSpaceKeys.all, "history", code] as const,
-  wallet: (code: string) => [...clientSpaceKeys.all, "wallet", code] as const,
-  reminders: (code: string) => [...clientSpaceKeys.all, "reminders", code] as const,
+  package: () => [...clientSpaceKeys.all, "package"] as const,
+  history: () => [...clientSpaceKeys.all, "history"] as const,
+  wallet: () => [...clientSpaceKeys.all, "wallet"] as const,
+  reminders: () => [...clientSpaceKeys.all, "reminders"] as const,
 };
 
 export const useClientSpace = () => {
@@ -17,33 +18,52 @@ export const useClientSpace = () => {
 
   return {
     invalidate,
+    clear: () => qc.removeQueries({ queryKey: clientSpaceKeys.all }),
 
-    usePackage: (code: string, enabled = true) =>
-      useQuery({
-        queryKey: clientSpaceKeys.package(code),
-        enabled: enabled && !!code,
-        queryFn: async () => unwrap(await clientSpaceService.getPackageByCode(code)),
+    /** Authentification */
+    useRequestOtp: () =>
+      useMutation({
+        mutationFn: async (code: string) => unwrap(await clientSpaceService.requestOtp(code)),
       }),
 
-    useHistory: (code: string, enabled = true) =>
-      useQuery({
-        queryKey: clientSpaceKeys.history(code),
-        enabled: enabled && !!code,
-        queryFn: async () => unwrap(await clientSpaceService.getCreditsHistory(code)),
+    useVerifyOtp: () =>
+      useMutation({
+        mutationFn: async (args: { code: string; otp: string }) =>
+          unwrap(await clientSpaceService.verifyOtp(args.code, args.otp)),
       }),
 
-    useWallet: (code: string, enabled = true) =>
-      useQuery({
-        queryKey: clientSpaceKeys.wallet(code),
-        enabled: enabled && !!code,
-        queryFn: async () => unwrap(await clientSpaceService.getWallet(code)),
+    useRevokeSession: () =>
+      useMutation({
+        mutationFn: async (token: string) => unwrap(await clientSpaceService.revokeSession(token)),
       }),
 
-    useReminders: (code: string, enabled = true) =>
+    /** Données protégées par la session */
+    usePackage: (token: string, enabled = true) =>
       useQuery({
-        queryKey: clientSpaceKeys.reminders(code),
-        enabled: enabled && !!code,
-        queryFn: async () => unwrap(await clientSpaceService.getReminders(code)),
+        queryKey: clientSpaceKeys.package(),
+        enabled: enabled && !!token,
+        queryFn: async () => unwrap(await clientSpaceService.getPackage(token)),
+      }),
+
+    useHistory: (token: string, enabled = true) =>
+      useQuery({
+        queryKey: clientSpaceKeys.history(),
+        enabled: enabled && !!token,
+        queryFn: async () => unwrap(await clientSpaceService.getCreditsHistory(token)),
+      }),
+
+    useWallet: (token: string, enabled = true) =>
+      useQuery({
+        queryKey: clientSpaceKeys.wallet(),
+        enabled: enabled && !!token,
+        queryFn: async () => unwrap(await clientSpaceService.getWallet(token)),
+      }),
+
+    useReminders: (token: string, enabled = true) =>
+      useQuery({
+        queryKey: clientSpaceKeys.reminders(),
+        enabled: enabled && !!token,
+        queryFn: async () => unwrap(await clientSpaceService.getReminders(token)),
       }),
 
     useSetReminders: () =>
