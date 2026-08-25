@@ -106,12 +106,8 @@ export const useReservations = () => {
           unwrap(await reservationService.confirmWaitlistOffer(args)),
       }),
 
-    useCancelBooking: () =>
-      useMutation({
-        mutationFn: async (args: Fn["cancel_booking_with_code"]["Args"]) =>
-          unwrap(await reservationService.cancelBookingWithCode(args)),
-        onSuccess: invalidate,
-      }),
+
+
 
     useJoinWaitlist: () =>
       useMutation({
