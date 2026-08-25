@@ -31,7 +31,7 @@ const toDayAvailability = (date: string, raw: DailyAvailabilityRaw | null): DayA
  */
 export const useReserver = () => {
   const navigate = useNavigate();
-  const { useAvailability, useBookDaily } = useReservations();
+  const { useAvailability } = useReservations();
 
   const [activity, setActivity] = useState<Activity>("kitesurf");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
@@ -40,7 +40,7 @@ export const useReserver = () => {
 
   const dateStr = selectedDate ? toParisDateOnly(selectedDate) : "";
   const availabilityQuery = useAvailability(dateStr, !!dateStr);
-  const bookDaily = useBookDaily();
+
 
   const availability: DayAvailability | null = useMemo(() => {
     if (!dateStr) return null;
