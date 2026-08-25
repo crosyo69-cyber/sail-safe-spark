@@ -58,30 +58,20 @@ export const useReserver = () => {
   const activityUsesGroups = activity === "kitesurf" || activity === "wingfoil";
   const isFull = !!activityAvail && activityUsesGroups && activityAvail.places <= 0;
 
-  const handleBookWithCode = async () => {
+  /**
+   * LOT C-2.2-D : la réservation par simple code client n'existe plus.
+   * On oriente le client vers le parcours sécurisé (code + code de sécurité e-mail).
+   * Le code n'est jamais placé dans l'URL : il transite par sessionStorage.
+   */
+  const handleBookWithCode = () => {
     const clean = code.trim().toUpperCase();
     if (!clean) {
       toast.error("Saisissez votre code de pack ci-dessous, ou achetez un pack.");
       return;
     }
-    if (!selectedDate) {
-      toast.error("Choisissez une date.");
-      return;
-    }
-    let res: RpcResult;
-    try {
-      res = (await bookDaily.mutateAsync({
-        p_code: clean,
-        p_date: toParisDateOnly(selectedDate),
-      })) as RpcResult;
-    } catch (error) {
-      return toast.error("Erreur : " + (error as Error).message);
-    }
-    if (!res?.ok) {
-      return toast.error(mapDailyBookingError(res?.error));
-    }
-    toast.success("Journée réservée ✅ — horaire communiqué la veille selon les conditions météo.");
-    navigate(`/mon-espace/${clean}`);
+    setPendingCode(clean);
+    toast.info("Vérification de sécurité requise : un code vous sera envoyé par e-mail.");
+    navigate("/mon-espace");
   };
 
   return {
@@ -99,10 +89,14 @@ export const useReserver = () => {
     activityUsesGroups,
     isFull,
     loading,
-    booking: bookDaily.isPending,
+    booking: false,
     handleBookWithCode,
-    goToSpace: (c: string) => navigate(`/mon-espace/${c}`),
+    goToSpace: (c: string) => {
+      setPendingCode(c);
+      navigate("/mon-espace");
+    },
   };
+
 };
 
 /** Hook métier du panneau Stage 100% Glisse (5 jours consécutifs). */
