@@ -143,7 +143,7 @@ const App = () => {
                 <Route path="/admin/assistant" element={<AdminAssistant />} />
                 <Route path="/liste-attente/:token" element={<WaitlistConfirm />} />
                 <Route path="/mon-espace" element={<MonEspace />} />
-                <Route path="/mon-espace/:code" element={<MonEspace />} />
+                <Route path="/mon-espace/:code" element={<LegacyCodeRedirect />} />
                 <Route path="/preferences-marketing" element={<PreferencesMarketing />} />
                 <Route path="/preferences-marketing/:token" element={<PreferencesMarketing />} />
                 <Route path="/reserver" element={<Reserver />} />
