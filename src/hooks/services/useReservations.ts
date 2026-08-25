@@ -77,12 +77,8 @@ export const useReservations = () => {
         queryFn: async () => unwrap(await reservationService.listDailyGroupsRange(args)),
       }),
 
-    useBookDaily: () =>
-      useMutation({
-        mutationFn: async (args: Fn["book_daily_with_code"]["Args"]) =>
-          unwrap(await reservationService.bookDailyWithCode(args)),
-        onSuccess: invalidate,
-      }),
+    /* Réservation/annulation d'une journée : `useClientSpace` (session OTP requise). */
+
 
     useBookStage100Glisse: () =>
       useMutation({
