@@ -292,6 +292,51 @@ export type Database = {
         }
         Relationships: []
       }
+      code_access_attempts: {
+        Row: {
+          code_hash: string
+          context: string
+          created_at: string
+          id: string
+          ip_hash: string
+          result: string
+        }
+        Insert: {
+          code_hash: string
+          context: string
+          created_at?: string
+          id?: string
+          ip_hash: string
+          result: string
+        }
+        Update: {
+          code_hash?: string
+          context?: string
+          created_at?: string
+          id?: string
+          ip_hash?: string
+          result?: string
+        }
+        Relationships: []
+      }
+      code_access_secret: {
+        Row: {
+          created_at: string
+          id: number
+          pepper: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          pepper: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          pepper?: string
+        }
+        Relationships: []
+      }
       credit_audit_log: {
         Row: {
           action: string
@@ -1806,6 +1851,16 @@ export type Database = {
       claim_stripe_webhook_event: {
         Args: { p_event_id: string; p_event_type: string }
         Returns: boolean
+      }
+      code_access_client_ip: { Args: never; Returns: string }
+      code_access_guard: {
+        Args: { p_code: string; p_context: string }
+        Returns: boolean
+      }
+      code_access_hash: { Args: { p_value: string }; Returns: string }
+      code_access_record: {
+        Args: { p_code: string; p_context: string; p_ok: boolean }
+        Returns: undefined
       }
       confirm_last_minute_subscription: {
         Args: { p_token: string }
