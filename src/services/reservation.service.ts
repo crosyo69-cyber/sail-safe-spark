@@ -26,9 +26,14 @@ export const reservationService = {
    * elles autorisaient l'accès avec le seul package_code, sans second facteur.
    */
 
-  /** public.book_stage_100_glisse(p_code text, p_start_date date) -> json */
-  bookStage100Glisse: (args: Fn["book_stage_100_glisse"]["Args"]) =>
-    api.rpc("book_stage_100_glisse", args, { retries: 1 }),
+  /**
+   * public.book_stage_with_session(p_session_token text, p_start_date date) -> json
+   * LOT C-2 F1 : `book_stage_100_glisse(p_code, …)` est supprimée — le stage
+   * exige désormais une session OTP validée côté serveur.
+   */
+  bookStageWithSession: (args: Fn["book_stage_with_session"]["Args"]) =>
+    api.rpc("book_stage_with_session", args, { retries: 1 }),
+
 
 
   /** Waitlist */
