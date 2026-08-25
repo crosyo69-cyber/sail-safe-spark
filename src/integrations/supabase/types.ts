@@ -1939,8 +1939,12 @@ export type Database = {
         Args: { p_date: string; p_session_token: string }
         Returns: Json
       }
-      book_stage_100_glisse: {
-        Args: { p_code: string; p_start_date: string }
+      book_stage_for_package: {
+        Args: { p_package_id: string; p_start_date: string }
+        Returns: Json
+      }
+      book_stage_with_session: {
+        Args: { p_session_token: string; p_start_date: string }
         Returns: Json
       }
       cancel_booking_with_session: {
@@ -2159,8 +2163,9 @@ export type Database = {
           template_name: string
         }[]
       }
-      get_marketing_preferences: {
-        Args: { p_code?: string; p_token?: string }
+      get_marketing_preferences: { Args: { p_token: string }; Returns: Json }
+      get_marketing_preferences_by_session: {
+        Args: { p_session_token: string }
         Returns: Json
       }
       get_marketing_segment: {
@@ -2289,6 +2294,19 @@ export type Database = {
         }[]
       }
       marketing_is_internal_caller: { Args: never; Returns: boolean }
+      marketing_preferences_payload: {
+        Args: { p_email: string }
+        Returns: Json
+      }
+      marketing_preferences_save: {
+        Args: {
+          p_activities: string[]
+          p_consent: boolean
+          p_email: string
+          p_topics: string[]
+        }
+        Returns: Json
+      }
       marketing_segment_base: {
         Args: never
         Returns: {
@@ -2383,10 +2401,7 @@ export type Database = {
       }
       release_email_claim: { Args: { _message_id: string }; Returns: undefined }
       request_otp: { Args: { p_code: string }; Returns: Json }
-      resolve_marketing_email: {
-        Args: { p_code: string; p_token: string }
-        Returns: string
-      }
+      resolve_marketing_email: { Args: { p_token: string }; Returns: string }
       restore_credit_fifo: {
         Args: { p_booking_id: string; p_package_id: string }
         Returns: string
@@ -2408,11 +2423,19 @@ export type Database = {
       run_waitlist_cycle: { Args: never; Returns: Json }
       save_marketing_preferences: {
         Args: {
-          p_activities?: string[]
-          p_code?: string
+          p_activities: string[]
           p_consent: boolean
-          p_token?: string
-          p_topics?: string[]
+          p_token: string
+          p_topics: string[]
+        }
+        Returns: Json
+      }
+      save_marketing_preferences_by_session: {
+        Args: {
+          p_activities: string[]
+          p_consent: boolean
+          p_session_token: string
+          p_topics: string[]
         }
         Returns: Json
       }

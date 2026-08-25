@@ -21,8 +21,9 @@ export function StageBookingPanel({
   code: string;
   onBooked: (code: string) => void;
 }) {
-  const { startDate, setStartDate, preview, anyFull, submitting, handleStageBook } =
+  const { startDate, setStartDate, preview, anyFull, submitting, hasSession, handleStageBook } =
     useStageBooking(code, onBooked);
+
 
   return (
     <Card className="p-6 space-y-5">
@@ -87,16 +88,19 @@ export function StageBookingPanel({
       <Button
         className="w-full min-h-[44px]"
         onClick={handleStageBook}
-        disabled={submitting || !startDate || anyFull}
+        disabled={submitting || (hasSession && (!startDate || anyFull))}
       >
         {submitting ? (
           <Loader2 className="w-4 h-4 animate-spin" />
+        ) : !hasSession ? (
+          "Vérifier mon identité pour réserver"
         ) : anyFull ? (
           "Au moins une journée est complète"
         ) : (
-          "Réserver les 5 jours avec mon code"
+          "Réserver les 5 jours"
         )}
       </Button>
+
     </Card>
   );
 }

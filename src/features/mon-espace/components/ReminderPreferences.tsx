@@ -10,10 +10,9 @@ interface Props {
   reminders: ReminderPrefs;
   saving: boolean;
   onChange: (next: ReminderPrefs) => void;
-  marketingCode: string;
 }
 
-export const ReminderPreferences = ({ reminders, saving, onChange, marketingCode }: Props) => (
+export const ReminderPreferences = ({ reminders, saving, onChange }: Props) => (
   <section id="rappels" className="scroll-mt-24">
     <Card>
       <CardHeader>
@@ -54,7 +53,7 @@ export const ReminderPreferences = ({ reminders, saving, onChange, marketingCode
             promotions, événements).
           </p>
           <Link
-            to={`/preferences-marketing?code=${encodeURIComponent(marketingCode)}`}
+            to="/preferences-marketing"
             className="inline-flex items-center justify-center min-h-[44px] px-4 rounded-md border text-sm font-medium hover:bg-muted"
           >
             Mes préférences marketing

@@ -80,12 +80,14 @@ export const useReservations = () => {
     /* Réservation/annulation d'une journée : `useClientSpace` (session OTP requise). */
 
 
-    useBookStage100Glisse: () =>
+    /** Stage 100% Glisse — session OTP obligatoire (LOT C-2 F1). */
+    useBookStageWithSession: () =>
       useMutation({
-        mutationFn: async (args: Fn["book_stage_100_glisse"]["Args"]) =>
-          unwrap(await reservationService.bookStage100Glisse(args)),
+        mutationFn: async (args: Fn["book_stage_with_session"]["Args"]) =>
+          unwrap(await reservationService.bookStageWithSession(args)),
         onSuccess: invalidate,
       }),
+
 
     /** `public.get_waitlist_offer(p_token)` — lecture ponctuelle, sans cache. */
     useWaitlistOffer: (token: string, enabled = true) =>

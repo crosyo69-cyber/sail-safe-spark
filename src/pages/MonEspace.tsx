@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
 import { useMonEspace } from "@/hooks/client/useMonEspace";
+import { StageBookingPanel } from "@/features/reservation/components/StageBookingPanel";
 import {
   CodeForm,
   OtpForm,
@@ -70,7 +71,6 @@ const MonEspace = () => {
               reminders={ctrl.reminders}
               saving={ctrl.savingReminders}
               onChange={ctrl.updateReminders}
-              marketingCode={pkg.package_code || ctrl.codeInput}
             />
 
 
@@ -92,6 +92,9 @@ const MonEspace = () => {
               onCancel={ctrl.handleCancel}
             />
 
+            {pkg.activity === "stage_100_glisse" ? (
+              <StageBookingPanel code={pkg.package_code} onBooked={() => ctrl.refresh()} />
+            ) : (
             <BookingSection
               packageInactive={ctrl.packageInactive}
               packageExpired={ctrl.packageExpired}
@@ -106,6 +109,7 @@ const MonEspace = () => {
               busy={ctrl.busyAction}
               onBook={ctrl.handleBook}
             />
+            )}
 
             <CreditHistoryList history={ctrl.history} />
 

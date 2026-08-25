@@ -231,6 +231,7 @@ export const useMonEspace = () => {
     busyAction,
     handleBook,
     handleCancel,
+    refresh,
     exit,
     activityLabel: activityTitle(pkg),
     capacity: groupCapacity(pkg),
