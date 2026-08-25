@@ -21,8 +21,9 @@ export function StageBookingPanel({
   code: string;
   onBooked: (code: string) => void;
 }) {
-  const { startDate, setStartDate, preview, anyFull, submitting, handleStageBook } =
+  const { startDate, setStartDate, preview, anyFull, submitting, hasSession, handleStageBook } =
     useStageBooking(code, onBooked);
+
 
   return (
     <Card className="p-6 space-y-5">
