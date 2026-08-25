@@ -130,7 +130,7 @@ const AdminCredits = () => {
 
   const openWallet = async (w: Wallet) => {
     setSelected(w);
-    const { data } = await supabase.rpc("get_wallet_by_code", { p_code: w.package_code });
+    const { data } = await supabase.rpc("admin_get_wallet_by_code", { p_code: w.package_code });
     const res = data as any;
     setHistory((res?.history as HistoryRow[]) || []);
     const { data: c } = await supabase.rpc("admin_list_credits", { p_package_id: w.package_id });
