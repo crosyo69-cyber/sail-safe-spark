@@ -2,17 +2,14 @@ import { createApiClient } from "./_shared/api";
 
 const api = createApiClient({ scope: "credit" });
 
+/**
+ * Crédits — périmètre ADMIN uniquement.
+ * L'accès client aux crédits passe exclusivement par `clientSpaceService`
+ * (session OTP obligatoire depuis le LOT C-2.2-D).
+ */
 export const creditService = {
-  getWalletByCode: (args: Record<string, unknown>) => api.rpc("get_wallet_by_code", args),
-  getPackageByCode: (args: Record<string, unknown>) => api.rpc("get_package_by_code", args),
-  getPackageCreditsHistory: (args: Record<string, unknown>) =>
-    api.rpc("get_package_credits_history", args),
-
-  getReminders: (args?: Record<string, unknown>) => api.rpc("get_credit_reminders", args),
-  setReminders: (args: Record<string, unknown>) =>
-    api.rpc("set_credit_reminders", args, { retries: 1 }),
-
   /** Admin */
+  getWalletByCode: (args: Record<string, unknown>) => api.rpc("admin_get_wallet_by_code", args),
   searchWallets: (args: Record<string, unknown>) => api.rpc("admin_search_wallets", args),
   listCredits: (args: Record<string, unknown>) => api.rpc("admin_list_credits", args),
   stats: (args?: Record<string, unknown>) => api.rpc("admin_credit_stats", args),

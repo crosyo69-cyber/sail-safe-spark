@@ -1846,6 +1846,7 @@ export type Database = {
         }
         Returns: Json
       }
+      admin_get_wallet_by_code: { Args: { p_code: string }; Returns: Json }
       admin_list_credits: { Args: { p_package_id: string }; Returns: Json }
       admin_list_daily_groups: { Args: { p_date: string }; Returns: Json }
       admin_list_daily_groups_range: {
@@ -1934,16 +1935,16 @@ export type Database = {
         }
         Returns: Json
       }
-      book_daily_with_code: {
-        Args: { p_code: string; p_date: string }
+      book_daily_with_session: {
+        Args: { p_date: string; p_session_token: string }
         Returns: Json
       }
       book_stage_100_glisse: {
         Args: { p_code: string; p_start_date: string }
         Returns: Json
       }
-      cancel_booking_with_code: {
-        Args: { p_booking_id: string; p_code: string }
+      cancel_booking_with_session: {
+        Args: { p_booking_id: string; p_session_token: string }
         Returns: Json
       }
       claim_email_send: {
@@ -1958,6 +1959,10 @@ export type Database = {
         Args: { p_event_id: string; p_event_type: string }
         Returns: boolean
       }
+      client_credits_payload: { Args: { p_pkg: string }; Returns: Json }
+      client_history_payload: { Args: { p_pkg: string }; Returns: Json }
+      client_package_payload: { Args: { p_pkg: string }; Returns: Json }
+      client_wallet_payload: { Args: { p_pkg: string }; Returns: Json }
       code_access_client_ip: { Args: never; Returns: string }
       code_access_guard: {
         Args: { p_code: string; p_context: string }
@@ -2127,8 +2132,14 @@ export type Database = {
         }
         Returns: string
       }
-      get_credit_reminders: { Args: { p_code: string }; Returns: Json }
-      get_credits_by_code: { Args: { p_code: string }; Returns: Json }
+      get_credit_reminders_by_session: {
+        Args: { p_session_token: string }
+        Returns: Json
+      }
+      get_credits_by_session: {
+        Args: { p_session_token: string }
+        Returns: Json
+      }
       get_daily_availability: { Args: { p_date: string }; Returns: Json }
       get_email_queue_status: {
         Args: never
@@ -2177,10 +2188,19 @@ export type Database = {
           topics: string[]
         }[]
       }
-      get_package_by_code: { Args: { p_code: string }; Returns: Json }
-      get_package_credits_history: { Args: { p_code: string }; Returns: Json }
+      get_package_by_session: {
+        Args: { p_session_token: string }
+        Returns: Json
+      }
+      get_package_credits_history_by_session: {
+        Args: { p_session_token: string }
+        Returns: Json
+      }
       get_waitlist_offer: { Args: { p_token: string }; Returns: Json }
-      get_wallet_by_code: { Args: { p_code: string }; Returns: Json }
+      get_wallet_by_session: {
+        Args: { p_session_token: string }
+        Returns: Json
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -2362,6 +2382,7 @@ export type Database = {
         }[]
       }
       release_email_claim: { Args: { _message_id: string }; Returns: undefined }
+      request_otp: { Args: { p_code: string }; Returns: Json }
       resolve_marketing_email: {
         Args: { p_code: string; p_token: string }
         Returns: string
@@ -2380,6 +2401,7 @@ export type Database = {
         }
         Returns: Json
       }
+      revoke_otp_session: { Args: { p_session_token: string }; Returns: Json }
       run_credit_maintenance: { Args: never; Returns: Json }
       run_dlq_purge_cycle: { Args: never; Returns: Json }
       run_dlq_retry_cycle: { Args: never; Returns: Json }
@@ -2394,12 +2416,12 @@ export type Database = {
         }
         Returns: Json
       }
-      set_credit_reminders: {
+      set_credit_reminders_by_session: {
         Args: {
-          p_code: string
           p_remind_0: boolean
           p_remind_30: boolean
           p_remind_7: boolean
+          p_session_token: string
         }
         Returns: Json
       }
@@ -2409,6 +2431,11 @@ export type Database = {
       }
       unsubscribe_last_minute: { Args: { p_token: string }; Returns: boolean }
       unsubscribe_weather_alert: { Args: { p_token: string }; Returns: boolean }
+      validate_otp_session: {
+        Args: { p_session_token: string }
+        Returns: string
+      }
+      verify_otp: { Args: { p_code: string; p_otp: string }; Returns: Json }
     }
     Enums: {
       activity_type:

@@ -6,6 +6,7 @@ import { Info } from "lucide-react";
 import { useMonEspace } from "@/hooks/client/useMonEspace";
 import {
   CodeForm,
+  OtpForm,
   ExpiringCreditsNotice,
   PackageSummary,
   WalletGrid,
@@ -14,6 +15,7 @@ import {
   BookingSection,
   CreditHistoryList,
 } from "@/features/mon-espace";
+
 
 const MonEspace = () => {
   const ctrl = useMonEspace();
@@ -32,15 +34,27 @@ const MonEspace = () => {
           Mon espace réservation
         </h1>
         <p className="text-muted-foreground mb-8">
-          Saisissez votre code de réservation pour gérer vos journées.
+          Saisissez votre code de réservation, puis le code de sécurité envoyé par e-mail.
         </p>
 
-        {!pkg && (
+        {ctrl.step === "code" && (
           <CodeForm
             value={ctrl.codeInput}
             onChange={ctrl.setCodeInput}
             onSubmit={ctrl.submitCode}
-            loading={ctrl.loading}
+            loading={ctrl.sendingCode}
+          />
+        )}
+
+        {ctrl.step === "otp" && (
+          <OtpForm
+            value={ctrl.otpInput}
+            onChange={ctrl.setOtpInput}
+            onSubmit={ctrl.submitOtp}
+            onResend={ctrl.resendCode}
+            onBack={ctrl.backToCode}
+            verifying={ctrl.verifying}
+            resending={ctrl.sendingCode}
           />
         )}
 
@@ -58,6 +72,7 @@ const MonEspace = () => {
               onChange={ctrl.updateReminders}
               marketingCode={pkg.package_code || ctrl.codeInput}
             />
+
 
             <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 flex gap-3">
               <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />

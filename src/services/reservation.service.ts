@@ -20,17 +20,16 @@ export const reservationService = {
   getDailyAvailability: (args: Fn["get_daily_availability"]["Args"]): Promise<Result<unknown>> =>
     api.rpc("get_daily_availability", args),
 
-  /** public.book_daily_with_code(p_code text, p_date date) -> json */
-  bookDailyWithCode: (args: Fn["book_daily_with_code"]["Args"]) =>
-    api.rpc("book_daily_with_code", args, { retries: 1 }),
+  /**
+   * Réservation/annulation d'une journée : voir `clientSpaceService`.
+   * Les anciennes RPC `*_with_code` ont été supprimées (LOT C-2.2-D) :
+   * elles autorisaient l'accès avec le seul package_code, sans second facteur.
+   */
 
   /** public.book_stage_100_glisse(p_code text, p_start_date date) -> json */
   bookStage100Glisse: (args: Fn["book_stage_100_glisse"]["Args"]) =>
     api.rpc("book_stage_100_glisse", args, { retries: 1 }),
 
-  /** public.cancel_booking_with_code(p_booking_id uuid, p_code text) -> json */
-  cancelBookingWithCode: (args: Fn["cancel_booking_with_code"]["Args"]) =>
-    api.rpc("cancel_booking_with_code", args, { retries: 1 }),
 
   /** Waitlist */
   joinWaitlist: (args: Fn["join_waitlist"]["Args"]) =>

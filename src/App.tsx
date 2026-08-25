@@ -1,5 +1,7 @@
 import { useEffect, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
+import { LegacyCodeRedirect } from "@/features/mon-espace/LegacyCodeRedirect";
+
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -143,7 +145,7 @@ const App = () => {
                 <Route path="/admin/assistant" element={<AdminAssistant />} />
                 <Route path="/liste-attente/:token" element={<WaitlistConfirm />} />
                 <Route path="/mon-espace" element={<MonEspace />} />
-                <Route path="/mon-espace/:code" element={<MonEspace />} />
+                <Route path="/mon-espace/:code" element={<LegacyCodeRedirect />} />
                 <Route path="/preferences-marketing" element={<PreferencesMarketing />} />
                 <Route path="/preferences-marketing/:token" element={<PreferencesMarketing />} />
                 <Route path="/reserver" element={<Reserver />} />
