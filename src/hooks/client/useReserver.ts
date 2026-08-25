@@ -101,11 +101,17 @@ export const useReserver = () => {
 
 };
 
-/** Hook métier du panneau Stage 100% Glisse (5 jours consécutifs). */
+/**
+ * Hook métier du panneau Stage 100% Glisse (5 jours consécutifs).
+ * LOT C-2 F1 : la réservation exige une session OTP validée. Sans session,
+ * on oriente vers le parcours sécurisé (le code transite par sessionStorage).
+ */
 export const useStageBooking = (code: string, onBooked: (code: string) => void) => {
-  const { useAvailabilityDays, useBookStage100Glisse } = useReservations();
+  const navigate = useNavigate();
+  const session = useClientSession();
+  const { useAvailabilityDays, useBookStageWithSession } = useReservations();
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
-  const bookStage = useBookStage100Glisse();
+  const bookStage = useBookStageWithSession();
 
   const dates = useMemo(() => {
     if (!startDate) return [];
@@ -132,18 +138,28 @@ export const useStageBooking = (code: string, onBooked: (code: string) => void) 
 
   const handleStageBook = async () => {
     const clean = code.trim().toUpperCase();
-    if (!clean) return toast.error("Saisissez votre code de pack Stage 100% Glisse.");
+    if (!session.hasSession) {
+      if (!clean) return toast.error("Saisissez votre code de pack Stage 100% Glisse.");
+      setPendingCode(clean);
+      toast.info("Vérification de sécurité requise : un code vous sera envoyé par e-mail.");
+      navigate("/mon-espace");
+      return;
+    }
     if (!startDate) return toast.error("Choisissez une date de début.");
     let res: RpcResult;
     try {
       res = (await bookStage.mutateAsync({
-        p_code: clean,
+        p_session_token: session.token,
         p_start_date: toParisDateOnly(startDate),
       })) as RpcResult;
     } catch (error) {
       return toast.error("Erreur : " + (error as Error).message);
     }
     if (!res?.ok) {
+      if (res?.error === "session_invalid") {
+        session.dropSession();
+        return toast.error(SESSION_EXPIRED_MESSAGE);
+      }
       return toast.error(mapStageBookingError(res?.error));
     }
     toast.success("Stage 100% Glisse réservé sur 5 jours consécutifs !");
@@ -156,6 +172,8 @@ export const useStageBooking = (code: string, onBooked: (code: string) => void) 
     preview,
     anyFull: preview.some((p) => p.places <= 0 && p.groupes > 0),
     submitting: bookStage.isPending,
+    hasSession: session.hasSession,
     handleStageBook,
   };
 };
+
