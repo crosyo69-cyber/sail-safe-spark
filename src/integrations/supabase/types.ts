@@ -1200,6 +1200,112 @@ export type Database = {
         }
         Relationships: []
       }
+      otp_challenges: {
+        Row: {
+          attempt_count: number
+          code_hash: string
+          consumed_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          invalidated_at: string | null
+          ip_hash: string | null
+          package_id: string
+        }
+        Insert: {
+          attempt_count?: number
+          code_hash: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          invalidated_at?: string | null
+          ip_hash?: string | null
+          package_id: string
+        }
+        Update: {
+          attempt_count?: number
+          code_hash?: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          invalidated_at?: string | null
+          ip_hash?: string | null
+          package_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "otp_challenges_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "client_credit_wallet"
+            referencedColumns: ["package_id"]
+          },
+          {
+            foreignKeyName: "otp_challenges_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "client_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      otp_sessions: {
+        Row: {
+          absolute_expires_at: string
+          challenge_id: string | null
+          created_at: string
+          id: string
+          last_seen_at: string
+          package_id: string
+          revoked_at: string | null
+          token_hash: string
+        }
+        Insert: {
+          absolute_expires_at: string
+          challenge_id?: string | null
+          created_at?: string
+          id?: string
+          last_seen_at?: string
+          package_id: string
+          revoked_at?: string | null
+          token_hash: string
+        }
+        Update: {
+          absolute_expires_at?: string
+          challenge_id?: string | null
+          created_at?: string
+          id?: string
+          last_seen_at?: string
+          package_id?: string
+          revoked_at?: string | null
+          token_hash?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "otp_sessions_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "otp_challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "otp_sessions_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "client_credit_wallet"
+            referencedColumns: ["package_id"]
+          },
+          {
+            foreignKeyName: "otp_sessions_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "client_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       package_bookings: {
         Row: {
           booking_kind: string
@@ -2220,6 +2326,19 @@ export type Database = {
           p_activity: Database["public"]["Enums"]["activity_type"]
           p_date: string
         }
+        Returns: Json
+      }
+      otp_create_challenge: {
+        Args: { p_ip_hash?: string; p_package_id: string }
+        Returns: Json
+      }
+      otp_create_session: {
+        Args: { p_challenge_id?: string; p_package_id: string }
+        Returns: Json
+      }
+      otp_generate_code: { Args: never; Returns: string }
+      otp_verify_challenge: {
+        Args: { p_challenge_id: string; p_otp: string }
         Returns: Json
       }
       purge_cron_run_details: {
