@@ -4,6 +4,8 @@ import { toast } from "sonner";
 import { useReservations } from "@/hooks/services/useReservations";
 import { toParisDateOnly } from "@/lib/booking-dates";
 import { ACTIVITIES, DEFAULT_KITE_CAPACITY, DEFAULT_STAGE_CAPACITY, DEFAULT_WING_CAPACITY, STAGE_DAYS } from "@/features/reservation/constants";
+import { setPendingCode } from "@/features/mon-espace/session-storage";
+
 import { mapDailyBookingError, mapStageBookingError } from "@/features/reservation/error-mapping";
 import type {
   Activity,
