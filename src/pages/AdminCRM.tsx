@@ -4,7 +4,8 @@ import { Helmet } from "react-helmet-async";
 import { useAdmin } from "@/hooks/useAdmin";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { supabase } from "@/integrations/supabase/client";
+import { crmService } from "@/services/crm.service";
+import { settle } from "@/services/_shared/result";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -38,20 +39,16 @@ const AdminCRM = () => {
   const [selected, setSelected] = useState<string | null>(null);
 
   const loadStats = useCallback(async () => {
-    const { data, error } = await supabase.rpc("crm_dashboard");
+    const { data, error } = settle(await crmService.dashboard());
     if (error) { toast.error("Tableau de bord : " + error.message); return; }
     setStats(data as unknown as CrmDashboardStats);
   }, []);
 
   const loadClients = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase.rpc("crm_list_clients", {
-      p_query: query || null,
-      p_activity: activity,
-      p_status: status,
-      p_consent: consent,
-      p_limit: 500,
-    });
+    const { data, error } = settle(
+      await crmService.listClients({ query, activity, status, consent, limit: 500 }),
+    );
     setLoading(false);
     if (error) { toast.error("Recherche : " + error.message); return; }
     setClients((data as unknown as CrmClient[]) ?? []);
