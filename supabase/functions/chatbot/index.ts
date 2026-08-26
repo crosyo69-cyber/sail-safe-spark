@@ -124,8 +124,34 @@ serve(async (req) => {
       sanitized.push({ role: m.role, content: m.content });
     }
 
+    // E-2-FIX : rate-limit serveur AVANT tout appel au gateway IA (coût provider).
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
+    const ip = clientIp(req);
+    for (const [context, limit, window] of [
+      ["chatbot_burst", 5, "10 seconds"],
+      ["chatbot_msg", 20, "1 minute"],
+    ] as const) {
+      const { data: allowed, error: guardErr } = await supabase.rpc("public_rate_guard", {
+        p_context: context,
+        p_key: ip,
+        p_limit: limit,
+        p_window: window,
+      });
+      if (guardErr) {
+        console.error("rate guard unavailable", context, guardErr.message);
+        return errorResponse(503, "service_error", "Service temporairement indisponible");
+      }
+      if (allowed !== true) {
+        return errorResponse(429, "rate_limit", "Trop de demandes, réessayez dans quelques instants.");
+      }
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
