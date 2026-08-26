@@ -1488,6 +1488,36 @@ export type Database = {
         }
         Relationships: []
       }
+      public_link_tokens: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          purpose: string
+          revoked_at: string | null
+          subject_id: string
+          token_hash: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          purpose: string
+          revoked_at?: string | null
+          subject_id: string
+          token_hash: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          purpose?: string
+          revoked_at?: string | null
+          subject_id?: string
+          token_hash?: string
+        }
+        Relationships: []
+      }
       public_rate_attempts: {
         Row: {
           blocked: boolean
@@ -2252,6 +2282,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      issue_link_token: {
+        Args: { p_expires_at?: string; p_purpose: string; p_subject_id: string }
+        Returns: string
+      }
       join_waitlist: {
         Args: {
           p_activity: Database["public"]["Enums"]["activity_type"]
@@ -2333,6 +2367,7 @@ export type Database = {
         }[]
       }
       marketing_is_internal_caller: { Args: never; Returns: boolean }
+      marketing_issue_pref_token: { Args: { p_email: string }; Returns: string }
       marketing_preferences_payload: {
         Args: { p_email: string }
         Returns: Json
@@ -2449,6 +2484,10 @@ export type Database = {
       }
       release_email_claim: { Args: { _message_id: string }; Returns: undefined }
       request_otp: { Args: { p_code: string }; Returns: Json }
+      resolve_link_token: {
+        Args: { p_purpose: string; p_token: string }
+        Returns: string
+      }
       resolve_marketing_email: { Args: { p_token: string }; Returns: string }
       restore_credit_fifo: {
         Args: { p_booking_id: string; p_package_id: string }
