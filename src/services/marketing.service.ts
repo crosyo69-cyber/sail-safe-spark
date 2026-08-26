@@ -122,6 +122,68 @@ export const marketingService = {
       { mode, automation_id: automationId },
       { retries: 1, timeoutMs: 60_000 },
     ),
+
+  /** Préférences marketing via session client (espace sécurisé OTP). */
+  getPreferencesBySession: (sessionToken: string) =>
+    api.rpc("get_marketing_preferences_by_session", { p_session_token: sessionToken }),
+
+  savePreferencesBySession: (args: {
+    p_session_token: string;
+    p_consent: boolean;
+    p_activities: string[];
+    p_topics: string[];
+  }) => api.rpc("save_marketing_preferences_by_session", args, { retries: 1 }),
+
+  /** Campagnes — lecture / écriture. */
+  listCampaigns: <T = unknown>() =>
+    api.query<T[]>("marketing_campaigns.list", (db) =>
+      db.from("marketing_campaigns").select("*").order("created_at", { ascending: false }),
+    ),
+
+  createCampaign: (payload: Record<string, unknown>) =>
+    api.query(
+      "marketing_campaigns.insert",
+      (db) => db.from("marketing_campaigns").insert(payload as never),
+      { retries: 1 },
+    ),
+
+  updateCampaign: (id: string, payload: Record<string, unknown>) =>
+    api.query(
+      "marketing_campaigns.update",
+      (db) => db.from("marketing_campaigns").update(payload as never).eq("id", id),
+      { retries: 1 },
+    ),
+
+  archiveCampaign: (id: string) =>
+    api.query(
+      "marketing_campaigns.archive",
+      (db) => db.from("marketing_campaigns").update({ status: "archived" }).eq("id", id),
+      { retries: 1 },
+    ),
+
+  /** Segments enregistrés — détail + écriture. */
+  listSegmentsDetailed: <T = unknown>() =>
+    api.query<T[]>("marketing_segments.list_detailed", (db) =>
+      db
+        .from("marketing_segments")
+        .select("id, name, description, definition, created_at")
+        .order("created_at", { ascending: false }),
+    ),
+
+  createSegment: (payload: Record<string, unknown>) =>
+    api.query(
+      "marketing_segments.insert",
+      (db) => db.from("marketing_segments").insert(payload as never),
+      { retries: 1 },
+    ),
+
+  deleteSegment: (id: string) =>
+    api.query(
+      "marketing_segments.delete",
+      (db) => db.from("marketing_segments").delete().eq("id", id),
+      { retries: 1 },
+    ),
 };
+
 
 export type MarketingService = typeof marketingService;
