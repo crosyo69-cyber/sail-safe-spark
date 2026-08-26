@@ -1476,6 +1476,30 @@ export type Database = {
         }
         Relationships: []
       }
+      public_rate_attempts: {
+        Row: {
+          blocked: boolean
+          context: string
+          created_at: string
+          id: string
+          key_hash: string
+        }
+        Insert: {
+          blocked?: boolean
+          context: string
+          created_at?: string
+          id?: string
+          key_hash: string
+        }
+        Update: {
+          blocked?: boolean
+          context?: string
+          created_at?: string
+          id?: string
+          key_hash?: string
+        }
+        Relationships: []
+      }
       reservations: {
         Row: {
           created_at: string
@@ -2378,6 +2402,15 @@ export type Database = {
       otp_verify_challenge: {
         Args: { p_challenge_id: string; p_otp: string }
         Returns: Json
+      }
+      public_rate_guard: {
+        Args: {
+          p_context: string
+          p_key: string
+          p_limit: number
+          p_window: string
+        }
+        Returns: boolean
       }
       purge_cron_run_details: {
         Args: {
