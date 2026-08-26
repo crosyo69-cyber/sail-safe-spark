@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { supabase } from "@/integrations/supabase/client";
+import { sanitizeAnalyticsPath } from "@/lib/analytics-path";
 
 const NotFound = () => {
   const location = useLocation();
