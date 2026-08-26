@@ -48,15 +48,15 @@ Deno.serve(async (req) => {
 
     const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
-    // upsert (allow re-subscribe with new tokens if already exists but unconfirmed)
+    // D-4-FIX-2 (R5 phase C) : les tokens ne sont JAMAIS relus depuis la base.
+    // Ils sont émis en mémoire côté serveur (issue_link_token) et seul le hash est persisté.
     const { data: existing } = await supabase
       .from("last_minute_subscribers")
-      .select("id, confirmed, confirm_token, unsubscribe_token")
+      .select("id, confirmed")
       .eq("email", email)
       .maybeSingle();
 
-    let confirmToken: string;
-    let unsubToken: string;
+    let subscriberId: string;
 
     if (existing) {
       if (existing.confirmed) {
@@ -64,24 +64,40 @@ Deno.serve(async (req) => {
         await supabase.from("last_minute_subscribers").update({ activities: cleanActivities, updated_at: new Date().toISOString() }).eq("id", existing.id);
         return new Response(JSON.stringify({ success: true, alreadyConfirmed: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
-      confirmToken = existing.confirm_token as string;
-      unsubToken = existing.unsubscribe_token as string;
+      subscriberId = existing.id as string;
       await supabase.from("last_minute_subscribers").update({ activities: cleanActivities, updated_at: new Date().toISOString() }).eq("id", existing.id);
     } else {
       const { data: created, error } = await supabase
         .from("last_minute_subscribers")
         .insert({ email, activities: cleanActivities })
-        .select("confirm_token, unsubscribe_token")
+        .select("id")
         .single();
       if (error || !created) {
         return new Response(JSON.stringify({ error: "Inscription impossible" }), { status: 500, headers: corsHeaders });
       }
-      confirmToken = created.confirm_token as string;
-      unsubToken = created.unsubscribe_token as string;
+      subscriberId = created.id as string;
+    }
+
+    // Nouveau token de confirmation à chaque envoi (non destructif : les anciens
+    // hashes restent valides — modèle multi-token public_link_tokens).
+    const { data: confirmToken, error: cErr } = await supabase.rpc("issue_link_token", {
+      p_purpose: "last_minute_confirm",
+      p_subject_id: subscriberId,
+      p_expires_at: null,
+    });
+    const { data: unsubToken, error: uErr } = await supabase.rpc("issue_link_token", {
+      p_purpose: "last_minute_unsubscribe",
+      p_subject_id: subscriberId,
+      p_expires_at: null,
+    });
+    if (cErr || uErr || !confirmToken || !unsubToken) {
+      console.error("issue_link_token failed", cErr?.message ?? uErr?.message);
+      return new Response(JSON.stringify({ error: "Inscription impossible" }), { status: 500, headers: corsHeaders });
     }
 
     const confirmUrl = `${SITE}/alerte-derniere-minute?confirm=${confirmToken}`;
     const unsubscribeUrl = `${SITE}/alerte-derniere-minute?unsubscribe=${unsubToken}`;
+
 
     const messageId = crypto.randomUUID();
     const runId = crypto.randomUUID();
