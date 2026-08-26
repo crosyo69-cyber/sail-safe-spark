@@ -29,32 +29,41 @@ const handler = async (req: Request): Promise<Response> => {
     // Validate token format (UUID)
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     if (!uuidRegex.test(token)) {
-      console.error("Invalid token format:", token);
+      console.error("Invalid unsubscribe token format");
       return new Response(
         JSON.stringify({ error: "Token invalide" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // First, verify the token exists
+    // Resolve the subscription via the hashed token only (never the clear token)
+    const { data: tokenHash, error: hashError } = await supabase
+      .rpc("code_access_hash", { p_value: token });
+
+    if (hashError) {
+      console.error("Error hashing unsubscribe token:", hashError.message);
+      throw hashError;
+    }
+
     const { data: subscription, error: fetchError } = await supabase
       .from("weather_alert_subscriptions")
-      .select("id, email, enabled")
-      .eq("unsubscribe_token", token)
+      .select("id, enabled")
+      .eq("unsubscribe_token_hash", tokenHash)
       .maybeSingle();
 
     if (fetchError) {
-      console.error("Error fetching subscription:", fetchError);
+      console.error("Error fetching subscription:", fetchError.message);
       throw fetchError;
     }
 
     if (!subscription) {
-      console.log("Subscription not found for token:", token);
+      console.log("Subscription not found");
       return new Response(
         JSON.stringify({ error: "Abonnement non trouvé" }),
         { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
 
     if (action === "delete") {
       // Permanently delete subscription
