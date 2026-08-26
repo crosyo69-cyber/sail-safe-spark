@@ -40,7 +40,7 @@ const NotFound = () => {
     const log404 = async () => {
       try {
         await supabase.from("page_404_logs" as any).insert({
-          path: location.pathname + location.search,
+          path: sanitizeAnalyticsPath(location.pathname, location.search),
           referrer: document.referrer || null,
           user_agent: navigator.userAgent || null,
         });
