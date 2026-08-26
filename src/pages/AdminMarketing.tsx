@@ -4,7 +4,8 @@ import { Helmet } from "react-helmet-async";
 import { useAdmin } from "@/hooks/useAdmin";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { supabase } from "@/integrations/supabase/client";
+import { marketingService } from "@/services/marketing.service";
+import { settle } from "@/services/_shared/result";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -100,9 +101,7 @@ const AdminMarketing = () => {
     );
     setSyncing(false);
     if (error) {
-      const detail = error instanceof FunctionsHttpError
-        ? await error.context.text()
-        : error.message;
+      const detail = error.message;
       toast.error("Synchronisation échouée", { description: detail });
       return;
     }

@@ -141,8 +141,8 @@ const Contact = () => {
           message: formData.message.trim() || undefined,
           honeypot: honeypot,
           formTimestamp: formTimestamp,
-        },
-      });
+        }),
+      );
 
       if (error) throw error;
 

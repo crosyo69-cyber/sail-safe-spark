@@ -103,8 +103,8 @@ const EfoilAssistFoil = () => {
           message: detailedMessage,
           honeypot,
           formTimestamp,
-        },
-      });
+        }),
+      );
       if (error || (data && (data as any).error)) {
         throw new Error(error?.message || (data as any).error);
       }
