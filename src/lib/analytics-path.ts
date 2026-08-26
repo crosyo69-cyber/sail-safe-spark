@@ -17,7 +17,16 @@
 const TOKEN_PATH_PREFIXES = ["/liste-attente", "/preferences-marketing"] as const;
 
 /** Paramètres de query considérés comme sensibles et retirés systématiquement. */
-const SENSITIVE_QUERY_PARAMS = ["token", "offer_token", "confirm_token", "unsubscribe_token"];
+const SENSITIVE_QUERY_PARAMS = [
+  "token",
+  "offer_token",
+  "confirm_token",
+  "unsubscribe_token",
+  // D-4-FIX-2 : liens "alertes dernière minute" (?confirm= / ?unsubscribe=)
+  "confirm",
+  "unsubscribe",
+];
+
 
 function sanitizePathname(pathname: string): string {
   for (const prefix of TOKEN_PATH_PREFIXES) {
