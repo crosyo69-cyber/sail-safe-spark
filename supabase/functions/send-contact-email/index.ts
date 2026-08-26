@@ -11,6 +11,46 @@ const FROM_DOMAIN = "kitesurfpassion.fr";
 const OWNER_EMAIL = "crosyo69@gmail.com";
 const LOGO_URL = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png';
 
+// E-2-FIX : clé de rate-limit jamais vide (p_key vide => bypass du guard).
+function clientIp(req: Request): string {
+  const xff = req.headers.get("x-forwarded-for") ?? "";
+  const first = xff.split(",")[0]?.trim() ?? "";
+  if (first) return first;
+  const real = (req.headers.get("x-real-ip") ?? "").trim();
+  return real || "unknown-ip";
+}
+
+// Retourne null si autorisé, sinon une Response (429 bloqué / 503 guard indisponible).
+async function rateGuard(
+  supabase: any,
+  context: string,
+  key: string,
+  limit: number,
+  window: string,
+): Promise<Response | null> {
+  const { data: allowed, error } = await supabase.rpc("public_rate_guard", {
+    p_context: context,
+    p_key: key && key.trim() ? key : "unknown-key",
+    p_limit: limit,
+    p_window: window,
+  });
+  if (error) {
+    console.error("rate guard unavailable", context, error.message);
+    return new Response(
+      JSON.stringify({ error: "Service temporairement indisponible. Réessayez." }),
+      { status: 503, headers: { "Content-Type": "application/json", ...corsHeaders } },
+    );
+  }
+  if (allowed !== true) {
+    return new Response(
+      JSON.stringify({ error: "Trop de demandes. Merci de réessayer plus tard." }),
+      { status: 429, headers: { "Content-Type": "application/json", ...corsHeaders } },
+    );
+  }
+  return null;
+}
+
+
 interface ContactFormRequest {
   name: string;
   email: string;
