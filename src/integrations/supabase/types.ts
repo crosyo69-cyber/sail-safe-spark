@@ -605,7 +605,6 @@ export type Database = {
           id: string
           last_name: string
           offer_expires_at: string | null
-          offer_token: string
           offer_token_hash: string | null
           offered_at: string | null
           participants: number
@@ -622,7 +621,6 @@ export type Database = {
           id?: string
           last_name: string
           offer_expires_at?: string | null
-          offer_token?: string
           offer_token_hash?: string | null
           offered_at?: string | null
           participants?: number
@@ -639,7 +637,6 @@ export type Database = {
           id?: string
           last_name?: string
           offer_expires_at?: string | null
-          offer_token?: string
           offer_token_hash?: string | null
           offered_at?: string | null
           participants?: number
@@ -760,7 +757,6 @@ export type Database = {
       last_minute_subscribers: {
         Row: {
           activities: string[]
-          confirm_token: string
           confirm_token_hash: string | null
           confirmed: boolean
           confirmed_at: string | null
@@ -768,13 +764,11 @@ export type Database = {
           email: string
           id: string
           phone: string | null
-          unsubscribe_token: string
           unsubscribe_token_hash: string | null
           updated_at: string
         }
         Insert: {
           activities?: string[]
-          confirm_token?: string
           confirm_token_hash?: string | null
           confirmed?: boolean
           confirmed_at?: string | null
@@ -782,13 +776,11 @@ export type Database = {
           email: string
           id?: string
           phone?: string | null
-          unsubscribe_token?: string
           unsubscribe_token_hash?: string | null
           updated_at?: string
         }
         Update: {
           activities?: string[]
-          confirm_token?: string
           confirm_token_hash?: string | null
           confirmed?: boolean
           confirmed_at?: string | null
@@ -796,7 +788,6 @@ export type Database = {
           email?: string
           id?: string
           phone?: string | null
-          unsubscribe_token?: string
           unsubscribe_token_hash?: string | null
           updated_at?: string
         }
@@ -1068,7 +1059,6 @@ export type Database = {
           created_at: string
           email: string
           id: string
-          token: string
           token_hash: string | null
           topics: string[]
           updated_at: string
@@ -1081,7 +1071,6 @@ export type Database = {
           created_at?: string
           email: string
           id?: string
-          token?: string
           token_hash?: string | null
           topics?: string[]
           updated_at?: string
@@ -1094,7 +1083,6 @@ export type Database = {
           created_at?: string
           email?: string
           id?: string
-          token?: string
           token_hash?: string | null
           topics?: string[]
           updated_at?: string
@@ -1775,7 +1763,6 @@ export type Database = {
           id: string
           max_wind: number
           min_wind: number
-          unsubscribe_token: string
           unsubscribe_token_hash: string | null
           updated_at: string
         }
@@ -1786,7 +1773,6 @@ export type Database = {
           id?: string
           max_wind?: number
           min_wind?: number
-          unsubscribe_token?: string
           unsubscribe_token_hash?: string | null
           updated_at?: string
         }
@@ -1797,7 +1783,6 @@ export type Database = {
           id?: string
           max_wind?: number
           min_wind?: number
-          unsubscribe_token?: string
           unsubscribe_token_hash?: string | null
           updated_at?: string
         }
