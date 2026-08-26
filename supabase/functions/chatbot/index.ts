@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -10,6 +11,17 @@ const errorResponse = (status: number, type: string, message: string) =>
     status,
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
+
+// E-2-FIX : clé de rate-limit jamais vide (p_key vide => bypass du guard).
+function clientIp(req: Request): string {
+  const xff = req.headers.get("x-forwarded-for") ?? "";
+  const first = xff.split(",")[0]?.trim() ?? "";
+  if (first) return first;
+  const real = (req.headers.get("x-real-ip") ?? "").trim();
+  return real || "unknown-ip";
+}
+
+
 
 
 const SYSTEM_PROMPT = `Tu es l'assistant virtuel de Kitesurf Passion, école de kitesurf à Hyères-les-Palmiers (plage de l'Almanarre), Var (83), dirigée par Yohan Cros, moniteur diplômé d'État BPJEPS depuis 2001.
