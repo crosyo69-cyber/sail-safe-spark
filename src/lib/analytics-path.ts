@@ -25,8 +25,20 @@ const SENSITIVE_QUERY_PARAMS = [
   // D-4-FIX-2 : liens "alertes dernière minute" (?confirm= / ?unsubscribe=)
   "confirm",
   "unsubscribe",
+  // D-3-FIX-2 : secrets d'authentification et PII
+  "access_token",
+  "refresh_token",
+  "code",
+  "token_hash",
+  "otp",
+  "secret",
+  "api_key",
+  "email",
+  "name",
+  "session",
 ];
 
+const SENSITIVE_QUERY_PARAMS_SET = new Set(SENSITIVE_QUERY_PARAMS.map((k) => k.toLowerCase()));
 
 function sanitizePathname(pathname: string): string {
   for (const prefix of TOKEN_PATH_PREFIXES) {
@@ -41,8 +53,8 @@ function sanitizeSearch(search: string): string {
 
   const params = new URLSearchParams(search.startsWith("?") ? search.slice(1) : search);
   let removed = false;
-  for (const key of SENSITIVE_QUERY_PARAMS) {
-    if (params.has(key)) {
+  for (const key of Array.from(params.keys())) {
+    if (SENSITIVE_QUERY_PARAMS_SET.has(key.toLowerCase())) {
       params.delete(key);
       removed = true;
     }
