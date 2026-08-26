@@ -21,6 +21,19 @@
   Link: <https://fonts.gstatic.com>; rel=preconnect; crossorigin
   Link: <https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600&display=swap>; rel=preload; as=style
 
+# D-3-FIX / R8 — pages portant un token public : aucune mise en cache
+/liste-attente/*
+  Cache-Control: no-store
+  Referrer-Policy: no-referrer
+
+/preferences-marketing/*
+  Cache-Control: no-store
+  Referrer-Policy: no-referrer
+
+/desabonnement-alertes
+  Cache-Control: no-store
+  Referrer-Policy: no-referrer
+
 # Text files - Proper MIME types
 /*.txt
   Content-Type: text/plain; charset=utf-8
