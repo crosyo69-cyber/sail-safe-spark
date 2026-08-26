@@ -9,6 +9,46 @@ const SITE = "https://www.kitesurfpassion.fr";
 const FROM_DOMAIN = "kitesurfpassion.fr";
 const SITE_NAME = "Kitesurf Passion";
 
+// E-2-FIX : clé de rate-limit jamais vide (p_key vide => bypass du guard).
+function clientIp(req: Request): string {
+  const xff = req.headers.get("x-forwarded-for") ?? "";
+  const first = xff.split(",")[0]?.trim() ?? "";
+  if (first) return first;
+  const real = (req.headers.get("x-real-ip") ?? "").trim();
+  return real || "unknown-ip";
+}
+
+// Retourne null si autorisé, sinon une Response (429 bloqué / 503 guard indisponible).
+async function rateGuard(
+  supabase: any,
+  context: string,
+  key: string,
+  limit: number,
+  window: string,
+): Promise<Response | null> {
+  const { data: allowed, error } = await supabase.rpc("public_rate_guard", {
+    p_context: context,
+    p_key: key && key.trim() ? key : "unknown-key",
+    p_limit: limit,
+    p_window: window,
+  });
+  if (error) {
+    console.error("rate guard unavailable", context, error.message);
+    return new Response(JSON.stringify({ error: "Service temporairement indisponible" }), {
+      status: 503,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+  if (allowed !== true) {
+    return new Response(JSON.stringify({ error: "Trop de demandes. Merci de réessayer plus tard." }), {
+      status: 429,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+  return null;
+}
+
+
 function buildHtml(confirmUrl: string, unsubscribeUrl: string) {
   return `<!DOCTYPE html><html lang="fr"><body style="margin:0;background:#fff;font-family:Inter,Arial,sans-serif;">
     <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;">
@@ -47,6 +87,15 @@ Deno.serve(async (req) => {
     }
 
     const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+
+    // E-2-FIX : rate-limit serveur AVANT toute opération métier (subscriber, token, e-mail).
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const ipBlocked = await rateGuard(supabase, "last_minute_subscribe_ip", clientIp(req), 5, "15 minutes");
+    if (ipBlocked) return ipBlocked;
+    const emailBlocked = await rateGuard(supabase, "last_minute_subscribe_email", normalizedEmail, 3, "1 hour");
+    if (emailBlocked) return emailBlocked;
+
+
 
     // D-4-FIX-2 (R5 phase C) : les tokens ne sont JAMAIS relus depuis la base.
     // Ils sont émis en mémoire côté serveur (issue_link_token) et seul le hash est persisté.

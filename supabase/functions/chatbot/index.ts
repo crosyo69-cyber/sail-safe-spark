@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -10,6 +11,17 @@ const errorResponse = (status: number, type: string, message: string) =>
     status,
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
+
+// E-2-FIX : clé de rate-limit jamais vide (p_key vide => bypass du guard).
+function clientIp(req: Request): string {
+  const xff = req.headers.get("x-forwarded-for") ?? "";
+  const first = xff.split(",")[0]?.trim() ?? "";
+  if (first) return first;
+  const real = (req.headers.get("x-real-ip") ?? "").trim();
+  return real || "unknown-ip";
+}
+
+
 
 
 const SYSTEM_PROMPT = `Tu es l'assistant virtuel de Kitesurf Passion, école de kitesurf à Hyères-les-Palmiers (plage de l'Almanarre), Var (83), dirigée par Yohan Cros, moniteur diplômé d'État BPJEPS depuis 2001.
@@ -112,8 +124,34 @@ serve(async (req) => {
       sanitized.push({ role: m.role, content: m.content });
     }
 
+    // E-2-FIX : rate-limit serveur AVANT tout appel au gateway IA (coût provider).
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
+    const ip = clientIp(req);
+    for (const [context, limit, window] of [
+      ["chatbot_burst", 5, "10 seconds"],
+      ["chatbot_msg", 20, "1 minute"],
+    ] as const) {
+      const { data: allowed, error: guardErr } = await supabase.rpc("public_rate_guard", {
+        p_context: context,
+        p_key: ip,
+        p_limit: limit,
+        p_window: window,
+      });
+      if (guardErr) {
+        console.error("rate guard unavailable", context, guardErr.message);
+        return errorResponse(503, "service_error", "Service temporairement indisponible");
+      }
+      if (allowed !== true) {
+        return errorResponse(429, "rate_limit", "Trop de demandes, réessayez dans quelques instants.");
+      }
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
