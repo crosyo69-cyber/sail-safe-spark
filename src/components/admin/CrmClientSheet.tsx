@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { crmService } from "@/services/crm.service";
+import { settle } from "@/services/_shared/result";
 import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription,
 } from "@/components/ui/sheet";
@@ -48,7 +49,7 @@ export const CrmClientSheet = ({ email, onClose, onSaved }: Props) => {
   const load = useCallback(async () => {
     if (!email) return;
     setLoading(true);
-    const { data, error } = await supabase.rpc("crm_client_detail", { p_email: email });
+    const { data, error } = settle(await crmService.clientDetail(email));
     setLoading(false);
     if (error) { toast.error("Chargement impossible : " + error.message); return; }
     const d = data as unknown as CrmDetail;
@@ -65,7 +66,7 @@ export const CrmClientSheet = ({ email, onClose, onSaved }: Props) => {
   const saveProfile = async () => {
     if (!email) return;
     setBusy(true);
-    const { error } = await supabase.rpc("crm_upsert_profile", {
+    const { error } = settle(await crmService.upsertProfile({
       p_email: email,
       p_first_name: detail?.summary?.first_name ?? null,
       p_last_name: detail?.summary?.last_name ?? null,
@@ -74,7 +75,7 @@ export const CrmClientSheet = ({ email, onClose, onSaved }: Props) => {
       p_recommended_gear: gear,
       p_marketing_consent: consent,
       p_tags: tags.split(",").map((t) => t.trim()).filter(Boolean),
-    });
+    }));
     setBusy(false);
     if (error) { toast.error(error.message); return; }
     toast.success("Fiche enregistrée");
@@ -85,12 +86,12 @@ export const CrmClientSheet = ({ email, onClose, onSaved }: Props) => {
   const saveLevel = async () => {
     if (!email) return;
     setBusy(true);
-    const { error } = await supabase.rpc("crm_set_level", {
+    const { error } = settle(await crmService.setLevel({
       p_email: email,
       p_activity: levelActivity as never,
       p_level: levelValue as never,
       p_notes: levelNotes || null,
-    });
+    }));
     setBusy(false);
     if (error) { toast.error(error.message); return; }
     setLevelNotes("");
@@ -101,9 +102,9 @@ export const CrmClientSheet = ({ email, onClose, onSaved }: Props) => {
   const addDoc = async () => {
     if (!email || !docTitle || !docUrl) { toast.error("Titre et lien requis"); return; }
     setBusy(true);
-    const { error } = await supabase.rpc("crm_add_document", {
+    const { error } = settle(await crmService.addDocument({
       p_email: email, p_title: docTitle, p_url: docUrl, p_doc_type: docType,
-    });
+    }));
     setBusy(false);
     if (error) { toast.error(error.message); return; }
     setDocTitle(""); setDocUrl("");
@@ -113,7 +114,7 @@ export const CrmClientSheet = ({ email, onClose, onSaved }: Props) => {
 
   const removeDoc = async (id: string) => {
     setBusy(true);
-    const { error } = await supabase.rpc("crm_delete_document", { p_id: id });
+    const { error } = settle(await crmService.deleteDocument({ p_id: id }));
     setBusy(false);
     if (error) { toast.error(error.message); return; }
     load();

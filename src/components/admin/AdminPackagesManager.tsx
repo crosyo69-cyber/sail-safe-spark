@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { creditService } from "@/services/credit.service";
+import { settle } from "@/services/_shared/result";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -121,11 +123,13 @@ const AdminPackagesManager = () => {
     }
     setAdjusting(true);
     const delta = adjustDirection === "credit" ? adjustAmount : -adjustAmount;
-    const { data, error } = await supabase.rpc("admin_adjust_package_credits", {
-      p_package_id: adjustPkg.id,
-      p_delta: delta,
-      p_reason: adjustReason.trim(),
-    });
+    const { data, error } = settle(
+      await creditService.adjustPackageCredits({
+        p_package_id: adjustPkg.id,
+        p_delta: delta,
+        p_reason: adjustReason.trim(),
+      }),
+    );
     setAdjusting(false);
     if (error) {
       toast.error(error.message);
@@ -354,11 +358,13 @@ const AdminPackagesManager = () => {
           )}
           onConfirm={async ({ reason, sessions }) => {
             if (!recreditPkg) return;
-            const { data, error } = await supabase.rpc("admin_recredit_package", {
-              p_package_id: recreditPkg.id,
-              p_sessions: sessions,
-              p_reason: reason,
-            });
+            const { data, error } = settle(
+              await creditService.recreditPackage({
+                p_package_id: recreditPkg.id,
+                p_sessions: sessions,
+                p_reason: reason,
+              }),
+            );
             if (error) {
               toast.error(error.message);
               return;

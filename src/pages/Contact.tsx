@@ -10,7 +10,8 @@ import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, lazy, Suspense } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { contactService } from "@/services/contact.service";
+import { settle } from "@/services/_shared/result";
 
 const DepositPaymentSection = lazy(() => import("@/components/sections/DepositPaymentSection"));
 
@@ -130,8 +131,8 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase.functions.invoke("send-contact-email", {
-        body: {
+      const { error } = settle(
+        await contactService.sendContactEmail({
           name: `${firstName} ${lastName}`,
           email: email,
           phone: phone || undefined,
@@ -141,8 +142,8 @@ const Contact = () => {
           message: formData.message.trim() || undefined,
           honeypot: honeypot,
           formTimestamp: formTimestamp,
-        },
-      });
+        }),
+      );
 
       if (error) throw error;
 

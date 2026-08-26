@@ -5,10 +5,14 @@ const api = createApiClient({ scope: "contact" });
 export interface SendContactEmailBody {
   name: string;
   email: string;
-  phone: string;
   activity: string;
   honeypot: string;
   formTimestamp: number;
+  /** Champs optionnels envoyés par certains formulaires (Contact, E-Foil). */
+  phone?: string;
+  startDate?: string;
+  participants?: number | string;
+  message?: string;
 }
 
 /**

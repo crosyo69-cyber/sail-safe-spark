@@ -4,7 +4,8 @@ import { Helmet } from "react-helmet-async";
 import { useAdmin } from "@/hooks/useAdmin";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { supabase } from "@/integrations/supabase/client";
+import { marketingService } from "@/services/marketing.service";
+import { settle } from "@/services/_shared/result";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,7 +21,6 @@ import { toast } from "sonner";
 import { Loader2, ArrowLeft, RefreshCw, Save, ShieldCheck, Send } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import { FunctionsHttpError } from "@supabase/supabase-js";
 
 interface SyncLog {
   id: string;
@@ -61,8 +61,8 @@ const AdminMarketing = () => {
 
   const load = useCallback(async () => {
     const [{ data: settings }, { data: logRows }] = await Promise.all([
-      supabase.from("marketing_settings").select("*").eq("id", 1).maybeSingle(),
-      supabase.from("marketing_sync_logs").select("*").order("created_at", { ascending: false }).limit(20),
+      marketingService.getSettings().then(settle),
+      marketingService.listSyncLogs(20).then(settle),
     ]);
     if (settings) {
       setListId(settings.brevo_list_id != null ? String(settings.brevo_list_id) : "");
@@ -76,13 +76,12 @@ const AdminMarketing = () => {
 
   const save = async () => {
     setSaving(true);
-    const { error } = await supabase
-      .from("marketing_settings")
-      .update({
+    const { error } = settle(
+      await marketingService.saveSettings({
         brevo_list_id: listId.trim() === "" ? null : Number(listId),
         mode,
-      })
-      .eq("id", 1);
+      }),
+    );
     setSaving(false);
     if (error) { toast.error("Enregistrement impossible", { description: error.message }); return; }
     toast.success("Paramètres marketing enregistrés");
@@ -91,18 +90,16 @@ const AdminMarketing = () => {
   const runSync = async () => {
     setSyncing(true);
     setReport(null);
-    const { data, error } = await supabase.functions.invoke("sync-brevo-contacts", {
-      body: {
+    const { data, error } = settle(
+      await marketingService.syncBrevoContacts({
         mode,
         listId: listId.trim() === "" ? null : Number(listId),
         limit: limit.trim() === "" ? null : Number(limit),
-      },
-    });
+      }),
+    );
     setSyncing(false);
     if (error) {
-      const detail = error instanceof FunctionsHttpError
-        ? await error.context.text()
-        : error.message;
+      const detail = error.message;
       toast.error("Synchronisation échouée", { description: detail });
       return;
     }

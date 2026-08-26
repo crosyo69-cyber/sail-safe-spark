@@ -8,6 +8,15 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
+import { analyticsService } from "@/services/analytics.service";
+import { settle } from "@/services/_shared/result";
+
+/** Ligne renvoyée par la RPC `get_latest_auth_email_status` (inchangée). */
+type AuthEmailStatusRow = {
+  status: string;
+  last_event_at: string;
+  error_message: string | null;
+};
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -66,9 +75,11 @@ const Auth = () => {
   // Récupère l'état du dernier email envoyé à cette adresse
   const fetchEmailStatus = async (targetEmail: string) => {
     setStatusLoading(true);
-    const { data, error } = await supabase.rpc("get_latest_auth_email_status", {
-      p_email: targetEmail,
-    });
+    const { data, error } = settle(
+      await analyticsService.latestAuthEmailStatus<AuthEmailStatusRow[]>({
+        p_email: targetEmail,
+      }),
+    );
     if (!error && data && data.length > 0) {
       setEmailStatus({
         status: data[0].status,

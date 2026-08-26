@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { assistantService } from "@/services/assistant.service";
+import { settle } from "@/services/_shared/result";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -55,7 +56,7 @@ export const AssistantFinances = ({ onAsk }: Props) => {
   const load = useCallback(async () => {
     setLoading(true);
     setError(null);
-    const { data: res, error: rpcError } = await supabase.rpc("assistant_financial_summary");
+    const { data: res, error: rpcError } = settle(await assistantService.financialSummary());
     if (rpcError) {
       setError(rpcError.message);
       setData(null);

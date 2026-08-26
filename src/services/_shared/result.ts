@@ -31,3 +31,11 @@ export const unwrap = <T,>(r: Result<T>): T => {
 
 export const mapResult = <T, U>(r: Result<T>, fn: (v: T) => U): Result<U> =>
   r.ok ? ok(fn((r as Ok<T>).data)) : (r as Err);
+
+/**
+ * Adapte un `Result<T>` au tuple `{ data, error }` historique de supabase-js.
+ * Purement transitionnel : permet aux composants migrés de conserver
+ * exactement le même flux loading/error/success qu'avant le LOT E-3.
+ */
+export const settle = <T,>(r: Result<T>): { data: T | null; error: ServiceError | null } =>
+  r.ok ? { data: (r as Ok<T>).data, error: null } : { data: null, error: (r as Err).error };

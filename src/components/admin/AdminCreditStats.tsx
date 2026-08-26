@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { creditService } from "@/services/credit.service";
+import { settle } from "@/services/_shared/result";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,7 +29,7 @@ const AdminCreditStats = () => {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase.rpc("admin_credit_stats", { p_start: start, p_end: end });
+    const { data, error } = settle(await creditService.stats({ p_start: start, p_end: end }));
     setLoading(false);
     if (error) return toast.error(error.message);
     setStats(data as unknown as Stats);

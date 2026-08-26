@@ -11,7 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Zap, Battery, Wind, Check, Phone, Send, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { contactService } from "@/services/contact.service";
+import { settle } from "@/services/_shared/result";
 import { trackPhoneClick } from "@/lib/analytics";
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import efoilRider from "@/assets/efoil-rider-hyeres.jpg.asset.json";
@@ -92,8 +93,8 @@ const EfoilAssistFoil = () => {
         form.message ? `\n📝 Message : ${form.message}` : "",
       ].filter(Boolean).join("\n");
 
-      const { data, error } = await supabase.functions.invoke("send-contact-email", {
-        body: {
+      const { data, error } = settle(
+        await contactService.sendContactEmail({
           name: `${form.firstName.trim()} ${form.lastName.trim()}`,
           email: form.email.trim().toLowerCase(),
           phone: form.phone.trim(),
@@ -103,8 +104,8 @@ const EfoilAssistFoil = () => {
           message: detailedMessage,
           honeypot,
           formTimestamp,
-        },
-      });
+        }),
+      );
       if (error || (data && (data as any).error)) {
         throw new Error(error?.message || (data as any).error);
       }
