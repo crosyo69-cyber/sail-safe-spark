@@ -297,6 +297,15 @@ Deno.serve(async (req) => {
 
     const sanitized = validation.sanitized;
 
+    // E-2-FIX : rate-limit serveur AVANT toute mise en file d'e-mail.
+    const normalizedEmail = sanitized.email.trim().toLowerCase();
+    const ipBlocked = await rateGuard(supabase, "contact_ip", clientIp(req), 5, "15 minutes");
+    if (ipBlocked) return ipBlocked;
+    const emailBlocked = await rateGuard(supabase, "contact_email", normalizedEmail, 3, "1 hour");
+    if (emailBlocked) return emailBlocked;
+
+
+
     // Enqueue confirmation email to customer
     try {
       await enqueueEmail(
