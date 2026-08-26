@@ -88,6 +88,15 @@ Deno.serve(async (req) => {
 
     const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
 
+    // E-2-FIX : rate-limit serveur AVANT toute opération métier (subscriber, token, e-mail).
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const ipBlocked = await rateGuard(supabase, "last_minute_subscribe_ip", clientIp(req), 5, "15 minutes");
+    if (ipBlocked) return ipBlocked;
+    const emailBlocked = await rateGuard(supabase, "last_minute_subscribe_email", normalizedEmail, 3, "1 hour");
+    if (emailBlocked) return emailBlocked;
+
+
+
     // D-4-FIX-2 (R5 phase C) : les tokens ne sont JAMAIS relus depuis la base.
     // Ils sont émis en mémoire côté serveur (issue_link_token) et seul le hash est persisté.
     const { data: existing } = await supabase
