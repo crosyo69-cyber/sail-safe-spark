@@ -17,6 +17,10 @@ export const creditService = {
     api.rpc("admin_adjust_package_credits", args, { retries: 1 }),
   recreditPackage: (args: Record<string, unknown>) =>
     api.rpc("admin_recredit_package", args, { retries: 1 }),
+  extendCredit: (args: Record<string, unknown>) =>
+    api.rpc("admin_extend_credit", args, { retries: 1 }),
+  reactivateCredit: (args: Record<string, unknown>) =>
+    api.rpc("admin_reactivate_credit", args, { retries: 1 }),
 };
 
 export type CreditService = typeof creditService;

@@ -45,10 +45,12 @@ export const AssistantActions = forwardRef<AssistantActionsHandle, Props>(({ onA
 
   const load = useCallback(async (status: PreparedActionStatus | "all") => {
     setLoading(true);
-    const { data, error } = await supabase.rpc("assistant_list_actions", {
-      p_status: status === "all" ? null : status,
-      p_limit: 50,
-    });
+    const { data, error } = settle(
+      await assistantService.listActions({
+        p_status: status === "all" ? null : status,
+        p_limit: 50,
+      }),
+    );
     if (error) {
       toast.error(error.message);
       setItems([]);
@@ -97,8 +99,13 @@ export const AssistantActions = forwardRef<AssistantActionsHandle, Props>(({ onA
     async (action: PreparedAction, validate: boolean) => {
       setDeciding(true);
       const { error } = validate
-        ? await supabase.rpc("assistant_validate_action", { p_id: action.id })
-        : await supabase.rpc("assistant_cancel_action", { p_id: action.id, p_reason: "Annulée par l'administrateur" });
+        ? settle(await assistantService.validateAction({ p_id: action.id }))
+        : settle(
+            await assistantService.cancelAction({
+              p_id: action.id,
+              p_reason: "Annulée par l'administrateur",
+            }),
+          );
       setDeciding(false);
       if (error) {
         toast.error(error.message);

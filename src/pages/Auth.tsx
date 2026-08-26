@@ -66,9 +66,11 @@ const Auth = () => {
   // Récupère l'état du dernier email envoyé à cette adresse
   const fetchEmailStatus = async (targetEmail: string) => {
     setStatusLoading(true);
-    const { data, error } = await supabase.rpc("get_latest_auth_email_status", {
-      p_email: targetEmail,
-    });
+    const { data, error } = settle(
+      await analyticsService.latestAuthEmailStatus<AuthEmailStatusRow[]>({
+        p_email: targetEmail,
+      }),
+    );
     if (!error && data && data.length > 0) {
       setEmailStatus({
         status: data[0].status,

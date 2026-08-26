@@ -9,6 +9,11 @@ export interface SendContactEmailBody {
   activity: string;
   honeypot: string;
   formTimestamp: number;
+  /** Champs optionnels envoyés par certains formulaires (Contact, E-Foil). */
+  phone?: string;
+  startDate?: string;
+  participants?: number | string;
+  message?: string;
 }
 
 /**

@@ -130,8 +130,8 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase.functions.invoke("send-contact-email", {
-        body: {
+      const { error } = settle(
+        await contactService.sendContactEmail({
           name: `${firstName} ${lastName}`,
           email: email,
           phone: phone || undefined,

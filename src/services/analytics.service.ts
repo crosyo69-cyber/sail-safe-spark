@@ -12,7 +12,8 @@ const api = createApiClient({ scope: "analytics" });
  */
 export const analyticsService = {
   platformHealth: () => api.rpc("admin_platform_health"),
-  latestAuthEmailStatus: () => api.rpc("get_latest_auth_email_status"),
+  latestAuthEmailStatus: (args?: Record<string, unknown>) =>
+    api.rpc("get_latest_auth_email_status", args),
 
   page404Logs: (limit = 200) =>
     api.query("page_404_logs.list", (db) =>

@@ -92,8 +92,8 @@ const EfoilAssistFoil = () => {
         form.message ? `\n📝 Message : ${form.message}` : "",
       ].filter(Boolean).join("\n");
 
-      const { data, error } = await supabase.functions.invoke("send-contact-email", {
-        body: {
+      const { data, error } = settle(
+        await contactService.sendContactEmail({
           name: `${form.firstName.trim()} ${form.lastName.trim()}`,
           email: form.email.trim().toLowerCase(),
           phone: form.phone.trim(),

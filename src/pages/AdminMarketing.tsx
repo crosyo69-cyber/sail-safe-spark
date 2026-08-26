@@ -91,13 +91,13 @@ const AdminMarketing = () => {
   const runSync = async () => {
     setSyncing(true);
     setReport(null);
-    const { data, error } = await supabase.functions.invoke("sync-brevo-contacts", {
-      body: {
+    const { data, error } = settle(
+      await marketingService.syncBrevoContacts({
         mode,
         listId: listId.trim() === "" ? null : Number(listId),
         limit: limit.trim() === "" ? null : Number(limit),
-      },
-    });
+      }),
+    );
     setSyncing(false);
     if (error) {
       const detail = error instanceof FunctionsHttpError

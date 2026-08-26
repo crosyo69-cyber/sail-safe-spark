@@ -4,7 +4,8 @@ import { Helmet } from "react-helmet-async";
 import { useAdmin } from "@/hooks/useAdmin";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { supabase } from "@/integrations/supabase/client";
+import { creditService } from "@/services/credit.service";
+import { settle } from "@/services/_shared/result";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -116,11 +117,13 @@ const AdminCredits = () => {
 
   const search = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase.rpc("admin_search_wallets", {
-      p_query: query || null,
-      p_activity: activity === "all" ? null : activity,
-      p_season: season === "all" ? null : season,
-    });
+    const { data, error } = settle(
+      await creditService.searchWallets({
+        p_query: query || null,
+        p_activity: activity === "all" ? null : activity,
+        p_season: season === "all" ? null : season,
+      }),
+    );
     setLoading(false);
     if (error) return toast.error(error.message);
     setWallets((data as unknown as Wallet[]) || []);
@@ -130,10 +133,10 @@ const AdminCredits = () => {
 
   const openWallet = async (w: Wallet) => {
     setSelected(w);
-    const { data } = await supabase.rpc("admin_get_wallet_by_code", { p_code: w.package_code });
+    const { data } = settle(await creditService.getWalletByCode({ p_code: w.package_code }));
     const res = data as any;
     setHistory((res?.history as HistoryRow[]) || []);
-    const { data: c } = await supabase.rpc("admin_list_credits", { p_package_id: w.package_id });
+    const { data: c } = settle(await creditService.listCredits({ p_package_id: w.package_id }));
     setCredits((c as unknown as Credit[]) || []);
   };
 
@@ -141,9 +144,18 @@ const AdminCredits = () => {
     if (!editCredit || editReason.trim().length < 3 || !editDate) return;
     setBusy(true);
     const iso = new Date(`${editDate}T12:00:00`).toISOString();
-    const { error } = await supabase.rpc(
-      editCredit.mode === "extend" ? "admin_extend_credit" : "admin_reactivate_credit",
-      { p_credit_id: editCredit.credit.id, p_new_expires_at: iso, p_reason: editReason.trim() },
+    const { error } = settle(
+      await (editCredit.mode === "extend"
+        ? creditService.extendCredit({
+            p_credit_id: editCredit.credit.id,
+            p_new_expires_at: iso,
+            p_reason: editReason.trim(),
+          })
+        : creditService.reactivateCredit({
+            p_credit_id: editCredit.credit.id,
+            p_new_expires_at: iso,
+            p_reason: editReason.trim(),
+          })),
     );
     setBusy(false);
     if (error) return toast.error(error.message);
@@ -181,11 +193,13 @@ const AdminCredits = () => {
   const submitAdjust = async () => {
     if (!adjust || finalReason.length < 3) return;
     setBusy(true);
-    const { error } = await supabase.rpc("admin_adjust_package_credits", {
-      p_package_id: adjust.wallet.package_id,
-      p_delta: adjust.sign * adjustQty,
-      p_reason: finalReason,
-    });
+    const { error } = settle(
+      await creditService.adjustPackageCredits({
+        p_package_id: adjust.wallet.package_id,
+        p_delta: adjust.sign * adjustQty,
+        p_reason: finalReason,
+      }),
+    );
     setBusy(false);
     if (error) return toast.error(error.message);
     toast.success(adjust.sign > 0 ? "Crédits ajoutés" : "Crédits retirés");
