@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { statsService } from "@/services/stats.service";
+import { settle } from "@/services/_shared/result";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -94,8 +95,8 @@ const AdminSeasonStats = () => {
   const fetchData = async () => {
     setLoading(true);
     const [groupRes, resRes] = await Promise.all([
-      supabase.from("daily_groups").select("id, date, activity, max_participants, status"),
-      supabase.from("reservations").select("id, daily_group_id, participants, status, skill_level, first_name, last_name").in("status", ["confirmed", "pending"]),
+      statsService.seasonGroups<SessionData[]>().then(settle),
+      statsService.seasonReservations<ReservationData[]>().then(settle),
     ]);
     const combined: SessionData[] = (groupRes.data || []).map((g: any) => ({
       id: g.id,

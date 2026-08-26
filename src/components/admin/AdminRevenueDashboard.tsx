@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { statsService } from "@/services/stats.service";
+import { settle } from "@/services/_shared/result";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -97,12 +98,8 @@ const AdminRevenueDashboard = () => {
   const fetchData = async () => {
     setLoading(true);
     const [resResult, groupResult] = await Promise.all([
-      supabase
-        .from("reservations")
-        .select("id, participants, status, created_at, stripe_session_id, daily_group_id")
-        .eq("status", "confirmed")
-        .not("stripe_session_id", "is", null),
-      supabase.from("daily_groups").select("id, activity, date"),
+      statsService.revenueReservations<Reservation[]>().then(settle),
+      statsService.revenueGroups<SessionInfo[]>().then(settle),
     ]);
 
     if (resResult.data) setReservations(resResult.data);
