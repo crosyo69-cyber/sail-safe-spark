@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { notificationsService } from "@/services/notifications.service";
+import { settle } from "@/services/_shared/result";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -46,13 +47,7 @@ export default function AdminAlertsCenter() {
 
   const load = useCallback(async () => {
     setLoading(true);
-    let q = supabase
-      .from("admin_notifications" as any)
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(200);
-    if (filter === "unread") q = q.is("read_at", null);
-    const { data, error } = await q;
+    const { data, error } = settle(await notificationsService.list(filter));
     if (error) {
       toast({ title: "Erreur chargement alertes", description: error.message, variant: "destructive" });
     } else {
@@ -70,10 +65,7 @@ export default function AdminAlertsCenter() {
   }, [load]);
 
   const markRead = async (id: string) => {
-    const { error } = await supabase
-      .from("admin_notifications" as any)
-      .update({ read_at: new Date().toISOString() })
-      .eq("id", id);
+    const { error } = settle(await notificationsService.markRead([id]));
     if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
     else void load();
   };
@@ -81,10 +73,7 @@ export default function AdminAlertsCenter() {
   const markAllRead = async () => {
     const ids = notifs.filter((n) => !n.read_at).map((n) => n.id);
     if (ids.length === 0) return;
-    const { error } = await supabase
-      .from("admin_notifications" as any)
-      .update({ read_at: new Date().toISOString() })
-      .in("id", ids);
+    const { error } = settle(await notificationsService.markRead(ids));
     if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
     else {
       toast({ title: `${ids.length} alerte(s) marquée(s) comme lues` });
@@ -93,7 +82,7 @@ export default function AdminAlertsCenter() {
   };
 
   const removeOne = async (id: string) => {
-    const { error } = await supabase.from("admin_notifications" as any).delete().eq("id", id);
+    const { error } = settle(await notificationsService.remove(id));
     if (error) toast({ title: "Erreur", description: error.message, variant: "destructive" });
     else void load();
   };

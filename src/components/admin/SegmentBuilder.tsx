@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { marketingService } from "@/services/marketing.service";
+import { settle } from "@/services/_shared/result";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -68,10 +70,7 @@ const SegmentBuilder = () => {
   const patch = useCallback((p: Partial<SegmentDefinition>) => setDef((d) => ({ ...d, ...p })), []);
 
   const loadSegments = useCallback(async () => {
-    const { data, error } = await supabase
-      .from("marketing_segments")
-      .select("id, name, description, definition, created_at")
-      .order("created_at", { ascending: false });
+    const { data, error } = settle(await marketingService.listSegmentsDetailed<SavedSegment>());
     if (error) { toast.error("Segments illisibles", { description: error.message }); return; }
     setSegments((data ?? []).map((s) => ({
       ...s,
@@ -87,9 +86,9 @@ const SegmentBuilder = () => {
     let cancelled = false;
     const t = setTimeout(async () => {
       setEstimating(true);
-      const { data, error } = await supabase.rpc("marketing_segment_estimate", {
-        p_definition: JSON.parse(defKey),
-      });
+      const { data, error } = settle(
+        await marketingService.segmentEstimate({ p_definition: JSON.parse(defKey) }),
+      );
       if (cancelled) return;
       setEstimating(false);
       if (error) { toast.error("Estimation impossible", { description: error.message }); return; }
@@ -102,13 +101,15 @@ const SegmentBuilder = () => {
     if (!name.trim()) { toast.error("Nom du segment requis"); return; }
     setSaving(true);
     const { data: userData } = await supabase.auth.getUser();
-    const { error } = await supabase.from("marketing_segments").insert({
-      name: name.trim(),
-      description: description.trim() || null,
-      definition: def as unknown as never,
-      created_by: userData.user?.id ?? null,
-      created_by_email: userData.user?.email ?? null,
-    });
+    const { error } = settle(
+      await marketingService.createSegment({
+        name: name.trim(),
+        description: description.trim() || null,
+        definition: def as unknown as never,
+        created_by: userData.user?.id ?? null,
+        created_by_email: userData.user?.email ?? null,
+      }),
+    );
     setSaving(false);
     if (error) { toast.error("Enregistrement impossible", { description: error.message }); return; }
     toast.success("Segment enregistré");
@@ -117,14 +118,16 @@ const SegmentBuilder = () => {
   };
 
   const remove = async (id: string) => {
-    const { error } = await supabase.from("marketing_segments").delete().eq("id", id);
+    const { error } = settle(await marketingService.deleteSegment(id));
     if (error) { toast.error("Suppression impossible", { description: error.message }); return; }
     toast.success("Segment supprimé");
     void loadSegments();
   };
 
   const exportCsv = async () => {
-    const { data, error } = await supabase.rpc("get_marketing_segment", { p_definition: def as unknown as never });
+    const { data, error } = settle(
+      await marketingService.getSegment({ p_definition: def as unknown as never }),
+    );
     if (error) { toast.error("Export impossible", { description: error.message }); return; }
     const rows = (data ?? []) as Array<Record<string, unknown>>;
     const headers = ["email", "first_name", "last_name", "phone", "activities", "level", "lifecycle", "last_date", "credits_remaining", "revenue", "consent"];

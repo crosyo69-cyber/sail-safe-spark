@@ -5,6 +5,8 @@ import { useAdmin } from "@/hooks/useAdmin";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { supabase } from "@/integrations/supabase/client";
+import { marketingService } from "@/services/marketing.service";
+import { settle } from "@/services/_shared/result";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -37,10 +39,7 @@ const AdminCampagnes = () => {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("marketing_campaigns")
-      .select("*")
-      .order("created_at", { ascending: false });
+    const { data, error } = settle(await marketingService.listCampaigns<Campaign>());
     setLoading(false);
     if (error) { toast.error("Chargement impossible", { description: error.message }); return; }
     setCampaigns(((data ?? []) as unknown as Campaign[]).map((c) => ({
@@ -60,7 +59,7 @@ const AdminCampagnes = () => {
   }, [campaigns, search, statusFilter]);
 
   const archive = async (c: Campaign) => {
-    const { error } = await supabase.from("marketing_campaigns").update({ status: "archived" }).eq("id", c.id);
+    const { error } = settle(await marketingService.archiveCampaign(c.id));
     if (error) { toast.error("Archivage impossible", { description: error.message }); return; }
     toast.success("Campagne archivée");
     void load();
@@ -68,7 +67,7 @@ const AdminCampagnes = () => {
 
   const duplicate = async (c: Campaign) => {
     const { data: userData } = await supabase.auth.getUser();
-    const { error } = await supabase.from("marketing_campaigns").insert({
+    const { error } = settle(await marketingService.createCampaign({
       name: `${c.name} (copie)`,
       subject: c.subject,
       preheader: c.preheader,
@@ -81,7 +80,7 @@ const AdminCampagnes = () => {
       recipients_count: c.recipients_count,
       created_by: userData.user?.id ?? null,
       created_by_email: userData.user?.email ?? null,
-    });
+    }));
     if (error) { toast.error("Duplication impossible", { description: error.message }); return; }
     toast.success("Campagne dupliquée");
     void load();
