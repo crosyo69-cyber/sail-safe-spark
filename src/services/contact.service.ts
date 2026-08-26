@@ -5,7 +5,6 @@ const api = createApiClient({ scope: "contact" });
 export interface SendContactEmailBody {
   name: string;
   email: string;
-  phone: string;
   activity: string;
   honeypot: string;
   formTimestamp: number;

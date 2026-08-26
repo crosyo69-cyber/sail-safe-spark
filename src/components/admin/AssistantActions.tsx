@@ -1,5 +1,7 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { assistantService } from "@/services/assistant.service";
+import { settle } from "@/services/_shared/result";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

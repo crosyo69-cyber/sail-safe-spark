@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { creditService } from "@/services/credit.service";
 import { settle } from "@/services/_shared/result";
 import { Button } from "@/components/ui/button";
