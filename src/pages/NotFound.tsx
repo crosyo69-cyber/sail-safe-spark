@@ -32,7 +32,10 @@ const NotFound = () => {
       return;
     }
 
-    // Log 404 hit to database for monitoring
+    // Log 404 hit to database for monitoring.
+    // EXCEPTION E-3-D : accès Supabase direct assumé ici (instrumentation 404 anonyme
+    // autorisée par le lot E-1). Ne pas router via la couche service (pas de retry,
+    // pas de toast, échec silencieux obligatoire).
     const log404 = async () => {
       try {
         await supabase.from("page_404_logs" as any).insert({
