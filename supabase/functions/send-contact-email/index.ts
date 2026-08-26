@@ -226,7 +226,7 @@ async function enqueueEmail(
     throw new Error(`Failed to enqueue ${templateName} email`);
   }
 
-  console.log(`${templateName} email enqueued for ${to}`);
+  // E-2-FIX : log PII supprimé (plus d'adresse e-mail en clair dans les logs Edge).
   return messageId;
 }
 
