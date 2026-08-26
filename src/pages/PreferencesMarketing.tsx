@@ -10,7 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
-import { supabase } from "@/integrations/supabase/client";
+import { marketingService } from "@/services/marketing.service";
+import { settle } from "@/services/_shared/result";
 import { toast } from "sonner";
 import { Loader2, Mail, ShieldCheck, ArrowLeft } from "lucide-react";
 import { useClientSession } from "@/hooks/client/useClientSession";
@@ -70,11 +71,11 @@ const PreferencesMarketing = () => {
   const load = useCallback(async (tok: string, sessionToken: string) => {
     if (!tok && !sessionToken) return;
     setLoading(true);
-    const { data, error } = sessionToken
-      ? await supabase.rpc("get_marketing_preferences_by_session", {
-          p_session_token: sessionToken,
-        })
-      : await supabase.rpc("get_marketing_preferences", { p_token: tok });
+    const { data, error } = settle(
+      sessionToken
+        ? await marketingService.getPreferencesBySession(sessionToken)
+        : await marketingService.getPreferences({ p_token: tok }),
+    );
     setLoading(false);
     if (error) {
       toast.error("Lien invalide ou expiré.");
@@ -101,19 +102,21 @@ const PreferencesMarketing = () => {
 
   const save = async () => {
     setSaving(true);
-    const { data, error } = session.token
-      ? await supabase.rpc("save_marketing_preferences_by_session", {
-          p_session_token: session.token,
-          p_consent: consent,
-          p_activities: consent ? activities : [],
-          p_topics: consent ? topics : [],
-        })
-      : await supabase.rpc("save_marketing_preferences", {
-          p_consent: consent,
-          p_activities: consent ? activities : [],
-          p_topics: consent ? topics : [],
-          p_token: token || null,
-        });
+    const { data, error } = settle(
+      session.token
+        ? await marketingService.savePreferencesBySession({
+            p_session_token: session.token,
+            p_consent: consent,
+            p_activities: consent ? activities : [],
+            p_topics: consent ? topics : [],
+          })
+        : await marketingService.savePreferences({
+            p_consent: consent,
+            p_activities: consent ? activities : [],
+            p_topics: consent ? topics : [],
+            p_token: token || null,
+          }),
+    );
     setSaving(false);
 
     const result = data as Record<string, unknown> | null;

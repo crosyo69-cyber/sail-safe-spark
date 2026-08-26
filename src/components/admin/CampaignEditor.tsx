@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { marketingService } from "@/services/marketing.service";
+import { settle } from "@/services/_shared/result";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -83,9 +85,9 @@ const CampaignEditor = ({ open, campaign, onOpenChange, onSaved }: Props) => {
 
   const estimate = useCallback(async (aud: CampaignAudience) => {
     setEstimating(true);
-    const { data, error } = await supabase.rpc("marketing_estimate_audience", {
-      p_audience: aud as unknown as never,
-    });
+    const { data, error } = settle(
+      await marketingService.estimateAudience({ p_audience: aud as unknown as never }),
+    );
     setEstimating(false);
     if (error) {
       toast.error("Estimation impossible", { description: error.message });
@@ -138,13 +140,15 @@ const CampaignEditor = ({ open, campaign, onOpenChange, onSaved }: Props) => {
       updated_by: userData.user?.id ?? null,
       updated_by_email: userData.user?.email ?? null,
     };
-    const { error } = campaign
-      ? await supabase.from("marketing_campaigns").update(payload).eq("id", campaign.id)
-      : await supabase.from("marketing_campaigns").insert({
-          ...payload,
-          created_by: userData.user?.id ?? null,
-          created_by_email: userData.user?.email ?? null,
-        });
+    const { error } = settle(
+      campaign
+        ? await marketingService.updateCampaign(campaign.id, payload)
+        : await marketingService.createCampaign({
+            ...payload,
+            created_by: userData.user?.id ?? null,
+            created_by_email: userData.user?.email ?? null,
+          }),
+    );
     setSaving(false);
     if (error) { toast.error("Enregistrement impossible", { description: error.message }); return; }
     toast.success(campaign ? "Campagne mise à jour" : "Campagne créée");

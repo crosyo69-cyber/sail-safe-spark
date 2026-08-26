@@ -5,7 +5,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { supabase } from "@/integrations/supabase/client";
+import { weatherService } from "@/services/weather.service";
+import { settle } from "@/services/_shared/result";
 import { CheckCircle, XCircle, Loader2, Mail, Trash2, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
@@ -26,11 +27,12 @@ const UnsubscribeAlerts = () => {
 
     setIsProcessing(true);
     try {
-      const { data, error } = await supabase.functions.invoke("unsubscribe-weather", {
-        body: { token, action: action === "delete" ? "delete" : "pause" },
-      });
+      const { data: raw, error } = settle(
+        await weatherService.unsubscribe({ token, action: action === "delete" ? "delete" : "pause" }),
+      );
 
       if (error) throw error;
+      const data = (raw ?? {}) as { error?: string; email?: string; alreadyUnsubscribed?: boolean };
 
       if (data.error) {
         toast.error(data.error);

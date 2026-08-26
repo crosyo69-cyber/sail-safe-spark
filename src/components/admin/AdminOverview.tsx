@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { opsService } from "@/services/ops.service";
+import { unwrap } from "@/services/_shared/result";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -69,9 +71,8 @@ const AdminOverview = () => {
   const sendWeeklySummary = async () => {
     setSendingSummary(true);
     try {
-      const { data, error } = await supabase.functions.invoke("weekly-summary", { body: {} });
-      if (error) throw error;
-      toast({ title: "Résumé envoyé !", description: `${data.sessions} sessions incluses (${data.week})` });
+      const data = unwrap(await opsService.sendWeeklySummary());
+      toast({ title: "Résumé envoyé !", description: `${data?.sessions ?? 0} sessions incluses (${data?.week ?? ""})` });
     } catch (e: any) {
       toast({ title: "Erreur", description: e.message || "Impossible d'envoyer le résumé", variant: "destructive" });
     } finally {
@@ -82,8 +83,7 @@ const AdminOverview = () => {
   const resubmitSitemap = async () => {
     setResubmittingSitemap(true);
     try {
-      const { data, error } = await supabase.functions.invoke("resubmit-sitemap-gsc", { body: { trigger: "manual-admin" } });
-      if (error) throw error;
+      const data = unwrap(await opsService.resubmitSitemap());
       const submitted = data?.status?.contents?.[0]?.submitted;
       toast({
         title: "Sitemap relancé ✓",
