@@ -41,12 +41,19 @@ export const useJoinWaitlist = (
     } catch (error) {
       return toast.error("Erreur : " + (error as Error).message);
     }
-    if (!res?.ok) return toast.error("Inscription impossible");
+    if (!res?.ok) {
+      return toast.error(
+        res?.error === "rate_limited"
+          ? "Trop de demandes. Merci de réessayer dans quelques minutes."
+          : "Inscription impossible",
+      );
+    }
+    // Réponse volontairement uniforme (D-2-FIX / R4) : ne jamais indiquer
+    // à l'utilisateur qu'une inscription existait déjà.
     toast.success(
-      res?.already
-        ? "Vous êtes déjà sur la liste d'attente pour cette journée."
-        : "Vous êtes inscrit sur la liste d'attente — nous vous préviendrons par email dès qu'une place se libère.",
+      "Votre demande a bien été prise en compte — nous vous préviendrons par email dès qu'une place se libère.",
     );
+
     onDone();
   };
 
