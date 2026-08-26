@@ -258,10 +258,10 @@ Deno.serve(async (req) => {
       // Jetons de préférences pour le lien de désinscription
       const { data: prefs } = await admin
         .from("marketing_preferences")
-        .select("email, token, consent")
+        .select("email, consent")
         .in("email", fresh.map((c) => c.email));
       const tokenByEmail = new Map(
-        ((prefs ?? []) as { email: string; token: string; consent: boolean }[])
+        ((prefs ?? []) as { email: string; consent: boolean }[])
           .map((p) => [p.email.toLowerCase(), p]),
       );
 
@@ -272,13 +272,18 @@ Deno.serve(async (req) => {
         // Double contrôle du consentement juste avant l'envoi
         if (pref && pref.consent === false) { refused++; continue; }
 
+        // D-4-FIX-2 : jeton de préférences émis en mémoire (hash seul persisté)
+        const { data: prefToken } = await admin.rpc("marketing_issue_pref_token", {
+          p_email: c.email,
+        });
+
         const messageId = crypto.randomUUID();
         const html = wrapEmail({
           subject: renderTemplate(a.email_subject, c),
           bodyHtml: renderTemplate(a.email_html, c),
           ctaLabel: a.email_cta_label,
           ctaUrl: a.email_cta_url,
-          token: pref?.token ?? null,
+          token: (prefToken as string | null) ?? null,
         });
         await admin.from("email_send_log").insert({
           message_id: messageId,

@@ -202,7 +202,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Fetch all enabled subscriptions where current wind is in range
     const { data: subscriptions, error } = await supabase
       .from("weather_alert_subscriptions")
-      .select("email, unsubscribe_token")
+      .select("id, email")
       .eq("enabled", true)
       .lte("min_wind", windSpeed)
       .gte("max_wind", windSpeed);
@@ -217,10 +217,20 @@ const handler = async (req: Request): Promise<Response> => {
     // Send emails to all matching subscriptions
     let sentCount = 0;
     for (const subscription of subscriptions || []) {
+      // D-4-FIX-2 : token de désinscription émis en mémoire (hash seul persisté)
+      const { data: unsubToken } = await supabase.rpc("issue_link_token", {
+        p_purpose: "weather_unsubscribe",
+        p_subject_id: subscription.id,
+        p_expires_at: null,
+      });
+      if (!unsubToken) {
+        console.error("issue_link_token failed for a weather subscription");
+        continue;
+      }
       const success = await sendEmailAlert(
         subscription.email,
         windData,
-        subscription.unsubscribe_token,
+        unsubToken as string,
         resendApiKey
       );
       if (success) sentCount++;

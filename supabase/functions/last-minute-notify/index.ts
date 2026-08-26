@@ -98,7 +98,7 @@ Deno.serve(async (req) => {
 
     const { data: subs } = await supabase
       .from("last_minute_subscribers")
-      .select("email,unsubscribe_token,activities")
+      .select("id,email,activities")
       .eq("confirmed", true)
       .contains("activities", [targetKey]);
 
@@ -107,7 +107,15 @@ Deno.serve(async (req) => {
       const messageId = crypto.randomUUID();
       const runId = crypto.randomUUID();
       const bookUrl = `${SITE}/dernieres-minutes`;
-      const unsubscribeUrl = `${SITE}/alerte-derniere-minute?unsubscribe=${sub.unsubscribe_token}`;
+      // D-4-FIX-2 : token émis en mémoire (hash seul persisté), jamais relu en base.
+      const { data: unsubToken } = await supabase.rpc("issue_link_token", {
+        p_purpose: "last_minute_unsubscribe",
+        p_subject_id: sub.id,
+        p_expires_at: null,
+      });
+      const unsubscribeUrl = unsubToken
+        ? `${SITE}/alerte-derniere-minute?unsubscribe=${unsubToken}`
+        : `${SITE}/alerte-derniere-minute`;
       await supabase.from("email_send_log").insert({
         message_id: messageId,
         template_name: "last_minute_alert",
