@@ -3,6 +3,12 @@ import type { Automation, AutomationRun, SegmentRow } from "@/features/admin-aut
 
 const api = createApiClient({ scope: "marketing" });
 
+export interface MarketingSettingsRow {
+  brevo_list_id: number | null;
+  mode: string | null;
+  last_sync_at: string | null;
+}
+
 /** Draft d'automatisation issu du formulaire admin → ligne persistée. */
 export type AutomationDraft = Partial<Automation>;
 
@@ -40,6 +46,28 @@ export const marketingService = {
     api.invoke("sync-brevo-contacts", body, { retries: 1, timeoutMs: 60_000 }),
   runAutomations: (body?: Record<string, unknown>) =>
     api.invoke("run-marketing-automations", body ?? {}, { retries: 1, timeoutMs: 60_000 }),
+
+  /** Paramètres Brevo (ligne unique id = 1). */
+  getSettings: () =>
+    api.query<MarketingSettingsRow | null>("marketing_settings.get", (db) =>
+      db.from("marketing_settings").select("*").eq("id", 1).maybeSingle(),
+    ),
+
+  saveSettings: (patch: { brevo_list_id: number | null; mode: string }) =>
+    api.query(
+      "marketing_settings.update",
+      (db) => db.from("marketing_settings").update(patch).eq("id", 1),
+      { retries: 1 },
+    ),
+
+  listSyncLogs: (limit = 20) =>
+    api.query<unknown[]>("marketing_sync_logs.list", (db) =>
+      db
+        .from("marketing_sync_logs")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(limit),
+    ),
 
   /** Automatisations — lecture. */
   listAutomations: () =>

@@ -21,7 +21,6 @@ import { toast } from "sonner";
 import { Loader2, ArrowLeft, RefreshCw, Save, ShieldCheck, Send } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
-import { FunctionsHttpError } from "@supabase/supabase-js";
 
 interface SyncLog {
   id: string;
@@ -62,8 +61,8 @@ const AdminMarketing = () => {
 
   const load = useCallback(async () => {
     const [{ data: settings }, { data: logRows }] = await Promise.all([
-      supabase.from("marketing_settings").select("*").eq("id", 1).maybeSingle(),
-      supabase.from("marketing_sync_logs").select("*").order("created_at", { ascending: false }).limit(20),
+      marketingService.getSettings().then(settle),
+      marketingService.listSyncLogs(20).then(settle),
     ]);
     if (settings) {
       setListId(settings.brevo_list_id != null ? String(settings.brevo_list_id) : "");
@@ -77,13 +76,12 @@ const AdminMarketing = () => {
 
   const save = async () => {
     setSaving(true);
-    const { error } = await supabase
-      .from("marketing_settings")
-      .update({
+    const { error } = settle(
+      await marketingService.saveSettings({
         brevo_list_id: listId.trim() === "" ? null : Number(listId),
         mode,
-      })
-      .eq("id", 1);
+      }),
+    );
     setSaving(false);
     if (error) { toast.error("Enregistrement impossible", { description: error.message }); return; }
     toast.success("Paramètres marketing enregistrés");
