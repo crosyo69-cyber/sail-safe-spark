@@ -36,37 +36,9 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Resolve the subscription via the hashed token only (never the clear token)
-    const { data: tokenHash, error: hashError } = await supabase
-      .rpc("code_access_hash", { p_value: token });
-
-    if (hashError) {
-      console.error("Error hashing unsubscribe token:", hashError.message);
-      throw hashError;
-    }
-
-    const { data: subscription, error: fetchError } = await supabase
-      .from("weather_alert_subscriptions")
-      .select("id, enabled")
-      .eq("unsubscribe_token_hash", tokenHash)
-      .maybeSingle();
-
-    if (fetchError) {
-      console.error("Error fetching subscription:", fetchError.message);
-      throw fetchError;
-    }
-
-    if (!subscription) {
-      console.log("Subscription not found");
-      return new Response(
-        JSON.stringify({ error: "Abonnement non trouvé" }),
-        { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-
+    // Token resolution is handled entirely inside the SECURITY DEFINER RPCs
+    // (public_link_tokens hash lookup + legacy hash fallback).
     if (action === "delete") {
-      // Permanently delete subscription
       const { data: deleteResult, error: deleteError } = await supabase
         .rpc("delete_weather_subscription", { p_token: token });
 
@@ -75,17 +47,22 @@ const handler = async (req: Request): Promise<Response> => {
         throw deleteError;
       }
 
-      // Log for audit purposes only - don't expose email in response
-      console.log("Subscription deleted for id:", subscription.id);
+      if (!deleteResult) {
+        return new Response(
+          JSON.stringify({ error: "Abonnement non trouvé" }),
+          { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      console.log("Weather subscription deleted");
       return new Response(
-        JSON.stringify({ 
-          success: true, 
+        JSON.stringify({
+          success: true,
           message: "Abonnement supprimé définitivement"
         }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     } else {
-      // Just disable (pause) the subscription
       const { data: unsubResult, error: unsubError } = await supabase
         .rpc("unsubscribe_weather_alert", { p_token: token });
 
@@ -95,10 +72,10 @@ const handler = async (req: Request): Promise<Response> => {
       }
 
       if (!unsubResult) {
-        // Already unsubscribed - don't disclose email
+        // Either already disabled or unknown token — never disclose which.
         return new Response(
-          JSON.stringify({ 
-            success: true, 
+          JSON.stringify({
+            success: true,
             message: "Vous êtes déjà désabonné",
             alreadyUnsubscribed: true
           }),
@@ -106,11 +83,10 @@ const handler = async (req: Request): Promise<Response> => {
         );
       }
 
-      // Log for audit purposes only - don't expose email in response
-      console.log("Subscription disabled for id:", subscription.id);
+      console.log("Weather subscription disabled");
       return new Response(
-        JSON.stringify({ 
-          success: true, 
+        JSON.stringify({
+          success: true,
           message: "Désabonnement effectué avec succès"
         }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
