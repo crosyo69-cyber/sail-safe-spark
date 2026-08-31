@@ -2455,6 +2455,7 @@ export type Database = {
         Returns: Json
       }
       purge_expired_email_claims: { Args: never; Returns: number }
+      purge_expired_link_tokens: { Args: never; Returns: Json }
       purge_retention_logs: { Args: never; Returns: Json }
       purge_stale_dlq_messages: {
         Args: { p_dlq: string; p_limit?: number; p_max_age_days?: number }
