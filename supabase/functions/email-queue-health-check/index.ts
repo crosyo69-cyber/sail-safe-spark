@@ -98,15 +98,21 @@ Deno.serve(async (req) => {
       }
     }
 
-    // 2. Check stuck "pending" rows in email_send_log (>15 min without sent/dlq/failed follow-up)
+    // 2. Check stuck "pending" rows in email_send_log.
+    // email_send_log est un journal append-only : une ligne "pending" est normale
+    // dès lors qu'une ligne terminale (sent/failed/...) portant le MÊME message_id
+    // existe. Seuls les pending réellement ORPHELINS sur une fenêtre récente
+    // constituent un incident — le stock historique ne doit pas alerter.
     const cutoff = new Date(Date.now() - MAX_PENDING_AGE_MIN * 60_000).toISOString()
+    const windowStart = new Date(Date.now() - PENDING_WINDOW_HOURS * 3600_000).toISOString()
     const { data: stuckRows, error: stuckErr } = await supabase
       .from('email_send_log')
       .select('message_id, template_name, recipient_email, created_at')
       .eq('status', 'pending')
       .lt('created_at', cutoff)
+      .gte('created_at', windowStart)
       .order('created_at', { ascending: true })
-      .limit(50)
+      .limit(500)
 
     if (stuckErr) {
       issues.push(`Lecture email_send_log impossible: ${stuckErr.message}`)
@@ -120,9 +126,11 @@ Deno.serve(async (req) => {
         .in('status', ['sent', 'dlq', 'failed', 'suppressed', 'bounced'])
       const resolvedSet = new Set((terminal || []).map((r: any) => r.message_id))
       const trulyStuck = stuckRows.filter((r) => r.message_id && !resolvedSet.has(r.message_id))
+      report.pendingWindowHours = PENDING_WINDOW_HOURS
+      report.pendingRowsInWindow = stuckRows.length
       report.stuckPending = trulyStuck
       if (trulyStuck.length > 0) {
-        issues.push(`${trulyStuck.length} email(s) bloqué(s) en "pending" depuis +${MAX_PENDING_AGE_MIN} min.`)
+        issues.push(`${trulyStuck.length} email(s) réellement orphelin(s) en "pending" depuis +${MAX_PENDING_AGE_MIN} min.`)
       }
     }
 
