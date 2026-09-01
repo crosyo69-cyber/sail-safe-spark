@@ -212,17 +212,9 @@ Deno.serve(async (req) => {
       `Rappel : votre session ${s.activity} dans 2 jours`,
       html,
       "package_reminder",
+      { booking_id: b.id, session_date: s.date },
     );
-    if (ok) {
-      await supabase.from("email_send_log").insert({
-        message_id: crypto.randomUUID(),
-        template_name: "package_reminder",
-        recipient_email: p.email,
-        status: "pending",
-        metadata: { booking_id: b.id, session_date: s.date },
-      });
-      sent++;
-    }
+    if (ok) sent++;
   }
 
   return new Response(
