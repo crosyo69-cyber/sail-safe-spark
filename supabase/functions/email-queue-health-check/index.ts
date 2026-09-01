@@ -6,6 +6,7 @@ const ALERT_FROM = 'Kitesurf Passion <notify@kitesurfpassion.fr>'
 // Thresholds
 const MAX_QUEUE_DEPTH = 20            // pending messages in a live queue
 const MAX_PENDING_AGE_MIN = 15        // oldest unresolved pending > 15 min = stuck
+const PENDING_WINDOW_HOURS = 168      // fenêtre d'analyse des pending orphelins (7 jours)
 const NEW_DLQ_THRESHOLD = 1           // any new DLQ message in the last hour triggers alert
 const LIVE_QUEUES = ['auth_emails', 'transactional_emails']
 
