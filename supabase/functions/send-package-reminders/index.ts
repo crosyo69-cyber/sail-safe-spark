@@ -67,14 +67,19 @@ async function enqueueEmail(
   subject: string,
   html: string,
   templateName: string,
+  metadata: Record<string, unknown> = {},
 ) {
   const messageId = crypto.randomUUID();
   const runId = crypto.randomUUID();
+  // Une seule ligne de journal "pending" par message, écrite AVANT l'enqueue :
+  // elle porte le message_id réellement enfilé, donc le worker pourra la clore
+  // avec une ligne terminale (sent/failed) portant le même message_id.
   await supabase.from("email_send_log").insert({
     message_id: messageId,
     template_name: templateName,
     recipient_email: to,
     status: "pending",
+    metadata,
   });
   const { error } = await supabase.rpc("enqueue_email", {
     queue_name: "transactional_emails",
@@ -94,6 +99,16 @@ async function enqueueEmail(
   });
   if (error) {
     console.error("enqueue error", error);
+    // Pas d'enqueue => on clôt immédiatement le journal pour ne jamais laisser
+    // de "pending" orphelin derrière nous.
+    await supabase.from("email_send_log").insert({
+      message_id: messageId,
+      template_name: templateName,
+      recipient_email: to,
+      status: "failed",
+      error_message: `enqueue_email failed: ${error.message ?? String(error)}`,
+      metadata,
+    });
     return false;
   }
   return true;
@@ -197,17 +212,9 @@ Deno.serve(async (req) => {
       `Rappel : votre session ${s.activity} dans 2 jours`,
       html,
       "package_reminder",
+      { booking_id: b.id, session_date: s.date },
     );
-    if (ok) {
-      await supabase.from("email_send_log").insert({
-        message_id: crypto.randomUUID(),
-        template_name: "package_reminder",
-        recipient_email: p.email,
-        status: "pending",
-        metadata: { booking_id: b.id, session_date: s.date },
-      });
-      sent++;
-    }
+    if (ok) sent++;
   }
 
   return new Response(
