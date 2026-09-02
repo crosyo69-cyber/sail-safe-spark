@@ -56,9 +56,30 @@ function assertAllowlistedUrl(url: string) {
   );
 }
 
+type RateGuardResult = { data: boolean | null; error: { message?: string } | null };
+
+type RateGuardMock = {
+  rpc: (
+    functionName: "public_rate_guard",
+    args: { p_context: string; p_key: string; p_limit: number; p_window: string },
+  ) => Promise<RateGuardResult>;
+};
+
+const allowRateGuard = (): RateGuardMock => ({
+  rpc: async () => ({ data: true, error: null }),
+});
+
+function createTestHandler(
+  stripeFactory: () => CheckoutClient,
+  originResolver?: (rawOrigin: string | null) => string,
+  rateGuardFactory: () => RateGuardMock = allowRateGuard,
+) {
+  return createHandler(stripeFactory, originResolver, rateGuardFactory);
+}
+
 Deno.test("create-checkout: allowlisted Origin header is used verbatim in Stripe URLs", async () => {
   const captured: CapturedCall[] = [];
-  const handler = createHandler(makeFakeStripe(captured));
+  const handler = createTestHandler(makeFakeStripe(captured));
 
   for (const allowed of ALLOWED_ORIGINS) {
     captured.length = 0;
@@ -96,7 +117,7 @@ Deno.test("create-checkout: attacker Origin header → Stripe URLs fall back to 
 
   for (const origin of attackers) {
     const captured: CapturedCall[] = [];
-    const handler = createHandler(makeFakeStripe(captured));
+    const handler = createTestHandler(makeFakeStripe(captured));
     const res = await handler(makeRequest(origin));
     await res.text();
 
@@ -125,7 +146,7 @@ Deno.test("create-checkout: defense-in-depth — rejects if Stripe would receive
   // catches a hostile URL by capturing the Stripe call and asserting that
   // ANY call whose host is outside the allowlist fails the test.
   const captured: CapturedCall[] = [];
-  const handler = createHandler(makeFakeStripe(captured));
+  const handler = createTestHandler(makeFakeStripe(captured));
 
   const res = await handler(makeRequest("https://attacker.test"));
   await res.text();
@@ -159,7 +180,7 @@ Deno.test("create-checkout: returns 400 and does NOT call Stripe when resolved o
       stripeFactoryCalls++;
       return makeFakeStripe(captured)();
     };
-    const handler = createHandler(factory, () => malicious);
+    const handler = createTestHandler(factory, () => malicious);
 
     const res = await handler(makeRequest("https://www.kitesurfpassion.fr"));
     const body = await res.json();
@@ -214,12 +235,17 @@ function makeIdemStripe(calls: IdemCall[]) {
   });
 }
 
-function makeIdemRequest(key: string | null, body: Record<string, unknown> = {}) {
+function makeIdemRequest(
+  key: string | null,
+  body: Record<string, unknown> = {},
+  clientIp: string | null = "203.0.113.10",
+) {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     origin: DEFAULT_ORIGIN,
   };
   if (key !== null) headers["Idempotency-Key"] = key;
+  if (clientIp !== null) headers["x-forwarded-for"] = clientIp;
   return new Request("https://example.com/create-checkout", {
     method: "POST",
     headers,
@@ -240,7 +266,7 @@ const KEY_B = "99999999-8888-7777-6666-555555555555";
 
 Deno.test("create-checkout: rejects a request without Idempotency-Key", async () => {
   const calls: IdemCall[] = [];
-  const handler = createHandler(makeIdemStripe(calls));
+  const handler = createTestHandler(makeIdemStripe(calls));
   const res = await handler(makeIdemRequest(null));
   const json = await res.json();
   assertEquals(res.status, 400);
@@ -250,7 +276,7 @@ Deno.test("create-checkout: rejects a request without Idempotency-Key", async ()
 
 Deno.test("create-checkout: rejects a malformed Idempotency-Key", async () => {
   const calls: IdemCall[] = [];
-  const handler = createHandler(makeIdemStripe(calls));
+  const handler = createTestHandler(makeIdemStripe(calls));
   const res = await handler(makeIdemRequest("short"));
   await res.text();
   assertEquals(res.status, 400);
@@ -259,7 +285,7 @@ Deno.test("create-checkout: rejects a malformed Idempotency-Key", async () => {
 
 Deno.test("create-checkout: forwards the Idempotency-Key verbatim to Stripe", async () => {
   const calls: IdemCall[] = [];
-  const handler = createHandler(makeIdemStripe(calls));
+  const handler = createTestHandler(makeIdemStripe(calls));
   const res = await handler(makeIdemRequest(KEY_A));
   await res.text();
   assertEquals(res.status, 200);
@@ -269,7 +295,7 @@ Deno.test("create-checkout: forwards the Idempotency-Key verbatim to Stripe", as
 
 Deno.test("create-checkout: retry with the SAME key returns the SAME session", async () => {
   const calls: IdemCall[] = [];
-  const handler = createHandler(makeIdemStripe(calls));
+  const handler = createTestHandler(makeIdemStripe(calls));
   const first = await (await handler(makeIdemRequest(KEY_A))).json();
   const second = await (await handler(makeIdemRequest(KEY_A))).json();
   assertEquals(calls.length, 2);
@@ -277,9 +303,56 @@ Deno.test("create-checkout: retry with the SAME key returns the SAME session", a
   assertEquals(first.url, second.url, "same key must not create a second Checkout Session");
 });
 
+Deno.test("create-checkout: returns 429 and does NOT call Stripe when the short window is exhausted", async () => {
+  const calls: IdemCall[] = [];
+  let stripeFactoryCalls = 0;
+  const handler = createTestHandler(
+    () => {
+      stripeFactoryCalls++;
+      return makeIdemStripe(calls)();
+    },
+    undefined,
+    () => ({
+      rpc: async (_functionName, args) => ({
+        data: args.p_context !== "create_checkout_ip_10m",
+        error: null,
+      }),
+    }),
+  );
+
+  const res = await handler(makeIdemRequest(KEY_A));
+  const json = await res.json();
+  assertEquals(res.status, 429);
+  assertEquals(json.error, "Trop de demandes. Merci de réessayer plus tard.");
+  assertEquals(calls.length, 0);
+  assertEquals(stripeFactoryCalls, 0);
+});
+
+Deno.test("create-checkout: returns 503 and does NOT call Stripe when the rate guard fails", async () => {
+  const calls: IdemCall[] = [];
+  let stripeFactoryCalls = 0;
+  const handler = createTestHandler(
+    () => {
+      stripeFactoryCalls++;
+      return makeIdemStripe(calls)();
+    },
+    undefined,
+    () => ({
+      rpc: async () => ({ data: null, error: { message: "database unavailable" } }),
+    }),
+  );
+
+  const res = await handler(makeIdemRequest(KEY_A));
+  const json = await res.json();
+  assertEquals(res.status, 503);
+  assertEquals(json.error, "Service temporairement indisponible");
+  assertEquals(calls.length, 0);
+  assertEquals(stripeFactoryCalls, 0);
+});
+
 Deno.test("create-checkout: a new payment intention (new key) creates a new session", async () => {
   const calls: IdemCall[] = [];
-  const handler = createHandler(makeIdemStripe(calls));
+  const handler = createTestHandler(makeIdemStripe(calls));
   const first = await (await handler(makeIdemRequest(KEY_A))).json();
   const second = await (await handler(makeIdemRequest(KEY_B, { participants: 2, totalSessions: 2 }))).json();
   assert(first.url !== second.url, "distinct intentions must yield distinct sessions");
