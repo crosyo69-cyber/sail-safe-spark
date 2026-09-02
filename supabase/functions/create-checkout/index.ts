@@ -202,7 +202,16 @@ export function createHandler(
 
     // F-05.1: both windows are checked before Stripe is touched. The service
     // role is required because public_rate_attempts is intentionally private.
-    const rateGuardClient = rateGuardFactory();
+    let rateGuardClient: RateGuardClient;
+    try {
+      rateGuardClient = rateGuardFactory();
+    } catch (error) {
+      console.error("create-checkout rate guard configuration unavailable", error);
+      return new Response(JSON.stringify({ error: "Service temporairement indisponible" }), {
+        status: 503,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     const ip = clientIp(req);
     const shortWindow = await rateGuard(rateGuardClient, "create_checkout_ip_10m", ip, 3, "10 minutes");
     if (shortWindow) return shortWindow;
