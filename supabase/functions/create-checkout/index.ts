@@ -44,6 +44,68 @@ function keyFingerprint(key: string): string {
   return `${key.slice(0, 4)}…${key.slice(-4)} (len=${key.length})`;
 }
 
+interface RateGuardClient {
+  rpc(
+    functionName: "public_rate_guard",
+    args: { p_context: string; p_key: string; p_limit: number; p_window: string },
+  ): Promise<{ data: boolean | null; error: { message?: string } | null }>;
+}
+
+function createRateGuardClient(): RateGuardClient {
+  return createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+  ) as unknown as RateGuardClient;
+}
+
+/**
+ * The edge proxy supplies the right-most forwarded address. A non-empty
+ * fallback is mandatory because an empty key bypasses public_rate_guard.
+ */
+export function clientIp(req: Request): string {
+  const forwarded = (req.headers.get("x-forwarded-for") ?? "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+  const forwardedIp = forwarded.at(-1);
+  if (forwardedIp) return forwardedIp.slice(0, 128);
+
+  const realIp = (req.headers.get("x-real-ip") ?? "").trim();
+  return realIp ? realIp.slice(0, 128) : "unknown-ip";
+}
+
+async function rateGuard(
+  supabase: RateGuardClient,
+  context: string,
+  key: string,
+  limit: number,
+  window: string,
+): Promise<Response | null> {
+  const { data: allowed, error } = await supabase.rpc("public_rate_guard", {
+    p_context: context,
+    p_key: key.trim() || "unknown-ip",
+    p_limit: limit,
+    p_window: window,
+  });
+
+  if (error) {
+    console.error("create-checkout rate guard unavailable", context, error.message ?? "unknown error");
+    return new Response(JSON.stringify({ error: "Service temporairement indisponible" }), {
+      status: 503,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  if (allowed !== true) {
+    return new Response(JSON.stringify({ error: "Trop de demandes. Merci de réessayer plus tard." }), {
+      status: 429,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  return null;
+}
+
 function createStripeClient(): CheckoutClient {
   return new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
     apiVersion: "2023-10-16",
@@ -53,6 +115,7 @@ function createStripeClient(): CheckoutClient {
 export function createHandler(
   stripeFactory: () => CheckoutClient = createStripeClient,
   originResolver: (rawOrigin: string | null) => string = (raw) => resolveOrigin(raw),
+  rateGuardFactory: () => RateGuardClient = createRateGuardClient,
 ) {
   return async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
@@ -134,6 +197,15 @@ export function createHandler(
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
+
+    // F-05.1: both windows are checked before Stripe is touched. The service
+    // role is required because public_rate_attempts is intentionally private.
+    const rateGuardClient = rateGuardFactory();
+    const ip = clientIp(req);
+    const shortWindow = await rateGuard(rateGuardClient, "create_checkout_ip_10m", ip, 3, "10 minutes");
+    if (shortWindow) return shortWindow;
+    const hourlyWindow = await rateGuard(rateGuardClient, "create_checkout_ip_1h", ip, 10, "1 hour");
+    if (hourlyWindow) return hourlyWindow;
 
     const origin = originResolver(req.headers.get("origin"));
 
