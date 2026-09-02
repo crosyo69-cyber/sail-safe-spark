@@ -94,7 +94,7 @@ export const SENSITIVE_TABLES = [
 
 /** RPC admin read-only (jamais de RPC mutative ici). */
 export const ADMIN_READONLY_RPCS: Array<{ fn: string; args: Record<string, unknown> }> = [
-  { fn: 'admin_credit_stats', args: { p_from: '2026-01-01', p_to: '2026-01-02' } },
+  { fn: 'admin_credit_stats', args: { p_start: '2026-01-01', p_end: '2026-01-02' } },
   { fn: 'admin_list_daily_groups', args: { p_date: '2026-01-01' } },
   { fn: 'admin_platform_health', args: {} },
   { fn: 'crm_dashboard', args: {} },

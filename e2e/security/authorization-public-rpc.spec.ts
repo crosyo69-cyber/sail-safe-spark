@@ -40,7 +40,7 @@ test.describe('F-13 · RPC session avec tokens invalides', () => {
   for (const fn of SESSION_RPCS) {
     for (const [label, token] of INVALID_TOKENS) {
       test(`${fn} — ${label} ne renvoie aucune donnée`, async () => {
-        const res = await callRpc(anon, fn, { p_token: token });
+        const res = await callRpc(anon, fn, { p_session_token: token });
         if (res.status() !== 200) {
           expect([400, 401, 403, 404]).toContain(res.status());
           return;
