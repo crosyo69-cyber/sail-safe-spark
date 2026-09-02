@@ -56,15 +56,25 @@ function assertAllowlistedUrl(url: string) {
   );
 }
 
-const allowRateGuard = () => ({
+type RateGuardResult = { data: boolean | null; error: { message?: string } | null };
+
+type RateGuardMock = {
+  rpc: (
+    functionName: "public_rate_guard",
+    args: { p_context: string; p_key: string; p_limit: number; p_window: string },
+  ) => Promise<RateGuardResult>;
+};
+
+const allowRateGuard = (): RateGuardMock => ({
   rpc: async () => ({ data: true, error: null }),
 });
 
 function createTestHandler(
   stripeFactory: () => CheckoutClient,
   originResolver?: (rawOrigin: string | null) => string,
+  rateGuardFactory: () => RateGuardMock = allowRateGuard,
 ) {
-  return createHandler(stripeFactory, originResolver, allowRateGuard);
+  return createHandler(stripeFactory, originResolver, rateGuardFactory);
 }
 
 Deno.test("create-checkout: allowlisted Origin header is used verbatim in Stripe URLs", async () => {
