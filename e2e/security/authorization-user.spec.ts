@@ -64,7 +64,7 @@ test.describe('F-13 · USER_A — lectures propres', () => {
     if (res.status() === 200) {
       expect(await res.json()).toEqual([]);
     } else {
-      expect([401, 403, 404]).toContain(res.status());
+      expect([401, 403]).toContain(res.status());
     }
   });
 });

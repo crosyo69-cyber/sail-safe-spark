@@ -30,7 +30,7 @@ test.describe('F-13 · ANON → RPC admin', () => {
     test(`${fn} refusé à anon`, async () => {
       const res = await callRpc(anon, fn, args);
       expect(res.status(), `${fn} doit être refusé`).not.toBe(200);
-      expect([401, 403, 404]).toContain(res.status());
+      expect([401, 403]).toContain(res.status());
     });
   }
 });
@@ -57,7 +57,7 @@ test.describe('F-13 · USER_A → RPC admin', () => {
   }
 
   test('USER_A ne possède pas le rôle admin', async () => {
-    const res = await userA.get('/user_roles?select=role&role=eq.admin&limit=5');
+    const res = await userA.get('user_roles?select=role&role=eq.admin&limit=5');
     expect([200, 401, 403]).toContain(res.status());
     if (res.status() === 200) expect(await res.json()).toEqual([]);
   });
@@ -79,7 +79,7 @@ test.describe('F-13 · ADMIN → RPC admin read-only', () => {
   }
 
   test('blog_comments reste lisible pour un administrateur', async () => {
-    const res = await admin.get('/blog_comments?select=id&limit=5');
+    const res = await admin.get('blog_comments?select=id&limit=5');
     expect(res.status()).toBe(200);
   });
 });

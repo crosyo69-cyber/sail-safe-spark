@@ -42,7 +42,7 @@ export const hasAdmin = ADMIN_TOKEN.length > 0;
 /** Contexte HTTP PostgREST. `token` vide ⇒ identité ANON. */
 export async function makeRestContext(token = ''): Promise<APIRequestContext> {
   return request.newContext({
-    baseURL: `${SUPABASE_URL}/rest/v1`,
+    baseURL: `${SUPABASE_URL}/rest/v1/`,
     extraHTTPHeaders: {
       apikey: SUPABASE_ANON_KEY,
       Authorization: `Bearer ${token || SUPABASE_ANON_KEY}`,
@@ -57,7 +57,7 @@ export function selectFrom(
   table: string,
   query = 'select=*&limit=5',
 ): Promise<APIResponse> {
-  return ctx.get(`/${table}?${query}`);
+  return ctx.get(`${table}?${query}`);
 }
 
 /**
@@ -69,12 +69,12 @@ export function callRpc(
   fn: string,
   body: Record<string, unknown> = {},
 ): Promise<APIResponse> {
-  return ctx.post(`/rpc/${fn}`, { data: body });
+  return ctx.post(`rpc/${fn}`, { data: body });
 }
 
 /** Classification : la surface est-elle refusée (401/403) ? */
 export function isDenied(status: number): boolean {
-  return status === 401 || status === 403 || status === 404;
+  return status === 401 || status === 403;
 }
 
 /** Tables sensibles jamais lisibles par ANON. */
