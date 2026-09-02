@@ -47,13 +47,15 @@ test.describe('F-13 · RPC session avec tokens invalides', () => {
         }
         const body = await res.json();
         const serialized = JSON.stringify(body ?? null);
-        expect(serialized).not.toMatch(/@/); // aucun e-mail exposé
-        expect(
-          body === null ||
-            (Array.isArray(body) && body.length === 0) ||
-            serialized === '{}' ||
-            /invalid|not_found|false|null/i.test(serialized),
-        ).toBe(true);
+        // Réponse neutre : ni PII, ni identifiant, ni ligne métier.
+        expect(serialized, 'aucun e-mail exposé').not.toMatch(/@/);
+        expect(serialized, 'aucune donnée nominative').not.toMatch(
+          /first_name|last_name|phone|package_code|email|user_id/i,
+        );
+        expect(serialized, 'aucun UUID exposé').not.toMatch(
+          /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i,
+        );
+
       });
     }
   }
