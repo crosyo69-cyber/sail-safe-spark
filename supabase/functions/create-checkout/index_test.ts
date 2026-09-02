@@ -303,6 +303,53 @@ Deno.test("create-checkout: retry with the SAME key returns the SAME session", a
   assertEquals(first.url, second.url, "same key must not create a second Checkout Session");
 });
 
+Deno.test("create-checkout: returns 429 and does NOT call Stripe when the short window is exhausted", async () => {
+  const calls: IdemCall[] = [];
+  let stripeFactoryCalls = 0;
+  const handler = createTestHandler(
+    () => {
+      stripeFactoryCalls++;
+      return makeIdemStripe(calls)();
+    },
+    undefined,
+    () => ({
+      rpc: async (_functionName, args) => ({
+        data: args.p_context !== "create_checkout_ip_10m",
+        error: null,
+      }),
+    }),
+  );
+
+  const res = await handler(makeIdemRequest(KEY_A));
+  const json = await res.json();
+  assertEquals(res.status, 429);
+  assertEquals(json.error, "Trop de demandes. Merci de réessayer plus tard.");
+  assertEquals(calls.length, 0);
+  assertEquals(stripeFactoryCalls, 0);
+});
+
+Deno.test("create-checkout: returns 503 and does NOT call Stripe when the rate guard fails", async () => {
+  const calls: IdemCall[] = [];
+  let stripeFactoryCalls = 0;
+  const handler = createTestHandler(
+    () => {
+      stripeFactoryCalls++;
+      return makeIdemStripe(calls)();
+    },
+    undefined,
+    () => ({
+      rpc: async () => ({ data: null, error: { message: "database unavailable" } }),
+    }),
+  );
+
+  const res = await handler(makeIdemRequest(KEY_A));
+  const json = await res.json();
+  assertEquals(res.status, 503);
+  assertEquals(json.error, "Service temporairement indisponible");
+  assertEquals(calls.length, 0);
+  assertEquals(stripeFactoryCalls, 0);
+});
+
 Deno.test("create-checkout: a new payment intention (new key) creates a new session", async () => {
   const calls: IdemCall[] = [];
   const handler = createTestHandler(makeIdemStripe(calls));
