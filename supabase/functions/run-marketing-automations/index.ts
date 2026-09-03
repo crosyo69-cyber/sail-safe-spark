@@ -90,17 +90,13 @@ function wrapEmail(opts: {
 </table></body></html>`;
 }
 
-function isServiceRoleJwt(token: string): boolean {
-  const parts = token.split(".");
-  if (parts.length < 2) return false;
-  try {
-    const padded = parts[1].replaceAll("-", "+").replaceAll("_", "/")
-      .padEnd(Math.ceil(parts[1].length / 4) * 4, "=");
-    const claims = JSON.parse(atob(padded)) as { role?: string; exp?: number };
-    if (claims.role !== "service_role") return false;
-    if (typeof claims.exp === "number" && claims.exp * 1000 < Date.now()) return false;
-    return true;
-  } catch { return false; }
+// F-05.2 : le chemin service interne repose sur une comparaison exacte avec le
+// secret serveur (SUPABASE_SERVICE_ROLE_KEY, identique au secret Vault utilisé
+// par pg_cron). Le payload d'un JWT n'est plus décodé pour déterminer le rôle.
+function isServiceRoleToken(token: string): boolean {
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+  if (!token || !serviceKey) return false;
+  return token === serviceKey;
 }
 
 Deno.serve(async (req) => {
@@ -119,7 +115,8 @@ Deno.serve(async (req) => {
   }
 
   let caller = "cron";
-  if (!isServiceRoleJwt(token)) {
+  if (!isServiceRoleToken(token)) {
+
     const { data: userData } = await admin.auth.getUser(token);
     const uid = userData?.user?.id;
     if (!uid) {
