@@ -1,16 +1,6 @@
 project_id = "unqxudbxxzzmmbwwxwcr"
 
 [functions]
-  [functions.cleanup-404-logs]
-    verify_jwt = true
-  [functions.resubmit-sitemap-gsc]
-    verify_jwt = true
-  [functions.run-marketing-automations]
-    verify_jwt = true
-  [functions.send-package-reminders]
-    verify_jwt = true
-  [functions.weekly-summary]
-    verify_jwt = true
   [functions.auth-email-hook]
     verify_jwt = false
   [functions.chatbot]
