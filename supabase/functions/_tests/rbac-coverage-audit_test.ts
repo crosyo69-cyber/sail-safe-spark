@@ -41,27 +41,21 @@ const AUTH_MARKERS = [
   "STRIPE_WEBHOOK_SECRET",
   "Standard-Webhook",
   "verifyAuthHook",
-  "isServiceRoleJwt(",
+  "isServiceRoleRequest(",
+  "isServiceRoleToken(",
   "auth.oauth.issuer",
 ];
 
 function hasAuthMarker(src: string): string | null {
-  for (const m of AUTH_MARKERS) {
-    if (src.includes(m)) return m;
-  }
-  return null;
-}
-
-function hasTokenComparison(src: string): boolean {
-  // Vérifie qu'on compare bien le bearer reçu au service-role
-  // (sinon SUPABASE_SERVICE_ROLE_KEY pourrait n'être utilisé que pour
-  // créer un client admin sans vérifier l'appelant).
+...
   return /token\s*===\s*serviceKey/.test(src) ||
          /token\s*!==\s*serviceKey/.test(src) ||
          /token\s*===\s*service_role/i.test(src) ||
          /claims\?\.role\s*!==\s*['"]service_role['"]/.test(src) ||
          /claims\.role\s*!==\s*['"]service_role['"]/.test(src) ||
          /isServiceRoleJwt\(/.test(src) ||
+         /isServiceRoleRequest\(/.test(src) ||
+         /isServiceRoleToken\(/.test(src) ||
          /has_role\(/.test(src) ||
          /auth\.getClaims\(/.test(src) ||
          /auth\.getUser\(/.test(src) ||
