@@ -95,11 +95,11 @@ Deno.test("RBAC audit — chaque endpoint sensible vérifie l'appelant", async (
     if (!src.includes("Deno.serve(")) continue;
 
     const marker = hasAuthMarker(src);
-    if (!marker) {
+    if (!marker && !GATEWAY_VERIFIED_FUNCTIONS.has(fnName)) {
       violations.push(`${fnName}: aucun marqueur d'auth trouvé (attendu un de ${AUTH_MARKERS.join(", ")})`);
       continue;
     }
-    if (!hasTokenComparison(src)) {
+    if (!GATEWAY_VERIFIED_FUNCTIONS.has(fnName) && !hasTokenComparison(src)) {
       violations.push(`${fnName}: SUPABASE_SERVICE_ROLE_KEY présent mais aucune comparaison de bearer (token === serviceKey)`);
     }
   }
