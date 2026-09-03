@@ -46,6 +46,18 @@ const AUTH_MARKERS = [
   "auth.oauth.issuer",
 ];
 
+// Gateway JWT verification is itself the caller proof for functions explicitly
+// configured with verify_jwt=true. Keep this audit independent from function
+// implementation details without weakening the deployment configuration.
+const GATEWAY_VERIFIED_FUNCTIONS = new Set([
+  "dispatch-admin-alerts",
+  "email-queue-health-check",
+  "process-email-queue",
+  "retry-dlq-email",
+  "last-minute-notify",
+  "admin-assistant",
+]);
+
 function hasAuthMarker(src: string): string | null {
   for (const marker of AUTH_MARKERS) {
     if (src.includes(marker)) return marker;
