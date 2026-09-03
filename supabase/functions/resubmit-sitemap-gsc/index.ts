@@ -3,6 +3,7 @@
 // d'articles (lastmod) et déclencher un recrawl prioritaire.
 
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { isServiceRoleRequest } from "../_shared/service-role-auth.ts";
 
 const GATEWAY_URL = "https://connector-gateway.lovable.dev/google_search_console";
 const SITE_PROPERTY = "sc-domain:kitesurfpassion.fr";
