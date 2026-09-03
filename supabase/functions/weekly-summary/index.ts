@@ -211,7 +211,7 @@ Deno.serve(async (req) => {
   // Restrict to service-role callers (cron). Prevents anyone with the anon
   // key from spamming the owner with summary emails on demand.
   {
-    if (!isServiceRoleCaller(req)) {
+    if (!isServiceRoleRequest(req)) {
       return new Response(JSON.stringify({ error: "Forbidden" }), {
         status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });

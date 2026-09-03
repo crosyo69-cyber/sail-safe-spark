@@ -15,7 +15,7 @@ Deno.serve(async (req) => {
   }
 
   // Restrict to service-role callers (pg_cron).
-  if (!isServiceRoleCaller(req)) {
+  if (!isServiceRoleRequest(req)) {
     return json({ ok: false, error: "Forbidden" }, 403);
   }
 
