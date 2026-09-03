@@ -158,11 +158,8 @@ const handler = async (req: Request): Promise<Response> => {
   const authHeader = req.headers.get("Authorization") ?? "";
   const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7).trim() : "";
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-  // Compare the raw bearer to the configured service-role key. The previous
-  // `isServiceRoleJwt` check only decoded the JWT payload without verifying
-  // the signature, allowing forged tokens with `role: service_role` to invoke
-  // this function and trigger bulk emails. Direct equality with the secret
-  // key avoids that bypass entirely.
+  // Compare the raw bearer to the configured service-role key. Direct equality
+  // with the server secret prevents forged role claims from invoking bulk emails.
   if (!token || !serviceKey || token !== serviceKey) {
     return new Response(JSON.stringify({ error: "Forbidden" }), {
       status: 403,
@@ -257,25 +254,5 @@ const handler = async (req: Request): Promise<Response> => {
     );
   }
 };
-
-
-// Vérifie qu'un JWT bearer porte le rôle service_role (cron/admin scripts).
-// Compare claim.role plutôt que la valeur brute du SUPABASE_SERVICE_ROLE_KEY
-// car la clé fournie par le vault/cron peut être un JWT distinct signé par
-// le même provider Supabase.
-function isServiceRoleJwt(token: string): boolean {
-  const parts = token.split(".");
-  if (parts.length < 2) return false;
-  try {
-    const padded = parts[1].replaceAll("-", "+").replaceAll("_", "/")
-      .padEnd(Math.ceil(parts[1].length / 4) * 4, "=");
-    const claims = JSON.parse(atob(padded)) as { role?: string; exp?: number };
-    if (claims.role !== "service_role") return false;
-    if (typeof claims.exp === "number" && claims.exp * 1000 < Date.now()) return false;
-    return true;
-  } catch {
-    return false;
-  }
-}
 
 Deno.serve(handler);

@@ -1,3 +1,4 @@
+import { isServiceRoleToken } from "../_shared/service-role-auth.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
@@ -90,18 +91,6 @@ function wrapEmail(opts: {
 </table></body></html>`;
 }
 
-function isServiceRoleJwt(token: string): boolean {
-  const parts = token.split(".");
-  if (parts.length < 2) return false;
-  try {
-    const padded = parts[1].replaceAll("-", "+").replaceAll("_", "/")
-      .padEnd(Math.ceil(parts[1].length / 4) * 4, "=");
-    const claims = JSON.parse(atob(padded)) as { role?: string; exp?: number };
-    if (claims.role !== "service_role") return false;
-    if (typeof claims.exp === "number" && claims.exp * 1000 < Date.now()) return false;
-    return true;
-  } catch { return false; }
-}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -119,7 +108,8 @@ Deno.serve(async (req) => {
   }
 
   let caller = "cron";
-  if (!isServiceRoleJwt(token)) {
+  if (!isServiceRoleToken(token)) {
+
     const { data: userData } = await admin.auth.getUser(token);
     const uid = userData?.user?.id;
     if (!uid) {
