@@ -6,17 +6,6 @@ const corsHeaders = {
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
 };
-// F-05.2 : l'authentification service-role repose sur une comparaison exacte
-// avec le secret serveur (SUPABASE_SERVICE_ROLE_KEY, identique au secret Vault
-// `email_queue_service_role_key` utilisé par pg_cron). Le payload d'un JWT
-// n'est PAS une preuve cryptographique : il n'est plus décodé.
-function isServiceRoleCaller(req: Request): boolean {
-  const authHeader = req.headers.get("Authorization") ?? "";
-  const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7).trim() : "";
-  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-  if (!token || !serviceKey) return false;
-  return token === serviceKey;
-}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {

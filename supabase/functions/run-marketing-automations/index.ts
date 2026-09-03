@@ -91,14 +91,6 @@ function wrapEmail(opts: {
 </table></body></html>`;
 }
 
-// F-05.2 : le chemin service interne repose sur une comparaison exacte avec le
-// secret serveur (SUPABASE_SERVICE_ROLE_KEY, identique au secret Vault utilisé
-// par pg_cron). Le payload d'un JWT n'est plus décodé pour déterminer le rôle.
-function isServiceRoleToken(token: string): boolean {
-  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-  if (!token || !serviceKey) return false;
-  return token === serviceKey;
-}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
