@@ -47,21 +47,10 @@ const AUTH_MARKERS = [
 ];
 
 function hasAuthMarker(src: string): string | null {
-...
-  return /token\s*===\s*serviceKey/.test(src) ||
-         /token\s*!==\s*serviceKey/.test(src) ||
-         /token\s*===\s*service_role/i.test(src) ||
-         /claims\?\.role\s*!==\s*['"]service_role['"]/.test(src) ||
-         /claims\.role\s*!==\s*['"]service_role['"]/.test(src) ||
-         /isServiceRoleJwt\(/.test(src) ||
-         /isServiceRoleRequest\(/.test(src) ||
-         /isServiceRoleToken\(/.test(src) ||
-         /has_role\(/.test(src) ||
-         /auth\.getClaims\(/.test(src) ||
-         /auth\.getUser\(/.test(src) ||
-         /STRIPE_WEBHOOK_SECRET/.test(src) ||
-         /Standard-Webhook/.test(src) ||
-         /auth\.oauth\.issuer/.test(src);
+  for (const marker of AUTH_MARKERS) {
+    if (src.includes(marker)) return marker;
+  }
+  return null;
 }
 
 Deno.test("RBAC audit — chaque endpoint sensible vérifie l'appelant", async () => {
