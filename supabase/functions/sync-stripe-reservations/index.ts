@@ -139,6 +139,21 @@ Deno.serve(async (req) => {
     let callerKind = authorized ? "service_role" : "unknown";
     let callerId: string | null = null;
 
+    // Accept any still-valid service-role key (legacy or rotated) by probing
+    // an admin-only endpoint with the presented token as the API key.
+    if (!authorized) {
+      try {
+        const probeClient = createClient(Deno.env.get("SUPABASE_URL")!, token);
+        const { error: probeError } = await probeClient.auth.admin.listUsers({ page: 1, perPage: 1 });
+        if (!probeError) {
+          authorized = true;
+          callerKind = "service_role_rotated";
+        }
+      } catch (_) {
+        // not a service-role key — fall through to the user path
+      }
+    }
+
     if (!authorized) {
       const authClient = createClient(
         Deno.env.get("SUPABASE_URL")!,
