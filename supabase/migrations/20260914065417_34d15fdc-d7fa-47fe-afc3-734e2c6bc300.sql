@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.enqueue_admin_notification(text, text, text, text, jsonb, text) FROM authenticated;
