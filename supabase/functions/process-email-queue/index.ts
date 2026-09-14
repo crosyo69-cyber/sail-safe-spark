@@ -1,5 +1,11 @@
 import { sendLovableEmail } from 'npm:@lovable.dev/email-js'
 import { createClient } from 'npm:@supabase/supabase-js@2'
+import {
+  countCurrentLifeFailures,
+  isSuppressedForPurpose,
+  normalizeEmail,
+  sanitizeHeaderValue,
+} from '../_shared/email-guards.ts'
 
 const RESEND_API_KEY_ENV = 'RESEND_API_KEY'
 
@@ -14,13 +20,16 @@ async function sendViaResend(payload: any): Promise<void> {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${resendKey}`,
     },
+    // F-21-04 : neutralisation CR/LF sur les champs d'en-tête.
     body: JSON.stringify({
-      from: payload.from,
-      to: [payload.to],
-      subject: payload.subject,
+      from: sanitizeHeaderValue(payload.from),
+      to: [sanitizeHeaderValue(payload.to)],
+      subject: sanitizeHeaderValue(payload.subject) ?? '',
       html: payload.html,
       ...(payload.text ? { text: payload.text } : {}),
-      ...(payload.reply_to ? { reply_to: payload.reply_to } : {}),
+      ...(sanitizeHeaderValue(payload.reply_to)
+        ? { reply_to: sanitizeHeaderValue(payload.reply_to) }
+        : {}),
     }),
   })
   const result = await res.json()
@@ -204,13 +213,16 @@ Deno.serve(async (req) => {
           .filter((id): id is string => Boolean(id))
       )
     )
+    // F-21-03 : ne compter que les échecs de la VIE COURANTE du message,
+    // c.-à-d. postérieurs au dernier passage en DLQ. Sinon une reprise DLQ
+    // repartirait immédiatement en DLQ à cause de l'historique.
     const failedAttemptsByMessageId = new Map<string, number>()
     if (messageIds.length > 0) {
-      const { data: failedRows, error: failedRowsError } = await supabase
+      const { data: lifeRows, error: failedRowsError } = await supabase
         .from('email_send_log')
-        .select('message_id')
+        .select('message_id, status, created_at')
         .in('message_id', messageIds)
-        .eq('status', 'failed')
+        .in('status', ['failed', 'dlq'])
 
       if (failedRowsError) {
         console.error('Failed to load failed-attempt counters', {
@@ -218,13 +230,16 @@ Deno.serve(async (req) => {
           error: failedRowsError,
         })
       } else {
-        for (const row of failedRows ?? []) {
+        const byMessage = new Map<string, Array<{ status: string; created_at: string }>>()
+        for (const row of lifeRows ?? []) {
           const messageId = row?.message_id
           if (typeof messageId !== 'string' || !messageId) continue
-          failedAttemptsByMessageId.set(
-            messageId,
-            (failedAttemptsByMessageId.get(messageId) ?? 0) + 1
-          )
+          const list = byMessage.get(messageId) ?? []
+          list.push({ status: row.status as string, created_at: row.created_at as string })
+          byMessage.set(messageId, list)
+        }
+        for (const [messageId, rows] of byMessage) {
+          failedAttemptsByMessageId.set(messageId, countCurrentLifeFailures(rows))
         }
       }
     }
@@ -339,6 +354,73 @@ Deno.serve(async (req) => {
         claimedMessageId = null
       }
 
+      // F-21-01 / F-21-02 — contrôles juste avant l'appel fournisseur :
+      // suppression list (bounce/plainte/désinscription) et, pour le marketing,
+      // revalidation du consentement courant (source de vérité marketing_preferences).
+      const recipient = normalizeEmail(payload.to)
+      let blockReason: string | null = null
+
+      if (recipient) {
+        const { data: suppressedRows, error: suppressedError } = await supabase
+          .from('suppressed_emails')
+          .select('email, reason')
+          .ilike('email', recipient)
+
+        if (suppressedError) {
+          console.error('Suppression lookup failed', { queue, error: suppressedError })
+        } else {
+          const verdict = isSuppressedForPurpose(
+            (suppressedRows ?? []) as Array<{ email: string; reason: string | null }>,
+            recipient,
+            payload.purpose,
+          )
+          if (verdict.blocked) blockReason = verdict.reason ?? 'suppressed'
+        }
+
+        if (!blockReason && payload.purpose === 'marketing') {
+          const { data: pref, error: prefError } = await supabase
+            .from('marketing_preferences')
+            .select('consent')
+            .ilike('email', recipient)
+            .maybeSingle()
+
+          if (prefError) {
+            console.error('Consent lookup failed', { queue, error: prefError })
+          } else if (pref?.consent === false) {
+            blockReason = 'marketing_opt_out'
+          }
+        }
+      }
+
+      if (blockReason) {
+        console.warn('Email suppressed before provider call', {
+          queue,
+          msg_id: msg.msg_id,
+          message_id: payload.message_id,
+          reason: blockReason,
+        })
+        await supabase.from('email_send_log').insert({
+          message_id: payload.message_id,
+          template_name: payload.label || queue,
+          recipient_email: payload.to,
+          status: 'suppressed',
+          error_message: blockReason,
+        })
+        const { error: supDelError } = await supabase.rpc('delete_email', {
+          queue_name: queue,
+          message_id: msg.msg_id,
+        })
+        if (supDelError) {
+          console.error('Failed to delete suppressed message from queue', {
+            queue,
+            msg_id: msg.msg_id,
+            error: supDelError,
+          })
+        }
+        await releaseClaim()
+        continue
+      }
+
       try {
         // Use Resend for transactional emails, Lovable Email API for auth emails
         if (queue === 'transactional_emails') {
@@ -347,10 +429,10 @@ Deno.serve(async (req) => {
           await sendLovableEmail(
             {
               run_id: payload.run_id,
-              to: payload.to,
-              from: payload.from,
+              to: sanitizeHeaderValue(payload.to),
+              from: sanitizeHeaderValue(payload.from),
               sender_domain: payload.sender_domain,
-              subject: payload.subject,
+              subject: sanitizeHeaderValue(payload.subject) ?? '',
               html: payload.html,
               text: payload.text,
               purpose: payload.purpose,

@@ -1,4 +1,5 @@
 import { createClient } from 'npm:@supabase/supabase-js@2'
+import { dlqRetryCount, MAX_DLQ_RETRIES } from '../_shared/email-guards.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -84,8 +85,26 @@ Deno.serve(async (req) => {
     )
   }
 
-  // 5. Re-enqueue the original payload onto the live queue with a fresh queued_at
-  const newPayload = { ...foundMsg.message, queued_at: new Date().toISOString() }
+  // 5. Re-enqueue the original payload onto the live queue with a fresh queued_at.
+  // F-21-03: the manual retry uses the same bounded DLQ counter as the automatic
+  // cycle (retry_dlq_messages) and never bypasses the cap.
+  const currentDlqRetries = dlqRetryCount(foundMsg.message)
+  if (currentDlqRetries >= MAX_DLQ_RETRIES) {
+    return json(
+      {
+        error: `Max DLQ retries (${MAX_DLQ_RETRIES}) already reached for this message.`,
+        dlq_retry_count: currentDlqRetries,
+      },
+      409,
+    )
+  }
+
+  const newPayload = {
+    ...foundMsg.message,
+    queued_at: new Date().toISOString(),
+    dlq_retry_count: currentDlqRetries + 1,
+    dlq_last_retry_at: new Date().toISOString(),
+  }
 
   const { data: enqueueId, error: enqErr } = await admin.rpc('enqueue_email', {
     queue_name: body.queue,
