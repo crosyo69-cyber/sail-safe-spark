@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { marked } from "marked";
-import DOMPurify from "dompurify";
+import { renderModelMarkdown } from "@/lib/sanitize-html";
 import { useAdmin } from "@/hooks/useAdmin";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -32,8 +32,7 @@ const DEFAULT_SUGGESTIONS = [
 
 const ASSISTANT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-assistant`;
 
-const renderMarkdown = (content: string) =>
-  DOMPurify.sanitize(marked.parse(content, { async: false }) as string);
+const renderMarkdown = (content: string) => renderModelMarkdown(content);
 
 const AdminAssistant = () => {
   const { isAdmin, isLoading } = useAdmin();

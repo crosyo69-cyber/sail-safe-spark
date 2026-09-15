@@ -10,7 +10,7 @@ import {
   Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import DOMPurify from "dompurify";
+import { renderEmailPreview } from "@/lib/sanitize-html";
 import {
   ACTION_META, PRIORITY_META, STATUS_META,
   type PreparedAction, type PreparedActionStatus, type PreparedActionType,
@@ -266,7 +266,7 @@ export const AssistantActions = forwardRef<AssistantActionsHandle, Props>(({ onA
                     {selected.payload.html && (
                       <div
                         className="max-h-72 overflow-y-auto rounded-lg border bg-background p-3"
-                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selected.payload.html) }}
+                        dangerouslySetInnerHTML={{ __html: renderEmailPreview(selected.payload.html) }}
                       />
                     )}
                     {!selected.payload.html && selected.payload.text && (
