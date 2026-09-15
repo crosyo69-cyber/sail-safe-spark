@@ -2,6 +2,7 @@
 // Remplace l'INSERT anon direct : validation + rate guard fail-closed +
 // demande "pending" + token de confirmation + e-mail via la chaîne F-21.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { globalQuota, publicRateKey } from "../_shared/public-guards.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
