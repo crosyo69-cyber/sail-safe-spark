@@ -61,35 +61,37 @@ export default defineTool({
     const sb = supabaseForUser(ctx);
     const userId = ctx.getUserId();
 
-    // Toutes les réservations (nouvelles + historiques après backfill) sont
-    // rattachées à un daily_group.
-    const [resvRes, pkgRes] = await Promise.all([
-      sb
-        .from("reservations")
-        .select(
-          `id, participants, skill_level, status, notes, created_at,
+    // F-26-01 — Périmètre volontairement limité aux réservations directes :
+    //  - `reservations.user_id` est la seule relation de propriété fiable
+    //    (RLS : « Users can view own reservations » = auth.uid() = user_id) ;
+    //  - `client_packages` n'a AUCUNE colonne user_id et n'est lisible que par
+    //    admin/service_role : les réservations liées à un pack ne sont donc pas
+    //    exposables ici sans élargir les droits. Elles restent consultables via
+    //    « Mon espace » (second facteur OTP).
+    // L'identité provient exclusivement du contexte MCP (ctx.getUserId()) ;
+    // aucun paramètre d'entrée ne permet de la substituer (inputSchema vide).
+    const resvRes = await sb
+      .from("reservations")
+      .select(
+        `id, participants, skill_level, status, notes, created_at,
            daily_group_id,
            daily_groups ( date, activity )`,
-        )
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false }),
-      sb
-        .from("package_bookings")
-        .select(
-          `id, status, booking_kind, created_at,
-           daily_group_id,
-           daily_groups ( date, activity ),
-           client_packages!inner ( id, user_id, package_code, activity )`,
-        )
-        .eq("client_packages.user_id", userId)
-        .order("created_at", { ascending: false }),
-    ]);
+      )
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
 
     if (resvRes.error) {
-      return { content: [{ type: "text", text: resvRes.error.message }], isError: true };
-    }
-    if (pkgRes.error) {
-      return { content: [{ type: "text", text: pkgRes.error.message }], isError: true };
+      // Message générique : aucun détail PostgREST/SQL/table/colonne exposé.
+      console.error("[mcp:list_my_reservations] query failed");
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Impossible de récupérer les réservations pour le moment. Réessayez plus tard.",
+          },
+        ],
+        isError: true,
+      };
     }
 
     type Item = {
@@ -122,23 +124,6 @@ export default defineTool({
       });
     }
 
-    for (const b of (pkgRes.data ?? []) as any[]) {
-      const dg = b.daily_groups;
-      const date: string | null = dg?.date ?? null;
-      const activity: string =
-        dg?.activity ?? b.client_packages?.activity ?? "kitesurf";
-      items.push({
-        id: b.id,
-        kind: "package_booking",
-        activity,
-        activity_label: ACTIVITY_LABEL[activity] ?? activity,
-        date,
-        date_label: date ? formatDateFR(date) : null,
-        participants: 1,
-        status: b.status,
-        package_code: b.client_packages?.package_code ?? null,
-      });
-    }
 
     // Tri : à venir d'abord (par date croissante), puis passées (par date décroissante)
     const today = new Date().toISOString().slice(0, 10);
