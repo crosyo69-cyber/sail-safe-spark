@@ -1,5 +1,4 @@
 import { createClient } from "npm:@supabase/supabase-js@2.89.0";
-import { Resend } from "npm:resend@2.0.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -49,22 +48,13 @@ function getWindDirection(degrees: number): string {
   return directions[index];
 }
 
-async function sendEmailAlert(
-  email: string,
-  windData: WindData,
-  unsubscribeToken: string,
-  resendApiKey: string
-): Promise<boolean> {
-  try {
-    const resend = new Resend(resendApiKey);
-    const windDirection = getWindDirection(windData.wind_direction);
-    const unsubscribeUrl = `https://kitesurfpassion.fr/desabonnement-alertes?token=${unsubscribeToken}`;
+const FROM_DOMAIN = "kitesurfpassion.fr";
+const SITE_NAME = "Kitesurf Passion";
 
-    const emailResponse = await resend.emails.send({
-      from: "Kitesurf Passion <noreply@kitesurfpassion.fr>",
-      to: [email],
-      subject: "🪁 Conditions idéales pour le kitesurf à l'Almanarre !",
-      html: `
+function buildAlertHtml(windData: WindData, unsubscribeToken: string): string {
+  const windDirection = getWindDirection(windData.wind_direction);
+  const unsubscribeUrl = `https://kitesurfpassion.fr/desabonnement-alertes?token=${unsubscribeToken}`;
+  return `
         <!DOCTYPE html>
         <html>
         <head>
@@ -132,23 +122,49 @@ async function sendEmailAlert(
           </div>
         </body>
         </html>
-      `,
-    });
-
-    const sentId = (emailResponse as any)?.data?.id ?? (emailResponse as any)?.id;
-    const sendErr = (emailResponse as any)?.error;
-    if (sendErr) {
-      console.error("Resend rejected email", { email, error: sendErr });
-      return false;
-    }
-    console.log("Weather alert email sent successfully", { email, id: sentId ?? "unknown" });
-    return true;
-  } catch (error) {
-    console.error("Error sending weather alert email", error);
-    return false;
-  }
+  `;
 }
 
+// F-22-02 : l'alerte passe désormais par la chaîne e-mail F-21
+// (enqueue_email -> process-email-queue -> suppression list / log / DLQ / retry).
+// Aucun appel direct au fournisseur depuis cette fonction.
+async function enqueueEmailAlert(
+  supabase: any,
+  email: string,
+  windData: WindData,
+  unsubscribeToken: string,
+): Promise<boolean> {
+  const messageId = crypto.randomUUID();
+  const { error: logErr } = await supabase.from("email_send_log").insert({
+    message_id: messageId,
+    template_name: "weather_alert",
+    recipient_email: email,
+    status: "pending",
+  });
+  if (logErr) console.error("email_send_log insert failed", logErr.message);
+
+  const { error } = await supabase.rpc("enqueue_email", {
+    queue_name: "transactional_emails",
+    payload: {
+      run_id: crypto.randomUUID(),
+      message_id: messageId,
+      to: email,
+      from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
+      sender_domain: FROM_DOMAIN,
+      subject: "Conditions idéales pour le kitesurf à l'Almanarre !",
+      html: buildAlertHtml(windData, unsubscribeToken),
+      text: `Vent moyen ${Math.round(windData.wind_avg)} noeuds a l'Almanarre. https://kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var`,
+      purpose: "transactional",
+      label: "weather_alert",
+      queued_at: new Date().toISOString(),
+    },
+  });
+  if (error) {
+    console.error("enqueue_email failed for weather alert", error.message);
+    return false;
+  }
+  return true;
+}
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
