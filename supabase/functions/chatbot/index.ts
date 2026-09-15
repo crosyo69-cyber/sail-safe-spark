@@ -22,14 +22,8 @@ const errorResponse = (status: number, type: string, message: string) =>
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 
-// E-2-FIX : clé de rate-limit jamais vide (p_key vide => bypass du guard).
-function clientIp(req: Request): string {
-  const xff = req.headers.get("x-forwarded-for") ?? "";
-  const first = xff.split(",")[0]?.trim() ?? "";
-  if (first) return first;
-  const real = (req.headers.get("x-real-ip") ?? "").trim();
-  return real || "unknown-ip";
-}
+// E-2-FIX / F-23-01 : clé de rate-limit jamais vide, et jamais dérivée d'une
+// seule valeur contrôlable par le client (cf. ../_shared/ai-guards.ts).
 
 
 
