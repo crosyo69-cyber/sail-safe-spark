@@ -124,23 +124,6 @@ export default defineTool({
       });
     }
 
-    for (const b of (pkgRes.data ?? []) as any[]) {
-      const dg = b.daily_groups;
-      const date: string | null = dg?.date ?? null;
-      const activity: string =
-        dg?.activity ?? b.client_packages?.activity ?? "kitesurf";
-      items.push({
-        id: b.id,
-        kind: "package_booking",
-        activity,
-        activity_label: ACTIVITY_LABEL[activity] ?? activity,
-        date,
-        date_label: date ? formatDateFR(date) : null,
-        participants: 1,
-        status: b.status,
-        package_code: b.client_packages?.package_code ?? null,
-      });
-    }
 
     // Tri : à venir d'abord (par date croissante), puis passées (par date décroissante)
     const today = new Date().toISOString().slice(0, 10);

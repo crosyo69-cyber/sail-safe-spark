@@ -127,22 +127,6 @@ var list_my_reservations_default = defineTool2({
         status: r.status
       });
     }
-    for (const b of pkgRes.data ?? []) {
-      const dg = b.daily_groups;
-      const date = dg?.date ?? null;
-      const activity = dg?.activity ?? b.client_packages?.activity ?? "kitesurf";
-      items.push({
-        id: b.id,
-        kind: "package_booking",
-        activity,
-        activity_label: ACTIVITY_LABEL[activity] ?? activity,
-        date,
-        date_label: date ? formatDateFR(date) : null,
-        participants: 1,
-        status: b.status,
-        package_code: b.client_packages?.package_code ?? null
-      });
-    }
     const today = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);
     items.sort((a, b) => {
       const aFuture = (a.date ?? "") >= today;
