@@ -128,8 +128,15 @@ Deno.serve(async (req) => {
       const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
       if (!uuidRegex.test(token)) return json({ success: false, confirmed: false }, 400);
 
-      const ipBlocked = await rateGuard(supabase, "weather_confirm_ip", clientIp(req), 20, "1 hour");
+      const ipBlocked = await rateGuard(supabase, "weather_confirm_ip", publicRateKey(req), 20, "1 hour");
       if (ipBlocked) return ipBlocked;
+      const confirmQuota = await quotaGuard(
+        supabase,
+        "weather_confirm",
+        CONFIRM_QUOTA_HOUR,
+        CONFIRM_QUOTA_DAY,
+      );
+      if (confirmQuota) return confirmQuota;
 
       const { data, error } = await supabase.rpc("confirm_weather_subscription", { p_token: token });
       if (error) {
