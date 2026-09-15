@@ -294,11 +294,29 @@ Deno.serve(async (req) => {
     const sanitized = validation.sanitized;
 
     // E-2-FIX : rate-limit serveur AVANT toute mise en file d'e-mail.
+    // F-25-01 : clé IP = dernière valeur XFF (non falsifiable par préfixe client).
     const normalizedEmail = sanitized.email.trim().toLowerCase();
-    const ipBlocked = await rateGuard(supabase, "contact_ip", clientIp(req), 5, "15 minutes");
+    const ipBlocked = await rateGuard(supabase, "contact_ip", publicRateKey(req), 5, "15 minutes");
     if (ipBlocked) return ipBlocked;
     const emailBlocked = await rateGuard(supabase, "contact_email", normalizedEmail, 3, "1 hour");
     if (emailBlocked) return emailBlocked;
+
+    // F-25-01 : quota global fail-closed AVANT toute mise en file d'e-mail.
+    const quota = await globalQuota(supabase, "contact", CONTACT_QUOTA_HOUR, CONTACT_QUOTA_DAY);
+    if (!quota.ok) {
+      return new Response(
+        JSON.stringify({
+          error: quota.reason === "error"
+            ? "Service temporairement indisponible. Réessayez."
+            : "Trop de demandes. Merci de réessayer plus tard.",
+        }),
+        {
+          status: quota.reason === "error" ? 503 : 429,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        },
+      );
+    }
+
 
 
 
