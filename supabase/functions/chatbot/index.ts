@@ -230,10 +230,7 @@ serve(async (req) => {
     });
   } catch (e) {
     console.error("chatbot error:", e);
-    return errorResponse(
-      500,
-      "technical_error",
-      e instanceof Error ? e.message : "Erreur inconnue",
-    );
+    // Aucun détail interne (fournisseur, clé, stack) renvoyé au client.
+    return errorResponse(500, "technical_error", "Erreur technique de l'assistant");
   }
 });
