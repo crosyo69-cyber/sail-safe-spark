@@ -133,14 +133,18 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
-    const ip = clientIp(req);
-    for (const [context, limit, window] of [
-      ["chatbot_burst", 5, "10 seconds"],
-      ["chatbot_msg", 20, "1 minute"],
+    const keys = rateLimitKeys(req);
+    // F-23-01 : 1) limites par IP déclarée (héritées), 2) limites par dernier
+    // proxy observé, 3) quotas globaux insensibles à la rotation d'IP.
+    for (const [context, key, limit, window] of [
+      ["chatbot_burst", keys.ip, 5, "10 seconds"],
+      ["chatbot_msg", keys.ip, 20, "1 minute"],
+      ["chatbot_edge_burst", keys.edge, 10, "10 seconds"],
+      ["chatbot_edge_msg", keys.edge, 40, "1 minute"],
     ] as const) {
       const { data: allowed, error: guardErr } = await supabase.rpc("public_rate_guard", {
         p_context: context,
-        p_key: ip,
+        p_key: key,
         p_limit: limit,
         p_window: window,
       });
@@ -153,25 +157,56 @@ serve(async (req) => {
       }
     }
 
+    // Quota global fail-closed : seconde barrière indépendante de toute valeur
+    // fournie par le client (anti Denial of Wallet). COST NOT VERIFIED.
+    for (const [context, limit, window] of [
+      ["chatbot_global_hour", GLOBAL_HOURLY_LIMIT, "1 hour"],
+      ["chatbot_global_day", GLOBAL_DAILY_LIMIT, "24 hours"],
+    ] as const) {
+      const { data: allowed, error: quotaErr } = await supabase.rpc("public_quota_guard", {
+        p_context: context,
+        p_limit: limit,
+        p_window: window,
+      });
+      if (quotaErr) {
+        console.error("quota guard unavailable", context, quotaErr.message);
+        return errorResponse(503, "service_error", "Service temporairement indisponible");
+      }
+      if (allowed !== true) {
+        return errorResponse(429, "rate_limit", "Assistant très sollicité, réessayez plus tard.");
+      }
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          ...sanitized,
-        ],
-        stream: true,
-      }),
-    });
+    let response: Response;
+    try {
+      response = await fetchWithTimeout(
+        "https://ai.gateway.lovable.dev/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${LOVABLE_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "google/gemini-3-flash-preview",
+            messages: [
+              { role: "system", content: SYSTEM_PROMPT },
+              ...sanitized,
+            ],
+            stream: true,
+            max_tokens: MAX_OUTPUT_TOKENS,
+          }),
+        },
+        UPSTREAM_TIMEOUT_MS,
+      );
+    } catch (err) {
+      // Timeout / erreur réseau : aucune relance automatique, erreur générique.
+      console.error("AI gateway unreachable", err instanceof Error ? err.name : "unknown");
+      return errorResponse(504, "service_error", "Le service met trop de temps à répondre.");
+    }
 
     if (!response.ok) {
       if (response.status === 429) {
