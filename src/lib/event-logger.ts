@@ -30,18 +30,16 @@ export function logAnalyticsEvent(
 ): void {
   if (typeof window === "undefined") return;
 
-  const payload = {
-    event_type: eventType,
-    session_id: getSessionId(),
-    page_path: options.pagePath ?? window.location.pathname,
-    location: options.location ?? undefined,
-    metadata: (options.metadata ?? null) as never,
-  };
-
-  // Fire and forget — never block UX on analytics
+  // F-23-06 : ingestion via RPC serveur (validation + rate limit côté base).
+  // Le client n'écrit plus directement dans analytics_events.
   void supabase
-    .from("analytics_events")
-    .insert([payload])
+    .rpc("log_analytics_event", {
+      p_event_type: eventType,
+      p_session_id: getSessionId(),
+      p_page_path: options.pagePath ?? window.location.pathname,
+      p_location: options.location ?? null,
+      p_metadata: (options.metadata ?? null) as never,
+    })
     .then(({ error }) => {
       if (error && import.meta.env.DEV) {
         console.warn("[Analytics] Failed to log event", eventType, error.message);

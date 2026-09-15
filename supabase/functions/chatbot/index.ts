@@ -1,5 +1,15 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { fetchWithTimeout, guardedStream, rateLimitKeys } from "../_shared/ai-guards.ts";
+
+// F-23-01/02 — plafonds serveur (le prompt n'est pas une frontière de sécurité).
+const MAX_OUTPUT_TOKENS = 400;
+const UPSTREAM_TIMEOUT_MS = 20_000;
+const STREAM_TIMEOUT_MS = 60_000;
+// Quotas globaux : COST NOT VERIFIED (tarif provider inconnu) → bornes techniques
+// dimensionnées largement au-dessus du trafic public observé d'une école de kite.
+const GLOBAL_HOURLY_LIMIT = 300;
+const GLOBAL_DAILY_LIMIT = 1500;
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -12,14 +22,8 @@ const errorResponse = (status: number, type: string, message: string) =>
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 
-// E-2-FIX : clé de rate-limit jamais vide (p_key vide => bypass du guard).
-function clientIp(req: Request): string {
-  const xff = req.headers.get("x-forwarded-for") ?? "";
-  const first = xff.split(",")[0]?.trim() ?? "";
-  if (first) return first;
-  const real = (req.headers.get("x-real-ip") ?? "").trim();
-  return real || "unknown-ip";
-}
+// E-2-FIX / F-23-01 : clé de rate-limit jamais vide, et jamais dérivée d'une
+// seule valeur contrôlable par le client (cf. ../_shared/ai-guards.ts).
 
 
 
@@ -129,14 +133,18 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
-    const ip = clientIp(req);
-    for (const [context, limit, window] of [
-      ["chatbot_burst", 5, "10 seconds"],
-      ["chatbot_msg", 20, "1 minute"],
+    const keys = rateLimitKeys(req);
+    // F-23-01 : 1) limites par IP déclarée (héritées), 2) limites par dernier
+    // proxy observé, 3) quotas globaux insensibles à la rotation d'IP.
+    for (const [context, key, limit, window] of [
+      ["chatbot_burst", keys.ip, 5, "10 seconds"],
+      ["chatbot_msg", keys.ip, 20, "1 minute"],
+      ["chatbot_edge_burst", keys.edge, 10, "10 seconds"],
+      ["chatbot_edge_msg", keys.edge, 40, "1 minute"],
     ] as const) {
       const { data: allowed, error: guardErr } = await supabase.rpc("public_rate_guard", {
         p_context: context,
-        p_key: ip,
+        p_key: key,
         p_limit: limit,
         p_window: window,
       });
@@ -149,25 +157,56 @@ serve(async (req) => {
       }
     }
 
+    // Quota global fail-closed : seconde barrière indépendante de toute valeur
+    // fournie par le client (anti Denial of Wallet). COST NOT VERIFIED.
+    for (const [context, limit, window] of [
+      ["chatbot_global_hour", GLOBAL_HOURLY_LIMIT, "1 hour"],
+      ["chatbot_global_day", GLOBAL_DAILY_LIMIT, "24 hours"],
+    ] as const) {
+      const { data: allowed, error: quotaErr } = await supabase.rpc("public_quota_guard", {
+        p_context: context,
+        p_limit: limit,
+        p_window: window,
+      });
+      if (quotaErr) {
+        console.error("quota guard unavailable", context, quotaErr.message);
+        return errorResponse(503, "service_error", "Service temporairement indisponible");
+      }
+      if (allowed !== true) {
+        return errorResponse(429, "rate_limit", "Assistant très sollicité, réessayez plus tard.");
+      }
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          ...sanitized,
-        ],
-        stream: true,
-      }),
-    });
+    let response: Response;
+    try {
+      response = await fetchWithTimeout(
+        "https://ai.gateway.lovable.dev/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${LOVABLE_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "google/gemini-3-flash-preview",
+            messages: [
+              { role: "system", content: SYSTEM_PROMPT },
+              ...sanitized,
+            ],
+            stream: true,
+            max_tokens: MAX_OUTPUT_TOKENS,
+          }),
+        },
+        UPSTREAM_TIMEOUT_MS,
+      );
+    } catch (err) {
+      // Timeout / erreur réseau : aucune relance automatique, erreur générique.
+      console.error("AI gateway unreachable", err instanceof Error ? err.name : "unknown");
+      return errorResponse(504, "service_error", "Le service met trop de temps à répondre.");
+    }
 
     if (!response.ok) {
       if (response.status === 429) {
@@ -181,15 +220,17 @@ serve(async (req) => {
       return errorResponse(500, "service_error", "Erreur du service IA");
     }
 
-    return new Response(response.body, {
+    if (!response.body) {
+      return errorResponse(502, "service_error", "Réponse IA invalide");
+    }
+
+    // F-23-02 : le flux est borné dans le temps et annulé si le client se déconnecte.
+    return new Response(guardedStream(response.body, STREAM_TIMEOUT_MS), {
       headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
     });
   } catch (e) {
     console.error("chatbot error:", e);
-    return errorResponse(
-      500,
-      "technical_error",
-      e instanceof Error ? e.message : "Erreur inconnue",
-    );
+    // Aucun détail interne (fournisseur, clé, stack) renvoyé au client.
+    return errorResponse(500, "technical_error", "Erreur technique de l'assistant");
   }
 });

@@ -2296,6 +2296,16 @@ export type Database = {
         }
         Returns: Json
       }
+      log_analytics_event: {
+        Args: {
+          p_event_type: string
+          p_location?: string
+          p_metadata?: Json
+          p_page_path?: string
+          p_session_id: string
+        }
+        Returns: boolean
+      }
       log_credit_action: {
         Args: {
           p_action: string
@@ -2305,6 +2315,10 @@ export type Database = {
           p_reason?: string
         }
         Returns: undefined
+      }
+      log_page_404: {
+        Args: { p_path: string; p_referrer?: string; p_user_agent?: string }
+        Returns: boolean
       }
       mark_stripe_webhook_event: {
         Args: { p_error_message?: string; p_event_id: string; p_status: string }
@@ -2450,6 +2464,10 @@ export type Database = {
       otp_verify_challenge: {
         Args: { p_challenge_id: string; p_otp: string }
         Returns: Json
+      }
+      public_quota_guard: {
+        Args: { p_context: string; p_limit: number; p_window: string }
+        Returns: boolean
       }
       public_rate_guard: {
         Args: {
