@@ -53,8 +53,10 @@ function json(body: unknown, status = 200) {
 }
 
 // Fail-closed : si le guard est indisponible, la demande est refusée.
+type Db = ReturnType<typeof createClient>;
+
 async function rateGuard(
-  supabase: any,
+  supabase: Db,
   context: string,
   key: string,
   limit: number,
