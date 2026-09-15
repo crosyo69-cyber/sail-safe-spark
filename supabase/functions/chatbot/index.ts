@@ -220,7 +220,12 @@ serve(async (req) => {
       return errorResponse(500, "service_error", "Erreur du service IA");
     }
 
-    return new Response(response.body, {
+    if (!response.body) {
+      return errorResponse(502, "service_error", "Réponse IA invalide");
+    }
+
+    // F-23-02 : le flux est borné dans le temps et annulé si le client se déconnecte.
+    return new Response(guardedStream(response.body, STREAM_TIMEOUT_MS), {
       headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
     });
   } catch (e) {
