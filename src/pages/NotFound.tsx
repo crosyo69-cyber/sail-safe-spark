@@ -40,7 +40,8 @@ const NotFound = () => {
     const log404 = async () => {
       try {
         // F-23-06 : ingestion via RPC serveur (validation + rate limit côté base).
-        await (supabase as any).rpc("log_page_404", {
+        // eslint-disable-next-line no-restricted-syntax -- même exception E-3-D que l'INSERT direct remplacé
+        await supabase.rpc("log_page_404", {
           p_path: sanitizeAnalyticsPath(location.pathname, location.search),
           p_referrer: document.referrer || null,
           p_user_agent: navigator.userAgent || null,
