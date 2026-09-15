@@ -186,15 +186,6 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const resendApiKey = Deno.env.get("RESEND_API_KEY");
-
-    if (!resendApiKey) {
-      console.error("RESEND_API_KEY not configured");
-      return new Response(
-        JSON.stringify({ error: "Email service not configured" }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -212,42 +203,49 @@ const handler = async (req: Request): Promise<Response> => {
     const windSpeed = Math.round(windData.wind_avg);
     console.log("Current wind:", windSpeed, "knots (rounded from", windData.wind_avg, ")");
 
-    // Fetch all enabled subscriptions where current wind is in range
-    const { data: subscriptions, error } = await supabase
-      .from("weather_alert_subscriptions")
-      .select("id, email")
-      .eq("enabled", true)
-      .lte("min_wind", windSpeed)
-      .gte("max_wind", windSpeed);
-
-    if (error) {
-      console.error("Error fetching subscriptions:", error);
-      throw error;
-    }
-
-    console.log("Subscriptions to notify:", subscriptions?.length || 0);
-
-    // Send emails to all matching subscriptions
+    // F-22-03 : traitement par lots atomiques. weather_alert_claim_batch
+    // verrouille et horodate les destinataires (SKIP LOCKED + dédup 12h),
+    // ce qui rend deux exécutions concurrentes sûres et sans doublon.
+    const BATCH_SIZE = 100;
+    const MAX_BATCHES = 20; // plafond de sécurité : 2000 destinataires / exécution
     let sentCount = 0;
-    for (const subscription of subscriptions || []) {
-      // D-4-FIX-2 : token de désinscription émis en mémoire (hash seul persisté)
-      const { data: unsubToken } = await supabase.rpc("issue_link_token", {
-        p_purpose: "weather_unsubscribe",
-        p_subject_id: subscription.id,
-        p_expires_at: null,
+    let total = 0;
+    let batches = 0;
+    let truncated = false;
+
+    for (; batches < MAX_BATCHES; batches++) {
+      const { data: batch, error } = await supabase.rpc("weather_alert_claim_batch", {
+        p_wind: windSpeed,
+        p_limit: BATCH_SIZE,
       });
-      if (!unsubToken) {
-        console.error("issue_link_token failed for a weather subscription");
-        continue;
+      if (error) {
+        console.error("weather_alert_claim_batch failed:", error.message);
+        throw error;
       }
-      const success = await sendEmailAlert(
-        subscription.email,
-        windData,
-        unsubToken as string,
-        resendApiKey
-      );
-      if (success) sentCount++;
+      const rows = (batch ?? []) as Array<{ id: string; email: string }>;
+      if (rows.length === 0) break;
+      total += rows.length;
+
+      for (const subscription of rows) {
+        // D-4-FIX-2 : token de désinscription émis en mémoire (hash seul persisté)
+        const { data: unsubToken } = await supabase.rpc("issue_link_token", {
+          p_purpose: "weather_unsubscribe",
+          p_subject_id: subscription.id,
+          p_expires_at: null,
+        });
+        if (!unsubToken) {
+          console.error("issue_link_token failed for a weather subscription");
+          continue;
+        }
+        const ok = await enqueueEmailAlert(supabase, subscription.email, windData, unsubToken as string);
+        if (ok) sentCount++;
+      }
+
+      if (rows.length < BATCH_SIZE) break;
+      if (batches === MAX_BATCHES - 1) truncated = true;
     }
+
+    console.log("Weather alerts queued:", sentCount, "of", total);
 
     return new Response(
       JSON.stringify({
@@ -256,11 +254,15 @@ const handler = async (req: Request): Promise<Response> => {
         windGusts: windData.wind_max,
         temperature: windData.temperature,
         windDirection: getWindDirection(windData.wind_direction),
+        queued: sentCount,
         sent: sentCount,
-        total: subscriptions?.length || 0,
+        total,
+        batches,
+        truncated,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
+
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Unknown error";
     console.error("Error in weather-alerts function:", message);
