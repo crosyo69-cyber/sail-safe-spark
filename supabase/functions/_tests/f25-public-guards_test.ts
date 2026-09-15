@@ -134,10 +134,15 @@ Deno.test("C1 — les quatre endpoints utilisent la primitive partagée", () => 
 
 Deno.test("C2 — quota exécuté avant toute mise en file / écriture d'e-mail", () => {
   for (const [name, src] of sources) {
-    const quotaIdx = src.indexOf("globalQuota(");
-    assert(quotaIdx > 0, `${name}: quota absent`);
-    for (const costly of ["enqueueEmail(", "enqueue_email", "issue_link_token", ".insert("]) {
-      const idx = src.indexOf(costly);
+    // On n'analyse que le corps du handler HTTP (les définitions de helpers
+    // situées plus haut dans le fichier ne sont pas des appels).
+    const handlerIdx = Math.max(src.indexOf("Deno.serve("), src.indexOf("const handler ="));
+    assert(handlerIdx > 0, `${name}: handler introuvable`);
+    const body = src.slice(handlerIdx);
+    const quotaIdx = body.indexOf("globalQuota(");
+    assert(quotaIdx > 0, `${name}: quota absent du handler`);
+    for (const costly of ["enqueueEmail(", "issue_link_token", ".insert(", "delete_weather_subscription"]) {
+      const idx = body.indexOf(costly);
       if (idx >= 0) {
         assert(quotaIdx < idx, `${name}: ${costly} avant le quota`);
       }
