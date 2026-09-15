@@ -78,6 +78,22 @@ async function rateGuard(
   return null;
 }
 
+// F-25-01 : quota global fail-closed (clé fixe, insensible à IP/e-mail/token).
+async function quotaGuard(
+  supabase: Db,
+  context: string,
+  hourly: number,
+  daily: number,
+): Promise<Response | null> {
+  const res = await globalQuota(supabase, context, hourly, daily);
+  if (res.ok) return null;
+  return res.reason === "error"
+    ? json({ error: "Service temporairement indisponible" }, 503)
+    : json({ error: "Trop de demandes. Merci de réessayer plus tard." }, 429);
+}
+
+
+
 function buildHtml(confirmUrl: string, min: number, max: number) {
   return `<!DOCTYPE html><html lang="fr"><body style="margin:0;background:#fff;font-family:Inter,Arial,sans-serif;">
     <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;">
