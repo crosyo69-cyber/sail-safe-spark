@@ -11,6 +11,11 @@ export const useWeather = () => ({
         unwrap(await weatherService.subscribe(payload)),
     }),
 
+  useConfirm: () =>
+    useMutation({
+      mutationFn: async (token: string) => unwrap(await weatherService.confirm(token)),
+    }),
+
   useUnsubscribe: () =>
     useMutation({
       mutationFn: async (body: Record<string, unknown>) =>

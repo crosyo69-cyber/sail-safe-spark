@@ -1,13 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- transport layer bridges untyped Supabase generics */
 import { createApiClient } from "./_shared/api";
 
 const api = createApiClient({ scope: "weather" });
 
 export const weatherService = {
-  subscribe: (payload: Record<string, unknown>) =>
-    api.query("weather_alert_subscriptions.insert", (db) =>
-      (db.from("weather_alert_subscriptions") as any).insert(payload).select().maybeSingle(),
-    ),
+  // F-22-01 : plus d'INSERT direct depuis le navigateur — Edge Function
+  // sécurisée (validation + rate guard + double opt-in).
+  subscribe: (body: Record<string, unknown>) => api.invoke("weather-subscribe", body),
+
+  confirm: (token: string) => api.invoke("weather-subscribe", { action: "confirm", token }),
 
   unsubscribe: (body: Record<string, unknown>) =>
     api.invoke("unsubscribe-weather", body, { retries: 1 }),
