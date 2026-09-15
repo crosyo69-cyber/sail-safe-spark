@@ -57,17 +57,30 @@ function assertAllowlistedUrl(url: string) {
 }
 
 type RateGuardResult = { data: boolean | null; error: { message?: string } | null };
+type CapacityResult = { data: number | null; error: { message?: string } | null };
 
-type RateGuardMock = {
-  rpc: (
-    functionName: "public_rate_guard",
-    args: { p_context: string; p_key: string; p_limit: number; p_window: string },
-  ) => Promise<RateGuardResult>;
+// F-27-01 : miroir de public.default_max_participants(activity_type).
+const CAPACITY_BY_ACTIVITY: Record<string, number> = {
+  kitesurf: 4,
+  wingfoil: 3,
+  pumpfoil: 4,
+  foil_tracte: 4,
+  stage_100_glisse: 4,
 };
 
+// deno-lint-ignore no-explicit-any
+type RateGuardMock = { rpc: (functionName: any, args: any) => Promise<any> };
+
 const allowRateGuard = (): RateGuardMock => ({
-  rpc: async () => ({ data: true, error: null }),
+  // deno-lint-ignore no-explicit-any
+  rpc: async (functionName: string, args: any): Promise<RateGuardResult | CapacityResult> => {
+    if (functionName === "default_max_participants") {
+      return { data: CAPACITY_BY_ACTIVITY[args._activity] ?? null, error: null };
+    }
+    return { data: true, error: null };
+  },
 });
+
 
 function createTestHandler(
   stripeFactory: () => CheckoutClient,
@@ -313,10 +326,13 @@ Deno.test("create-checkout: returns 429 and does NOT call Stripe when the short 
     },
     undefined,
     () => ({
-      rpc: async (_functionName, args) => ({
-        data: args.p_context !== "create_checkout_ip_10m",
-        error: null,
-      }),
+      rpc: async (functionName, args) => {
+        if (functionName === "default_max_participants") {
+          return { data: CAPACITY_BY_ACTIVITY[args._activity] ?? null, error: null };
+        }
+        return { data: args.p_context !== "create_checkout_ip_10m", error: null };
+      },
+
     }),
   );
 
