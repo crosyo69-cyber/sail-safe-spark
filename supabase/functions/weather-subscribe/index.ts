@@ -37,13 +37,11 @@ export function clampWind(min: unknown, max: unknown): { min: number; max: numbe
   return { min: lo, max: hi };
 }
 
-function clientIp(req: Request): string {
-  const xff = req.headers.get("x-forwarded-for") ?? "";
-  const first = xff.split(",")[0]?.trim() ?? "";
-  if (first) return first;
-  const real = (req.headers.get("x-real-ip") ?? "").trim();
-  return real || "unknown-ip";
-}
+// F-25-01 : quotas globaux de la surface météo (indépendants IP / e-mail / token).
+const SUBSCRIBE_QUOTA_HOUR = 60;
+const SUBSCRIBE_QUOTA_DAY = 300;
+const CONFIRM_QUOTA_HOUR = 200;
+const CONFIRM_QUOTA_DAY = 1000;
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
