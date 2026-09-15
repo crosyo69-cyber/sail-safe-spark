@@ -12,6 +12,25 @@ import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { parisStartOfTomorrow, toParisDateOnly } from "@/lib/booking-dates";
 
+/**
+ * F-27-01 — cohérence UX avec la capacité serveur d'un daily_group
+ * (public.default_max_participants). La validation d'intégrité reste
+ * exclusivement serveur (`create-checkout`) : ceci n'est qu'un garde-fou UX
+ * pour ne pas proposer une quantité que le paiement refusera.
+ */
+const MAX_PARTICIPANTS_BY_ACTIVITY: Record<string, number> = {
+  "cours-particulier": 4,
+  "stage-100-glisse": 4,
+  "cours-carte": 4,
+  "stage-wingfoil": 3,
+  "location-materiel": 4,
+  "foil-tracte": 4,
+  "deposes-mer": 4,
+};
+
+const maxParticipantsFor = (activityId: string) =>
+  MAX_PARTICIPANTS_BY_ACTIVITY[activityId] ?? 4;
+
 const activities = [
   {
     id: "cours-particulier",
@@ -125,7 +144,7 @@ const DepositPaymentSection = () => {
   const updateCount = (id: string, delta: number) => {
     setParticipants((prev) => {
       const current = prev[id] || 1;
-      const next = Math.max(1, Math.min(6, current + delta));
+      const next = Math.max(1, Math.min(maxParticipantsFor(id), current + delta));
       return { ...prev, [id]: next };
     });
   };
@@ -324,7 +343,7 @@ const DepositPaymentSection = () => {
                       <button
                         type="button"
                         onClick={() => updateCount(activity.id, 1)}
-                        disabled={count >= 6}
+                        disabled={count >= maxParticipantsFor(activity.id)}
                         className="w-7 h-7 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:bg-muted disabled:opacity-30 transition-colors"
                       >
                         <Plus className="w-3 h-3" />
