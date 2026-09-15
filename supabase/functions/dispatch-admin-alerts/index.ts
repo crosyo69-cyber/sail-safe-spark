@@ -1,4 +1,5 @@
 import { createClient } from 'npm:@supabase/supabase-js@2'
+import { createAdminApiProbe, verifyServiceRoleCredential } from '../_shared/service-role-auth.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -9,18 +10,6 @@ const ADMIN_EMAIL = 'crosyo69@gmail.com'
 const LOGO_URL = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png'
 const SPIKE_404_THRESHOLD = 30 // per hour
 
-function isServiceRoleJwt(token: string): boolean {
-  const parts = token.split('.')
-  if (parts.length < 2) return false
-  try {
-    const padded = parts[1].replaceAll('-', '+').replaceAll('_', '/')
-      .padEnd(Math.ceil(parts[1].length / 4) * 4, '=')
-    const claims = JSON.parse(atob(padded)) as { role?: string; exp?: number }
-    if (claims.role !== 'service_role') return false
-    if (typeof claims.exp === 'number' && claims.exp * 1000 < Date.now()) return false
-    return true
-  } catch { return false }
-}
 
 function escapeHtml(s: string): string {
   return String(s ?? '').replace(/[&<>"']/g, (c) =>
@@ -70,7 +59,13 @@ Deno.serve(async (req) => {
 
   const authHeader = req.headers.get('Authorization') ?? ''
   const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : ''
-  if (!token || !isServiceRoleJwt(token)) {
+  // F-24-04 : défense en profondeur — verify_jwt=true reste actif à la gateway,
+  // et le jeton doit prouver localement qu'il détient bien l'autorité service_role.
+  const authorized = await verifyServiceRoleCredential(
+    token,
+    createAdminApiProbe(createClient as never),
+  )
+  if (!authorized) {
     return new Response(JSON.stringify({ error: 'Forbidden' }), {
       status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
