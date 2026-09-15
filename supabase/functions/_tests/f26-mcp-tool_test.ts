@@ -9,9 +9,11 @@ import { assert, assertEquals } from "https://deno.land/std@0.224.0/assert/mod.t
 const SRC = await Deno.readTextFile("src/lib/mcp/tools/list-my-reservations.ts");
 const BUNDLE = await Deno.readTextFile("supabase/functions/mcp/index.ts");
 
-Deno.test("F-26-01: aucune référence à la colonne inexistante client_packages.user_id", () => {
-  assert(!/client_packages[^\n]*user_id/.test(SRC));
+Deno.test("F-26-01: aucune requête sur la colonne inexistante client_packages.user_id", () => {
   assert(!SRC.includes('.eq("client_packages.user_id"'));
+  assert(!SRC.includes("client_packages!inner"));
+  assert(!SRC.includes('.from("client_packages")'));
+  assert(!SRC.includes('.from("package_bookings")'));
 });
 
 Deno.test("F-26-01: identité dérivée du contexte MCP, jamais d'un input", () => {
