@@ -10,17 +10,42 @@ import { settle } from "@/services/_shared/result";
 import { CheckCircle, XCircle, Loader2, Mail, Trash2, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 
-type UnsubscribeStatus = "loading" | "confirming" | "success" | "deleted" | "error" | "already_unsubscribed";
+type UnsubscribeStatus =
+  | "loading"
+  | "confirming"
+  | "success"
+  | "deleted"
+  | "error"
+  | "already_unsubscribed"
+  | "optin_success"
+  | "optin_error";
 
 const UnsubscribeAlerts = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
-  const [status, setStatus] = useState<UnsubscribeStatus>("confirming");
+  const confirmToken = searchParams.get("confirm");
+  const [status, setStatus] = useState<UnsubscribeStatus>(searchParams.get("confirm") ? "loading" : "confirming");
   const [email, setEmail] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // F-22-01 : validation du double opt-in météo (?confirm=<token>)
+  useEffect(() => {
+    if (!confirmToken) return;
+    let cancelled = false;
+    setStatus("loading");
+    (async () => {
+      const { data: raw, error } = settle(await weatherService.confirm(confirmToken));
+      if (cancelled) return;
+      const data = (raw ?? {}) as { confirmed?: boolean };
+      setStatus(!error && data.confirmed ? "optin_success" : "optin_error");
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [confirmToken]);
+
   const handleUnsubscribe = async (action: "pause" | "delete") => {
-    if (!token) {
+    if (!token && !confirmToken) {
       setStatus("error");
       return;
     }
@@ -206,6 +231,46 @@ const UnsubscribeAlerts = () => {
                 <CardTitle>Déjà désabonné</CardTitle>
                 <CardDescription>
                   Vous êtes déjà désabonné des alertes météo.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-center">
+                <Link to="/spot-kitesurf-almanarre-hyeres-var">
+                  <Button variant="outline">
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Retour au spot
+                  </Button>
+                </Link>
+              </CardContent>
+            </>
+          )}
+
+          {status === "optin_success" && (
+            <>
+              <CardHeader className="text-center">
+                <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                <CardTitle>Alertes météo activées</CardTitle>
+                <CardDescription>
+                  Votre abonnement est confirmé. Vous recevrez un e-mail lorsque les conditions correspondront à vos critères.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-center">
+                <Link to="/spot-kitesurf-almanarre-hyeres-var">
+                  <Button variant="outline">
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Retour au spot
+                  </Button>
+                </Link>
+              </CardContent>
+            </>
+          )}
+
+          {status === "optin_error" && (
+            <>
+              <CardHeader className="text-center">
+                <XCircle className="w-16 h-16 text-destructive mx-auto mb-4" />
+                <CardTitle>Lien de confirmation invalide</CardTitle>
+                <CardDescription>
+                  Ce lien a expiré ou a déjà été utilisé. Vous pouvez relancer une inscription depuis la page du spot.
                 </CardDescription>
               </CardHeader>
               <CardContent className="text-center">
