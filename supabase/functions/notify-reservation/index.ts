@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { correlationId, errorSummary, maskEmail } from "../_shared/log-redact.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -253,14 +254,14 @@ Deno.serve(async (req) => {
       throw enqueueError;
     }
 
-    console.log(`Reservation notification enqueued for ${data.first_name} ${data.last_name}`);
+    console.log("Reservation notification enqueued", { message_id: messageId });
 
     return new Response(
       JSON.stringify({ success: true }),
       { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } },
     );
   } catch (error: any) {
-    console.error("Reservation notification error:", error);
+    console.error("Reservation notification error", errorSummary(error));
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } },

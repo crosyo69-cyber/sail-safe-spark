@@ -1,4 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2.89.0";
+import { correlationId, errorSummary, maskEmail } from "../_shared/log-redact.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -341,7 +342,7 @@ Deno.serve(async (req) => {
         else { created++; details.push({ email, status: "créé" }); }
       } else {
         errors++;
-        console.error(`Brevo ${email} [${res.status}]: ${res.body}`);
+        console.error(`Brevo contact sync failed`, { contact: maskEmail(email), http_status: res.status });
         details.push({ email, status: "erreur", http_status: res.status, error: res.body.slice(0, 300) });
       }
     }
@@ -382,7 +383,7 @@ Deno.serve(async (req) => {
     return json({ ...report, log_id: logRow?.id ?? null });
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
-    console.error("sync-brevo-contacts failed:", message);
+    console.error("sync-brevo-contacts failed", errorSummary(e));
     return json({ error: message }, 500);
   }
 });
