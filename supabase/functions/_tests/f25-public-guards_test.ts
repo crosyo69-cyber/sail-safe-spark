@@ -139,7 +139,10 @@ Deno.test("C2 — quota exécuté avant toute mise en file / écriture d'e-mail"
     const handlerIdx = Math.max(src.indexOf("Deno.serve("), src.indexOf("const handler ="));
     assert(handlerIdx > 0, `${name}: handler introuvable`);
     const body = src.slice(handlerIdx);
-    const quotaIdx = body.indexOf("globalQuota(");
+    // `quotaGuard(` est le wrapper local qui appelle `globalQuota`.
+    const quotaIdx = [body.indexOf("globalQuota("), body.indexOf("quotaGuard(")]
+      .filter((i) => i > 0)
+      .sort((a, b) => a - b)[0] ?? -1;
     assert(quotaIdx > 0, `${name}: quota absent du handler`);
     for (const costly of ["enqueueEmail(", "issue_link_token", ".insert(", "delete_weather_subscription"]) {
       const idx = body.indexOf(costly);
