@@ -155,10 +155,18 @@ Deno.serve(async (req) => {
     if (!isValidEmail(email)) return json({ error: "Adresse email invalide" }, 400);
     const { min, max } = clampWind(body?.min_wind, body?.max_wind);
 
-    const ipBlocked = await rateGuard(supabase, "weather_subscribe_ip", clientIp(req), 5, "15 minutes");
+    const ipBlocked = await rateGuard(supabase, "weather_subscribe_ip", publicRateKey(req), 5, "15 minutes");
     if (ipBlocked) return ipBlocked;
     const emailBlocked = await rateGuard(supabase, "weather_subscribe_email", email, 3, "1 hour");
     if (emailBlocked) return emailBlocked;
+    // F-25-01 : quota global AVANT token de confirmation, écriture et enqueue.
+    const subscribeQuota = await quotaGuard(
+      supabase,
+      "weather_subscribe",
+      SUBSCRIBE_QUOTA_HOUR,
+      SUBSCRIBE_QUOTA_DAY,
+    );
+    if (subscribeQuota) return subscribeQuota;
 
     const { data: existing } = await supabase
       .from("weather_alert_subscriptions")
