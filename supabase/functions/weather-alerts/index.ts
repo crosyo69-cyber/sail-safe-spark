@@ -128,7 +128,8 @@ function buildAlertHtml(windData: WindData, unsubscribeToken: string): string {
 // F-22-02 : l'alerte passe désormais par la chaîne e-mail F-21
 // (enqueue_email -> process-email-queue -> suppression list / log / DLQ / retry).
 // Aucun appel direct au fournisseur depuis cette fonction.
-type Db = ReturnType<typeof createClient>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Db = any;
 
 async function enqueueEmailAlert(
   supabase: Db,

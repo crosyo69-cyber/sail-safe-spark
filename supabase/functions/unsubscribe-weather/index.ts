@@ -16,7 +16,8 @@ function clientIp(req: Request): string {
   return (req.headers.get("x-real-ip") ?? "").trim() || "unknown-ip";
 }
 
-type Db = ReturnType<typeof createClient>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Db = any;
 
 async function rateGuard(supabase: Db, context: string, key: string, limit: number, window: string) {
   const { data: allowed, error } = await supabase.rpc("public_rate_guard", {

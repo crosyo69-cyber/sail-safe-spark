@@ -53,7 +53,8 @@ function json(body: unknown, status = 200) {
 }
 
 // Fail-closed : si le guard est indisponible, la demande est refusée.
-type Db = ReturnType<typeof createClient>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Db = any;
 
 async function rateGuard(
   supabase: Db,
