@@ -94,24 +94,22 @@ var list_my_reservations_default = defineTool2({
     }
     const sb = supabaseForUser(ctx);
     const userId = ctx.getUserId();
-    const [resvRes, pkgRes] = await Promise.all([
-      sb.from("reservations").select(
-        `id, participants, skill_level, status, notes, created_at,
+    const resvRes = await sb.from("reservations").select(
+      `id, participants, skill_level, status, notes, created_at,
            daily_group_id,
            daily_groups ( date, activity )`
-      ).eq("user_id", userId).order("created_at", { ascending: false }),
-      sb.from("package_bookings").select(
-        `id, status, booking_kind, created_at,
-           daily_group_id,
-           daily_groups ( date, activity ),
-           client_packages!inner ( id, user_id, package_code, activity )`
-      ).eq("client_packages.user_id", userId).order("created_at", { ascending: false })
-    ]);
+    ).eq("user_id", userId).order("created_at", { ascending: false });
     if (resvRes.error) {
-      return { content: [{ type: "text", text: resvRes.error.message }], isError: true };
-    }
-    if (pkgRes.error) {
-      return { content: [{ type: "text", text: pkgRes.error.message }], isError: true };
+      console.error("[mcp:list_my_reservations] query failed");
+      return {
+        content: [
+          {
+            type: "text",
+            text: "Impossible de r\xE9cup\xE9rer les r\xE9servations pour le moment. R\xE9essayez plus tard."
+          }
+        ],
+        isError: true
+      };
     }
     const items = [];
     for (const r of resvRes.data ?? []) {
