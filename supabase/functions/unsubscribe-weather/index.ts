@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.89.0";
+import { globalQuota, publicRateKey } from "../_shared/public-guards.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -9,12 +10,10 @@ const corsHeaders = {
 // F-22-04 : garde de débit sur un endpoint public. Le token reste la protection
 // principale ; le guard limite seulement l'abus (fail-open si le guard est HS,
 // pour ne jamais empêcher une désinscription légitime).
-function clientIp(req: Request): string {
-  const xff = req.headers.get("x-forwarded-for") ?? "";
-  const first = xff.split(",")[0]?.trim() ?? "";
-  if (first) return first;
-  return (req.headers.get("x-real-ip") ?? "").trim() || "unknown-ip";
-}
+// F-25-01 : quota global de la surface désinscription, volontairement large
+// pour rester utilisable en fonctionnement normal.
+const UNSUB_QUOTA_HOUR = 300;
+const UNSUB_QUOTA_DAY = 2000;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Db = any;
