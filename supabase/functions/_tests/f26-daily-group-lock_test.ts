@@ -12,7 +12,12 @@ let sql = "";
 for await (const entry of Deno.readDir(dir)) {
   if (!entry.isFile || !entry.name.endsWith(".sql")) continue;
   const content = await Deno.readTextFile(`${dir}/${entry.name}`);
-  if (content.includes("pg_advisory_xact_lock") && content.includes("find_or_create_daily_group")) {
+  // On ne retient que la migration qui (re)définit la fonction elle-même,
+  // pas celles qui se contentent de réutiliser sa clé de verrou.
+  if (
+    content.includes("pg_advisory_xact_lock") &&
+    content.includes("FUNCTION public.find_or_create_daily_group(")
+  ) {
     sql = content;
   }
 }
