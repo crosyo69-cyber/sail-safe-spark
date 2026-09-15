@@ -172,7 +172,61 @@ export function createHandler(
       });
     }
 
-    const count = Math.max(1, Math.min(6, Math.floor(Number(participants) || 1)));
+    // F-27-01 : la validation métier (activité connue + capacité réelle) doit
+    // se faire AVANT tout appel Stripe. Le client service_role est donc créé
+    // ici : il sert à la fois à lire la capacité et aux garde-fous F-05.1.
+    let rateGuardClient: RateGuardClient;
+    try {
+      rateGuardClient = rateGuardFactory();
+    } catch (error) {
+      console.error("create-checkout rate guard configuration unavailable", error);
+      return new Response(JSON.stringify({ error: "Service temporairement indisponible" }), {
+        status: 503,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Activité inconnue → rejet (pas de repli silencieux vers kitesurf).
+    const activityEnum = resolveActivityEnum(activityName);
+    if (!activityEnum) {
+      return new Response(JSON.stringify({ error: `Activité inconnue : "${activityName}".` }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Capacité maximale d'un daily_group : source de vérité SQL, la même que
+    // celle appliquée par enforce_daily_group_capacity. Fail-closed.
+    const { data: maxParticipants, error: capacityError } = await rateGuardClient.rpc(
+      "default_max_participants",
+      { _activity: activityEnum },
+    );
+    if (capacityError || typeof maxParticipants !== "number" || !Number.isInteger(maxParticipants) || maxParticipants < 1) {
+      console.error("create-checkout capacity lookup unavailable", capacityError?.message ?? "invalid capacity");
+      return new Response(JSON.stringify({ error: "Service temporairement indisponible" }), {
+        status: 503,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const count = parseParticipants(participants);
+    if (count === null) {
+      return new Response(JSON.stringify({ error: "participants doit être un entier positif." }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (count > maxParticipants) {
+      return new Response(
+        JSON.stringify({
+          error:
+            `Un groupe "${activityName}" accueille au maximum ${maxParticipants} participant${maxParticipants > 1 ? "s" : ""}. ` +
+            `Merci de nous contacter pour un groupe plus important.`,
+        }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
     const packSessions = Math.max(1, Math.min(20, Math.floor(Number(totalSessions) || count)));
 
     // Server-side validation: total_sessions must match the activity's allowed pack sizes.
@@ -208,21 +262,12 @@ export function createHandler(
 
     // F-05.1: both windows are checked before Stripe is touched. The service
     // role is required because public_rate_attempts is intentionally private.
-    let rateGuardClient: RateGuardClient;
-    try {
-      rateGuardClient = rateGuardFactory();
-    } catch (error) {
-      console.error("create-checkout rate guard configuration unavailable", error);
-      return new Response(JSON.stringify({ error: "Service temporairement indisponible" }), {
-        status: 503,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
     const ip = clientIp(req);
     const shortWindow = await rateGuard(rateGuardClient, "create_checkout_ip_10m", ip, 3, "10 minutes");
     if (shortWindow) return shortWindow;
     const hourlyWindow = await rateGuard(rateGuardClient, "create_checkout_ip_1h", ip, 10, "1 hour");
     if (hourlyWindow) return hourlyWindow;
+
 
     const origin = originResolver(req.headers.get("origin"));
 
