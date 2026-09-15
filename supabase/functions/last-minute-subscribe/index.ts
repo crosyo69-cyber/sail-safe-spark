@@ -86,10 +86,27 @@ Deno.serve(async (req) => {
 
     // E-2-FIX : rate-limit serveur AVANT toute opération métier (subscriber, token, e-mail).
     const normalizedEmail = String(email).trim().toLowerCase();
-    const ipBlocked = await rateGuard(supabase, "last_minute_subscribe_ip", clientIp(req), 5, "15 minutes");
+    const ipBlocked = await rateGuard(supabase, "last_minute_subscribe_ip", publicRateKey(req), 5, "15 minutes");
     if (ipBlocked) return ipBlocked;
     const emailBlocked = await rateGuard(supabase, "last_minute_subscribe_email", normalizedEmail, 3, "1 hour");
     if (emailBlocked) return emailBlocked;
+
+    // F-25-01 : quota global fail-closed AVANT token, écriture et enqueue e-mail.
+    const quota = await globalQuota(supabase, "last_minute_subscribe", LM_QUOTA_HOUR, LM_QUOTA_DAY);
+    if (!quota.ok) {
+      return new Response(
+        JSON.stringify({
+          error: quota.reason === "error"
+            ? "Service temporairement indisponible"
+            : "Trop de demandes. Merci de réessayer plus tard.",
+        }),
+        {
+          status: quota.reason === "error" ? 503 : 429,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
+
 
 
 
