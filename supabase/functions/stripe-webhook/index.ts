@@ -1,6 +1,6 @@
 import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { correlationId, errorSummary, maskEmail } from "../_shared/log-redact.ts";
+import { maskEmail } from "../_shared/log-redact.ts";
 
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
 

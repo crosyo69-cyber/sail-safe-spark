@@ -1,5 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2.89.0";
-import { correlationId, errorSummary, maskEmail } from "../_shared/log-redact.ts";
+import { errorSummary, maskEmail } from "../_shared/log-redact.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
