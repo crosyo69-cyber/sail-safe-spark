@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { marked } from "marked";
 import { renderModelMarkdown } from "@/lib/sanitize-html";
 import { useAdmin } from "@/hooks/useAdmin";
 import { Header } from "@/components/layout/Header";

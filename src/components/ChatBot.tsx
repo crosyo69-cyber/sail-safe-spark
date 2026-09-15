@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { marked } from "marked";
 import { renderModelMarkdown } from "@/lib/sanitize-html";
 
 type Message = { role: "user" | "assistant"; content: string };
