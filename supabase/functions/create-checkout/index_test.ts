@@ -326,10 +326,13 @@ Deno.test("create-checkout: returns 429 and does NOT call Stripe when the short 
     },
     undefined,
     () => ({
-      rpc: async (_functionName, args) => ({
-        data: args.p_context !== "create_checkout_ip_10m",
-        error: null,
-      }),
+      rpc: async (functionName, args) => {
+        if (functionName === "default_max_participants") {
+          return { data: CAPACITY_BY_ACTIVITY[args._activity] ?? null, error: null };
+        }
+        return { data: args.p_context !== "create_checkout_ip_10m", error: null };
+      },
+
     }),
   );
 
