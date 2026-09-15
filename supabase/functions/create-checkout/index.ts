@@ -49,7 +49,13 @@ interface RateGuardClient {
     functionName: "public_rate_guard",
     args: { p_context: string; p_key: string; p_limit: number; p_window: string },
   ): Promise<{ data: boolean | null; error: { message?: string } | null }>;
+  // F-27-01 : capacité métier d'un daily_group (source de vérité SQL).
+  rpc(
+    functionName: "default_max_participants",
+    args: { _activity: string },
+  ): Promise<{ data: number | null; error: { message?: string } | null }>;
 }
+
 
 function createRateGuardClient(): RateGuardClient {
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
