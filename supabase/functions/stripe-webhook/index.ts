@@ -1,5 +1,6 @@
 import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { maskEmail } from "../_shared/log-redact.ts";
 
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
 
@@ -437,7 +438,7 @@ async function enqueueEmail(
     throw new Error(`Failed to enqueue ${templateName} email`);
   }
 
-  console.log(`${templateName} email enqueued for ${to}`);
+  console.log(`${templateName} email enqueued`, { message_id: messageId, to: maskEmail(to) });
   return messageId;
 }
 
@@ -486,7 +487,7 @@ async function createReservationFromCheckout(
     console.error('book_daily_visitor rejected:', rpcRes);
     return;
   }
-  console.log(`Reservation created for ${customerEmail} on ${sessionDate} (${activityName} → ${activityEnum})`);
+  console.log(`Reservation created`, { email: maskEmail(customerEmail), date: sessionDate, activity: activityEnum });
 }
 
 export interface WebhookDeps {
@@ -561,7 +562,7 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
       const customerName = session.metadata?.customer_name;
       const phone = session.metadata?.phone;
 
-      console.log(`Payment completed for: ${customerEmail}, activity: ${activityName}, date: ${preferredDate}, participants: ${participants}`);
+      console.log('Payment completed', { event_id: event.id, email: maskEmail(customerEmail), activity: activityName, date: preferredDate, participants });
 
       // Create reservation in database
       try {

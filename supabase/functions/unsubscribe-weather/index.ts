@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.89.0";
 import { globalQuota, publicRateKey } from "../_shared/public-guards.ts";
+import { correlationId, errorSummary, GENERIC_ERROR_MESSAGE } from "../_shared/log-redact.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -94,7 +95,6 @@ const handler = async (req: Request): Promise<Response> => {
         .rpc("delete_weather_subscription", { p_token: token });
 
       if (deleteError) {
-        console.error("Error deleting subscription:", deleteError);
         throw deleteError;
       }
 
@@ -118,7 +118,6 @@ const handler = async (req: Request): Promise<Response> => {
         .rpc("unsubscribe_weather_alert", { p_token: token });
 
       if (unsubError) {
-        console.error("Error unsubscribing:", unsubError);
         throw unsubError;
       }
 
@@ -143,10 +142,14 @@ const handler = async (req: Request): Promise<Response> => {
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
-  } catch (error: any) {
-    console.error("Error in unsubscribe function:", error);
+  } catch (error) {
+    // F-25-02 : endpoint public — aucun message interne (PostgREST, contrainte SQL,
+    // nom de table/fonction, détail fournisseur) ne doit sortir. Seul un identifiant
+    // de corrélation non sensible est partagé pour le support.
+    const cid = correlationId();
+    console.error("unsubscribe-weather failed", { correlation_id: cid, ...errorSummary(error) });
     return new Response(
-      JSON.stringify({ error: error.message || "Erreur interne" }),
+      JSON.stringify({ error: GENERIC_ERROR_MESSAGE, correlation_id: cid }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

@@ -1,5 +1,4 @@
-import DOMPurify from "dompurify";
-import { marked } from "marked";
+import { renderRichMarkdown } from "@/lib/sanitize-html";
 import { Tag } from "lucide-react";
 import type { BlogArticle } from "@/features/blog";
 import type { ArticleContent } from "../types";
@@ -26,7 +25,7 @@ export const BlogArticleContent = ({ article, content }: Props) => (
 
     {/* Article Content */}
     <div className="max-w-3xl mx-auto prose prose-lg prose-headings:font-display prose-headings:font-bold prose-h2:text-2xl prose-h3:text-xl prose-a:text-primary prose-strong:text-foreground prose-table:border-collapse prose-th:border prose-th:border-border prose-th:p-2 prose-th:bg-muted prose-td:border prose-td:border-border prose-td:p-2">
-      <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(content.content, { async: false }) as string) }} />
+      <div dangerouslySetInnerHTML={{ __html: renderRichMarkdown(content.content) }} />
     </div>
   </>
 );

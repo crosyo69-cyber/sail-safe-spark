@@ -1,5 +1,6 @@
 import { createClient } from 'npm:@supabase/supabase-js@2'
 import { createAdminApiProbe, verifyServiceRoleCredential } from '../_shared/service-role-auth.ts'
+import { correlationId, errorSummary, maskEmail } from "../_shared/log-redact.ts";
 
 const ADMIN_EMAIL = 'crosyo69@gmail.com'
 const ALERT_FROM = 'Kitesurf Passion <notify@kitesurfpassion.fr>'
@@ -117,7 +118,8 @@ Deno.serve(async (req) => {
       const trulyStuck = stuckRows.filter((r) => r.message_id && !resolvedSet.has(r.message_id))
       report.pendingWindowHours = PENDING_WINDOW_HOURS
       report.pendingRowsInWindow = stuckRows.length
-      report.stuckPending = trulyStuck
+      // F-25-03 : pas d'e-mail en clair dans le rapport transmis par e-mail.
+      report.stuckPending = trulyStuck.map((r) => ({ ...r, recipient_email: maskEmail(r.recipient_email) }))
       if (trulyStuck.length > 0) {
         issues.push(`${trulyStuck.length} email(s) réellement orphelin(s) en "pending" depuis +${MAX_PENDING_AGE_MIN} min.`)
       }
@@ -134,7 +136,7 @@ Deno.serve(async (req) => {
       .limit(20)
 
     if (!dlqErr && dlqRows && dlqRows.length >= NEW_DLQ_THRESHOLD) {
-      report.recentDlq = dlqRows
+      report.recentDlq = dlqRows.map((r: any) => ({ ...r, recipient_email: maskEmail(r.recipient_email) }))
       issues.push(`${dlqRows.length} email(s) tombé(s) en DLQ dans la dernière heure.`)
     }
 
@@ -176,14 +178,24 @@ Deno.serve(async (req) => {
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
     )
   } catch (err) {
-    console.error('[health-check] fatal', err)
-    // Try to alert about the health-check itself failing
+    // F-25-02 : jamais de stack trace brute par e-mail ni dans la réponse HTTP.
+    // Type + code + identifiant de corrélation suffisent au diagnostic via les logs.
+    const cid = correlationId()
+    const { type, code } = errorSummary(err)
+    console.error('[health-check] fatal', { correlation_id: cid, type, code })
     await sendAlertEmail(
       '[KSP] ⚠️ Health-check file email en erreur',
-      `<p>Le contrôle automatique a échoué :</p><pre>${String(err?.stack || err)}</pre>`,
+      `<p>Le contrôle automatique a échoué.</p>
+       <ul>
+         <li>Type : ${type}</li>
+         <li>Code : ${code ?? 'n/a'}</li>
+         <li>Corrélation : ${cid}</li>
+         <li>Fonction : email-queue-health-check</li>
+       </ul>
+       <p style="color:#666;font-size:12px;">Détail complet dans les logs de la fonction (rechercher l'identifiant de corrélation).</p>`,
     )
     return new Response(
-      JSON.stringify({ ok: false, error: String(err) }),
+      JSON.stringify({ ok: false, error: 'health_check_failed', correlation_id: cid }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
     )
   }

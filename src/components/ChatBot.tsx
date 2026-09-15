@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { marked } from "marked";
-import DOMPurify from "dompurify";
+import { renderModelMarkdown } from "@/lib/sanitize-html";
 
 type Message = { role: "user" | "assistant"; content: string };
 type ChatErrorType = "credits_exhausted" | "rate_limit" | "service_error" | "technical_error" | "bad_request";
@@ -197,7 +196,7 @@ export function ChatBot() {
                 ) : (
                   <div
                     className="max-w-[85%] rounded-xl px-3 py-2 text-sm bg-muted text-foreground prose prose-sm prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5 prose-headings:my-1 prose-a:text-ocean"
-                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(msg.content, { async: false }) as string) }}
+                    dangerouslySetInnerHTML={{ __html: renderModelMarkdown(msg.content) }}
                   />
                 )}
               </div>
