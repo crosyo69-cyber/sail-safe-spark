@@ -102,7 +102,7 @@ Deno.serve(async (req) => {
     const { data: existing } = await supabase
       .from("last_minute_subscribers")
       .select("id, confirmed")
-      .eq("email", email)
+      .eq("email", normalizedEmail)
       .maybeSingle();
 
     let subscriberId: string;
@@ -111,14 +111,15 @@ Deno.serve(async (req) => {
       if (existing.confirmed) {
         // already confirmed: just update activities
         await supabase.from("last_minute_subscribers").update({ activities: cleanActivities, updated_at: new Date().toISOString() }).eq("id", existing.id);
-        return new Response(JSON.stringify({ success: true, alreadyConfirmed: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        // F-22-06 : réponse uniforme, l'état de l'adresse n'est jamais révélé.
+        return new Response(JSON.stringify({ success: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
       subscriberId = existing.id as string;
       await supabase.from("last_minute_subscribers").update({ activities: cleanActivities, updated_at: new Date().toISOString() }).eq("id", existing.id);
     } else {
       const { data: created, error } = await supabase
         .from("last_minute_subscribers")
-        .insert({ email, activities: cleanActivities })
+        .insert({ email: normalizedEmail, activities: cleanActivities })
         .select("id")
         .single();
       if (error || !created) {
@@ -153,7 +154,7 @@ Deno.serve(async (req) => {
     await supabase.from("email_send_log").insert({
       message_id: messageId,
       template_name: "last_minute_confirm",
-      recipient_email: email,
+      recipient_email: normalizedEmail,
       status: "pending",
     });
     const { error: enqErr } = await supabase.rpc("enqueue_email", {
@@ -161,7 +162,7 @@ Deno.serve(async (req) => {
       payload: {
         run_id: runId,
         message_id: messageId,
-        to: email,
+        to: normalizedEmail,
         from: `${SITE_NAME} <noreply@${FROM_DOMAIN}>`,
         sender_domain: FROM_DOMAIN,
         subject: "Confirmez vos alertes Dernière Minute – Kitesurf Passion",

@@ -1757,30 +1757,39 @@ export type Database = {
       }
       weather_alert_subscriptions: {
         Row: {
+          confirmed: boolean
+          confirmed_at: string | null
           created_at: string
           email: string
           enabled: boolean
           id: string
+          last_alert_sent_at: string | null
           max_wind: number
           min_wind: number
           unsubscribe_token_hash: string | null
           updated_at: string
         }
         Insert: {
+          confirmed?: boolean
+          confirmed_at?: string | null
           created_at?: string
           email: string
           enabled?: boolean
           id?: string
+          last_alert_sent_at?: string | null
           max_wind?: number
           min_wind?: number
           unsubscribe_token_hash?: string | null
           updated_at?: string
         }
         Update: {
+          confirmed?: boolean
+          confirmed_at?: string | null
           created_at?: string
           email?: string
           enabled?: boolean
           id?: string
+          last_alert_sent_at?: string | null
           max_wind?: number
           min_wind?: number
           unsubscribe_token_hash?: string | null
@@ -2036,6 +2045,10 @@ export type Database = {
         Returns: boolean
       }
       confirm_waitlist_offer: { Args: { p_token: string }; Returns: Json }
+      confirm_weather_subscription: {
+        Args: { p_token: string }
+        Returns: boolean
+      }
       consume_credit_fifo: {
         Args: { p_booking_id: string; p_package_id: string }
         Returns: string
@@ -2533,6 +2546,13 @@ export type Database = {
         Returns: string
       }
       verify_otp: { Args: { p_code: string; p_otp: string }; Returns: Json }
+      weather_alert_claim_batch: {
+        Args: { p_limit?: number; p_wind: number }
+        Returns: {
+          email: string
+          id: string
+        }[]
+      }
     }
     Enums: {
       activity_type:

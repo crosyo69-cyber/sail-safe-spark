@@ -6,6 +6,36 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// F-22-04 : garde de débit sur un endpoint public. Le token reste la protection
+// principale ; le guard limite seulement l'abus (fail-open si le guard est HS,
+// pour ne jamais empêcher une désinscription légitime).
+function clientIp(req: Request): string {
+  const xff = req.headers.get("x-forwarded-for") ?? "";
+  const first = xff.split(",")[0]?.trim() ?? "";
+  if (first) return first;
+  return (req.headers.get("x-real-ip") ?? "").trim() || "unknown-ip";
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Db = any;
+
+async function rateGuard(supabase: Db, context: string, key: string, limit: number, window: string) {
+  const { data: allowed, error } = await supabase.rpc("public_rate_guard", {
+    p_context: context,
+    p_key: key && key.trim() ? key : "unknown-key",
+    p_limit: limit,
+    p_window: window,
+  });
+  if (error) {
+    console.error("rate guard unavailable", context, error.message);
+    return null;
+  }
+  return allowed === true ? null : new Response(
+    JSON.stringify({ error: "Trop de demandes. Merci de réessayer plus tard." }),
+    { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+  );
+}
+
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -35,6 +65,11 @@ const handler = async (req: Request): Promise<Response> => {
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+    const ipBlocked = await rateGuard(supabase, "weather_unsubscribe_ip", clientIp(req), 30, "1 hour");
+    if (ipBlocked) return ipBlocked;
+    const tokenBlocked = await rateGuard(supabase, "weather_unsubscribe_token", String(token), 10, "1 hour");
+    if (tokenBlocked) return tokenBlocked;
 
     // Token resolution is handled entirely inside the SECURITY DEFINER RPCs
     // (public_link_tokens hash lookup + legacy hash fallback).

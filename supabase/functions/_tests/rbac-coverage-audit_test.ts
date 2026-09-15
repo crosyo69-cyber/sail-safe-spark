@@ -28,6 +28,7 @@ const PUBLIC_ENDPOINTS = new Set<string>([
   "send-contact-email",      // formulaire contact (honeypot + délai côté client)
   "last-minute-subscribe",   // inscription alerte publique (double opt-in)
   "unsubscribe-weather",     // désabonnement par token uuid
+  "weather-subscribe",       // inscription météo publique (honeypot + rate guard + double opt-in)
   "create-checkout",         // checkout Stripe public (validation montant côté serveur)
   "stripe-webhook",          // signature Stripe (STRIPE_WEBHOOK_SECRET)
   "auth-email-hook",         // hook signé Standard-Webhook (auth provider)
