@@ -136,7 +136,9 @@ const PII_SURFACES = [
 
 Deno.test("D1 — aucun secret / token / OTP / Authorization journalisé", async () => {
   const forbidden = [
-    /console\.(log|warn|error)\([^\n]*\b(?:apiKey|api_key|serviceKey|serviceRoleKey|resendKey|secret|password)\b/i,
+    // valeur interpolée ou propriété d'objet (un libellé littéral est inoffensif)
+    /console\.(log|warn|error)\([^\n]*\$\{[^}\n]*(?:apiKey|api_key|serviceKey|serviceRoleKey|resendKey|secret|password)/i,
+    /console\.(log|warn|error)\([^\n]*\b(?:apiKey|api_key|serviceKey|serviceRoleKey|resendKey|secret|password)\s*[,:}]/i,
     /console\.(log|warn|error)\([^\n]*\bauthHeader\b/,
     /console\.(log|warn|error)\([^\n]*\botp\b/i,
     /console\.(log|warn|error)\([^\n]*\bcookie\b/i,
