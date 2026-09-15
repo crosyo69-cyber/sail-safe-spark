@@ -2,6 +2,7 @@
 // Remplace l'INSERT anon direct : validation + rate guard fail-closed +
 // demande "pending" + token de confirmation + e-mail via la chaîne F-21.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { globalQuota, publicRateKey } from "../_shared/public-guards.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -37,13 +38,11 @@ export function clampWind(min: unknown, max: unknown): { min: number; max: numbe
   return { min: lo, max: hi };
 }
 
-function clientIp(req: Request): string {
-  const xff = req.headers.get("x-forwarded-for") ?? "";
-  const first = xff.split(",")[0]?.trim() ?? "";
-  if (first) return first;
-  const real = (req.headers.get("x-real-ip") ?? "").trim();
-  return real || "unknown-ip";
-}
+// F-25-01 : quotas globaux de la surface météo (indépendants IP / e-mail / token).
+const SUBSCRIBE_QUOTA_HOUR = 60;
+const SUBSCRIBE_QUOTA_DAY = 300;
+const CONFIRM_QUOTA_HOUR = 200;
+const CONFIRM_QUOTA_DAY = 1000;
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -79,6 +78,22 @@ async function rateGuard(
   return null;
 }
 
+// F-25-01 : quota global fail-closed (clé fixe, insensible à IP/e-mail/token).
+async function quotaGuard(
+  supabase: Db,
+  context: string,
+  hourly: number,
+  daily: number,
+): Promise<Response | null> {
+  const res = await globalQuota(supabase, context, hourly, daily);
+  if (res.ok) return null;
+  return res.reason === "error"
+    ? json({ error: "Service temporairement indisponible" }, 503)
+    : json({ error: "Trop de demandes. Merci de réessayer plus tard." }, 429);
+}
+
+
+
 function buildHtml(confirmUrl: string, min: number, max: number) {
   return `<!DOCTYPE html><html lang="fr"><body style="margin:0;background:#fff;font-family:Inter,Arial,sans-serif;">
     <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;margin:0 auto;">
@@ -113,8 +128,15 @@ Deno.serve(async (req) => {
       const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
       if (!uuidRegex.test(token)) return json({ success: false, confirmed: false }, 400);
 
-      const ipBlocked = await rateGuard(supabase, "weather_confirm_ip", clientIp(req), 20, "1 hour");
+      const ipBlocked = await rateGuard(supabase, "weather_confirm_ip", publicRateKey(req), 20, "1 hour");
       if (ipBlocked) return ipBlocked;
+      const confirmQuota = await quotaGuard(
+        supabase,
+        "weather_confirm",
+        CONFIRM_QUOTA_HOUR,
+        CONFIRM_QUOTA_DAY,
+      );
+      if (confirmQuota) return confirmQuota;
 
       const { data, error } = await supabase.rpc("confirm_weather_subscription", { p_token: token });
       if (error) {
@@ -133,10 +155,18 @@ Deno.serve(async (req) => {
     if (!isValidEmail(email)) return json({ error: "Adresse email invalide" }, 400);
     const { min, max } = clampWind(body?.min_wind, body?.max_wind);
 
-    const ipBlocked = await rateGuard(supabase, "weather_subscribe_ip", clientIp(req), 5, "15 minutes");
+    const ipBlocked = await rateGuard(supabase, "weather_subscribe_ip", publicRateKey(req), 5, "15 minutes");
     if (ipBlocked) return ipBlocked;
     const emailBlocked = await rateGuard(supabase, "weather_subscribe_email", email, 3, "1 hour");
     if (emailBlocked) return emailBlocked;
+    // F-25-01 : quota global AVANT token de confirmation, écriture et enqueue.
+    const subscribeQuota = await quotaGuard(
+      supabase,
+      "weather_subscribe",
+      SUBSCRIBE_QUOTA_HOUR,
+      SUBSCRIBE_QUOTA_DAY,
+    );
+    if (subscribeQuota) return subscribeQuota;
 
     const { data: existing } = await supabase
       .from("weather_alert_subscriptions")

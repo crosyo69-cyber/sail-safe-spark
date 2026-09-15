@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { globalQuota, publicRateKey } from "../_shared/public-guards.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -11,14 +12,9 @@ const FROM_DOMAIN = "kitesurfpassion.fr";
 const OWNER_EMAIL = "crosyo69@gmail.com";
 const LOGO_URL = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png';
 
-// E-2-FIX : clé de rate-limit jamais vide (p_key vide => bypass du guard).
-function clientIp(req: Request): string {
-  const xff = req.headers.get("x-forwarded-for") ?? "";
-  const first = xff.split(",")[0]?.trim() ?? "";
-  if (first) return first;
-  const real = (req.headers.get("x-real-ip") ?? "").trim();
-  return real || "unknown-ip";
-}
+// F-25-01 : quota global de la surface contact (indépendant IP / e-mail).
+const CONTACT_QUOTA_HOUR = 60;
+const CONTACT_QUOTA_DAY = 300;
 
 // Retourne null si autorisé, sinon une Response (429 bloqué / 503 guard indisponible).
 async function rateGuard(
@@ -298,11 +294,29 @@ Deno.serve(async (req) => {
     const sanitized = validation.sanitized;
 
     // E-2-FIX : rate-limit serveur AVANT toute mise en file d'e-mail.
+    // F-25-01 : clé IP = dernière valeur XFF (non falsifiable par préfixe client).
     const normalizedEmail = sanitized.email.trim().toLowerCase();
-    const ipBlocked = await rateGuard(supabase, "contact_ip", clientIp(req), 5, "15 minutes");
+    const ipBlocked = await rateGuard(supabase, "contact_ip", publicRateKey(req), 5, "15 minutes");
     if (ipBlocked) return ipBlocked;
     const emailBlocked = await rateGuard(supabase, "contact_email", normalizedEmail, 3, "1 hour");
     if (emailBlocked) return emailBlocked;
+
+    // F-25-01 : quota global fail-closed AVANT toute mise en file d'e-mail.
+    const quota = await globalQuota(supabase, "contact", CONTACT_QUOTA_HOUR, CONTACT_QUOTA_DAY);
+    if (!quota.ok) {
+      return new Response(
+        JSON.stringify({
+          error: quota.reason === "error"
+            ? "Service temporairement indisponible. Réessayez."
+            : "Trop de demandes. Merci de réessayer plus tard.",
+        }),
+        {
+          status: quota.reason === "error" ? 503 : 429,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        },
+      );
+    }
+
 
 
 

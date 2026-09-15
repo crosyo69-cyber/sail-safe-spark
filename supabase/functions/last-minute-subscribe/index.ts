@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { globalQuota, publicRateKey } from "../_shared/public-guards.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -9,14 +10,9 @@ const SITE = "https://www.kitesurfpassion.fr";
 const FROM_DOMAIN = "kitesurfpassion.fr";
 const SITE_NAME = "Kitesurf Passion";
 
-// E-2-FIX : clé de rate-limit jamais vide (p_key vide => bypass du guard).
-function clientIp(req: Request): string {
-  const xff = req.headers.get("x-forwarded-for") ?? "";
-  const first = xff.split(",")[0]?.trim() ?? "";
-  if (first) return first;
-  const real = (req.headers.get("x-real-ip") ?? "").trim();
-  return real || "unknown-ip";
-}
+// F-25-01 : quota global de la surface Last Minute (indépendant IP / e-mail).
+const LM_QUOTA_HOUR = 60;
+const LM_QUOTA_DAY = 300;
 
 // Retourne null si autorisé, sinon une Response (429 bloqué / 503 guard indisponible).
 async function rateGuard(
@@ -90,10 +86,27 @@ Deno.serve(async (req) => {
 
     // E-2-FIX : rate-limit serveur AVANT toute opération métier (subscriber, token, e-mail).
     const normalizedEmail = String(email).trim().toLowerCase();
-    const ipBlocked = await rateGuard(supabase, "last_minute_subscribe_ip", clientIp(req), 5, "15 minutes");
+    const ipBlocked = await rateGuard(supabase, "last_minute_subscribe_ip", publicRateKey(req), 5, "15 minutes");
     if (ipBlocked) return ipBlocked;
     const emailBlocked = await rateGuard(supabase, "last_minute_subscribe_email", normalizedEmail, 3, "1 hour");
     if (emailBlocked) return emailBlocked;
+
+    // F-25-01 : quota global fail-closed AVANT token, écriture et enqueue e-mail.
+    const quota = await globalQuota(supabase, "last_minute_subscribe", LM_QUOTA_HOUR, LM_QUOTA_DAY);
+    if (!quota.ok) {
+      return new Response(
+        JSON.stringify({
+          error: quota.reason === "error"
+            ? "Service temporairement indisponible"
+            : "Trop de demandes. Merci de réessayer plus tard.",
+        }),
+        {
+          status: quota.reason === "error" ? 503 : 429,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
+
 
 
 
