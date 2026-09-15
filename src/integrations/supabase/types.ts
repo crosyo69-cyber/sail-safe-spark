@@ -2564,6 +2564,14 @@ export type Database = {
         Returns: string
       }
       verify_otp: { Args: { p_code: string; p_otp: string }; Returns: Json }
+      waitlist_free_seats: {
+        Args: {
+          p_activity: Database["public"]["Enums"]["activity_type"]
+          p_date: string
+          p_include_potential?: boolean
+        }
+        Returns: number
+      }
       weather_alert_claim_batch: {
         Args: { p_limit?: number; p_wind: number }
         Returns: {
