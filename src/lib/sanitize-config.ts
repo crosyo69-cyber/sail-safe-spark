@@ -14,7 +14,7 @@
 
 /** Schémas d'URL autorisés pour href/src. Exclut javascript:, data:, vbscript:, file:. */
 export const ALLOWED_URI_REGEXP =
-  /^(?:(?:https?|mailto|tel):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i;
+  /^(?:(?:https?|mailto|tel):|[^a-z]|[a-z+.-]+(?:[^a-z+.:-]|$))/i;
 
 /** Balises de texte enrichi communes à tous les profils. */
 const TEXT_TAGS = [
