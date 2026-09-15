@@ -1,5 +1,15 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { fetchWithTimeout, guardedStream, rateLimitKeys } from "../_shared/ai-guards.ts";
+
+// F-23-01/02 — plafonds serveur (le prompt n'est pas une frontière de sécurité).
+const MAX_OUTPUT_TOKENS = 400;
+const UPSTREAM_TIMEOUT_MS = 20_000;
+const STREAM_TIMEOUT_MS = 60_000;
+// Quotas globaux : COST NOT VERIFIED (tarif provider inconnu) → bornes techniques
+// dimensionnées largement au-dessus du trafic public observé d'une école de kite.
+const GLOBAL_HOURLY_LIMIT = 300;
+const GLOBAL_DAILY_LIMIT = 1500;
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
