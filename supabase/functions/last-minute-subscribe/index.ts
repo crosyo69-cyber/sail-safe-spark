@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { globalQuota, publicRateKey } from "../_shared/public-guards.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -9,14 +10,9 @@ const SITE = "https://www.kitesurfpassion.fr";
 const FROM_DOMAIN = "kitesurfpassion.fr";
 const SITE_NAME = "Kitesurf Passion";
 
-// E-2-FIX : clé de rate-limit jamais vide (p_key vide => bypass du guard).
-function clientIp(req: Request): string {
-  const xff = req.headers.get("x-forwarded-for") ?? "";
-  const first = xff.split(",")[0]?.trim() ?? "";
-  if (first) return first;
-  const real = (req.headers.get("x-real-ip") ?? "").trim();
-  return real || "unknown-ip";
-}
+// F-25-01 : quota global de la surface Last Minute (indépendant IP / e-mail).
+const LM_QUOTA_HOUR = 60;
+const LM_QUOTA_DAY = 300;
 
 // Retourne null si autorisé, sinon une Response (429 bloqué / 503 guard indisponible).
 async function rateGuard(
