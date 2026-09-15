@@ -140,7 +140,7 @@ Deno.test("F-27-01 capacité indisponible → 503 fail-closed, aucun Stripe", as
       throw new Error("stripe must not be reached");
     },
     () => "https://www.kitesurfpassion.fr",
-    () => ({
+    (): Guard => ({
       // deno-lint-ignore no-explicit-any
       rpc: async (functionName: any) =>
         functionName === "default_max_participants"
