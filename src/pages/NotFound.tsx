@@ -39,10 +39,11 @@ const NotFound = () => {
     // pas de toast, échec silencieux obligatoire).
     const log404 = async () => {
       try {
-        await supabase.from("page_404_logs" as any).insert({
-          path: sanitizeAnalyticsPath(location.pathname, location.search),
-          referrer: document.referrer || null,
-          user_agent: navigator.userAgent || null,
+        // F-23-06 : ingestion via RPC serveur (validation + rate limit côté base).
+        await (supabase as any).rpc("log_page_404", {
+          p_path: sanitizeAnalyticsPath(location.pathname, location.search),
+          p_referrer: document.referrer || null,
+          p_user_agent: navigator.userAgent || null,
         });
       } catch (e) {
         // Silent fail — monitoring should never break UX

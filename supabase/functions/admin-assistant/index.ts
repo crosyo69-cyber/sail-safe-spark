@@ -220,7 +220,12 @@ Deno.serve(async (req) => {
           usedIntents.push({ intent, params });
         }
 
-        messages.push({ role: "tool", tool_call_id: call.id, content });
+        // F-23-05 : séparation explicite DONNÉES / INSTRUCTIONS.
+        messages.push({
+          role: "tool",
+          tool_call_id: call.id,
+          content: `<donnees_non_fiables>${content}</donnees_non_fiables>`,
+        });
       }
     }
 
