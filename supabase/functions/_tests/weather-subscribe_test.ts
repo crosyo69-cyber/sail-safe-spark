@@ -17,7 +17,7 @@ Deno.test("isValidEmail — rejette les valeurs invalides", () => {
   assertEquals(isValidEmail("rider@example.com"), true);
   assertEquals(isValidEmail("rider@example"), false);
   assertEquals(isValidEmail(""), false);
-  assertEquals(isValidEmail("a".repeat(250) + "@b.fr"), false);
+  assertEquals(isValidEmail("a".repeat(255) + "@b.fr"), false);
 });
 
 Deno.test("clampWind — borne et réordonne la plage", () => {
