@@ -171,7 +171,7 @@ export const homeStructuredData = {
           description: "Leçon privée 100% individualisée avec moniteur dédié",
           url: "https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres",
            image: "https://www.kitesurfpassion.fr/images/kitesurf-cours-hyeres.jpg",
-          price: "230",
+          price: "180",
           priceCurrency: "EUR",
           priceValidUntil: priceValidUntil,
           availability: "https://schema.org/InStock",

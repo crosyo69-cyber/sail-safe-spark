@@ -49,8 +49,8 @@ const stages = [
     name: "Cours Particulier",
     sessions: "2 heures",
     duration: "1 personne / 1 moniteur",
-    price: "230€",
-    priceNote: "Hors saison (380€ juil./août)",
+    price: "180€",
+    priceNote: "Basse saison (210€ en juillet/août)",
     description: "Progression maximale avec un moniteur dédié et radios interactives.",
     features: [
       "1 moniteur pour 1 élève",
@@ -207,7 +207,7 @@ const CoursKitesurf = () => {
     },
     offers: {
       "@type": "AggregateOffer",
-      lowPrice: "230",
+      lowPrice: "180",
       highPrice: "599",
       priceCurrency: "EUR",
       offerCount: 3,
