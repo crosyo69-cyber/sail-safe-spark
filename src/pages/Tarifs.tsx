@@ -27,7 +27,10 @@ const kitesurfSeasonPricing = [
   { name: "1 Cours Collectif", sessions: "1 séance", highSeasonPrice: "130€", lowSeasonPrice: "120€", savings: "10€" },
   { name: "3 Cours Collectifs", sessions: "3 séances", highSeasonPrice: "360€", lowSeasonPrice: "330€", savings: "30€" },
   { name: "5 Cours Collectifs", sessions: "5 séances", highSeasonPrice: "570€", lowSeasonPrice: "500€", savings: "70€" },
-  { name: "Cours Particulier", sessions: "2 heures", highSeasonPrice: "380€", lowSeasonPrice: "230€", savings: "150€" },
+];
+
+const privateLessonSeasonPricing = [
+  { name: "Cours Particulier", sessions: "2 heures", highSeasonPrice: "210€", lowSeasonPrice: "180€", savings: "30€", popular: true },
 ];
 
 const wingfoilSeasonPricing = [
@@ -293,6 +296,14 @@ const Tarifs = () => {
           gradientClass="from-primary to-turquoise"
           items={kitesurfSeasonPricing}
           colorScheme="ocean"
+        />
+
+        {/* Cours particuliers avec saisons */}
+        <SeasonPricingSection
+          title="Cours particuliers"
+          gradientClass="from-sunset to-sunset-light"
+          items={privateLessonSeasonPricing}
+          colorScheme="sunset"
         />
 
         {/* Wingfoil avec saisons */}
@@ -680,7 +691,7 @@ const Tarifs = () => {
                     Nos tarifs sont conçus pour offrir la <strong>meilleure valeur possible</strong> à chaque profil d'élève. Le <Link to="/stage-kitesurf-100-glisse-hyeres" className="text-primary hover:underline">stage 100% Glisse</Link> à 399€ (hors saison) reste notre formule phare : 5 jours consécutifs pour devenir autonome, avec <strong>foil tracté et wakeboard inclus</strong> les jours sans vent. C'est le meilleur investissement pour un débutant.
                   </p>
                   <p>
-                    Le <Link to="/cours-particulier-kitesurf-hyeres" className="text-primary hover:underline">cours particulier</Link> à 230€ (2h, hors saison) est idéal pour une <strong>progression accélérée</strong> ou pour travailler des points techniques spécifiques. Le ratio 1:1 avec le moniteur garantit que chaque minute est optimisée pour votre apprentissage.
+                    Le <Link to="/cours-particulier-kitesurf-hyeres" className="text-primary hover:underline">cours particulier</Link> à 180€ (2h, hors juillet/août) est idéal pour une <strong>progression accélérée</strong> ou pour travailler des points techniques spécifiques. Le ratio 1:1 avec le moniteur garantit que chaque minute est optimisée pour votre apprentissage.
                   </p>
                   <p>
                     Les <Link to="/session-kitesurf-carte-hyeres" className="text-primary hover:underline">sessions à la carte</Link> (dès 120€ la séance) conviennent aux <strong>résidents locaux</strong> et aux vacanciers avec des emplois du temps variables. Les packs de 3 ou 5 séances offrent des réductions progressives allant jusqu'à 70€ d'économie.

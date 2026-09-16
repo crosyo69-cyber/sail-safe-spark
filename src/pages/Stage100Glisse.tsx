@@ -486,7 +486,7 @@ const Stage100Glisse = () => {
               >
                 <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Cours Particulier</h3>
                 <p className="text-muted-foreground text-sm mb-3">Moniteur 100% dédié à votre progression</p>
-                <span className="text-primary text-sm font-medium">Dès 230€ →</span>
+                <span className="text-primary text-sm font-medium">Dès 180€ →</span>
               </Link>
               <Link 
                 to="/location-materiel-kitesurf-hyeres"
