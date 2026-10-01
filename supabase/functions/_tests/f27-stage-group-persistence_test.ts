@@ -112,6 +112,7 @@ Deno.test("SQL — protections conservées, aucun changement ACL", () => {
   assert(sql.includes("SECURITY DEFINER"));
   assert(sql.includes("SET search_path TO 'public'"));
   assert(sql.includes("pb.status = 'confirmed'"));
-  assert(sql.includes("RAISE EXCEPTION 'day_full:%'"));
+  // F-27-03-03 : pré-check day_full retiré ; capacité imposée par trigger + find_or_create.
+  assert(sql.includes("public.find_or_create_daily_group(v_day, 'stage_100_glisse', 1)"));
   assert(!/\b(GRANT|REVOKE|POLICY)\b/.test(sql));
 });
