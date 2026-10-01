@@ -155,7 +155,8 @@ Deno.test("F-27-03-01 : protections existantes conservées", () => {
   assert(sql.includes("public.find_or_create_daily_group(v_day, 'stage_100_glisse', 1)"));
   // Verrou pack conservé, capacité et e-mail inchangés
   assert(sql.includes("FOR UPDATE"));
-  assert(sql.includes("RAISE EXCEPTION 'day_full:%'"));
+  // F-27-03-03 : pré-check day_full retiré ; capacité imposée par trigger + find_or_create.
+  assert(sql.includes("public.find_or_create_daily_group(v_day, 'stage_100_glisse', 1)"));
   assert(sql.includes("enqueue_booking_confirmation(v_booking_ids[1])"));
   assert(sql.includes("SECURITY DEFINER"));
   assert(sql.includes("SET search_path TO 'public'"));
