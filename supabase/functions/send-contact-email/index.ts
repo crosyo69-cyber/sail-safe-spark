@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { globalQuota, publicRateKey } from "../_shared/public-guards.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -10,6 +11,41 @@ const SITE_NAME = "KiteSurf Passion";
 const FROM_DOMAIN = "kitesurfpassion.fr";
 const OWNER_EMAIL = "crosyo69@gmail.com";
 const LOGO_URL = 'https://unqxudbxxzzmmbwwxwcr.supabase.co/storage/v1/object/public/email-assets/logo.png';
+
+// F-25-01 : quota global de la surface contact (indépendant IP / e-mail).
+const CONTACT_QUOTA_HOUR = 60;
+const CONTACT_QUOTA_DAY = 300;
+
+// Retourne null si autorisé, sinon une Response (429 bloqué / 503 guard indisponible).
+async function rateGuard(
+  supabase: any,
+  context: string,
+  key: string,
+  limit: number,
+  window: string,
+): Promise<Response | null> {
+  const { data: allowed, error } = await supabase.rpc("public_rate_guard", {
+    p_context: context,
+    p_key: key && key.trim() ? key : "unknown-key",
+    p_limit: limit,
+    p_window: window,
+  });
+  if (error) {
+    console.error("rate guard unavailable", context, error.message);
+    return new Response(
+      JSON.stringify({ error: "Service temporairement indisponible. Réessayez." }),
+      { status: 503, headers: { "Content-Type": "application/json", ...corsHeaders } },
+    );
+  }
+  if (allowed !== true) {
+    return new Response(
+      JSON.stringify({ error: "Trop de demandes. Merci de réessayer plus tard." }),
+      { status: 429, headers: { "Content-Type": "application/json", ...corsHeaders } },
+    );
+  }
+  return null;
+}
+
 
 interface ContactFormRequest {
   name: string;
@@ -226,7 +262,7 @@ async function enqueueEmail(
     throw new Error(`Failed to enqueue ${templateName} email`);
   }
 
-  console.log(`${templateName} email enqueued for ${to}`);
+  // E-2-FIX : log PII supprimé (plus d'adresse e-mail en clair dans les logs Edge).
   return messageId;
 }
 
@@ -256,6 +292,33 @@ Deno.serve(async (req) => {
     }
 
     const sanitized = validation.sanitized;
+
+    // E-2-FIX : rate-limit serveur AVANT toute mise en file d'e-mail.
+    // F-25-01 : clé IP = dernière valeur XFF (non falsifiable par préfixe client).
+    const normalizedEmail = sanitized.email.trim().toLowerCase();
+    const ipBlocked = await rateGuard(supabase, "contact_ip", publicRateKey(req), 5, "15 minutes");
+    if (ipBlocked) return ipBlocked;
+    const emailBlocked = await rateGuard(supabase, "contact_email", normalizedEmail, 3, "1 hour");
+    if (emailBlocked) return emailBlocked;
+
+    // F-25-01 : quota global fail-closed AVANT toute mise en file d'e-mail.
+    const quota = await globalQuota(supabase, "contact", CONTACT_QUOTA_HOUR, CONTACT_QUOTA_DAY);
+    if (!quota.ok) {
+      return new Response(
+        JSON.stringify({
+          error: quota.reason === "error"
+            ? "Service temporairement indisponible. Réessayez."
+            : "Trop de demandes. Merci de réessayer plus tard.",
+        }),
+        {
+          status: quota.reason === "error" ? 503 : 429,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        },
+      );
+    }
+
+
+
 
     // Enqueue confirmation email to customer
     try {

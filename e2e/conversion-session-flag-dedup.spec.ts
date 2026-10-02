@@ -1,4 +1,7 @@
-import { test, expect, type Page } from '@playwright/test';
+import { type Page } from '@playwright/test';
+// retry-filter : hook global (nettoyage flags dédup + consentement marketing).
+import { test, expect } from './fixtures';
+import { installGtagRecorder, readGtagCalls } from './utils/conversion-readers';
 import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL, SUBMIT_BUTTON_TESTID, getSubmitButton } from './utils/submit-button';
 
 /**
@@ -25,48 +28,9 @@ const CONV_ID = `${ADS_ID}/${ADS_LABEL}`;
 type GtagCall = [string, string, Record<string, unknown>?];
 
 async function installInstrumentation(page: Page) {
-  await page.addInitScript(() => {
-    const GTAG_STASH = '__gtagCallsStash';
-    const prior = (() => {
-      try {
-        const raw = sessionStorage.getItem(GTAG_STASH);
-        return raw ? (JSON.parse(raw) as GtagCall[]) : [];
-      } catch { return []; }
-    })();
-    const calls: GtagCall[] = prior;
-    (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls = calls;
-    (window as unknown as { dataLayer: unknown[] }).dataLayer = [];
-
-    const persist = () => {
-      try { sessionStorage.setItem(GTAG_STASH, JSON.stringify(calls)); } catch { /* ignore */ }
-    };
-
-    const record = (...args: unknown[]) => {
-      calls.push(args as GtagCall);
-      persist();
-    };
-
-    const wrap = (orig: unknown): ((...a: unknown[]) => void) => {
-      const fn = typeof orig === 'function' ? (orig as (...a: unknown[]) => void) : undefined;
-      const wrapped = (...args: unknown[]) => {
-        record(...args);
-        try { fn?.(...args); } catch { /* ignore */ }
-      };
-      (wrapped as unknown as { __isGtagRecorder?: boolean }).__isGtagRecorder = true;
-      return wrapped;
-    };
-
-    const isWrapped = (v: unknown) =>
-      typeof v === 'function' &&
-      (v as unknown as { __isGtagRecorder?: boolean }).__isGtagRecorder === true;
-
-    let current: unknown = wrap((window as unknown as { gtag?: unknown }).gtag);
-    Object.defineProperty(window, 'gtag', {
-      configurable: true,
-      get() { return current; },
-      set(v: unknown) { current = isWrapped(v) ? v : wrap(v); },
-    });
-  });
+  // Recorder partagé : accessor re-épinglé (index.html redéclare `function gtag`),
+  // enregistrement strictement une fois par appel.
+  await installGtagRecorder(page);
 
   await page.route('**/functions/v1/send-contact-email', async (route) => {
     await route.fulfill({
@@ -109,9 +73,7 @@ test.describe('Google Ads conversion — per-session dedup flag', () => {
     await page.waitForURL('**/merci', { timeout: 10_000 });
     await page.waitForTimeout(500);
 
-    let calls = await page.evaluate(
-      () => (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls
-    );
+    let calls = await readGtagCalls(page);
     expect(countConversions(calls), 'after form + /merci, conversion fired exactly once').toBe(1);
 
     // The session flag must now be present
@@ -125,9 +87,7 @@ test.describe('Google Ads conversion — per-session dedup flag', () => {
     await page.reload();
     await page.waitForTimeout(500);
 
-    calls = await page.evaluate(
-      () => (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls
-    );
+    calls = await readGtagCalls(page);
     expect(countConversions(calls), 'after /merci reload, conversion still fired only once').toBe(1);
 
     // ---- 4) Navigate back to "/" and manually invoke the tracker ----
@@ -154,9 +114,7 @@ test.describe('Google Ads conversion — per-session dedup flag', () => {
       w.gtag?.('event', 'conversion', { send_to: `AW-974052357/${label}` });
     }, ADS_LABEL);
 
-    calls = await page.evaluate(
-      () => (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls
-    );
+    calls = await readGtagCalls(page);
     const finalCount = countConversions(calls);
 
     console.log(

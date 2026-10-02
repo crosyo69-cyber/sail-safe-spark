@@ -1,0 +1,61 @@
+name: Edge Function Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/functions/**'
+      - 'scripts/test-edge-functions.sh'
+      - '.github/workflows/edge-function-tests.yml'
+  pull_request:
+    paths:
+      - 'supabase/functions/**'
+      - 'scripts/test-edge-functions.sh'
+      - '.github/workflows/edge-function-tests.yml'
+  schedule:
+    # Nightly run at 03:17 UTC — catches regressions from external deps
+    # (Deno std, Stripe SDK, etc.) even when no code has changed.
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  deno-tests:
+    name: Run all edge function Deno tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.46.3
+
+      - name: Cache Deno dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/deno
+            ~/.deno
+          key: ${{ runner.os }}-deno-${{ hashFiles('supabase/functions/**/*.ts') }}
+          restore-keys: |
+            ${{ runner.os }}-deno-
+
+      - name: Verify Supabase secret is configured (manual dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          if [ -z "${SUPABASE_SERVICE_ROLE_KEY:-}" ]; then
+            echo "::error::SUPABASE_SERVICE_ROLE_KEY GitHub secret is not configured."
+            echo "Add it under Settings → Secrets and variables → Actions before triggering this workflow."
+            exit 1
+          fi
+          echo "✓ SUPABASE_SERVICE_ROLE_KEY is present — integration tests will run against Supabase."
+
+      - name: Run edge function tests against Supabase
+        env:
+          SUPABASE_URL: https://unqxudbxxzzmmbwwxwcr.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: bash scripts/test-edge-functions.sh

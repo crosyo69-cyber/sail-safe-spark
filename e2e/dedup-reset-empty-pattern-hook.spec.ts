@@ -1,4 +1,4 @@
-import { test, expect } from './utils/retry-filter';
+import { test, expect } from './fixtures';
 import {
   clearDedupStorage,
   skipDedupAutoReset,

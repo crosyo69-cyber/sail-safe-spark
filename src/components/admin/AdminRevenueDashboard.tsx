@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { statsService } from "@/services/stats.service";
+import { settle } from "@/services/_shared/result";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -52,6 +53,7 @@ const ACTIVITY_LABELS: Record<string, string> = {
   wingfoil: "Wingfoil",
   pumpfoil: "Pumpfoil",
   foil_tracte: "Foil tracté",
+  stage_100_glisse: "Stage 100% Glisse",
 };
 
 const ACTIVITY_COLORS: Record<string, string> = {
@@ -59,6 +61,7 @@ const ACTIVITY_COLORS: Record<string, string> = {
   wingfoil: "hsl(25, 95%, 53%)",
   pumpfoil: "hsl(174, 77%, 50%)",
   foil_tracte: "hsl(222, 47%, 25%)",
+  stage_100_glisse: "hsl(20, 95%, 55%)",
 };
 
 const PIE_COLORS = [
@@ -76,36 +79,31 @@ interface Reservation {
   status: string;
   created_at: string;
   stripe_session_id: string | null;
-  session_id: string;
+  daily_group_id: string | null;
 }
 
 interface SessionInfo {
   id: string;
   activity: string;
   date: string;
-  time_slot: string;
 }
 
 const AdminRevenueDashboard = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
-  const [sessions, setSessions] = useState<SessionInfo[]>([]);
+  const [groups, setGroups] = useState<SessionInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState<Period>("month");
   const [activityFilter, setActivityFilter] = useState<string>("all");
 
   const fetchData = async () => {
     setLoading(true);
-    const [resResult, sessResult] = await Promise.all([
-      supabase
-        .from("reservations")
-        .select("id, participants, status, created_at, stripe_session_id, session_id")
-        .eq("status", "confirmed")
-        .not("stripe_session_id", "is", null),
-      supabase.from("sessions").select("id, activity, date, time_slot"),
+    const [resResult, groupResult] = await Promise.all([
+      statsService.revenueReservations<Reservation[]>().then(settle),
+      statsService.revenueGroups<SessionInfo[]>().then(settle),
     ]);
 
     if (resResult.data) setReservations(resResult.data);
-    if (sessResult.data) setSessions(sessResult.data);
+    if (groupResult.data) setGroups(groupResult.data);
     setLoading(false);
   };
 
@@ -113,11 +111,16 @@ const AdminRevenueDashboard = () => {
     fetchData();
   }, []);
 
-  const sessionMap = useMemo(() => {
+  const groupMap = useMemo(() => {
     const map: Record<string, SessionInfo> = {};
-    sessions.forEach((s) => (map[s.id] = s));
+    groups.forEach((g) => (map[g.id] = g));
     return map;
-  }, [sessions]);
+  }, [groups]);
+
+  const resolve = (r: Reservation): SessionInfo | undefined => {
+    if (r.daily_group_id && groupMap[r.daily_group_id]) return groupMap[r.daily_group_id];
+    return undefined;
+  };
 
   const dateRange = useMemo(() => {
     const now = new Date();
@@ -138,12 +141,12 @@ const AdminRevenueDashboard = () => {
       const date = parseISO(r.created_at);
       if (!isWithinInterval(date, dateRange)) return false;
       if (activityFilter !== "all") {
-        const session = sessionMap[r.session_id];
-        if (session?.activity !== activityFilter) return false;
+        const info = resolve(r);
+        if (info?.activity !== activityFilter) return false;
       }
       return true;
     });
-  }, [reservations, dateRange, activityFilter, sessionMap]);
+  }, [reservations, dateRange, activityFilter, groupMap]);
 
   // Previous period for comparison
   const prevDateRange = useMemo(() => {
@@ -159,12 +162,12 @@ const AdminRevenueDashboard = () => {
       const date = parseISO(r.created_at);
       if (!isWithinInterval(date, prevDateRange)) return false;
       if (activityFilter !== "all") {
-        const session = sessionMap[r.session_id];
-        if (session?.activity !== activityFilter) return false;
+        const info = resolve(r);
+        if (info?.activity !== activityFilter) return false;
       }
       return true;
     });
-  }, [reservations, prevDateRange, activityFilter, sessionMap]);
+  }, [reservations, prevDateRange, activityFilter, groupMap]);
 
   // Stats
   const totalRevenue = filteredReservations.reduce((a, r) => a + r.participants * DEPOSIT_PER_PERSON, 0);
@@ -187,8 +190,8 @@ const AdminRevenueDashboard = () => {
   const revenueByActivity = useMemo(() => {
     const map: Record<string, number> = {};
     filteredReservations.forEach((r) => {
-      const session = sessionMap[r.session_id];
-      const act = session?.activity || "unknown";
+      const info = resolve(r);
+      const act = info?.activity || "unknown";
       map[act] = (map[act] || 0) + r.participants * DEPOSIT_PER_PERSON;
     });
     return Object.entries(map)
@@ -198,7 +201,7 @@ const AdminRevenueDashboard = () => {
         activity,
       }))
       .sort((a, b) => b.value - a.value);
-  }, [filteredReservations, sessionMap]);
+  }, [filteredReservations, groupMap]);
 
   // Revenue over time (bar chart)
   const revenueOverTime = useMemo(() => {
@@ -249,15 +252,15 @@ const AdminRevenueDashboard = () => {
       .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
       .slice(0, 10)
       .map((r) => {
-        const session = sessionMap[r.session_id];
+        const info = resolve(r);
         return {
           ...r,
-          activity: session?.activity || "unknown",
-          date: session?.date || "",
+          activity: info?.activity || "unknown",
+          date: info?.date || "",
           amount: r.participants * DEPOSIT_PER_PERSON,
         };
       });
-  }, [filteredReservations, sessionMap]);
+  }, [filteredReservations, groupMap]);
 
   const periodLabels: Record<Period, string> = {
     month: "Ce mois",
@@ -358,10 +361,10 @@ const AdminRevenueDashboard = () => {
     const allTransactions = [...filteredReservations]
       .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
       .map((r) => {
-        const session = sessionMap[r.session_id];
+        const info = resolve(r);
         return {
           date: format(parseISO(r.created_at), "dd/MM/yyyy HH:mm", { locale: fr }),
-          activity: ACTIVITY_LABELS[session?.activity || ""] || session?.activity || "—",
+          activity: ACTIVITY_LABELS[info?.activity || ""] || info?.activity || "—",
           participants: `${r.participants}`,
           amount: `${(r.participants * DEPOSIT_PER_PERSON).toLocaleString("fr-FR")} €`,
         };

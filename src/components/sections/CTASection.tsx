@@ -3,13 +3,15 @@ import { Phone, Send, ShieldCheck, Clock, BadgeCheck } from "lucide-react";
 import { forwardRef, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { useContact } from "@/hooks/services/useContact";
 import { trackFormSubmit, trackPhoneClick, trackGoogleAdsConversion } from "@/lib/analytics";
 import { trackMetaLead, trackMetaContact } from "@/lib/meta-pixel";
 import sunsetImage from "@/assets/almanarre-sunset.jpg?webp";
 
 export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_, ref) {
   const navigate = useNavigate();
+  const { useSendContactEmail } = useContact();
+  const sendContactEmail = useSendContactEmail();
   const [formData, setFormData] = useState({
     firstName: "",
     email: "",
@@ -71,28 +73,28 @@ export const CTASection = forwardRef<HTMLElement, object>(function CTASection(_,
     }
 
     try {
-      const { data, error } = await supabase.functions.invoke("send-contact-email", {
-        body: {
-          name: formData.firstName,
-          email: formData.email,
-          phone: formData.phone,
-          activity: activityLabels[formData.activity] || formData.activity,
-          honeypot,
-          formTimestamp,
-        },
+      await sendContactEmail.mutateAsync({
+        name: formData.firstName,
+        email: formData.email,
+        phone: formData.phone,
+        activity: activityLabels[formData.activity] || formData.activity,
+        honeypot,
+        formTimestamp,
       });
 
-      if (error) throw error;
-
-      setFormData({ firstName: "", email: "", phone: "", activity: "kitesurf" });
-      // Fire Google Ads conversion immediately before redirect to avoid loss if navigation is interrupted.
-      // Wrapped so any throw (rare: e.g. analytics blocker) cannot prevent the /merci redirect.
+      // Google Ads Contact conversion: fire only after the backend confirms
+      // the form submission succeeded. This avoids counting simple clicks,
+      // validation failures, honeypot submissions, or email-send errors.
       try {
-        trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
+        trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD', {
+          onComplete: () => navigate("/merci"),
+        });
       } catch (err) {
         if (import.meta.env.DEV) console.warn("[CTA] trackGoogleAdsConversion threw", err);
+        navigate("/merci");
       }
-      navigate("/merci");
+
+      setFormData({ firstName: "", email: "", phone: "", activity: "kitesurf" });
     } catch (error) {
       console.error("CTA form error:", error);
       toast.error("Erreur", {

@@ -12,10 +12,12 @@
     "typecheck:e2e": "tsc --noEmit -p tsconfig.e2e.json",
     "preview": "vite preview",
     "test:e2e": "playwright test",
+    "test:edge": "bash scripts/test-edge-functions.sh",
     "lint:no-empty-pattern": "node scripts/lint-no-empty-pattern.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
+    "@lovable.dev/mcp-js": "^0.23.0",
     "@playwright/test": "^1.58.2",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -73,6 +75,7 @@
     "vaul": "^0.9.9",
     "vite-imagetools": "^9.0.2",
     "web-vitals": "^5.1.0",
+    "xlsx": "^0.18.5",
     "zod": "^3.25.76"
   },
   "devDependencies": {

@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { trackPhoneClick } from "@/lib/analytics";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
@@ -393,7 +394,7 @@ const SessionCarte = () => {
               >
                 <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Cours Particulier</h3>
                 <p className="text-muted-foreground text-sm mb-3">Moniteur 100% dédié</p>
-                <span className="text-primary text-sm font-medium">Dès 230€ →</span>
+                <span className="text-primary text-sm font-medium">Dès 180€ →</span>
               </Link>
               <Link 
                 to="/stage-wingfoil-hyeres-almanarre"
@@ -429,7 +430,7 @@ const SessionCarte = () => {
                 <Link to="/contact-reservation-kitesurf-hyeres">Réserver maintenant</Link>
               </Button>
               <Button variant="hero" size="lg" asChild>
-                <a href="tel:0672716905">06 72 71 69 05</a>
+                <a href="tel:0672716905" onClick={() => trackPhoneClick("session_carte")}>06 72 71 69 05</a>
               </Button>
             </div>
           </div>

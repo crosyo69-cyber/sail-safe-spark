@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { trackPhoneClick } from "@/lib/analytics";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
@@ -48,8 +49,8 @@ const stages = [
     name: "Cours Particulier",
     sessions: "2 heures",
     duration: "1 personne / 1 moniteur",
-    price: "230€",
-    priceNote: "Hors saison (380€ juil./août)",
+    price: "180€",
+    priceNote: "Basse saison (210€ en juillet/août)",
     description: "Progression maximale avec un moniteur dédié et radios interactives.",
     features: [
       "1 moniteur pour 1 élève",
@@ -206,7 +207,7 @@ const CoursKitesurf = () => {
     },
     offers: {
       "@type": "AggregateOffer",
-      lowPrice: "230",
+      lowPrice: "180",
       highPrice: "599",
       priceCurrency: "EUR",
       offerCount: 3,
@@ -771,7 +772,7 @@ const CoursKitesurf = () => {
                     <Link to="/contact-reservation-kitesurf-hyeres">Nous Contacter</Link>
                   </Button>
                   <Button variant="outline" size="lg" asChild>
-                    <a href="tel:+33672716905">06 72 71 69 05</a>
+                    <a href="tel:+33672716905" onClick={() => trackPhoneClick("cours_kitesurf")}>06 72 71 69 05</a>
                   </Button>
                 </div>
               </div>

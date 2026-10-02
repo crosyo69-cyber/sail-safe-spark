@@ -1,19 +1,41 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { CheckCircle, Phone } from "lucide-react";
-import { trackGoogleAdsConversion } from "@/lib/analytics";
+import { trackGoogleAdsConversion, trackPhoneClick } from "@/lib/analytics";
 import { pushMerciConversion } from "@/lib/gtm";
 import { trackMetaLead } from "@/lib/meta-pixel";
 import { verifyGtagId } from "@/lib/gtag-id-check";
 import { ConversionStatusIndicator } from "@/components/debug/ConversionStatusIndicator";
 import { GoogleAdsConversionLog } from "@/components/debug/GoogleAdsConversionLog";
 
+function isDebugEnabled(): boolean {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).get("debug") === "1";
+}
+
 const Merci = () => {
+  const hasFiredRef = useRef(false);
+
   useEffect(() => {
+    const debug = isDebugEnabled();
+    const reqId = `merci-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+
+    if (hasFiredRef.current) {
+      if (debug)
+        console.log(`[Merci Debug] SKIP — reqId ${reqId} : doublon détecté (useRef guard)`);
+      return;
+    }
+    hasFiredRef.current = true;
+
+    if (debug)
+      console.log(`[Merci Debug] START — reqId ${reqId} : première exécution`);
+
+    // NOTE: no unconditional direct gtag conversion here — it bypassed the
+    // cookie-consent gate and double-counted alongside the paths below.
     // GTM-driven trigger (preferred): fires even on direct navigation, and
     // works independently of GA4/Ads init order. GTM must have a Custom
     // Event trigger on `merci_conversion` wired to the Ads conversion tag.
@@ -81,7 +103,7 @@ const Merci = () => {
                 <a
                   href="tel:0672716905"
                   className="inline-flex items-center gap-2 mt-2 text-primary font-bold text-xl hover:underline"
-                >
+                 onClick={() => trackPhoneClick("merci")}>
                   <Phone className="w-5 h-5" />
                   06 72 71 69 05
                 </a>

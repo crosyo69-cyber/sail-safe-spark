@@ -1,10 +1,40 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.89.0";
+import { globalQuota, publicRateKey } from "../_shared/public-guards.ts";
+import { correlationId, errorSummary, GENERIC_ERROR_MESSAGE } from "../_shared/log-redact.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+// F-22-04 : garde de débit sur un endpoint public. Le token reste la protection
+// principale ; le guard limite seulement l'abus (fail-open si le guard est HS,
+// pour ne jamais empêcher une désinscription légitime).
+// F-25-01 : quota global de la surface désinscription, volontairement large
+// pour rester utilisable en fonctionnement normal.
+const UNSUB_QUOTA_HOUR = 300;
+const UNSUB_QUOTA_DAY = 2000;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Db = any;
+
+async function rateGuard(supabase: Db, context: string, key: string, limit: number, window: string) {
+  const { data: allowed, error } = await supabase.rpc("public_rate_guard", {
+    p_context: context,
+    p_key: key && key.trim() ? key : "unknown-key",
+    p_limit: limit,
+    p_window: window,
+  });
+  if (error) {
+    console.error("rate guard unavailable", context, error.message);
+    return null;
+  }
+  return allowed === true ? null : new Response(
+    JSON.stringify({ error: "Trop de demandes. Merci de réessayer plus tard." }),
+    { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+  );
+}
 
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
@@ -29,67 +59,73 @@ const handler = async (req: Request): Promise<Response> => {
     // Validate token format (UUID)
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     if (!uuidRegex.test(token)) {
-      console.error("Invalid token format:", token);
+      console.error("Invalid unsubscribe token format");
       return new Response(
         JSON.stringify({ error: "Token invalide" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // First, verify the token exists
-    const { data: subscription, error: fetchError } = await supabase
-      .from("weather_alert_subscriptions")
-      .select("id, email, enabled")
-      .eq("unsubscribe_token", token)
-      .maybeSingle();
+    const ipBlocked = await rateGuard(supabase, "weather_unsubscribe_ip", publicRateKey(req), 30, "1 hour");
+    if (ipBlocked) return ipBlocked;
+    const tokenBlocked = await rateGuard(supabase, "weather_unsubscribe_token", String(token), 10, "1 hour");
+    if (tokenBlocked) return tokenBlocked;
 
-    if (fetchError) {
-      console.error("Error fetching subscription:", fetchError);
-      throw fetchError;
-    }
-
-    if (!subscription) {
-      console.log("Subscription not found for token:", token);
+    // F-25-01 : quota global fail-closed, AVANT toute résolution de token / écriture.
+    const quota = await globalQuota(supabase, "weather_unsubscribe", UNSUB_QUOTA_HOUR, UNSUB_QUOTA_DAY);
+    if (!quota.ok) {
       return new Response(
-        JSON.stringify({ error: "Abonnement non trouvé" }),
-        { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({
+          error: quota.reason === "error"
+            ? "Service temporairement indisponible"
+            : "Trop de demandes. Merci de réessayer plus tard.",
+        }),
+        {
+          status: quota.reason === "error" ? 503 : 429,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
+
+    // Token resolution is handled entirely inside the SECURITY DEFINER RPCs
+    // (public_link_tokens hash lookup + legacy hash fallback).
     if (action === "delete") {
-      // Permanently delete subscription
       const { data: deleteResult, error: deleteError } = await supabase
         .rpc("delete_weather_subscription", { p_token: token });
 
       if (deleteError) {
-        console.error("Error deleting subscription:", deleteError);
         throw deleteError;
       }
 
-      // Log for audit purposes only - don't expose email in response
-      console.log("Subscription deleted for id:", subscription.id);
+      if (!deleteResult) {
+        return new Response(
+          JSON.stringify({ error: "Abonnement non trouvé" }),
+          { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      console.log("Weather subscription deleted");
       return new Response(
-        JSON.stringify({ 
-          success: true, 
+        JSON.stringify({
+          success: true,
           message: "Abonnement supprimé définitivement"
         }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     } else {
-      // Just disable (pause) the subscription
       const { data: unsubResult, error: unsubError } = await supabase
         .rpc("unsubscribe_weather_alert", { p_token: token });
 
       if (unsubError) {
-        console.error("Error unsubscribing:", unsubError);
         throw unsubError;
       }
 
       if (!unsubResult) {
-        // Already unsubscribed - don't disclose email
+        // Either already disabled or unknown token — never disclose which.
         return new Response(
-          JSON.stringify({ 
-            success: true, 
+          JSON.stringify({
+            success: true,
             message: "Vous êtes déjà désabonné",
             alreadyUnsubscribed: true
           }),
@@ -97,20 +133,23 @@ const handler = async (req: Request): Promise<Response> => {
         );
       }
 
-      // Log for audit purposes only - don't expose email in response
-      console.log("Subscription disabled for id:", subscription.id);
+      console.log("Weather subscription disabled");
       return new Response(
-        JSON.stringify({ 
-          success: true, 
+        JSON.stringify({
+          success: true,
           message: "Désabonnement effectué avec succès"
         }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
-  } catch (error: any) {
-    console.error("Error in unsubscribe function:", error);
+  } catch (error) {
+    // F-25-02 : endpoint public — aucun message interne (PostgREST, contrainte SQL,
+    // nom de table/fonction, détail fournisseur) ne doit sortir. Seul un identifiant
+    // de corrélation non sensible est partagé pour le support.
+    const cid = correlationId();
+    console.error("unsubscribe-weather failed", { correlation_id: cid, ...errorSummary(error) });
     return new Response(
-      JSON.stringify({ error: error.message || "Erreur interne" }),
+      JSON.stringify({ error: GENERIC_ERROR_MESSAGE, correlation_id: cid }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

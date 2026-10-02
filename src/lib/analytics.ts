@@ -1,10 +1,18 @@
 // Google Analytics 4 initialization and utilities
-import { markFired, shouldFireWithinWindow } from './conversion-dedup';
+import {
+  hasSessionConversionFired,
+  markFired,
+  markSessionConversionFired,
+  shouldFireWithinWindow,
+} from './conversion-dedup';
+import { hasAnalyticsConsent, hasMarketingConsent, onMarketingConsent } from './consent';
+import { logAnalyticsEvent } from './event-logger';
 
 declare global {
   interface Window {
     dataLayer: unknown[];
     gtag: (...args: unknown[]) => void;
+    gtag_report_conversion?: (url?: string) => boolean;
   }
 }
 
@@ -17,7 +25,39 @@ declare global {
 const GA_MEASUREMENT_ID: string | undefined = undefined;
 const GOOGLE_ADS_ID = 'AW-974052357';
 
+/**
+ * Google Ads conversion labels (centralized).
+ *
+ * Strategy decided with the client (2026-05): only TWO conversion actions in
+ * Google Ads:
+ *   - LEAD  → form submit, primary booking CTA, /merci page landing
+ *   - PHONE → any click on a `tel:` link anywhere on the site
+ *
+ * To add the PHONE conversion in Google Ads:
+ *   1. Google Ads → Tools → Conversions → New conversion action
+ *      Source: Website. Category: "Phone call lead". Goal: "Submit lead form"
+ *   2. Use the AW-974052357 tag (already loaded site-wide via gtag.js)
+ *   3. Copy the generated label (looks like "AbCdEfGhIj1KlMnOp")
+ *   4. Replace REPLACE_WITH_PHONE_LABEL below — that's the only change needed.
+ */
+export const ADS_LEAD_LABEL = 's2n0CL3puI4cEIW4u9AD';
+export const ADS_PHONE_LABEL = 'REPLACE_WITH_PHONE_LABEL';
+
+type AdsConversionOptions = {
+  onComplete?: () => void;
+  transportUrl?: string;
+};
+
 let isInitialized = false;
+
+function ensureGtagBootstrap(): void {
+  window.dataLayer = window.dataLayer || [];
+  if (typeof window.gtag !== 'function') {
+    window.gtag = function gtag(...args: unknown[]) {
+      window.dataLayer.push(args);
+    };
+  }
+}
 
 /**
  * Initialize Google Analytics 4
@@ -33,11 +73,10 @@ export function initGA4(): void {
     return;
   }
 
-  // Initialize dataLayer and gtag function
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag(...args: unknown[]) {
-    window.dataLayer.push(args);
-  };
+  // Initialize dataLayer and gtag function. If the canonical head snippet has
+  // already run, keep its gtag function so Tag Assistant sees one consistent
+  // implementation instead of a late body-injected replacement.
+  ensureGtagBootstrap();
 
   // Set initial timestamp
   window.gtag('js', new Date());
@@ -57,11 +96,30 @@ export function initGA4(): void {
 
   // Defer script loading to avoid React DOM conflicts
   const loadGAScript = () => {
+    // RGPD: never fetch gtag.js before analytics or marketing consent.
+    // Consent Mode v2 would otherwise emit cookieless pings to Google.
+    if (!hasAnalyticsConsent() && !hasMarketingConsent()) {
+      isInitialized = false;
+      // Retry once the visitor accepts analytics or marketing cookies.
+      const onUpdate = () => {
+        if (hasAnalyticsConsent() || hasMarketingConsent()) {
+          window.removeEventListener('ksp:consent-updated', onUpdate);
+          loadGAScript();
+        }
+      };
+      window.addEventListener('ksp:consent-updated', onUpdate);
+      return;
+    }
     const trackingId = GA_MEASUREMENT_ID || GOOGLE_ADS_ID;
+    if (document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${trackingId}"]`)) {
+      isInitialized = true;
+      console.log('%c[Analytics] Google Analytics & Ads initialized', 'color: #4285f4; font-weight: bold');
+      return;
+    }
     const script = document.createElement('script');
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
-    document.body.appendChild(script);
+    document.head.appendChild(script);
     
     isInitialized = true;
     console.log('%c[Analytics] Google Analytics & Ads initialized', 'color: #4285f4; font-weight: bold');
@@ -163,6 +221,12 @@ export function trackFormSubmit(
     window.gtag('event', 'form_submit', params);
   }
 
+  // Persist to our own analytics store for the conversion dashboard
+  logAnalyticsEvent('form_submit', {
+    location: formLocation,
+    metadata: { form_name: formName, ...(formData ?? {}) },
+  });
+
   if (import.meta.env.DEV) {
     console.log(
       `%c[Analytics] Form Submit: ${formName}`,
@@ -186,8 +250,21 @@ export function trackPhoneClick(location: string): void {
     window.gtag('event', 'phone_click', params);
   }
 
-  // Track Google Ads conversion for phone clicks
-  trackGoogleAdsConversion('s2n0CL3puI4cEIW4u9AD');
+  // Persist to our own analytics store for the conversion dashboard
+  logAnalyticsEvent('phone_click', { location });
+
+  // Track Google Ads PHONE conversion (separate action from LEAD).
+  // Falls back silently if the label is still the placeholder, so the GA4
+  // `phone_click` event still fires while the Ads action is being created.
+  if (ADS_PHONE_LABEL && ADS_PHONE_LABEL !== 'REPLACE_WITH_PHONE_LABEL') {
+    trackGoogleAdsConversion(ADS_PHONE_LABEL);
+  } else if (import.meta.env.DEV) {
+    console.warn(
+      '[Analytics] PHONE conversion not fired: ADS_PHONE_LABEL placeholder. ' +
+        'Create the "Phone call" conversion action in Google Ads and update ' +
+        'ADS_PHONE_LABEL in src/lib/analytics.ts.'
+    );
+  }
 
   if (import.meta.env.DEV) {
     console.log(
@@ -203,7 +280,10 @@ export function trackPhoneClick(location: string): void {
  * daily key (`ksp_conv_YYYY-MM-DD`) survives reload/back flows via localStorage
  * while still mirroring into sessionStorage for the current tab session.
  */
-export function trackGoogleAdsConversion(conversionLabel?: string): void {
+export function trackGoogleAdsConversion(
+  conversionLabel?: string,
+  options: AdsConversionOptions = {}
+): void {
   if (typeof window === 'undefined' || !GOOGLE_ADS_ID) {
     return;
   }
@@ -212,6 +292,42 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
     ? `${GOOGLE_ADS_ID}/${conversionLabel}`
     : GOOGLE_ADS_ID;
 
+  let completed = false;
+  const completeOnce = () => {
+    if (completed) return;
+    completed = true;
+    options.onComplete?.();
+  };
+  if (options.onComplete) {
+    window.setTimeout(completeOnce, 2000);
+  }
+
+  // Cookie consent gate: never send a Google Ads hit before the user has
+  // accepted marketing cookies. Blocked hits would otherwise show up as
+  // failures in Tag Assistant / Ads diagnostics. We still call onComplete so
+  // navigation (e.g. → /merci) is not held hostage by the consent state, and
+  // we re-arm the fire for when the user later accepts.
+  if (!hasMarketingConsent()) {
+    if (import.meta.env.DEV) {
+      console.log(
+        `%c[Analytics] Google Ads Conversion DEFERRED (no marketing consent): ${conversionId}`,
+        'color: #f59e0b; font-weight: bold'
+      );
+    }
+    completeOnce();
+    window.dispatchEvent(
+      new CustomEvent('ksp:gads-conversion', {
+        detail: { status: 'deferred', send_to: conversionId, ts: Date.now() },
+      })
+    );
+    onMarketingConsent(() => {
+      // Replay once consent is granted. Dedup keys still protect against
+      // duplicates if the user had already navigated away and back.
+      trackGoogleAdsConversion(conversionLabel);
+    });
+    return;
+  }
+
   // 10s sliding-window dedup. The CTA submit fires this and so does Merci.tsx
   // on mount — within 10s the second call is a no-op; after 10s it re-fires.
   // Persistent mirror `conversion_fired_<id>` (localStorage) lets the dedup
@@ -219,6 +335,28 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
   // attempt was made for this session.
   const dedupKey = `__gads_conv_${conversionId}`;
   const mirrorKey = `conversion_fired_${conversionId}`;
+
+  // Session-once guard: once this exact conversion id has fired via any
+  // path (gtag direct here OR the GTM `merci_conversion` event) in this
+  // browser session, block all further fires. Prevents double counting
+  // when the visitor flows Contact form → /merci page, or when GTM
+  // triggers multiple events for the same hit.
+  if (hasSessionConversionFired(conversionId)) {
+    if (import.meta.env.DEV) {
+      console.log(
+        `%c[Analytics] Google Ads Conversion SKIPPED (session-once): ${conversionId}`,
+        'color: #f59e0b; font-weight: bold'
+      );
+    }
+    completeOnce();
+    window.dispatchEvent(
+      new CustomEvent('ksp:gads-conversion', {
+        detail: { status: 'skipped', send_to: conversionId, ts: Date.now() },
+      })
+    );
+    return;
+  }
+
   if (!shouldFireWithinWindow(dedupKey, mirrorKey)) {
     if (import.meta.env.DEV) {
       console.log(
@@ -226,6 +364,7 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
         'color: #f59e0b; font-weight: bold'
       );
     }
+    completeOnce();
     if (typeof window !== 'undefined') {
       window.dispatchEvent(
         new CustomEvent('ksp:gads-conversion', {
@@ -241,19 +380,34 @@ export function trackGoogleAdsConversion(conversionLabel?: string): void {
   // without GA scripts loaded). This guarantees the per-session contract
   // validated by the Playwright dedup suite.
   markFired(dedupKey, mirrorKey);
+  markSessionConversionFired(conversionId);
 
   // Bootstrap gtag/dataLayer if init hasn't run yet (e.g. direct landing on
   // /merci before App's init effect has executed). The actual gtag.js script
-  // loaded by initGA4() will pick up the queued call from dataLayer.
-  if (typeof window.gtag !== 'function') {
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function gtag(...args: unknown[]) {
-      window.dataLayer.push(args);
+  // loaded by the head snippet/initGA4() will pick up the queued call.
+  ensureGtagBootstrap();
+  // Match Google's recommended click-conversion helper signature so Ads Tag
+  // Assistant can recognize this as the configured Contact action during the
+  // conversion-action troubleshooter flow, not only as a generic queued event.
+  window.gtag_report_conversion = (url?: string) => {
+    const callback = () => {
+      completeOnce();
+      window.dispatchEvent(
+        new CustomEvent('ksp:gads-conversion-callback', {
+          detail: { send_to: conversionId, ts: Date.now() },
+        })
+      );
+      if (typeof url === 'string' && url) window.location.href = url;
     };
-  }
-  window.gtag('event', 'conversion', {
-    send_to: conversionId,
-  });
+    window.gtag('event', 'conversion', {
+      send_to: conversionId,
+      event_callback: callback,
+      event_timeout: 2000,
+      ...(url ? { value: 1.0, currency: 'EUR' } : {}),
+    });
+    return false;
+  };
+  window.gtag_report_conversion(options.transportUrl);
 
   if (import.meta.env.DEV) {
     console.log(

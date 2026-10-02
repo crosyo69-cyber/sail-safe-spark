@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { statsService } from "@/services/stats.service";
+import { settle } from "@/services/_shared/result";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ const ACTIVITY_LABELS: Record<string, string> = {
   wingfoil: "Wingfoil",
   pumpfoil: "Pumpfoil",
   foil_tracte: "Foil tracté",
+  stage_100_glisse: "Stage 100% Glisse",
 };
 
 const ACTIVITY_COLORS: Record<string, string> = {
@@ -38,6 +40,7 @@ const ACTIVITY_COLORS: Record<string, string> = {
   wingfoil: "hsl(25, 95%, 53%)",
   pumpfoil: "hsl(174, 77%, 50%)",
   foil_tracte: "hsl(222, 47%, 25%)",
+  stage_100_glisse: "hsl(20, 95%, 55%)",
 };
 
 const LEVEL_LABELS: Record<string, string> = {
@@ -69,14 +72,13 @@ interface SessionData {
   id: string;
   date: string;
   activity: string;
-  time_slot: string;
   max_participants: number;
   status: string;
 }
 
 interface ReservationData {
   id: string;
-  session_id: string;
+  daily_group_id: string | null;
   participants: number;
   status: string;
   skill_level: string;
@@ -92,11 +94,18 @@ const AdminSeasonStats = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    const [sessRes, resRes] = await Promise.all([
-      supabase.from("sessions").select("id, date, activity, time_slot, max_participants, status"),
-      supabase.from("reservations").select("id, session_id, participants, status, skill_level, first_name, last_name").in("status", ["confirmed", "pending"]),
+    const [groupRes, resRes] = await Promise.all([
+      statsService.seasonGroups<SessionData[]>().then(settle),
+      statsService.seasonReservations<ReservationData[]>().then(settle),
     ]);
-    if (sessRes.data) setSessions(sessRes.data);
+    const combined: SessionData[] = (groupRes.data || []).map((g: any) => ({
+      id: g.id,
+      date: g.date,
+      activity: g.activity,
+      max_participants: g.max_participants,
+      status: g.status,
+    }));
+    setSessions(combined);
     if (resRes.data) setReservations(resRes.data);
     setLoading(false);
   };
@@ -118,8 +127,8 @@ const AdminSeasonStats = () => {
   // Filter by year
   const yearSessions = useMemo(() => sessions.filter((s) => s.date.startsWith(selectedYear)), [sessions, selectedYear]);
   const yearReservations = useMemo(() => {
-    const sessionIds = new Set(yearSessions.map((s) => s.id));
-    return reservations.filter((r) => sessionIds.has(r.session_id));
+    const ids = new Set(yearSessions.map((s) => s.id));
+    return reservations.filter((r) => r.daily_group_id && ids.has(r.daily_group_id));
   }, [reservations, yearSessions]);
 
   // Season breakdown
@@ -143,7 +152,7 @@ const AdminSeasonStats = () => {
     });
 
     yearReservations.forEach((r) => {
-      const session = sessionMap[r.session_id];
+      const session = sessionMap[r.daily_group_id || ""];
       if (!session) return;
       const season = getSeason(session.date);
       result[season].participants += r.participants;
@@ -168,7 +177,7 @@ const AdminSeasonStats = () => {
     });
 
     yearReservations.forEach((r) => {
-      const session = sessionMap[r.session_id];
+      const session = sessionMap[r.daily_group_id || ""];
       if (!session) return;
       const month = new Date(session.date + "T12:00:00").getMonth();
       months[`${month}`].participants += r.participants;
@@ -186,7 +195,7 @@ const AdminSeasonStats = () => {
   const activityData = useMemo(() => {
     const map: Record<string, { haute: number; basse: number }> = {};
     yearReservations.forEach((r) => {
-      const session = sessionMap[r.session_id];
+      const session = sessionMap[r.daily_group_id || ""];
       if (!session) return;
       const act = session.activity;
       const season = getSeason(session.date);
@@ -260,7 +269,7 @@ const AdminSeasonStats = () => {
               .map(([act, count]) => {
                 const actParticipants = yearReservations
                   .filter((r) => {
-                    const s = sessionMap[r.session_id];
+                    const s = sessionMap[r.daily_group_id || ""];
                     return s && s.activity === act && getSeason(s.date) === season;
                   })
                   .reduce((a, r) => a + r.participants, 0);

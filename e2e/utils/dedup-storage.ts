@@ -26,6 +26,9 @@ export const DEDUP_STORAGE_PREFIXES = [
   '__meta_pixel_lead',
   'conversion_fired_',
   'ksp_conv_',
+  'conversion_once_',
+  '__gtm_merci_',
+  '__ksp_merci_gtag_count',
 ] as const;
 
 /**
@@ -56,6 +59,16 @@ export async function clearDedupStorage(page: Page): Promise<void> {
     };
     try { wipe(window.sessionStorage); } catch { /* ignore */ }
     try { wipe(window.localStorage); } catch { /* ignore */ }
+    // Seed marketing/analytics consent so conversion tests are not blocked
+    // by the new cookie-consent gate in src/lib/consent.ts. Production
+    // behavior remains gated until the visitor accepts cookies.
+    try {
+      window.localStorage.setItem('cookie-consent', 'true');
+      window.localStorage.setItem(
+        'cookie-preferences',
+        JSON.stringify({ necessary: true, analytics: true, marketing: true }),
+      );
+    } catch { /* ignore */ }
   }, DEDUP_STORAGE_PREFIXES as unknown as string[]);
 }
 

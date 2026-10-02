@@ -1,34 +1,24 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { opsService } from "@/services/ops.service";
+import { unwrap } from "@/services/_shared/result";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Users, CalendarDays, ChevronDown, ChevronUp, Mail, Phone, CreditCard, RefreshCw, Download, Send } from "lucide-react";
+import { Users, CalendarDays, ChevronDown, ChevronUp, Mail, Phone, CreditCard, RefreshCw, Download, Send, Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 
-type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte";
-type TimeSlot = "morning" | "early_afternoon" | "late_afternoon";
+type Activity = "kitesurf" | "wingfoil" | "pumpfoil" | "foil_tracte" | "stage_100_glisse";
 
 const ACTIVITY_LABELS: Record<Activity, string> = {
   kitesurf: "Kitesurf",
   wingfoil: "Wingfoil",
   pumpfoil: "Pumpfoil",
   foil_tracte: "Foil tracté",
-};
-
-const SLOT_LABELS: Record<TimeSlot, string> = {
-  morning: "Matin",
-  early_afternoon: "Début d'après-midi",
-  late_afternoon: "Fin d'après-midi",
-};
-
-const SLOT_ORDER: Record<string, number> = {
-  morning: 0,
-  early_afternoon: 1,
-  late_afternoon: 2,
+  stage_100_glisse: "Stage 100% Glisse",
 };
 
 const LEVEL_LABELS: Record<string, string> = {
@@ -61,31 +51,28 @@ interface Reservation {
   stripe_session_id: string | null;
 }
 
-interface SessionWithReservations {
+interface GroupRow {
   id: string;
   date: string;
-  time_slot: TimeSlot;
   activity: Activity;
   max_participants: number;
-  status: string;
-  notes: string | null;
-  weather_condition: string | null;
   reservations: Reservation[];
+  status: string;
 }
 
 const AdminOverview = () => {
-  const [sessions, setSessions] = useState<SessionWithReservations[]>([]);
+  const [sessions, setSessions] = useState<GroupRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedSessions, setExpandedSessions] = useState<Set<string>>(new Set());
   const [showPast, setShowPast] = useState(false);
   const [sendingSummary, setSendingSummary] = useState(false);
+  const [resubmittingSitemap, setResubmittingSitemap] = useState(false);
 
   const sendWeeklySummary = async () => {
     setSendingSummary(true);
     try {
-      const { data, error } = await supabase.functions.invoke("weekly-summary", { body: {} });
-      if (error) throw error;
-      toast({ title: "Résumé envoyé !", description: `${data.sessions} sessions incluses (${data.week})` });
+      const data = unwrap(await opsService.sendWeeklySummary());
+      toast({ title: "Résumé envoyé !", description: `${data?.sessions ?? 0} sessions incluses (${data?.week ?? ""})` });
     } catch (e: any) {
       toast({ title: "Erreur", description: e.message || "Impossible d'envoyer le résumé", variant: "destructive" });
     } finally {
@@ -93,32 +80,56 @@ const AdminOverview = () => {
     }
   };
 
+  const resubmitSitemap = async () => {
+    setResubmittingSitemap(true);
+    try {
+      const data = unwrap(await opsService.resubmitSitemap());
+      const submitted = data?.status?.contents?.[0]?.submitted;
+      toast({
+        title: "Sitemap relancé ✓",
+        description: submitted
+          ? `Google a reçu la demande (${submitted} URLs). Recrawl prioritaire en cours.`
+          : "Google a reçu la demande de recrawl.",
+      });
+    } catch (e: any) {
+      toast({
+        title: "Erreur",
+        description: e.message || "Impossible de relancer la soumission GSC",
+        variant: "destructive",
+      });
+    } finally {
+      setResubmittingSitemap(false);
+    }
+  };
+
   const fetchAll = async () => {
     setLoading(true);
 
-    const query = supabase
-      .from("sessions")
-      .select("*, reservations(id, first_name, last_name, email, phone, skill_level, participants, status, stripe_session_id)")
-      .order("date", { ascending: true })
-      .order("time_slot", { ascending: true });
+    const today = format(new Date(), "yyyy-MM-dd");
+    const resFields = "id, first_name, last_name, email, phone, skill_level, participants, status, stripe_session_id";
 
+    const groupsQ = supabase
+      .from("daily_groups")
+      .select(`id, date, activity, max_participants, status, reservations(${resFields})`)
+      .order("date", { ascending: true });
     if (!showPast) {
-      const today = format(new Date(), "yyyy-MM-dd");
-      query.gte("date", today);
+      groupsQ.gte("date", today);
     }
 
-    const { data, error } = await query.limit(200);
+    const groupsRes = await groupsQ.limit(200);
+    if (groupsRes.error) console.error("Error fetching daily_groups:", groupsRes.error);
 
-    if (error) {
-      console.error("Error fetching overview:", error);
-    } else {
-      const sorted = (data || []).sort((a: any, b: any) => {
-        const dateCmp = a.date.localeCompare(b.date);
-        if (dateCmp !== 0) return dateCmp;
-        return (SLOT_ORDER[a.time_slot] ?? 0) - (SLOT_ORDER[b.time_slot] ?? 0);
-      });
-      setSessions(sorted as SessionWithReservations[]);
-    }
+    const rows: GroupRow[] = ((groupsRes.data as any[]) || []).map((g) => ({
+      id: g.id,
+      date: g.date,
+      activity: g.activity as Activity,
+      max_participants: g.max_participants,
+      status: g.status,
+      reservations: g.reservations || [],
+    }));
+
+    rows.sort((a, b) => a.date.localeCompare(b.date));
+    setSessions(rows);
     setLoading(false);
   };
 
@@ -136,7 +147,7 @@ const AdminOverview = () => {
   };
 
   // Group sessions by date
-  const grouped = sessions.reduce<Record<string, SessionWithReservations[]>>((acc, s) => {
+  const grouped = sessions.reduce<Record<string, GroupRow[]>>((acc, s) => {
     if (!acc[s.date]) acc[s.date] = [];
     acc[s.date].push(s);
     return acc;
@@ -157,7 +168,7 @@ const AdminOverview = () => {
       s.reservations.forEach((r) => {
         rows.push([
           format(new Date(s.date), "dd/MM/yyyy"),
-          SLOT_LABELS[s.time_slot],
+          "—",
           ACTIVITY_LABELS[s.activity],
           r.first_name,
           r.last_name,
@@ -229,6 +240,17 @@ const AdminOverview = () => {
           <Send className="w-3 h-3" />
           {sendingSummary ? "Envoi…" : "Résumé hebdo"}
         </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={resubmitSitemap}
+          disabled={resubmittingSitemap}
+          className="gap-1"
+          title="Resoumettre sitemap.xml à Google Search Console"
+        >
+          <Globe className="w-3 h-3" />
+          {resubmittingSitemap ? "Envoi…" : "Relancer GSC maintenant"}
+        </Button>
       </div>
 
       {/* Sessions grouped by date */}
@@ -289,7 +311,7 @@ const AdminOverview = () => {
                           >
                             {ACTIVITY_LABELS[session.activity]}
                           </Badge>
-                          <span className="text-sm text-foreground">{SLOT_LABELS[session.time_slot]}</span>
+                          <span className="text-xs text-muted-foreground">horaire communiqué la veille</span>
                           {session.status === "closed" && (
                             <Badge variant="outline" className="text-xs bg-muted">Fermée</Badge>
                           )}

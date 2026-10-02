@@ -1,5 +1,40 @@
+import {
+  cleanupServiceWorkersAndCaches,
+  clearChunkReloadAttempt,
+  isChunkLoadError,
+  isLovablePreviewHost,
+  recoverFromChunkLoadError,
+} from "./chunk-recovery";
+
 export function registerServiceWorker() {
-  if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  // Auto-reload once when a lazy chunk fails to load (typically after a new deploy
+  // where the old hashed chunk no longer exists on the server).
+  if (typeof window !== 'undefined') {
+    // Clear the reload flag once the app has successfully loaded a fresh build
+    window.addEventListener('load', () => {
+      clearChunkReloadAttempt();
+    });
+
+    window.addEventListener('error', (event) => {
+      const target = event.target as HTMLLinkElement | HTMLScriptElement | null;
+      const resourceUrl = target && ('href' in target ? target.href : target.src);
+      const isBuildScript = Boolean(resourceUrl?.includes('/assets/') && resourceUrl.includes('.js'));
+
+      if (isBuildScript || isChunkLoadError(event?.error || event?.message)) {
+        void recoverFromChunkLoadError(event?.error || event?.message || resourceUrl);
+      }
+    }, true);
+
+    // Dynamic import failures often surface as unhandled promise rejections
+    window.addEventListener('unhandledrejection', (event) => {
+      if (isChunkLoadError(event?.reason)) {
+        event.preventDefault();
+        void recoverFromChunkLoadError(event?.reason);
+      }
+    });
+  }
+
+  if ('serviceWorker' in navigator && import.meta.env.PROD && !isLovablePreviewHost()) {
     window.addEventListener('load', async () => {
       try {
         const registration = await navigator.serviceWorker.register('/sw.js', {
@@ -23,6 +58,10 @@ export function registerServiceWorker() {
       } catch (error) {
         console.error('Service Worker registration failed:', error);
       }
+    });
+  } else if ('serviceWorker' in navigator && isLovablePreviewHost()) {
+    window.addEventListener('load', () => {
+      void cleanupServiceWorkersAndCaches();
     });
   }
 }

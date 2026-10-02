@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { trackPhoneClick } from "@/lib/analytics";
 import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Cookie, Rss } from "lucide-react";
 import { Link } from "react-router-dom";
 import { NewsletterForm } from "@/components/NewsletterForm";
@@ -221,7 +222,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
                 <a
                   href="tel:0672716905"
                   className="flex items-center gap-3 text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                >
+                 onClick={() => trackPhoneClick("footer")}>
                   <div className="w-10 h-10 bg-sunset/20 rounded-lg flex items-center justify-center">
                     <Phone className="w-5 h-5 text-sunset" />
                   </div>

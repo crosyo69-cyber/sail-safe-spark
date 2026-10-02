@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="fr" dir="ltr" prefix="og: https://ogp.me/ns#">
+<html lang="fr" dir="ltr" prefix="og: https://ogp.me/ns#" translate="no" class="notranslate">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="google" content="notranslate" />
     <title>Kitesurf Passion – École de kitesurf, wingfoil, pumpfoil & foil tracté à Hyères</title>
     <meta name="description" content="Découvrez Kitesurf Passion à Hyères (Almanarre). Cours et stages de kitesurf, wingfoil, pumpfoil et foil tracté avec bateau sécurité, petits groupes, radios et Duotone récent. Réservez votre session dès maintenant." />
     <meta name="author" content="KiteSurf Passion" />
@@ -13,6 +14,7 @@
     <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="bingbot" content="index, follow" />
     <meta name="format-detection" content="telephone=yes" />
+    <meta name="google-site-verification" content="hOFr1VgVN3wVjnjW_DHNutijF2koyxyv60Px5rv5bbA" />
     
     <!-- Geographic targeting -->
     <meta name="geo.region" content="FR-83" />
@@ -20,10 +22,10 @@
     <meta name="geo.position" content="43.0779;6.1508" />
     <meta name="ICBM" content="43.0779, 6.1508" />
     
-    <!-- Canonical & Language -->
-    <link rel="canonical" href="https://www.kitesurfpassion.fr/" />
-    <link rel="alternate" hreflang="fr" href="https://www.kitesurfpassion.fr/" />
-    <link rel="alternate" hreflang="x-default" href="https://www.kitesurfpassion.fr/" />
+    <!-- Canonical & hreflang are emitted per route via react-helmet-async.
+         Do NOT add static <link rel="canonical"> or <link rel="alternate" hreflang> here:
+         <link> tags don't dedupe by rel, so any static value would create
+         duplicate canonicals on every inner route (invalid SEO). -->
     
     <!-- Favicons & App Icons -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -104,6 +106,60 @@
       })();
     </script>
     <!-- End Google Tag Manager -->
+
+    <!-- Google tag (gtag.js) — canonical Ads tag for Tag Assistant -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      // Google Consent Mode v2 — default to denied until the visitor accepts.
+      // CookieConsent.tsx + src/lib/consent-mode.ts will call gtag('consent','update', ...)
+      // when the user grants analytics/marketing consent.
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500
+      });
+      gtag('js', new Date());
+      gtag('config', 'AW-974052357');
+    </script>
+    <script>
+      /**
+       * Consent-gated loader for gtag.js.
+       * Consent Mode v2 alone still emits cookieless pings to
+       * pagead2.googlesyndication.com / googletagmanager.com. To guarantee
+       * ZERO Google network traffic before the visitor opts in, the tag
+       * script itself is only injected once analytics OR marketing consent
+       * is stored. Queued gtag() calls stay in dataLayer and replay on load.
+       */
+      (function () {
+        var loaded = false;
+        function hasConsent() {
+          try {
+            var raw = localStorage.getItem('cookie-preferences');
+            if (!raw) return false;
+            var p = JSON.parse(raw);
+            return p && (p.analytics === true || p.marketing === true);
+          } catch (e) { return false; }
+        }
+        function loadGtag() {
+          if (loaded || !hasConsent()) return;
+          loaded = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=AW-974052357';
+          document.head.appendChild(s);
+        }
+        window.__kspLoadGtag = loadGtag;
+        window.addEventListener('ksp:consent-updated', loadGtag);
+        window.addEventListener('storage', function (e) {
+          if (e.key === 'cookie-preferences') loadGtag();
+        });
+        loadGtag();
+      })();
+    </script>
+    <!-- End Google tag -->
     
     <!-- Structured Data - WebSite with SearchAction -->
     <script type="application/ld+json">

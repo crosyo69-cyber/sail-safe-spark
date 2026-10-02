@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bell, Wind, Mail, Check } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { useWeather } from "@/hooks/services/useWeather";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -29,60 +29,34 @@ export const WeatherAlertSubscription = () => {
     formLoadTime.current = Date.now();
   }, []);
 
+  const { useSubscribe } = useWeather();
+  const subscribeMutation = useSubscribe();
+
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Bot detection: honeypot field should be empty
-    if (honeypot) {
-      // Silently reject - don't reveal bot detection
-      setIsSubscribed(true);
-      return;
-    }
-    
-    // Bot detection: form submitted too quickly (less than 2 seconds)
-    const timeElapsed = Date.now() - formLoadTime.current;
-    if (timeElapsed < 2000) {
-      // Silently reject - don't reveal timing detection
-      setIsSubscribed(true);
-      return;
-    }
-    
-    // Validate email with zod
+
+    // Validate email with zod (la validation serveur reste la référence)
     const emailValidation = emailSchema.safeParse(email);
     if (!emailValidation.success) {
       toast.error(emailValidation.error.errors[0]?.message || "Adresse email invalide");
       return;
     }
-    
-    const validatedEmail = emailValidation.data;
 
     setIsLoading(true);
 
     try {
-      // Use INSERT only - upsert requires UPDATE permission which RLS blocks
-      const { error } = await supabase
-        .from("weather_alert_subscriptions")
-        .insert({
-          email: validatedEmail,
-          min_wind: windRange[0],
-          max_wind: windRange[1],
-          enabled: true,
-        });
-
-      // Handle duplicate email case gracefully
-      if (error) {
-        if (error.code === "23505") {
-          // Email already subscribed - show success message anyway
-          setIsSubscribed(true);
-          toast.success("Vous êtes déjà abonné aux alertes météo !");
-          return;
-        }
-        throw error;
-      }
-
+      // F-22-01 : Edge Function sécurisée (rate guard + double opt-in).
+      // F-22-06 : la réponse est uniforme, l'état de l'adresse n'est jamais révélé.
+      await subscribeMutation.mutateAsync({
+        email: emailValidation.data,
+        min_wind: windRange[0],
+        max_wind: windRange[1],
+        honeypot,
+        formTimestamp: formLoadTime.current,
+      });
       setIsSubscribed(true);
-      toast.success("Vous êtes maintenant abonné aux alertes météo !");
-    } catch (error: unknown) {
+      toast.success("Si cette adresse est éligible, vous recevrez un e-mail de confirmation.");
+    } catch {
       console.error("Subscription error");
       toast.error("Erreur lors de l'inscription. Veuillez réessayer.");
     } finally {
@@ -99,9 +73,10 @@ export const WeatherAlertSubscription = () => {
               <Check className="h-8 w-8 text-primary" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-foreground">Abonnement confirmé !</h3>
+              <h3 className="text-xl font-semibold text-foreground">Vérifiez votre boîte mail</h3>
               <p className="text-muted-foreground mt-2">
-                Vous recevrez un email quand le vent sera entre {windRange[0]} et {windRange[1]} nœuds.
+                Si cette adresse est éligible, un e-mail de confirmation vous a été envoyé. Vos alertes
+                ({windRange[0]} à {windRange[1]} nœuds) seront activées après validation du lien.
               </p>
             </div>
             <Button 

@@ -1,15 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CreditCard, Ship, Award, Settings, Repeat, MapPin, Minus, Plus, CalendarIcon } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useDepositCheckout } from "@/hooks/client/useDepositCheckout";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import { parisStartOfTomorrow, toParisDateOnly } from "@/lib/booking-dates";
+
+/**
+ * F-27-01 — cohérence UX avec la capacité serveur d'un daily_group
+ * (public.default_max_participants). La validation d'intégrité reste
+ * exclusivement serveur (`create-checkout`) : ceci n'est qu'un garde-fou UX
+ * pour ne pas proposer une quantité que le paiement refusera.
+ */
+const MAX_PARTICIPANTS_BY_ACTIVITY: Record<string, number> = {
+  "cours-particulier": 4,
+  "stage-100-glisse": 4,
+  "cours-carte": 4,
+  "stage-wingfoil": 3,
+  "location-materiel": 4,
+  "foil-tracte": 4,
+  "deposes-mer": 4,
+};
+
+const maxParticipantsFor = (activityId: string) =>
+  MAX_PARTICIPANTS_BY_ACTIVITY[activityId] ?? 4;
 
 const activities = [
   {
@@ -23,18 +43,21 @@ const activities = [
     name: "Stage 100% Glisse",
     icon: Ship,
     description: "5 jours consécutifs vers l'autonomie",
+    defaultSessions: 5,
   },
   {
     id: "cours-carte",
     name: "Cours à la Carte",
     icon: Settings,
     description: "Flexibilité totale selon vos disponibilités",
+    packOptions: [1, 3, 5, 10],
   },
   {
     id: "stage-wingfoil",
     name: "Cours Wingfoil",
     icon: Repeat,
     description: "Découvrez le vol sur l'eau en wingfoil",
+    packOptions: [1, 3, 5],
   },
   {
     id: "location-materiel",
@@ -58,23 +81,79 @@ const activities = [
 
 const DepositPaymentSection = () => {
   const { toast } = useToast();
-  const [loadingId, setLoadingId] = useState<string | null>(null);
+  const { loadingId, start } = useDepositCheckout();
   const [participants, setParticipants] = useState<Record<string, number>>({});
   const [selectedDates, setSelectedDates] = useState<Record<string, Date | undefined>>({});
   const [phones, setPhones] = useState<Record<string, string>>({});
   const [names, setNames] = useState<Record<string, string>>({});
+  const [packSessions, setPackSessions] = useState<Record<string, number>>({});
+
+  // Resume link from admin/customer email after a stuck Stripe payment:
+  // /contact?activity=kitesurf&date=YYYY-MM-DD&participants=2&name=…&email=…&ref=…#reservation
+  useEffect(() => {
+    const qp = new URLSearchParams(window.location.search);
+    const activityParam = qp.get("activity");
+    if (!activityParam) return;
+    // Accept both the card id (new links, unambiguous) and the legacy DB enum
+    // (older resume emails still in inboxes). The card-id form is preferred
+    // because the DB enum is many-to-one and would otherwise land rental /
+    // sea-drop customers on the Cours Particulier card.
+    const VALID_IDS = new Set([
+      "cours-particulier",
+      "stage-100-glisse",
+      "cours-carte",
+      "stage-wingfoil",
+      "location-materiel",
+      "foil-tracte",
+      "deposes-mer",
+    ]);
+    const ENUM_TO_ID: Record<string, string> = {
+      kitesurf: "cours-particulier",
+      wingfoil: "stage-wingfoil",
+      stage_100_glisse: "stage-100-glisse",
+      foil_tracte: "foil-tracte",
+      pumpfoil: "foil-tracte",
+    };
+    const id = VALID_IDS.has(activityParam) ? activityParam : ENUM_TO_ID[activityParam];
+    if (!id) return;
+    const name = qp.get("name") || "";
+    const dateStr = qp.get("date");
+    const p = parseInt(qp.get("participants") || "", 10);
+    setNames((prev) => (prev[id] ? prev : { ...prev, [id]: name }));
+    if (Number.isFinite(p) && p >= 1) {
+      setParticipants((prev) => ({ ...prev, [id]: Math.min(6, Math.max(1, p)) }));
+    }
+    if (dateStr) {
+      const [y, m, d] = dateStr.split("-").map((n) => parseInt(n, 10));
+      if (y && m && d) {
+        const dt = new Date(y, m - 1, d);
+        if (!isNaN(dt.getTime())) {
+          setSelectedDates((prev) => ({ ...prev, [id]: dt }));
+        }
+      }
+    }
+    // Scroll to the matching activity card once mounted
+    requestAnimationFrame(() => {
+      const el = document.getElementById(`deposit-${id}`);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }, []);
 
   const getCount = (id: string) => participants[id] || 1;
 
   const updateCount = (id: string, delta: number) => {
     setParticipants((prev) => {
       const current = prev[id] || 1;
-      const next = Math.max(1, Math.min(6, current + delta));
+      const next = Math.max(1, Math.min(maxParticipantsFor(id), current + delta));
       return { ...prev, [id]: next };
     });
   };
 
-  const handleCheckout = async (activityName: string, activityId: string) => {
+  const handleCheckout = async (
+    activityName: string,
+    activityId: string,
+    totalSessions?: number,
+  ) => {
     const date = selectedDates[activityId];
     const phone = phones[activityId]?.trim();
     const name = names[activityId]?.trim();
@@ -92,45 +171,33 @@ const DepositPaymentSection = () => {
       return;
     }
 
-    setLoadingId(activityId);
     const count = getCount(activityId);
+    // RÈGLE ABSOLUE Safari/iOS : ouverture SYNCHRONE, avant tout await /
+    // mutation React Query / appel réseau.
     const stripeWindow = window.open("about:blank", "_blank");
-    try {
-      const { data, error } = await supabase.functions.invoke("create-checkout", {
-        body: {
-          activityName,
-          participants: count,
-          preferredDate: format(date, "yyyy-MM-dd"),
-          phone,
-          customerName: name,
-        },
-      });
-
-      if (error) throw error;
-      if (data?.url) {
-        if (stripeWindow && !stripeWindow.closed) {
-          stripeWindow.location.href = data.url;
-        } else {
-          window.location.href = data.url;
-        }
-      } else {
-        stripeWindow?.close();
-        throw new Error("Aucune URL de paiement reçue");
-      }
-    } catch (err: any) {
-      console.error("Checkout error:", err);
-      toast({
-        title: "Erreur",
-        description: "Impossible de lancer le paiement. Veuillez réessayer ou nous appeler.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoadingId(null);
-    }
+    await start(
+      activityId,
+      {
+        activityName,
+        participants: count,
+        preferredDate: toParisDateOnly(date),
+        phone,
+        customerName: name,
+        totalSessions: totalSessions ?? count,
+      },
+      stripeWindow,
+      () =>
+        toast({
+          title: "Erreur",
+          description: "Impossible de lancer le paiement. Veuillez réessayer ou nous appeler.",
+          variant: "destructive",
+        }),
+    );
   };
 
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  // "Demain" calculé en Europe/Paris (timezone serveur), normalisé à minuit
+  // local pour aligner avec les dates émises par <Calendar />.
+  const tomorrow = parisStartOfTomorrow();
 
   return (
     <section className="py-20 bg-muted/30">
@@ -145,18 +212,27 @@ const DepositPaymentSection = () => {
               Réservez en Ligne
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Versez un acompte de 50€ par personne pour confirmer votre réservation. Le solde sera à régler le jour de votre cours.
+              Versez un acompte de 50€ par séance réservée pour confirmer votre réservation. Le solde sera à régler le jour de votre cours.
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {activities.map((activity) => {
               const count = getCount(activity.id);
-              const total = count * 50;
               const date = selectedDates[activity.id];
+              const packOptions = (activity as { packOptions?: number[] }).packOptions;
+              const defaultSessions = (activity as { defaultSessions?: number }).defaultSessions;
+              const selectedPack =
+                packSessions[activity.id] ?? packOptions?.[0] ?? defaultSessions ?? count;
+              // Acompte = 50 € × nombre de séances (packs, stages ou activités
+              // par participant où sessions == participants).
+              const sessionsForDeposit =
+                packOptions ? selectedPack : defaultSessions ?? count;
+              const total = sessionsForDeposit * 50;
               return (
                 <div
                   key={activity.id}
+                  id={`deposit-${activity.id}`}
                   className="bg-card border border-border rounded-2xl p-6 flex flex-col hover:border-primary/50 transition-colors"
                 >
                   <div className="w-12 h-12 mb-4 bg-gradient-to-br from-primary/20 to-turquoise/20 rounded-xl flex items-center justify-center">
@@ -166,6 +242,36 @@ const DepositPaymentSection = () => {
                   <p className="text-muted-foreground text-sm mb-4 flex-1">
                     {activity.description}
                   </p>
+                  {packOptions && (
+                    <div className="mb-3">
+                      <Label className="text-xs text-muted-foreground">
+                        Pack — nombre de sessions
+                      </Label>
+                      <div className="grid grid-cols-4 gap-1.5 mt-1">
+                        {packOptions.map((n) => (
+                          <button
+                            key={n}
+                            type="button"
+                            onClick={() =>
+                              setPackSessions((prev) => ({ ...prev, [activity.id]: n }))
+                            }
+                            className={cn(
+                              "h-9 rounded-lg border text-sm font-semibold transition-colors min-w-[44px]",
+                              selectedPack === n
+                                ? "bg-primary text-primary-foreground border-primary"
+                                : "bg-background border-border text-foreground hover:border-primary/50",
+                            )}
+                            aria-pressed={selectedPack === n}
+                          >
+                            {n}
+                          </button>
+                        ))}
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-1 leading-snug">
+                        Réservez ensuite vos journées librement avec votre code KP, selon la météo.
+                      </p>
+                    </div>
+                  )}
 
                   {/* Name field */}
                   <div className="mb-3">
@@ -237,7 +343,7 @@ const DepositPaymentSection = () => {
                       <button
                         type="button"
                         onClick={() => updateCount(activity.id, 1)}
-                        disabled={count >= 6}
+                        disabled={count >= maxParticipantsFor(activity.id)}
                         className="w-7 h-7 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:bg-muted disabled:opacity-30 transition-colors"
                       >
                         <Plus className="w-3 h-3" />
@@ -247,17 +353,30 @@ const DepositPaymentSection = () => {
 
                   <div className="bg-muted/50 rounded-lg p-3 mb-4 text-center">
                     <p className="text-sm font-semibold text-foreground">
-                      Acompte : {total}€ {count > 1 && <span className="font-normal text-muted-foreground">({count} × 50€)</span>}
+                      Acompte : {total}€{" "}
+                      {sessionsForDeposit > 1 && (
+                        <span className="font-normal text-muted-foreground">
+                          ({sessionsForDeposit} × 50€)
+                        </span>
+                      )}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      (solde à régler le jour J)
+                      {packOptions
+                        ? `Pack ${selectedPack} session${selectedPack > 1 ? "s" : ""} — solde à régler sur place`
+                        : "(solde à régler le jour J)"}
                     </p>
                   </div>
                   <Button
                     variant="sunset"
                     className="w-full"
                     disabled={loadingId === activity.id}
-                    onClick={() => handleCheckout(activity.name, activity.id)}
+                    onClick={() =>
+                      handleCheckout(
+                        activity.name,
+                        activity.id,
+                        packOptions ? selectedPack : defaultSessions,
+                      )
+                    }
                   >
                     {loadingId === activity.id ? "Redirection…" : "Payer l'acompte"}
                   </Button>

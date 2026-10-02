@@ -1,5 +1,8 @@
-import { test, expect, type Page } from '@playwright/test';
-import { SUBMIT_IDLE_LABEL_RE, SUBMIT_LOADING_LABEL_RE, SUBMIT_LOADING_LABEL, SUBMIT_BUTTON_TESTID, getSubmitButton } from './utils/submit-button';
+import { type Page } from '@playwright/test';
+import { test, expect } from './fixtures';
+import { getSubmitButton } from './utils/submit-button';
+import { installGtagRecorder, readGtagCalls } from './utils/conversion-readers';
+import { clearDedupStorage } from './utils/dedup-storage';
 
 /**
  * E2E: verify that after a successful CTA submission + redirect to /merci,
@@ -16,42 +19,14 @@ const ADS_ID = 'AW-974052357';
 
 type GtagCall = [string, string, Record<string, unknown>?];
 
+/**
+ * Root cause of the historical 3x `form_submit` count: the old inline
+ * recorder re-wrapped `window.gtag` on a setTimeout ladder (0/100/500/1500ms),
+ * so a SINGLE real gtag call was recorded once per wrapper layer. The app was
+ * always firing exactly once. We now use the shared idempotent recorder.
+ */
 async function installInstrumentation(page: Page) {
-  await page.addInitScript(() => {
-    const STASH_KEY = '__gtagCallsStash';
-    const prior = (() => {
-      try {
-        const raw = sessionStorage.getItem(STASH_KEY);
-        return raw ? (JSON.parse(raw) as GtagCall[]) : [];
-      } catch { return []; }
-    })();
-    const calls: GtagCall[] = prior;
-    (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls = calls;
-    (window as unknown as { dataLayer: unknown[] }).dataLayer = [];
-
-    const persist = () => {
-      try { sessionStorage.setItem(STASH_KEY, JSON.stringify(calls)); } catch { /* ignore */ }
-    };
-
-    const recorder = (...args: unknown[]) => {
-      calls.push(args as GtagCall);
-      persist();
-    };
-    (window as unknown as { gtag: typeof recorder }).gtag = recorder;
-
-    const reinstall = () => {
-      const original = (window as unknown as { gtag: (...a: unknown[]) => void }).gtag;
-      (window as unknown as { gtag: typeof recorder }).gtag = (...args: unknown[]) => {
-        calls.push(args as GtagCall);
-        persist();
-        try { original?.(...args); } catch { /* ignore */ }
-      };
-    };
-    setTimeout(reinstall, 0);
-    setTimeout(reinstall, 100);
-    setTimeout(reinstall, 500);
-    setTimeout(reinstall, 1500);
-  });
+  await installGtagRecorder(page);
 
   await page.route('**/functions/v1/send-contact-email', async (route) => {
     await route.fulfill({
@@ -67,6 +42,7 @@ test.describe('CTA → /merci → reload — no double conversion', () => {
     await installInstrumentation(page);
 
     await page.goto('/');
+    await clearDedupStorage(page);
     const submitButton = getSubmitButton(page);
     await submitButton.scrollIntoViewIfNeeded();
     await expect(submitButton).toBeVisible();
@@ -90,9 +66,7 @@ test.describe('CTA → /merci → reload — no double conversion', () => {
     await expect(page.getByRole('heading', { name: /merci pour votre demande/i })).toBeVisible();
     await page.waitForTimeout(1_000);
 
-    const calls = await page.evaluate(
-      () => (window as unknown as { __gtagCalls: GtagCall[] }).__gtagCalls
-    );
+    const calls = (await readGtagCalls(page)) as GtagCall[];
 
     const formSubmits = calls.filter(
       (c) => c[0] === 'event' && c[1] === 'form_submit'

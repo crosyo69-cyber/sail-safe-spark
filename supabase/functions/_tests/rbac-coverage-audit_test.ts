@@ -1,0 +1,113 @@
+/**
+ * Audit statique : garantit qu'aucun nouvel endpoint sensible n'est ajouté
+ * sans contrôle d'autorisation côté serveur.
+ *
+ * Stratégie : pour chaque function index.ts, on classe l'endpoint comme
+ *   - "public"  → listé dans PUBLIC_ENDPOINTS (formulaires, webhooks signés…)
+ *   - "sensible" → tout le reste
+ * Un endpoint sensible DOIT contenir au moins un marqueur d'auth reconnu :
+ *   - `has_role(`               (RPC admin)
+ *   - `SUPABASE_SERVICE_ROLE_KEY` + comparaison de token (cron service-role)
+ *   - `auth.getClaims(`         (JWT vérifié)
+ *   - `auth.getUser(`           (JWT vérifié)
+ *   - `STRIPE_WEBHOOK_SECRET`   (signature Stripe vérifiée)
+ *   - `verifyAuthHook` / `Standard-Webhook` (hooks signés)
+ *
+ * Si un nouvel endpoint sensible est ajouté sans aucun de ces marqueurs,
+ * ce test échoue → on ne peut plus déployer sans contrôle RBAC.
+ */
+import { assert } from "https://deno.land/std@0.224.0/assert/mod.ts";
+import { walk } from "https://deno.land/std@0.224.0/fs/walk.ts";
+import { dirname, fromFileUrl, join, relative } from "https://deno.land/std@0.224.0/path/mod.ts";
+
+const FUNCTIONS_ROOT = join(dirname(dirname(fromFileUrl(import.meta.url))));
+
+/** Endpoints publics par conception. Documenter la raison à chaque ajout. */
+const PUBLIC_ENDPOINTS = new Set<string>([
+  "chatbot",                 // chat public anti-bot + rate-limit applicatif
+  "send-contact-email",      // formulaire contact (honeypot + délai côté client)
+  "last-minute-subscribe",   // inscription alerte publique (double opt-in)
+  "unsubscribe-weather",     // désabonnement par token uuid
+  "weather-subscribe",       // inscription météo publique (honeypot + rate guard + double opt-in)
+  "create-checkout",         // checkout Stripe public (validation montant côté serveur)
+  "stripe-webhook",          // signature Stripe (STRIPE_WEBHOOK_SECRET)
+  "auth-email-hook",         // hook signé Standard-Webhook (auth provider)
+]);
+
+const AUTH_MARKERS = [
+  "has_role(",
+  "auth.getClaims(",
+  "auth.getUser(",
+  "SUPABASE_SERVICE_ROLE_KEY",
+  "STRIPE_WEBHOOK_SECRET",
+  "Standard-Webhook",
+  "verifyAuthHook",
+  "isServiceRoleRequest(",
+  "isServiceRoleToken(",
+  "auth.oauth.issuer",
+];
+
+// Gateway JWT verification is itself the caller proof for functions explicitly
+// configured with verify_jwt=true. Keep this audit independent from function
+// implementation details without weakening the deployment configuration.
+const GATEWAY_VERIFIED_FUNCTIONS = new Set([
+  "dispatch-admin-alerts",
+  "email-queue-health-check",
+  "process-email-queue",
+  "retry-dlq-email",
+  "last-minute-notify",
+  "admin-assistant",
+]);
+
+function hasAuthMarker(src: string): string | null {
+  for (const marker of AUTH_MARKERS) {
+    if (src.includes(marker)) return marker;
+  }
+  return null;
+}
+
+function hasTokenComparison(src: string): boolean {
+  return /token\s*===\s*serviceKey/.test(src) ||
+    /token\s*!==\s*serviceKey/.test(src) ||
+    /isServiceRoleRequest\(/.test(src) ||
+    /isServiceRoleToken\(/.test(src) ||
+    /has_role\(/.test(src) ||
+    /auth\.getClaims\(/.test(src) ||
+    /auth\.getUser\(/.test(src) ||
+    /STRIPE_WEBHOOK_SECRET/.test(src) ||
+    /Standard-Webhook/.test(src) ||
+    /auth\.oauth\.issuer/.test(src);
+}
+
+Deno.test("RBAC audit — chaque endpoint sensible vérifie l'appelant", async () => {
+  const violations: string[] = [];
+
+  for await (const entry of walk(FUNCTIONS_ROOT, {
+    includeDirs: false,
+    match: [/index\.ts$/],
+    skip: [/_tests/, /_shared/, /node_modules/],
+  })) {
+    const rel = relative(FUNCTIONS_ROOT, entry.path);
+    const fnName = rel.split("/")[0];
+    if (PUBLIC_ENDPOINTS.has(fnName)) continue;
+
+    const src = await Deno.readTextFile(entry.path);
+    // Ignore les fichiers qui ne servent pas un endpoint HTTP
+    if (!src.includes("Deno.serve(")) continue;
+
+    const marker = hasAuthMarker(src);
+    if (!marker && !GATEWAY_VERIFIED_FUNCTIONS.has(fnName)) {
+      violations.push(`${fnName}: aucun marqueur d'auth trouvé (attendu un de ${AUTH_MARKERS.join(", ")})`);
+      continue;
+    }
+    if (!GATEWAY_VERIFIED_FUNCTIONS.has(fnName) && !hasTokenComparison(src)) {
+      violations.push(`${fnName}: SUPABASE_SERVICE_ROLE_KEY présent mais aucune comparaison de bearer (token === serviceKey)`);
+    }
+  }
+
+  assert(
+    violations.length === 0,
+    `Endpoint(s) sensibles sans contrôle d'autorisation :\n  - ${violations.join("\n  - ")}\n` +
+    `Ajoute un check has_role/getClaims/service-role, ou liste-le explicitement dans PUBLIC_ENDPOINTS avec une justification.`,
+  );
+});

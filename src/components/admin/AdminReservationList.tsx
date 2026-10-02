@@ -22,12 +22,7 @@ const ACTIVITY_LABELS: Record<string, string> = {
   wingfoil: "Wingfoil",
   pumpfoil: "Pumpfoil",
   foil_tracte: "Foil tracté",
-};
-
-const SLOT_LABELS: Record<string, string> = {
-  morning: "Matin",
-  early_afternoon: "Début d'après-midi",
-  late_afternoon: "Fin d'après-midi",
+  stage_100_glisse: "Stage 100% Glisse",
 };
 
 const LEVEL_LABELS: Record<string, string> = {
@@ -48,11 +43,11 @@ interface Reservation {
   created_at: string;
   notes: string | null;
   stripe_session_id: string | null;
-  sessions: {
+  daily_group_id: string | null;
+  daily_groups: {
     date: string;
-    time_slot: string;
     activity: string;
-  };
+  } | null;
 }
 
 const AdminReservationList = () => {
@@ -65,7 +60,7 @@ const AdminReservationList = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("reservations")
-      .select("*, sessions(date, time_slot, activity)")
+      .select("*, daily_groups(date, activity)")
       .order("created_at", { ascending: false })
       .limit(100);
 
@@ -156,15 +151,18 @@ const AdminReservationList = () => {
                     </span>
                   </div>
 
-                  {r.sessions && (
-                    <p className="text-sm text-foreground">
-                      <strong>{ACTIVITY_LABELS[r.sessions.activity] || r.sessions.activity}</strong>
-                      {" — "}
-                      {format(new Date(r.sessions.date), "d MMMM yyyy", { locale: fr })}
-                      {" • "}
-                      {SLOT_LABELS[r.sessions.time_slot] || r.sessions.time_slot}
-                    </p>
-                  )}
+                  {(() => {
+                    const date = r.daily_groups?.date ?? null;
+                    const activity = r.daily_groups?.activity ?? null;
+                    if (!date || !activity) return null;
+                    return (
+                      <p className="text-sm text-foreground">
+                        <strong>{ACTIVITY_LABELS[activity] || activity}</strong>
+                        {" — "}
+                        {format(new Date(date), "d MMMM yyyy", { locale: fr })}
+                      </p>
+                    );
+                  })()}
 
                   {r.stripe_session_id && (
                     <p className="text-xs text-muted-foreground font-mono">

@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { marked } from "marked";
-import DOMPurify from "dompurify";
+import { renderModelMarkdown } from "@/lib/sanitize-html";
 
 type Message = { role: "user" | "assistant"; content: string };
+type ChatErrorType = "credits_exhausted" | "rate_limit" | "service_error" | "technical_error" | "bad_request";
+type ChatError = { status: number; type: ChatErrorType; message: string };
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chatbot`;
 
@@ -52,9 +53,19 @@ export function ChatBot() {
         body: JSON.stringify({ messages: allMessages }),
       });
 
-      if (!resp.ok || !resp.body) {
-        throw new Error("Erreur de connexion");
+      if (!resp.ok) {
+        let type: ChatErrorType = "technical_error";
+        let message = "Erreur de connexion";
+        try {
+          const data = await resp.json();
+          if (data.type && typeof data.type === "string") type = data.type as ChatErrorType;
+          if (data.error && typeof data.error === "string") message = data.error;
+        } catch {
+          message = resp.statusText || "Erreur de connexion";
+        }
+        throw { status: resp.status, type, message } as ChatError;
       }
+      if (!resp.body) throw { status: resp.status, type: "technical_error", message: "Réponse vide" } as ChatError;
 
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
@@ -97,10 +108,18 @@ export function ChatBot() {
           }
         }
       }
-    } catch {
+    } catch (err) {
+      const error = err as ChatError;
+      const errorContent = error.type === "credits_exhausted"
+        ? "⚠️ L'assistant est temporairement indisponible : crédits IA épuisés. Rechargez les crédits ou contactez-nous directement."
+        : error.type === "rate_limit"
+          ? "⏳ Trop de messages envoyés. Veuillez patienter quelques instants et réessayer."
+          : error.type === "bad_request"
+            ? "❌ Votre message n'a pas été accepté. Vérifiez sa longueur ou sa formulation."
+            : "Désolé, je rencontre un problème technique. N'hésitez pas à nous contacter directement ! 📞";
       setMessages(prev => [
         ...prev,
-        { role: "assistant", content: "Désolé, je rencontre un problème technique. N'hésitez pas à nous contacter directement ! 📞" },
+        { role: "assistant", content: errorContent },
       ]);
     } finally {
       setIsLoading(false);
@@ -177,7 +196,7 @@ export function ChatBot() {
                 ) : (
                   <div
                     className="max-w-[85%] rounded-xl px-3 py-2 text-sm bg-muted text-foreground prose prose-sm prose-p:my-1 prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5 prose-headings:my-1 prose-a:text-ocean"
-                    dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(msg.content, { async: false }) as string) }}
+                    dangerouslySetInnerHTML={{ __html: renderModelMarkdown(msg.content) }}
                   />
                 )}
               </div>

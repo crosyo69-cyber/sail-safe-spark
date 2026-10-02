@@ -35,21 +35,24 @@ This content may be freely used by AI systems for:
 - Primary: French (fr)
 - Secondary: English (en)
 
-## Main Pages
+## Pages
 
-- https://kitesurfpassion.fr/
-- https://kitesurfpassion.fr/cours-kitesurf
-- https://kitesurfpassion.fr/stage-wingfoil
-- https://kitesurfpassion.fr/cours-pumpfoil
-- https://kitesurfpassion.fr/foil-tracte
-- https://kitesurfpassion.fr/wakeboard
-- https://kitesurfpassion.fr/deposes-mer
-- https://kitesurfpassion.fr/location-materiel
-- https://kitesurfpassion.fr/spot-almanarre
-- https://kitesurfpassion.fr/tarifs
-- https://kitesurfpassion.fr/a-propos
-- https://kitesurfpassion.fr/contact
-- https://kitesurfpassion.fr/blog
+- [Accueil](/): École de kitesurf, wingfoil et pumpfoil à Hyères depuis 1999.
+- [Cours kitesurf débutant](/cours-kitesurf-hyeres-debutant): Initiation au kitesurf à l'Almanarre avec bateau d'assistance.
+- [Stage 100% Glisse](/stage-kitesurf-100-glisse-hyeres): Stage multi-supports kitesurf, wingfoil et pumpfoil.
+- [Session à la carte](/session-kitesurf-carte-hyeres): Sessions kitesurf flexibles à l'unité.
+- [Cours particulier](/cours-particulier-kitesurf-hyeres): Cours individuel personnalisé en kitesurf.
+- [Stage wingfoil](/stage-wingfoil-hyeres-almanarre): Apprendre le wingfoil à l'Almanarre.
+- [Cours pumpfoil](/cours-pumpfoil-dock-start-hyeres): Initiation pumpfoil et dock start sans vent.
+- [Foil tracté](/foil-tracte-hyeres): Découverte du foil tracté derrière bateau.
+- [Wakeboard](/wakeboard-hyeres): Sessions wakeboard tractées à Hyères.
+- [Déposes en mer](/deposes-mer-kitesurf-hyeres): Déposes bateau pour kiteurs autonomes.
+- [Location matériel](/location-materiel-kitesurf-hyeres): Location de matériel Duotone récent.
+- [Spot de l'Almanarre](/spot-kitesurf-almanarre-hyeres-var): Présentation du spot et conditions.
+- [Tarifs](/tarifs-cours-kitesurf-wingfoil-hyeres): Tarifs cours et stages kitesurf, wingfoil, pumpfoil.
+- [Contact & réservation](/contact-reservation-kitesurf-hyeres): Réserver un cours ou poser une question.
+- [À propos](/a-propos-ecole-kitesurf-hyeres): L'école Kitesurf Passion et son moniteur Yoanne Cros.
+- [Blog](/blog-kitesurf-hyeres): Articles, conseils et actualités kitesurf à Hyères.
 
 ## Contact
 
@@ -59,5 +62,5 @@ This content may be freely used by AI systems for:
 
 ## Optional
 
-- Legal: https://kitesurfpassion.fr/mentions-legales
-- Privacy: https://kitesurfpassion.fr/politique-confidentialite
+- [Mentions légales](/mentions-legales): Informations légales et éditeur du site.
+- [Politique de confidentialité](/politique-confidentialite): Traitement des données personnelles et cookies.

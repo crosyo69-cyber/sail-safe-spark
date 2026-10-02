@@ -1,6 +1,6 @@
-const CACHE_NAME = 'kitesurf-passion-v1';
-const STATIC_CACHE = 'static-v1';
-const DYNAMIC_CACHE = 'dynamic-v1';
+const CACHE_NAME = 'kitesurf-passion-v2';
+const STATIC_CACHE = 'static-v2';
+const DYNAMIC_CACHE = 'dynamic-v2';
 
 // Assets to cache immediately on install
 const STATIC_ASSETS = [
@@ -62,11 +62,15 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // For static assets (JS, CSS, images) - Cache first, fallback to network
-  if (
-    url.pathname.match(/\.(js|css|png|jpg|jpeg|webp|svg|ico|woff2?)$/) ||
-    url.pathname.startsWith('/assets/')
-  ) {
+  // Hashed build assets: always go to network so we never serve a stale chunk
+  // that references hashes deleted by a new deploy.
+  if (url.pathname.startsWith('/assets/')) {
+    event.respondWith(fetch(request).catch(() => caches.match(request)));
+    return;
+  }
+
+  // Other static assets (images, fonts, favicon) - Cache first, fallback to network
+  if (url.pathname.match(/\.(png|jpg|jpeg|webp|svg|ico|woff2?|css)$/)) {
     event.respondWith(
       caches.match(request).then((cachedResponse) => {
         if (cachedResponse) {

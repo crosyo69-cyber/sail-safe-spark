@@ -1,5 +1,11 @@
 import { sendLovableEmail } from 'npm:@lovable.dev/email-js'
 import { createClient } from 'npm:@supabase/supabase-js@2'
+import {
+  countCurrentLifeFailures,
+  isSuppressedForPurpose,
+  normalizeEmail,
+  sanitizeHeaderValue,
+} from '../_shared/email-guards.ts'
 
 const RESEND_API_KEY_ENV = 'RESEND_API_KEY'
 
@@ -14,13 +20,16 @@ async function sendViaResend(payload: any): Promise<void> {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${resendKey}`,
     },
+    // F-21-04 : neutralisation CR/LF sur les champs d'en-tête.
     body: JSON.stringify({
-      from: payload.from,
-      to: [payload.to],
-      subject: payload.subject,
+      from: sanitizeHeaderValue(payload.from),
+      to: [sanitizeHeaderValue(payload.to)],
+      subject: sanitizeHeaderValue(payload.subject) ?? '',
       html: payload.html,
       ...(payload.text ? { text: payload.text } : {}),
-      ...(payload.reply_to ? { reply_to: payload.reply_to } : {}),
+      ...(sanitizeHeaderValue(payload.reply_to)
+        ? { reply_to: sanitizeHeaderValue(payload.reply_to) }
+        : {}),
     }),
   })
   const result = await res.json()
@@ -36,6 +45,12 @@ async function sendViaResend(payload: any): Promise<void> {
 }
 
 const MAX_RETRIES = 5
+// Lease duration for the atomic send claim. Must be longer than the pgmq
+// visibility timeout (30s) plus the maximum provider call duration, so a live
+// worker never loses its claim mid-send; short enough that a crashed worker's
+// message is retried quickly.
+const CLAIM_LEASE_SECONDS = 120
+const workerId = crypto.randomUUID()
 const DEFAULT_BATCH_SIZE = 10
 const DEFAULT_SEND_DELAY_MS = 200
 const DEFAULT_AUTH_TTL_MINUTES = 15
@@ -49,6 +64,15 @@ function isRateLimited(error: unknown): boolean {
     return (error as { status: number }).status === 429
   }
   return error instanceof Error && error.message.includes('429')
+}
+
+// Check if an error is a forbidden (403) response. Retrying won't help.
+// Move straight to DLQ.
+function isForbidden(error: unknown): boolean {
+  if (error && typeof error === 'object' && 'status' in error) {
+    return (error as { status: number }).status === 403
+  }
+  return error instanceof Error && error.message.includes('403')
 }
 
 // Extract Retry-After seconds from a structured EmailAPIError, or default to 60s.
@@ -74,6 +98,32 @@ function parseJwtClaims(token: string): Record<string, unknown> | null {
     return JSON.parse(atob(payload)) as Record<string, unknown>
   } catch {
     return null
+  }
+}
+
+// Move a message to the dead letter queue and log the reason.
+async function moveToDlq(
+  supabase: ReturnType<typeof createClient>,
+  queue: string,
+  msg: { msg_id: number; message: Record<string, unknown> },
+  reason: string
+): Promise<void> {
+  const payload = msg.message
+  await supabase.from('email_send_log').insert({
+    message_id: payload.message_id,
+    template_name: (payload.label || queue) as string,
+    recipient_email: payload.to,
+    status: 'dlq',
+    error_message: reason,
+  })
+  const { error } = await supabase.rpc('move_to_dlq', {
+    source_queue: queue,
+    dlq_name: `${queue}_dlq`,
+    message_id: msg.msg_id,
+    payload,
+  })
+  if (error) {
+    console.error('Failed to move message to DLQ', { queue, msg_id: msg.msg_id, reason, error })
   }
 }
 
@@ -136,7 +186,6 @@ Deno.serve(async (req) => {
 
   // 2. Process auth_emails first (priority), then transactional_emails
   for (const queue of ['auth_emails', 'transactional_emails']) {
-    const dlq = `${queue}_dlq`
     const { data: messages, error: readError } = await supabase.rpc('read_email_batch', {
       queue_name: queue,
       batch_size: batchSize,
@@ -164,13 +213,16 @@ Deno.serve(async (req) => {
           .filter((id): id is string => Boolean(id))
       )
     )
+    // F-21-03 : ne compter que les échecs de la VIE COURANTE du message,
+    // c.-à-d. postérieurs au dernier passage en DLQ. Sinon une reprise DLQ
+    // repartirait immédiatement en DLQ à cause de l'historique.
     const failedAttemptsByMessageId = new Map<string, number>()
     if (messageIds.length > 0) {
-      const { data: failedRows, error: failedRowsError } = await supabase
+      const { data: lifeRows, error: failedRowsError } = await supabase
         .from('email_send_log')
-        .select('message_id')
+        .select('message_id, status, created_at')
         .in('message_id', messageIds)
-        .eq('status', 'failed')
+        .in('status', ['failed', 'dlq'])
 
       if (failedRowsError) {
         console.error('Failed to load failed-attempt counters', {
@@ -178,13 +230,16 @@ Deno.serve(async (req) => {
           error: failedRowsError,
         })
       } else {
-        for (const row of failedRows ?? []) {
+        const byMessage = new Map<string, Array<{ status: string; created_at: string }>>()
+        for (const row of lifeRows ?? []) {
           const messageId = row?.message_id
           if (typeof messageId !== 'string' || !messageId) continue
-          failedAttemptsByMessageId.set(
-            messageId,
-            (failedAttemptsByMessageId.get(messageId) ?? 0) + 1
-          )
+          const list = byMessage.get(messageId) ?? []
+          list.push({ status: row.status as string, created_at: row.created_at as string })
+          byMessage.set(messageId, list)
+        }
+        for (const [messageId, rows] of byMessage) {
+          failedAttemptsByMessageId.set(messageId, countCurrentLifeFailures(rows))
         }
       }
     }
@@ -195,84 +250,175 @@ Deno.serve(async (req) => {
       const failedAttempts =
         payload?.message_id && typeof payload.message_id === 'string'
           ? (failedAttemptsByMessageId.get(payload.message_id) ?? 0)
-          : 0
+          : msg.read_ct ?? 0
 
-      // Drop expired messages (TTL exceeded)
-      if (payload.queued_at) {
-        const ageMs = Date.now() - new Date(payload.queued_at).getTime()
+      // Drop expired messages (TTL exceeded).
+      // Prefer payload.queued_at when present; fall back to PGMQ's enqueued_at
+      // which is always set by the queue.
+      const queuedAt = payload.queued_at ?? msg.enqueued_at
+      if (queuedAt) {
+        const ageMs = Date.now() - new Date(queuedAt).getTime()
         const maxAgeMs = ttlMinutes[queue] * 60 * 1000
         if (ageMs > maxAgeMs) {
           console.warn('Email expired (TTL exceeded)', {
             queue,
             msg_id: msg.msg_id,
-            queued_at: payload.queued_at,
+            queued_at: queuedAt,
             ttl_minutes: ttlMinutes[queue],
           })
-          await supabase.from('email_send_log').insert({
-            message_id: payload.message_id,
-            template_name: payload.label || queue,
-            recipient_email: payload.to,
-            status: 'dlq',
-            error_message: `TTL exceeded (${ttlMinutes[queue]} minutes)`,
-          })
-          const { error: ttlDlqError } = await supabase.rpc('move_to_dlq', {
-            source_queue: queue,
-            dlq_name: dlq,
-            message_id: msg.msg_id,
-            payload,
-          })
-          if (ttlDlqError) {
-            console.error('Failed to move expired message to DLQ', { queue, msg_id: msg.msg_id, error: ttlDlqError })
-          }
+          await moveToDlq(supabase, queue, msg, `TTL exceeded (${ttlMinutes[queue]} minutes)`)
           continue
         }
       }
 
       // Move to DLQ if max failed send attempts reached.
       if (failedAttempts >= MAX_RETRIES) {
+        await moveToDlq(supabase, queue, msg, `Max retries (${MAX_RETRIES}) exceeded (attempted ${failedAttempts} times)`)
+        continue
+      }
+
+      // Atomic claim (lease) + already-sent guard in a single DB round-trip.
+      // claim_email_send returns false when the message is already logged as
+      // 'sent' OR when another worker holds a non-expired lease on it.
+      // This closes the TOCTOU window between the "already sent" check and the
+      // provider call: only the lease holder may call the provider.
+      let claimedMessageId: string | null = null
+      if (payload.message_id) {
+        const { data: claimGranted, error: claimError } = await supabase.rpc('claim_email_send', {
+          _message_id: payload.message_id,
+          _worker_id: workerId,
+          _lease_seconds: CLAIM_LEASE_SECONDS,
+        })
+
+        if (claimError) {
+          // Fail closed: never send without a confirmed claim.
+          console.error('Failed to acquire send claim', {
+            queue,
+            msg_id: msg.msg_id,
+            message_id: payload.message_id,
+            error: claimError,
+          })
+          continue
+        }
+
+        if (!claimGranted) {
+          // Either already sent, or another worker is currently sending it.
+          const { data: alreadySent } = await supabase
+            .from('email_send_log')
+            .select('id')
+            .eq('message_id', payload.message_id)
+            .eq('status', 'sent')
+            .maybeSingle()
+
+          if (alreadySent) {
+            console.warn('Skipping duplicate send (already sent)', {
+              queue,
+              msg_id: msg.msg_id,
+              message_id: payload.message_id,
+            })
+            const { error: dupDelError } = await supabase.rpc('delete_email', {
+              queue_name: queue,
+              message_id: msg.msg_id,
+            })
+            if (dupDelError) {
+              console.error('Failed to delete duplicate message from queue', { queue, msg_id: msg.msg_id, error: dupDelError })
+            }
+          } else {
+            // Concurrent worker holds the lease: leave the message in the queue.
+            // It becomes visible again when the VT expires and will be retried.
+            console.warn('Skipping message (claim held by another worker)', {
+              queue,
+              msg_id: msg.msg_id,
+              message_id: payload.message_id,
+            })
+          }
+          continue
+        }
+
+        claimedMessageId = payload.message_id
+      }
+
+      const releaseClaim = async () => {
+        if (!claimedMessageId) return
+        const { error: releaseError } = await supabase.rpc('release_email_claim', {
+          _message_id: claimedMessageId,
+        })
+        if (releaseError) {
+          // Non-fatal: the lease expires on its own after CLAIM_LEASE_SECONDS.
+          console.error('Failed to release send claim', {
+            queue,
+            message_id: claimedMessageId,
+            error: releaseError,
+          })
+        }
+        claimedMessageId = null
+      }
+
+      // F-21-01 / F-21-02 — contrôles juste avant l'appel fournisseur :
+      // suppression list (bounce/plainte/désinscription) et, pour le marketing,
+      // revalidation du consentement courant (source de vérité marketing_preferences).
+      const recipient = normalizeEmail(payload.to)
+      let blockReason: string | null = null
+
+      if (recipient) {
+        const { data: suppressedRows, error: suppressedError } = await supabase
+          .from('suppressed_emails')
+          .select('email, reason')
+          .ilike('email', recipient)
+
+        if (suppressedError) {
+          console.error('Suppression lookup failed', { queue, error: suppressedError })
+        } else {
+          const verdict = isSuppressedForPurpose(
+            (suppressedRows ?? []) as Array<{ email: string; reason: string | null }>,
+            recipient,
+            payload.purpose,
+          )
+          if (verdict.blocked) blockReason = verdict.reason ?? 'suppressed'
+        }
+
+        if (!blockReason && payload.purpose === 'marketing') {
+          const { data: pref, error: prefError } = await supabase
+            .from('marketing_preferences')
+            .select('consent')
+            .ilike('email', recipient)
+            .maybeSingle()
+
+          if (prefError) {
+            console.error('Consent lookup failed', { queue, error: prefError })
+          } else if (pref?.consent === false) {
+            blockReason = 'marketing_opt_out'
+          }
+        }
+      }
+
+      if (blockReason) {
+        console.warn('Email suppressed before provider call', {
+          queue,
+          msg_id: msg.msg_id,
+          message_id: payload.message_id,
+          reason: blockReason,
+        })
         await supabase.from('email_send_log').insert({
           message_id: payload.message_id,
           template_name: payload.label || queue,
           recipient_email: payload.to,
-          status: 'dlq',
-          error_message: `Max retries (${MAX_RETRIES}) exceeded (attempted ${failedAttempts} times)`,
+          status: 'suppressed',
+          error_message: blockReason,
         })
-        const { error: retryDlqError } = await supabase.rpc('move_to_dlq', {
-          source_queue: queue,
-          dlq_name: dlq,
+        const { error: supDelError } = await supabase.rpc('delete_email', {
+          queue_name: queue,
           message_id: msg.msg_id,
-          payload,
         })
-        if (retryDlqError) {
-          console.error('Failed to move max-retry message to DLQ', { queue, msg_id: msg.msg_id, error: retryDlqError })
-        }
-        continue
-      }
-
-      // Guard: skip if another worker already sent this message (VT expired race)
-      if (payload.message_id) {
-        const { data: alreadySent } = await supabase
-          .from('email_send_log')
-          .select('id')
-          .eq('message_id', payload.message_id)
-          .eq('status', 'sent')
-          .maybeSingle()
-
-        if (alreadySent) {
-          console.warn('Skipping duplicate send (already sent)', {
+        if (supDelError) {
+          console.error('Failed to delete suppressed message from queue', {
             queue,
             msg_id: msg.msg_id,
-            message_id: payload.message_id,
+            error: supDelError,
           })
-          const { error: dupDelError } = await supabase.rpc('delete_email', {
-            queue_name: queue,
-            message_id: msg.msg_id,
-          })
-          if (dupDelError) {
-            console.error('Failed to delete duplicate message from queue', { queue, msg_id: msg.msg_id, error: dupDelError })
-          }
-          continue
         }
+        await releaseClaim()
+        continue
       }
 
       try {
@@ -283,10 +429,10 @@ Deno.serve(async (req) => {
           await sendLovableEmail(
             {
               run_id: payload.run_id,
-              to: payload.to,
-              from: payload.from,
+              to: sanitizeHeaderValue(payload.to),
+              from: sanitizeHeaderValue(payload.from),
               sender_domain: payload.sender_domain,
-              subject: payload.subject,
+              subject: sanitizeHeaderValue(payload.subject) ?? '',
               html: payload.html,
               text: payload.text,
               purpose: payload.purpose,
@@ -353,6 +499,16 @@ Deno.serve(async (req) => {
           )
         }
 
+        // 403s are permanent configuration or authorization failures for this
+        // message, so move straight to DLQ and stop processing the rest of the batch.
+        if (isForbidden(error)) {
+          await moveToDlq(supabase, queue, msg, errorMsg.slice(0, 1000))
+          return new Response(
+            JSON.stringify({ processed: totalProcessed, stopped: 'forbidden' }),
+            { headers: { 'Content-Type': 'application/json' } }
+          )
+        }
+
         // Log non-429 failures to track real retry attempts.
         await supabase.from('email_send_log').insert({
           message_id: payload.message_id,
@@ -366,6 +522,11 @@ Deno.serve(async (req) => {
         }
 
         // Non-429 errors: message stays invisible until VT expires, then retried
+      } finally {
+        // Always release the lease (success, failure, rate-limit or DLQ path).
+        // A crashed worker never reaches this point: its lease expires after
+        // CLAIM_LEASE_SECONDS and the message becomes claimable again.
+        await releaseClaim()
       }
 
       // Small delay between sends to smooth bursts

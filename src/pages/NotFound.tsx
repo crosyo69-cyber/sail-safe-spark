@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { supabase } from "@/integrations/supabase/client";
+import { sanitizeAnalyticsPath } from "@/lib/analytics-path";
 
 const NotFound = () => {
   const location = useLocation();
@@ -32,13 +33,18 @@ const NotFound = () => {
       return;
     }
 
-    // Log 404 hit to database for monitoring
+    // Log 404 hit to database for monitoring.
+    // EXCEPTION E-3-D : accès Supabase direct assumé ici (instrumentation 404 anonyme
+    // autorisée par le lot E-1). Ne pas router via la couche service (pas de retry,
+    // pas de toast, échec silencieux obligatoire).
     const log404 = async () => {
       try {
-        await supabase.from("page_404_logs" as any).insert({
-          path: location.pathname + location.search,
-          referrer: document.referrer || null,
-          user_agent: navigator.userAgent || null,
+        // F-23-06 : ingestion via RPC serveur (validation + rate limit côté base).
+        // eslint-disable-next-line no-restricted-syntax -- même exception E-3-D que l'INSERT direct remplacé
+        await supabase.rpc("log_page_404", {
+          p_path: sanitizeAnalyticsPath(location.pathname, location.search),
+          p_referrer: document.referrer || null,
+          p_user_agent: navigator.userAgent || null,
         });
       } catch (e) {
         // Silent fail — monitoring should never break UX

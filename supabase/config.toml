@@ -13,5 +13,24 @@ project_id = "unqxudbxxzzmmbwwxwcr"
     verify_jwt = false
   [functions.unsubscribe-weather]
     verify_jwt = false
+  [functions.weather-subscribe]
+    verify_jwt = false
+
   [functions.weather-alerts]
     verify_jwt = false
+  [functions.process-email-queue]
+    verify_jwt = true
+  [functions.retry-dlq-email]
+    verify_jwt = true
+  [functions.email-queue-health-check]
+    verify_jwt = true
+  [functions.last-minute-subscribe]
+    verify_jwt = false
+  [functions.last-minute-notify]
+    verify_jwt = true
+  [functions.dispatch-admin-alerts]
+    verify_jwt = true
+  [functions.sync-stripe-reservations]
+    verify_jwt = false
+  [functions.admin-assistant]
+    verify_jwt = true

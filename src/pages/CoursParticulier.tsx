@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { trackPhoneClick } from "@/lib/analytics";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { PageBreadcrumb } from "@/components/PageBreadcrumb";
@@ -7,6 +8,7 @@ import { Link } from "react-router-dom";
 import { Ship, Star, Award, Clock, CheckCircle, Target, Zap, Shield, User } from "lucide-react";
 import { ActivityFAQ } from "@/components/sections/ActivityFAQ";
 import { InternalLinking, disciplineLinks, pillarLinks } from "@/components/sections/InternalLinking";
+import { SeasonPricingSection } from "@/components/sections/SeasonPricingSection";
 import { getProductRatingData } from "@/lib/seo-ratings";
 import kitesurfLesson from "@/assets/kitesurf-cours-hyeres.jpg?webp";
 import heroKitesurf from "@/assets/kitesurf-hyeres.jpg?webp";
@@ -18,7 +20,7 @@ const coursParticulierFaqs = [
   },
   {
     question: "Combien coûte un cours particulier de kitesurf à l'Almanarre ?",
-    answer: "Le cours particulier de 2 heures avec moniteur diplômé dédié est à 230€ hors saison et 380€ en juillet/août. Tout le matériel et le bateau d'assistance sont inclus.",
+    answer: "Le cours particulier de 2 heures avec moniteur diplômé dédié est à 180€ en basse saison (hors juillet/août) et 210€ en haute saison (juillet et août). Tout le matériel et le bateau d'assistance sont inclus.",
   },
   {
     question: "Le cours particulier est-il adapté aux vrais débutants ?",
@@ -64,14 +66,14 @@ const CoursParticulier = () => {
       {
         "@type": "Offer",
         "name": "Cours Particulier 2h - Hors saison",
-        "price": "230",
+        "price": "180",
         "priceCurrency": "EUR",
         "availability": "https://schema.org/InStock"
       },
       {
         "@type": "Offer",
         "name": "Cours Particulier 2h - Juillet/Août",
-        "price": "380",
+        "price": "210",
         "priceCurrency": "EUR",
         "availability": "https://schema.org/InStock"
       }
@@ -90,8 +92,8 @@ const CoursParticulier = () => {
     },
     offers: {
       "@type": "AggregateOffer",
-      lowPrice: "230",
-      highPrice: "380",
+      lowPrice: "180",
+      highPrice: "210",
       priceCurrency: "EUR",
       offerCount: 2,
       availability: "https://schema.org/InStock",
@@ -192,7 +194,7 @@ const CoursParticulier = () => {
         <title>Cours Particulier Kitesurf – Hyères Almanarre | Progression Premium</title>
         <meta
           name="description"
-          content="Cours particulier kitesurf à Hyères Almanarre (Var). Leçon privée 100% individualisée, moniteur diplômé dédié, bateau sécurité, progression 3x plus rapide. Dès 230€."
+          content="Cours particulier kitesurf à Hyères Almanarre avec moniteur diplômé dédié et bateau sécurité. 180€ hors juillet/août, 210€ en haute saison."
         />
         <link rel="canonical" href="https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres" />
         <link rel="alternate" hrefLang="fr-FR" href="https://www.kitesurfpassion.fr/cours-particulier-kitesurf-hyeres" />
@@ -296,88 +298,19 @@ const CoursParticulier = () => {
           </div>
         </section>
 
-        {/* Pricing Section */}
-        <section className="py-20 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
-                  Tarifs Cours Particulier
-                </h2>
-                <p className="text-muted-foreground">
-                  Séance de 2 heures avec moniteur diplômé dédié.
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-card border border-border rounded-2xl p-8 hover:border-sunset/50 transition-colors">
-                  <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-sm font-medium rounded-full mb-4">
-                    Hors saison
-                  </span>
-                  <div className="mb-4">
-                    <span className="text-4xl font-display font-bold text-foreground">230€</span>
-                    <span className="text-muted-foreground ml-2">/ 2 heures</span>
-                  </div>
-                  <ul className="space-y-3 mb-8">
-                    <li className="flex items-center gap-2 text-muted-foreground">
-                      <CheckCircle className="w-5 h-5 text-primary" />
-                      Moniteur 100% dédié
-                    </li>
-                    <li className="flex items-center gap-2 text-muted-foreground">
-                      <CheckCircle className="w-5 h-5 text-primary" />
-                      Matériel complet fourni
-                    </li>
-                    <li className="flex items-center gap-2 text-muted-foreground">
-                      <CheckCircle className="w-5 h-5 text-primary" />
-                      Bateau d'assistance
-                    </li>
-                    <li className="flex items-center gap-2 text-muted-foreground">
-                      <CheckCircle className="w-5 h-5 text-primary" />
-                      Assurance incluse
-                    </li>
-                  </ul>
-                  <Button variant="sunset" className="w-full" asChild>
-                    <Link to="/contact-reservation-kitesurf-hyeres">Réserver</Link>
-                  </Button>
-                </div>
-
-                <div className="bg-card border-2 border-sunset rounded-2xl p-8 relative">
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-sunset text-white text-sm font-medium rounded-full">
-                    Haute saison
-                  </span>
-                  <span className="inline-block px-3 py-1 bg-sunset/10 text-sunset text-sm font-medium rounded-full mb-4">
-                    Juillet / Août
-                  </span>
-                  <div className="mb-4">
-                    <span className="text-4xl font-display font-bold text-foreground">380€</span>
-                    <span className="text-muted-foreground ml-2">/ 2 heures</span>
-                  </div>
-                  <ul className="space-y-3 mb-8">
-                    <li className="flex items-center gap-2 text-muted-foreground">
-                      <CheckCircle className="w-5 h-5 text-sunset" />
-                      Moniteur 100% dédié
-                    </li>
-                    <li className="flex items-center gap-2 text-muted-foreground">
-                      <CheckCircle className="w-5 h-5 text-sunset" />
-                      Matériel complet fourni
-                    </li>
-                    <li className="flex items-center gap-2 text-muted-foreground">
-                      <CheckCircle className="w-5 h-5 text-sunset" />
-                      Bateau d'assistance
-                    </li>
-                    <li className="flex items-center gap-2 text-muted-foreground">
-                      <CheckCircle className="w-5 h-5 text-sunset" />
-                      Assurance incluse
-                    </li>
-                  </ul>
-                  <Button variant="sunset" className="w-full" asChild>
-                    <Link to="/contact-reservation-kitesurf-hyeres">Réserver</Link>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <SeasonPricingSection
+          title="Tarifs Cours Particulier"
+          gradientClass="from-sunset to-sunset-light"
+          items={[{
+            name: "Cours Particulier",
+            sessions: "Séance de 2 heures avec moniteur dédié",
+            highSeasonPrice: "210€",
+            lowSeasonPrice: "180€",
+            savings: "30€",
+            popular: true,
+          }]}
+          colorScheme="sunset"
+        />
 
         {/* Benefits Section */}
         <section className="py-20 bg-muted/30">
@@ -548,7 +481,7 @@ const CoursParticulier = () => {
                 <Link to="/contact-reservation-kitesurf-hyeres">Réserver maintenant</Link>
               </Button>
               <Button variant="hero" size="lg" asChild>
-                <a href="tel:0672716905">06 72 71 69 05</a>
+                <a href="tel:0672716905" onClick={() => trackPhoneClick("cours_particulier")}>06 72 71 69 05</a>
               </Button>
             </div>
           </div>
