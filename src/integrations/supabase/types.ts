@@ -243,6 +243,7 @@ export type Database = {
           notes_admin: string | null
           package_code: string
           package_type: string
+          participant_index: number | null
           phone: string | null
           status: string
           stripe_session_id: string | null
@@ -263,6 +264,7 @@ export type Database = {
           notes_admin?: string | null
           package_code: string
           package_type: string
+          participant_index?: number | null
           phone?: string | null
           status?: string
           stripe_session_id?: string | null
@@ -283,6 +285,7 @@ export type Database = {
           notes_admin?: string | null
           package_code?: string
           package_type?: string
+          participant_index?: number | null
           phone?: string | null
           status?: string
           stripe_session_id?: string | null
