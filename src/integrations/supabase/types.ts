@@ -2012,6 +2012,14 @@ export type Database = {
         Args: { p_package_id: string; p_start_date: string }
         Returns: Json
       }
+      book_stage_for_participants: {
+        Args: {
+          p_participants: Json
+          p_start_date: string
+          p_stripe_session_id: string
+        }
+        Returns: Json
+      }
       book_stage_with_session: {
         Args: { p_session_token: string; p_start_date: string }
         Returns: Json
