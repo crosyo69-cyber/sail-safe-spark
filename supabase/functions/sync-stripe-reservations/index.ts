@@ -61,6 +61,27 @@ async function syncOne(
     .maybeSingle();
   if (existing) return { ...base, status: "already_synced", reservation_id: existing.id };
 
+  // A1 — Stage 100 % Glisse : réservé via client_packages/package_bookings,
+  // jamais rattrapé en réservation à la carte.
+  const { data: packs, error: packsErr } = await supabase
+    .from("client_packages")
+    .select("activity")
+    .eq("stripe_session_id", session.id);
+  if (packsErr) return { ...base, status: "error", detail: `client_packages: ${packsErr.message}` };
+  const decision = decideRecovery({
+    activityName,
+    packActivities: (packs ?? []).map((p: { activity: string }) => p.activity),
+  });
+  if (decision === "stage_already_booked") {
+    return { ...base, status: "already_synced", detail: "stage_packages" };
+  }
+  if (decision === "stage_left_to_manual") {
+    console.warn("sync-stripe-reservations: paiement Stage sans pack, laissé à la gestion manuelle A0", {
+      stripe_session_id: session.id,
+    });
+    return { ...base, status: "skipped_stage", detail: "stage_without_package_manual_handling" };
+  }
+
   if (!customerEmail) {
     return { ...base, status: "skipped_no_email", detail: "No email in Stripe session" };
   }
