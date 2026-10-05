@@ -1,7 +1,7 @@
 import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { resolveOrigin, assertSafeRedirectUrl } from "./origin.ts";
-import { parseParticipants, resolveActivityEnum } from "./participants.ts";
+import { parseParticipants, parseStageParticipants, resolveActivityEnum } from "./participants.ts";
 
 
 const corsHeaders = {
@@ -211,9 +211,15 @@ export function createHandler(
       });
     }
 
-    const count = parseParticipants(participants);
+    const isStage = activityEnum === "stage_100_glisse";
+    // S3 : pour le Stage, participants est obligatoire et strictement entier 1..4.
+    const count = isStage ? parseStageParticipants(participants) : parseParticipants(participants);
     if (count === null) {
-      return new Response(JSON.stringify({ error: "participants doit être un entier positif." }), {
+      return new Response(JSON.stringify({
+        error: isStage
+          ? "Stage 100% Glisse : participants doit être un entier entre 1 et 4."
+          : "participants doit être un entier positif.",
+      }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -274,6 +280,7 @@ export function createHandler(
     const origin = originResolver(req.headers.get("origin"));
 
     const PRICE_ID = "price_1TAXYhJTWAAnYv4Vnnoy6jIP";
+    const STAGE_PRICE_ID = "price_1UN6OiJTWAAnYv4VSmNgqYLs"; // 250 € EUR, par participant
 
     const successUrl = `${origin}/reservation-confirmee?activity=${encodeURIComponent(activityName)}`;
     const cancelUrl = `${origin}/contact-reservation-kitesurf-hyeres`;
@@ -298,16 +305,19 @@ export function createHandler(
       payment_method_types: ["card"],
       mode: "payment",
       line_items: [
-        {
-          price: PRICE_ID,
-          // Acompte = nombre de séances × 50 €. Pour les activités facturées
-          // par participant (cours particulier, location, foil tracté,
-          // déposes en mer), packSessions == count donc le montant reste
-          // identique. Pour les packs (Cours à la Carte, Wingfoil) et le
-          // Stage 100 % Glisse, l'acompte suit désormais le nombre de
-          // séances réservées (ex. 5 jours de stage → 250 €).
-          quantity: packSessions,
-        },
+        isStage
+          ? {
+            // S3 : Stage 100 % Glisse = prix Stripe 250 € (25000 centimes,
+            // EUR) × participants. Le nombre de jours (5) ne détermine plus
+            // le montant. A0 exige amount_total == 25000 × participants.
+            price: STAGE_PRICE_ID,
+            quantity: count,
+          }
+          : {
+            price: PRICE_ID,
+            // Autres activités (inchangé) : nombre de séances × 50 €.
+            quantity: packSessions,
+          },
       ],
       metadata: {
         activity_name: activityName,

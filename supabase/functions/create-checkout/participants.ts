@@ -47,3 +47,15 @@ export function parseParticipants(raw: unknown): number | null {
   if (value < 1 || value > 1000) return null;
   return value;
 }
+
+/**
+ * S3 — Stage 100 % Glisse : participants OBLIGATOIRE, entier strict 1..4.
+ * Absent, 0, négatif, 5+, décimal, texte, booléen → null (rejet).
+ */
+export function parseStageParticipants(raw: unknown): number | null {
+  if (typeof raw === "number") {
+    return Number.isInteger(raw) && raw >= 1 && raw <= 4 ? raw : null;
+  }
+  if (typeof raw === "string" && /^\s*[1-4]\s*$/.test(raw)) return Number(raw.trim());
+  return null;
+}
