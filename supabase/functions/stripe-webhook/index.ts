@@ -1,6 +1,14 @@
 import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { maskEmail } from "../_shared/log-redact.ts";
+import {
+  buildStageCustomerEmail,
+  buildStageOwnerEmail,
+  formatEuros,
+  isStageActivity,
+  processStagePayment,
+  type StageCheckoutSession,
+} from "./stage.ts";
 
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
 
@@ -563,6 +571,80 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
       const phone = session.metadata?.phone;
 
       console.log('Payment completed', { event_id: event.id, email: maskEmail(customerEmail), activity: activityName, date: preferredDate, participants });
+
+      // ── A0 : Stage 100 % Glisse → flux dédié, atomique (S2) ─────────────
+      if (isStageActivity(activityName)) {
+        const outcome = await processStagePayment(supabase, session as unknown as StageCheckoutSession);
+        const ownerHtml = buildStageOwnerEmail(LOGO_URL, session as unknown as StageCheckoutSession, outcome);
+
+        if (outcome.status === "booked") {
+          console.log('Stage booked', { event_id: event.id, packages: outcome.packageCodes.length, replay: outcome.replay });
+          try {
+            await enqueueEmail(
+              supabase,
+              outcome.check.email!,
+              `Confirmation de paiement – Stage 100% Glisse`,
+              buildStageCustomerEmail(LOGO_URL, outcome.check, outcome.packageCodes),
+              'booking_confirmation',
+              undefined,
+              // Clé par paiement (et non par événement) : un rejeu ne renvoie rien.
+              await deterministicMessageId(session.id, 'booking_confirmation', outcome.check.email!),
+            );
+          } catch (error) {
+            console.error("Customer email enqueue error:", error instanceof Error ? error.message : error);
+          }
+          try {
+            await enqueueEmail(
+              supabase, OWNER_EMAIL,
+              `💰 Paiement reçu – Stage 100% Glisse (${outcome.check.email})`,
+              ownerHtml, 'booking_owner_notification', outcome.check.email ?? undefined,
+              await deterministicMessageId(session.id, 'booking_owner_notification', OWNER_EMAIL),
+            );
+          } catch (error) {
+            console.error("Owner email enqueue error:", error instanceof Error ? error.message : error);
+          }
+          await markWebhookEvent(supabase, event.id, "processed");
+        } else {
+          // Paiement encaissé mais aucune réservation : trace + alerte, jamais de succès.
+          const errorMessage = `stage_${outcome.reason}${outcome.detail ? `: ${outcome.detail}` : ''}`.slice(0, 500);
+          console.error('Stage payment NOT booked', { event_id: event.id, session_id: session.id, reason: outcome.reason });
+          const { error: notifErr } = await supabase.rpc('enqueue_admin_notification', {
+            p_kind: 'stripe_stage_payment_failed',
+            p_severity: 'critical',
+            p_title: `Paiement Stage 100% Glisse non réservé (${outcome.reason})`,
+            p_body: `Encaissé ${formatEuros(outcome.check.stripeAmountCents)} · attendu ${formatEuros(outcome.check.expectedAmountCents)} · ${outcome.check.participants} participant(s). Aucune réservation créée.`,
+            p_metadata: {
+              stripe_session_id: session.id,
+              event_id: event.id,
+              reason: outcome.reason,
+              detail: outcome.detail ?? null,
+              stripe_amount_cents: outcome.check.stripeAmountCents,
+              expected_amount_cents: outcome.check.expectedAmountCents,
+              participants: outcome.check.participants,
+              start_date: outcome.check.startDate,
+              customer_email: outcome.check.email,
+            },
+            p_ref_key: session.id,
+          });
+          if (notifErr) console.error('enqueue_admin_notification failed:', notifErr);
+          try {
+            await enqueueEmail(
+              supabase, OWNER_EMAIL,
+              `🚨 Paiement Stage 100% Glisse à traiter (${outcome.check.email ?? session.id})`,
+              ownerHtml, 'stage_payment_failed_admin', outcome.check.email ?? undefined,
+              await deterministicMessageId(session.id, 'stage_payment_failed_admin', OWNER_EMAIL),
+            );
+          } catch (error) {
+            console.error("Admin alert email enqueue error:", error instanceof Error ? error.message : error);
+          }
+          await markWebhookEvent(supabase, event.id, "failed", errorMessage);
+        }
+
+        return new Response(JSON.stringify({ received: true, stage: outcome.status }), {
+          headers: { "Content-Type": "application/json" },
+          status: 200,
+        });
+      }
 
       // Create reservation in database
       try {
