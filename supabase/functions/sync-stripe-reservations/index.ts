@@ -1,5 +1,6 @@
 import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { decideRecovery } from "./stage_guard.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -27,7 +28,7 @@ type SyncEntry = {
   activity_name: string | null;
   preferred_date: string | null;
   participants: number;
-  status: "already_synced" | "inserted" | "skipped_no_email" | "error";
+  status: "already_synced" | "inserted" | "skipped_no_email" | "skipped_stage" | "error";
   detail?: string;
   reservation_id?: string;
 };
@@ -266,6 +267,7 @@ Deno.serve(async (req) => {
       already_synced: report.filter((r) => r.status === "already_synced").length,
       inserted: report.filter((r) => r.status === "inserted").length,
       skipped_no_email: report.filter((r) => r.status === "skipped_no_email").length,
+      skipped_stage: report.filter((r) => r.status === "skipped_stage").length,
       errors: report.filter((r) => r.status === "error").length,
     };
     console.log("sync-stripe-reservations summary", summary);
