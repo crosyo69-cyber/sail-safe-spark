@@ -2230,6 +2230,14 @@ export type Database = {
         Returns: undefined
       }
       expire_session_credits: { Args: never; Returns: Json }
+      find_or_create_compatible_group: {
+        Args: {
+          p_client_activity: Database["public"]["Enums"]["activity_type"]
+          p_date: string
+          p_seats?: number
+        }
+        Returns: string
+      }
       find_or_create_daily_group: {
         Args: {
           p_activity: Database["public"]["Enums"]["activity_type"]
