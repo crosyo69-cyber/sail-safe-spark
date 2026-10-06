@@ -243,6 +243,7 @@ export type Database = {
           notes_admin: string | null
           package_code: string
           package_type: string
+          participant_index: number | null
           phone: string | null
           status: string
           stripe_session_id: string | null
@@ -263,6 +264,7 @@ export type Database = {
           notes_admin?: string | null
           package_code: string
           package_type: string
+          participant_index?: number | null
           phone?: string | null
           status?: string
           stripe_session_id?: string | null
@@ -283,6 +285,7 @@ export type Database = {
           notes_admin?: string | null
           package_code?: string
           package_type?: string
+          participant_index?: number | null
           phone?: string | null
           status?: string
           stripe_session_id?: string | null
@@ -2007,6 +2010,14 @@ export type Database = {
       }
       book_stage_for_package: {
         Args: { p_package_id: string; p_start_date: string }
+        Returns: Json
+      }
+      book_stage_for_participants: {
+        Args: {
+          p_participants: Json
+          p_start_date: string
+          p_stripe_session_id: string
+        }
         Returns: Json
       }
       book_stage_with_session: {

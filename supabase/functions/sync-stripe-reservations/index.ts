@@ -1,5 +1,6 @@
 import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { decideRecovery } from "./stage_guard.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -27,7 +28,7 @@ type SyncEntry = {
   activity_name: string | null;
   preferred_date: string | null;
   participants: number;
-  status: "already_synced" | "inserted" | "skipped_no_email" | "error";
+  status: "already_synced" | "inserted" | "skipped_no_email" | "skipped_stage" | "error";
   detail?: string;
   reservation_id?: string;
 };
@@ -60,6 +61,27 @@ async function syncOne(
     .eq("stripe_session_id", session.id)
     .maybeSingle();
   if (existing) return { ...base, status: "already_synced", reservation_id: existing.id };
+
+  // A1 — Stage 100 % Glisse : réservé via client_packages/package_bookings,
+  // jamais rattrapé en réservation à la carte.
+  const { data: packs, error: packsErr } = await supabase
+    .from("client_packages")
+    .select("activity")
+    .eq("stripe_session_id", session.id);
+  if (packsErr) return { ...base, status: "error", detail: `client_packages: ${packsErr.message}` };
+  const decision = decideRecovery({
+    activityName,
+    packActivities: (packs ?? []).map((p: { activity: string }) => p.activity),
+  });
+  if (decision === "stage_already_booked") {
+    return { ...base, status: "already_synced", detail: "stage_packages" };
+  }
+  if (decision === "stage_left_to_manual") {
+    console.warn("sync-stripe-reservations: paiement Stage sans pack, laissé à la gestion manuelle A0", {
+      stripe_session_id: session.id,
+    });
+    return { ...base, status: "skipped_stage", detail: "stage_without_package_manual_handling" };
+  }
 
   if (!customerEmail) {
     return { ...base, status: "skipped_no_email", detail: "No email in Stripe session" };
@@ -245,6 +267,7 @@ Deno.serve(async (req) => {
       already_synced: report.filter((r) => r.status === "already_synced").length,
       inserted: report.filter((r) => r.status === "inserted").length,
       skipped_no_email: report.filter((r) => r.status === "skipped_no_email").length,
+      skipped_stage: report.filter((r) => r.status === "skipped_stage").length,
       errors: report.filter((r) => r.status === "error").length,
     };
     console.log("sync-stripe-reservations summary", summary);

@@ -28,6 +28,9 @@ const MAX_PARTICIPANTS_BY_ACTIVITY: Record<string, number> = {
   "deposes-mer": 4,
 };
 
+/** Acompte Stage 100% Glisse par personne (affichage ; vérité = serveur). */
+const STAGE_DEPOSIT_PER_PERSON = 250;
+
 const maxParticipantsFor = (activityId: string) =>
   MAX_PARTICIPANTS_BY_ACTIVITY[activityId] ?? 4;
 
@@ -212,7 +215,7 @@ const DepositPaymentSection = () => {
               Réservez en Ligne
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Versez un acompte de 50€ par séance réservée pour confirmer votre réservation. Le solde sera à régler le jour de votre cours.
+              Versez un acompte de 50€ par séance réservée (250€ par personne pour le Stage 100% Glisse) pour confirmer votre réservation. Le solde sera à régler le jour de votre cours.
             </p>
           </div>
 
@@ -351,6 +354,21 @@ const DepositPaymentSection = () => {
                     </div>
                   </div>
 
+                  {activity.id === "stage-100-glisse" ? (
+                    // S3-UX : affichage seulement. Le montant réel est calculé
+                    // côté serveur (create-checkout) : 250 € × participants.
+                    <div className="bg-muted/50 rounded-lg p-3 mb-4 text-center" aria-live="polite">
+                      <p className="text-sm font-semibold text-foreground">
+                        Acompte : {(count * STAGE_DEPOSIT_PER_PERSON).toLocaleString("fr-FR")}€{" "}
+                        <span className="font-normal text-muted-foreground">
+                          ({count} × {STAGE_DEPOSIT_PER_PERSON}€ / personne)
+                        </span>
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        5 jours consécutifs — solde à régler sur place
+                      </p>
+                    </div>
+                  ) : (
                   <div className="bg-muted/50 rounded-lg p-3 mb-4 text-center">
                     <p className="text-sm font-semibold text-foreground">
                       Acompte : {total}€{" "}
@@ -366,6 +384,7 @@ const DepositPaymentSection = () => {
                         : "(solde à régler le jour J)"}
                     </p>
                   </div>
+                  )}
                   <Button
                     variant="sunset"
                     className="w-full"
