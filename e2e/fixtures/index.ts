@@ -57,6 +57,7 @@ export const test = base.extend<KspFixtures>({
 });
 
 export { expect } from '@playwright/test';
+export type { Page, Route } from '@playwright/test';
 
 export * from './storage.fixture';
 export * from './consent.fixture';

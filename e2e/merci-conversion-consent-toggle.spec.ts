@@ -26,7 +26,7 @@ async function installDataLayerRecorder(page: Page) {
     const w = window as unknown as { dataLayer?: unknown[] };
     const existing = Array.isArray(w.dataLayer) ? w.dataLayer : [];
     const proxied: unknown[] = [...existing];
-    proxied.push = function (...items: unknown[]) {
+    proxied.push = function (this: unknown[], ...items: unknown[]) {
       for (const item of items) {
         if (item && typeof item === 'object') captured.push(item as DLEvent);
       }
