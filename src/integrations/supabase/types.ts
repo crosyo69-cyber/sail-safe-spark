@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_group_compatibility: {
+        Row: {
+          allowed_client_activity: Database["public"]["Enums"]["activity_type"]
+          can_create_group: boolean
+          group_activity: Database["public"]["Enums"]["activity_type"]
+        }
+        Insert: {
+          allowed_client_activity: Database["public"]["Enums"]["activity_type"]
+          can_create_group: boolean
+          group_activity: Database["public"]["Enums"]["activity_type"]
+        }
+        Update: {
+          allowed_client_activity?: Database["public"]["Enums"]["activity_type"]
+          can_create_group?: boolean
+          group_activity?: Database["public"]["Enums"]["activity_type"]
+        }
+        Relationships: []
+      }
       admin_notifications: {
         Row: {
           body: string | null
@@ -1538,6 +1556,7 @@ export type Database = {
       }
       reservations: {
         Row: {
+          client_activity: Database["public"]["Enums"]["activity_type"]
           created_at: string
           daily_group_id: string | null
           email: string
@@ -1554,6 +1573,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          client_activity: Database["public"]["Enums"]["activity_type"]
           created_at?: string
           daily_group_id?: string | null
           email: string
@@ -1570,6 +1590,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          client_activity?: Database["public"]["Enums"]["activity_type"]
           created_at?: string
           daily_group_id?: string | null
           email?: string
@@ -2209,6 +2230,14 @@ export type Database = {
         Returns: undefined
       }
       expire_session_credits: { Args: never; Returns: Json }
+      find_or_create_compatible_group: {
+        Args: {
+          p_client_activity: Database["public"]["Enums"]["activity_type"]
+          p_date: string
+          p_seats?: number
+        }
+        Returns: string
+      }
       find_or_create_daily_group: {
         Args: {
           p_activity: Database["public"]["Enums"]["activity_type"]
