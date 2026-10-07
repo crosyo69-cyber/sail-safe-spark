@@ -176,7 +176,7 @@ const dedupAutoResetFixture = async (
 
 /** Retry policy: skip retries whose previous failure was deterministic. */
 const retryFilterFixture = async (
-  {}: Record<string, never>,
+  _fixtures: Record<string, never>,
   use: (v: void) => Promise<void>,
   testInfo: import('@playwright/test').TestInfo,
 ) => {
