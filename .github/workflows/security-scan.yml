@@ -147,10 +147,9 @@ jobs:
         run: |
           set -euo pipefail
           PROJECT_REF="unqxudbxxzzmmbwwxwcr"
-
-          supabase db lint --project-ref "$PROJECT_REF" --level warning > lint.txt 2>&1 || true
-          cat lint.txt
-
+          supabase link --project-ref "$PROJECT_REF"
+          supabase db lint --linked --level warning > lint.txt 2>&1 || true
+          cat lint.txt          
           # Lints already reviewed and accepted in @security-memory.
           # Only NEW warnings (outside this list) should fail the build.
           IGNORED_LINTS=(
