@@ -132,6 +132,9 @@ export default tseslint.config(
     rules: {
       "no-duplicate-imports": "error",
       "@typescript-eslint/no-duplicate-imports": "off",
+      // Les fixtures Playwright utilisent un callback `use()` qui n'est pas
+      // un hook React : la règle react-hooks ne s'applique pas aux tests e2e.
+      "react-hooks/rules-of-hooks": "off",
     },
   },
 );
