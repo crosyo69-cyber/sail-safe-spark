@@ -22,7 +22,7 @@ test.describe('Blog – JSON-LD FAQPage séparé', () => {
             try {
               const d = JSON.parse(n.textContent || '');
               const types = Array.isArray(d?.['@graph'])
-                ? d['@graph'].map((x: any) => x?.['@type'])
+                ? d['@graph'].map((x: Record<string, unknown>) => x?.['@type'])
                 : [d?.['@type']];
               return types.includes('Article') || types.includes('BlogPosting');
             } catch { return false; }
@@ -40,13 +40,15 @@ test.describe('Blog – JSON-LD FAQPage séparé', () => {
 
       // Un bloc FAQPage standalone (pas imbriqué dans @graph)
       const standaloneFaq = blocks.find(
-        (b: any) => b && b['@type'] === 'FAQPage' && Array.isArray(b.mainEntity),
+        (b: Record<string, unknown>) => b && b['@type'] === 'FAQPage' && Array.isArray(b.mainEntity),
       );
       expect(standaloneFaq, `FAQPage standalone manquant pour ${slug}`).toBeTruthy();
 
       // Pas de FAQPage dupliqué à l'intérieur d'un @graph Article
       const graphFaq = blocks.some(
-        (b: any) => Array.isArray(b?.['@graph']) && b['@graph'].some((n: any) => n?.['@type'] === 'FAQPage'),
+(b: Record<string, unknown>) =>
+          Array.isArray(b?.['@graph']) &&
+          (b['@graph'] as Record<string, unknown>[]).some((n) => n?.['@type'] === 'FAQPage'),
       );
       expect(graphFaq, `FAQPage dupliqué dans @graph pour ${slug}`).toBe(false);
 
