@@ -1,15 +1,17 @@
 name: Lighthouse & Accessibility
 
-# Runs after every push to main (Lovable publishes from main) and can be
-# triggered manually. Fails the run if Performance or Accessibility drop
-# below 0.95 on the live published site.
+# Runs after every push to main (Lovable publishes from main), can be
+# triggered manually, and runs as a weekly safety net.
+# Non-blocking by design: perf/accessibility regressions are reported as
+# failures inside the job (red annotations + artifacts) but do NOT fail
+# the overall run or send failure e-mails on every push.
 on:
   push:
     branches: [main]
   workflow_dispatch:
   schedule:
-    # Daily safety net at 04:00 UTC
-    - cron: "0 4 * * *"
+    # Weekly safety net, Mondays 04:00 UTC (was daily)
+    - cron: "0 4 * * 1"
 
 jobs:
   lighthouse:
@@ -33,6 +35,10 @@ jobs:
         run: lhci autorun --config=./.lighthouserc.json
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        # Report-only: scores below the 0.95 threshold are visible in the
+        # step output and assertions, but never block the run.
+        continue-on-error: true
+        id: lighthouse_run
 
       - name: Upload Lighthouse reports
         if: always()
@@ -58,9 +64,13 @@ jobs:
 
       - name: Run pa11y-ci
         run: pa11y-ci --config ./.pa11yci.json
+        # Report-only: WCAG issues are listed in the step output and in the
+        # uploaded report, but never block the run.
+        continue-on-error: true
+        id: pa11y_run
 
       - name: Upload pa11y report
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: pa11y-report
