@@ -74,7 +74,7 @@ export default defineTool({
       .from("reservations")
       .select(
         `id, participants, skill_level, status, notes, created_at,
-           daily_group_id,
+           daily_group_id, client_activity,
            daily_groups ( date, activity )`,
       )
       .eq("user_id", userId)
@@ -111,7 +111,9 @@ export default defineTool({
     for (const r of (resvRes.data ?? []) as any[]) {
       const dg = r.daily_groups;
       const date: string | null = dg?.date ?? null;
-      const activity: string = dg?.activity ?? "kitesurf";
+      // F-28-07-05 : activité de la réservation du client (reservations.client_activity),
+      // distincte de l'activité/origine du groupe (daily_groups.activity).
+      const activity: string = r.client_activity ?? dg?.activity ?? "kitesurf";
       items.push({
         id: r.id,
         kind: "reservation",

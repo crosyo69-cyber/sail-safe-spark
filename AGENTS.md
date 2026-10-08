@@ -13,3 +13,4 @@
 - Admin reservation list shows reservations.client_activity as the main activity label and mentions the group activity only as secondary info when it differs.
 - Revenue/season stats and assistant reservation metrics classify visitor reservations by reservations.client_activity; group/occupation metrics (sessions, fill rate, journées, remplissage) keep daily_groups.activity; package metrics keep client_packages.activity.
 - New-reservation admin notifications (notify_new_reservation) title the reservation by reservations.client_activity and mention the group activity only when it differs; package booking confirmations keep the group/package activity — notifications describe what the client booked.
+- MCP list_my_reservations reports each reservation's activity from reservations.client_activity (group activity only as fallback), keeping the same 'activity' field and user_id/RLS scope — the client sees what they booked.

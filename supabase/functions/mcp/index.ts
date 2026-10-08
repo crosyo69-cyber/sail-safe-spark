@@ -96,7 +96,7 @@ var list_my_reservations_default = defineTool2({
     const userId = ctx.getUserId();
     const resvRes = await sb.from("reservations").select(
       `id, participants, skill_level, status, notes, created_at,
-           daily_group_id,
+           daily_group_id, client_activity,
            daily_groups ( date, activity )`
     ).eq("user_id", userId).order("created_at", { ascending: false });
     if (resvRes.error) {
@@ -115,7 +115,7 @@ var list_my_reservations_default = defineTool2({
     for (const r of resvRes.data ?? []) {
       const dg = r.daily_groups;
       const date = dg?.date ?? null;
-      const activity = dg?.activity ?? "kitesurf";
+      const activity = r.client_activity ?? dg?.activity ?? "kitesurf";
       items.push({
         id: r.id,
         kind: "reservation",
