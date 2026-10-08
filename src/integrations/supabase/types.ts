@@ -628,6 +628,7 @@ export type Database = {
           offer_expires_at: string | null
           offer_token_hash: string | null
           offered_at: string | null
+          offered_group_id: string | null
           participants: number
           phone: string | null
           status: string
@@ -644,6 +645,7 @@ export type Database = {
           offer_expires_at?: string | null
           offer_token_hash?: string | null
           offered_at?: string | null
+          offered_group_id?: string | null
           participants?: number
           phone?: string | null
           status?: string
@@ -660,12 +662,21 @@ export type Database = {
           offer_expires_at?: string | null
           offer_token_hash?: string | null
           offered_at?: string | null
+          offered_group_id?: string | null
           participants?: number
           phone?: string | null
           status?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "daily_waitlist_offered_group_id_fkey"
+            columns: ["offered_group_id"]
+            isOneToOne: false
+            referencedRelation: "daily_groups"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       email_send_claims: {
         Row: {
@@ -2488,10 +2499,19 @@ export type Database = {
         }
         Returns: number
       }
+      notify_waitlist_for_group: { Args: { p_group_id: string }; Returns: Json }
       offer_waitlist_spot: {
         Args: {
           p_activity: Database["public"]["Enums"]["activity_type"]
           p_date: string
+        }
+        Returns: Json
+      }
+      offer_waitlist_spot_in: {
+        Args: {
+          p_activity: Database["public"]["Enums"]["activity_type"]
+          p_date: string
+          p_group_id: string
         }
         Returns: Json
       }
