@@ -8,6 +8,13 @@
       "when": 1791429485114,
       "tag": "0000_f28_06_admin_move_reschedule_client_activity",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791430019615,
+      "tag": "0001_f28_07_01_crm_client_activity",
+      "breakpoints": true
     }
   ]
 }
