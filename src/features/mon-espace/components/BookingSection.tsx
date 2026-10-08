@@ -6,7 +6,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarIcon, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { toParisDateOnly } from "@/lib/booking-dates";
+import { Phone } from "lucide-react";
+import { parisToday, toParisDateOnly } from "@/lib/booking-dates";
 
 interface Props {
   packageInactive: boolean;
@@ -16,7 +17,7 @@ interface Props {
   selectedDate: Date | undefined;
   onSelectDate: (d: Date | undefined) => void;
   bookedDates: Set<string>;
-  tomorrow: Date;
+  today: Date;
   activityLabel: string;
   capacity: string;
   busy: boolean;
