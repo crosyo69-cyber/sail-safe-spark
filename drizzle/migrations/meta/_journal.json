@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791429485114,
+      "tag": "0000_f28_06_admin_move_reschedule_client_activity",
+      "breakpoints": true
+    }
+  ]
+}
