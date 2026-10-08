@@ -22,6 +22,13 @@
       "when": 1791448399543,
       "tag": "0002_f28_07_03_assistant_client_activity",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791477620432,
+      "tag": "0003_f28_07_04_notify_new_reservation_client_activity",
+      "breakpoints": true
     }
   ]
 }
