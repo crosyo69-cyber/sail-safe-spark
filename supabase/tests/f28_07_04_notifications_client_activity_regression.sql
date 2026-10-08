@@ -10,9 +10,7 @@ DECLARE
   FUNCTION_LIST text[] := ARRAY['enqueue_booking_confirmation','on_package_booking_created_dg',
     'enqueue_admin_notification','admin_move_group_member','admin_reschedule_booking',
     'book_stage_for_participants','book_stage_for_package'];
-  PROCEDURE_NOOP int;
 
-  -- helper inline : crée une réservation et renvoie la notification
 BEGIN
   SELECT string_agg(md5(pg_get_functiondef(p.oid)), ',' ORDER BY p.proname) INTO fp_before
     FROM pg_proc p JOIN pg_namespace ns ON ns.oid = p.pronamespace
