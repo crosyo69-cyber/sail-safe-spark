@@ -103,7 +103,7 @@ const MonEspace = () => {
               selectedDate={ctrl.selectedDate}
               onSelectDate={ctrl.setSelectedDate}
               bookedDates={ctrl.bookedDates}
-              tomorrow={ctrl.tomorrow}
+              today={ctrl.today}
               activityLabel={ctrl.activityLabel}
               capacity={ctrl.capacity}
               busy={ctrl.busyAction}

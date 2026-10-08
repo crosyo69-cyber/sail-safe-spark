@@ -227,7 +227,7 @@ export const useMonEspace = () => {
     bookedDates,
     selectedDate,
     setSelectedDate,
-    tomorrow: parisStartOfTomorrow(),
+    today: parisStartOfToday(),
     busyAction,
     handleBook,
     handleCancel,
