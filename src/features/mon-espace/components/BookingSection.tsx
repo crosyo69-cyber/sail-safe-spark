@@ -6,7 +6,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarIcon, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { toParisDateOnly } from "@/lib/booking-dates";
+import { Phone } from "lucide-react";
+import { parisToday, toParisDateOnly } from "@/lib/booking-dates";
 
 interface Props {
   packageInactive: boolean;
@@ -16,7 +17,7 @@ interface Props {
   selectedDate: Date | undefined;
   onSelectDate: (d: Date | undefined) => void;
   bookedDates: Set<string>;
-  tomorrow: Date;
+  today: Date;
   activityLabel: string;
   capacity: string;
   busy: boolean;
@@ -62,7 +63,7 @@ export const BookingSection = (p: Props) => (
                 mode="single"
                 selected={p.selectedDate}
                 onSelect={p.onSelectDate}
-                disabled={(d) => d < p.tomorrow || p.bookedDates.has(toParisDateOnly(d))}
+                disabled={(d) => d < p.today || p.bookedDates.has(toParisDateOnly(d))}
                 modifiers={{ booked: (d) => p.bookedDates.has(toParisDateOnly(d)) }}
                 modifiersClassNames={{ booked: "bg-primary/20 text-primary font-bold" }}
                 locale={fr}
@@ -88,6 +89,17 @@ export const BookingSection = (p: Props) => (
                   </p>
                   <p className="font-semibold">
                     {format(p.selectedDate, "EEEE d MMMM yyyy", { locale: fr })}
+                  </p>
+                </div>
+              )}
+              {p.selectedDate && toParisDateOnly(p.selectedDate) === parisToday() && (
+                <div className="bg-accent/10 border border-accent/30 rounded-lg p-3 flex gap-2">
+                  <Phone className="w-4 h-4 text-accent shrink-0 mt-0.5" />
+                  <p className="text-xs text-foreground">
+                    <strong>Inscription le jour même :</strong> contactez directement Yoanne au{" "}
+                    <a href="tel:0672716905" className="underline font-semibold">06 72 71 69 05</a>{" "}
+                    pour connaître immédiatement le spot retenu et l'horaire de départ si vous
+                    n'avez pas reçu le message de la veille.
                   </p>
                 </div>
               )}

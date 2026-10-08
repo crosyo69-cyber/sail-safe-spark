@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { useClientSpace } from "@/hooks/services/useClientSpace";
 import { SESSION_EXPIRED_MESSAGE, useClientSession } from "@/hooks/client/useClientSession";
 import { takePendingCode } from "@/features/mon-espace/session-storage";
-import { parisStartOfTomorrow, toParisDateOnly } from "@/lib/booking-dates";
+import { parisStartOfToday, toParisDateOnly } from "@/lib/booking-dates";
 import { BOOKING_ERRORS, CANCEL_ERRORS, DEFAULT_REMINDERS } from "@/features/mon-espace/constants";
 import {
   activityTitle,
@@ -227,7 +227,7 @@ export const useMonEspace = () => {
     bookedDates,
     selectedDate,
     setSelectedDate,
-    tomorrow: parisStartOfTomorrow(),
+    today: parisStartOfToday(),
     busyAction,
     handleBook,
     handleCancel,
