@@ -15,6 +15,13 @@
       "when": 1791430019615,
       "tag": "0001_f28_07_01_crm_client_activity",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791448399543,
+      "tag": "0002_f28_07_03_assistant_client_activity",
+      "breakpoints": true
     }
   ]
 }

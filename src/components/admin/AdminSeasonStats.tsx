@@ -79,6 +79,8 @@ interface SessionData {
 interface ReservationData {
   id: string;
   daily_group_id: string | null;
+  /** F-28-07-03 : activité pratiquée par le client (graphique stagiaires par activité). */
+  client_activity: string | null;
   participants: number;
   status: string;
   skill_level: string;
@@ -197,7 +199,7 @@ const AdminSeasonStats = () => {
     yearReservations.forEach((r) => {
       const session = sessionMap[r.daily_group_id || ""];
       if (!session) return;
-      const act = session.activity;
+      const act = r.client_activity || session.activity;
       const season = getSeason(session.date);
       if (!map[act]) map[act] = { haute: 0, basse: 0 };
       map[act][season] += r.participants;

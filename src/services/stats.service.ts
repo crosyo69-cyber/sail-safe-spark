@@ -21,7 +21,7 @@ export const statsService = {
   seasonReservations: <T = unknown[],>() =>
     api.query<T>("reservations.season", (db) =>
       (db.from("reservations") as any)
-        .select("id, daily_group_id, participants, status, skill_level, first_name, last_name")
+        .select("id, daily_group_id, client_activity, participants, status, skill_level, first_name, last_name")
         .in("status", ["confirmed", "pending"]),
     ),
 
@@ -29,7 +29,7 @@ export const statsService = {
   revenueReservations: <T = unknown[],>() =>
     api.query<T>("reservations.revenue", (db) =>
       (db.from("reservations") as any)
-        .select("id, participants, status, created_at, stripe_session_id, daily_group_id")
+        .select("id, participants, status, created_at, stripe_session_id, daily_group_id, client_activity")
         .eq("status", "confirmed")
         .not("stripe_session_id", "is", null),
     ),
