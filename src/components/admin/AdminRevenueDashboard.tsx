@@ -80,6 +80,8 @@ interface Reservation {
   created_at: string;
   stripe_session_id: string | null;
   daily_group_id: string | null;
+  /** F-28-07-03 : activité achetée par le client — source du CA par activité. */
+  client_activity: string | null;
 }
 
 interface SessionInfo {
@@ -141,8 +143,7 @@ const AdminRevenueDashboard = () => {
       const date = parseISO(r.created_at);
       if (!isWithinInterval(date, dateRange)) return false;
       if (activityFilter !== "all") {
-        const info = resolve(r);
-        if (info?.activity !== activityFilter) return false;
+        if (r.client_activity !== activityFilter) return false;
       }
       return true;
     });
@@ -162,8 +163,7 @@ const AdminRevenueDashboard = () => {
       const date = parseISO(r.created_at);
       if (!isWithinInterval(date, prevDateRange)) return false;
       if (activityFilter !== "all") {
-        const info = resolve(r);
-        if (info?.activity !== activityFilter) return false;
+        if (r.client_activity !== activityFilter) return false;
       }
       return true;
     });
@@ -190,8 +190,7 @@ const AdminRevenueDashboard = () => {
   const revenueByActivity = useMemo(() => {
     const map: Record<string, number> = {};
     filteredReservations.forEach((r) => {
-      const info = resolve(r);
-      const act = info?.activity || "unknown";
+      const act = r.client_activity || "unknown";
       map[act] = (map[act] || 0) + r.participants * DEPOSIT_PER_PERSON;
     });
     return Object.entries(map)
@@ -255,7 +254,7 @@ const AdminRevenueDashboard = () => {
         const info = resolve(r);
         return {
           ...r,
-          activity: info?.activity || "unknown",
+          activity: r.client_activity || "unknown",
           date: info?.date || "",
           amount: r.participants * DEPOSIT_PER_PERSON,
         };
@@ -364,7 +363,7 @@ const AdminRevenueDashboard = () => {
         const info = resolve(r);
         return {
           date: format(parseISO(r.created_at), "dd/MM/yyyy HH:mm", { locale: fr }),
-          activity: ACTIVITY_LABELS[info?.activity || ""] || info?.activity || "—",
+          activity: ACTIVITY_LABELS[r.client_activity || ""] || r.client_activity || "—",
           participants: `${r.participants}`,
           amount: `${(r.participants * DEPOSIT_PER_PERSON).toLocaleString("fr-FR")} €`,
         };
