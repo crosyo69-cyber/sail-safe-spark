@@ -6,6 +6,10 @@ export type Member = {
   phone: string | null;
   participants: number;
   package_code?: string;
+  /** Activité réellement pratiquée par le client (visiteur : client_activity, pack : activité du pack). */
+  client_activity?: string;
+  /** Horodatage de la réservation (ISO). */
+  booked_at?: string;
 };
 
 export type DailyGroup = {

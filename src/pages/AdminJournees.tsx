@@ -16,6 +16,8 @@ import { WeekDayPicker } from "@/components/admin/journees/WeekDayPicker";
 import { EditGroupDialog } from "@/components/admin/journees/EditGroupDialog";
 import { MoveMemberDialog } from "@/components/admin/journees/MoveMemberDialog";
 import { ACTIVITY_LABEL, type DailyGroup, type Member } from "@/features/admin-journees/types";
+import { TodayBookingsPanel } from "@/components/admin/journees/TodayBookingsPanel";
+import { parisToday } from "@/lib/booking-dates";
 
 const AdminJournees = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -89,6 +91,10 @@ const AdminJournees = () => {
         </div>
 
         <WeekDayPicker date={date} onDateChange={setDate} />
+
+        {format(date, "yyyy-MM-dd") === parisToday() && !loading && (
+          <TodayBookingsPanel groups={groups} />
+        )}
 
         {loading ? (
           <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div>
