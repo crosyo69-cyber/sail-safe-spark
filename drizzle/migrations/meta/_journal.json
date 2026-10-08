@@ -50,6 +50,13 @@
       "when": 1791480710261,
       "tag": "0006_f28_14_waitlist_offer_2h_last_minute",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1791480851372,
+      "tag": "0007_f28_15_waitlist_reoffer_and_stage_kite_priority",
+      "breakpoints": true
     }
   ]
 }
