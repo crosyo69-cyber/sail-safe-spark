@@ -36,6 +36,13 @@
       "when": 1791479135998,
       "tag": "0004_f28_12_admin_groups_member_client_activity",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791480368674,
+      "tag": "0005_f28_13_last_minute_booking_emails",
+      "breakpoints": true
     }
   ]
 }
