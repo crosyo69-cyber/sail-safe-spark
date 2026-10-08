@@ -43,6 +43,13 @@
       "when": 1791480368674,
       "tag": "0005_f28_13_last_minute_booking_emails",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791480710261,
+      "tag": "0006_f28_14_waitlist_offer_2h_last_minute",
+      "breakpoints": true
     }
   ]
 }
