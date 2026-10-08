@@ -44,11 +44,30 @@ interface Reservation {
   notes: string | null;
   stripe_session_id: string | null;
   daily_group_id: string | null;
+  /** Activité pratiquée par le client (source de vérité de l'affichage). */
+  client_activity: string;
   daily_groups: {
     date: string;
+    /** Origine / nature du groupe — information secondaire uniquement. */
     activity: string;
   } | null;
 }
+
+/**
+ * F-28-07-02 — libellé principal = reservations.client_activity ;
+ * le groupe n'est mentionné que s'il diffère de l'activité du client.
+ */
+export const reservationActivityLabels = (
+  r: Pick<Reservation, "client_activity" | "daily_groups">,
+): { clientLabel: string | null; groupLabel: string | null } => {
+  const client = r.client_activity ?? null;
+  const group = r.daily_groups?.activity ?? null;
+  const label = (a: string | null) => (a ? ACTIVITY_LABELS[a] || a : null);
+  return {
+    clientLabel: label(client),
+    groupLabel: group && group !== client ? label(group) : null,
+  };
+};
 
 const AdminReservationList = () => {
   const { toast } = useToast();
@@ -153,13 +172,16 @@ const AdminReservationList = () => {
 
                   {(() => {
                     const date = r.daily_groups?.date ?? null;
-                    const activity = r.daily_groups?.activity ?? null;
-                    if (!date || !activity) return null;
+                    const { clientLabel, groupLabel } = reservationActivityLabels(r);
+                    if (!date || !clientLabel) return null;
                     return (
                       <p className="text-sm text-foreground">
-                        <strong>{ACTIVITY_LABELS[activity] || activity}</strong>
+                        <strong>{clientLabel}</strong>
                         {" — "}
                         {format(new Date(date), "d MMMM yyyy", { locale: fr })}
+                        {groupLabel && (
+                          <span className="text-xs text-muted-foreground"> · Groupe : {groupLabel}</span>
+                        )}
                       </p>
                     );
                   })()}
