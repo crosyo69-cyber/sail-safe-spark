@@ -122,7 +122,7 @@ export const ActivitiesSection = memo(function ActivitiesSection() {
                 {/* Content */}
                 <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-end">
                   {/* Price Badge */}
-                  <div className="absolute top-6 right-6 bg-sunset text-accent-foreground px-4 py-2 rounded-full font-bold text-sm">
+                  <div className="absolute top-6 right-6 bg-sunset-strong text-accent-foreground px-4 py-2 rounded-full font-bold text-sm">
                     {activity.price}
                   </div>
 
