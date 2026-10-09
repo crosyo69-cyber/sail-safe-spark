@@ -64,6 +64,13 @@
       "when": 1791519929257,
       "tag": "0008_f28_09_waitlist_no_double_offer",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1791520422898,
+      "tag": "0009_f28_13_waitlist_confirm_without_phone",
+      "breakpoints": true
     }
   ]
 }
