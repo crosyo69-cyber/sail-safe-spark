@@ -64,7 +64,10 @@ export default {
         },
         navy: "hsl(var(--navy))",
         sand: "hsl(var(--sand))",
-        turquoise: "hsl(var(--turquoise))",
+        turquoise: {
+          DEFAULT: "hsl(var(--turquoise))",
+          strong: "hsl(var(--turquoise-text))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
