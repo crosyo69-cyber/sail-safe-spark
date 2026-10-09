@@ -57,6 +57,13 @@
       "when": 1791480851372,
       "tag": "0007_f28_15_waitlist_reoffer_and_stage_kite_priority",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1791519929257,
+      "tag": "0008_f28_09_waitlist_no_double_offer",
+      "breakpoints": true
     }
   ]
 }
