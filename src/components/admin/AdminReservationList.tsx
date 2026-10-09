@@ -165,9 +165,11 @@ const AdminReservationList = () => {
                     <span className="flex items-center gap-1">
                       <Mail className="w-3 h-3" /> {r.email}
                     </span>
-                    <span className="flex items-center gap-1">
-                      <Phone className="w-3 h-3" /> {r.phone}
-                    </span>
+                    {r.phone?.trim() && (
+                      <span className="flex items-center gap-1">
+                        <Phone className="w-3 h-3" /> {r.phone}
+                      </span>
+                    )}
                   </div>
 
                   {(() => {
