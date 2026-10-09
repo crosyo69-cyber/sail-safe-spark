@@ -25,9 +25,14 @@ export const BlogFilters = ({
     <div className="container mx-auto px-4">
       <div className="max-w-md mx-auto mb-6">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+          <label htmlFor="blog-search-input" className="sr-only">
+            Rechercher un article du blog
+          </label>
+          <Search aria-hidden="true" className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
           <Input
-            type="text"
+            id="blog-search-input"
+            name="blogSearch"
+            type="search"
             placeholder="Rechercher un article..."
             value={searchQuery}
             onChange={(e) => onSearch(e.target.value)}
