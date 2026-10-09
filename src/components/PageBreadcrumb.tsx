@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { Home } from "lucide-react";
 import {
@@ -28,14 +29,14 @@ export function PageBreadcrumb({ items, className }: PageBreadcrumbProps) {
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
               <Link to="/" className="flex items-center gap-1.5 hover:text-primary transition-colors">
-                <Home className="w-4 h-4" />
+                <Home className="w-4 h-4" aria-hidden="true" />
                 <span className="sr-only sm:not-sr-only">Accueil</span>
               </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
 
           {items.map((item, index) => (
-            <div key={index} className="contents">
+            <Fragment key={index}>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 {index === items.length - 1 ? (
@@ -48,7 +49,7 @@ export function PageBreadcrumb({ items, className }: PageBreadcrumbProps) {
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>
-            </div>
+            </Fragment>
           ))}
         </BreadcrumbList>
       </Breadcrumb>

@@ -143,7 +143,7 @@ export const CookieConsent = () => {
                   <Button 
                     onClick={acceptAll}
                     className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                    aria-label="Accepter tous les cookies"
+                    aria-label="Tout accepter : accepter tous les cookies"
                   >
                     Tout accepter
                   </Button>
@@ -151,7 +151,7 @@ export const CookieConsent = () => {
                     onClick={rejectAll}
                     variant="outline"
                     className="border-border hover:bg-accent"
-                    aria-label="Refuser les cookies non essentiels"
+                    aria-label="Tout refuser : refuser les cookies non essentiels"
                   >
                     Tout refuser
                   </Button>

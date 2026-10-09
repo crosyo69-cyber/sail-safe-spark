@@ -107,7 +107,7 @@ export function WebVitalsDashboard() {
       <button
         onClick={() => setIsOpen(true)}
         className={cn(
-          "fixed bottom-4 right-4 z-50 flex items-center gap-2 px-3 py-2 rounded-full shadow-lg transition-all",
+          "fixed bottom-4 left-4 z-50 flex items-center gap-2 px-3 py-2 rounded-full shadow-lg transition-all",
           "bg-background/95 backdrop-blur-sm border border-border hover:shadow-xl",
           "text-sm font-medium"
         )}
