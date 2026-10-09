@@ -60,10 +60,14 @@ export default {
           DEFAULT: "hsl(var(--sunset))",
           light: "hsl(var(--sunset-light))",
           dark: "hsl(var(--sunset-dark))",
+          strong: "hsl(var(--sunset-text))",
         },
         navy: "hsl(var(--navy))",
         sand: "hsl(var(--sand))",
-        turquoise: "hsl(var(--turquoise))",
+        turquoise: {
+          DEFAULT: "hsl(var(--turquoise))",
+          strong: "hsl(var(--turquoise-text))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
