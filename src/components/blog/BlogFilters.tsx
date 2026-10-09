@@ -60,7 +60,7 @@ export const BlogFilters = ({
             {category}
             <span
               className={`text-xs px-1.5 py-0.5 rounded-full ${
-                category === selectedCategory ? "bg-primary-foreground/20" : "bg-muted"
+                category === selectedCategory ? "bg-primary-foreground/20" : "bg-muted text-foreground"
               }`}
             >
               {getCategoryCount(category)}

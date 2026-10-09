@@ -624,7 +624,7 @@ const Tarifs = () => {
                   <a 
                     href={bonCadeauWingfoil} 
                     download="bon-cadeau-wingfoil-hyeres.jpg"
-                    className="inline-flex items-center justify-center gap-2 bg-sunset hover:bg-sunset/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors text-sm touch-target"
+                    className="inline-flex items-center justify-center gap-2 bg-sunset-strong hover:bg-sunset-strong/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors text-sm touch-target"
                   >
                     <Download className="w-4 h-4" />
                     Télécharger le bon
@@ -653,7 +653,7 @@ const Tarifs = () => {
                   <a 
                     href={bonCadeauFoilTracte} 
                     download="bon-cadeau-foil-tracte-hyeres.jpg"
-                    className="inline-flex items-center justify-center gap-2 bg-turquoise hover:bg-turquoise/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors text-sm touch-target"
+                    className="inline-flex items-center justify-center gap-2 bg-turquoise-strong hover:bg-turquoise-strong/90 text-primary-foreground px-4 py-2 rounded-lg font-medium transition-colors text-sm touch-target"
                   >
                     <Download className="w-4 h-4" />
                     Télécharger le bon

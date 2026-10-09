@@ -51,6 +51,7 @@
        Les aplats décoratifs et dégradés gardent --primary / --sunset. */
     --primary-text: 189 94% 30%;
     --sunset-text: 25 95% 39%;
+    --turquoise-text: 174 100% 26%;
 
     /* Gradients */
     --gradient-ocean: linear-gradient(135deg, hsl(189 94% 37%), hsl(174 77% 50%));
@@ -107,6 +108,7 @@
 
     --primary-text: 189 94% 43%;
     --sunset-text: 25 95% 53%;
+    --turquoise-text: 174 77% 50%;
   }
 }
 
