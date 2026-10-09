@@ -207,7 +207,7 @@ const DepositPaymentSection = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary border border-primary/20 text-sm font-medium mb-4">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-background text-primary border border-primary/20 text-sm font-medium mb-4">
               <CreditCard className="w-4 h-4" />
               Paiement sécurisé
             </span>
@@ -332,7 +332,7 @@ const DepositPaymentSection = () => {
 
                   {/* Participant selector */}
                   <div className="flex items-center justify-between bg-muted/50 rounded-lg px-3 py-2 mb-3">
-                    <span className="text-sm text-muted-foreground">Participants</span>
+                    <span className="text-sm text-foreground/80">Participants</span>
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
@@ -364,11 +364,11 @@ const DepositPaymentSection = () => {
                     <div className="bg-muted/50 rounded-lg p-3 mb-4 text-center" aria-live="polite">
                       <p className="text-sm font-semibold text-foreground">
                         Acompte : {(count * STAGE_DEPOSIT_PER_PERSON).toLocaleString("fr-FR")}€{" "}
-                        <span className="font-normal text-muted-foreground">
+                        <span className="font-normal text-foreground/80">
                           ({count} × {STAGE_DEPOSIT_PER_PERSON}€ / personne)
                         </span>
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-foreground/80">
                         5 jours consécutifs — solde à régler sur place
                       </p>
                     </div>
@@ -377,12 +377,12 @@ const DepositPaymentSection = () => {
                     <p className="text-sm font-semibold text-foreground">
                       Acompte : {total}€{" "}
                       {sessionsForDeposit > 1 && (
-                        <span className="font-normal text-muted-foreground">
+                        <span className="font-normal text-foreground/80">
                           ({sessionsForDeposit} × 50€)
                         </span>
                       )}
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-foreground/80">
                       {packOptions
                         ? `Pack ${selectedPack} session${selectedPack > 1 ? "s" : ""} — solde à régler sur place`
                         : "(solde à régler le jour J)"}
