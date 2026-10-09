@@ -386,7 +386,7 @@ const Tarifs = () => {
             <div className="text-center">
               <Link 
                 to="/foil-tracte-hyeres" 
-                className="text-turquoise-strong hover:underline text-sm font-medium transition-colors"
+                className="text-primary underline-offset-2 hover:underline text-sm font-medium transition-colors"
               >
                 En savoir plus sur le foil tracté →
               </Link>
