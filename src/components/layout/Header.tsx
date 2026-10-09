@@ -181,8 +181,12 @@ export function Header() {
 
           {/* Mobile Menu Button */}
           <button
+            type="button"
             className="lg:hidden p-2 rounded-lg"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             {isMobileMenuOpen ? (
               <X className={cn("w-6 h-6", isScrolled ? "text-foreground" : "text-primary-foreground")} />
@@ -195,7 +199,7 @@ export function Header() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 right-0 bg-background/98 backdrop-blur-xl border-b border-border animate-fade-in">
+        <div id="mobile-menu" className="lg:hidden absolute top-full left-0 right-0 bg-background/98 backdrop-blur-xl border-b border-border animate-fade-in">
           <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
             {navigation.map((item) => (
               <div key={item.name}>
