@@ -148,7 +148,7 @@ export const HeroSection = memo(function HeroSection() {
             }}
           />
           <div 
-            className="absolute inset-0 bg-gradient-to-b from-navy/70 via-navy/55 to-navy/95" 
+            className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/75 to-navy/95" 
             style={{ contain: 'strict' }}
           />
         </div>
