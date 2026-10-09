@@ -372,7 +372,7 @@ const Tarifs = () => {
                   } relative`}
                 >
                   {item.popular && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-turquoise text-primary-foreground text-xs px-3 py-1 rounded-full font-bold">
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-turquoise-strong text-primary-foreground text-xs px-3 py-1 rounded-full font-bold">
                       Recommandé
                     </span>
                   )}
@@ -386,7 +386,7 @@ const Tarifs = () => {
             <div className="text-center">
               <Link 
                 to="/foil-tracte-hyeres" 
-                className="text-turquoise hover:text-turquoise/80 text-sm font-medium transition-colors"
+                className="text-turquoise-strong hover:underline text-sm font-medium transition-colors"
               >
                 En savoir plus sur le foil tracté →
               </Link>
@@ -418,7 +418,7 @@ const Tarifs = () => {
                   } relative`}
                 >
                   {item.popular && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-sunset text-primary-foreground text-xs px-3 py-1 rounded-full font-bold">
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-sunset-strong text-primary-foreground text-xs px-3 py-1 rounded-full font-bold">
                       Session Fun
                     </span>
                   )}
@@ -525,7 +525,7 @@ const Tarifs = () => {
         >
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
-              <div className="bg-primary/10 border border-primary/30 rounded-2xl p-6 flex items-start gap-4">
+              <div className="bg-background border border-primary/30 rounded-2xl p-6 flex items-start gap-4">
                 <div className="flex-shrink-0">
                   <AlertCircle className="w-6 h-6 text-primary mt-0.5" />
                 </div>
@@ -731,14 +731,14 @@ const Tarifs = () => {
             <h2 className="font-display text-2xl sm:text-3xl font-bold mb-4">
               Prêt à Réserver ?
             </h2>
-            <p className="mb-8 text-primary-foreground/80">
+            <p className="mb-8 text-primary-foreground">
               Contactez-nous pour réserver votre créneau ou obtenir un devis personnalisé.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="heroFilled" size="lg" className="touch-target" asChild>
                 <Link to="/contact-reservation-kitesurf-hyeres">Réserver en Ligne</Link>
               </Button>
-              <Button variant="hero" size="lg" className="touch-target" asChild>
+              <Button variant="hero" size="lg" className="touch-target bg-transparent hover:bg-navy/20" asChild>
                 <a href="tel:0672716905" onClick={() => trackPhoneClick("tarifs")}>Appeler : 06 72 71 69 05</a>
               </Button>
             </div>

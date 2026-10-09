@@ -78,7 +78,7 @@ export const GallerySection = memo(function GallerySection() {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+          <span className="inline-block px-4 py-2 bg-background border border-primary/20 text-primary rounded-full text-sm font-medium mb-4">
             Notre Univers
           </span>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4">

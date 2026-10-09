@@ -96,7 +96,7 @@ export const SeasonPricingSection = ({
             <div className="p-3 md:p-4 bg-sunset/5 border-b border-sunset/10">
               <ul className="flex flex-wrap gap-2 md:gap-3">
                 {highSeasonAdvantages.map((advantage, idx) => (
-                  <li key={idx} className="flex items-center gap-1.5 md:gap-2 text-xs md:text-sm text-muted-foreground">
+                  <li key={idx} className="flex items-center gap-1.5 md:gap-2 text-xs md:text-sm text-foreground/80">
                     <advantage.icon className="w-3.5 h-3.5 md:w-4 md:h-4 text-sunset flex-shrink-0" />
                     <span>{advantage.text}</span>
                   </li>
@@ -114,7 +114,7 @@ export const SeasonPricingSection = ({
                   } relative flex items-center justify-between gap-3 md:gap-4 transition-all duration-200 hover:bg-background hover:shadow-md hover:scale-[1.02] cursor-pointer`}
                 >
                   {item.popular && (
-                    <span className="absolute -top-2 right-3 md:right-4 bg-sunset text-white text-[10px] md:text-xs px-2 py-0.5 rounded-full font-semibold">
+                    <span className="absolute -top-2 right-3 md:right-4 bg-sunset-strong text-white text-[10px] md:text-xs px-2 py-0.5 rounded-full font-semibold">
                       Populaire
                     </span>
                   )}
@@ -170,7 +170,7 @@ export const SeasonPricingSection = ({
             <div className="p-3 md:p-4 bg-primary/5 border-b border-primary/10">
               <ul className="flex flex-wrap gap-2 md:gap-3">
                 {lowSeasonAdvantages.map((advantage, idx) => (
-                  <li key={idx} className="flex items-center gap-1.5 md:gap-2 text-xs md:text-sm text-muted-foreground">
+                  <li key={idx} className="flex items-center gap-1.5 md:gap-2 text-xs md:text-sm text-foreground/80">
                     <advantage.icon className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary flex-shrink-0" />
                     <span>{advantage.text}</span>
                   </li>
@@ -199,7 +199,7 @@ export const SeasonPricingSection = ({
                   <div className="text-right flex-shrink-0">
                     <p className="font-display text-lg md:text-xl font-bold text-primary">{item.lowSeasonPrice}</p>
                     {item.savings && (
-                      <p className="text-[10px] md:text-xs text-primary/80 font-medium">
+                      <p className="text-[10px] md:text-xs text-primary font-medium">
                         Économisez {item.savings}
                       </p>
                     )}
