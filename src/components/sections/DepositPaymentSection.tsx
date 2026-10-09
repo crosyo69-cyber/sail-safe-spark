@@ -278,8 +278,9 @@ const DepositPaymentSection = () => {
 
                   {/* Name field */}
                   <div className="mb-3">
-                    <Label className="text-xs text-muted-foreground">Nom et prénom *</Label>
+                    <Label htmlFor={`deposit-name-${activity.id}`} className="text-xs text-muted-foreground">Nom et prénom *</Label>
                     <Input
+                      id={`deposit-name-${activity.id}`}
                       value={names[activity.id] || ""}
                       onChange={(e) => setNames((prev) => ({ ...prev, [activity.id]: e.target.value }))}
                       placeholder="Jean Dupont"
@@ -289,8 +290,9 @@ const DepositPaymentSection = () => {
 
                   {/* Phone field */}
                   <div className="mb-3">
-                    <Label className="text-xs text-muted-foreground">Téléphone *</Label>
+                    <Label htmlFor={`deposit-phone-${activity.id}`} className="text-xs text-muted-foreground">Téléphone *</Label>
                     <Input
+                      id={`deposit-phone-${activity.id}`}
                       value={phones[activity.id] || ""}
                       onChange={(e) => setPhones((prev) => ({ ...prev, [activity.id]: e.target.value }))}
                       placeholder="06 12 34 56 78"
@@ -335,6 +337,7 @@ const DepositPaymentSection = () => {
                       <button
                         type="button"
                         onClick={() => updateCount(activity.id, -1)}
+                        aria-label="Diminuer le nombre de participants"
                         disabled={count <= 1}
                         className="w-7 h-7 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:bg-muted disabled:opacity-30 transition-colors"
                       >
@@ -346,6 +349,7 @@ const DepositPaymentSection = () => {
                       <button
                         type="button"
                         onClick={() => updateCount(activity.id, 1)}
+                        aria-label="Augmenter le nombre de participants"
                         disabled={count >= maxParticipantsFor(activity.id)}
                         className="w-7 h-7 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:bg-muted disabled:opacity-30 transition-colors"
                       >

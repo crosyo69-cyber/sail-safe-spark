@@ -74,7 +74,7 @@ export const NewsletterForm = forwardRef<HTMLDivElement, NewsletterFormProps>(
             className="bg-background/10 border-border/30 text-foreground placeholder:text-muted-foreground"
             disabled={isLoading}
           />
-          <Button type="submit" variant="sunset" size="icon" disabled={isLoading}>
+          <Button type="submit" variant="sunset" size="icon" disabled={isLoading} aria-label="S'inscrire à la newsletter">
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (

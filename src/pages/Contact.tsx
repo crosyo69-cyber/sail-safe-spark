@@ -343,10 +343,11 @@ const Contact = () => {
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">
+                      <label htmlFor="contact-firstname" className="block text-sm font-medium text-foreground mb-2">
                         Prénom *
                       </label>
                       <input
+                      id="contact-firstname"
                         type="text"
                         value={formData.firstName}
                         onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
@@ -356,10 +357,11 @@ const Contact = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">
+                      <label htmlFor="contact-lastname" className="block text-sm font-medium text-foreground mb-2">
                         Nom *
                       </label>
                       <input
+                      id="contact-lastname"
                         type="text"
                         value={formData.lastName}
                         onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
@@ -372,10 +374,11 @@ const Contact = () => {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">
+                      <label htmlFor="contact-email" className="block text-sm font-medium text-foreground mb-2">
                         Email *
                       </label>
                       <input
+                      id="contact-email"
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -385,10 +388,11 @@ const Contact = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">
+                      <label htmlFor="contact-phone" className="block text-sm font-medium text-foreground mb-2">
                         Téléphone *
                       </label>
                       <input
+                      id="contact-phone"
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -401,10 +405,11 @@ const Contact = () => {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">
+                      <label htmlFor="contact-activity" className="block text-sm font-medium text-foreground mb-2">
                         Activité souhaitée *
                       </label>
                       <select
+                      id="contact-activity"
                         value={formData.activity}
                         onChange={(e) => setFormData({ ...formData, activity: e.target.value })}
                         className="w-full h-12 px-4 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:border-primary transition-colors"
@@ -418,10 +423,11 @@ const Contact = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">
+                      <label htmlFor="contact-people" className="block text-sm font-medium text-foreground mb-2">
                         Nombre de personnes
                       </label>
                       <select
+                      id="contact-people"
                         value={formData.people}
                         onChange={(e) => setFormData({ ...formData, people: e.target.value })}
                         className="w-full h-12 px-4 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:border-primary transition-colors"
@@ -436,10 +442,11 @@ const Contact = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
+                    <label htmlFor="contact-dates" className="block text-sm font-medium text-foreground mb-2">
                       Dates souhaitées
                     </label>
                     <input
+                      id="contact-dates"
                       type="text"
                       placeholder="Ex: du 15 au 20 juillet"
                       value={formData.dates}
@@ -450,10 +457,11 @@ const Contact = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
+                    <label htmlFor="contact-message" className="block text-sm font-medium text-foreground mb-2">
                       Message
                     </label>
                     <textarea
+                      id="contact-message"
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
