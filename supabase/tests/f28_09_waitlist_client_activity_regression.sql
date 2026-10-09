@@ -40,6 +40,8 @@ BEGIN
   PERFORM notify_waitlist_for_group(v_g);
   SELECT count(*) INTO v_n FROM daily_waitlist WHERE date=d2 AND status='offered';
   IF v_n <> 1 THEN RAISE EXCEPTION 'F28_09_FAIL T9 idempotence offre: %', v_n; END IF;
+  PERFORM offer_waitlist_spot_in(d2, 'stage_100_glisse', NULL); -- chemin du cycle périodique
+  IF (SELECT status FROM daily_waitlist WHERE id=v_ws) <> 'waiting' THEN RAISE EXCEPTION 'F28_09_FAIL T9 cycle: place offerte deux fois'; END IF;
 
   -- T7 : confirmation → réservation Kitesurf dans le groupe Stage ciblé
   v_tok := issue_link_token('waitlist_offer', v_w1::text, now() + interval '1 hour');
