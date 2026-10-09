@@ -16,7 +16,7 @@ BEGIN
   INSERT INTO daily_groups(date, activity, group_index, max_participants, status) VALUES (d1,'kitesurf',1,4,'open') RETURNING id INTO v_g;
   INSERT INTO reservations(daily_group_id, first_name, last_name, email, phone, skill_level, participants, status, client_activity)
     SELECT v_g,'R'||i,'F2809','r'||i||'@test.invalid','0600000000','debutant',1,'confirmed','kitesurf' FROM generate_series(1,4) i;
-  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, participants) VALUES (d1,'kitesurf','W1','F2809','w1@test.invalid',1) RETURNING id INTO v_w1;
+  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, phone, participants) VALUES (d1,'kitesurf','W1','F2809','w1@test.invalid','0600000000',1) RETURNING id INTO v_w1;
   UPDATE reservations SET status='cancelled' WHERE id = (SELECT id FROM reservations WHERE daily_group_id=v_g LIMIT 1);
   SELECT status INTO v_s FROM daily_waitlist WHERE id=v_w1;
   IF v_s <> 'offered' THEN RAISE EXCEPTION 'F28_09_FAIL T1: %', v_s; END IF;
@@ -28,9 +28,9 @@ BEGIN
     VALUES (v_g,'K','F2809','k@test.invalid','0600000000','debutant',1,'confirmed','kitesurf') RETURNING id INTO v_r;
   INSERT INTO reservations(daily_group_id, first_name, last_name, email, phone, skill_level, participants, status, client_activity)
     VALUES (v_g,'Kb','F2809','kb@test.invalid','0600000000','debutant',2,'confirmed','kitesurf'); -- groupe plein (1 Stage + 3 Kite)
-  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, participants, created_at) VALUES (d2,'stage_100_glisse','S','F2809','s@test.invalid',1, now()-interval '3 day') RETURNING id INTO v_ws;
-  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, participants, created_at) VALUES (d2,'kitesurf','K1','F2809','k1@test.invalid',1, now()-interval '2 day') RETURNING id INTO v_w1;
-  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, participants, created_at) VALUES (d2,'kitesurf','K2','F2809','k2@test.invalid',1, now()-interval '1 day') RETURNING id INTO v_w2;
+  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, phone, participants, created_at) VALUES (d2,'stage_100_glisse','S','F2809','s@test.invalid','0600000000',1, now()-interval '3 day') RETURNING id INTO v_ws;
+  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, phone, participants, created_at) VALUES (d2,'kitesurf','K1','F2809','k1@test.invalid','0600000000',1, now()-interval '2 day') RETURNING id INTO v_w1;
+  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, phone, participants, created_at) VALUES (d2,'kitesurf','K2','F2809','k2@test.invalid','0600000000',1, now()-interval '1 day') RETURNING id INTO v_w2;
   UPDATE reservations SET status='cancelled' WHERE id = v_r;
   IF (SELECT status FROM daily_waitlist WHERE id=v_w1) <> 'offered' THEN RAISE EXCEPTION 'F28_09_FAIL T2: Kite non prioritaire'; END IF;
   IF (SELECT offered_group_id FROM daily_waitlist WHERE id=v_w1) IS DISTINCT FROM v_g THEN RAISE EXCEPTION 'F28_09_FAIL T2: groupe cible'; END IF;
@@ -60,14 +60,14 @@ BEGIN
   -- T4 : aucun candidat Kitesurf → repli documenté : liste Stage du jour (comportement antérieur)
   INSERT INTO daily_groups(date, activity, group_index, max_participants, status) VALUES (d3,'stage_100_glisse',1,4,'open') RETURNING id INTO v_g;
   INSERT INTO package_bookings(package_id, status, booking_kind, daily_group_id) VALUES (v_pkg,'confirmed','regular',v_g);
-  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, participants) VALUES (d3,'stage_100_glisse','S3','F2809','s3@test.invalid',1) RETURNING id INTO v_ws;
+  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, phone, participants) VALUES (d3,'stage_100_glisse','S3','F2809','s3@test.invalid','0600000000',1) RETURNING id INTO v_ws;
   v_j := notify_waitlist_for_group(v_g);
   IF (SELECT status FROM daily_waitlist WHERE id=v_ws) <> 'offered' OR (SELECT offered_group_id FROM daily_waitlist WHERE id=v_ws) IS NOT NULL
     THEN RAISE EXCEPTION 'F28_09_FAIL T4 repli: %', v_j; END IF;
 
   -- T5 : groupe Stage vide → jamais d'offre Kitesurf
   INSERT INTO daily_groups(date, activity, group_index, max_participants, status) VALUES (d4,'stage_100_glisse',1,4,'open') RETURNING id INTO v_g;
-  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, participants) VALUES (d4,'kitesurf','K5','F2809','k5@test.invalid',1) RETURNING id INTO v_w1;
+  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, phone, participants) VALUES (d4,'kitesurf','K5','F2809','k5@test.invalid','0600000000',1) RETURNING id INTO v_w1;
   PERFORM notify_waitlist_for_group(v_g);
   IF (SELECT status FROM daily_waitlist WHERE id=v_w1) <> 'waiting' THEN RAISE EXCEPTION 'F28_09_FAIL T5 Stage vide offert au Kite'; END IF;
   IF EXISTS (SELECT 1 FROM daily_groups WHERE date=d4 AND id<>v_g) THEN RAISE EXCEPTION 'F28_09_FAIL T5 groupe créé'; END IF;
@@ -77,7 +77,7 @@ BEGIN
   INSERT INTO package_bookings(package_id, status, booking_kind, daily_group_id) VALUES (v_pkg,'confirmed','regular',v_g);
   INSERT INTO reservations(daily_group_id, first_name, last_name, email, phone, skill_level, participants, status, client_activity)
     VALUES (v_g,'K6','F2809','k6@test.invalid','0600000000','debutant',2,'confirmed','kitesurf');
-  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, participants) VALUES (d5,'kitesurf','K6b','F2809','k6b@test.invalid',2) RETURNING id INTO v_w1;
+  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, phone, participants) VALUES (d5,'kitesurf','K6b','F2809','k6b@test.invalid','0600000000',2) RETURNING id INTO v_w1;
   PERFORM notify_waitlist_for_group(v_g);
   IF (SELECT status FROM daily_waitlist WHERE id=v_w1) <> 'waiting' THEN RAISE EXCEPTION 'F28_09_FAIL T6 surcapacité'; END IF;
 
@@ -96,7 +96,7 @@ BEGIN
   INSERT INTO daily_groups(date, activity, group_index, max_participants, status) VALUES (d6,'wingfoil',1,3,'open') RETURNING id INTO v_g2;
   INSERT INTO reservations(daily_group_id, first_name, last_name, email, phone, skill_level, participants, status, client_activity)
     VALUES (v_g2,'Wg','F2809','wg@test.invalid','0600000000','debutant',3,'confirmed','wingfoil') RETURNING id INTO v_r;
-  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, participants) VALUES (d6,'wingfoil','Wf','F2809','wf@test.invalid',1) RETURNING id INTO v_w1;
+  INSERT INTO daily_waitlist(date, activity, first_name, last_name, email, phone, participants) VALUES (d6,'wingfoil','Wf','F2809','wf@test.invalid','0600000000',1) RETURNING id INTO v_w1;
   UPDATE reservations SET status='cancelled' WHERE id=v_r;
   IF (SELECT status FROM daily_waitlist WHERE id=v_w1) <> 'offered' OR (SELECT offered_group_id FROM daily_waitlist WHERE id=v_w1) IS NOT NULL
     THEN RAISE EXCEPTION 'F28_09_FAIL T10 wingfoil'; END IF;
