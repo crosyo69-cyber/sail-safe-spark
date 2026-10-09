@@ -47,6 +47,11 @@
     --sand: 48 96% 89%;
     --turquoise: 174 77% 50%;
 
+    /* F-28-16 : versions foncées pour textes et boutons (contraste WCAG AA ≥ 4,5:1 sur blanc).
+       Les aplats décoratifs et dégradés gardent --primary / --sunset. */
+    --primary-text: 189 94% 30%;
+    --sunset-text: 25 95% 39%;
+
     /* Gradients */
     --gradient-ocean: linear-gradient(135deg, hsl(189 94% 37%), hsl(174 77% 50%));
     --gradient-sunset: linear-gradient(135deg, hsl(25 95% 53%), hsl(32 98% 60%));
@@ -201,6 +206,11 @@
 }
 
 @layer utilities {
+  /* F-28-16 : textes et boutons en version foncée accessible. */
+  .text-primary { color: hsl(var(--primary-text)); }
+  .text-sunset { color: hsl(var(--sunset-text)); }
+  .bg-primary { background-color: hsl(var(--primary-text)); }
+
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
