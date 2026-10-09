@@ -32,7 +32,7 @@ export const BlogFilters = ({
           <Input
             id="blog-search-input"
             name="blogSearch"
-            type="search"
+            type="text"
             placeholder="Rechercher un article..."
             value={searchQuery}
             onChange={(e) => onSearch(e.target.value)}
