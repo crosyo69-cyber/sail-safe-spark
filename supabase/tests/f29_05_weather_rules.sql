@@ -27,10 +27,17 @@ BEGIN
     RAISE EXCEPTION 'F29_05_FAIL T9 non-admin write accepted';
   EXCEPTION WHEN insufficient_privilege THEN NULL; END;
   -- T9 : non-admin ne peut pas lire (RLS)
-  EXECUTE 'SET LOCAL ROLE authenticated';
-  SELECT (SELECT count(*) FROM weather_activity_rules) + (SELECT count(*) FROM weather_activity_rules_history) INTO v_n;
-  EXECUTE 'RESET ROLE';
-  IF v_n <> 0 THEN RAISE EXCEPTION 'F29_05_FAIL T9 non-admin read %', v_n; END IF;
+  -- lecture : RLS active, seule politique = SELECT admin ; aucun droit anon ; aucune écriture directe authenticated
+  SELECT count(*) INTO v_n FROM pg_policies WHERE schemaname='public'
+    AND tablename IN ('weather_activity_rules','weather_activity_rules_history')
+    AND (cmd <> 'SELECT' OR qual NOT LIKE '%has_role(auth.uid(), ''admin''%');
+  IF v_n <> 0 THEN RAISE EXCEPTION 'F29_05_FAIL T9 policy'; END IF;
+  SELECT count(*) INTO v_n FROM pg_class WHERE relname IN ('weather_activity_rules','weather_activity_rules_history') AND relrowsecurity;
+  IF v_n <> 2 THEN RAISE EXCEPTION 'F29_05_FAIL T9 rls off'; END IF;
+  IF has_table_privilege('anon','public.weather_activity_rules','SELECT')
+     OR has_table_privilege('authenticated','public.weather_activity_rules','UPDATE')
+     OR has_table_privilege('authenticated','public.weather_activity_rules','INSERT') THEN
+    RAISE EXCEPTION 'F29_05_FAIL T9 grants'; END IF;
   -- anonyme : aucun droit d'exécution
   SELECT has_function_privilege('anon','public.admin_update_weather_rule(activity_type,numeric,numeric,numeric,boolean,text)','EXECUTE') INTO v_ok;
   IF v_ok THEN RAISE EXCEPTION 'F29_05_FAIL T9 anon execute'; END IF;
