@@ -286,12 +286,12 @@ export default function CoursPumpfoil() {
       </Helmet>
 
       <Header />
-      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
+      <PageBreadcrumb items={breadcrumbItems} className="hero-split-breadcrumb" />
 
       <main>
         {/* Hero Section */}
-        <section className="relative min-h-[60vh] flex items-center pt-20">
-          <div className="absolute inset-0">
+        <section className="hero-split">
+          <div className="hero-split-photo">
             <img
               src={pumpfoilImage}
               alt="Cours Pumpfoil Hyères - Dock Start Pump Foil école KiteSurf Passion Var"
@@ -300,13 +300,12 @@ export default function CoursPumpfoil() {
               fetchPriority="high"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-navy/70 via-navy/40 to-transparent" />
           </div>
 
-          <div className="container mx-auto px-4 relative z-10">
+          <div className="hero-split-panel">
             <div className="max-w-2xl">
               <span className="inline-block text-sunset font-semibold mb-4">Nouveau Sport</span>
-              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-primary-foreground mb-6">
+              <h1 className="font-display text-[2.25rem] leading-[1.05] sm:text-5xl xl:text-6xl font-black text-primary-foreground mb-5">
                 Cours{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-ocean to-turquoise">
                   Pumpfoil

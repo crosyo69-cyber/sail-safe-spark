@@ -229,13 +229,13 @@ const DeposesMer = () => {
       </Helmet>
 
       <Header />
-      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
+      <PageBreadcrumb items={breadcrumbItems} className="hero-split-breadcrumb" />
 
       <main>
         {/* Hero */}
-        <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
+        <section className="hero-split">
           {/* Background Image */}
-          <div className="absolute inset-0">
+          <div className="hero-split-photo">
             <img
               src={bateauSecurite}
               alt="Bateau assistance kitesurf Hyères - Déposes en mer école KiteSurf Passion Almanarre Var"
@@ -244,18 +244,17 @@ const DeposesMer = () => {
               fetchPriority="high"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/25 to-background" />
           </div>
 
           {/* Content */}
-          <div className="container mx-auto px-4 text-center relative z-10 pt-32 pb-16">
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-primary-foreground mb-6 drop-shadow-lg">
+          <div className="hero-split-panel">
+            <h1 className="font-display text-[2.25rem] leading-[1.05] sm:text-5xl xl:text-6xl font-black text-primary-foreground mb-5">
               Déposes en{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-turquoise to-primary-foreground">
                 Mer
               </span>
             </h1>
-            <p className="text-primary-foreground/90 text-lg max-w-2xl mx-auto mb-8 drop-shadow-md">
+            <p className="text-primary-foreground/90 text-lg max-w-2xl mx-auto mb-8">
               Accédez aux meilleurs spots de kitesurf de la baie d'Hyères en toute sécurité. 
               Notre bateau vous dépose directement sur zone pour des sessions inoubliables.
             </p>
