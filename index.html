@@ -238,7 +238,21 @@
     }
     </script>
     
-    <!-- Hero image preload is injected dynamically by HeroSection to match Vite-hashed paths -->
+    <!-- Homepage only: start the responsive photo request before loading React. -->
+    <script>
+      if (window.location.pathname === '/') {
+        var heroPreload = document.createElement('link');
+        heroPreload.rel = 'preload';
+        heroPreload.as = 'image';
+        heroPreload.type = 'image/webp';
+        heroPreload.href = '/images/hero-kitesurf-1920w.webp';
+        heroPreload.setAttribute('imagesrcset', '/images/hero-kitesurf-768w.webp 768w, /images/hero-kitesurf-1280w.webp 1280w, /images/hero-kitesurf-1920w.webp 1920w');
+        heroPreload.setAttribute('imagesizes', '(min-width: 1024px) 60vw, 100vw');
+        heroPreload.setAttribute('fetchpriority', 'high');
+        heroPreload.setAttribute('data-hero-preload', 'true');
+        document.head.appendChild(heroPreload);
+      }
+    </script>
     
     <!-- Critical CSS inline for faster FCP/LCP -->
     <style>
