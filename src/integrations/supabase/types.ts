@@ -1835,6 +1835,36 @@ export type Database = {
         }
         Relationships: []
       }
+      weather_forecast_cache: {
+        Row: {
+          fetched_at: string | null
+          forecast_date: string
+          hourly: Json | null
+          last_attempt_at: string
+          last_error: string | null
+          location: string
+          status: string
+        }
+        Insert: {
+          fetched_at?: string | null
+          forecast_date: string
+          hourly?: Json | null
+          last_attempt_at?: string
+          last_error?: string | null
+          location?: string
+          status?: string
+        }
+        Update: {
+          fetched_at?: string | null
+          forecast_date?: string
+          hourly?: Json | null
+          last_attempt_at?: string
+          last_error?: string | null
+          location?: string
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       client_credit_wallet: {

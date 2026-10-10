@@ -71,6 +71,13 @@
       "when": 1791520422898,
       "tag": "0009_f28_13_waitlist_confirm_without_phone",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1791632628766,
+      "tag": "0010_weather_forecast_cache",
+      "breakpoints": true
     }
   ]
 }
