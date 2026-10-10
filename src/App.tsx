@@ -52,6 +52,7 @@ const PreferencesMarketing = lazyWithChunkRecovery(() => import("./pages/Prefere
 const Reserver = lazyWithChunkRecovery(() => import("./pages/Reserver"));
 const OAuthConsent = lazyWithChunkRecovery(() => import("./pages/OAuthConsent"));
 const AdminJournees = lazyWithChunkRecovery(() => import("./pages/AdminJournees"));
+const AdminReglesMeteo = lazyWithChunkRecovery(() => import("./pages/AdminReglesMeteo"));
 const AdminCredits = lazyWithChunkRecovery(() => import("./pages/AdminCredits"));
 const AdminCRM = lazyWithChunkRecovery(() => import("./pages/AdminCRM"));
 const AdminCampagnes = lazyWithChunkRecovery(() => import("./pages/AdminCampagnes"));
@@ -137,6 +138,7 @@ const App = () => {
                 <Route path="/merci" element={<Merci />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/admin/journees" element={<AdminJournees />} />
+                <Route path="/admin/regles-meteo" element={<AdminReglesMeteo />} />
                 <Route path="/admin/credits" element={<AdminCredits />} />
                 <Route path="/admin/crm" element={<AdminCRM />} />
                 <Route path="/admin/campagnes" element={<AdminCampagnes />} />
