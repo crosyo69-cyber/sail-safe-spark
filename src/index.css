@@ -179,6 +179,12 @@
     background-image: radial-gradient(ellipse farthest-corner at center, hsl(var(--navy) / 0.74) 0%, hsl(var(--navy) / 0.66) 58%, hsl(var(--navy) / 0) 74%);
   }
 
+  @media (max-width: 639px) {
+    .home-hero-copy h1::before {
+      background-image: radial-gradient(ellipse farthest-corner at center, hsl(var(--navy) / 0.82) 0%, hsl(var(--navy) / 0.76) 60%, hsl(var(--navy) / 0) 76%);
+    }
+  }
+
   .home-hero-copy p {
     text-shadow: 0 1px 2px hsl(var(--navy) / 0.85), 0 2px 12px hsl(var(--navy) / 0.6);
   }
