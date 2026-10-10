@@ -78,6 +78,13 @@
       "when": 1791632628766,
       "tag": "0010_weather_forecast_cache",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1791648866596,
+      "tag": "0011_weather_activity_rules",
+      "breakpoints": true
     }
   ]
 }
