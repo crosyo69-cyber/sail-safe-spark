@@ -19,3 +19,9 @@
 - [x] Vérification ciblée du LCP Tarifs / Contact : titres principaux, pas de modification globale des chargements.
 - [x] Mesures locales avant/après et aperçus ordinateur/mobile ; aucune publication.
 - [ ] Certification Performance ≥95 en production : bloquée par l'absence de mesure d'une version de production contenant ces corrections, sans publication autorisée.
+
+# F-28-30 — Menu mobile
+
+- [x] Audit validé du panneau mobile.
+- [x] Panneau opaque, liens et sous-menus accessibles, défilement interne et blocage de la page derrière, uniquement sous 1024 px.
+- [x] Vérifier accueil et Tarifs à 360/390 px, mesures et aperçus des trois états, sans publication : fond rgb(15,23,42), alpha 1, aucun flou, contraste 17,85:1 (sous-menus 14,63:1), liens 18px et ≥48px, Échap et navigation rétablissent le défilement.

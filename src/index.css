@@ -44,6 +44,12 @@
     --sunset-light: 32 98% 60%;
     --sunset-dark: 21 90% 48%;
     --navy: 222 47% 11%;
+    /* Complete opaque tokens independent of page and theme. */
+    --mobile-menu-background: #0f172a;
+    --mobile-menu-submenu: #1e293b;
+    --mobile-menu-foreground: #ffffff;
+    --mobile-menu-divider: #475569;
+    --mobile-menu-shadow: 0 8px 20px hsl(222 47% 11% / 0.3);
     --sand: 48 96% 89%;
     --turquoise: 174 77% 50%;
 
@@ -388,5 +394,46 @@
     .hero-split-panel .flex-wrap,
     .hero-split-panel .justify-center { justify-content: flex-start; }
     .hero-split-panel .mx-auto { margin-left: 0; }
+  }
+}
+
+/* F-28-30 — only the mobile navigation panel. */
+@layer components {
+  @media (max-width: 1023px) {
+    .site-header { box-shadow: var(--mobile-menu-shadow); }
+    .mobile-menu-panel {
+      z-index: 60;
+      background-color: var(--mobile-menu-background, #0f172a);
+      color: var(--mobile-menu-foreground);
+      opacity: 1;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      box-shadow: var(--mobile-menu-shadow);
+      border-bottom: 1px solid var(--mobile-menu-divider);
+      max-height: calc(100vh - var(--mobile-header-height, 80px));
+      max-height: calc(100dvh - var(--mobile-header-height, 80px));
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    #mobile-menu .mobile-menu-link {
+      min-height: 48px;
+      height: auto;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      font-size: 18px;
+      line-height: 28px;
+      color: var(--mobile-menu-foreground);
+      border-bottom: 1px solid var(--mobile-menu-divider);
+      border-radius: 0;
+      white-space: normal;
+    }
+    .mobile-menu-submenu, #mobile-menu .mobile-menu-link:hover {
+      background-color: var(--mobile-menu-submenu);
+      color: var(--mobile-menu-foreground);
+    }
+    #mobile-menu .mobile-menu-link:focus-visible, .mobile-menu-phone:focus-visible, .mobile-menu-toggle:focus-visible {
+      outline: 2px solid var(--mobile-menu-foreground);
+      outline-offset: -3px;
+    }
   }
 }
