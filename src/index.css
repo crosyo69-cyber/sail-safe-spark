@@ -376,8 +376,8 @@
   .hero-split-photo { @apply relative w-full aspect-[16/10] overflow-hidden lg:aspect-auto lg:h-full; }
   .hero-split-photo img,
   .hero-split-photo > div { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .hero-split-panel { @apply bg-navy px-5 sm:px-8 lg:px-12 py-10 lg:py-14; display: flex; flex-direction: column; justify-content: center; text-align: center; }
-  @media (min-width: 1024px) { .hero-split-panel { text-align: left; } }
+  .hero-split-panel { @apply bg-navy px-5 sm:px-8 lg:px-12 py-10 lg:py-14; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  @media (min-width: 1024px) { .hero-split-panel { text-align: left; align-items: flex-start; } }
   .hero-split-panel .text-foreground,
   .hero-split-panel .text-muted-foreground { color: hsl(var(--primary-foreground) / 0.85); }
   .hero-split-panel .text-sunset { color: hsl(var(--sunset)); }
