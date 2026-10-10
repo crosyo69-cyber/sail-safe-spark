@@ -40,18 +40,18 @@ const dropPrices = [
 const advantages = [
   {
     icon: Anchor,
-    title: "Accès aux Meilleurs Spots",
-    description: "Dépose directe sur les zones de navigation optimales de la baie d'Hyères et du spot de l'Almanarre."
+    title: "Accès aux Zones de Navigation",
+    description: "Dépose en bateau sur les zones de navigation de la baie d'Hyères et de l'Almanarre, selon les conditions du jour."
   },
   {
     icon: Shield,
-    title: "Sécurité Maximale",
+    title: "Bateau d'Assistance sur Zone",
     description: "Bateau d'assistance permanent sur zone. Encadrement professionnel pour naviguer en toute sérénité."
   },
   {
     icon: MapPin,
-    title: "Flexibilité Totale",
-    description: "Nous nous adaptons aux conditions météo pour vous déposer sur le meilleur spot du jour (Almanarre, Giens, baie d'Hyères)."
+    title: "Lieu Choisi Selon la Météo",
+    description: "Le lieu de dépose est choisi selon les conditions météo du jour : Almanarre, Giens ou baie d'Hyères."
   },
   {
     icon: Users,
@@ -74,7 +74,7 @@ const DeposesMer = () => {
         <title>Déposes Mer Kitesurf Hyères | Kitesurf Passion – Bateau Almanarre</title>
         <meta
           name="description"
-          content="Service de déposes en mer pour kitesurf à Hyères. Bateau sécurité sur l'Almanarre et Giens. Accès aux meilleurs spots dès 45€. Réservez votre dépose."
+          content="Service de déposes en mer pour kitesurf à Hyères. Bateau sécurité sur l'Almanarre et Giens. Dépose en bateau dès 45€. Réservez votre dépose."
         />
         <meta
           name="keywords"
@@ -86,7 +86,7 @@ const DeposesMer = () => {
         
         {/* Open Graph */}
         <meta property="og:title" content="Déposes en Mer Kitesurf Hyères | Kitesurf Passion – Bateau Almanarre" />
-        <meta property="og:description" content="Accédez aux meilleurs spots kitesurf de Hyères par bateau. Dépose en mer sécurisée dès 45€. Almanarre, Giens, baie d'Hyères." />
+        <meta property="og:description" content="Accédez aux zones de navigation de Hyères par bateau. Dépose en mer sécurisée dès 45€. Almanarre, Giens, baie d'Hyères." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.kitesurfpassion.fr/deposes-mer-kitesurf-hyeres" />
         <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
@@ -172,7 +172,7 @@ const DeposesMer = () => {
                 name: "Qu'est-ce qu'une dépose en mer pour le kitesurf ?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Une dépose en mer est un service de transport en bateau qui vous emmène directement sur les meilleurs spots de navigation. Vous évitez le départ depuis la plage et accédez à des zones de kitesurf optimales sur la baie d'Hyères, l'Almanarre ou la presqu'île de Giens."
+                  text: "Une dépose en mer est un transport en bateau vers une zone de navigation. Vous évitez le départ depuis la plage. Le lieu de dépose, dans la baie d'Hyères, à l'Almanarre ou autour de Giens, est choisi selon la météo et les zones autorisées."
                 }
               },
               {
@@ -188,7 +188,7 @@ const DeposesMer = () => {
                 name: "Le bateau de sécurité reste-t-il sur zone pendant ma session ?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Oui, notre bateau d'assistance reste sur zone pendant toute la durée de votre session. Un professionnel veille à votre sécurité et peut intervenir rapidement en cas de besoin. C'est la garantie de naviguer sereinement sur les spots de Hyères."
+                  text: "Oui, notre bateau d'assistance reste sur zone pendant toute la durée de votre session. Un professionnel veille à votre sécurité et peut intervenir rapidement en cas de besoin. La présence du bateau ne dispense pas de respecter les consignes et les règles de navigation."
                 }
               },
               {
@@ -196,7 +196,7 @@ const DeposesMer = () => {
                 name: "Puis-je combiner location de matériel et dépose en mer ?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Absolument ! Notre formule Location + Dépose à 80€ inclut le matériel complet (aile, planche, harnais) et la dépose en mer. C'est la solution idéale pour les riders autonomes en voyage qui n'ont pas apporté leur équipement."
+                  text: "Absolument ! Notre formule Location + Dépose à 80€ inclut le matériel complet (aile, planche, harnais) et la dépose en mer. Cette formule s'adresse aux pratiquants autonomes qui souhaitent louer le matériel pour leur session."
                 }
               },
               {
@@ -204,7 +204,7 @@ const DeposesMer = () => {
                 name: "Sur quels spots les déposes en mer sont-elles possibles ?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Nous proposons des déposes sur l'Almanarre, la presqu'île de Giens et la baie d'Hyères. Le choix du spot dépend des conditions météo du jour. Notre connaissance locale nous permet de vous placer sur la meilleure zone pour votre session."
+                  text: "Nous proposons des déposes sur l'Almanarre, la presqu'île de Giens et la baie d'Hyères. Le choix du spot dépend des conditions météo du jour. La zone de dépose est choisie selon le vent, l'état de la mer et les zones autorisées."
                 }
               },
               {
@@ -212,7 +212,7 @@ const DeposesMer = () => {
                 name: "Le carnet de 10 déposes est-il nominatif ?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Le carnet de 10 déposes peut être partagé entre plusieurs personnes (famille, groupe d'amis). À 30€ la dépose au lieu de 45€, c'est l'offre idéale pour les pratiquants réguliers sur les spots de Hyères. Validité d'un an."
+                  text: "Le carnet de 10 déposes peut être partagé entre plusieurs personnes (famille, groupe d'amis). Le tarif revient à 30€ par dépose, contre 45€ à l'unité. Validité d'un an."
                 }
               }
             ]
@@ -255,8 +255,8 @@ const DeposesMer = () => {
               </span>
             </h1>
             <p className="text-primary-foreground/90 text-lg max-w-2xl mx-auto mb-8">
-              Accédez aux meilleurs spots de kitesurf de la baie d'Hyères en toute sécurité. 
-              Notre bateau vous dépose directement sur zone pour des sessions inoubliables.
+              Notre bateau vous dépose sur une zone de navigation dans la baie d'Hyères,
+              choisie selon les conditions du jour. Le bateau d'assistance reste sur zone pendant la session.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="heroFilled" size="lg" asChild>
@@ -381,12 +381,12 @@ const DeposesMer = () => {
               <div className="bg-card rounded-2xl p-6 border border-border/50 text-center">
                 <MapPin className="w-8 h-8 text-primary mx-auto mb-4" />
                 <h3 className="font-display font-bold text-foreground mb-2">L'Almanarre</h3>
-                <p className="text-muted-foreground text-sm">Spot emblématique idéal pour le kitesurf avec vents réguliers.</p>
+                <p className="text-muted-foreground text-sm">Zone de navigation à Hyères, choisie selon le vent et l'état de la mer.</p>
               </div>
               <div className="bg-card rounded-2xl p-6 border border-border/50 text-center">
                 <MapPin className="w-8 h-8 text-primary mx-auto mb-4" />
                 <h3 className="font-display font-bold text-foreground mb-2">Presqu'île de Giens</h3>
-                <p className="text-muted-foreground text-sm">Zone protégée avec d'excellentes conditions de navigation.</p>
+                <p className="text-muted-foreground text-sm">Zones de navigation autour de Giens, choisies selon la météo et la réglementation.</p>
               </div>
               <div className="bg-card rounded-2xl p-6 border border-border/50 text-center">
                 <MapPin className="w-8 h-8 text-primary mx-auto mb-4" />
