@@ -263,7 +263,6 @@ const MentionsLegales = () => {
         <PageBreadcrumb 
           className="hero-split-breadcrumb"
           items={[
-            { label: "Accueil", href: "/" },
             { label: "Mentions Légales" }
           ]} 
         />

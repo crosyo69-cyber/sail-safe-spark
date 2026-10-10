@@ -80,7 +80,6 @@ const PolitiqueConfidentialite = () => {
         <PageBreadcrumb 
           className="hero-split-breadcrumb"
           items={[
-            { label: "Accueil", href: "/" },
             { label: "Politique de Confidentialité" }
           ]} 
         />
