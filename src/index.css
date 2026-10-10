@@ -176,7 +176,7 @@
     inset: -24px -32px;
     z-index: -1;
     pointer-events: none;
-    background-image: radial-gradient(ellipse closest-side at center, hsl(var(--navy) / 0.72) 0%, hsl(var(--navy) / 0.62) 70%, hsl(var(--navy) / 0) 100%);
+    background-image: radial-gradient(ellipse farthest-corner at center, hsl(var(--navy) / 0.74) 0%, hsl(var(--navy) / 0.66) 58%, hsl(var(--navy) / 0) 74%);
   }
 
   .home-hero-copy p {
