@@ -175,7 +175,7 @@ export const HeroSection = memo(function HeroSection() {
         <div className="home-hero-copy max-w-4xl mx-auto">
           {/* Pre-title — Fixed offer clarity (no slide dependency) */}
           <div 
-            className="inline-flex items-center gap-2 bg-sunset/30 backdrop-blur-sm border border-sunset/60 rounded-full px-4 py-2 mb-6 animate-fade-in shadow-lg"
+            className="inline-flex items-center gap-2 bg-navy/70 backdrop-blur-sm border border-sunset/60 rounded-full px-4 py-2 mb-6 animate-fade-in shadow-lg"
           >
             <Shield className="w-4 h-4 text-sunset-light" />
             <span className="text-primary-foreground text-xs sm:text-sm font-semibold">

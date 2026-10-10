@@ -59,7 +59,7 @@
     --gradient-hero: linear-gradient(180deg, transparent 0%, hsl(222 47% 11% / 0.7) 100%);
     /* Home photo and localized copy protection are independent. */
     --gradient-home-photo: linear-gradient(180deg, hsl(var(--navy) / 0.70) 0%, hsl(var(--navy) / 0.45) 9%, hsl(var(--navy) / 0) 18%, hsl(var(--navy) / 0) 80%, hsl(var(--navy) / 0.35) 100%);
-    --gradient-home-copy: radial-gradient(ellipse closest-side at center, hsl(var(--navy) / 0.50) 0%, hsl(var(--navy) / 0.42) 55%, hsl(var(--navy) / 0.22) 80%, hsl(var(--navy) / 0) 100%);
+    --gradient-home-copy: radial-gradient(ellipse closest-side at center, hsl(var(--navy) / 0.74) 0%, hsl(var(--navy) / 0.70) 60%, hsl(var(--navy) / 0.40) 82%, hsl(var(--navy) / 0) 100%);
     --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.1), hsl(0 0% 100% / 0.05));
 
     /* Shadows */
@@ -172,7 +172,7 @@
   .home-hero-copy::before {
     content: '';
     position: absolute;
-    inset: -60px -120px;
+    inset: -40px -90px;
     z-index: -1;
     pointer-events: none;
     background-image: var(--gradient-home-copy);
