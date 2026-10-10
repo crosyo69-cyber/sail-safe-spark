@@ -44,10 +44,17 @@ const navigation = [
 ];
 
 export function Header() {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [hasScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const location = useLocation();
+  // Pages whose top is light (no navy hero/breadcrumb band): keep the solid header so text stays readable
+  const LIGHT_TOP_PAGES = [
+    "/tarifs-cours-kitesurf-wingfoil-hyeres",
+    "/contact-reservation-kitesurf-hyeres",
+    "/a-propos-ecole-kitesurf-hyeres",
+  ];
+  const isScrolled = hasScrolled || LIGHT_TOP_PAGES.includes(location.pathname);
 
   useEffect(() => {
     const handleScroll = () => {
