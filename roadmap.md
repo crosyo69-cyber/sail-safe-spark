@@ -9,6 +9,7 @@
 # F-28-27
 
 - [x] Audit des cinq pages et validation du périmètre minimal.
-- [ ] Préchargement accueil et logos hors écran, sans changement visuel.
-- [ ] Vérification ciblée du LCP Tarifs / Contact.
-- [ ] Mesures avant/après et aperçus ordinateur/mobile ; aucune publication.
+- [x] Préchargement accueil et logos hors écran, sans changement visuel.
+- [x] Vérification ciblée du LCP Tarifs / Contact : titres principaux, pas de modification globale des chargements.
+- [x] Mesures locales avant/après et aperçus ordinateur/mobile ; aucune publication.
+- [ ] Certification Performance ≥95 en production : bloquée par l'absence de mesure d'une version de production contenant ces corrections, sans publication autorisée.
