@@ -58,8 +58,8 @@
     --gradient-sunset: linear-gradient(135deg, hsl(25 95% 53%), hsl(32 98% 60%));
     --gradient-hero: linear-gradient(180deg, transparent 0%, hsl(222 47% 11% / 0.7) 100%);
     /* Home photo and localized copy protection are independent. */
-    --gradient-home-photo: linear-gradient(180deg, hsl(var(--navy) / 0.90) 0%, hsl(var(--navy) / 0.88) 10%, hsl(var(--navy) / 0.18) 22%, hsl(var(--navy) / 0.12) 75%, hsl(var(--navy) / 0.48) 100%);
-    --gradient-home-copy: radial-gradient(ellipse closest-side at center, hsl(var(--navy) / 0.80) 0%, hsl(var(--navy) / 0.78) 55%, hsl(var(--navy) / 0.64) 75%, hsl(var(--navy) / 0) 100%);
+    --gradient-home-photo: linear-gradient(180deg, hsl(var(--navy) / 0.70) 0%, hsl(var(--navy) / 0.45) 9%, hsl(var(--navy) / 0) 18%, hsl(var(--navy) / 0) 80%, hsl(var(--navy) / 0.35) 100%);
+    --gradient-home-copy: radial-gradient(ellipse closest-side at center, hsl(var(--navy) / 0.74) 0%, hsl(var(--navy) / 0.70) 60%, hsl(var(--navy) / 0.40) 82%, hsl(var(--navy) / 0) 100%);
     --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.1), hsl(0 0% 100% / 0.05));
 
     /* Shadows */
@@ -165,10 +165,34 @@
     isolation: isolate;
   }
 
+  .home-hero-copy h1 {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .home-hero-copy h1::before {
+    content: '';
+    position: absolute;
+    inset: -24px -32px;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(ellipse farthest-corner at center, hsl(var(--navy) / 0.74) 0%, hsl(var(--navy) / 0.66) 58%, hsl(var(--navy) / 0) 74%);
+  }
+
+  @media (max-width: 639px) {
+    .home-hero-copy h1::before {
+      background-image: radial-gradient(ellipse farthest-corner at center, hsl(var(--navy) / 0.82) 0%, hsl(var(--navy) / 0.76) 60%, hsl(var(--navy) / 0) 76%);
+    }
+  }
+
+  .home-hero-copy p {
+    text-shadow: 0 1px 2px hsl(var(--navy) / 0.85), 0 2px 12px hsl(var(--navy) / 0.6);
+  }
+
   .home-hero-copy::before {
     content: '';
     position: absolute;
-    inset: -180px -260px;
+    inset: -40px -90px;
     z-index: -1;
     pointer-events: none;
     background-image: var(--gradient-home-copy);
