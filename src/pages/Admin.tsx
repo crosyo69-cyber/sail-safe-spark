@@ -21,7 +21,7 @@ import AdminAlertsCenter from "@/components/admin/AdminAlertsCenter";
 import AdminNotificationsBell from "@/components/admin/AdminNotificationsBell";
 import AdminPlatformHealth from "@/components/admin/AdminPlatformHealth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell, Wallet, Megaphone, Settings, Bot, Activity } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell, Wallet, Megaphone, Settings, Bot, Activity, Wind } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -70,6 +70,9 @@ const Admin = () => {
             </Button>
             <Button asChild variant="outline" size="sm">
               <Link to="/admin/journees"><CalendarDays className="w-4 h-4 mr-2" />Gestion des journées</Link>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/admin/regles-meteo"><Wind className="w-4 h-4 mr-2" />Règles météo</Link>
             </Button>
             <Button asChild variant="outline" size="sm">
               <Link to="/admin/credits"><Wallet className="w-4 h-4 mr-2" />Gestion des crédits</Link>

@@ -1793,6 +1793,78 @@ export type Database = {
         }
         Relationships: []
       }
+      weather_activity_rules: {
+        Row: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          change_reason: string
+          created_at: string
+          enabled: boolean
+          max_gust_kn: number
+          max_wind_kn: number | null
+          min_wind_kn: number | null
+          updated_at: string
+          updated_by: string | null
+          updated_by_email: string | null
+        }
+        Insert: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          change_reason: string
+          created_at?: string
+          enabled?: boolean
+          max_gust_kn: number
+          max_wind_kn?: number | null
+          min_wind_kn?: number | null
+          updated_at?: string
+          updated_by?: string | null
+          updated_by_email?: string | null
+        }
+        Update: {
+          activity?: Database["public"]["Enums"]["activity_type"]
+          change_reason?: string
+          created_at?: string
+          enabled?: boolean
+          max_gust_kn?: number
+          max_wind_kn?: number | null
+          min_wind_kn?: number | null
+          updated_at?: string
+          updated_by?: string | null
+          updated_by_email?: string | null
+        }
+        Relationships: []
+      }
+      weather_activity_rules_history: {
+        Row: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          change_reason: string
+          changed_at: string
+          changed_by: string | null
+          changed_by_email: string | null
+          id: string
+          new_values: Json
+          old_values: Json | null
+        }
+        Insert: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          change_reason: string
+          changed_at?: string
+          changed_by?: string | null
+          changed_by_email?: string | null
+          id?: string
+          new_values: Json
+          old_values?: Json | null
+        }
+        Update: {
+          activity?: Database["public"]["Enums"]["activity_type"]
+          change_reason?: string
+          changed_at?: string
+          changed_by?: string | null
+          changed_by_email?: string | null
+          id?: string
+          new_values?: Json
+          old_values?: Json | null
+        }
+        Relationships: []
+      }
       weather_alert_subscriptions: {
         Row: {
           confirmed: boolean
@@ -2032,6 +2104,34 @@ export type Database = {
           p_status?: string
         }
         Returns: Json
+      }
+      admin_update_weather_rule: {
+        Args: {
+          p_activity: Database["public"]["Enums"]["activity_type"]
+          p_enabled: boolean
+          p_max_gust_kn: number
+          p_max_wind_kn: number
+          p_min_wind_kn: number
+          p_reason: string
+        }
+        Returns: {
+          activity: Database["public"]["Enums"]["activity_type"]
+          change_reason: string
+          created_at: string
+          enabled: boolean
+          max_gust_kn: number
+          max_wind_kn: number | null
+          min_wind_kn: number | null
+          updated_at: string
+          updated_by: string | null
+          updated_by_email: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "weather_activity_rules"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       assistant_briefing: { Args: never; Returns: Json }
       assistant_cancel_action: {
