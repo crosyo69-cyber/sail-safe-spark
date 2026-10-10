@@ -261,14 +261,14 @@ export function Header() {
                       variant="ghost"
                       onClick={() => setOpenSubmenu(openSubmenu === item.name ? null : item.name)}
                       aria-expanded={openSubmenu === item.name}
-                      aria-controls={`mobile-submenu-${item.name.replaceAll(" ", "-")}`}
+                      aria-controls={`mobile-submenu-${item.name.replace(/ /g, "-")}`}
                       className="mobile-menu-link w-full px-4 font-medium flex items-center justify-between"
                     >
                       {item.name}
                       <ChevronDown className={cn("w-5 h-5 shrink-0 transition-transform", openSubmenu === item.name && "rotate-180")} />
                     </Button>
                     {openSubmenu === item.name && (
-                      <div id={`mobile-submenu-${item.name.replaceAll(" ", "-")}`} className="mobile-menu-submenu ml-4">
+                      <div id={`mobile-submenu-${item.name.replace(/ /g, "-")}`} className="mobile-menu-submenu ml-4">
                         {item.submenu.map((subItem) => (
                           <Link key={subItem.name} to={subItem.href}
                             className="mobile-menu-link flex items-center px-4 font-medium"
