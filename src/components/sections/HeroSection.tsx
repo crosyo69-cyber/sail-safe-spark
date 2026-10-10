@@ -148,7 +148,7 @@ export const HeroSection = memo(function HeroSection() {
             }}
           />
           <div 
-            className="absolute inset-0 bg-gradient-to-b from-navy/80 via-navy/75 to-navy/95" 
+            className="absolute inset-0 home-photo-overlay" 
             style={{ contain: 'strict' }}
           />
         </div>
@@ -172,7 +172,7 @@ export const HeroSection = memo(function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 pt-24 pb-16 text-center">
-        <div className="max-w-4xl mx-auto">
+        <div className="home-hero-copy max-w-4xl mx-auto">
           {/* Pre-title — Fixed offer clarity (no slide dependency) */}
           <div 
             className="inline-flex items-center gap-2 bg-sunset/30 backdrop-blur-sm border border-sunset/60 rounded-full px-4 py-2 mb-6 animate-fade-in shadow-lg"

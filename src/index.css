@@ -57,6 +57,9 @@
     --gradient-ocean: linear-gradient(135deg, hsl(189 94% 37%), hsl(174 77% 50%));
     --gradient-sunset: linear-gradient(135deg, hsl(25 95% 53%), hsl(32 98% 60%));
     --gradient-hero: linear-gradient(180deg, transparent 0%, hsl(222 47% 11% / 0.7) 100%);
+    /* Home photo and localized copy protection are independent. */
+    --gradient-home-photo: linear-gradient(180deg, hsl(var(--navy) / 0.68) 0%, hsl(var(--navy) / 0.18) 22%, hsl(var(--navy) / 0.12) 75%, hsl(var(--navy) / 0.48) 100%);
+    --gradient-home-copy: radial-gradient(ellipse closest-side at center, hsl(var(--navy) / 0.80) 0%, hsl(var(--navy) / 0.78) 55%, hsl(var(--navy) / 0.64) 75%, hsl(var(--navy) / 0) 100%);
     --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.1), hsl(0 0% 100% / 0.05));
 
     /* Shadows */
@@ -153,6 +156,24 @@
 }
 
 @layer components {
+  .home-photo-overlay {
+    background-image: var(--gradient-home-photo);
+  }
+
+  .home-hero-copy {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .home-hero-copy::before {
+    content: '';
+    position: absolute;
+    inset: -180px -260px;
+    z-index: -1;
+    pointer-events: none;
+    background-image: var(--gradient-home-copy);
+  }
+
   .glass {
     @apply bg-white/80 backdrop-blur-xl border border-white/20;
   }
