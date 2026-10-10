@@ -6,13 +6,11 @@
 - [x] Deliver measured report and confirm no publication; document unchanged gradient-button contrast and mobile accessible-name findings for a separate authorized correction.
 - [x] F-28-25 Heros des 13 pages intérieures : photo seule + panneau bleu nuit (non publié)
 
-# F-28-27
-
 # F-28-29 — Formulations factuelles
 
-- [ ] Remplacer les deux colonnes et les deux formules restantes de « Notre expertise locale » sur l’accueil.
-- [ ] Reformuler les affirmations comparatives de Spot Almanarre, Stage Wingfoil et Déposes en mer.
-- [ ] Vérifier les quatre pages dans l’aperçu sans publication.
+- [x] Remplacer les deux colonnes et les deux formules restantes de « Notre expertise locale » sur l’accueil.
+- [x] Reformuler les affirmations comparatives de Spot Almanarre, Stage Wingfoil et Déposes en mer.
+- [x] Vérifier les quatre pages dans l’aperçu sans publication.
 
 # F-28-27 — Suivi
 
