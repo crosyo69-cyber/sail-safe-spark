@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { trackPhoneClick } from "@/lib/analytics";
 import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Cookie, Rss } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { openCookiePreferences } from "@/components/CookieConsent";
 import logoFfvl from "@/assets/logo-ffvl.png";
@@ -60,6 +60,11 @@ const CookieLink = () => (
 );
 
 export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
+  const { pathname } = useLocation();
+  const optimizeLogoLoading = ["/", "/tarifs-cours-kitesurf-wingfoil-hyeres", "/contact-reservation-kitesurf-hyeres"].includes(pathname);
+  const logoLoading = (width: number, height: number) => optimizeLogoLoading
+    ? { width, height, loading: "lazy" as const, decoding: "async" as const }
+    : {};
   return (
     <footer ref={ref} className="bg-navy text-primary-foreground">
       <div className="container mx-auto px-4 py-16">
@@ -148,6 +153,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
                 >
                   <img 
                     src={logoFfvl} 
+                {...logoLoading(100, 100)}
                     alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
                     className="h-10 w-auto object-contain"
                   />
@@ -161,6 +167,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
                 >
                   <img 
                     src={logoEfk} 
+                {...logoLoading(148, 148)}
                     alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
                     className="h-10 w-auto object-contain"
                   />
@@ -260,6 +267,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
                   <div className="w-10 h-10 bg-white/90 rounded-lg flex items-center justify-center overflow-hidden">
                     <img 
                       src={logoProvenceMed} 
+                {...logoLoading(264, 148)}
                       alt="Provence Médical - Partenaire école kitesurf" 
                       className="w-full h-full object-cover"
                     />
@@ -294,6 +302,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoDuotone} 
+                {...logoLoading(184, 148)}
                 alt="Logo Duotone - Partenaire école kitesurf" 
                 className="h-10 w-auto object-contain"
               />
@@ -307,6 +316,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoWelcomeSurfShop} 
+                {...logoLoading(400, 230)}
                 alt="Logo Welcome Surf Shop - Partenaire école kitesurf" 
                 className="h-10 w-auto object-contain"
               />
@@ -320,6 +330,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoProvenceMed} 
+                {...logoLoading(264, 148)}
                 alt="Provence Médical - Partenaire école kitesurf" 
                 className="h-10 w-auto object-contain"
               />
@@ -340,6 +351,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoOtHyeres} 
+                {...logoLoading(737, 1200)}
                 alt="Office de Tourisme Hyères" 
                 className="h-10 w-auto object-contain"
               />
@@ -353,6 +365,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoOtCarqueiranne} 
+                {...logoLoading(1200, 1200)}
                 alt="Office de Tourisme Carqueiranne" 
                 className="h-10 w-auto object-contain"
               />
@@ -366,6 +379,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoTripadvisor} 
+                {...logoLoading(512, 512)}
                 alt="TripAdvisor Kitesurf Passion" 
                 className="h-10 w-auto object-contain"
               />
@@ -379,6 +393,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoSpeedkart} 
+                {...logoLoading(500, 500)}
                 alt="Speedkart partenaire" 
                 className="h-10 w-auto object-contain"
               />
@@ -392,6 +407,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoThespot2be} 
+                {...logoLoading(512, 512)}
                 alt="TheSpot2be - Partenaire école kitesurf" 
                 className="h-10 w-auto object-contain"
               />
@@ -405,6 +421,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoHotelRichiardi} 
+                {...logoLoading(512, 512)}
                 alt="Hôtel Richiardi - Partenaire hébergement école kitesurf" 
                 className="h-10 w-auto object-contain"
               />
@@ -418,6 +435,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoVisitvar} 
+                {...logoLoading(512, 512)}
                 alt="Visit Var - Tourisme département du Var" 
                 className="h-10 w-auto object-contain"
               />
@@ -431,6 +449,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoPagesjaunes} 
+                {...logoLoading(512, 512)}
                 alt="Pages Jaunes - Fiche professionnelle Kitesurf Passion" 
                 className="h-10 w-auto object-contain"
               />
@@ -444,6 +463,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoWanderlog} 
+                {...logoLoading(512, 512)}
                 alt="Wanderlog - Kitesurf Passion guide voyage" 
                 className="h-10 w-auto object-contain"
               />
@@ -457,6 +477,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoBiereIlesDor} 
+                {...logoLoading(512, 512)}
                 alt="La Bière des Îles d'Or - Partenaire brasserie artisanale" 
                 className="h-10 w-auto object-contain"
               />
@@ -470,6 +491,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoCitoofrance} 
+                {...logoLoading(512, 512)}
                 alt="Citoo France - Annuaire des écoles de kitesurf" 
                 className="h-10 w-auto object-contain"
               />
@@ -483,6 +505,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoCotedazurfrance} 
+                {...logoLoading(200, 80)}
                 alt="Côte d'Azur France - Fiche Kitesurf Passion" 
                 className="h-10 w-auto object-contain"
               />
@@ -496,6 +519,7 @@ export const Footer = forwardRef<HTMLElement, object>(function Footer(_, ref) {
             >
               <img 
                 src={logoLoisirsfr} 
+                {...logoLoading(1248, 832)}
                 alt="Loisirs.fr - Fiche Kitesurf Passion" 
                 className="h-10 w-auto object-contain"
               />
