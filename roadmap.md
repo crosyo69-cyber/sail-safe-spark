@@ -8,6 +8,14 @@
 
 # F-28-27
 
+# F-28-29 — Formulations factuelles
+
+- [ ] Remplacer les deux colonnes et les deux formules restantes de « Notre expertise locale » sur l’accueil.
+- [ ] Reformuler les affirmations comparatives de Spot Almanarre, Stage Wingfoil et Déposes en mer.
+- [ ] Vérifier les quatre pages dans l’aperçu sans publication.
+
+# F-28-27 — Suivi
+
 - [x] Audit des cinq pages et validation du périmètre minimal.
 - [x] Préchargement accueil et logos hors écran, sans changement visuel.
 - [x] Vérification ciblée du LCP Tarifs / Contact : titres principaux, pas de modification globale des chargements.
