@@ -165,6 +165,20 @@
     isolation: isolate;
   }
 
+  .home-hero-copy h1 {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .home-hero-copy h1::before {
+    content: '';
+    position: absolute;
+    inset: -24px -32px;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(ellipse closest-side at center, hsl(var(--navy) / 0.72) 0%, hsl(var(--navy) / 0.62) 70%, hsl(var(--navy) / 0) 100%);
+  }
+
   .home-hero-copy p {
     text-shadow: 0 1px 2px hsl(var(--navy) / 0.85), 0 2px 12px hsl(var(--navy) / 0.6);
   }
