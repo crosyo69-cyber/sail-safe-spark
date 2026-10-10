@@ -15,7 +15,7 @@ export const BlogCtaSection = () => (
       />
       <div className="absolute inset-0 bg-navy/60" />
     </div>
-    <div className="container mx-auto px-4 text-center relative z-10">
+    <div className="container mx-auto px-4 text-center relative z-10"><div className="bg-navy rounded-2xl px-6 py-10 max-w-2xl mx-auto">
       <h2 className="font-display text-3xl font-bold text-white mb-4">Prêt à Vous Lancer ?</h2>
       <p className="text-white/90 mb-8 max-w-xl mx-auto">
         Passez de la théorie à la pratique avec nos stages encadrés par des professionnels.
