@@ -1,9 +1,9 @@
 # Technical decisions
 
 - Home hero keeps byte-identical responsive WebPs and a pathname-gated early preload with matching srcset/sizes — no duplicate or off-route downloads.
-- Footer logo loading improvements are gated to the homepage, pricing and contact routes for F-28-27; intrinsic dimensions preserve image proportions while lazy loading avoids competing with above-fold content.
+- Footer logos use intrinsic dimensions and lazy loading only on home, pricing and contact (F-28-27) — preserve proportions without competing with above-fold images.
 
-- Page heroes show the photo untouched (no overlay/filter) with copy in a separate solid navy panel; inner pages share the .hero-split* classes in index.css — photos stay true-colour while text keeps AA contrast.
+- Heroes keep untouched photos (no overlay/filter) beside solid navy copy panels; inner pages share index.css .hero-split* — preserve true colour and AA text contrast.
 
 - client_packages uniqueness: one package per Stripe session when participant_index is NULL, and one per (stripe_session_id, participant_index) when set (1..4) — keeps webhook double-delivery protection (P0-2) while allowing one package per participant for multi-participant stages.
 - Stage 100% Glisse Stripe payments go only through stripe-webhook/stage.ts: amount_total must equal 250 € × participants, then a single book_stage_for_participants call; any mismatch or failure creates no booking and alerts the admin — keeps payments atomic and amounts truthful.
@@ -20,4 +20,4 @@
 - Contrast tokens: .text-primary, .text-sunset and .bg-primary render the darker --primary-text / --sunset-text (WCAG AA on white); gradients and decorative tints keep --primary / --sunset; use bg-sunset-strong / bg-turquoise-strong behind white text — keeps brand colours while text and buttons stay ≥4.5:1.
 - Weather: forecasts fetched server-side only (weather-forecast fn, cached, stale on failure); per-activity thresholds live in weather_activity_rules (NULL = n/a), written only via admin_update_weather_rule with append-only history; never a course decision.
 
-- Mobile menu uses scoped opaque tokens below 1024px, measured header height and cleanup-based page scroll locking — stays readable on all pages without changing desktop.
+- Mobile menu uses opaque tokens below 1024px, measured header height and scroll-lock cleanup — readable on all pages; desktop unchanged.
