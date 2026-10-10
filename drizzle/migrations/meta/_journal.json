@@ -85,6 +85,13 @@
       "when": 1791648866596,
       "tag": "0011_weather_activity_rules",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1791649414172,
+      "tag": "0012_harden_weather_rules_history_grants",
+      "breakpoints": true
     }
   ]
 }
