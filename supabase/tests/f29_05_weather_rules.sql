@@ -28,9 +28,7 @@ BEGIN
   EXCEPTION WHEN insufficient_privilege THEN NULL; END;
   -- T9 : non-admin ne peut pas lire (RLS)
   EXECUTE 'SET LOCAL ROLE authenticated';
-  SELECT count(*) INTO v_n FROM weather_activity_rules;
-  SELECT count(*) INTO v_n FROM (SELECT 1 FROM weather_activity_rules UNION ALL SELECT 1 FROM weather_activity_rules_history) s
-    WHERE v_n > 0;
+  SELECT (SELECT count(*) FROM weather_activity_rules) + (SELECT count(*) FROM weather_activity_rules_history) INTO v_n;
   EXECUTE 'RESET ROLE';
   IF v_n <> 0 THEN RAISE EXCEPTION 'F29_05_FAIL T9 non-admin read %', v_n; END IF;
   -- anonyme : aucun droit d'exécution
