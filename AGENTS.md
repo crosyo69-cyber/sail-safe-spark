@@ -1,5 +1,8 @@
 # Technical decisions
 
+- The first homepage photo uses byte-identical frozen responsive WebP outputs and a pathname-gated early head preload with matching srcset/sizes; other routes must not preload it, avoiding duplicate or unnecessary image downloads.
+- Footer logo loading improvements are gated to the homepage, pricing and contact routes for F-28-27; intrinsic dimensions preserve image proportions while lazy loading avoids competing with above-fold content.
+
 - Page heroes show the photo untouched (no overlay/filter) with copy in a separate solid navy panel; inner pages share the .hero-split* classes in index.css — photos stay true-colour while text keeps AA contrast.
 
 - client_packages uniqueness: one package per Stripe session when participant_index is NULL, and one per (stripe_session_id, participant_index) when set (1..4) — keeps webhook double-delivery protection (P0-2) while allowing one package per participant for multi-participant stages.

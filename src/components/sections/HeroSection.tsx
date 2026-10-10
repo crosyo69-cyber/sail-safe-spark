@@ -1,21 +1,21 @@
-import { memo, useState, useEffect, useCallback, useLayoutEffect } from "react";
+import { memo, useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Phone, Star, Award, Users, Shield, ChevronLeft, ChevronRight, GraduationCap, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { trackCTAClick, trackPhoneClick } from "@/lib/analytics";
 
 // Import hero images with WebP conversion - Desktop (full size)
-import heroKitesurf from "@/assets/kitesurf-hyeres.jpg?webp";
+const heroKitesurf = "/images/hero-kitesurf-1920w.webp";
 import heroWingfoil from "@/assets/wingfoil-hyeres.jpg?webp";
 import heroPumpfoil from "@/assets/pumpfoil-hyeres.jpg?webp";
 
 // Import hero images - Mobile optimized (smaller size)
-import heroKitesurfMobile from "@/assets/kitesurf-hyeres.jpg?webp&w=768";
+const heroKitesurfMobile = "/images/hero-kitesurf-768w.webp";
 import heroWingfoilMobile from "@/assets/wingfoil-hyeres.jpg?webp&w=768";
 import heroPumpfoilMobile from "@/assets/pumpfoil-hyeres.jpg?webp&w=768";
 
 // Import hero images - Tablet optimized (medium size)
-import heroKitesurfTablet from "@/assets/kitesurf-hyeres.jpg?webp&w=1280";
+const heroKitesurfTablet = "/images/hero-kitesurf-1280w.webp";
 import heroWingfoilTablet from "@/assets/wingfoil-hyeres.jpg?webp&w=1280";
 import heroPumpfoilTablet from "@/assets/pumpfoil-hyeres.jpg?webp&w=1280";
 
@@ -68,20 +68,6 @@ const trustBadges = [
 export const HeroSection = memo(function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-
-  // Dynamically inject preload for hero LCP image (matches Vite-hashed path)
-  useLayoutEffect(() => {
-    const existing = document.querySelector('link[data-hero-preload]');
-    if (existing) return;
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'image';
-    link.type = 'image/webp';
-    link.href = heroKitesurf;
-    link.setAttribute('fetchpriority', 'high');
-    link.setAttribute('data-hero-preload', 'true');
-    document.head.appendChild(link);
-  }, []);
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);

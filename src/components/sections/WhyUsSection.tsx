@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Ship, MapPin, GraduationCap, Waves, Shield } from "lucide-react";
 import { trackCTAClick } from "@/lib/analytics";
-import logoFfvl from "@/assets/logo-ffvl.png";
+import logoFfvl from "@/assets/logo-ffvl-lossless.webp";
 import logoEfk from "@/assets/logo-efk.png";
 
 const features = [
@@ -96,8 +96,8 @@ export const WhyUsSection = memo(function WhyUsSection() {
                 <img 
                   src={logoFfvl} 
                   alt="Logo FFVL labellisée EFK - École de kitesurf certifiée" 
-                  width={80}
-                  height={48}
+                  width={100}
+                  height={100}
                   loading="lazy"
                   decoding="async"
                   className="h-12 w-auto object-contain"

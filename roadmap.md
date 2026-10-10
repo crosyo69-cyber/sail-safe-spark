@@ -5,3 +5,11 @@
 - [x] Validate all slides on desktop/mobile, measure backgrounds, rerun Lighthouse accessibility (100 desktop/mobile).
 - [x] Deliver measured report and confirm no publication; document unchanged gradient-button contrast and mobile accessible-name findings for a separate authorized correction.
 - [x] F-28-25 Heros des 13 pages intérieures : photo seule + panneau bleu nuit (non publié)
+
+# F-28-27
+
+- [x] Audit des cinq pages et validation du périmètre minimal.
+- [x] Préchargement accueil et logos hors écran, sans changement visuel.
+- [x] Vérification ciblée du LCP Tarifs / Contact : titres principaux, pas de modification globale des chargements.
+- [x] Mesures locales avant/après et aperçus ordinateur/mobile ; aucune publication.
+- [ ] Certification Performance ≥95 en production : bloquée par l'absence de mesure d'une version de production contenant ces corrections, sans publication autorisée.
