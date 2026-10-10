@@ -269,9 +269,9 @@ const MentionsLegales = () => {
         />
 
         {/* Hero Section */}
-        <section className="bg-gradient-to-b from-navy to-navy/90 text-primary-foreground py-16">
+        <section className="hero-split-panel">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="font-display text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="font-display text-4xl md:text-5xl font-bold mb-4 text-primary-foreground">
               Mentions Légales
             </h1>
             <p className="text-primary-foreground/80 text-lg max-w-2xl mx-auto">
