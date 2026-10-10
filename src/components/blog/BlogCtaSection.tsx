@@ -32,5 +32,6 @@ export const BlogCtaSection = () => (
         </Button>
       </div>
     </div>
+    </div>
   </section>
 );
