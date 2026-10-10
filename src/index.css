@@ -165,7 +165,6 @@
     isolation: isolate;
   }
 
-  .home-hero-copy h1,
   .home-hero-copy p {
     text-shadow: 0 1px 2px hsl(var(--navy) / 0.85), 0 2px 12px hsl(var(--navy) / 0.6);
   }
