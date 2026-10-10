@@ -18,6 +18,8 @@ import { MoveMemberDialog } from "@/components/admin/journees/MoveMemberDialog";
 import { ACTIVITY_LABEL, type DailyGroup, type Member } from "@/features/admin-journees/types";
 import { TodayBookingsPanel } from "@/components/admin/journees/TodayBookingsPanel";
 import { parisToday } from "@/lib/booking-dates";
+import { TomorrowForecastPanel } from "@/components/admin/journees/TomorrowForecastPanel";
+import { useTomorrowForecast } from "@/hooks/services/useWeather";
 
 const AdminJournees = () => {
   const { isAdmin, isLoading, user } = useAdmin();
@@ -26,6 +28,7 @@ const AdminJournees = () => {
     handleCancelGroup, handleRemoveMember, handleCancelAndRecredit,
     handleCancelGroupAndRecredit, handleCancelDay, handleMove, handleSaveEdit,
   } = useAdminJournees(isAdmin);
+  const forecast = useTomorrowForecast(isAdmin);
 
   const [editGroup, setEditGroup] = useState<DailyGroup | null>(null);
   const [moveMember, setMoveMember] = useState<{ member: Member; group: DailyGroup } | null>(null);
@@ -89,6 +92,14 @@ const AdminJournees = () => {
             </Button>
           </div>
         </div>
+
+        <TomorrowForecastPanel
+          data={forecast.query.data}
+          loading={forecast.query.isLoading}
+          error={forecast.query.error as Error | null}
+          refreshing={forecast.refresh.isPending}
+          onRefresh={() => forecast.refresh.mutate()}
+        />
 
         <WeekDayPicker date={date} onDateChange={setDate} />
 
