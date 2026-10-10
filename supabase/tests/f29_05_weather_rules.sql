@@ -25,7 +25,8 @@ BEGIN
   BEGIN
     PERFORM admin_update_weather_rule('kitesurf',12,30,35,true,'x');
     RAISE EXCEPTION 'F29_05_FAIL T9 non-admin write accepted';
-  EXCEPTION WHEN insufficient_privilege THEN NULL; END;
+  EXCEPTION WHEN insufficient_privilege THEN
+    IF SQLERRM NOT LIKE 'Accès réservé%' THEN RAISE; END IF; END;
   -- T9 : non-admin ne peut pas lire (RLS)
   -- lecture : RLS active, seule politique = SELECT admin ; aucun droit anon ; aucune écriture directe authenticated
   SELECT count(*) INTO v_n FROM pg_policies WHERE schemaname='public'
