@@ -1,6 +1,6 @@
 # Technical decisions
 
-- The first homepage photo uses byte-identical frozen responsive WebP outputs and a pathname-gated early head preload with matching srcset/sizes; other routes must not preload it, avoiding duplicate or unnecessary image downloads.
+- Home hero keeps byte-identical responsive WebPs and a pathname-gated early preload with matching srcset/sizes — no duplicate or off-route downloads.
 - Footer logo loading improvements are gated to the homepage, pricing and contact routes for F-28-27; intrinsic dimensions preserve image proportions while lazy loading avoids competing with above-fold content.
 
 - Page heroes show the photo untouched (no overlay/filter) with copy in a separate solid navy panel; inner pages share the .hero-split* classes in index.css — photos stay true-colour while text keeps AA contrast.
@@ -19,3 +19,5 @@
 - Waitlist offer confirmation (confirm_waitlist_offer) keeps phone optional: a missing waitlist phone becomes '' on the reservation (reservations.phone stays NOT NULL), never an invented number — readers must treat '' as no phone.
 - Contrast tokens: .text-primary, .text-sunset and .bg-primary render the darker --primary-text / --sunset-text (WCAG AA on white); gradients and decorative tints keep --primary / --sunset; use bg-sunset-strong / bg-turquoise-strong behind white text — keeps brand colours while text and buttons stay ≥4.5:1.
 - Weather: forecasts fetched server-side only (weather-forecast fn, cached, stale on failure); per-activity thresholds live in weather_activity_rules (NULL = n/a), written only via admin_update_weather_rule with append-only history; never a course decision.
+
+- Mobile menu uses scoped opaque tokens below 1024px, measured header height and cleanup-based page scroll locking — stays readable on all pages without changing desktop.

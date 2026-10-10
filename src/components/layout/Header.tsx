@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -47,6 +47,8 @@ export function Header() {
   const [hasScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
   // Pages whose top is light (no navy hero/breadcrumb band): keep the solid header so text stays readable
   const LIGHT_TOP_PAGES = [
@@ -69,6 +71,45 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+    setOpenSubmenu(null);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const header = headerRef.current;
+    if (!header) return;
+    const updateHeight = () => header.style.setProperty("--mobile-header-height", `${header.getBoundingClientRect().height}px`);
+    updateHeight();
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(header);
+    const scrollY = window.scrollY;
+    const body = document.body;
+    const previous = { position: body.style.position, top: body.style.top, width: body.style.width, overflow: body.style.overflow };
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setIsMobileMenuOpen(false);
+      setOpenSubmenu(null);
+      menuButtonRef.current?.focus();
+    };
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const closeOnDesktop = () => { if (desktop.matches) setIsMobileMenuOpen(false); };
+    document.addEventListener("keydown", closeOnEscape);
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("keydown", closeOnEscape);
+      desktop.removeEventListener("change", closeOnDesktop);
+      Object.assign(body.style, previous);
+      window.scrollTo({ top: scrollY, behavior: "instant" });
+    };
+  }, [isMobileMenuOpen]);
+
   const isActiveLink = (href: string, submenu?: { name: string; href: string }[]) => {
     if (location.pathname === href) return true;
     if (submenu) {
@@ -79,8 +120,9 @@ export function Header() {
 
   return (
     <header
+      ref={headerRef}
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+        "site-header fixed top-0 left-0 right-0 z-50 transition-all duration-500",
         isScrolled
           ? "bg-background/95 backdrop-blur-xl shadow-lg py-2"
           : "bg-navy py-4"
@@ -187,9 +229,11 @@ export function Header() {
           </a>
 
           {/* Mobile Menu Button */}
-          <button
+          <Button
+            ref={menuButtonRef}
+            variant="ghost"
             type="button"
-            className="lg:hidden p-2 rounded-lg"
+            className="mobile-menu-toggle lg:hidden p-2 rounded-lg min-h-11 min-w-11"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={isMobileMenuOpen}
@@ -200,47 +244,35 @@ export function Header() {
             ) : (
               <Menu className={cn("w-6 h-6", isScrolled ? "text-foreground" : "text-primary-foreground")} />
             )}
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div id="mobile-menu" className="lg:hidden absolute top-full left-0 right-0 bg-background/98 backdrop-blur-xl border-b border-border animate-fade-in">
-          <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
+        <div id="mobile-menu" className="mobile-menu-panel lg:hidden absolute top-full left-0 right-0">
+          <nav className="container mx-auto px-4 py-4 flex flex-col">
             {navigation.map((item) => (
               <div key={item.name}>
                 {item.submenu ? (
                   <>
-                    <button
+                    <Button
+                      type="button"
+                      variant="ghost"
                       onClick={() => setOpenSubmenu(openSubmenu === item.name ? null : item.name)}
-                      className={cn(
-                        "w-full px-4 py-3 rounded-lg font-medium transition-colors flex items-center justify-between",
-                        isActiveLink(item.href, item.submenu)
-                          ? "bg-primary/10 text-primary"
-                          : "text-foreground hover:bg-muted"
-                      )}
+                      aria-expanded={openSubmenu === item.name}
+                      aria-controls={`mobile-submenu-${item.name.replaceAll(" ", "-")}`}
+                      className="mobile-menu-link w-full px-4 font-medium flex items-center justify-between"
                     >
                       {item.name}
-                      <ChevronDown className={cn(
-                        "w-4 h-4 transition-transform",
-                        openSubmenu === item.name && "rotate-180"
-                      )} />
-                    </button>
+                      <ChevronDown className={cn("w-5 h-5 shrink-0 transition-transform", openSubmenu === item.name && "rotate-180")} />
+                    </Button>
                     {openSubmenu === item.name && (
-                      <div className="ml-4 mt-2 space-y-2">
+                      <div id={`mobile-submenu-${item.name.replaceAll(" ", "-")}`} className="mobile-menu-submenu ml-4">
                         {item.submenu.map((subItem) => (
-                          <Link
-                            key={subItem.name}
-                            to={subItem.href}
-                            className={cn(
-                              "block px-4 py-2 rounded-lg font-medium transition-colors",
-                              location.pathname === subItem.href
-                                ? "bg-primary/10 text-primary"
-                                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                            )}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                          >
+                          <Link key={subItem.name} to={subItem.href}
+                            className="mobile-menu-link flex items-center px-4 font-medium"
+                            onClick={() => setIsMobileMenuOpen(false)}>
                             {subItem.name}
                           </Link>
                         ))}
@@ -248,26 +280,15 @@ export function Header() {
                     )}
                   </>
                 ) : (
-                  <Link
-                    to={item.href}
-                    className={cn(
-                      "block px-4 py-3 rounded-lg font-medium transition-colors",
-                      location.pathname === item.href
-                        ? "bg-primary/10 text-primary"
-                        : "text-foreground hover:bg-muted"
-                    )}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
+                  <Link to={item.href} className="mobile-menu-link flex items-center px-4 font-medium"
+                    onClick={() => setIsMobileMenuOpen(false)}>
                     {item.name}
                   </Link>
                 )}
               </div>
             ))}
-            <a 
-              href="tel:0672716905" 
-              className="mt-2"
-              onClick={() => { trackPhoneClick("mobile_menu"); trackMetaContact({ content_name: "phone_click", content_category: "mobile_menu" }); }}
-            >
+            <a href="tel:0672716905" className="mobile-menu-phone mt-4"
+              onClick={() => { setIsMobileMenuOpen(false); trackPhoneClick("mobile_menu"); trackMetaContact({ content_name: "phone_click", content_category: "mobile_menu" }); }}>
               <Button variant="sunset" size="lg" className="w-full">
                 <Phone className="w-4 h-4" />
                 06 72 71 69 05
