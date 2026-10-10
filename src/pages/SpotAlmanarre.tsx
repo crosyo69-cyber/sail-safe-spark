@@ -124,7 +124,7 @@ const structuredData = {
 // FAQ data for the spot page
 const spotFaqs = [
   {
-    question: "Pourquoi l'Almanarre est-il considéré comme le spot de kitesurf à Hyères dans le Var ?",
+    question: "Quelles conditions rencontre-t-on sur le spot de l'Almanarre ?",
     answer: "L'Almanarre est exposée notamment au Mistral. La force et la direction du vent, le clapot et la profondeur varient selon la météo et la zone. Le moniteur vérifie ces conditions avant de choisir le lieu de la séance."
   },
   {
