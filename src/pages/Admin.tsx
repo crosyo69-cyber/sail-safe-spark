@@ -21,7 +21,7 @@ import AdminAlertsCenter from "@/components/admin/AdminAlertsCenter";
 import AdminNotificationsBell from "@/components/admin/AdminNotificationsBell";
 import AdminPlatformHealth from "@/components/admin/AdminPlatformHealth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell, Wallet, Megaphone, Settings, Bot, Activity } from "lucide-react";
+import { LayoutDashboard, CalendarDays, ClipboardList, Mail, Loader2, Euro, BarChart3, AlertTriangle, ShieldAlert, Ticket, Inbox, TrendingUp, FileSearch, Users, Bell, Wallet, Megaphone, Settings, Bot, Activity, Wind } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 

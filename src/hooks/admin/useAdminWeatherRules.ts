@@ -23,7 +23,7 @@ export const useAdminWeatherRules = (enabled: boolean) => {
   const requestSave = () => {
     if (!draft) return;
     const v = validateDraft(draft);
-    if (!v.ok) { setErrors(v.errors); return; }
+    if (v.ok === false) { setErrors(v.errors); return; }
     setErrors([]);
     setPending(v.value);
   };
