@@ -21,7 +21,7 @@ const Blog = () => {
       <BlogSeoHead />
 
       <Header />
-      <PageBreadcrumb items={blogBreadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
+      <PageBreadcrumb items={blogBreadcrumbItems} className="hero-split-breadcrumb" />
 
       <main>
         <BlogHero />
