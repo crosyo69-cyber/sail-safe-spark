@@ -76,8 +76,9 @@ const PolitiqueConfidentialite = () => {
 
       <Header />
 
-      <main className="pt-20">
+      <main>
         <PageBreadcrumb 
+          className="hero-split-breadcrumb"
           items={[
             { label: "Accueil", href: "/" },
             { label: "Politique de Confidentialité" }
