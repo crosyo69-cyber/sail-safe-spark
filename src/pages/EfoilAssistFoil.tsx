@@ -139,11 +139,12 @@ const EfoilAssistFoil = () => {
       </Helmet>
 
       <Header />
-      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
+      <PageBreadcrumb items={breadcrumbItems} className="hero-split-breadcrumb" />
 
-      <main className="pt-24">
+      <main>
         {/* Hero visuel */}
-        <section className="relative h-[60vh] min-h-[420px] w-full overflow-hidden">
+        <section className="hero-split">
+          <div className="hero-split-photo">
           <OptimizedImage
             src={efoilRider.url}
             alt="Rider en e-foil Hyères glissant au-dessus de la Méditerranée — Kitesurf Passion Hyères"
@@ -151,16 +152,15 @@ const EfoilAssistFoil = () => {
             className="absolute inset-0 w-full h-full object-cover"
             wrapperClassName="absolute inset-0 w-full h-full"
           />
-          <div className="absolute inset-0 bg-black/30" />
-          <div className="absolute inset-0 bg-gradient-to-b from-navy/20 via-transparent to-background/80" />
-          <div className="relative z-10 h-full flex flex-col items-center justify-end pb-12 text-center px-4 animate-fade-in">
+          </div>
+          <div className="hero-split-panel">
             <span className="inline-block px-4 py-2 bg-background/95 backdrop-blur text-primary rounded-full text-sm font-semibold mb-4 shadow-lg">
               Nouveauté · Sans vent
             </span>
-            <h1 className="font-display text-4xl sm:text-6xl font-bold text-white drop-shadow-[0_3px_6px_rgba(0,0,0,0.6)] mb-3">
+            <h1 className="font-display text-[2.25rem] leading-[1.05] sm:text-5xl xl:text-6xl font-black text-primary-foreground mb-5">
               E-Foil & Assist Foil Hyères
             </h1>
-            <p className="text-white max-w-2xl mx-auto text-lg drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+            <p className="text-white max-w-2xl mx-auto text-lg">
               Volez au-dessus de l'eau, en silence, même sans vent — sur la baie d'Hyères.
             </p>
           </div>

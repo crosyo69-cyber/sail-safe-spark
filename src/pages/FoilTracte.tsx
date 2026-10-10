@@ -266,12 +266,12 @@ const FoilTracte = () => {
       </Helmet>
 
       <Header />
-      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
+      <PageBreadcrumb items={breadcrumbItems} className="hero-split-breadcrumb" />
 
       <main>
         {/* Hero */}
-        <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0">
+        <section className="hero-split">
+          <div className="hero-split-photo">
             <img
               src={foilTracteHero}
               alt="Foil tracté Hyères - Session foil remorqué bateau école KiteSurf Passion Almanarre Var"
@@ -280,17 +280,16 @@ const FoilTracte = () => {
               fetchPriority="high"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/25 to-background" />
           </div>
 
-          <div className="container mx-auto px-4 text-center relative z-10 pt-32 pb-16">
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-primary-foreground mb-6 drop-shadow-lg">
+          <div className="hero-split-panel">
+            <h1 className="font-display text-[2.25rem] leading-[1.05] sm:text-5xl xl:text-6xl font-black text-primary-foreground mb-5">
               Foil Tracté{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-turquoise to-primary-foreground">
                 Hyères
               </span>
             </h1>
-            <p className="text-primary-foreground/90 text-lg max-w-2xl mx-auto mb-8 drop-shadow-md">
+            <p className="text-primary-foreground/90 text-lg max-w-2xl mx-auto mb-8">
               Découvrez les sensations uniques du foil tracté sur la baie d'Hyères. 
               La méthode idéale pour apprendre à voler sur l'eau en toute sécurité.
             </p>

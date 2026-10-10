@@ -295,12 +295,12 @@ export default function SpotAlmanarre() {
       </Helmet>
 
       <Header />
-      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
+      <PageBreadcrumb items={breadcrumbItems} className="hero-split-breadcrumb" />
       
       <main>
         {/* Hero Section */}
-        <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0">
+        <section className="hero-split">
+          <div className="hero-split-photo">
             <img
               src={almanarre}
               alt="Spot kitesurf Almanarre Hyères - Coucher de soleil plage de glisse Var"
@@ -310,15 +310,14 @@ export default function SpotAlmanarre() {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background" />
           
-          <div className="container mx-auto px-4 relative z-10 text-center py-32">
+          <div className="hero-split-panel">
             <div className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full px-4 py-2 mb-6">
               <MapPin className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-primary">Hyères, Var (83)</span>
             </div>
             
-            <h1 className="font-display font-black text-4xl md:text-5xl lg:text-6xl text-foreground mb-6">
+            <h1 className="font-display text-[2.25rem] leading-[1.05] sm:text-5xl xl:text-6xl font-black text-primary-foreground mb-5">
               Le Spot de{" "}
               <span className="bg-gradient-to-r from-primary via-turquoise to-primary bg-clip-text text-transparent">
                 l'Almanarre

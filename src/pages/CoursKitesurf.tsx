@@ -354,12 +354,12 @@ const CoursKitesurf = () => {
       </Helmet>
 
       <Header />
-      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
+      <PageBreadcrumb items={breadcrumbItems} className="hero-split-breadcrumb" />
 
       <main>
         {/* Hero */}
-        <section className="relative pt-32 pb-20 overflow-hidden">
-          <div className="absolute inset-0">
+        <section className="hero-split">
+          <div className="hero-split-photo">
             <img
               src={kitesurfImage}
               alt="Stage kitesurf Hyères Almanarre - Formation élèves école KiteSurf Passion Var"
@@ -368,13 +368,12 @@ const CoursKitesurf = () => {
               fetchPriority="high"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-navy/85 via-navy/70 to-navy/50" />
           </div>
 
-          <div className="relative z-10 container mx-auto px-4">
+          <div className="hero-split-panel">
             <div className="max-w-2xl">
               <span className="inline-block text-sunset font-semibold mb-4">Cours Kitesurf</span>
-              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-primary-foreground mb-6">
+              <h1 className="font-display text-[2.25rem] leading-[1.05] sm:text-5xl xl:text-6xl font-black text-primary-foreground mb-5">
                 Apprenez le Kitesurf à Hyères
               </h1>
               <p className="text-primary-foreground/80 text-lg mb-8">

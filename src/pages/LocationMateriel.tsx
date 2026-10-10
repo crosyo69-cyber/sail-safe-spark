@@ -183,12 +183,12 @@ const LocationMateriel = () => {
       </Helmet>
 
       <Header />
-      <PageBreadcrumb items={breadcrumbItems} className="bg-background/80 backdrop-blur-sm" />
+      <PageBreadcrumb items={breadcrumbItems} className="hero-split-breadcrumb" />
 
       <main>
         {/* Hero with Image */}
-        <section className="relative pt-32 pb-16 overflow-hidden">
-          <div className="absolute inset-0">
+        <section className="hero-split">
+          <div className="hero-split-photo">
             <img
               src={kiteEquipment}
               alt="Location matériel kitesurf Hyères Almanarre - Aile planche harnais école KiteSurf Passion Var"
@@ -196,10 +196,9 @@ const LocationMateriel = () => {
               fetchPriority="high"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background" />
           </div>
-          <div className="container mx-auto px-4 text-center relative z-10">
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-6">
+          <div className="hero-split-panel">
+            <h1 className="font-display text-[2.25rem] leading-[1.05] sm:text-5xl xl:text-6xl font-black text-primary-foreground mb-5">
               Location de Matériel{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-turquoise">
                 Kitesurf
