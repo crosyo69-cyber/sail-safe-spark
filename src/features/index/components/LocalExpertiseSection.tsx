@@ -20,35 +20,35 @@ export function LocalExpertiseSection() {
 
               <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed mb-16">
                 <div className="space-y-5">
-                  <h3 className="font-display text-2xl font-bold text-foreground">Pourquoi l'Almanarre est le meilleur spot pour apprendre</h3>
+                  <h3 className="font-display text-2xl font-bold text-foreground">Apprendre le kitesurf sur le spot de l'Almanarre</h3>
                   <p>
-                    La <strong>plage de l'Almanarre</strong>, située sur la presqu'île de Giens à Hyères, est unanimement considérée comme l'un des <strong>meilleurs spots de kitesurf de Méditerranée</strong>. Ce n'est pas un hasard si nous avons choisi ce lieu il y a plus de 25 ans pour y fonder notre école : les conditions naturelles y sont exceptionnelles pour l'apprentissage.
+                    La <strong>plage de l'Almanarre</strong> se situe à Hyères, sur la presqu'île de Giens. <strong>KiteSurf Passion enseigne le kitesurf depuis 1999</strong> et adapte les séances au niveau des élèves et aux conditions observées sur le spot.
                   </p>
                   <p>
-                    Le spot bénéficie de <strong>deux régimes de vent dominants</strong> — le Mistral (nord-ouest) et le Levant (est) — qui assurent des conditions navigables plus de <strong>200 jours par an</strong>. La configuration géographique unique de la presqu'île crée une lagune protégée côté ouest, avec une <strong>eau plate</strong> idéale pour les débutants, tandis que le côté est offre plus de clapot pour les riders confirmés.
+                    Le <strong>Mistral (nord-ouest)</strong> et le <strong>Levant (est)</strong> font partie des vents rencontrés autour de la presqu'île. Leur direction, leur force et l'état de la mer déterminent le lieu de pratique retenu par le moniteur. Les conditions sont vérifiées avant chaque séance.
                   </p>
                   <p>
-                    La profondeur progressive, le fond sablonneux sans rochers et l'absence de courants dangereux font de l'Almanarre un terrain de jeu parfaitement sécurisé. C'est pourquoi de nombreuses écoles se sont installées ici, mais <strong>KiteSurf Passion reste la seule à proposer un bateau d'assistance permanent</strong> sur chaque session — un avantage décisif pour votre progression et votre sécurité.
+                    Les séances de KiteSurf Passion sont accompagnées par un <strong>bateau d'assistance</strong>. Il permet au moniteur de suivre les élèves sur l'eau et d'intervenir en cas de difficulté. La pratique reste soumise aux conditions météo et aux consignes de sécurité.
                   </p>
                 </div>
 
                 <div className="space-y-5">
-                  <h3 className="font-display text-2xl font-bold text-foreground">Une pédagogie forgée par 25 ans d'expérience</h3>
+                  <h3 className="font-display text-2xl font-bold text-foreground">Une pédagogie développée depuis 1999</h3>
                   <p>
-                    Notre fondateur <strong>Yoanne Cros</strong> est diplômé d'État (BPJEPS) depuis 1999 et <strong>formateur de moniteurs pour la FFVL</strong> (Fédération Française de Vol Libre). Cette double casquette — enseignant et formateur d'enseignants — confère à notre école une expertise pédagogique inégalée dans le Var.
+                    Notre fondateur <strong>Yoanne Cros</strong> enseigne depuis 1999, est <strong>diplômé d'État (BPJEPS) depuis 2001</strong> et formateur de moniteurs depuis 2010. Son travail auprès des élèves et des moniteurs en formation nourrit la pédagogie de l'école.
                   </p>
                   <p>
-                    Avec plus de <strong>2 500 élèves formés</strong>, nous avons affiné notre méthode pour garantir une progression optimale. Notre approche repose sur trois piliers fondamentaux : la <strong>sécurité maximale</strong> grâce au bateau d'assistance et aux radios de communication, la <strong>personnalisation</strong> avec des groupes de 3 à 4 élèves maximum, et la <strong>qualité du matériel</strong> avec du Duotone dernière génération.
+                    Avec plus de <strong>2 500 élèves formés</strong>, notre approche associe <strong>bateau d'assistance et radios de communication</strong>, <strong>groupes limités à 4 élèves</strong> et matériel adapté à la séance. Les exercices sont ajustés à votre niveau et à votre progression.
                   </p>
                   <p>
-                    Contrairement aux grandes structures qui privilégient le volume, nous misons sur la <strong>qualité de l'encadrement</strong>. Chaque élève bénéficie d'un suivi individualisé, avec des débriefings après chaque session et des conseils adaptés à sa progression personnelle. C'est cette approche humaine et passionnée qui explique notre <strong>note de 4,9/5</strong> basée sur les retours de nos élèves.
+                    Chaque élève bénéficie d'un <strong>suivi individualisé</strong>, avec des débriefings après les séances et des conseils adaptés aux points à travailler. Les groupes limités à quatre élèves permettent au moniteur de proposer des exercices en fonction des acquis de chacun.
                   </p>
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-12 text-muted-foreground leading-relaxed mb-16">
                 <div className="space-y-5">
-                  <h3 className="font-display text-2xl font-bold text-foreground">Le bateau d'assistance : notre avantage décisif</h3>
+                  <h3 className="font-display text-2xl font-bold text-foreground">Le bateau d'assistance : suivi et récupération sur l'eau</h3>
                   <p>
                     Le <strong>bateau d'assistance</strong> est au cœur de notre pédagogie. Présent sur chaque session, il remplit trois fonctions essentielles qui accélèrent considérablement votre apprentissage du kitesurf ou du wingfoil à Hyères.
                   </p>
@@ -75,7 +75,7 @@ export function LocalExpertiseSection() {
                     Le <Link to="/cours-pumpfoil-dock-start-hyeres" className="text-primary hover:underline"><strong>pumpfoil</strong></Link> est notre dernière innovation : volez sur l'eau sans vent ni vagues grâce à la technique du dock start. C'est l'activité idéale les jours calmes et un excellent workout. Le <Link to="/foil-tracte-hyeres" className="text-primary hover:underline"><strong>foil tracté</strong></Link> sert de tremplin vers le wingfoil, tandis que le <Link to="/wakeboard-hyeres" className="text-primary hover:underline"><strong>wakeboard</strong></Link> propose une glisse fun accessible dès 8 ans.
                   </p>
                   <p>
-                    Cette diversité fait de KiteSurf Passion <strong>l'école la plus complète du littoral varois</strong>. Quelle que soit votre envie, votre niveau ou les conditions du jour, nous avons toujours une activité à vous proposer. Consultez nos <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres" className="text-primary hover:underline">tarifs</Link> ou <Link to="/contact-reservation-kitesurf-hyeres" className="text-primary hover:underline">contactez-nous</Link> pour trouver la formule idéale.
+                    KiteSurf Passion propose <strong>le kitesurf, le wingfoil, le pumpfoil, le foil tracté et le wakeboard</strong>. Le choix de l'activité dépend de votre niveau, de vos envies et des conditions du jour. Consultez nos <Link to="/tarifs-cours-kitesurf-wingfoil-hyeres" className="text-primary hover:underline">tarifs</Link> ou <Link to="/contact-reservation-kitesurf-hyeres" className="text-primary hover:underline">contactez-nous</Link> pour trouver la formule idéale.
                   </p>
                 </div>
               </div>

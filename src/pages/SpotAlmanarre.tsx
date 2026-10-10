@@ -36,12 +36,12 @@ const spotFeatures = [
   {
     icon: Wind,
     title: "Vent Thermique Régulier",
-    description: "Le Mistral et le vent thermique d'Est offrent des conditions idéales de mars à octobre, avec une moyenne de 15-25 nœuds."
+    description: "Le Mistral et les vents d'Est influencent les conditions de navigation. Consultez les prévisions et les observations du jour."
   },
   {
     icon: Waves,
-    title: "Eaux Plates & Sécurisées",
-    description: "La baie protégée offre des eaux calmes parfaites pour l'apprentissage du kitesurf et du wingfoil."
+    title: "État du Plan d'Eau",
+    description: "Le clapot et les vagues dépendent du vent. L'état du plan d'eau est vérifié avant la séance."
   },
   {
     icon: Sun,
@@ -50,8 +50,8 @@ const spotFeatures = [
   },
   {
     icon: Shield,
-    title: "Zone Réglementée Sécurisée",
-    description: "Zones de navigation dédiées et balisées pour une pratique en toute sécurité."
+    title: "Zones de Navigation Réglementées",
+    description: "Les zones autorisées et les règles locales doivent être respectées pendant la navigation."
   }
 ];
 
@@ -89,7 +89,7 @@ const practicalInfo = [
 ];
 
 const conditions = [
-  { label: "Meilleure période", value: "Avril à Septembre" },
+  { label: "Période estivale", value: "Avril à Septembre" },
   { label: "Vent dominant", value: "Mistral (N-NO) / Est" },
   { label: "Force moyenne", value: "15-25 nœuds" },
   { label: "Température eau", value: "18-24°C en été" },
@@ -101,7 +101,7 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "Beach",
   name: "Plage de l'Almanarre - Spot Kitesurf Hyères",
-  description: "Spot de kitesurf et wingfoil emblématique du Var. Conditions idéales pour débutants et confirmés avec vent thermique régulier et eaux plates.",
+  description: "Spot de kitesurf et wingfoil à Hyères dans le Var. Le lieu de pratique est choisi selon le niveau des élèves, le vent et l'état de la mer.",
   address: {
     "@type": "PostalAddress",
     streetAddress: "Plage de l'Almanarre",
@@ -124,16 +124,16 @@ const structuredData = {
 // FAQ data for the spot page
 const spotFaqs = [
   {
-    question: "Pourquoi l'Almanarre est-il considéré comme le meilleur spot kitesurf du Var ?",
-    answer: "L'Almanarre bénéficie d'une orientation parfaite pour capter le Mistral et les vents thermiques d'Est, avec une moyenne de 15-25 nœuds. La baie protégée offre des eaux calmes idéales pour l'apprentissage, avec un fond de sable fin et une faible profondeur sur 200m."
+    question: "Quelles conditions rencontre-t-on sur le spot de l'Almanarre ?",
+    answer: "L'Almanarre est exposée notamment au Mistral. La force et la direction du vent, le clapot et la profondeur varient selon la météo et la zone. Le moniteur vérifie ces conditions avant de choisir le lieu de la séance."
   },
   {
-    question: "Quelle est la meilleure période pour faire du kitesurf à l'Almanarre ?",
-    answer: "La saison s'étend de mars à novembre. Le printemps (avril-juin) offre un Mistral régulier avec moins de monde. L'été combine chaleur et vent thermique régulier. L'automne propose les meilleures conditions avec un Mistral puissant et une eau encore chaude."
+    question: "À quelle période pratique-t-on le kitesurf à l'Almanarre ?",
+    answer: "Les séances sont organisées en fonction des conditions du jour. Au printemps et en automne, le Mistral peut être présent ; en été, les températures de l'eau sont plus élevées. Aucune saison ne garantit des conditions navigables chaque jour."
   },
   {
     question: "Y a-t-il des zones dédiées aux débutants sur le spot ?",
-    answer: "Oui, une zone protégée à faible profondeur (1-3m sur 200m) est parfaite pour les débutants. L'espace est dégagé et le fond de sable fin permet de se relever facilement. Les confirmés naviguent plus au large."
+    answer: "Le moniteur choisit une zone en fonction du niveau des élèves, du vent, de l'état de la mer et de la réglementation. La profondeur varie selon l'endroit : elle doit être vérifiée avant la pratique, notamment avec un foil."
   },
   {
     question: "Quelles sont les commodités disponibles sur le spot de l'Almanarre ?",
@@ -162,7 +162,7 @@ const sportsActivityLocationData = {
   "@id": "https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var#sportslocation",
   name: "Spot Kitesurf & Wingfoil de l'Almanarre",
   priceRange: "€€",
-  description: "Spot de sports nautiques emblématique de la Côte d'Azur. Idéal pour kitesurf, wingfoil et pumpfoil avec conditions régulières et sécurisées.",
+  description: "Spot de sports nautiques à Hyères. Kitesurf, wingfoil et pumpfoil se pratiquent selon les conditions météo et la réglementation locale.",
   url: "https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var",
   image: "https://www.kitesurfpassion.fr/images/almanarre-sunset.jpg",
   address: {
@@ -198,7 +198,7 @@ const sportsActivityLocationData = {
   sport: ["Kitesurf", "Wingfoil", "Pumpfoil", "Windsurf"],
   publicAccess: true,
   isAccessibleForFree: true,
-  slogan: "Le meilleur spot de kitesurf du Var",
+  slogan: "Un spot de kitesurf à Hyères, dans le Var",
   aggregateRating: {
     "@type": "AggregateRating",
     ratingValue: "4.9",
@@ -212,7 +212,7 @@ const imageStructuredData = {
   "@context": "https://schema.org",
   "@type": "ImageObject",
   name: "Spot kitesurf Almanarre Hyères coucher de soleil",
-  description: "Plage de l'Almanarre à Hyères au coucher de soleil - meilleur spot kitesurf du Var",
+  description: "Plage de l'Almanarre à Hyères au coucher de soleil - spot de kitesurf à Hyères dans le Var",
   contentUrl: "https://www.kitesurfpassion.fr/images/almanarre-sunset.jpg",
   thumbnailUrl: "https://www.kitesurfpassion.fr/images/almanarre-sunset.jpg",
   creditText: "KiteSurf Passion",
@@ -240,10 +240,10 @@ export default function SpotAlmanarre() {
   return (
     <>
       <Helmet>
-        <title>Spot Kitesurf Almanarre Hyères | Kitesurf Passion – Meilleur Spot Var</title>
+        <title>Spot Kitesurf Almanarre Hyères | Kitesurf Passion – Conditions et Accès</title>
         <meta
           name="description"
-          content="Découvrez le spot de l'Almanarre à Hyères, meilleur spot kitesurf du Var. Vent thermique régulier, eaux plates, idéal débutants. Infos conditions, accès et équipements."
+          content="Découvrez le spot de l'Almanarre à Hyères avec Kitesurf Passion : informations sur le vent, les conditions de navigation, l'accès et les équipements."
         />
         <meta
           name="keywords"
@@ -254,8 +254,8 @@ export default function SpotAlmanarre() {
         <link rel="alternate" hrefLang="x-default" href="https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="Spot Kitesurf Almanarre Hyères | Kitesurf Passion – Meilleur Spot Var" />
-        <meta property="og:description" content="L'Almanarre : le meilleur spot kitesurf du Var. Vent régulier, eaux plates, 300 jours de soleil. Conditions idéales pour apprendre !" />
+        <meta property="og:title" content="Spot Kitesurf Almanarre Hyères | Kitesurf Passion – Conditions et Accès" />
+        <meta property="og:description" content="Découvrez l'Almanarre à Hyères avec Kitesurf Passion : conditions de navigation, accès au spot et cours avec bateau d'assistance." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.kitesurfpassion.fr/spot-kitesurf-almanarre-hyeres-var" />
         <meta property="og:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
@@ -268,7 +268,7 @@ export default function SpotAlmanarre() {
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Spot Kitesurf Almanarre Hyères" />
-        <meta name="twitter:description" content="Le meilleur spot kitesurf du Var : vent régulier, eaux plates, conditions idéales." />
+        <meta name="twitter:description" content="L'Almanarre à Hyères : informations sur le vent, les conditions de navigation et l'accès au spot." />
         <meta name="twitter:image" content="https://www.kitesurfpassion.fr/og-image.jpg" />
         <meta name="twitter:image:alt" content="Spot Almanarre Hyères kitesurf" />
         
@@ -325,8 +325,8 @@ export default function SpotAlmanarre() {
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Le meilleur spot de kitesurf et wingfoil du Var. Conditions idéales pour 
-              l'apprentissage avec vent thermique régulier et eaux plates protégées.
+              Un spot de kitesurf et wingfoil à Hyères, dans le Var.
+              Le lieu de la séance est choisi selon le vent, l'état de la mer et votre niveau.
             </p>
 
             <div className="flex flex-wrap justify-center gap-4">
@@ -348,12 +348,12 @@ export default function SpotAlmanarre() {
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="font-display font-bold text-3xl md:text-4xl text-foreground mb-4">
-                Pourquoi l'Almanarre est le{" "}
-                <span className="text-primary">Spot Idéal</span>
+                Les caractéristiques du{" "}
+                <span className="text-primary">Spot de l'Almanarre</span>
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Reconnu comme l'un des meilleurs spots de kitesurf en Méditerranée, 
-                l'Almanarre offre des conditions exceptionnelles pour tous les niveaux.
+                À l'Almanarre, les conditions de navigation varient avec la direction
+                et la force du vent. Les séances sont adaptées au niveau des élèves.
               </p>
             </div>
 
@@ -423,16 +423,15 @@ export default function SpotAlmanarre() {
                 </div>
                 
                 <h2 className="font-display font-bold text-3xl md:text-4xl text-foreground mb-6">
-                  Des Conditions{" "}
-                  <span className="text-primary">Optimales</span>{" "}
-                  Toute l'Année
+                  Les Conditions{" "}
+                  <span className="text-primary">de Navigation</span>{" "}
+                  au Fil des Saisons
                 </h2>
                 
                 <p className="text-muted-foreground mb-8">
-                  L'Almanarre bénéficie d'une orientation parfaite pour capter le Mistral 
-                  et les vents thermiques d'Est. La baie protégée crée des conditions 
-                  de navigation exceptionnelles, avec un plan d'eau plat idéal pour 
-                  l'apprentissage du kitesurf et du wingfoil.
+                  Le Mistral et les vents d'Est modifient les conditions autour de la
+                  presqu'île de Giens. La direction du vent, sa force et l'état de
+                  la mer sont vérifiés avant chaque séance de kitesurf ou de wingfoil.
                 </p>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -450,7 +449,7 @@ export default function SpotAlmanarre() {
                   <div className="flex items-center gap-3 mb-6">
                     <ThermometerSun className="w-8 h-8 text-sunset" />
                     <h3 className="font-display font-bold text-xl text-foreground">
-                      Meilleure Saison
+                      Repères Saisonniers
                     </h3>
                   </div>
                   
@@ -558,8 +557,8 @@ export default function SpotAlmanarre() {
               Prêt à Découvrir l'Almanarre ?
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-              Réservez votre cours de kitesurf ou wingfoil et profitez des meilleures 
-              conditions de navigation du Var avec un moniteur diplômé d'État.
+              Réservez votre cours de kitesurf ou wingfoil à Hyères avec un moniteur
+              diplômé d'État. La séance est adaptée à votre niveau et à la météo.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button variant="heroFilled" size="xl" asChild>
