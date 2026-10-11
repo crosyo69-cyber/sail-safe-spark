@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { FfvlLicenceNotice } from "@/components/FfvlLicenceNotice";
 import { Button } from "@/components/ui/button";
 import { Sun, Snowflake, TrendingUp, Users, Clock, Award, Calendar, Zap } from "lucide-react";
 
@@ -16,6 +17,7 @@ interface SeasonPricingSectionProps {
   gradientClass: string;
   items: PricingItem[];
   colorScheme: "ocean" | "sunset" | "turquoise";
+  ffvlLicence?: boolean;
 }
 
 const highSeasonAdvantages = [
@@ -36,6 +38,7 @@ export const SeasonPricingSection = ({
   gradientClass,
   items,
   colorScheme,
+  ffvlLicence = false,
 }: SeasonPricingSectionProps) => {
   const borderColorMap = {
     ocean: "border-primary",
@@ -111,7 +114,7 @@ export const SeasonPricingSection = ({
                   key={`high-${item.name}-${index}`}
                   className={`bg-background/50 rounded-lg md:rounded-xl p-3 md:p-4 border ${
                     item.popular ? "border-sunset shadow-md" : "border-border/30"
-                  } relative flex items-center justify-between gap-3 md:gap-4 transition-all duration-200 hover:bg-background hover:shadow-md hover:scale-[1.02] cursor-pointer`}
+                  } relative flex flex-wrap items-center justify-between gap-3 md:gap-4 transition-all duration-200 hover:bg-background hover:shadow-md hover:scale-[1.02] cursor-pointer`}
                 >
                   {item.popular && (
                     <span className="absolute -top-2 right-3 md:right-4 bg-sunset-strong text-white text-[10px] md:text-xs px-2 py-0.5 rounded-full font-semibold">
@@ -125,6 +128,7 @@ export const SeasonPricingSection = ({
                   <div className="text-right flex-shrink-0">
                     <p className="font-display text-lg md:text-xl font-bold text-foreground">{item.highSeasonPrice}</p>
                   </div>
+                  {ffvlLicence && <div className="basis-full"><FfvlLicenceNotice compact /></div>}
                 </div>
               ))}
             </div>
@@ -185,7 +189,7 @@ export const SeasonPricingSection = ({
                   key={`low-${item.name}-${index}`}
                   className={`bg-background/50 rounded-lg md:rounded-xl p-3 md:p-4 border ${
                     item.popular ? `${accentColor} shadow-md` : "border-border/30"
-                  } relative flex items-center justify-between gap-3 md:gap-4 transition-all duration-200 hover:bg-background hover:shadow-md hover:scale-[1.02] cursor-pointer`}
+                  } relative flex flex-wrap items-center justify-between gap-3 md:gap-4 transition-all duration-200 hover:bg-background hover:shadow-md hover:scale-[1.02] cursor-pointer`}
                 >
                   {item.popular && (
                     <span className={`absolute -top-2 right-3 md:right-4 bg-primary text-white text-[10px] md:text-xs px-2 py-0.5 rounded-full font-semibold`}>
@@ -204,6 +208,7 @@ export const SeasonPricingSection = ({
                       </p>
                     )}
                   </div>
+                  {ffvlLicence && <div className="basis-full"><FfvlLicenceNotice compact /></div>}
                 </div>
               ))}
             </div>

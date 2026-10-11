@@ -1,3 +1,4 @@
+import { FfvlLicenceNotice } from "@/components/FfvlLicenceNotice";
 import {
   Accordion,
   AccordionContent,
@@ -15,9 +16,10 @@ interface ActivityFAQProps {
   subtitle: string;
   faqs: FAQ[];
   accentColor?: "primary" | "sunset" | "ocean";
+  ffvlLicence?: boolean;
 }
 
-export function ActivityFAQ({ title, subtitle, faqs, accentColor = "primary" }: ActivityFAQProps) {
+export function ActivityFAQ({ title, subtitle, faqs, accentColor = "primary", ffvlLicence = false }: ActivityFAQProps) {
   const gradientClass = accentColor === "sunset" 
     ? "from-sunset to-sunset-light" 
     : accentColor === "ocean" 
@@ -50,10 +52,18 @@ export function ActivityFAQ({ title, subtitle, faqs, accentColor = "primary" }: 
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-muted-foreground pb-6 leading-relaxed">
-                  {faq.answer}
+                  {ffvlLicence && faq.question.toLowerCase().includes("licence ffvl") ? <FfvlLicenceNotice /> : faq.answer}
                 </AccordionContent>
               </AccordionItem>
             ))}
+            {ffvlLicence && !faqs.some((faq) => faq.question.toLowerCase().includes("licence ffvl")) && (
+              <AccordionItem value="ffvl-licence" className="bg-card rounded-2xl border border-border/50 px-6 shadow-sm">
+                <AccordionTrigger className="text-left font-display font-semibold text-foreground py-6 hover:no-underline">
+                  La licence FFVL est-elle incluse dans le tarif ?
+                </AccordionTrigger>
+                <AccordionContent className="pb-6"><FfvlLicenceNotice /></AccordionContent>
+              </AccordionItem>
+            )}
           </Accordion>
         </div>
       </div>
