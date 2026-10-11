@@ -25,3 +25,8 @@
 - [x] Audit validé du panneau mobile.
 - [x] Panneau opaque, liens et sous-menus accessibles, défilement interne et blocage de la page derrière, uniquement sous 1024 px.
 - [x] Vérifier accueil et Tarifs à 360/390 px, mesures et aperçus des trois états, sans publication : fond rgb(15,23,42), alpha 1, aucun flou, contraste 17,85:1 (sous-menus 14,63:1), liens 18px et ≥48px, Échap et navigation rétablissent le défilement.
+
+# F-28-31 — Licence FFVL
+
+- [ ] Phase 0 : inventorier les prix, listes inclus, FAQ, parcours de réservation, confirmations et offres SEO ; présenter les textes actuels sans modifier le site.
+- [ ] Phase 1 : bloquée jusqu'à validation de l'audit et décision sur « Assurance incluse » ; aucun changement ni publication autorisés à ce stade.
