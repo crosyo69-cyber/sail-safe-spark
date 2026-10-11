@@ -22,7 +22,7 @@ export function HourlyThresholdTable({ data, rules }: { data: TomorrowForecast; 
                 const status = evaluateHourThresholds(hour, data.state, rules.find((rule) => rule.activity === a));
                 return (
                   <td key={a} className="p-3 align-top min-w-[170px]">
-                    <Badge variant={status.kind === "outside" ? "destructive" : status.kind === "within" ? "default" : "outline"}>{status.label}</Badge>
+                    <Badge variant={status.kind === "within" ? "default" : "outline"}>{status.label}</Badge>
                     {status.reasons.map((reason) => <p key={reason} className="text-xs text-muted-foreground mt-1">{reason}</p>)}
                   </td>
                 );
