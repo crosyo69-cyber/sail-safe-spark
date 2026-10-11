@@ -66,6 +66,7 @@ const Stage100Glisse = () => {
       {
         "@type": "Offer",
         "name": "Stage 100% Glisse - Hors saison",
+        "description": "Licence FFVL obligatoire non incluse dans le tarif. Elle est à prendre en ligne sur https://ffvl.fr avant la session.",
         "price": "399",
         "priceCurrency": "EUR",
         "availability": "https://schema.org/InStock"
@@ -73,6 +74,7 @@ const Stage100Glisse = () => {
       {
         "@type": "Offer",
         "name": "Stage 100% Glisse - Juillet/Août",
+        "description": "Licence FFVL obligatoire non incluse dans le tarif. Elle est à prendre en ligne sur https://ffvl.fr avant la session.",
         "price": "499",
         "priceCurrency": "EUR",
         "availability": "https://schema.org/InStock"
@@ -92,6 +94,7 @@ const Stage100Glisse = () => {
     },
     offers: {
       "@type": "AggregateOffer",
+      description: "Licence FFVL obligatoire non incluse dans le tarif. Elle est à prendre en ligne sur https://ffvl.fr avant la session.",
       lowPrice: "399",
       highPrice: "599",
       priceCurrency: "EUR",

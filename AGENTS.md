@@ -1,7 +1,7 @@
 # Technical decisions
 
-- Home hero keeps byte-identical responsive WebPs and a pathname-gated early preload with matching srcset/sizes — no duplicate or off-route downloads.
-- Footer logos use intrinsic dimensions and lazy loading only on home, pricing and contact (F-28-27) — preserve proportions without competing with above-fold images.
+- Home hero: byte-identical responsive WebPs, path-gated preload, matching srcset/sizes — no duplicate/off-route downloads.
+- Footer logos: intrinsic dimensions, lazy only on home/pricing/contact — preserve proportions and prioritize above-fold images.
 
 - Heroes keep untouched photos (no overlay/filter) beside solid navy copy panels; inner pages share index.css .hero-split* — preserve true colour and AA text contrast.
 
@@ -18,7 +18,7 @@
 - Waitlist: a seat freed in a Stage 100% Glisse group that already has ≥1 confirmed Stage booking is offered first to the Kitesurf waitlist as a targeted offer (daily_waitlist.offered_group_id), falling back to the Stage waitlist only when no Kitesurf offer is made or pending; a pending targeted offer holds its seats in waitlist_free_seats — prevents double-offering the same seat and keeps empty Stage groups out of the Kitesurf path.
 - Waitlist offer confirmation (confirm_waitlist_offer) keeps phone optional: a missing waitlist phone becomes '' on the reservation (reservations.phone stays NOT NULL), never an invented number — readers must treat '' as no phone.
 - Contrast tokens: .text-primary, .text-sunset and .bg-primary render the darker --primary-text / --sunset-text (WCAG AA on white); gradients and decorative tints keep --primary / --sunset; use bg-sunset-strong / bg-turquoise-strong behind white text — keeps brand colours while text and buttons stay ≥4.5:1.
-- Weather: forecasts fetched server-side only (weather-forecast fn, cached, stale on failure); per-activity thresholds live in weather_activity_rules (NULL = n/a), written only via admin_update_weather_rule with append-only history; never a course decision.
+- Weather: server-side cached forecasts; weather_activity_rules (NULL = n/a) updated only via admin_update_weather_rule with append-only history. Hourly comparisons use unrounded inclusive bounds; stale/missing is indeterminate — never a course decision.
 
 - Mobile menu: opaque tokens, measured height, scroll-lock cleanup below 1024px; desktop unchanged.
-- FFVL notices preserve SEO and booking/payment logic — editorial isolation.
+- FFVL sports terms use Offer.description; ImageObject.license stays media rights. Notices preserve booking/payment logic — editorial isolation.
