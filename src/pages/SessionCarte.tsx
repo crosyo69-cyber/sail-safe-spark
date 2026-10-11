@@ -1,3 +1,4 @@
+import { FfvlLicenceNotice } from "@/components/FfvlLicenceNotice";
 import { Helmet } from "react-helmet-async";
 import { trackPhoneClick } from "@/lib/analytics";
 import { Header } from "@/components/layout/Header";
@@ -274,6 +275,7 @@ const SessionCarte = () => {
                       </div>
                     </div>
 
+                    <FfvlLicenceNotice compact />
                     <ul className="space-y-2 mb-6">
                       <li className="flex items-center gap-2 text-sm text-muted-foreground">
                         <CheckCircle className="w-4 h-4 text-primary" />
@@ -412,6 +414,7 @@ const SessionCarte = () => {
           title="Questions Fréquentes Kitesurf"
           subtitle="Tout savoir sur nos cours à la carte à Hyères Almanarre"
           faqs={coursCarteFaqs}
+          ffvlLicence
           accentColor="primary"
         />
 

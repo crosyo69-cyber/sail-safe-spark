@@ -1,3 +1,4 @@
+import { FfvlLicenceNotice } from "@/components/FfvlLicenceNotice";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -388,6 +389,9 @@ const DepositPaymentSection = () => {
                         : "(solde à régler le jour J)"}
                     </p>
                   </div>
+                  )}
+                  {["cours-particulier", "stage-100-glisse", "cours-carte", "stage-wingfoil"].includes(activity.id) && (
+                    <div className="mb-4"><FfvlLicenceNotice /></div>
                   )}
                   <Button
                     variant="sunset"

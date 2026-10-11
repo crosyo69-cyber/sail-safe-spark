@@ -1,3 +1,4 @@
+import { FfvlLicenceNotice } from "@/components/FfvlLicenceNotice";
 import { Helmet } from "react-helmet-async";
 import { trackPhoneClick } from "@/lib/analytics";
 import { Header } from "@/components/layout/Header";
@@ -311,6 +312,7 @@ const Stage100Glisse = () => {
                   </span>
                   <div className="mb-4">
                     <span className="text-4xl font-display font-bold text-foreground">399€</span>
+                    <FfvlLicenceNotice compact />
                   </div>
                   <p className="text-muted-foreground mb-6">Stage de 5 jours consécutifs</p>
                   <ul className="space-y-3 mb-8">
@@ -341,6 +343,7 @@ const Stage100Glisse = () => {
                   </span>
                   <div className="mb-4">
                     <span className="text-4xl font-display font-bold text-foreground">499€</span>
+                    <FfvlLicenceNotice compact />
                   </div>
                   <p className="text-muted-foreground mb-6">Stage de 5 jours consécutifs</p>
                   <ul className="space-y-3 mb-8">
@@ -373,6 +376,7 @@ const Stage100Glisse = () => {
                   <div className="text-right">
                     <p className="text-muted-foreground text-sm">À partir de</p>
                     <span className="text-3xl font-display font-bold text-foreground">599€</span>
+                    <FfvlLicenceNotice compact />
                     <p className="text-muted-foreground text-sm">par personne</p>
                   </div>
                 </div>
@@ -478,6 +482,7 @@ const Stage100Glisse = () => {
                 <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Cours à la Carte</h3>
                 <p className="text-muted-foreground text-sm mb-3">Flexibilité totale selon vos disponibilités</p>
                 <span className="text-primary text-sm font-medium">Dès 120€ →</span>
+                <FfvlLicenceNotice compact />
               </Link>
               <Link 
                 to="/cours-particulier-kitesurf-hyeres"
@@ -486,6 +491,7 @@ const Stage100Glisse = () => {
                 <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Cours Particulier</h3>
                 <p className="text-muted-foreground text-sm mb-3">Moniteur 100% dédié à votre progression</p>
                 <span className="text-primary text-sm font-medium">Dès 180€ →</span>
+                <FfvlLicenceNotice compact />
               </Link>
               <Link 
                 to="/location-materiel-kitesurf-hyeres"
@@ -504,6 +510,7 @@ const Stage100Glisse = () => {
           title="Questions Fréquentes Kitesurf"
           subtitle="Tout savoir sur notre stage 100% Glisse à Hyères Almanarre"
           faqs={stage100GlisseFaqs}
+          ffvlLicence
           accentColor="primary"
         />
 

@@ -1,3 +1,4 @@
+import { FfvlLicenceNotice } from "@/components/FfvlLicenceNotice";
 import { Helmet } from "react-helmet-async";
 import { trackPhoneClick } from "@/lib/analytics";
 import { Header } from "@/components/layout/Header";
@@ -295,6 +296,7 @@ const Tarifs = () => {
           title="Kitesurf"
           gradientClass="from-primary to-turquoise"
           items={kitesurfSeasonPricing}
+          ffvlLicence
           colorScheme="ocean"
         />
 
@@ -303,6 +305,7 @@ const Tarifs = () => {
           title="Cours particuliers"
           gradientClass="from-sunset to-sunset-light"
           items={privateLessonSeasonPricing}
+          ffvlLicence
           colorScheme="sunset"
         />
 
@@ -312,6 +315,7 @@ const Tarifs = () => {
             title="Wing Foil"
             gradientClass="from-sunset to-sunset-light"
             items={wingfoilSeasonPricing}
+            ffvlLicence
             colorScheme="sunset"
           />
         </section>
@@ -536,15 +540,15 @@ const Tarifs = () => {
                   <p className="text-muted-foreground text-sm leading-relaxed">
                     Pour les stages <strong className="text-foreground">Kitesurf</strong> et <strong className="text-foreground">Wingfoil</strong>, 
                     une licence FFVL (Fédération Française de Vol Libre) est obligatoire. 
-                    Elle peut être souscrite directement auprès de notre école ou en ligne sur{" "}
+                    La licence n'est pas incluse dans le tarif. Elle est à prendre en ligne sur{" "}
                     <a 
-                      href="https://www.ffvl.fr" 
+                      href="https://ffvl.fr" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="text-primary hover:text-primary/80 underline underline-offset-2 font-medium transition-colors"
                     >
-                      www.ffvl.fr
-                    </a>.
+                      ffvl.fr
+                    </a>{" "}avant la session.
                   </p>
                 </div>
               </div>
@@ -705,6 +709,7 @@ const Tarifs = () => {
                   </p>
                   <p>
                     Tous nos tarifs sont <strong>tout compris</strong> : matériel (aile, planche, combinaison, casque, gilet), bateau d'assistance permanent, assurance responsabilité civile, et encadrement par notre moniteur diplômé d'État. Il n'y a aucun frais caché. La seule obligation supplémentaire est la <strong>licence FFVL</strong> pour les stages kitesurf et wingfoil.
+                    <span className="block mt-2"><FfvlLicenceNotice /></span>
                   </p>
                   <p>
                     Nos <strong>bons cadeaux</strong> sont valables 1 an et disponibles pour toutes nos activités. C'est une idée de cadeau originale pour un anniversaire, Noël, ou toute occasion spéciale. <Link to="/contact-reservation-kitesurf-hyeres" className="text-primary hover:underline">Contactez-nous</Link> pour personnaliser votre bon.
@@ -720,6 +725,7 @@ const Tarifs = () => {
           title="Questions Fréquentes Tarifs"
           subtitle="Tout ce que vous devez savoir sur nos formules et nos prix"
           faqs={tarifsFAQItems}
+          ffvlLicence
         />
 
         {/* CTA - content-visibility for CLS */}

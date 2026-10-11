@@ -1,3 +1,4 @@
+import { FfvlLicenceNotice } from "@/components/FfvlLicenceNotice";
 import { Helmet } from "react-helmet-async";
 import { trackPhoneClick } from "@/lib/analytics";
 import { Header } from "@/components/layout/Header";
@@ -686,7 +687,7 @@ const CoursKitesurf = () => {
                       "Âge minimum : 10 ans (35 kg)",
                       "Certificat médical de non contre-indication",
                       "Autorisation parentale pour les mineurs",
-                      "Licence FFVL (délivrée par l'école)",
+                      "Licence FFVL non incluse — à prendre en ligne sur ffvl.fr",
                     ].map((item) => (
                       <li key={item} className="flex items-start gap-3">
                         <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
@@ -749,7 +750,7 @@ const CoursKitesurf = () => {
                       </span>
                     </summary>
                     <p className="text-muted-foreground mt-4 leading-relaxed">
-                      {q.acceptedAnswer.text}
+                      {q.name.includes("licence FFVL") ? <FfvlLicenceNotice /> : q.acceptedAnswer.text}
                     </p>
                   </details>
                 ))}
@@ -806,6 +807,7 @@ const CoursKitesurf = () => {
                   <p className="text-muted-foreground text-sm mb-4">{stage.duration}</p>
                   <p className="font-display text-4xl font-bold text-foreground mb-1">{stage.price}</p>
                   <p className="text-primary text-sm mb-4">{stage.priceNote}</p>
+                  <FfvlLicenceNotice compact />
                   <p className="text-muted-foreground text-sm mb-6">{stage.description}</p>
                   <ul className="space-y-3 mb-8">
                     {stage.features.map((feature) => (
