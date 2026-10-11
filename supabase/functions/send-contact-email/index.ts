@@ -1,3 +1,4 @@
+import { ffvlLicenceEmailNotice } from "../_shared/ffvl-licence-notice.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { globalQuota, publicRateKey } from "../_shared/public-guards.ts";
 
@@ -160,6 +161,7 @@ function buildCustomerEmailHtml(sanitized: NonNullable<ReturnType<typeof validat
         ${sanitized.message ? `<tr><td colspan="2" style="padding:10px 16px;color:#64748B;font-size:14px;border-top:1px solid #E2E8F0;"><strong>Message :</strong><br>${escapeHtml(sanitized.message)}</td></tr>` : ''}
       </table>
     </td></tr>
+    ${ffvlLicenceEmailNotice(sanitized.activity)}
     <tr><td style="padding:0 25px 24px;text-align:center;">
       <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 16px;">Pour toute question urgente, appelez-nous directement :</p>
       <a href="tel:0672716905" style="display:inline-block;background-color:#F97316;color:#ffffff;font-size:15px;font-weight:bold;border-radius:12px;padding:14px 28px;text-decoration:none;">📞 06 72 71 69 05</a>

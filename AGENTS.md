@@ -20,4 +20,5 @@
 - Contrast tokens: .text-primary, .text-sunset and .bg-primary render the darker --primary-text / --sunset-text (WCAG AA on white); gradients and decorative tints keep --primary / --sunset; use bg-sunset-strong / bg-turquoise-strong behind white text — keeps brand colours while text and buttons stay ≥4.5:1.
 - Weather: forecasts fetched server-side only (weather-forecast fn, cached, stale on failure); per-activity thresholds live in weather_activity_rules (NULL = n/a), written only via admin_update_weather_rule with append-only history; never a course decision.
 
-- Mobile menu uses opaque tokens below 1024px, measured header height and scroll-lock cleanup — readable on all pages; desktop unchanged.
+- Mobile menu: opaque tokens, measured height, scroll-lock cleanup below 1024px; desktop unchanged.
+- FFVL notices preserve SEO and booking/payment logic — editorial isolation.

@@ -1,3 +1,4 @@
+import { FfvlLicenceNotice } from "@/components/FfvlLicenceNotice";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -103,6 +104,7 @@ export const BookingSection = (p: Props) => (
                   </p>
                 </div>
               )}
+              {/kitesurf|wingfoil|wing foil|100.*glisse/i.test(p.activityLabel) && <FfvlLicenceNotice />}
               <Button
                 size="lg"
                 onClick={p.onBook}

@@ -1,3 +1,4 @@
+import { FfvlLicenceNotice } from "@/components/FfvlLicenceNotice";
 import { memo } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -141,6 +142,9 @@ export const ActivitiesSection = memo(function ActivitiesSection() {
                   </div>
                 </div>
               </div>
+              {["kitesurf", "wingfoil"].includes(activity.id) && (
+                <div className="bg-card px-6 py-2"><FfvlLicenceNotice compact /></div>
+              )}
             </Link>
           ))}
         </div>

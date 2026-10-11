@@ -299,6 +299,7 @@ const CoursParticulier = () => {
 
         <SeasonPricingSection
           title="Tarifs Cours Particulier"
+          ffvlLicence
           gradientClass="from-sunset to-sunset-light"
           items={[{
             name: "Cours Particulier",
@@ -450,6 +451,7 @@ const CoursParticulier = () => {
           title="Questions Fréquentes Kitesurf"
           subtitle="Tout savoir sur nos cours particuliers à Hyères Almanarre"
           faqs={coursParticulierFaqs}
+          ffvlLicence
           accentColor="sunset"
         />
 

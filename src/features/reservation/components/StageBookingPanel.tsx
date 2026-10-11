@@ -1,3 +1,4 @@
+import { FfvlLicenceNotice } from "@/components/FfvlLicenceNotice";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -85,6 +86,7 @@ export function StageBookingPanel({
         </div>
       )}
 
+      <FfvlLicenceNotice />
       <Button
         className="w-full min-h-[44px]"
         onClick={handleStageBook}

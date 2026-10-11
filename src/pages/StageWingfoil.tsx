@@ -1,3 +1,4 @@
+import { FfvlLicenceNotice } from "@/components/FfvlLicenceNotice";
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -352,7 +353,7 @@ const StageWingfoil = () => {
                 <h3 className="font-display text-2xl font-bold text-foreground mb-6">Nos Formules Wing Foil</h3>
                 
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center py-4 border-b border-border">
+                  <div className="flex flex-wrap gap-2 justify-between items-center py-4 border-b border-border">
                     <div>
                       <span className="font-semibold text-foreground">Stage Initiation 5 jours</span>
                       <p className="text-muted-foreground text-sm">4 leçons de 2h30 + simulateur foil tracté 40min</p>
@@ -360,10 +361,11 @@ const StageWingfoil = () => {
                     <div className="text-right">
                       <span className="font-display text-2xl font-bold text-foreground">440€</span>
                       <p className="text-primary text-xs">Hors saison (520€ juil./août)</p>
+                      <FfvlLicenceNotice compact />
                     </div>
                   </div>
                   
-                  <div className="flex justify-between items-center py-4 border-b border-border">
+                  <div className="flex flex-wrap gap-2 justify-between items-center py-4 border-b border-border">
                     <div>
                       <span className="font-semibold text-foreground">Cours 2h30</span>
                       <p className="text-muted-foreground text-sm">Cours à la carte</p>
@@ -371,10 +373,11 @@ const StageWingfoil = () => {
                     <div className="text-right">
                       <span className="font-display text-2xl font-bold text-foreground">90€</span>
                       <p className="text-primary text-xs">Hors saison (110€ juil./août)</p>
+                      <FfvlLicenceNotice compact />
                     </div>
                   </div>
                   
-                  <div className="flex justify-between items-center py-4 border-b border-border">
+                  <div className="flex flex-wrap gap-2 justify-between items-center py-4 border-b border-border">
                     <div>
                       <span className="font-semibold text-foreground">Foil Tracté 40 min</span>
                       <p className="text-muted-foreground text-sm">Simulateur de foil</p>
@@ -508,6 +511,7 @@ const StageWingfoil = () => {
           title="Questions Fréquentes Wingfoil"
           subtitle="Tout savoir sur nos cours de wingfoil à Hyères Almanarre"
           faqs={wingfoilFaqs}
+          ffvlLicence
           accentColor="primary"
         />
 

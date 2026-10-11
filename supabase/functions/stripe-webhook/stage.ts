@@ -1,3 +1,4 @@
+import { ffvlLicenceEmailNotice } from "../_shared/ffvl-licence-notice.ts";
 /**
  * A0 — Flux Stripe dédié au Stage 100 % Glisse.
  *
@@ -157,6 +158,7 @@ export function buildStageCustomerEmail(logoUrl: string, check: StagePaymentChec
       <h1 style="font-size:22px;font-weight:bold;color:#0F172A;margin:0 0 16px;">Confirmation de paiement et de réservation ✅</h1>
       <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 20px;">Nous avons bien reçu votre paiement de <strong>${esc(formatEuros(check.stripeAmountCents))}</strong> pour le <strong>Stage 100% Glisse</strong> (${n} participant${n > 1 ? "s" : ""}). Vos 5 journées sont réservées.</p>
     </td></tr>
+    ${ffvlLicenceEmailNotice("Stage 100% Glisse")}
     <tr><td style="padding:0 25px 24px;"><table width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(135deg,#0891B2,#0F172A);border-radius:12px;"><tr><td style="padding:20px;text-align:center;">
       <p style="margin:0 0 12px;color:#bae6fd;font-size:13px;text-transform:uppercase;letter-spacing:1px;">Code${codes.length > 1 ? "s" : ""} de réservation (1 par participant)</p>${codeLinks}
     </td></tr></table></td></tr>

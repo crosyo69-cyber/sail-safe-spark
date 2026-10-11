@@ -1,3 +1,4 @@
+import { FfvlLicenceNotice } from "@/components/FfvlLicenceNotice";
 import { Helmet } from "react-helmet-async";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -165,6 +166,7 @@ const ReserverPage = () => {
               </span>
             </div>
 
+            {["kitesurf", "wingfoil"].includes(activity) && <FfvlLicenceNotice />}
             <Button
               className="w-full min-h-[44px]"
               disabled={booking || !selectedDate || isFull}

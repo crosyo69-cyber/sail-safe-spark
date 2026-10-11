@@ -1,3 +1,4 @@
+import { ffvlLicenceEmailNotice } from "../_shared/ffvl-licence-notice.ts";
 import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { maskEmail } from "../_shared/log-redact.ts";
@@ -252,6 +253,7 @@ function buildCustomerPaymentEmailWithCode(
       </p>
     </td></tr>
     ${codeBlock}
+    ${ffvlLicenceEmailNotice(activityName)}
     <tr><td style="padding:0 25px 24px;">
       <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F1F5F9;border-radius:12px;overflow:hidden;">
         <tr><td style="padding:16px;font-size:15px;font-weight:bold;color:#0F172A;border-bottom:1px solid #E2E8F0;">📋 Récapitulatif</td></tr>

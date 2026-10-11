@@ -28,5 +28,7 @@
 
 # F-28-31 — Licence FFVL
 
-- [ ] Phase 0 : inventorier les prix, listes inclus, FAQ, parcours de réservation, confirmations et offres SEO ; présenter les textes actuels sans modifier le site.
-- [ ] Phase 1 : bloquée jusqu'à validation de l'audit et décision sur « Assurance incluse » ; aucun changement ni publication autorisés à ce stade.
+- [x] Phase 0 : inventaire présenté et audit validé ; assurance conservée, périmètre Kitesurf/Wingfoil, gabarits de confirmation autorisés uniquement.
+- [x] Ajouter les mentions sous les prix et avant paiement, corriger les FAQ visibles sans changer le SEO.
+- [x] Préparer les seuls textes des confirmations, sans déploiement ni modification de logique ; confirmation des journées préparée hors migrations actives.
+- [x] Vérifier contrastes (17,87:1 sous les prix), prix/SEO inchangés et aperçus à 1280/390/360 px ; 285 tests réussis, aucune publication.
