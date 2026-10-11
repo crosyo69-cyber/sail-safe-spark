@@ -35,6 +35,6 @@
 
 # F-29-06 — Lecture horaire des seuils météo et licence structurée
 
-- [ ] Afficher toutes les heures par activité : dans/hors seuils ou indéterminé, avec lien de réservation ; aucune décision automatique.
-- [ ] Préciser la licence FFVL exclue des offres Tarifs, Stage 100 % Glisse et Cours débutant ; conserver séparément les droits des images et les prix.
-- [ ] Tester limites, données périmées/manquantes, affichage admin connecté et JSON-LD ; sans publication ni déploiement.
+- [x] Afficher toutes les heures par activité : dans/hors seuils ou indéterminé, avec lien de réservation ; aucune décision automatique.
+- [x] Préciser la licence FFVL exclue des offres Tarifs, Stage 100 % Glisse et Cours débutant ; conserver séparément les droits des images et les prix.
+- [x] Tester limites, données périmées/manquantes : 292 tests réussis ; admin connecté vérifié (24 heures, 4 activités), lien /reserver et 6 offres JSON-LD contrôlés ; sans publication ni déploiement.
