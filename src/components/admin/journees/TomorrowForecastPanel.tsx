@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { ForecastState, TomorrowForecast } from "@/services/weather.service";
+import type { WeatherRule } from "@/features/weather-rules/types";
+import { HourlyThresholdTable } from "./HourlyThresholdTable";
+import { Link } from "react-router-dom";
 
 const STATE: Record<ForecastState, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
   fresh: { label: "Prévisions à jour", variant: "default" },
@@ -22,10 +25,13 @@ interface Props {
   error?: Error | null;
   refreshing: boolean;
   onRefresh: () => void;
+  rules: WeatherRule[];
+  rulesLoading: boolean;
+  rulesError?: Error | null;
 }
 
 /** Affichage informatif uniquement — aucune décision de cours. */
-export function TomorrowForecastPanel({ data, loading, error, refreshing, onRefresh }: Props) {
+export function TomorrowForecastPanel({ data, loading, error, refreshing, onRefresh, rules, rulesLoading, rulesError }: Props) {
   const s = data ? STATE[data.state] : null;
   return (
     <Card className="p-4 mb-6">
@@ -64,9 +70,13 @@ export function TomorrowForecastPanel({ data, loading, error, refreshing, onRefr
               </table>
             </div>
           )}
-          <p className="text-xs text-muted-foreground mt-2">Source Open-Meteo. Information indicative : la décision de maintenir un cours reste la vôtre.</p>
+          {rulesLoading && <p className="text-sm text-muted-foreground mt-3">Chargement des seuils par activité…</p>}
+          {rulesError && <p className="text-sm text-destructive mt-3">Seuils indisponibles : {rulesError.message}</p>}
+          {data.hourly.length > 0 && <HourlyThresholdTable data={data} rules={rulesError || rulesLoading ? [] : rules} />}
+          <p className="text-xs text-muted-foreground mt-2">Source Open-Meteo. Dans les seuils ne signifie pas qu’un cours est confirmé. La direction n’entre pas dans cette comparaison ; la décision de maintenir un cours reste la vôtre.</p>
         </>
       )}
+      <Button asChild variant="outline" className="mt-3 min-h-[44px]"><Link to="/reserver">Accéder au parcours de réservation</Link></Button>
     </Card>
   );
 }

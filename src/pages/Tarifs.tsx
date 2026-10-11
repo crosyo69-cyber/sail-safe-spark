@@ -170,6 +170,7 @@ const productStructuredData = {
   },
   offers: {
     "@type": "AggregateOffer",
+      description: "Pour les cours et stages Kitesurf et Wingfoil uniquement : Licence FFVL obligatoire non incluse dans le tarif. Elle est à prendre en ligne sur https://ffvl.fr avant la session.",
     lowPrice: "40",
     highPrice: "699",
     priceCurrency: "EUR",

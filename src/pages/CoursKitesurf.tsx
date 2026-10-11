@@ -190,6 +190,7 @@ const CoursKitesurf = () => {
     },
     offers: {
       "@type": "Offer",
+      description: "Licence FFVL obligatoire non incluse dans le tarif. Elle est à prendre en ligne sur https://ffvl.fr avant la session.",
       price: "399",
       priceCurrency: "EUR",
       availability: "https://schema.org/InStock",
@@ -208,6 +209,7 @@ const CoursKitesurf = () => {
     },
     offers: {
       "@type": "AggregateOffer",
+      description: "Licence FFVL obligatoire non incluse dans le tarif. Elle est à prendre en ligne sur https://ffvl.fr avant la session.",
       lowPrice: "180",
       highPrice: "599",
       priceCurrency: "EUR",
