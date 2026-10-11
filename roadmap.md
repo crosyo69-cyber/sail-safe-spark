@@ -32,3 +32,9 @@
 - [x] Ajouter les mentions sous les prix et avant paiement, corriger les FAQ visibles sans changer le SEO.
 - [x] Préparer les seuls textes des confirmations, sans déploiement ni modification de logique ; confirmation des journées préparée hors migrations actives.
 - [x] Vérifier contrastes (17,87:1 sous les prix), prix/SEO inchangés et aperçus à 1280/390/360 px ; 285 tests réussis, aucune publication.
+
+# F-29-06 — Lecture horaire des seuils météo et licence structurée
+
+- [ ] Afficher toutes les heures par activité : dans/hors seuils ou indéterminé, avec lien de réservation ; aucune décision automatique.
+- [ ] Préciser la licence FFVL exclue des offres Tarifs, Stage 100 % Glisse et Cours débutant ; conserver séparément les droits des images et les prix.
+- [ ] Tester limites, données périmées/manquantes, affichage admin connecté et JSON-LD ; sans publication ni déploiement.
