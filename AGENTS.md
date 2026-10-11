@@ -21,4 +21,4 @@
 - Weather: forecasts fetched server-side only (weather-forecast fn, cached, stale on failure); per-activity thresholds live in weather_activity_rules (NULL = n/a), written only via admin_update_weather_rule with append-only history; never a course decision.
 
 - Mobile menu: opaque tokens, measured height, scroll-lock cleanup below 1024px; desktop unchanged.
-- FFVL notices leave SEO and booking/payment logic unchanged — editorial isolation.
+- FFVL notices preserve SEO and booking/payment logic — editorial isolation.
