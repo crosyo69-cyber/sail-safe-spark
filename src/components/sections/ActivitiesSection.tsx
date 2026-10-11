@@ -128,7 +128,7 @@ export const ActivitiesSection = memo(function ActivitiesSection() {
                   </div>
                   {["kitesurf", "wingfoil"].includes(activity.id) && (
                     <div className="absolute top-16 right-6 bg-card px-3 py-1 rounded-lg max-w-[calc(100%-3rem)]"><FfvlLicenceNotice compact /></div>
-                  )
+                  )}
 
                   {/* Title & Description */}
                   <h3 className="font-display text-2xl sm:text-3xl font-bold text-primary-foreground mb-3">
