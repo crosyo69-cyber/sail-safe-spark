@@ -77,7 +77,6 @@ export function checkStagePayment(session: StageCheckoutSession): StagePaymentCh
   return { ok: true, ...base };
 }
 
-import { ffvlLicenceEmailNotice } from "../_shared/ffvl-licence-notice.ts";
 /**
  * Le paiement ne transmet qu'un seul contact (l'acheteur). Chaque pack est
  * donc rattaché aux coordonnées de l'acheteur, un pack par participant.

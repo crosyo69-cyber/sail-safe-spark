@@ -126,9 +126,6 @@ export const ActivitiesSection = memo(function ActivitiesSection() {
                   <div className="absolute top-6 right-6 bg-sunset-strong text-accent-foreground px-4 py-2 rounded-full font-bold text-sm">
                     {activity.price}
                   </div>
-                  {["kitesurf", "wingfoil"].includes(activity.id) && (
-                    <div className="absolute top-16 right-6 bg-card px-3 py-1 rounded-lg max-w-[calc(100%-3rem)]"><FfvlLicenceNotice compact /></div>
-                  )}
 
                   {/* Title & Description */}
                   <h3 className="font-display text-2xl sm:text-3xl font-bold text-primary-foreground mb-3">
@@ -145,6 +142,9 @@ export const ActivitiesSection = memo(function ActivitiesSection() {
                   </div>
                 </div>
               </div>
+              {["kitesurf", "wingfoil"].includes(activity.id) && (
+                <div className="bg-card px-6 py-2"><FfvlLicenceNotice compact /></div>
+              )}
             </Link>
           ))}
         </div>
