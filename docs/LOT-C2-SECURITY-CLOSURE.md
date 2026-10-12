@@ -203,3 +203,14 @@ Ces écarts sont **hors périmètre C-2** et ne rouvrent pas le lot.
 
 Aucune anomalie critique ou haute du périmètre C-2. TypeScript : 0 erreur.
 Ce document constitue la base de référence de sécurité de la plateforme.
+
+## Risques acceptés — Security Advisor (base de données)
+
+Contrôlés dans le Security Advisor Lovable (non exécutable depuis GitHub Actions, backend Lovable Cloud) :
+
+| Lint | Motif d'acceptation |
+|---|---|
+| 0011_function_search_path_mutable | fonctions historiques revues |
+| 0025_public_bucket_allows_listing | images d'e-mail lues par les messageries |
+| 0028_anon_security_definer_function_executable | RPC publiques (réservation par session OTP, disponibilités, liste d'attente, journaux) |
+| 0029_authenticated_security_definer_function_executable | RPC admin protégées par une vérification du rôle admin interne |
