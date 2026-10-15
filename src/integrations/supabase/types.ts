@@ -2305,6 +2305,10 @@ export type Database = {
         Args: { p_body?: Json; p_function_name: string }
         Returns: number
       }
+      day_operational_group_count: {
+        Args: { p_date: string; p_exclude?: string }
+        Returns: number
+      }
       default_max_participants: {
         Args: { _activity: Database["public"]["Enums"]["activity_type"] }
         Returns: number
@@ -2480,6 +2484,7 @@ export type Database = {
         }
         Returns: Json
       }
+      lock_day_groups: { Args: { p_date: string }; Returns: undefined }
       log_analytics_event: {
         Args: {
           p_event_type: string
