@@ -4,7 +4,13 @@ import { toast } from "sonner";
 import { useReservations } from "@/hooks/services/useReservations";
 import { ACTIVITY_LABEL, type DailyGroup, type Member } from "@/features/admin-journees/types";
 
-const msg = (e: unknown) => (e instanceof Error ? e.message : String(e));
+const msg = (e: unknown) => {
+  const raw = e instanceof Error ? e.message : String(e);
+  if (raw.includes("day_group_limit_reached")) {
+    return "Cette journée a déjà 3 groupes : impossible d'en créer un nouveau. Déplacez vers une autre date ou un groupe existant.";
+  }
+  return raw;
+};
 
 /**
  * Toute la logique métier de la page « Gestion des journées ».
