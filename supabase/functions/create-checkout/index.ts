@@ -282,6 +282,44 @@ export function createHandler(
     if (hourlyWindow) return hourlyWindow;
 
 
+    // Plafond journalier : ne jamais faire payer une réservation qui ne peut
+    // plus être honorée. Pré-contrôle AVANT Stripe (fail-closed) : pour le
+    // Stage, les 5 jours doivent tous être faisables. La garantie finale reste
+    // le garde-fou en base au moment de la réservation (webhook) ; ce contrôle
+    // évite l'essentiel des paiements impossibles.
+    const DAY_LIMIT_MESSAGE =
+      "Cette journée a atteint sa limite de 3 groupes. Merci de choisir une autre date ou de contacter l'école.";
+    const firstDay = new Date(`${preferredDate}T00:00:00Z`);
+    if (Number.isNaN(firstDay.getTime())) {
+      return new Response(JSON.stringify({ error: "preferredDate invalide." }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const daysToCheck = isStage ? 5 : 1;
+    for (let d = 0; d < daysToCheck; d++) {
+      const day = new Date(firstDay);
+      day.setUTCDate(day.getUTCDate() + d);
+      const isoDay = day.toISOString().slice(0, 10);
+      const { data: feasible, error: feasError } = await rateGuardClient.rpc(
+        "booking_feasibility",
+        { p_date: isoDay, p_activity: activityEnum, p_seats: count },
+      );
+      if (feasError || typeof feasible !== "boolean") {
+        console.error("create-checkout feasibility lookup unavailable", feasError?.message ?? "invalid result");
+        return new Response(JSON.stringify({ error: "Service temporairement indisponible" }), {
+          status: 503,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      if (!feasible) {
+        return new Response(JSON.stringify({ error: DAY_LIMIT_MESSAGE, code: "day_group_limit_reached" }), {
+          status: 409,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+    }
+
     const origin = originResolver(req.headers.get("origin"));
 
     const PRICE_ID = "price_1TAXYhJTWAAnYv4Vnnoy6jIP";
