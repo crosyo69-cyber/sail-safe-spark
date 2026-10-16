@@ -12,6 +12,8 @@ export const DAILY_BOOKING_ERRORS: Record<string, string> = {
   credits_expired: "Vos séances restantes ont expiré — contactez l'école",
   date_in_past: "Date passée",
   already_booked_this_date: "Vous avez déjà réservé cette date",
+  day_group_limit_reached:
+    "Cette journée a atteint sa limite de 3 groupes. Merci de choisir une autre date ou de contacter l'école.",
 };
 
 export const STAGE_BOOKING_ERRORS: Record<string, string> = {
@@ -21,6 +23,8 @@ export const STAGE_BOOKING_ERRORS: Record<string, string> = {
   not_enough_credits: "Pas assez de crédits pour réserver les 5 jours",
   not_a_stage_package: "Ce code ne correspond pas à un Stage 100% Glisse",
   start_in_past: "Date de début passée",
+  day_group_limit_reached:
+    "Un des 5 jours du stage a atteint sa limite de 3 groupes. Merci de choisir une autre date de début ou de contacter l'école.",
 };
 
 export const WAITLIST_OFFER_ERRORS: Record<string, string> = {
