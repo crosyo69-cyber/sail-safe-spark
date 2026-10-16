@@ -373,3 +373,121 @@ Deno.test("create-checkout: a new payment intention (new key) creates a new sess
   const second = await (await handler(makeIdemRequest(KEY_B, { participants: 2, totalSessions: 2 }))).json();
   assert(first.url !== second.url, "distinct intentions must yield distinct sessions");
 });
+
+// ── Plafond journalier (3 groupes opérationnels / date) ─────────────────────
+
+const feasibilityMock = (feasible: boolean | null, error: { message: string } | null = null): RateGuardMock => ({
+  // deno-lint-ignore no-explicit-any
+  rpc: async (functionName: string, args: any): Promise<any> => {
+    if (functionName === "default_max_participants") {
+      return { data: CAPACITY_BY_ACTIVITY[args._activity] ?? null, error: null };
+    }
+    if (functionName === "booking_feasibility") {
+      return { data: feasible, error };
+    }
+    return { data: true, error: null };
+  },
+});
+
+Deno.test("create-checkout: day limit reached → 409 in French, Stripe never called", async () => {
+  const captured: CapturedCall[] = [];
+  let stripeFactoryCalls = 0;
+  const handler = createTestHandler(
+    () => {
+      stripeFactoryCalls++;
+      return makeFakeStripe(captured)();
+    },
+    undefined,
+    () => feasibilityMock(false),
+  );
+  const res = await handler(makeRequest("https://www.kitesurfpassion.fr"));
+  const json = await res.json();
+  assertEquals(res.status, 409);
+  assertEquals(json.code, "day_group_limit_reached");
+  assert(json.error.includes("3 groupes"), `French message expected, got ${json.error}`);
+  assertEquals(captured.length, 0);
+  assertEquals(stripeFactoryCalls, 0);
+});
+
+Deno.test("create-checkout: feasibility lookup failing closed → 503, Stripe never called", async () => {
+  const captured: CapturedCall[] = [];
+  const handler = createTestHandler(
+    makeFakeStripe(captured),
+    undefined,
+    () => feasibilityMock(null, { message: "database unavailable" }),
+  );
+  const res = await handler(makeRequest("https://www.kitesurfpassion.fr"));
+  const json = await res.json();
+  assertEquals(res.status, 503);
+  assertEquals(json.error, "Service temporairement indisponible");
+  assertEquals(captured.length, 0);
+});
+
+Deno.test("create-checkout: Stage checks feasibility for all 5 days before Stripe", async () => {
+  const captured: CapturedCall[] = [];
+  const feasibilityDates: string[] = [];
+  const handler = createTestHandler(
+    makeFakeStripe(captured),
+    undefined,
+    () => ({
+      // deno-lint-ignore no-explicit-any
+      rpc: async (functionName: string, args: any): Promise<any> => {
+        if (functionName === "default_max_participants") {
+          return { data: CAPACITY_BY_ACTIVITY[args._activity] ?? null, error: null };
+        }
+        if (functionName === "booking_feasibility") {
+          feasibilityDates.push(args.p_date);
+          return { data: true, error: null };
+        }
+        return { data: true, error: null };
+      },
+    }),
+  );
+  const res = await handler(makeRequest("https://www.kitesurfpassion.fr", {
+    activityName: "Stage 100% Glisse",
+    participants: 2,
+    totalSessions: 5,
+    preferredDate: "2026-07-06",
+  }));
+  await res.text();
+  assertEquals(res.status, 200);
+  assertEquals(feasibilityDates, [
+    "2026-07-06",
+    "2026-07-07",
+    "2026-07-08",
+    "2026-07-09",
+    "2026-07-10",
+  ]);
+  assertEquals(captured.length, 1);
+});
+
+Deno.test("create-checkout: Stage refused when any of the 5 days is at the limit", async () => {
+  const captured: CapturedCall[] = [];
+  const handler = createTestHandler(
+    makeFakeStripe(captured),
+    undefined,
+    () => ({
+      // deno-lint-ignore no-explicit-any
+      rpc: async (functionName: string, args: any): Promise<any> => {
+        if (functionName === "default_max_participants") {
+          return { data: CAPACITY_BY_ACTIVITY[args._activity] ?? null, error: null };
+        }
+        if (functionName === "booking_feasibility") {
+          // Jour 3 saturé.
+          return { data: args.p_date !== "2026-07-08", error: null };
+        }
+        return { data: true, error: null };
+      },
+    }),
+  );
+  const res = await handler(makeRequest("https://www.kitesurfpassion.fr", {
+    activityName: "Stage 100% Glisse",
+    participants: 1,
+    totalSessions: 5,
+    preferredDate: "2026-07-06",
+  }));
+  const json = await res.json();
+  assertEquals(res.status, 409);
+  assertEquals(json.code, "day_group_limit_reached");
+  assertEquals(captured.length, 0);
+});
