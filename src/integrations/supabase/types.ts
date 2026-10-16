@@ -2186,6 +2186,14 @@ export type Database = {
         Args: { p_session_token: string; p_start_date: string }
         Returns: Json
       }
+      booking_feasibility: {
+        Args: {
+          p_activity: Database["public"]["Enums"]["activity_type"]
+          p_date: string
+          p_seats?: number
+        }
+        Returns: boolean
+      }
       cancel_booking_with_session: {
         Args: { p_booking_id: string; p_session_token: string }
         Returns: Json
