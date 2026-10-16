@@ -56,6 +56,11 @@ interface RateGuardClient {
     functionName: "default_max_participants",
     args: { _activity: string },
   ): Promise<{ data: number | null; error: { message?: string } | null }>;
+  // Pré-contrôle plafond journalier (3 groupes opérationnels / date).
+  rpc(
+    functionName: "booking_feasibility",
+    args: { p_date: string; p_activity: string; p_seats: number },
+  ): Promise<{ data: boolean | null; error: { message?: string } | null }>;
 }
 
 
