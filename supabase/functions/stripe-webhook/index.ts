@@ -452,11 +452,103 @@ async function enqueueEmail(
   return messageId;
 }
 
+export type BookingOutcome =
+  | { status: "booked"; reservationId: string | null }
+  | { status: "refused"; reason: string }
+  | { status: "indeterminate"; reason: string };
+
+/**
+ * Incident durable après paiement (P-critique) : stocké dans admin_notifications
+ * (jamais uniquement un e-mail), ref_key = session.id (unique → rejeu idempotent).
+ * Aucune donnée de carte bancaire n'est reçue ni stockée ici.
+ * Retourne true si l'incident est enregistré ; false si l'écriture a échoué
+ * (l'appelant doit alors laisser Stripe retenter la livraison).
+ */
+async function recordPaidBookingIncident(
+  supabase: any,
+  session: Stripe.Checkout.Session,
+  input: { activityName: string; activityEnum: string; sessionDate: string; participants: number; reason: string; indeterminate: boolean },
+): Promise<boolean> {
+  const customerEmail = session.customer_details?.email ?? null;
+  const customerName = session.metadata?.customer_name || session.customer_details?.name || null;
+  const phone = session.metadata?.phone || session.customer_details?.phone || null;
+  const amountCents = typeof session.amount_total === "number" ? session.amount_total : null;
+  const currency = session.currency ?? null;
+  const { error } = await supabase.rpc("enqueue_admin_notification", {
+    p_kind: "paid_booking_failed",
+    p_severity: "critical",
+    p_title: input.indeterminate
+      ? "Paiement encaissé — réservation non vérifiée"
+      : "Paiement encaissé sans réservation",
+    p_body:
+      `Paiement Stripe ${session.id} (${amountCents !== null ? formatEuros(amountCents) : "montant inconnu"} ${currency ?? ""}) ` +
+      `pour ${customerName ?? maskEmail(customerEmail ?? "?")} (${input.activityName}, ${input.sessionDate}, ${input.participants} participant(s)). ` +
+      (input.indeterminate
+        ? `Résultat de la réservation indéterminé (panne/interruption) : ${input.reason}. Vérifier manuellement avant toute action.`
+        : `Réservation refusée après paiement : ${input.reason}. Remboursement ou gestion manuelle requis.`),
+    p_metadata: {
+      stripe_session_id: session.id,
+      activity: input.activityName,
+      activity_enum: input.activityEnum,
+      date: input.sessionDate,
+      participants: input.participants,
+      customer_name: customerName,
+      customer_email: customerEmail,
+      phone,
+      amount_cents: amountCents,
+      currency,
+      reason: input.reason,
+      indeterminate: input.indeterminate,
+      status: "manual_review_required",
+    },
+    p_ref_key: `paid_booking_failed:${session.id}`,
+  });
+  if (error) {
+    console.error("recordPaidBookingIncident failed:", error);
+    return false;
+  }
+  return true;
+}
+
+/** E-mail honnête envoyé au client quand le paiement est reçu sans réservation. */
+function buildCustomerPaymentProblemEmail(activityName: string, amountCents: number | null): string {
+  const amount = amountCents !== null ? formatEuros(amountCents) : "votre acompte";
+  return `<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#ffffff;font-family:Montserrat,Inter,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;">
+    <tr><td style="background-color:#0F172A;padding:24px 25px;text-align:center;">
+      <img src="${LOGO_URL}" alt="KiteSurf Passion" width="180" style="display:block;margin:0 auto;" />
+    </td></tr>
+    <tr><td style="padding:32px 25px 24px;">
+      <h1 style="font-size:22px;font-weight:bold;color:#0F172A;margin:0 0 16px;">Paiement reçu — réservation en cours de régularisation</h1>
+      <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 16px;">
+        Nous avons bien reçu votre paiement de <strong>${escapeHtml(amount)}</strong> pour <strong>${escapeHtml(activityName)}</strong>,
+        mais votre réservation n'a pas pu être confirmée automatiquement.
+      </p>
+      <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 16px;">
+        Notre équipe a été alertée et régularise votre situation dans les plus brefs délais
+        (confirmation manuelle ou remboursement). Vous n'avez aucune démarche à effectuer.
+      </p>
+      <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0;">
+        Pour toute question : <a href="tel:0672716905" style="color:#F97316;font-weight:bold;">06 72 71 69 05</a><br><br>
+        <strong>L'équipe KiteSurf Passion</strong>
+      </p>
+    </td></tr>
+    <tr><td style="background-color:#0F172A;padding:16px 25px;text-align:center;">
+      <p style="font-size:12px;color:#94a3b8;margin:0;">📍 Spot de l'Almanarre, Hyères (Var)</p>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
 // Create reservation from Stripe checkout, using preferred date and activity mapping
 async function createReservationFromCheckout(
   supabase: any,
   session: Stripe.Checkout.Session,
-) {
+): Promise<BookingOutcome> {
   const customerEmail = session.customer_details?.email;
   const customerName = session.metadata?.customer_name || session.customer_details?.name || '';
   const activityName = session.metadata?.activity_name || 'votre activité';
