@@ -558,7 +558,7 @@ async function createReservationFromCheckout(
 
   if (!customerEmail) {
     console.error('No customer email found in checkout session');
-    return;
+    return { status: "refused", reason: "missing_customer_email" };
   }
 
   const nameParts = customerName.trim().split(/\s+/);
@@ -582,22 +582,27 @@ async function createReservationFromCheckout(
   });
 
   if (rpcErr || (rpcRes && (rpcRes as any).ok === false)) {
-    // Paiement encaissé mais réservation impossible (ex. plafond journalier
-    // atteint entre le paiement et le webhook) : ne JAMAIS rester silencieux.
+    // Erreur réseau/interruption (rpcErr) = résultat INDÉTERMINÉ : la
+    // réservation a pu être créée. Refus explicite du RPC (ok === false) =
+    // REFUS DÉFINITIF. La distinction pilote la reprise sûre (§3 du plan).
+    const indeterminate = !!rpcErr;
     const reason = rpcErr ? String(rpcErr.message ?? rpcErr) : String((rpcRes as any).error ?? 'unknown');
     console.error('book_daily_visitor failed after payment:', reason);
-    const { error: notifErr } = await supabase.rpc('enqueue_admin_notification', {
-      p_kind: 'paid_booking_failed',
-      p_severity: 'critical',
-      p_title: 'Paiement encaissé sans réservation',
-      p_body: `La réservation de ${maskEmail(customerEmail)} (${activityName}, ${sessionDate}, session Stripe ${session.id}) a échoué après paiement : ${reason}. Remboursement ou gestion manuelle requis.`,
-      p_metadata: { stripe_session_id: session.id, activity: activityName, date: sessionDate, reason },
-      p_ref_key: `paid_booking_failed:${session.id}`,
+    const recorded = await recordPaidBookingIncident(supabase, session, {
+      activityName, activityEnum, sessionDate, participants, reason, indeterminate,
     });
-    if (notifErr) console.error('enqueue_admin_notification failed:', notifErr);
-    return;
+    if (!recorded) {
+      // L'incident n'est pas conservé : ne pas clore l'événement, Stripe
+      // retentera la livraison (reprise idempotente, ref_key unique).
+      return { status: "indeterminate", reason: `incident_record_failed: ${reason}` };
+    }
+    return indeterminate
+      ? { status: "indeterminate", reason }
+      : { status: "refused", reason };
   }
+  const reservationId = (rpcRes as any)?.reservation_id ?? null;
   console.log(`Reservation created`, { email: maskEmail(customerEmail), date: sessionDate, activity: activityEnum });
+  return { status: "booked", reservationId };
 }
 
 export interface WebhookDeps {
