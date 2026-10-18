@@ -738,6 +738,22 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
             p_ref_key: session.id,
           });
           if (notifErr) console.error('enqueue_admin_notification failed:', notifErr);
+          // Le client est informé honnêtement (jamais de confirmation).
+          if (outcome.check.email) {
+            try {
+              await enqueueEmail(
+                supabase,
+                outcome.check.email,
+                `Paiement reçu – régularisation en cours – Stage 100% Glisse`,
+                buildCustomerPaymentProblemEmail("Stage 100% Glisse", outcome.check.stripeAmountCents),
+                'booking_payment_problem',
+                undefined,
+                await deterministicMessageId(session.id, 'booking_payment_problem', outcome.check.email),
+              );
+            } catch (error) {
+              console.error("Customer problem email enqueue error:", error instanceof Error ? error.message : error);
+            }
+          }
           try {
             await enqueueEmail(
               supabase, OWNER_EMAIL,
