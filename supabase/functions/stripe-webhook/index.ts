@@ -452,11 +452,103 @@ async function enqueueEmail(
   return messageId;
 }
 
+export type BookingOutcome =
+  | { status: "booked"; reservationId: string | null }
+  | { status: "refused"; reason: string }
+  | { status: "indeterminate"; reason: string };
+
+/**
+ * Incident durable après paiement (P-critique) : stocké dans admin_notifications
+ * (jamais uniquement un e-mail), ref_key = session.id (unique → rejeu idempotent).
+ * Aucune donnée de carte bancaire n'est reçue ni stockée ici.
+ * Retourne true si l'incident est enregistré ; false si l'écriture a échoué
+ * (l'appelant doit alors laisser Stripe retenter la livraison).
+ */
+async function recordPaidBookingIncident(
+  supabase: any,
+  session: Stripe.Checkout.Session,
+  input: { activityName: string; activityEnum: string; sessionDate: string; participants: number; reason: string; indeterminate: boolean },
+): Promise<boolean> {
+  const customerEmail = session.customer_details?.email ?? null;
+  const customerName = session.metadata?.customer_name || session.customer_details?.name || null;
+  const phone = session.metadata?.phone || session.customer_details?.phone || null;
+  const amountCents = typeof session.amount_total === "number" ? session.amount_total : null;
+  const currency = session.currency ?? null;
+  const { error } = await supabase.rpc("enqueue_admin_notification", {
+    p_kind: "paid_booking_failed",
+    p_severity: "critical",
+    p_title: input.indeterminate
+      ? "Paiement encaissé — réservation non vérifiée"
+      : "Paiement encaissé sans réservation",
+    p_body:
+      `Paiement Stripe ${session.id} (${amountCents !== null ? formatEuros(amountCents) : "montant inconnu"} ${currency ?? ""}) ` +
+      `pour ${customerName ?? maskEmail(customerEmail ?? "?")} (${input.activityName}, ${input.sessionDate}, ${input.participants} participant(s)). ` +
+      (input.indeterminate
+        ? `Résultat de la réservation indéterminé (panne/interruption) : ${input.reason}. Vérifier manuellement avant toute action.`
+        : `Réservation refusée après paiement : ${input.reason}. Remboursement ou gestion manuelle requis.`),
+    p_metadata: {
+      stripe_session_id: session.id,
+      activity: input.activityName,
+      activity_enum: input.activityEnum,
+      date: input.sessionDate,
+      participants: input.participants,
+      customer_name: customerName,
+      customer_email: customerEmail,
+      phone,
+      amount_cents: amountCents,
+      currency,
+      reason: input.reason,
+      indeterminate: input.indeterminate,
+      status: "manual_review_required",
+    },
+    p_ref_key: `paid_booking_failed:${session.id}`,
+  });
+  if (error) {
+    console.error("recordPaidBookingIncident failed:", error);
+    return false;
+  }
+  return true;
+}
+
+/** E-mail honnête envoyé au client quand le paiement est reçu sans réservation. */
+function buildCustomerPaymentProblemEmail(activityName: string, amountCents: number | null): string {
+  const amount = amountCents !== null ? formatEuros(amountCents) : "votre acompte";
+  return `<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#ffffff;font-family:Montserrat,Inter,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;">
+    <tr><td style="background-color:#0F172A;padding:24px 25px;text-align:center;">
+      <img src="${LOGO_URL}" alt="KiteSurf Passion" width="180" style="display:block;margin:0 auto;" />
+    </td></tr>
+    <tr><td style="padding:32px 25px 24px;">
+      <h1 style="font-size:22px;font-weight:bold;color:#0F172A;margin:0 0 16px;">Paiement reçu — réservation en cours de régularisation</h1>
+      <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 16px;">
+        Nous avons bien reçu votre paiement de <strong>${escapeHtml(amount)}</strong> pour <strong>${escapeHtml(activityName)}</strong>,
+        mais votre réservation n'a pas pu être confirmée automatiquement.
+      </p>
+      <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 16px;">
+        Notre équipe a été alertée et régularise votre situation dans les plus brefs délais
+        (confirmation manuelle ou remboursement). Vous n'avez aucune démarche à effectuer.
+      </p>
+      <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0;">
+        Pour toute question : <a href="tel:0672716905" style="color:#F97316;font-weight:bold;">06 72 71 69 05</a><br><br>
+        <strong>L'équipe KiteSurf Passion</strong>
+      </p>
+    </td></tr>
+    <tr><td style="background-color:#0F172A;padding:16px 25px;text-align:center;">
+      <p style="font-size:12px;color:#94a3b8;margin:0;">📍 Spot de l'Almanarre, Hyères (Var)</p>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
 // Create reservation from Stripe checkout, using preferred date and activity mapping
 async function createReservationFromCheckout(
   supabase: any,
   session: Stripe.Checkout.Session,
-) {
+): Promise<BookingOutcome> {
   const customerEmail = session.customer_details?.email;
   const customerName = session.metadata?.customer_name || session.customer_details?.name || '';
   const activityName = session.metadata?.activity_name || 'votre activité';
@@ -466,7 +558,7 @@ async function createReservationFromCheckout(
 
   if (!customerEmail) {
     console.error('No customer email found in checkout session');
-    return;
+    return { status: "refused", reason: "missing_customer_email" };
   }
 
   const nameParts = customerName.trim().split(/\s+/);
@@ -490,22 +582,27 @@ async function createReservationFromCheckout(
   });
 
   if (rpcErr || (rpcRes && (rpcRes as any).ok === false)) {
-    // Paiement encaissé mais réservation impossible (ex. plafond journalier
-    // atteint entre le paiement et le webhook) : ne JAMAIS rester silencieux.
+    // Erreur réseau/interruption (rpcErr) = résultat INDÉTERMINÉ : la
+    // réservation a pu être créée. Refus explicite du RPC (ok === false) =
+    // REFUS DÉFINITIF. La distinction pilote la reprise sûre (§3 du plan).
+    const indeterminate = !!rpcErr;
     const reason = rpcErr ? String(rpcErr.message ?? rpcErr) : String((rpcRes as any).error ?? 'unknown');
     console.error('book_daily_visitor failed after payment:', reason);
-    const { error: notifErr } = await supabase.rpc('enqueue_admin_notification', {
-      p_kind: 'paid_booking_failed',
-      p_severity: 'critical',
-      p_title: 'Paiement encaissé sans réservation',
-      p_body: `La réservation de ${maskEmail(customerEmail)} (${activityName}, ${sessionDate}, session Stripe ${session.id}) a échoué après paiement : ${reason}. Remboursement ou gestion manuelle requis.`,
-      p_metadata: { stripe_session_id: session.id, activity: activityName, date: sessionDate, reason },
-      p_ref_key: `paid_booking_failed:${session.id}`,
+    const recorded = await recordPaidBookingIncident(supabase, session, {
+      activityName, activityEnum, sessionDate, participants, reason, indeterminate,
     });
-    if (notifErr) console.error('enqueue_admin_notification failed:', notifErr);
-    return;
+    if (!recorded) {
+      // L'incident n'est pas conservé : ne pas clore l'événement, Stripe
+      // retentera la livraison (reprise idempotente, ref_key unique).
+      return { status: "indeterminate", reason: `incident_record_failed: ${reason}` };
+    }
+    return indeterminate
+      ? { status: "indeterminate", reason }
+      : { status: "refused", reason };
   }
+  const reservationId = (rpcRes as any)?.reservation_id ?? null;
   console.log(`Reservation created`, { email: maskEmail(customerEmail), date: sessionDate, activity: activityEnum });
+  return { status: "booked", reservationId };
 }
 
 export interface WebhookDeps {
@@ -633,10 +730,30 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
               participants: outcome.check.participants,
               start_date: outcome.check.startDate,
               customer_email: outcome.check.email,
+              customer_name: session.metadata?.customer_name || session.customer_details?.name || null,
+              phone: session.metadata?.phone || session.customer_details?.phone || null,
+              currency: session.currency ?? null,
+              status: "manual_review_required",
             },
             p_ref_key: session.id,
           });
           if (notifErr) console.error('enqueue_admin_notification failed:', notifErr);
+          // Le client est informé honnêtement (jamais de confirmation).
+          if (outcome.check.email) {
+            try {
+              await enqueueEmail(
+                supabase,
+                outcome.check.email,
+                `Paiement reçu – régularisation en cours – Stage 100% Glisse`,
+                buildCustomerPaymentProblemEmail("Stage 100% Glisse", outcome.check.stripeAmountCents),
+                'booking_payment_problem',
+                undefined,
+                await deterministicMessageId(session.id, 'booking_payment_problem', outcome.check.email),
+              );
+            } catch (error) {
+              console.error("Customer problem email enqueue error:", error instanceof Error ? error.message : error);
+            }
+          }
           try {
             await enqueueEmail(
               supabase, OWNER_EMAIL,
@@ -656,14 +773,105 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
         });
       }
 
-      // Create reservation in database
+      // Create reservation in database — la suite (forfait, e-mails) ne
+      // s'exécute QUE si la réservation est réellement créée et vérifiée.
+      let booking: BookingOutcome;
       try {
-        await createReservationFromCheckout(supabase, session);
+        booking = await createReservationFromCheckout(supabase, session);
       } catch (error) {
+        // Exception inattendue : résultat indéterminé, reprise sûre via Stripe.
         console.error("Reservation creation error:", error instanceof Error ? error.message : error);
+        await recordPaidBookingIncident(supabase, session, {
+          activityName,
+          activityEnum: mapActivityToEnum(activityName),
+          sessionDate: preferredDate || new Date().toISOString().split("T")[0],
+          participants,
+          reason: `unexpected_exception: ${error instanceof Error ? error.message : error}`,
+          indeterminate: true,
+        });
+        return new Response(JSON.stringify({ received: true, booking: "indeterminate" }), {
+          headers: { "Content-Type": "application/json" },
+          status: 500,
+        });
       }
 
-      // Send confirmation emails
+      if (booking.status === "indeterminate") {
+        // Ni forfait ni confirmation : on ne marque PAS l'événement et on
+        // répond 500 pour que Stripe retente la livraison (reprise idempotente
+        // grâce aux contraintes uniques et aux clés d'e-mails déterministes).
+        return new Response(JSON.stringify({ received: true, booking: "indeterminate" }), {
+          headers: { "Content-Type": "application/json" },
+          status: 500,
+        });
+      }
+
+      if (booking.status === "refused") {
+        // Paiement encaissé, réservation refusée : incident déjà enregistré,
+        // aucun forfait actif, aucune confirmation de réservation. On informe
+        // le client honnêtement (clé par paiement : jamais de doublon).
+        if (customerEmail) {
+          try {
+            await enqueueEmail(
+              supabase,
+              customerEmail,
+              `Paiement reçu – régularisation en cours – ${activityName}`,
+              buildCustomerPaymentProblemEmail(
+                activityName,
+                typeof session.amount_total === "number" ? session.amount_total : null,
+              ),
+              'booking_payment_problem',
+              undefined,
+              await deterministicMessageId(session.id, 'booking_payment_problem', customerEmail),
+            );
+          } catch (error) {
+            console.error("Customer problem email enqueue error:", error instanceof Error ? error.message : error);
+          }
+        }
+        await markWebhookEvent(supabase, event.id, "failed", `booking_refused: ${booking.reason}`.slice(0, 500));
+        return new Response(JSON.stringify({ received: true, booking: "refused" }), {
+          headers: { "Content-Type": "application/json" },
+          status: 200,
+        });
+      }
+
+      // Revérification avant toute confirmation : la réservation doit exister.
+      if (!booking.reservationId) {
+        console.error("Booking reported booked without reservation_id", { session_id: session.id });
+        await recordPaidBookingIncident(supabase, session, {
+          activityName,
+          activityEnum: mapActivityToEnum(activityName),
+          sessionDate: preferredDate || new Date().toISOString().split("T")[0],
+          participants,
+          reason: "booked_without_reservation_id",
+          indeterminate: true,
+        });
+        return new Response(JSON.stringify({ received: true, booking: "indeterminate" }), {
+          headers: { "Content-Type": "application/json" },
+          status: 500,
+        });
+      }
+      const { data: verifiedReservation, error: verifyErr } = await supabase
+        .from("reservations")
+        .select("id")
+        .eq("id", booking.reservationId)
+        .maybeSingle();
+      if (verifyErr || !verifiedReservation) {
+        console.error("Reservation verification failed", { session_id: session.id, reservation_id: booking.reservationId, verifyErr });
+        await recordPaidBookingIncident(supabase, session, {
+          activityName,
+          activityEnum: mapActivityToEnum(activityName),
+          sessionDate: preferredDate || new Date().toISOString().split("T")[0],
+          participants,
+          reason: `reservation_verification_failed: ${verifyErr ? String(verifyErr.message ?? verifyErr) : "not_found"}`,
+          indeterminate: true,
+        });
+        return new Response(JSON.stringify({ received: true, booking: "indeterminate" }), {
+          headers: { "Content-Type": "application/json" },
+          status: 500,
+        });
+      }
+
+      // Send confirmation emails (réservation vérifiée uniquement)
       if (customerEmail) {
         // Create client package and capture code for the email
         let packageCode: string | null = null;
@@ -701,7 +909,9 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
             buildCustomerPaymentEmailWithCode(activityName, participants, preferredDate, packageCode || undefined, totalSessions),
             'booking_confirmation',
             undefined,
-            await deterministicMessageId(event.id, 'booking_confirmation', customerEmail),
+            // Clé par paiement (session.id) : deux événements distincts liés
+            // au même paiement ne produisent pas deux confirmations.
+            await deterministicMessageId(session.id, 'booking_confirmation', customerEmail),
           );
         } catch (error) {
           console.error("Customer email enqueue error:", error instanceof Error ? error.message : error);
@@ -715,7 +925,7 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
             buildOwnerPaymentEmail(activityName, customerEmail, session.id, participants, customerName, phone, preferredDate),
             'booking_owner_notification',
             customerEmail,
-            await deterministicMessageId(event.id, 'booking_owner_notification', OWNER_EMAIL),
+            await deterministicMessageId(session.id, 'booking_owner_notification', OWNER_EMAIL),
           );
         } catch (error) {
           console.error("Owner email enqueue error:", error instanceof Error ? error.message : error);
