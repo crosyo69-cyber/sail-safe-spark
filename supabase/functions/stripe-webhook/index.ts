@@ -753,14 +753,105 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
         });
       }
 
-      // Create reservation in database
+      // Create reservation in database — la suite (forfait, e-mails) ne
+      // s'exécute QUE si la réservation est réellement créée et vérifiée.
+      let booking: BookingOutcome;
       try {
-        await createReservationFromCheckout(supabase, session);
+        booking = await createReservationFromCheckout(supabase, session);
       } catch (error) {
+        // Exception inattendue : résultat indéterminé, reprise sûre via Stripe.
         console.error("Reservation creation error:", error instanceof Error ? error.message : error);
+        await recordPaidBookingIncident(supabase, session, {
+          activityName,
+          activityEnum: mapActivityToEnum(activityName),
+          sessionDate: preferredDate || new Date().toISOString().split("T")[0],
+          participants,
+          reason: `unexpected_exception: ${error instanceof Error ? error.message : error}`,
+          indeterminate: true,
+        });
+        return new Response(JSON.stringify({ received: true, booking: "indeterminate" }), {
+          headers: { "Content-Type": "application/json" },
+          status: 500,
+        });
       }
 
-      // Send confirmation emails
+      if (booking.status === "indeterminate") {
+        // Ni forfait ni confirmation : on ne marque PAS l'événement et on
+        // répond 500 pour que Stripe retente la livraison (reprise idempotente
+        // grâce aux contraintes uniques et aux clés d'e-mails déterministes).
+        return new Response(JSON.stringify({ received: true, booking: "indeterminate" }), {
+          headers: { "Content-Type": "application/json" },
+          status: 500,
+        });
+      }
+
+      if (booking.status === "refused") {
+        // Paiement encaissé, réservation refusée : incident déjà enregistré,
+        // aucun forfait actif, aucune confirmation de réservation. On informe
+        // le client honnêtement (clé par paiement : jamais de doublon).
+        if (customerEmail) {
+          try {
+            await enqueueEmail(
+              supabase,
+              customerEmail,
+              `Paiement reçu – régularisation en cours – ${activityName}`,
+              buildCustomerPaymentProblemEmail(
+                activityName,
+                typeof session.amount_total === "number" ? session.amount_total : null,
+              ),
+              'booking_payment_problem',
+              undefined,
+              await deterministicMessageId(session.id, 'booking_payment_problem', customerEmail),
+            );
+          } catch (error) {
+            console.error("Customer problem email enqueue error:", error instanceof Error ? error.message : error);
+          }
+        }
+        await markWebhookEvent(supabase, event.id, "failed", `booking_refused: ${booking.reason}`.slice(0, 500));
+        return new Response(JSON.stringify({ received: true, booking: "refused" }), {
+          headers: { "Content-Type": "application/json" },
+          status: 200,
+        });
+      }
+
+      // Revérification avant toute confirmation : la réservation doit exister.
+      if (!booking.reservationId) {
+        console.error("Booking reported booked without reservation_id", { session_id: session.id });
+        await recordPaidBookingIncident(supabase, session, {
+          activityName,
+          activityEnum: mapActivityToEnum(activityName),
+          sessionDate: preferredDate || new Date().toISOString().split("T")[0],
+          participants,
+          reason: "booked_without_reservation_id",
+          indeterminate: true,
+        });
+        return new Response(JSON.stringify({ received: true, booking: "indeterminate" }), {
+          headers: { "Content-Type": "application/json" },
+          status: 500,
+        });
+      }
+      const { data: verifiedReservation, error: verifyErr } = await supabase
+        .from("reservations")
+        .select("id")
+        .eq("id", booking.reservationId)
+        .maybeSingle();
+      if (verifyErr || !verifiedReservation) {
+        console.error("Reservation verification failed", { session_id: session.id, reservation_id: booking.reservationId, verifyErr });
+        await recordPaidBookingIncident(supabase, session, {
+          activityName,
+          activityEnum: mapActivityToEnum(activityName),
+          sessionDate: preferredDate || new Date().toISOString().split("T")[0],
+          participants,
+          reason: `reservation_verification_failed: ${verifyErr ? String(verifyErr.message ?? verifyErr) : "not_found"}`,
+          indeterminate: true,
+        });
+        return new Response(JSON.stringify({ received: true, booking: "indeterminate" }), {
+          headers: { "Content-Type": "application/json" },
+          status: 500,
+        });
+      }
+
+      // Send confirmation emails (réservation vérifiée uniquement)
       if (customerEmail) {
         // Create client package and capture code for the email
         let packageCode: string | null = null;
