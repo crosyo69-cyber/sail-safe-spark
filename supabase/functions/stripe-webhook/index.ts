@@ -730,6 +730,10 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
               participants: outcome.check.participants,
               start_date: outcome.check.startDate,
               customer_email: outcome.check.email,
+              customer_name: session.metadata?.customer_name || session.customer_details?.name || null,
+              phone: session.metadata?.phone || session.customer_details?.phone || null,
+              currency: session.currency ?? null,
+              status: "manual_review_required",
             },
             p_ref_key: session.id,
           });
@@ -889,7 +893,9 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
             buildCustomerPaymentEmailWithCode(activityName, participants, preferredDate, packageCode || undefined, totalSessions),
             'booking_confirmation',
             undefined,
-            await deterministicMessageId(event.id, 'booking_confirmation', customerEmail),
+            // Clé par paiement (session.id) : deux événements distincts liés
+            // au même paiement ne produisent pas deux confirmations.
+            await deterministicMessageId(session.id, 'booking_confirmation', customerEmail),
           );
         } catch (error) {
           console.error("Customer email enqueue error:", error instanceof Error ? error.message : error);
@@ -903,7 +909,7 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
             buildOwnerPaymentEmail(activityName, customerEmail, session.id, participants, customerName, phone, preferredDate),
             'booking_owner_notification',
             customerEmail,
-            await deterministicMessageId(event.id, 'booking_owner_notification', OWNER_EMAIL),
+            await deterministicMessageId(session.id, 'booking_owner_notification', OWNER_EMAIL),
           );
         } catch (error) {
           console.error("Owner email enqueue error:", error instanceof Error ? error.message : error);
