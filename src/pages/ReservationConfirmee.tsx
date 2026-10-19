@@ -1,14 +1,55 @@
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { trackPhoneClick } from "@/lib/analytics";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Link, useSearchParams } from "react-router-dom";
-import { CheckCircle, Phone } from "lucide-react";
+import { CheckCircle, Phone, Loader2, AlertTriangle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
+type BookingStatus = "loading" | "confirmed" | "pending" | "failed" | "unknown";
 
 const ReservationConfirmee = () => {
   const [searchParams] = useSearchParams();
   const activity = searchParams.get("activity") || "votre activité";
+  const sessionId = searchParams.get("session_id");
+  const [status, setStatus] = useState<BookingStatus>(sessionId ? "loading" : "pending");
+
+  useEffect(() => {
+    if (!sessionId) return;
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase.rpc("get_payment_booking_status", {
+        p_stripe_session_id: sessionId,
+      });
+      if (cancelled) return;
+      if (error || !data) {
+        setStatus("pending");
+        return;
+      }
+      setStatus(data as BookingStatus);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [sessionId]);
+
+  const phoneBlock = (
+    <div className="border-t border-border pt-4 mt-4">
+      <p className="text-foreground font-medium text-center">
+        Contactez-nous la veille de votre venue pour confirmer votre créneau :
+      </p>
+      <a
+        href="tel:0672716905"
+        className="flex items-center justify-center gap-2 mt-3 text-primary font-bold text-xl hover:underline"
+        onClick={() => trackPhoneClick("reservation_confirmee")}
+      >
+        <Phone className="w-5 h-5" />
+        06 72 71 69 05
+      </a>
+    </div>
+  );
 
   return (
     <>
@@ -22,38 +63,77 @@ const ReservationConfirmee = () => {
       <main className="min-h-screen flex items-center justify-center py-32">
         <div className="container mx-auto px-4">
           <div className="max-w-xl mx-auto text-center">
-            <div className="w-20 h-20 mx-auto mb-8 bg-primary/10 rounded-full flex items-center justify-center">
-              <CheckCircle className="w-10 h-10 text-primary" />
-            </div>
+            {status === "loading" && (
+              <>
+                <div className="w-20 h-20 mx-auto mb-8 bg-primary/10 rounded-full flex items-center justify-center">
+                  <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                </div>
+                <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-6">
+                  Vérification de votre réservation…
+                </h1>
+              </>
+            )}
 
-            <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-6">
-              Réservation Confirmée !
-            </h1>
+            {status === "confirmed" && (
+              <>
+                <div className="w-20 h-20 mx-auto mb-8 bg-primary/10 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-10 h-10 text-primary" />
+                </div>
+                <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-6">
+                  Réservation Confirmée !
+                </h1>
+                <div className="bg-card border border-border rounded-2xl p-8 mb-8 space-y-4 text-left">
+                  <p className="text-foreground text-lg font-semibold text-center">
+                    Votre acompte de 50€ a bien été reçu !
+                  </p>
+                  <p className="text-muted-foreground text-center">
+                    Votre réservation pour <strong className="text-foreground">{activity}</strong> est confirmée.
+                  </p>
+                  <p className="text-muted-foreground text-center">
+                    Le solde sera à régler le jour de votre cours.
+                  </p>
+                  {phoneBlock}
+                </div>
+              </>
+            )}
 
-            <div className="bg-card border border-border rounded-2xl p-8 mb-8 space-y-4 text-left">
-              <p className="text-foreground text-lg font-semibold text-center">
-                Votre acompte de 50€ a bien été reçu !
-              </p>
-              <p className="text-muted-foreground text-center">
-                Votre réservation pour <strong className="text-foreground">{activity}</strong> est confirmée.
-              </p>
-              <p className="text-muted-foreground text-center">
-                Le solde sera à régler le jour de votre cours.
-              </p>
+            {status === "pending" && (
+              <>
+                <div className="w-20 h-20 mx-auto mb-8 bg-primary/10 rounded-full flex items-center justify-center">
+                  <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                </div>
+                <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-6">
+                  Paiement reçu, réservation en cours de vérification
+                </h1>
+                <div className="bg-card border border-border rounded-2xl p-8 mb-8 space-y-4 text-left">
+                  <p className="text-muted-foreground text-center">
+                    Votre paiement a bien été reçu. La confirmation de votre réservation pour{" "}
+                    <strong className="text-foreground">{activity}</strong> est en cours : vous recevrez
+                    un e-mail de confirmation dans quelques instants.
+                  </p>
+                  {phoneBlock}
+                </div>
+              </>
+            )}
 
-              <div className="border-t border-border pt-4 mt-4">
-                <p className="text-foreground font-medium text-center">
-                  Contactez-nous la veille de votre venue pour confirmer votre créneau :
-                </p>
-                <a
-                  href="tel:0672716905"
-                  className="flex items-center justify-center gap-2 mt-3 text-primary font-bold text-xl hover:underline"
-                 onClick={() => trackPhoneClick("reservation_confirmee")}>
-                  <Phone className="w-5 h-5" />
-                  06 72 71 69 05
-                </a>
-              </div>
-            </div>
+            {(status === "failed" || status === "unknown") && (
+              <>
+                <div className="w-20 h-20 mx-auto mb-8 bg-destructive/10 rounded-full flex items-center justify-center">
+                  <AlertTriangle className="w-10 h-10 text-destructive" />
+                </div>
+                <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-6">
+                  Paiement reçu, réservation non confirmée
+                </h1>
+                <div className="bg-card border border-border rounded-2xl p-8 mb-8 space-y-4 text-left">
+                  <p className="text-muted-foreground text-center">
+                    Votre paiement a bien été reçu, mais votre réservation n'a pas pu être confirmée
+                    automatiquement. <strong className="text-foreground">Notre équipe doit régulariser
+                    la situation</strong> et vous contactera dans les plus brefs délais.
+                  </p>
+                  {phoneBlock}
+                </div>
+              </>
+            )}
 
             <div className="flex flex-wrap justify-center gap-4">
               <Button variant="sunset" size="lg" asChild>
