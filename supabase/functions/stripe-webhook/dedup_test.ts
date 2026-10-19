@@ -14,12 +14,19 @@ function makeFakeSupabase() {
   const emailLog: Array<Record<string, unknown>> = [];
   const queued: Array<Record<string, unknown>> = [];
   const bookings: Array<Record<string, unknown>> = [];
+  const reservations: Array<Record<string, unknown>> = [];
 
   const uniqueError = { code: "23505", message: "duplicate key value violates unique constraint" };
 
   const table = (name: string) => {
     const rows =
-      name === "client_packages" ? packages : name === "email_send_log" ? emailLog : bookings;
+      name === "client_packages"
+        ? packages
+        : name === "email_send_log"
+          ? emailLog
+          : name === "reservations"
+            ? reservations
+            : bookings;
     const filters: Array<[string, unknown]> = [];
     const api: any = {
       insert(values: Record<string, unknown>) {
@@ -90,7 +97,8 @@ function makeFakeSupabase() {
       }
       if (fn === "book_daily_visitor") {
         bookings.push(args);
-        return Promise.resolve({ data: { ok: true }, error: null });
+        reservations.push({ id: "res-1", stripe_session_id: args.p_stripe_session_id });
+        return Promise.resolve({ data: { ok: true, reservation_id: "res-1" }, error: null });
       }
       if (fn === "find_or_create_daily_group") {
         return Promise.resolve({ data: "group-1", error: null });
