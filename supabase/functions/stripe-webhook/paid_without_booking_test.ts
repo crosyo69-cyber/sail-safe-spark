@@ -45,7 +45,11 @@ function makeFake(opts: FakeOptions = {}) {
           return Promise.resolve({ error: uniqueError });
         }
         rows.push(values);
-        return Promise.resolve({ data: values, error: null });
+        const result = { data: values, error: null };
+        return {
+          select: () => ({ single: () => Promise.resolve(result) }),
+          then: (r: any) => r(result),
+        };
       },
       select() {
         return api;
