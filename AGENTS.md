@@ -1,11 +1,11 @@
 # Technical decisions
 
-- Home hero: byte-identical responsive WebPs, path-gated preload, matching srcset/sizes — no duplicate/off-route downloads.
-- Footer logos: intrinsic dimensions, lazy only on home/pricing/contact — preserve proportions and prioritize above-fold images.
+- Home hero: byte-identical WebPs, path-gated preload, matching srcset/sizes — no duplicate/off-route downloads.
+- Footer logos: intrinsic dimensions, lazy only on home/pricing/contact — preserve proportions.
 
 - Heroes keep untouched photos (no overlay/filter) beside solid navy copy panels; inner pages share index.css .hero-split* — preserve true colour and AA text contrast.
 
-- client_packages uniqueness: one package per Stripe session when participant_index is NULL, and one per (stripe_session_id, participant_index) when set (1..4) — keeps webhook double-delivery protection (P0-2) while allowing one package per participant for multi-participant stages.
+- client_packages uniqueness: one per Stripe session for NULL participant_index; otherwise one per (session, participant_index 1..4) — prevents duplicates while supporting multi-participant stages.
 - Stage 100% Glisse Stripe payments go only through stripe-webhook/stage.ts: amount_total must equal 250 € × participants, then a single book_stage_for_participants call; any mismatch or failure creates no booking and alerts the admin — keeps payments atomic and amounts truthful.
 - Stage 100% Glisse checkout uses a dedicated per-participant Stripe price (quantity = participants, strictly 1..4); other activities keep the 50 € deposit price × sessions — the checkout amount must match what the webhook expects.
 - Stripe recovery (sync-stripe-reservations) never books Stage 100% Glisse as à la carte: a stage payment is 'done' when a stage client_package exists for its stripe_session_id, otherwise left to A0 manual handling — stage bookings live in client_packages/package_bookings, not reservations.
@@ -22,3 +22,4 @@
 
 - Mobile menu: opaque tokens, measured height, scroll-lock cleanup below 1024px; desktop unchanged.
 - FFVL sports terms use Offer.description; ImageObject.license stays media rights. Notices preserve booking/payment logic — editorial isolation.
+- Payment status uses paymentService's shared RPC transport — supports pending SQL functions without editing generated types.
