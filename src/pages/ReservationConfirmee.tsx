@@ -6,7 +6,8 @@ import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Link, useSearchParams } from "react-router-dom";
 import { CheckCircle, Phone, Loader2, AlertTriangle } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { paymentService } from "@/services/payment.service";
+import { settle } from "@/services/_shared/result";
 
 type BookingStatus = "loading" | "confirmed" | "pending" | "failed" | "unknown";
 
@@ -20,9 +21,7 @@ const ReservationConfirmee = () => {
     if (!sessionId) return;
     let cancelled = false;
     (async () => {
-      const { data, error } = await supabase.rpc("get_payment_booking_status", {
-        p_stripe_session_id: sessionId,
-      });
+      const { data, error } = settle(await paymentService.getBookingStatus(sessionId));
       if (cancelled) return;
       if (error || !data) {
         setStatus("pending");
