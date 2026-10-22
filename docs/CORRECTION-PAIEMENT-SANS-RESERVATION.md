@@ -33,9 +33,11 @@ Résultat : **65 tests réussis, 0 échec** sur `stripe-webhook/` et `create-che
 
 Les 5 échecs observés dans `_tests/rbac-authorization_test.ts` et `_tests/weather-subscribe_test.ts` sont indépendants de cette correction : ces tests appellent le backend hébergé réel, actuellement en pause (erreurs réseau), et échouaient pour cette raison d'infrastructure.
 
-## Point bloquant restant
+## Vérification après paiement — finalisée le 22 octobre 2026
 
-La fonction SQL `get_payment_booking_status` n'a pas pu être créée : **la base de données hébergée est en pause** (connexion refusée, reprise automatique désactivée). Tant qu'elle n'est pas réveillée (depuis les réglages du projet), la page de retour affichera l'état prudent « en cours de vérification » au lieu de la confirmation. Le SQL exact est prêt et sera appliqué dès que la base sera active.
+La base répond désormais : `get_payment_booking_status` a été créée (lecture seule, réponse limitée à confirmed/pending/failed, aucune coordonnée exposée). Une réservation confirmée est nécessaire ; pour le Stage, chaque pack participant doit avoir cinq inscriptions confirmées. Le retour checkout transmet désormais `session_id={CHECKOUT_SESSION_ID}`. La page réinterroge le statut jusqu’à 15 fois à deux secondes d’intervalle pendant le traitement du webhook et arrête dès confirmation/refus. La mention fixe « 50€ » a été retirée pour ne pas inventer le montant des packs/stages. Aucun changement du montant encaissé.
+
+La migration est active sur le backend partagé. Les changements de page et de fonction checkout ne sont pas publiés/déployés par ce correctif ; les sessions Stripe déjà créées ne changent pas d’URL.
 
 ## Limites respectées
 
