@@ -325,7 +325,7 @@ export function createHandler(
     const PRICE_ID = "price_1TAXYhJTWAAnYv4Vnnoy6jIP";
     const STAGE_PRICE_ID = "price_1UN6OiJTWAAnYv4VSmNgqYLs"; // 250 € EUR, par participant
 
-    const successUrl = `${origin}/reservation-confirmee?activity=${encodeURIComponent(activityName)}`;
+    const successUrl = `${origin}/reservation-confirmee?activity=${encodeURIComponent(activityName)}&session_id={CHECKOUT_SESSION_ID}`;
     const cancelUrl = `${origin}/contact-reservation-kitesurf-hyeres`;
 
     // Defense in depth: strictly validate every redirect URL handed to Stripe.

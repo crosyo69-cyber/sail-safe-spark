@@ -1,5 +1,10 @@
 # F-28-22
 
+# Confirmation après paiement — QA
+
+- [ ] Ajouter la référence Stripe au retour et la vérification en lecture seule.
+- [ ] Réessayer brièvement pendant le traitement du paiement et tester les états réels et simulés, sans publication.
+
 - [x] Inspect photo overlays and compare local gradient candidates.
 - [x] Apply homepage-only lighter photos with soft copy protection.
 - [x] Validate all slides on desktop/mobile, measure backgrounds, rerun Lighthouse accessibility (100 desktop/mobile).

@@ -18,19 +18,31 @@ const ReservationConfirmee = () => {
   const [status, setStatus] = useState<BookingStatus>(sessionId ? "loading" : "pending");
 
   useEffect(() => {
-    if (!sessionId) return;
     let cancelled = false;
-    (async () => {
-      const { data, error } = settle(await paymentService.getBookingStatus(sessionId));
-      if (cancelled) return;
-      if (error || !data) {
-        setStatus("pending");
-        return;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let attempts = 0;
+    setStatus(sessionId ? "loading" : "pending");
+    if (!sessionId) return;
+    const checkStatus = async () => {
+      try {
+        const { data, error } = settle(await paymentService.getBookingStatus(sessionId));
+        if (cancelled) return;
+        const nextStatus = !error && (data === "confirmed" || data === "failed") ? data : "pending";
+        setStatus(nextStatus);
+        attempts += 1;
+        // Stripe may redirect before the webhook commits the booking.
+        // Bounded retries keep slow bookings from remaining pending forever.
+        if (nextStatus === "pending" && attempts < 15) {
+          timer = setTimeout(checkStatus, 2000);
+        }
+      } catch {
+        if (!cancelled) setStatus("pending");
       }
-      setStatus(data as BookingStatus);
-    })();
+    };
+    void checkStatus();
     return () => {
       cancelled = true;
+      if (timer) clearTimeout(timer);
     };
   }, [sessionId]);
 
@@ -83,7 +95,7 @@ const ReservationConfirmee = () => {
                 </h1>
                 <div className="bg-card border border-border rounded-2xl p-8 mb-8 space-y-4 text-left">
                   <p className="text-foreground text-lg font-semibold text-center">
-                    Votre acompte de 50€ a bien été reçu !
+                    Votre acompte a bien été reçu !
                   </p>
                   <p className="text-muted-foreground text-center">
                     Votre réservation pour <strong className="text-foreground">{activity}</strong> est confirmée.
