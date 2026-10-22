@@ -1,0 +1,27 @@
+Error: browserType.launch: Executable doesn't exist at /nix/store/gj8alpilhg4a01jidk6hk6h4xyf62kyr-playwright-browsers-with-overrides/chromium_headless_shell-1217/chrome-headless-shell-linux64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Error: browserType.launch: Executable doesn't exist at /nix/store/gj8alpilhg4a01jidk6hk6h4xyf62kyr-playwright-browsers-with-overrides/chromium_headless_shell-1217/chrome-headless-shell-linux64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+Error: browserType.launch: Executable doesn't exist at /nix/store/gj8alpilhg4a01jidk6hk6h4xyf62kyr-playwright-browsers-with-overrides/chromium_headless_shell-1217/chrome-headless-shell-linux64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
