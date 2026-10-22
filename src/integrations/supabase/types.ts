@@ -2464,6 +2464,10 @@ export type Database = {
         Args: { p_session_token: string }
         Returns: Json
       }
+      get_payment_booking_status: {
+        Args: { p_stripe_session_id: string }
+        Returns: string
+      }
       get_waitlist_offer: { Args: { p_token: string }; Returns: Json }
       get_wallet_by_session: {
         Args: { p_session_token: string }

@@ -153,6 +153,18 @@ Deno.test("create-checkout: attacker Origin header → Stripe URLs fall back to 
   }
 });
 
+Deno.test("create-checkout: successful return passes Stripe's session placeholder for booking verification", async () => {
+  const captured: CapturedCall[] = [];
+  const handler = createTestHandler(makeFakeStripe(captured));
+  const response = await handler(makeRequest(DEFAULT_ORIGIN));
+  await response.text();
+  assertEquals(response.status, 200);
+  assertEquals(captured.length, 1);
+  const successUrl = new URL(captured[0].success_url);
+  assertEquals(successUrl.searchParams.get("session_id"), "{CHECKOUT_SESSION_ID}");
+  assertEquals(successUrl.searchParams.get("activity"), "Cours à la Carte");
+});
+
 Deno.test("create-checkout: defense-in-depth — rejects if Stripe would receive non-allowlisted URLs", async () => {
   // Simulate a regression where Stripe somehow gets a non-allowlisted URL.
   // We can't break resolveOrigin from here, but we CAN prove the defense

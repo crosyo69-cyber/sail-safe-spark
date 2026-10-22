@@ -22,4 +22,4 @@
 
 - Mobile menu: opaque tokens, measured height, scroll-lock cleanup below 1024px; desktop unchanged.
 - FFVL sports terms use Offer.description; ImageObject.license stays media rights. Notices preserve booking/payment logic — editorial isolation.
-- Payment status uses paymentService's shared RPC transport — supports pending SQL functions without editing generated types.
+- Payment status uses paymentService's shared RPC transport and bounded polling of a read-only, scalar-status RPC keyed by the opaque Stripe checkout reference; confirmation requires actual bookings and never exposes customer data.

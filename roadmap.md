@@ -1,5 +1,10 @@
 # F-28-22
 
+# Confirmation après paiement — QA
+
+- [x] Ajouter la référence Stripe au retour et la vérification en lecture seule : migration active sur le backend partagé.
+- [x] Réessayer brièvement pendant le traitement du paiement et tester les états réels et simulés : 42 tests checkout et 3 tests navigateur réussis ; réservation réelle confirmée via la page, références invalides/inconnues non confirmées, aucune erreur navigateur. Aucun paiement créé, aucune publication ni déploiement checkout.
+
 - [x] Inspect photo overlays and compare local gradient candidates.
 - [x] Apply homepage-only lighter photos with soft copy protection.
 - [x] Validate all slides on desktop/mobile, measure backgrounds, rerun Lighthouse accessibility (100 desktop/mobile).
