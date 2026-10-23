@@ -29,6 +29,7 @@ function makeFake(opts: FakeOptions = {}) {
             : [];
     const filters: Array<[string, unknown]> = [];
     const api: any = {
+      upsert() { return Promise.resolve({ data: null, error: null }); },
       insert(values: Record<string, unknown>) {
         if (
           name === "client_packages" &&

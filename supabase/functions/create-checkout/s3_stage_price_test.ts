@@ -61,10 +61,10 @@ for (const [label, v] of [["T5 0", 0], ["T6 5", 5], ["T7 1.5", 1.5], ["T7 '2.5'"
 }
 
 Deno.test("T12 — autres activités inchangées (séances × 50 €)", async () => {
-  const carte = await run({ activityName: "Cours à la Carte", participants: 1, totalSessions: 3 });
+  const carte = await run({ activityName: "Cours à la Carte", operation: "pack_purchase", participants: 1, totalSessions: 3 });
   assertEquals(amountOf(carte.calls[0]), 15000);
   const part = await run({ activityName: "Cours particulier kitesurf", participants: 2, totalSessions: 2 });
   assertEquals(amountOf(part.calls[0]), 10000);
-  const wing = await run({ activityName: "Cours wingfoil", participants: 1, totalSessions: 5 });
+  const wing = await run({ activityName: "Cours wingfoil", operation: "pack_purchase", participants: 1, totalSessions: 5 });
   assertEquals(amountOf(wing.calls[0]), 25000);
 });
