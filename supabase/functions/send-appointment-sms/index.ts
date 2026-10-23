@@ -288,7 +288,7 @@ export function createHandler(deps: SmsDeps) {
       }
     }
 
-    return json({ results, sent, skipped, failed });
+    return json({ results, sent, skipped, failed, ineligible });
   };
 }
 
@@ -321,6 +321,14 @@ function buildProductionDeps(): SmsDeps {
     },
     brevoFetch: fetch,
     env: (key) => Deno.env.get(key),
+    async checkRecipient(kind, bookingId, groupId) {
+      const table = kind === "visitor" ? "reservations" : "package_bookings";
+      let q = service.from(table).select("id").eq("id", bookingId).eq("status", "confirmed");
+      if (groupId) q = q.eq("daily_group_id", groupId);
+      const { data, error } = await q.limit(1);
+      if (error) return false; // fail-closed
+      return Array.isArray(data) && data.length === 1;
+    },
   };
 }
 
