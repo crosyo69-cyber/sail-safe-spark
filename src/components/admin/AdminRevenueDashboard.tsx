@@ -110,10 +110,20 @@ const AdminRevenueDashboard = () => {
       paymentAccountingService.ledger().then(settle),
     ]);
 
-    if (resResult.data) setReservations(resResult.data.map(r => {
-      const evidence = paymentResult.data?.find(p => p.stripe_session_id === r.stripe_session_id);
-      return { ...r, ...paymentAmounts(evidence), created_at: evidence?.paid_at ?? r.created_at };
-    }));
+    if (resResult.data) {
+      const legacy = resResult.data.filter(r => !paymentResult.data?.some(p => p.stripe_session_id === r.stripe_session_id))
+        .map(r => ({ ...r, ...paymentAmounts() }));
+      const verified = (paymentResult.data ?? []).map(p => {
+        const reservation = resResult.data?.find(r => r.stripe_session_id === p.stripe_session_id);
+        const row = p as typeof p & { participants?: number; activity_name?: string };
+        return { id: p.stripe_session_id, participants: row.participants ?? reservation?.participants ?? 1,
+          status: "confirmed", created_at: p.paid_at, stripe_session_id: p.stripe_session_id,
+          daily_group_id: reservation?.daily_group_id ?? null,
+          client_activity: reservation?.client_activity ?? (row.activity_name?.toLowerCase().includes("wing") ? "wingfoil" : row.activity_name?.includes("100%") ? "stage_100_glisse" : "kitesurf"),
+          ...paymentAmounts(p) };
+      });
+      setReservations([...verified, ...legacy]);
+    }
     if (groupResult.data) setGroups(groupResult.data);
     setLoading(false);
   };
@@ -181,13 +191,13 @@ const AdminRevenueDashboard = () => {
   // Stats
   const totalRevenue = filteredReservations.reduce((a, r) => a + (r.received ?? 0), 0);
   const totalParticipants = filteredReservations.reduce((a, r) => a + r.participants, 0);
-  const totalTransactions = filteredReservations.length;
+  const totalTransactions = filteredReservations.filter(r => r.received !== null).length;
   const avgPerTransaction = totalTransactions > 0 ? Math.round(totalRevenue / totalTransactions) : 0;
 
   // Previous period stats
   const prevRevenue = prevReservations.reduce((a, r) => a + (r.received ?? 0), 0);
   const prevParticipants = prevReservations.reduce((a, r) => a + r.participants, 0);
-  const prevTransactions = prevReservations.length;
+  const prevTransactions = prevReservations.filter(r => r.received !== null).length;
   const prevAvg = prevTransactions > 0 ? Math.round(prevRevenue / prevTransactions) : 0;
 
   const calcTrend = (current: number, previous: number) => {
@@ -465,7 +475,7 @@ const AdminRevenueDashboard = () => {
       {/* Stats cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { icon: Euro, label: "Revenu total", value: `${totalRevenue.toLocaleString("fr-FR")} €`, trend: calcTrend(totalRevenue, prevRevenue) },
+          { icon: Euro, label: "Encaissé vérifié", value: `${totalRevenue.toLocaleString("fr-FR")} €`, trend: calcTrend(totalRevenue, prevRevenue) },
           { icon: TrendingUp, label: "Transactions", value: `${totalTransactions}`, trend: calcTrend(totalTransactions, prevTransactions) },
           { icon: Users, label: "Participants", value: `${totalParticipants}`, trend: calcTrend(totalParticipants, prevParticipants) },
           { icon: CalendarDays, label: "Panier moyen", value: `${avgPerTransaction} €`, trend: calcTrend(avgPerTransaction, prevAvg) },
