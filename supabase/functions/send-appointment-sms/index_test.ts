@@ -74,6 +74,7 @@ function makeDeps(overrides: Partial<SmsDeps> & { isAdmin?: boolean; hasUser?: b
     store: makeStore().store,
     brevoFetch: makeBrevo({ calls: [] }),
     env: (k) => (k === "BREVO_API_KEY" ? "test-key" : undefined),
+    checkRecipient: async () => true,
     ...rest,
   };
 }
@@ -86,8 +87,10 @@ function makeRequest(body: Record<string, unknown> | null, auth = "Bearer user-j
       date: "2026-07-10",
       activity: "kitesurf",
       groupId: GROUP_ID,
+      spot: "Port de Carqueiranne",
+      horaire: "09:00",
       message: "RDV 9h Port de Carqueiranne",
-      recipients: [{ reservationId: RESA_ID, name: "Jean Test", phone: "0612345678" }],
+      recipients: [{ kind: "visitor", bookingId: RESA_ID, name: "Jean Test", phone: "0612345678" }],
       ...(body ?? {}),
     }),
   });
@@ -120,9 +123,38 @@ Deno.test("refus de validation : message vide et numéro invalide", async () => 
   let res = await h(makeRequest({ message: "   " }));
   await res.text();
   assertEquals(res.status, 400);
-  res = await h(makeRequest({ recipients: [{ reservationId: null, name: "A", phone: "0123456789" }] }));
+  res = await h(makeRequest({ recipients: [{ kind: "visitor", bookingId: RESA_ID, name: "A", phone: "0123456789" }] }));
   await res.text();
   assertEquals(res.status, 400);
+});
+
+Deno.test("spot/horaire obligatoires : champ vide, absent ou horaire invalide → 400, rien envoyé", async () => {
+  const calls: BrevoCall[] = [];
+  const h = createHandler(makeDeps({ brevoFetch: makeBrevo({ calls }) }));
+  for (const bad of [
+    { spot: "" },
+    { spot: "   " },
+    { spot: undefined },
+    { horaire: "" },
+    { horaire: "9h30" },
+    { horaire: "25:00" },
+    { horaire: "09:60" },
+  ]) {
+    const res = await h(makeRequest(bad));
+    await res.text();
+    assertEquals(res.status, 400, JSON.stringify(bad));
+  }
+  assertEquals(calls.filter((c) => c.method === "POST").length, 0);
+  assertEquals(calls.filter((c) => c.url.endsWith("/account")).length, 0, "refus avant même le pré-contrôle Brevo");
+});
+
+Deno.test("le contenu du message ne fait pas foi : spot/horaire doivent venir des champs dédiés", async () => {
+  const calls: BrevoCall[] = [];
+  const h = createHandler(makeDeps({ brevoFetch: makeBrevo({ calls }) }));
+  const res = await h(makeRequest({ spot: "", message: "RDV 14:00 Spot de l'Almanarre" }));
+  await res.text();
+  assertEquals(res.status, 400);
+  assertEquals(calls.filter((c) => c.method === "POST").length, 0);
 });
 
 // ---------- 3. Envoi nominal ----------
