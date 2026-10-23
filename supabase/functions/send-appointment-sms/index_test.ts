@@ -17,7 +17,7 @@ function makeStore(opts?: { failInsert?: boolean }) {
   const store: SmsLogStore = {
     async insertPrepared(row) {
       if (opts?.failInsert) return { ok: false, duplicate: false, error: "down" };
-      const dup = rows.some((r) =>
+      const dup = row.is_resend === false && rows.some((r) =>
         r.dedupe_key === row.dedupe_key && r.is_resend === false &&
         ["prepared", "sending", "sent", "unknown"].includes(String(r.status))
       );
@@ -82,15 +82,14 @@ function makeRequest(body: Record<string, unknown> | null, auth = "Bearer user-j
   return new Request("https://example.com/send-appointment-sms", {
     method: "POST",
     headers: { "Content-Type": "application/json", ...(auth ? { Authorization: auth } : {}) },
-    body: JSON.stringify(
-      body ?? {
-        date: "2026-07-10",
-        activity: "kitesurf",
-        groupId: GROUP_ID,
-        message: "RDV 9h Port de Carqueiranne",
-        recipients: [{ reservationId: RESA_ID, name: "Jean Test", phone: "0612345678" }],
-      },
-    ),
+    body: JSON.stringify({
+      date: "2026-07-10",
+      activity: "kitesurf",
+      groupId: GROUP_ID,
+      message: "RDV 9h Port de Carqueiranne",
+      recipients: [{ reservationId: RESA_ID, name: "Jean Test", phone: "0612345678" }],
+      ...(body ?? {}),
+    }),
   });
 }
 
