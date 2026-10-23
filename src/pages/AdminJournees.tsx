@@ -41,6 +41,7 @@ const AdminJournees = () => {
   const [recreditGroup, setRecreditGroup] = useState<DailyGroup | null>(null);
   const [moveReason, setMoveReason] = useState(RECREDIT_REASONS[0].value);
   const [cancelDayOpen, setCancelDayOpen] = useState(false);
+  const [smsTarget, setSmsTarget] = useState<SmsTarget | null>(null);
 
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>;
@@ -65,6 +66,28 @@ const AdminJournees = () => {
     onRecredit: setRecreditMember,
     onCancelGroupRecredit: setRecreditGroup,
     onMove: (m: Member, g: DailyGroup) => { setMoveMember({ member: m, group: g }); setMoveDate(undefined); },
+    onSms: (g: DailyGroup) =>
+      setSmsTarget({
+        dateIso: format(date, "yyyy-MM-dd"),
+        activity: g.activity,
+        groupId: g.id,
+        members: g.members,
+      }),
+  };
+
+  /** Envoi jour entier : seulement si une seule activité (sinon, par groupe). */
+  const openDaySms = () => {
+    const acts = Array.from(new Set(groups.map((g) => g.activity)));
+    if (acts.length !== 1) {
+      toast.info("Plusieurs activités ce jour : envoyez les SMS groupe par groupe.");
+      return;
+    }
+    setSmsTarget({
+      dateIso: format(date, "yyyy-MM-dd"),
+      activity: acts[0],
+      groupId: null,
+      members: groups.flatMap((g) => g.members),
+    });
   };
 
   return (
@@ -84,6 +107,15 @@ const AdminJournees = () => {
             <Button variant="outline" size="sm" onClick={reload} disabled={loading}>
               <RefreshCw className={cn("w-4 h-4 mr-2", loading && "animate-spin")} />
               Rafraîchir
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={openDaySms}
+              disabled={loading || groups.length === 0}
+            >
+              <MessageSquare className="w-4 h-4 mr-2" />
+              SMS rendez-vous
             </Button>
             <Button
               variant="destructive"
@@ -189,6 +221,8 @@ const AdminJournees = () => {
           if (okDone) setCancelDayOpen(false);
         }}
       />
+
+      <AppointmentSmsDialog target={smsTarget} onClose={() => setSmsTarget(null)} />
 
       <EditGroupDialog
         group={editGroup}
