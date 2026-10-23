@@ -13,7 +13,7 @@ export type CrmClient = {
   credits_consumed: number;
   credits_expired: number;
   next_expiry: string | null;
-  revenue: number;
+  revenue: number | null;
   activities: string[];
   marketing_consent: boolean;
   last_activity: string | null;
@@ -73,7 +73,7 @@ export type CrmDetail = {
     activity: string | null; balance_after: number; created_at: string;
   }[];
   payments: {
-    source: "package" | "reservation"; reference: string | null; amount: number;
+    source: "package" | "reservation"; reference: string | null; amount: number | null;
     activity: string | null; stripe_session_id: string | null; paid_at: string;
   }[];
 };
