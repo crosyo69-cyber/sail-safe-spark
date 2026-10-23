@@ -24,6 +24,8 @@ export interface CreateCheckoutBody {
  * safe: `retries` is raised to 2 when a key is supplied.
  */
 export const paymentService = {
+  getPackStatus: (sessionId: string) =>
+    api.rpc("get_pack_payment_status", { p_stripe_session_id: sessionId }),
   getBookingStatus: (sessionId: string) =>
     api.rpc("get_payment_booking_status", { p_stripe_session_id: sessionId }),
   createCheckout: (body: CreateCheckoutBody, idempotencyKey?: string) =>

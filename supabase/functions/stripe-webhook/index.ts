@@ -1,3 +1,4 @@
+import { persistPayment } from "./payment-ledger.ts";
 import { ffvlLicenceEmailNotice } from "../_shared/ffvl-licence-notice.ts";
 import Stripe from "https://esm.sh/stripe@14.21.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
@@ -98,7 +99,7 @@ async function createClientPackage(
         activity: activityEnum,
         package_type: activityName,
         total_sessions: totalSessions,
-        deposit_amount: participants * 50,
+        deposit_amount: Number(session.amount_total) / 100,
         deposit_paid_at: new Date().toISOString(),
         stripe_session_id: session.id,
         status: "active",
@@ -223,8 +224,10 @@ function buildCustomerPaymentEmailWithCode(
   preferredDate?: string,
   packageCode?: string,
   totalSessions?: number,
+  amountCents?: number,
+  isPack = false,
 ): string {
-  const amount = participants * 50;
+  const amount = amountCents === undefined ? "à vérifier" : amountCents / 100;
   const participantsLabel = participants > 1 ? `${participants} personnes` : '1 personne';
   const dateRow = preferredDate ? `<tr><td style="padding:10px 16px;color:#64748B;font-size:14px;">Date souhaitée</td><td style="padding:10px 16px;font-weight:bold;color:#0F172A;font-size:14px;">${escapeHtml(preferredDate)}</td></tr>` : '';
   const codeBlock = packageCode ? `
@@ -247,7 +250,7 @@ function buildCustomerPaymentEmailWithCode(
       <img src="${LOGO_URL}" alt="KiteSurf Passion" width="180" style="display:block;margin:0 auto;" />
     </td></tr>
     <tr><td style="padding:32px 25px 0;">
-      <h1 style="font-size:22px;font-weight:bold;color:#0F172A;margin:0 0 16px;">Votre réservation est confirmée ! ✅</h1>
+      <h1 style="font-size:22px;font-weight:bold;color:#0F172A;margin:0 0 16px;">${isPack ? "Votre pack est activé ! Aucune journée réservée." : "Votre réservation est confirmée ! ✅"}</h1>
       <p style="font-size:15px;color:#64748B;line-height:1.6;margin:0 0 20px;">
         Nous avons bien reçu votre acompte de <strong>${amount}€</strong> pour <strong>${escapeHtml(activityName)}</strong> (${participantsLabel}).
       </p>
@@ -292,8 +295,8 @@ function buildCustomerPaymentEmailWithCode(
 </html>`;
 }
 
-function buildOwnerPaymentEmail(activityName: string, customerEmail: string, sessionId: string, participants: number, customerName?: string, phone?: string, preferredDate?: string): string {
-  const amount = participants * 50;
+function buildOwnerPaymentEmail(activityName: string, customerEmail: string, sessionId: string, participants: number, customerName?: string, phone?: string, preferredDate?: string, amountCents?: number): string {
+  const amount = amountCents === undefined ? "à vérifier" : amountCents / 100;
   const nameRow = customerName ? `<tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Client</td><td style="padding:10px;border:1px solid #E2E8F0;color:#0F172A;">${escapeHtml(customerName)}</td></tr>` : '';
   const phoneRow = phone ? `<tr style="background-color:#F1F5F9;"><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Téléphone</td><td style="padding:10px;border:1px solid #E2E8F0;"><a href="tel:${escapeHtml(phone)}" style="color:#0891B2;">${escapeHtml(phone)}</a></td></tr>` : '';
   const dateRow = preferredDate ? `<tr><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">Date souhaitée</td><td style="padding:10px;border:1px solid #E2E8F0;font-weight:bold;color:#0F172A;">${escapeHtml(preferredDate)}</td></tr>` : '';
@@ -578,7 +581,7 @@ async function createReservationFromCheckout(
     p_phone: phone,
     p_participants: participants,
     p_stripe_session_id: session.id,
-    p_notes: `Acompte ${participants * 50}€ payé via Stripe – ${activityName}`,
+    p_notes: `Acompte ${Number(session.amount_total) / 100}€ réellement payé via Stripe – ${activityName}`,
   });
 
   if (rpcErr || (rpcRes && (rpcRes as any).ok === false)) {
@@ -655,6 +658,11 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
     }
 
     console.log(`Received event: ${event.type}`);
+
+    if (event.type === "checkout.session.completed") {
+      const paymentSession = event.data.object as Stripe.Checkout.Session;
+      await persistPayment(supabase, paymentSession, event.id);
+    }
 
     // ── Déduplication atomique (P0-2) ────────────────────────────────────
     // L'event_id est enregistré via INSERT ... ON CONFLICT DO NOTHING dans un
@@ -773,6 +781,22 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
         });
       }
 
+      if (session.metadata?.operation === "pack_purchase") {
+        const code = await createClientPackage(supabase, session);
+        if (!code) {
+          const recorded = await recordPaidBookingIncident(supabase, session, {
+            activityName, activityEnum: mapActivityToEnum(activityName), sessionDate: "", participants: 1,
+            reason: "pack_activation_failed", indeterminate: true,
+          });
+          return new Response(JSON.stringify({ received: true, pack: "indeterminate", incident: recorded }), { status: 500 });
+        }
+        if (customerEmail) await enqueueEmail(supabase, customerEmail, `Activation de votre pack – ${activityName}`,
+          buildCustomerPaymentEmailWithCode(activityName, 1, undefined, code, Number(session.metadata.total_sessions), Number(session.amount_total), true),
+          "booking_confirmation", undefined, await deterministicMessageId(session.id, "booking_confirmation", customerEmail));
+        await markWebhookEvent(supabase, event.id, "processed");
+        return new Response(JSON.stringify({ received: true, pack: "active" }), { status: 200 });
+      }
+
       // Create reservation in database — la suite (forfait, e-mails) ne
       // s'exécute QUE si la réservation est réellement créée et vérifiée.
       let booking: BookingOutcome;
@@ -877,7 +901,7 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
         let packageCode: string | null = null;
         let totalSessions = participants;
         try {
-          packageCode = await createClientPackage(supabase, session);
+          if (!session.metadata?.operation) packageCode = await createClientPackage(supabase, session);
           totalSessions = Math.max(
             1,
             parseInt(session.metadata?.total_sessions || String(participants), 10),
@@ -906,7 +930,7 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
             supabase,
             customerEmail,
             `Confirmation de réservation – ${activityName}`,
-            buildCustomerPaymentEmailWithCode(activityName, participants, preferredDate, packageCode || undefined, totalSessions),
+            buildCustomerPaymentEmailWithCode(activityName, participants, preferredDate, packageCode || undefined, totalSessions, Number(session.amount_total)),
             'booking_confirmation',
             undefined,
             // Clé par paiement (session.id) : deux événements distincts liés
@@ -922,7 +946,7 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
             supabase,
             OWNER_EMAIL,
             `💰 Acompte reçu – ${activityName} (${customerEmail})`,
-            buildOwnerPaymentEmail(activityName, customerEmail, session.id, participants, customerName, phone, preferredDate),
+            buildOwnerPaymentEmail(activityName, customerEmail, session.id, participants, customerName, phone, preferredDate, Number(session.amount_total)),
             'booking_owner_notification',
             customerEmail,
             await deterministicMessageId(session.id, 'booking_owner_notification', OWNER_EMAIL),
