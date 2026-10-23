@@ -2,10 +2,11 @@
 
 # Correction Stripe — acomptes et fiabilité comptable
 
-- [ ] Distinguer réservation datée multi-participants et achat de pack individuel ; arrêter les corrections de paiement si la structure est ambiguë et soumettre le choix.
-- [ ] Après résolution de cette distinction, corriger checkout, montants réels du webhook et sources comptables, uniquement en aperçu.
-- [ ] Rapprocher les 14 commandes historiques en lecture seule, sans régularisation automatique.
-- [ ] Tester montants, packs, Stage, incidents et idempotence avec mocks, sans paiement ni remboursement réel, migration appliquée, déploiement ou publication.
+- [x] Distinguer réservation datée et achat individuel : utilisateur confirme pack sans journée automatique.
+- [x] Préparer checkout explicite, montants Stripe réels, brouillon du journal non appliqué et affichages revenus/fiche CRM ; 90 tests simulés passent et deux états visibles vérifiés.
+- [ ] Compléter les lectures comptables CRM globales/assistant et la reprise atomique des événements indéterminés : attend validation du périmètre des RPC F-28 gelées et du brouillon de journal, sans appliquer de migration.
+- [ ] Certifier le rapprochement exact des 14 commandes : liste de l'ancien audit absente ; 12 écarts rapprochés de Stripe, rapport préparé sans régularisation.
+- [ ] Vérifier le parcours hébergé complet : bloqué par le journal et les RPC non appliqués, activation non autorisée.
 
 # Confirmation après paiement — QA
 
