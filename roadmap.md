@@ -2,6 +2,7 @@
 
 # Correction Stripe — acomptes et fiabilité comptable
 
+- [ ] Finalisation demandée le 23 octobre : tableau des 14 commandes, lectures CRM/assistant vérifiées, reprise idempotente préparée, tests et dossier de validation ; aperçu uniquement, aucune activation.
 - [x] Distinguer réservation datée et achat individuel : utilisateur confirme pack sans journée automatique.
 - [x] Préparer checkout explicite, montants Stripe réels, brouillon du journal non appliqué et affichages revenus/fiche CRM ; 90 tests simulés passent et deux états visibles vérifiés.
 - [ ] Compléter les lectures comptables CRM globales/assistant et la reprise atomique des événements indéterminés : attend validation du périmètre des RPC F-28 gelées et du brouillon de journal, sans appliquer de migration.
