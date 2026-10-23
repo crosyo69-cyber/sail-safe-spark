@@ -275,3 +275,29 @@ Deno.test("8. Stage refusé au 5e jour : aucune écriture partielle, incident, a
   assertEquals((fake.notifications[0] as any).p_kind, "stripe_stage_payment_failed");
   assertEquals(fake.events.get("evt_stage")?.status, "failed");
 });
+
+Deno.test("Pack individuel : crédits créés, aucune réservation même si une date est fournie", async () => {
+  const fake = makeFake();
+  const event = makeEvent("evt_pack_only");
+  event.data.object.metadata.operation = "pack_purchase";
+  event.data.object.metadata.total_sessions = "3";
+  event.data.object.amount_total = 15000;
+  const response = await createWebhookHandler(makeDeps(fake, event))(makeRequest());
+  await response.text();
+  assertEquals(response.status, 200);
+  assertEquals(fake.reservations.length, 0);
+  assertEquals(fake.packages.length, 1);
+  assertEquals(fake.packages[0].total_sessions, 3);
+  assertEquals(fake.packages[0].deposit_amount, 150);
+});
+
+Deno.test("Réservation datée : aucun pack de crédits supplémentaire", async () => {
+  const fake = makeFake();
+  const event = makeEvent("evt_dated_only");
+  event.data.object.metadata.operation = "dated_reservation";
+  const response = await createWebhookHandler(makeDeps(fake, event))(makeRequest());
+  await response.text();
+  assertEquals(response.status, 200);
+  assertEquals(fake.reservations.length, 1);
+  assertEquals(fake.packages.length, 0);
+});
