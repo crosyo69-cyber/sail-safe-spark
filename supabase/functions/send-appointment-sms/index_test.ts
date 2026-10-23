@@ -42,7 +42,7 @@ function makeBrevo(opts: {
   accountOk?: boolean;
   accountJson?: Record<string, unknown> | null;
   accountThrows?: boolean;
-  sendResults?: Array<{ ok: boolean; status?: number; json?: unknown; throws?: boolean }>;
+  sendResults?: Array<{ ok?: boolean; status?: number; json?: unknown; throws?: boolean }>;
 }) {
   let sendIndex = 0;
   return async (url: string | URL | Request, init?: RequestInit): Promise<Response> => {
