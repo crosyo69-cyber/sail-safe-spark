@@ -5,7 +5,8 @@ const api = createApiClient({ scope: "payment" });
 export interface CreateCheckoutBody {
   activityName: string;
   participants: number;
-  preferredDate: string;
+  preferredDate?: string;
+  operation?: "dated_reservation" | "pack_purchase" | "stage";
   phone: string;
   customerName: string;
   totalSessions?: number;

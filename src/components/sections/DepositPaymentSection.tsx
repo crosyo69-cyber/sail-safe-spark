@@ -161,8 +161,9 @@ const DepositPaymentSection = () => {
     const date = selectedDates[activityId];
     const phone = phones[activityId]?.trim();
     const name = names[activityId]?.trim();
+    const isPack = ["cours-carte", "stage-wingfoil"].includes(activityId) && (totalSessions ?? 1) > 1;
 
-    if (!date) {
+    if (!isPack && !date) {
       toast({ title: "Date requise", description: "Veuillez choisir une date souhaitée.", variant: "destructive" });
       return;
     }
@@ -183,11 +184,12 @@ const DepositPaymentSection = () => {
       activityId,
       {
         activityName,
-        participants: count,
-        preferredDate: toParisDateOnly(date),
+        participants: isPack ? 1 : count,
+        operation: activityId === "stage-100-glisse" ? "stage" : isPack ? "pack_purchase" : "dated_reservation",
+        preferredDate: !isPack && date ? toParisDateOnly(date) : undefined,
         phone,
         customerName: name,
-        totalSessions: totalSessions ?? count,
+        totalSessions: isPack ? totalSessions : activityId === "stage-100-glisse" ? 5 : 1,
       },
       stripeWindow,
       () =>
@@ -216,7 +218,7 @@ const DepositPaymentSection = () => {
               Réservez en Ligne
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Versez un acompte de 50€ par séance réservée (250€ par personne pour le Stage 100% Glisse) pour confirmer votre réservation. Le solde sera à régler le jour de votre cours.
+              Versez un acompte de 50€ par participant pour une journée, ou 50€ par séance pour un pack individuel (250€ par personne pour le Stage 100% Glisse) pour confirmer votre réservation. Le solde sera à régler le jour de votre cours.
             </p>
           </div>
 
@@ -232,7 +234,8 @@ const DepositPaymentSection = () => {
               // par participant où sessions == participants).
               const sessionsForDeposit =
                 packOptions ? selectedPack : defaultSessions ?? count;
-              const total = sessionsForDeposit * 50;
+              const isPack = !!packOptions && selectedPack > 1;
+              const total = (isPack ? selectedPack : count) * 50;
               return (
                 <div
                   key={activity.id}
@@ -301,8 +304,8 @@ const DepositPaymentSection = () => {
                     />
                   </div>
 
-                  {/* Date picker */}
-                  <div className="mb-3">
+                  {/* Packs are credits only: no date is collected. */}
+                  {!isPack && <div className="mb-3">
                     <Label className="text-xs text-muted-foreground">Date souhaitée *</Label>
                     <Popover>
                       <PopoverTrigger asChild>
@@ -329,10 +332,10 @@ const DepositPaymentSection = () => {
                         />
                       </PopoverContent>
                     </Popover>
-                  </div>
+                  </div>}
 
                   {/* Participant selector */}
-                  <div className="flex items-center justify-between bg-muted/50 rounded-lg px-3 py-2 mb-3">
+                  {!isPack && <div className="flex items-center justify-between bg-muted/50 rounded-lg px-3 py-2 mb-3">
                     <span className="text-sm text-foreground/80">Participants</span>
                     <div className="flex items-center gap-2">
                       <button
@@ -357,7 +360,8 @@ const DepositPaymentSection = () => {
                         <Plus className="w-3 h-3" />
                       </button>
                     </div>
-                  </div>
+                  </div>}
+                  {isPack && <p className="text-sm text-muted-foreground mb-3">Pack individuel — aucune journée réservée automatiquement.</p>}
 
                   {activity.id === "stage-100-glisse" ? (
                     // S3-UX : affichage seulement. Le montant réel est calculé
@@ -377,14 +381,14 @@ const DepositPaymentSection = () => {
                   <div className="bg-muted/50 rounded-lg p-3 mb-4 text-center">
                     <p className="text-sm font-semibold text-foreground">
                       Acompte : {total}€{" "}
-                      {sessionsForDeposit > 1 && (
+                      {(isPack ? selectedPack : count) > 1 && (
                         <span className="font-normal text-foreground/80">
-                          ({sessionsForDeposit} × 50€)
+                          ({isPack ? selectedPack : count} × 50€)
                         </span>
                       )}
                     </p>
                     <p className="text-xs text-foreground/80">
-                      {packOptions
+                      {isPack
                         ? `Pack ${selectedPack} session${selectedPack > 1 ? "s" : ""} — solde à régler sur place`
                         : "(solde à régler le jour J)"}
                     </p>

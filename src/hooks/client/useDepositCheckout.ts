@@ -32,6 +32,7 @@ export const useDepositCheckout = () => {
       body.phone,
       body.customerName,
       body.totalSessions ?? null,
+      body.operation ?? null,
     ]);
     if (intentRef.current?.signature === signature) return intentRef.current.key;
     const key = newIdempotencyKey();
