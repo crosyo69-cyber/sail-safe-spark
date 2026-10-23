@@ -119,7 +119,7 @@ const ReservationConfirmee = () => {
                 </h1>
                 <div className="bg-card border border-border rounded-2xl p-8 mb-8 space-y-4 text-left">
                   <p className="text-muted-foreground text-center">
-                    Votre paiement a bien été reçu. La confirmation de votre réservation pour{" "}
+                    Votre paiement a bien été reçu. {isPack ? "L’activation de votre pack pour" : "La confirmation de votre réservation pour"}{" "}
                     <strong className="text-foreground">{activity}</strong> est en cours : vous recevrez
                     un e-mail de confirmation dans quelques instants.
                   </p>
@@ -138,7 +138,7 @@ const ReservationConfirmee = () => {
                 </h1>
                 <div className="bg-card border border-border rounded-2xl p-8 mb-8 space-y-4 text-left">
                   <p className="text-muted-foreground text-center">
-                    Votre paiement a bien été reçu, mais votre réservation n'a pas pu être confirmée
+                    Votre paiement a bien été reçu, mais {isPack ? "votre pack n’a pas pu être activé" : "votre réservation n’a pas pu être confirmée"}
                     automatiquement. <strong className="text-foreground">Notre équipe doit régulariser
                     la situation</strong> et vous contactera dans les plus brefs délais.
                   </p>
