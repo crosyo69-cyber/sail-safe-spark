@@ -43,3 +43,9 @@
 - [x] Afficher toutes les heures par activité : dans/hors seuils ou indéterminé, avec lien de réservation ; aucune décision automatique.
 - [x] Préciser la licence FFVL exclue des offres Tarifs, Stage 100 % Glisse et Cours débutant ; conserver séparément les droits des images et les prix.
 - [x] Tester limites, données périmées/manquantes : 292 tests réussis ; admin connecté vérifié (24 heures, 4 activités), lien /reserver et 6 offres JSON-LD contrôlés ; sans publication ni déploiement.
+
+## SMS rendez-vous manuels (Brevo) — Phase 2
+- [x] Journal d'envoi en base avec anti-doublon et états explicites
+- [x] Fonction d'envoi admin + tests simulés (15/15, aucun SMS réel)
+- [x] Fenêtre de prévisualisation/confirmation dans Gestion des journées
+- [ ] Déploiement de la fonction et activation réelle : uniquement sur autorisation explicite
