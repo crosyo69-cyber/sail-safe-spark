@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { paymentAmounts } from "./accounting";
+import { paymentAmounts } from "./accounting.ts";
 describe("Payment evidence", () => {
   test("unknown historical receipt is not zero or a theoretical amount", () => {
     expect(paymentAmounts().received).toBeNull();
