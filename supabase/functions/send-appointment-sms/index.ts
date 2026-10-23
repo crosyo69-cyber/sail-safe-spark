@@ -34,6 +34,13 @@ export interface SmsDeps {
   store: SmsLogStore;
   brevoFetch: typeof fetch;
   env: (key: string) => string | undefined;
+  /**
+   * Vérification serveur d'éligibilité : true UNIQUEMENT si la réservation
+   * (visiteur) ou l'inscription (forfait) existe avec status = 'confirmed'
+   * et, si un groupe est fourni, appartient à ce groupe. Tout autre statut,
+   * une erreur de lecture ou une ligne absente → false (fail-closed).
+   */
+  checkRecipient: (kind: RecipientKind, bookingId: string, groupId: string | null) => Promise<boolean>;
 }
 
 // ---------- Utilitaires exportés (testés) ----------
@@ -61,11 +68,14 @@ export const dedupeKeyOf = (
 
 // ---------- Validation manuelle du corps (pas de dépendance externe) ----------
 
-interface RecipientInput { reservationId: string | null; name: string; phone: string }
+export type RecipientKind = "visitor" | "package";
+interface RecipientInput { kind: RecipientKind; bookingId: string; name: string; phone: string }
 interface ParsedBody {
   date: string;
   activity: string | null;
   groupId: string | null;
+  spot: string;
+  horaire: string;
   message: string;
   resend: boolean;
   recipients: RecipientInput[];
@@ -83,6 +93,16 @@ function parseBody(raw: unknown): { ok: true; body: ParsedBody } | { ok: false; 
   if (activity !== null && !ACTIVITIES.has(activity)) return { ok: false, error: "Activité inconnue." };
   const groupId = r.groupId == null ? null : String(r.groupId);
   if (groupId !== null && !UUID_RE.test(groupId)) return { ok: false, error: "Identifiant de groupe invalide." };
+  // Spot et horaire sont des champs obligatoires et validés serveur ; le
+  // contenu éditable du SMS ne fait jamais foi.
+  const spot = String(r.spot ?? "").trim();
+  if (spot.length < 1 || spot.length > 120) {
+    return { ok: false, error: "Spot obligatoire (1 à 120 caractères)." };
+  }
+  const horaire = String(r.horaire ?? "").trim();
+  if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(horaire)) {
+    return { ok: false, error: "Horaire obligatoire au format HH:MM (ex. 09:30)." };
+  }
   const message = String(r.message ?? "").trim();
   if (message.length < 1 || message.length > MAX_MESSAGE_LEN) {
     return { ok: false, error: `Message requis (1 à ${MAX_MESSAGE_LEN} caractères).` };
@@ -94,17 +114,21 @@ function parseBody(raw: unknown): { ok: true; body: ParsedBody } | { ok: false; 
   const recipients: RecipientInput[] = [];
   for (const item of list) {
     const it = item as Record<string, unknown>;
-    const reservationId = it.reservationId == null ? null : String(it.reservationId);
-    if (reservationId !== null && !UUID_RE.test(reservationId)) {
-      return { ok: false, error: "Identifiant de réservation invalide." };
+    const kind = it.kind === "visitor" || it.kind === "package" ? it.kind : null;
+    const bookingId = String(it.bookingId ?? "");
+    // Fail-closed : tout destinataire sans référence de réservation vérifiable
+    // est rejeté avant tout envoi.
+    if (kind === null || !UUID_RE.test(bookingId)) {
+      return { ok: false, error: "Destinataire sans référence de réservation valide." };
     }
     recipients.push({
-      reservationId,
+      kind,
+      bookingId,
       name: String(it.name ?? "").slice(0, 120),
       phone: String(it.phone ?? ""),
     });
   }
-  return { ok: true, body: { date, activity, groupId, message, resend: r.resend === true, recipients } };
+  return { ok: true, body: { date, activity, groupId, spot, horaire, message, resend: r.resend === true, recipients } };
 }
 
 // ---------- Réponses JSON ----------
@@ -177,22 +201,45 @@ export function createHandler(deps: SmsDeps) {
       return json({ error: `Crédits SMS insuffisants sur le compte Brevo (${credits} restant(s)).` }, 402);
     }
 
-    // 5. Envoi séquentiel avec journalisation et protection anti-doublon.
+    // 5. Éligibilité stricte côté serveur : status = 'confirmed' exigé pour
+    // chaque destinataire (réservation visiteur ou inscription forfait).
+    // Tout autre statut (pending, cancelled, …), une ligne absente ou une
+    // erreur de lecture = destinataire exclu, jamais envoyé.
+    const eligible: { input: RecipientInput; to: string }[] = [];
     const results: Record<string, unknown>[] = [];
+    let ineligible = 0;
+    for (const item of normalized) {
+      let ok = false;
+      try {
+        ok = await deps.checkRecipient(item.input.kind, item.input.bookingId, body.groupId);
+      } catch {
+        ok = false; // fail-closed
+      }
+      if (!ok) {
+        ineligible++;
+        results.push({ name: item.input.name, phone_last4: item.to.slice(-4), status: "ineligible", error: "Réservation non confirmée ou introuvable : exclue." });
+      } else {
+        eligible.push(item);
+      }
+    }
+    if (eligible.length === 0) {
+      return json({ results, sent: 0, skipped: 0, failed: 0, ineligible, error: "Aucun destinataire confirmé : rien n'a été envoyé." }, 422);
+    }
+
+    // 6. Envoi séquentiel avec journalisation et protection anti-doublon.
     let sent = 0;
     let skipped = 0;
     let failed = 0;
 
-    for (const { input, to } of normalized) {
-      const ref = input.reservationId ?? to;
-      const dedupeKey = await dedupeKeyOf(body.date, body.groupId, ref, body.message);
+    for (const { input, to } of eligible) {
+      const dedupeKey = await dedupeKeyOf(body.date, body.groupId, input.bookingId, body.message);
       const baseRow = {
         kind: "appointment",
         status: "prepared",
         date: body.date,
         activity: body.activity,
         daily_group_id: body.groupId,
-        reservation_id: input.reservationId,
+        reservation_id: input.kind === "visitor" ? input.bookingId : null,
         recipient_name: input.name || null,
         phone_last4: to.slice(-4),
         message: body.message,
@@ -241,7 +288,7 @@ export function createHandler(deps: SmsDeps) {
       }
     }
 
-    return json({ results, sent, skipped, failed });
+    return json({ results, sent, skipped, failed, ineligible });
   };
 }
 
@@ -274,6 +321,14 @@ function buildProductionDeps(): SmsDeps {
     },
     brevoFetch: fetch,
     env: (key) => Deno.env.get(key),
+    async checkRecipient(kind, bookingId, groupId) {
+      const table = kind === "visitor" ? "reservations" : "package_bookings";
+      let q = service.from(table).select("id").eq("id", bookingId).eq("status", "confirmed");
+      if (groupId) q = q.eq("daily_group_id", groupId);
+      const { data, error } = await q.limit(1);
+      if (error) return false; // fail-closed
+      return Array.isArray(data) && data.length === 1;
+    },
   };
 }
 

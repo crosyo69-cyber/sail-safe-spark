@@ -42,7 +42,7 @@ function makeBrevo(opts: {
   accountOk?: boolean;
   accountJson?: Record<string, unknown> | null;
   accountThrows?: boolean;
-  sendResults?: Array<{ ok: boolean; status?: number; json?: unknown; throws?: boolean }>;
+  sendResults?: Array<{ ok?: boolean; status?: number; json?: unknown; throws?: boolean }>;
 }) {
   let sendIndex = 0;
   return async (url: string | URL | Request, init?: RequestInit): Promise<Response> => {
@@ -74,6 +74,7 @@ function makeDeps(overrides: Partial<SmsDeps> & { isAdmin?: boolean; hasUser?: b
     store: makeStore().store,
     brevoFetch: makeBrevo({ calls: [] }),
     env: (k) => (k === "BREVO_API_KEY" ? "test-key" : undefined),
+    checkRecipient: async () => true,
     ...rest,
   };
 }
@@ -86,8 +87,10 @@ function makeRequest(body: Record<string, unknown> | null, auth = "Bearer user-j
       date: "2026-07-10",
       activity: "kitesurf",
       groupId: GROUP_ID,
+      spot: "Port de Carqueiranne",
+      horaire: "09:00",
       message: "RDV 9h Port de Carqueiranne",
-      recipients: [{ reservationId: RESA_ID, name: "Jean Test", phone: "0612345678" }],
+      recipients: [{ kind: "visitor", bookingId: RESA_ID, name: "Jean Test", phone: "0612345678" }],
       ...(body ?? {}),
     }),
   });
@@ -120,9 +123,38 @@ Deno.test("refus de validation : message vide et numéro invalide", async () => 
   let res = await h(makeRequest({ message: "   " }));
   await res.text();
   assertEquals(res.status, 400);
-  res = await h(makeRequest({ recipients: [{ reservationId: null, name: "A", phone: "0123456789" }] }));
+  res = await h(makeRequest({ recipients: [{ kind: "visitor", bookingId: RESA_ID, name: "A", phone: "0123456789" }] }));
   await res.text();
   assertEquals(res.status, 400);
+});
+
+Deno.test("spot/horaire obligatoires : champ vide, absent ou horaire invalide → 400, rien envoyé", async () => {
+  const calls: BrevoCall[] = [];
+  const h = createHandler(makeDeps({ brevoFetch: makeBrevo({ calls }) }));
+  for (const bad of [
+    { spot: "" },
+    { spot: "   " },
+    { spot: undefined },
+    { horaire: "" },
+    { horaire: "9h30" },
+    { horaire: "25:00" },
+    { horaire: "09:60" },
+  ]) {
+    const res = await h(makeRequest(bad));
+    await res.text();
+    assertEquals(res.status, 400, JSON.stringify(bad));
+  }
+  assertEquals(calls.filter((c) => c.method === "POST").length, 0);
+  assertEquals(calls.filter((c) => c.url.endsWith("/account")).length, 0, "refus avant même le pré-contrôle Brevo");
+});
+
+Deno.test("le contenu du message ne fait pas foi : spot/horaire doivent venir des champs dédiés", async () => {
+  const calls: BrevoCall[] = [];
+  const h = createHandler(makeDeps({ brevoFetch: makeBrevo({ calls }) }));
+  const res = await h(makeRequest({ spot: "", message: "RDV 14:00 Spot de l'Almanarre" }));
+  await res.text();
+  assertEquals(res.status, 400);
+  assertEquals(calls.filter((c) => c.method === "POST").length, 0);
 });
 
 // ---------- 3. Envoi nominal ----------
@@ -276,6 +308,80 @@ Deno.test("deux requêtes simultanées du même message → un seul envoi", asyn
   assertEquals(b1.sent + b2.sent, 1);
   assertEquals(b1.skipped + b2.skipped, 1);
   assertEquals(calls.filter((c) => c.method === "POST").length, 1);
+});
+
+// ---------- 11. Éligibilité stricte : seul status = 'confirmed' reçoit un SMS ----------
+
+Deno.test("réservation non confirmée (pending/cancelled/autre) → exclue, aucun SMS, aucun journal d'envoi", async () => {
+  for (const status of ["pending", "cancelled", "refunded", "anything_else"]) {
+    const calls: BrevoCall[] = [];
+    const { store, rows } = makeStore();
+    const h = createHandler(makeDeps({
+      store,
+      brevoFetch: makeBrevo({ calls }),
+      checkRecipient: async () => status === "confirmed",
+    }));
+    const res = await h(makeRequest(null));
+    const body = await res.json();
+    assertEquals(res.status, 422, status);
+    assertEquals(body.ineligible, 1, status);
+    assertEquals(body.results[0].status, "ineligible", status);
+    assertEquals(rows.length, 0, `aucune ligne préparée pour ${status}`);
+    assertEquals(calls.filter((c) => c.method === "POST").length, 0, `aucun envoi pour ${status}`);
+  }
+});
+
+Deno.test("réservation confirmée → envoyée ; erreur de lecture d'éligibilité → fail-closed, rien envoyé", async () => {
+  const calls: BrevoCall[] = [];
+  const h1 = createHandler(makeDeps({ brevoFetch: makeBrevo({ calls }), checkRecipient: async () => true }));
+  const ok = await h1(makeRequest(null));
+  assertEquals((await ok.json()).sent, 1);
+
+  const calls2: BrevoCall[] = [];
+  const h2 = createHandler(makeDeps({
+    brevoFetch: makeBrevo({ calls: calls2 }),
+    checkRecipient: async () => { throw new Error("db down"); },
+  }));
+  const res2 = await h2(makeRequest(null));
+  await res2.text();
+  assertEquals(res2.status, 422);
+  assertEquals(calls2.filter((c) => c.method === "POST").length, 0);
+});
+
+Deno.test("inscription forfait confirmée → envoyée avec sa référence ; mixte confirmé/non confirmé → seuls les confirmés reçoivent", async () => {
+  const calls: BrevoCall[] = [];
+  const PKG_ID = "33333333-3333-3333-3333-333333333333";
+  const h = createHandler(makeDeps({
+    brevoFetch: makeBrevo({ calls, sendResults: [{ ok: true }, { ok: true }] }),
+    checkRecipient: async (kind) => kind === "package",
+  }));
+  const res = await h(makeRequest({
+    recipients: [
+      { kind: "visitor", bookingId: RESA_ID, name: "Visiteur", phone: "0612345678" },
+      { kind: "package", bookingId: PKG_ID, name: "Forfait", phone: "0798765432" },
+    ],
+  }));
+  const body = await res.json();
+  assertEquals(res.status, 200);
+  assertEquals(body.sent, 1);
+  assertEquals(body.ineligible, 1);
+  assertEquals(body.results.find((r: { status: string }) => r.status === "ineligible").name, "Visiteur");
+  assertEquals(calls.filter((c) => c.method === "POST").length, 1);
+});
+
+Deno.test("destinataire sans référence de réservation vérifiable → rejet 400 avant tout appel", async () => {
+  const calls: BrevoCall[] = [];
+  const h = createHandler(makeDeps({ brevoFetch: makeBrevo({ calls }) }));
+  for (const bad of [
+    { recipients: [{ kind: "visitor", bookingId: null, name: "A", phone: "0612345678" }] },
+    { recipients: [{ kind: "visitor", bookingId: "pas-un-uuid", name: "A", phone: "0612345678" }] },
+    { recipients: [{ bookingId: RESA_ID, name: "A", phone: "0612345678" }] },
+  ]) {
+    const res = await h(makeRequest(bad));
+    await res.text();
+    assertEquals(res.status, 400, JSON.stringify(bad));
+  }
+  assertEquals(calls.length, 0);
 });
 
 // ---------- Utilitaire : normalisation ----------

@@ -4,8 +4,10 @@ import type { Result } from "./_shared/result";
 const api = createApiClient({ scope: "sms" });
 
 export interface AppointmentSmsRecipient {
-  /** Identifiant de réservation (visiteur) ou null (membre de pack). */
-  reservationId: string | null;
+  /** "visitor" = réservation à la carte, "package" = inscription forfait. */
+  kind: "visitor" | "package";
+  /** Identifiant de la réservation / inscription, revérifié côté serveur. */
+  bookingId: string;
   name: string;
   phone: string;
 }
@@ -14,6 +16,9 @@ export interface AppointmentSmsRequest {
   date: string;
   activity: string | null;
   groupId: string | null;
+  /** Obligatoires et validés côté serveur, indépendamment du message éditable. */
+  spot: string;
+  horaire: string;
   message: string;
   resend: boolean;
   recipients: AppointmentSmsRecipient[];
@@ -22,7 +27,7 @@ export interface AppointmentSmsRequest {
 export interface AppointmentSmsResultItem {
   name: string;
   phone_last4: string;
-  status: "sent" | "failed" | "unknown" | "duplicate" | string;
+  status: "sent" | "failed" | "unknown" | "duplicate" | "ineligible" | string;
   messageId?: string;
   error?: string;
 }
@@ -32,6 +37,8 @@ export interface AppointmentSmsResponse {
   sent: number;
   skipped: number;
   failed: number;
+  /** Destinataires exclus car réservation non confirmée ou introuvable. */
+  ineligible?: number;
 }
 
 export const smsService = {

@@ -86,6 +86,10 @@ export const AppointmentSmsDialog = ({
     setMessage(buildTemplate(target.dateIso, target.activity, spot, horaire));
   }, [spot, horaire, target, messageTouched]);
 
+  const HORAIRE_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
+  const spotOk = spot.trim().length > 0;
+  const horaireOk = HORAIRE_RE.test(horaire.trim());
+
   const doSend = async (resend: boolean) => {
     if (!target) return;
     try {
@@ -93,14 +97,18 @@ export const AppointmentSmsDialog = ({
         date: target.dateIso,
         activity: target.activity,
         groupId: target.groupId,
+        spot: spot.trim(),
+        horaire: horaire.trim(),
         message: message.trim(),
         resend,
         recipients: recipients.map((m) => ({
-          reservationId: m.kind === "visitor" ? m.id : null,
+          kind: m.kind,
+          bookingId: m.id,
           name: m.name,
           phone: m.phone ?? "",
         })),
       });
+      if ((data.ineligible ?? 0) > 0) toast.warning(`${data.ineligible} destinataire(s) non confirmé(s) exclu(s) : aucun SMS pour eux.`);
       setResults(data.results);
       if (data.sent > 0) toast.success(`${data.sent} SMS envoyé(s).`);
       if (data.skipped > 0) toast.info(`${data.skipped} déjà envoyé(s) : aucun doublon créé.`);
@@ -221,7 +229,7 @@ export const AppointmentSmsDialog = ({
           <Button
             onClick={() => void doSend(false)}
             disabled={
-              send.isPending || recipients.length === 0 || message.trim().length === 0
+              send.isPending || recipients.length === 0 || message.trim().length === 0 || !spotOk || !horaireOk
             }
           >
             {send.isPending ? (
