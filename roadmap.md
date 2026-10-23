@@ -1,5 +1,12 @@
 # F-28-22
 
+# Correction Stripe — acomptes et fiabilité comptable
+
+- [ ] Distinguer réservation datée multi-participants et achat de pack individuel ; arrêter les corrections de paiement si la structure est ambiguë et soumettre le choix.
+- [ ] Après résolution de cette distinction, corriger checkout, montants réels du webhook et sources comptables, uniquement en aperçu.
+- [ ] Rapprocher les 14 commandes historiques en lecture seule, sans régularisation automatique.
+- [ ] Tester montants, packs, Stage, incidents et idempotence avec mocks, sans paiement ni remboursement réel, migration appliquée, déploiement ou publication.
+
 # Confirmation après paiement — QA
 
 - [x] Ajouter la référence Stripe au retour et la vérification en lecture seule : migration active sur le backend partagé.
