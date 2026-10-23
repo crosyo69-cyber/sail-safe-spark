@@ -201,22 +201,45 @@ export function createHandler(deps: SmsDeps) {
       return json({ error: `Crédits SMS insuffisants sur le compte Brevo (${credits} restant(s)).` }, 402);
     }
 
-    // 5. Envoi séquentiel avec journalisation et protection anti-doublon.
+    // 5. Éligibilité stricte côté serveur : status = 'confirmed' exigé pour
+    // chaque destinataire (réservation visiteur ou inscription forfait).
+    // Tout autre statut (pending, cancelled, …), une ligne absente ou une
+    // erreur de lecture = destinataire exclu, jamais envoyé.
+    const eligible: { input: RecipientInput; to: string }[] = [];
     const results: Record<string, unknown>[] = [];
+    let ineligible = 0;
+    for (const item of normalized) {
+      let ok = false;
+      try {
+        ok = await deps.checkRecipient(item.input.kind, item.input.bookingId, body.groupId);
+      } catch {
+        ok = false; // fail-closed
+      }
+      if (!ok) {
+        ineligible++;
+        results.push({ name: item.input.name, phone_last4: item.to.slice(-4), status: "ineligible", error: "Réservation non confirmée ou introuvable : exclue." });
+      } else {
+        eligible.push(item);
+      }
+    }
+    if (eligible.length === 0) {
+      return json({ results, sent: 0, skipped: 0, failed: 0, ineligible, error: "Aucun destinataire confirmé : rien n'a été envoyé." }, 422);
+    }
+
+    // 6. Envoi séquentiel avec journalisation et protection anti-doublon.
     let sent = 0;
     let skipped = 0;
     let failed = 0;
 
-    for (const { input, to } of normalized) {
-      const ref = input.reservationId ?? to;
-      const dedupeKey = await dedupeKeyOf(body.date, body.groupId, ref, body.message);
+    for (const { input, to } of eligible) {
+      const dedupeKey = await dedupeKeyOf(body.date, body.groupId, input.bookingId, body.message);
       const baseRow = {
         kind: "appointment",
         status: "prepared",
         date: body.date,
         activity: body.activity,
         daily_group_id: body.groupId,
-        reservation_id: input.reservationId,
+        reservation_id: input.kind === "visitor" ? input.bookingId : null,
         recipient_name: input.name || null,
         phone_last4: to.slice(-4),
         message: body.message,
