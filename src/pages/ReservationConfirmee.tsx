@@ -14,6 +14,7 @@ type BookingStatus = "loading" | "confirmed" | "pending" | "failed" | "unknown";
 const ReservationConfirmee = () => {
   const [searchParams] = useSearchParams();
   const activity = searchParams.get("activity") || "votre activité";
+  const isPack = searchParams.get("operation") === "pack_purchase";
   const sessionId = searchParams.get("session_id");
   const [status, setStatus] = useState<BookingStatus>(sessionId ? "loading" : "pending");
 
@@ -25,7 +26,7 @@ const ReservationConfirmee = () => {
     if (!sessionId) return;
     const checkStatus = async () => {
       try {
-        const { data, error } = settle(await paymentService.getBookingStatus(sessionId));
+        const { data, error } = settle(await (isPack ? paymentService.getPackStatus(sessionId) : paymentService.getBookingStatus(sessionId)));
         if (cancelled) return;
         const nextStatus = !error && (data === "confirmed" || data === "failed") ? data : "pending";
         setStatus(nextStatus);
@@ -44,7 +45,7 @@ const ReservationConfirmee = () => {
       cancelled = true;
       if (timer) clearTimeout(timer);
     };
-  }, [sessionId]);
+  }, [sessionId, isPack]);
 
   const phoneBlock = (
     <div className="border-t border-border pt-4 mt-4">
@@ -91,19 +92,19 @@ const ReservationConfirmee = () => {
                   <CheckCircle className="w-10 h-10 text-primary" />
                 </div>
                 <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-6">
-                  Réservation Confirmée !
+                  {isPack ? "Pack activé !" : "Réservation Confirmée !"}
                 </h1>
                 <div className="bg-card border border-border rounded-2xl p-8 mb-8 space-y-4 text-left">
                   <p className="text-foreground text-lg font-semibold text-center">
                     Votre acompte a bien été reçu !
                   </p>
                   <p className="text-muted-foreground text-center">
-                    Votre réservation pour <strong className="text-foreground">{activity}</strong> est confirmée.
+                    {isPack ? <>Votre pack pour <strong className="text-foreground">{activity}</strong> est activé. Aucune journée n’est réservée automatiquement ; utilisez le code reçu par e-mail.</> : <>Votre réservation pour <strong className="text-foreground">{activity}</strong> est confirmée.</>}
                   </p>
                   <p className="text-muted-foreground text-center">
                     Le solde sera à régler le jour de votre cours.
                   </p>
-                  {phoneBlock}
+                  {!isPack && phoneBlock}
                 </div>
               </>
             )}
@@ -114,7 +115,7 @@ const ReservationConfirmee = () => {
                   <Loader2 className="w-10 h-10 text-primary animate-spin" />
                 </div>
                 <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-6">
-                  Paiement reçu, réservation en cours de vérification
+                  {isPack ? "Paiement reçu, activation du pack en cours de vérification" : "Paiement reçu, réservation en cours de vérification"}
                 </h1>
                 <div className="bg-card border border-border rounded-2xl p-8 mb-8 space-y-4 text-left">
                   <p className="text-muted-foreground text-center">
@@ -122,7 +123,7 @@ const ReservationConfirmee = () => {
                     <strong className="text-foreground">{activity}</strong> est en cours : vous recevrez
                     un e-mail de confirmation dans quelques instants.
                   </p>
-                  {phoneBlock}
+                  {!isPack && phoneBlock}
                 </div>
               </>
             )}
@@ -133,7 +134,7 @@ const ReservationConfirmee = () => {
                   <AlertTriangle className="w-10 h-10 text-destructive" />
                 </div>
                 <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-6">
-                  Paiement reçu, réservation non confirmée
+                  {isPack ? "Paiement reçu, pack non activé" : "Paiement reçu, réservation non confirmée"}
                 </h1>
                 <div className="bg-card border border-border rounded-2xl p-8 mb-8 space-y-4 text-left">
                   <p className="text-muted-foreground text-center">
@@ -141,7 +142,7 @@ const ReservationConfirmee = () => {
                     automatiquement. <strong className="text-foreground">Notre équipe doit régulariser
                     la situation</strong> et vous contactera dans les plus brefs délais.
                   </p>
-                  {phoneBlock}
+                  {!isPack && phoneBlock}
                 </div>
               </>
             )}

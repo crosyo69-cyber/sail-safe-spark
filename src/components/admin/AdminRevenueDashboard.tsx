@@ -1,4 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
+import { paymentAccountingService } from "@/services/payment-accounting.service";
+import { paymentAmounts } from "@/features/payment/accounting";
 import { statsService } from "@/services/stats.service";
 import { settle } from "@/services/_shared/result";
 import { Card } from "@/components/ui/card";
@@ -46,7 +48,7 @@ import {
 import { fr } from "date-fns/locale";
 import { toast } from "sonner";
 
-const DEPOSIT_PER_PERSON = 50;
+
 
 const ACTIVITY_LABELS: Record<string, string> = {
   kitesurf: "Kitesurf",
@@ -82,6 +84,9 @@ interface Reservation {
   daily_group_id: string | null;
   /** F-28-07-03 : activité achetée par le client — source du CA par activité. */
   client_activity: string | null;
+  received: number | null;
+  expected: number | null;
+  gap: number | null;
 }
 
 interface SessionInfo {
@@ -99,12 +104,16 @@ const AdminRevenueDashboard = () => {
 
   const fetchData = async () => {
     setLoading(true);
-    const [resResult, groupResult] = await Promise.all([
+    const [resResult, groupResult, paymentResult] = await Promise.all([
       statsService.revenueReservations<Reservation[]>().then(settle),
       statsService.revenueGroups<SessionInfo[]>().then(settle),
+      paymentAccountingService.ledger().then(settle),
     ]);
 
-    if (resResult.data) setReservations(resResult.data);
+    if (resResult.data) setReservations(resResult.data.map(r => {
+      const evidence = paymentResult.data?.find(p => p.stripe_session_id === r.stripe_session_id);
+      return { ...r, ...paymentAmounts(evidence), created_at: evidence?.paid_at ?? r.created_at };
+    }));
     if (groupResult.data) setGroups(groupResult.data);
     setLoading(false);
   };
@@ -170,13 +179,13 @@ const AdminRevenueDashboard = () => {
   }, [reservations, prevDateRange, activityFilter, groupMap]);
 
   // Stats
-  const totalRevenue = filteredReservations.reduce((a, r) => a + r.participants * DEPOSIT_PER_PERSON, 0);
+  const totalRevenue = filteredReservations.reduce((a, r) => a + (r.received ?? 0), 0);
   const totalParticipants = filteredReservations.reduce((a, r) => a + r.participants, 0);
   const totalTransactions = filteredReservations.length;
   const avgPerTransaction = totalTransactions > 0 ? Math.round(totalRevenue / totalTransactions) : 0;
 
   // Previous period stats
-  const prevRevenue = prevReservations.reduce((a, r) => a + r.participants * DEPOSIT_PER_PERSON, 0);
+  const prevRevenue = prevReservations.reduce((a, r) => a + (r.received ?? 0), 0);
   const prevParticipants = prevReservations.reduce((a, r) => a + r.participants, 0);
   const prevTransactions = prevReservations.length;
   const prevAvg = prevTransactions > 0 ? Math.round(prevRevenue / prevTransactions) : 0;
@@ -191,7 +200,7 @@ const AdminRevenueDashboard = () => {
     const map: Record<string, number> = {};
     filteredReservations.forEach((r) => {
       const act = r.client_activity || "unknown";
-      map[act] = (map[act] || 0) + r.participants * DEPOSIT_PER_PERSON;
+      map[act] = (map[act] || 0) + (r.received ?? 0);
     });
     return Object.entries(map)
       .map(([activity, revenue]) => ({
@@ -213,7 +222,7 @@ const AdminRevenueDashboard = () => {
             const d = parseISO(r.created_at);
             return isWithinInterval(d, { start: weekStart, end: weekEnd });
           })
-          .reduce((a, r) => a + r.participants * DEPOSIT_PER_PERSON, 0);
+          .reduce((a, r) => a + (r.received ?? 0), 0);
         return {
           label: `Sem. ${format(weekStart, "d MMM", { locale: fr })}`,
           revenue: weekRevenue,
@@ -228,7 +237,7 @@ const AdminRevenueDashboard = () => {
           const d = parseISO(r.created_at);
           return isWithinInterval(d, { start: monthStart, end: monthEnd });
         })
-        .reduce((a, r) => a + r.participants * DEPOSIT_PER_PERSON, 0);
+        .reduce((a, r) => a + (r.received ?? 0), 0);
       return {
         label: format(monthStart, "MMM yy", { locale: fr }),
         revenue: monthRevenue,
@@ -256,7 +265,7 @@ const AdminRevenueDashboard = () => {
           ...r,
           activity: r.client_activity || "unknown",
           date: info?.date || "",
-          amount: r.participants * DEPOSIT_PER_PERSON,
+          amount: r.received,
         };
       });
   }, [filteredReservations, groupMap]);
@@ -365,7 +374,7 @@ const AdminRevenueDashboard = () => {
           date: format(parseISO(r.created_at), "dd/MM/yyyy HH:mm", { locale: fr }),
           activity: ACTIVITY_LABELS[r.client_activity || ""] || r.client_activity || "—",
           participants: `${r.participants}`,
-          amount: `${(r.participants * DEPOSIT_PER_PERSON).toLocaleString("fr-FR")} €`,
+          amount: r.received === null ? "À vérifier" : `${r.received.toLocaleString("fr-FR")} €`,
         };
       });
 
@@ -417,7 +426,7 @@ const AdminRevenueDashboard = () => {
             Revenus
           </h2>
           <p className="text-sm text-muted-foreground">
-            Acomptes de {DEPOSIT_PER_PERSON} € par participant
+            Encaissements Stripe vérifiés ; {filteredReservations.filter(r => r.received === null).length} référence(s) à vérifier
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -563,7 +572,9 @@ const AdminRevenueDashboard = () => {
                   <th className="text-left py-2 px-3 text-muted-foreground font-medium text-xs">Date</th>
                   <th className="text-left py-2 px-3 text-muted-foreground font-medium text-xs">Activité</th>
                   <th className="text-center py-2 px-3 text-muted-foreground font-medium text-xs">Participants</th>
-                  <th className="text-right py-2 px-3 text-muted-foreground font-medium text-xs">Montant</th>
+                  <th className="text-right py-2 px-3 text-muted-foreground font-medium text-xs">Encaissé</th>
+                  <th className="text-right py-2 px-3 text-muted-foreground font-medium text-xs">Attendu</th>
+                  <th className="text-right py-2 px-3 text-muted-foreground font-medium text-xs">Écart</th>
                 </tr>
               </thead>
               <tbody>
@@ -579,8 +590,10 @@ const AdminRevenueDashboard = () => {
                     </td>
                     <td className="py-2.5 px-3 text-center text-foreground">{t.participants}</td>
                     <td className="py-2.5 px-3 text-right font-semibold text-foreground">
-                      {t.amount.toLocaleString("fr-FR")} €
+                      {t.amount === null ? "À vérifier" : `${t.amount.toLocaleString("fr-FR")} €`}
                     </td>
+                    <td className="py-2.5 px-3 text-right">{t.expected === null ? "À vérifier" : `${t.expected} €`}</td>
+                    <td className="py-2.5 px-3 text-right">{t.gap === null ? "À vérifier" : `${t.gap} €`}</td>
                   </tr>
                 ))}
               </tbody>

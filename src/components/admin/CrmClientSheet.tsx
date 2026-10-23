@@ -152,7 +152,7 @@ export const CrmClientSheet = ({ email, onClose, onSaved }: Props) => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
                 { label: "Séances", value: s?.reservations_count ?? 0 },
-                { label: "CA total", value: eur(s?.revenue) },
+                { label: "CA total", value: s?.revenue == null ? "À vérifier" : eur(s.revenue) },
                 { label: "Crédits dispo", value: s?.credits_remaining ?? 0 },
                 { label: "Dernière venue", value: fmt(s?.last_activity) },
               ].map((k) => (
@@ -312,7 +312,7 @@ export const CrmClientSheet = ({ email, onClose, onSaved }: Props) => {
                     <div key={`${p.stripe_session_id}-${i}`} className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border p-3">
                       <div className="min-w-0">
                         <p className="text-sm font-medium text-foreground">
-                          {eur(p.amount)} · {p.source === "package" ? "Pack" : "Acompte réservation"}
+                          {p.amount === null ? "À vérifier" : eur(p.amount)} · {p.source === "package" ? "Pack" : "Acompte réservation"}
                         </p>
                         <p className="text-xs text-muted-foreground break-all">
                           {fmt(p.paid_at)} · {p.reference ?? p.stripe_session_id}

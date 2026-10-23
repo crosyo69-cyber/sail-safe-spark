@@ -29,6 +29,7 @@ function makeFakeSupabase() {
             : bookings;
     const filters: Array<[string, unknown]> = [];
     const api: any = {
+      upsert() { return Promise.resolve({ data: null, error: null }); },
       insert(values: Record<string, unknown>) {
         // Emulate uq_client_packages_stripe_session_id
         if (
@@ -119,6 +120,7 @@ function makeEvent(sessionId = "cs_test_1") {
     data: {
       object: {
         id: sessionId,
+        amount_total: 5000, currency: "eur", payment_status: "paid",
         customer_details: { email: "client@example.com", name: "Jean Test" },
         metadata: {
           activity_name: "Cours à la Carte",
