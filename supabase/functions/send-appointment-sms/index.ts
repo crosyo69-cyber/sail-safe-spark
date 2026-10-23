@@ -2,8 +2,12 @@
 // Jamais d'envoi automatique : chaque requête vient d'une confirmation explicite
 // du moniteur dans l'administration. Journalisation dans public.sms_send_log avec
 // protection anti-doublon en base (index unique partiel sur dedupe_key).
-import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
 
 const BREVO_BASE = "https://api.brevo.com/v3";
 const MAX_MESSAGE_LEN = 459; // 3 SMS concaténés max
