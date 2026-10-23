@@ -113,6 +113,13 @@
       "when": 1792650559291,
       "tag": "0015_add_payment_booking_status",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1792739619113,
+      "tag": "0016_create_sms_send_log",
+      "breakpoints": true
     }
   ]
 }

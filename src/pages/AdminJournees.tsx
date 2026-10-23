@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { format } from "date-fns";
-import { Loader2, Wind, Waves, Users, RefreshCw, CalendarX } from "lucide-react";
+import { Loader2, Wind, Waves, Users, RefreshCw, CalendarX, MessageSquare } from "lucide-react";
+import { toast } from "sonner";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useAdminJournees } from "@/hooks/admin/useAdminJournees";
 import { Header } from "@/components/layout/Header";
@@ -16,6 +17,7 @@ import { WeekDayPicker } from "@/components/admin/journees/WeekDayPicker";
 import { EditGroupDialog } from "@/components/admin/journees/EditGroupDialog";
 import { MoveMemberDialog } from "@/components/admin/journees/MoveMemberDialog";
 import { ACTIVITY_LABEL, type DailyGroup, type Member } from "@/features/admin-journees/types";
+import { AppointmentSmsDialog, type SmsTarget } from "@/components/admin/journees/AppointmentSmsDialog";
 import { TodayBookingsPanel } from "@/components/admin/journees/TodayBookingsPanel";
 import { parisToday } from "@/lib/booking-dates";
 import { TomorrowForecastPanel } from "@/components/admin/journees/TomorrowForecastPanel";
@@ -39,6 +41,7 @@ const AdminJournees = () => {
   const [recreditGroup, setRecreditGroup] = useState<DailyGroup | null>(null);
   const [moveReason, setMoveReason] = useState(RECREDIT_REASONS[0].value);
   const [cancelDayOpen, setCancelDayOpen] = useState(false);
+  const [smsTarget, setSmsTarget] = useState<SmsTarget | null>(null);
 
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-primary" /></div>;
@@ -63,6 +66,28 @@ const AdminJournees = () => {
     onRecredit: setRecreditMember,
     onCancelGroupRecredit: setRecreditGroup,
     onMove: (m: Member, g: DailyGroup) => { setMoveMember({ member: m, group: g }); setMoveDate(undefined); },
+    onSms: (g: DailyGroup) =>
+      setSmsTarget({
+        dateIso: format(date, "yyyy-MM-dd"),
+        activity: g.activity,
+        groupId: g.id,
+        members: g.members,
+      }),
+  };
+
+  /** Envoi jour entier : seulement si une seule activité (sinon, par groupe). */
+  const openDaySms = () => {
+    const acts = Array.from(new Set(groups.map((g) => g.activity)));
+    if (acts.length !== 1) {
+      toast.info("Plusieurs activités ce jour : envoyez les SMS groupe par groupe.");
+      return;
+    }
+    setSmsTarget({
+      dateIso: format(date, "yyyy-MM-dd"),
+      activity: acts[0],
+      groupId: null,
+      members: groups.flatMap((g) => g.members),
+    });
   };
 
   return (
@@ -82,6 +107,15 @@ const AdminJournees = () => {
             <Button variant="outline" size="sm" onClick={reload} disabled={loading}>
               <RefreshCw className={cn("w-4 h-4 mr-2", loading && "animate-spin")} />
               Rafraîchir
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={openDaySms}
+              disabled={loading || groups.length === 0}
+            >
+              <MessageSquare className="w-4 h-4 mr-2" />
+              SMS rendez-vous
             </Button>
             <Button
               variant="destructive"
@@ -187,6 +221,8 @@ const AdminJournees = () => {
           if (okDone) setCancelDayOpen(false);
         }}
       />
+
+      <AppointmentSmsDialog target={smsTarget} onClose={() => setSmsTarget(null)} />
 
       <EditGroupDialog
         group={editGroup}

@@ -1724,6 +1724,77 @@ export type Database = {
         }
         Relationships: []
       }
+      sms_send_log: {
+        Row: {
+          activity: Database["public"]["Enums"]["activity_type"] | null
+          created_at: string
+          daily_group_id: string | null
+          date: string
+          dedupe_key: string
+          error: string | null
+          id: string
+          is_resend: boolean
+          kind: string
+          message: string
+          message_id: string | null
+          phone_last4: string | null
+          recipient_name: string | null
+          reservation_id: string | null
+          sent_by: string | null
+          sent_by_email: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          activity?: Database["public"]["Enums"]["activity_type"] | null
+          created_at?: string
+          daily_group_id?: string | null
+          date: string
+          dedupe_key: string
+          error?: string | null
+          id?: string
+          is_resend?: boolean
+          kind?: string
+          message: string
+          message_id?: string | null
+          phone_last4?: string | null
+          recipient_name?: string | null
+          reservation_id?: string | null
+          sent_by?: string | null
+          sent_by_email?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          activity?: Database["public"]["Enums"]["activity_type"] | null
+          created_at?: string
+          daily_group_id?: string | null
+          date?: string
+          dedupe_key?: string
+          error?: string | null
+          id?: string
+          is_resend?: boolean
+          kind?: string
+          message?: string
+          message_id?: string | null
+          phone_last4?: string | null
+          recipient_name?: string | null
+          reservation_id?: string | null
+          sent_by?: string | null
+          sent_by_email?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sms_send_log_daily_group_id_fkey"
+            columns: ["daily_group_id"]
+            isOneToOne: false
+            referencedRelation: "daily_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       stripe_webhook_events: {
         Row: {
           created_at: string

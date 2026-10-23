@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ArrowRightLeft, Ban, RotateCcw, Settings2, Trash2 } from "lucide-react";
+import { ArrowRightLeft, Ban, MessageSquare, RotateCcw, Settings2, Trash2 } from "lucide-react";
 import { STATUS_STYLES, statusLabel, type DailyGroup, type Member } from "@/features/admin-journees/types";
 
 export interface GroupCardProps {
@@ -13,10 +13,12 @@ export interface GroupCardProps {
   onMove: (m: Member, g: DailyGroup) => void;
   onRecredit: (m: Member) => void;
   onCancelGroupRecredit: (g: DailyGroup) => void;
+  /** Envoi manuel d'un SMS de rendez-vous (spot/horaire) aux membres du groupe. */
+  onSms: (g: DailyGroup) => void;
 }
 
 export const GroupCard = ({
-  group: g, onEdit, onCancel, onRemove, onMove, onRecredit, onCancelGroupRecredit,
+  group: g, onEdit, onCancel, onRemove, onMove, onRecredit, onCancelGroupRecredit, onSms,
 }: GroupCardProps) => (
   <Card className="p-4">
     <div className="flex items-start justify-between gap-2 mb-3">
@@ -33,6 +35,16 @@ export const GroupCard = ({
         {g.notes && <p className="text-xs text-muted-foreground mt-1 whitespace-pre-wrap">{g.notes}</p>}
       </div>
       <div className="flex gap-1">
+        {g.status !== "cancelled" && g.members.some((m) => (m.phone ?? "").trim() !== "") && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onSms(g)}
+            title="Envoyer un SMS de rendez-vous (spot/horaire)"
+          >
+            <MessageSquare className="w-4 h-4 text-primary" />
+          </Button>
+        )}
         <Button variant="ghost" size="icon" onClick={() => onEdit(g)} title="Modifier">
           <Settings2 className="w-4 h-4" />
         </Button>
