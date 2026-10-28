@@ -1,12 +1,14 @@
 // Frozen reports are operational sources, not verified payment evidence.
 // Apply before presenting results or sending tool data to a language model.
-export function maskUnverifiedFinancials(value: unknown): unknown {
-  if (Array.isArray(value)) return value.map(maskUnverifiedFinancials);
+export function maskUnverifiedFinancials(value: unknown, financialContext = false): unknown {
+  if (Array.isArray(value)) return value.map(item => maskUnverifiedFinancials(item, financialContext));
   if (!value || typeof value !== "object") return value;
   const result: Record<string, unknown> = {};
   for (const [key, child] of Object.entries(value)) {
     const financial = /(^|_)(ca|revenue|acomptes?|deposit|solde|panier|balance|amount|montant)(_|$)|_eur$|evolution_.*_pct$/.test(key);
-    result[key] = financial ? null : maskUnverifiedFinancials(child);
+    result[key] = child !== null && typeof child === "object"
+      ? maskUnverifiedFinancials(child, financialContext || financial)
+      : financial || (financialContext && typeof child === "number") ? null : child;
   }
   return result;
 }
