@@ -7,6 +7,8 @@ type FakeOptions = {
   bookResult?: { ok: boolean; reservation_id?: string; error?: string };
   bookNetworkError?: boolean;
   incidentFails?: boolean;
+  reservationStatus?: string;
+  wrongSession?: boolean;
 };
 
 function makeFake(opts: FakeOptions = {}) {
@@ -99,7 +101,7 @@ function makeFake(opts: FakeOptions = {}) {
         }
         const r = opts.bookResult ?? { ok: true, reservation_id: "res-1" };
         if (r.ok && r.reservation_id) {
-          reservations.push({ id: r.reservation_id, stripe_session_id: args.p_stripe_session_id });
+          reservations.push({ id: r.reservation_id, status: opts.reservationStatus ?? "confirmed", stripe_session_id: opts.wrongSession ? "cs_other" : args.p_stripe_session_id });
         }
         return Promise.resolve({ data: r, error: null });
       }
@@ -159,6 +161,24 @@ function makeRequest() {
 }
 
 const labels = (fake: ReturnType<typeof makeFake>) => fake.queued.map((q) => q.label);
+
+for (const status of ["pending", "cancelled"]) {
+  Deno.test(`existing ${status} reservation never authorizes confirmation`, async () => {
+    const fake = makeFake({ reservationStatus: status });
+    const response = await createWebhookHandler(makeDeps(fake, makeEvent(`evt_${status}`)))(makeRequest());
+    await response.text();
+    assertEquals(response.status, 500);
+    assertEquals(labels(fake).includes("booking_confirmation"), false);
+    assertEquals(fake.packages.length, 0);
+  });
+}
+Deno.test("wrong-session reservation never authorizes confirmation", async () => {
+  const fake = makeFake({ wrongSession: true });
+  const response = await createWebhookHandler(makeDeps(fake, makeEvent("evt_wrong_session")))(makeRequest());
+  await response.text();
+  assertEquals(response.status, 500);
+  assertEquals(labels(fake).includes("booking_confirmation"), false);
+});
 
 Deno.test("1. refus après paiement : aucun forfait, aucune confirmation, incident enregistré", async () => {
   const fake = makeFake({ bookResult: { ok: false, error: "day_group_limit_reached" } });

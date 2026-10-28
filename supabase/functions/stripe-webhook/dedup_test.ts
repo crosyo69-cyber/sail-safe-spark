@@ -98,7 +98,7 @@ function makeFakeSupabase() {
       }
       if (fn === "book_daily_visitor") {
         bookings.push(args);
-        reservations.push({ id: "res-1", stripe_session_id: args.p_stripe_session_id });
+        reservations.push({ id: "res-1", status: "confirmed", stripe_session_id: args.p_stripe_session_id });
         return Promise.resolve({ data: { ok: true, reservation_id: "res-1" }, error: null });
       }
       if (fn === "find_or_create_daily_group") {
