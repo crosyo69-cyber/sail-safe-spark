@@ -876,10 +876,10 @@ export function createWebhookHandler(depsFactory: () => WebhookDeps = defaultDep
       }
       const { data: verifiedReservation, error: verifyErr } = await supabase
         .from("reservations")
-        .select("id")
+        .select("id, status, stripe_session_id")
         .eq("id", booking.reservationId)
         .maybeSingle();
-      if (verifyErr || !verifiedReservation) {
+      if (verifyErr || !verifiedReservation || verifiedReservation.status !== "confirmed" || verifiedReservation.stripe_session_id !== session.id) {
         console.error("Reservation verification failed", { session_id: session.id, reservation_id: booking.reservationId, verifyErr });
         await recordPaidBookingIncident(supabase, session, {
           activityName,

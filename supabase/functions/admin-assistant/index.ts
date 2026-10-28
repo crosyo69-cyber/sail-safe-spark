@@ -1,4 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.58.0";
+import { financialToolResult } from "../_shared/financial-provenance.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -25,6 +26,7 @@ réponds exactement : « Je peux préparer cette action mais je ne peux pas enco
 (destinataires estimés, contenu proposé, données concernées) en t'appuyant sur les données lues.
 
 ## Méthode
+- Tout montant masqué ou non certifié doit être annoncé « à vérifier », jamais zéro. Ne calcule aucun solde à partir des tarifs catalogue ou des notes. Les classements financiers non certifiés ne prouvent pas les meilleurs clients ou activités.
 - Appelle systématiquement \`assistant_query\` avant de donner un chiffre. N'invente jamais de données.
 - Tu peux enchaîner plusieurs appels pour croiser les informations.
 - Vocabulaire financier OBLIGATOIRE (via l'intention \`finances\`) : ne dis jamais « CA » sans le qualifier. Distingue toujours :
@@ -215,7 +217,7 @@ Deno.serve(async (req) => {
             console.error("assistant tool error", intent, error.message);
             content = JSON.stringify({ error: error.message });
           } else {
-            content = JSON.stringify(result);
+            content = JSON.stringify(financialToolResult(result));
           }
           usedIntents.push({ intent, params });
         }

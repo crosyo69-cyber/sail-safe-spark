@@ -28,9 +28,9 @@ export type CrmDashboardStats = {
   active_clients: number;
   inactive_clients: number;
   prospects: number;
-  total_revenue: number;
-  revenue_per_client: number;
-  avg_basket: number;
+  total_revenue: number | null;
+  revenue_per_client: number | null;
+  avg_basket: number | null;
   avg_sessions: number;
   loyalty_rate: number;
   repeat_clients: number;
@@ -99,5 +99,5 @@ export const LIFECYCLE_LABEL: Record<string, { label: string; className: string 
 };
 
 export const eur = (n: number | null | undefined) =>
-  new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 })
-    .format(Number(n ?? 0));
+  n == null || !Number.isFinite(n) ? "À vérifier" :
+    new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);

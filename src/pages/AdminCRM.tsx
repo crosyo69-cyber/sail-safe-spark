@@ -72,7 +72,7 @@ const AdminCRM = () => {
       LIFECYCLE_LABEL[c.lifecycle]?.label ?? c.lifecycle,
       (c.activities ?? []).map((a) => ACTIVITY_LABEL[a] ?? a).join(" / "),
       c.reservations_count, c.packages_count, c.credits_remaining,
-      String(Number(c.revenue ?? 0)).replace(".", ","),
+      c.revenue == null ? "À vérifier" : String(c.revenue).replace(".", ","),
       fmt(c.first_activity), fmt(c.last_activity),
       c.marketing_consent ? "Oui" : "Non",
     ]);

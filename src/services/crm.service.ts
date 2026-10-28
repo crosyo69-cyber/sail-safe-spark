@@ -1,7 +1,7 @@
 import { paymentAccountingService } from "./payment-accounting.service";
 import { mapResult, settle } from "./_shared/result";
 import { paymentAmounts } from "@/features/payment/accounting";
-import type { CrmDetail } from "@/components/admin/crm-types";
+import type { CrmDetail, CrmClient, CrmDashboardStats } from "@/components/admin/crm-types";
 import { createApiClient } from "./_shared/api";
 
 const api = createApiClient({ scope: "crm" });
@@ -15,16 +15,18 @@ export interface CrmListParams {
 }
 
 export const crmService = {
-  dashboard: () => api.rpc("crm_dashboard"),
+  dashboard: async () => mapResult(await api.rpc<CrmDashboardStats>("crm_dashboard"), d => ({
+    ...d, total_revenue: null, revenue_per_client: null, avg_basket: null,
+  })),
 
-  listClients: (p: CrmListParams) =>
-    api.rpc("crm_list_clients", {
+  listClients: async (p: CrmListParams) =>
+    mapResult(await api.rpc<CrmClient[]>("crm_list_clients", {
       p_query: p.query || null,
       p_activity: p.activity ?? "all",
       p_status: p.status ?? "all",
       p_consent: p.consent ?? "all",
       p_limit: p.limit ?? 500,
-    }),
+    }), clients => clients.map(c => ({ ...c, revenue: null }))),
 
   clientDetail: async (email: string) => {
     const [detail, ledger] = await Promise.all([
