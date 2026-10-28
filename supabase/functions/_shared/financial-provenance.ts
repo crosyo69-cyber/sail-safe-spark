@@ -5,7 +5,7 @@ export function maskUnverifiedFinancials(value: unknown, financialContext = fals
   if (!value || typeof value !== "object") return value;
   const result: Record<string, unknown> = {};
   for (const [key, child] of Object.entries(value)) {
-    const financial = /(^|_)(ca|revenue|acomptes?|deposit|solde|panier|balance|amount|montant)(_|$)|_eur$|evolution_.*_pct$/.test(key);
+    const financial = /(^|_)(ca|revenue|acomptes?|deposit|solde|panier|balance|amount|montant)(_|$)|_eur$|evolution_.*_pct$|^par_activite_mois$|^activite_plus_rentable$/.test(key);
     result[key] = child !== null && typeof child === "object"
       ? maskUnverifiedFinancials(child, financialContext || financial)
       : financial || (financialContext && typeof child === "number") ? null : child;

@@ -76,7 +76,7 @@ export const AssistantFinances = ({ onAsk }: Props) => {
       { key: "acomptes" as FinanceDetailKey, label: "Acomptes encaissés", value: r.acomptes_eur, color: "bg-primary" },
       { key: "prestations" as FinanceDetailKey, label: "Prestations réservées", value: r.prestations_eur, color: "bg-orange-500" },
       { key: "credits" as FinanceDetailKey, label: "Crédits disponibles", value: r.credits_eur, color: "bg-emerald-500" },
-    ].map((b) => ({ ...b, pct: Math.round((b.value / max) * 100) }));
+    ].map((b) => ({ ...b, pct: b.value == null ? 0 : Math.round((b.value / max) * 100) }));
   }, [data]);
 
   if (loading) return <Skeleton className="h-64 w-full rounded-xl" />;
@@ -190,8 +190,7 @@ export const AssistantFinances = ({ onAsk }: Props) => {
         </div>
 
         <p className="text-xs text-muted-foreground">
-          Acomptes = encaissements Stripe. Prestations = valeur des réservations confirmées ({data.tarifs_source}).
-          Crédits = séances achetées non encore consommées.
+          À vérifier : paiements historiques et prix contractuels non certifiés. Aucun solde n'est déduit des tarifs catalogue.
         </p>
 
         {onAsk && (

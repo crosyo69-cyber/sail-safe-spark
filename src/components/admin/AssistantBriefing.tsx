@@ -171,7 +171,7 @@ export const AssistantBriefing = ({ onAsk, onSuggestions, onPrepare }: Props) =>
             <div className="rounded-lg border bg-card p-3">
               <p className="text-xs text-muted-foreground">Activité la plus rentable</p>
               <p className="font-medium">
-                {b.activite_plus_rentable ? (ACTIVITY_LABEL[b.activite_plus_rentable] ?? b.activite_plus_rentable) : "—"}
+                {b.activite_plus_rentable ? (ACTIVITY_LABEL[b.activite_plus_rentable] ?? b.activite_plus_rentable) : "À vérifier"}
               </p>
             </div>
             <div className="rounded-lg border bg-card p-3">
