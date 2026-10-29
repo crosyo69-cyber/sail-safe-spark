@@ -234,12 +234,14 @@ const AdminOverview = () => {
           {showPast ? "Masquer l'historique" : "Voir l'historique"}
         </Button>
         {totalReservations > 0 && (
+          <>
           <Button size="sm" variant="outline" onClick={() => exportCSV("xlsx")} className="gap-1">
             <Download className="w-3 h-3" /> Exporter Excel
           </Button>
           <Button size="sm" variant="ghost" onClick={() => exportCSV("csv")}>
             CSV
           </Button>
+          </>
         )}
         <Button
           size="sm"
