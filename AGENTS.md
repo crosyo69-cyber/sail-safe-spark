@@ -25,3 +25,4 @@
 - Mobile menu: opaque tokens, measured height, scroll-lock cleanup below 1024px; desktop unchanged.
 - FFVL sports terms use Offer.description; ImageObject.license stays media rights. Notices preserve booking/payment logic — editorial isolation.
 - Payment status uses paymentService's shared RPC transport and bounded polling of a read-only, scalar-status RPC keyed by the opaque Stripe checkout reference; confirmation requires actual bookings and never exposes customer data.
+- Admin exports: XLSX is primary via src/lib/xlsx-safe (write-excel-file, per-column declared kinds, text cells never formulas); CSV via csv-safe stays as fallback — no visible apostrophe while keeping formula-injection protection.
