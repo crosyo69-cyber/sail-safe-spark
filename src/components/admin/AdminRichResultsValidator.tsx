@@ -1,4 +1,5 @@
 import { csvCell } from "@/lib/csv-safe";
+import { downloadXlsx, type XlsxColumn } from "@/lib/xlsx-safe";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -303,6 +304,21 @@ const AdminRichResultsValidator = () => {
     URL.revokeObjectURL(url);
   };
 
+  const downloadBulkXlsx = () => {
+    if (bulkReports.length === 0) return;
+    const columns: XlsxColumn[] = [
+      { header: "url", kind: "text" }, { header: "scripts", kind: "number" }, { header: "types", kind: "text" },
+      { header: "hasArticle", kind: "text" }, { header: "hasFAQPage", kind: "text" },
+      { header: "faqQuestionsCount", kind: "number" }, { header: "visibleQuestionsCount", kind: "number" },
+      { header: "questionsMatch", kind: "text" }, { header: "error", kind: "text" },
+    ];
+    const rows = bulkReports.map((r) => [
+      r.url, r.scripts, r.types.join("|"), String(r.hasArticle), String(r.hasFAQPage),
+      r.faqQuestions.length, r.visibleQuestions.length, String(r.questionsMatch), r.error || "",
+    ]);
+    void downloadXlsx(`rich-results-bulk-${new Date().toISOString().slice(0, 10)}.xlsx`, columns, rows);
+  };
+
   const downloadBulkCsv = () => {
     if (bulkReports.length === 0) return;
     const esc = csvCell;
@@ -495,7 +511,8 @@ const AdminRichResultsValidator = () => {
               {bulkReports.length > 0 && (
                 <>
                   <Button variant="outline" onClick={downloadBulkJson}>Rapport JSON</Button>
-                  <Button variant="outline" onClick={downloadBulkCsv}>Rapport CSV</Button>
+                  <Button variant="outline" onClick={downloadBulkXlsx}>Rapport Excel</Button>
+                  <Button variant="ghost" onClick={downloadBulkCsv}>Rapport CSV</Button>
                 </>
               )}
             </div>

@@ -1,4 +1,5 @@
 import { csvCell } from "@/lib/csv-safe";
+import type { XlsxColumn } from "@/lib/xlsx-safe";
 /* eslint-disable @typescript-eslint/no-explicit-any -- metadata JSON is untyped */
 
 export type EmailLog = {
@@ -187,6 +188,19 @@ export const buildAvgTimeData = (rows: QueueRow[]): { name: string; avgSec: numb
     }))
     .sort((a, b) => b.avgSec - a.avgSec);
 };
+
+/** Colonnes et lignes typées de l'export XLSX (mêmes en-têtes et ordre que le CSV). */
+export const QUEUE_XLSX_COLUMNS: XlsxColumn[] = [
+  { header: "Statut", kind: "text" }, { header: "Destinataire", kind: "text" },
+  { header: "Template", kind: "text" }, { header: "Tentatives", kind: "number" },
+  { header: "Enfile a", kind: "datetime" }, { header: "Dernier evenement", kind: "datetime" },
+  { header: "Derniere erreur", kind: "text" },
+];
+export const buildQueueXlsxRows = (rows: QueueRow[]): unknown[][] =>
+  rows.map((r) => [
+    r.current_status, r.recipient_email, r.template_name, r.attempts,
+    new Date(r.enqueued_at), new Date(r.last_event_at), r.last_error ?? "",
+  ]);
 
 /** Export CSV (séparateur ;, BOM UTF-8). */
 export const buildQueueCsv = (rows: QueueRow[]): string => {

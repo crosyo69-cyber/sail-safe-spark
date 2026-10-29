@@ -1,4 +1,5 @@
 import { csvCell } from "@/lib/csv-safe";
+import { downloadXlsx, type XlsxColumn } from "@/lib/xlsx-safe";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -63,7 +64,7 @@ const AdminCRM = () => {
     return () => clearTimeout(t);
   }, [isAdmin, loadClients]);
 
-  const exportCsv = () => {
+  const exportCsv = (outFormat: "xlsx" | "csv" = "xlsx") => {
     const headers = [
       "Email", "Prénom", "Nom", "Téléphone", "Statut", "Activités", "Séances",
       "Packs", "Crédits dispo", "CA (EUR)", "Première venue", "Dernière venue", "Opt-in marketing",
@@ -77,6 +78,11 @@ const AdminCRM = () => {
       fmt(c.first_activity), fmt(c.last_activity),
       c.marketing_consent ? "Oui" : "Non",
     ]);
+    if (outFormat === "xlsx") {
+      const kinds: XlsxColumn["kind"][] = ["text", "text", "text", "text", "text", "text", "number", "number", "number", "number", "date", "date", "text"];
+      void downloadXlsx(`crm-clients-${new Date().toISOString().slice(0, 10)}.xlsx`, headers.map((h, i) => ({ header: h, kind: kinds[i] })), rows);
+      return;
+    }
     const csv = [headers, ...rows]
       .map((r) => r.map(csvCell).join(";"))
       .join("\r\n");
@@ -138,8 +144,11 @@ const AdminCRM = () => {
               onClick={() => { loadStats(); loadClients(); }}>
               <RefreshCw className="w-4 h-4 mr-2" />Actualiser
             </Button>
-            <Button size="sm" className="min-h-11" onClick={exportCsv} disabled={clients.length === 0}>
-              <Download className="w-4 h-4 mr-2" />Export CSV
+            <Button size="sm" className="min-h-11" onClick={() => exportCsv("xlsx")} disabled={clients.length === 0}>
+              <Download className="w-4 h-4 mr-2" />Export Excel
+            </Button>
+            <Button size="sm" variant="outline" className="min-h-11" onClick={() => exportCsv("csv")} disabled={clients.length === 0}>
+              CSV
             </Button>
           </div>
         </div>

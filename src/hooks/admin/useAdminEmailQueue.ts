@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useEmailQueue } from "@/hooks/services/useEmailQueue";
+import { downloadXlsx } from "@/lib/xlsx-safe";
 import {
   ITEMS_PER_PAGE,
   buildAvgTimeData,
   buildQueueCsv,
+  buildQueueXlsxRows,
+  QUEUE_XLSX_COLUMNS,
   buildQueueRows,
   buildTemplateStatusData,
   computeQueueStats,
@@ -74,6 +77,18 @@ export const useAdminEmailQueue = () => {
     }
   };
 
+  const handleExportXLSX = () => {
+    if (filtered.length === 0) {
+      toast.info("Aucune donnée à exporter pour les filtres actuels.");
+      return;
+    }
+    void downloadXlsx(
+      `emails-${statusFilter}-${new Date().toISOString().slice(0, 10)}.xlsx`,
+      QUEUE_XLSX_COLUMNS,
+      buildQueueXlsxRows(filtered),
+    ).then(() => toast.success(`${filtered.length} ligne(s) exportée(s) en Excel.`));
+  };
+
   const handleExportCSV = () => {
     if (filtered.length === 0) {
       toast.info("Aucune donnée à exporter pour les filtres actuels.");
@@ -104,6 +119,7 @@ export const useAdminEmailQueue = () => {
     toggleAutoRefresh: () => setAutoRefresh((v) => !v),
     refresh: () => logsQuery.refetch(),
     handleExportCSV,
+    handleExportXLSX,
 
     queueRows,
     stats,
