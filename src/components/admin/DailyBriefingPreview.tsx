@@ -11,11 +11,12 @@ export const DailyBriefingPreview = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const load = async () => {
+  // The AI is only called on explicit request; its text is kept until the page is reloaded.
+  const load = async (withAI: boolean) => {
     setLoading(true); setError(null);
-    const res = settle(await assistantService.dailyBriefingPreview());
+    const res = settle(await assistantService.dailyBriefingPreview(withAI));
     if (res.error || !res.data) setError("Aperçu indisponible pour le moment.");
-    else setData(res.data);
+    else setData((prev) => (!withAI && prev?.ai_requested ? { ...res.data!, ai_text: prev.ai_text, ai_requested: true, ai_rejected: prev.ai_rejected } : res.data));
     setLoading(false);
   };
 
@@ -23,9 +24,14 @@ export const DailyBriefingPreview = () => {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between gap-2 space-y-0">
         <CardTitle className="flex items-center gap-2 text-base"><Mail className="h-4 w-4" /> Briefing du jour</CardTitle>
-        <Button size="sm" variant="outline" onClick={load} disabled={loading} className="min-h-11">
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Préparer l'aperçu"}
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button size="sm" variant="outline" onClick={() => load(false)} disabled={loading} className="min-h-11">
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Préparer l'aperçu"}
+          </Button>
+          {data && !data.ai_requested && (
+            <Button size="sm" variant="secondary" onClick={() => load(true)} disabled={loading} className="min-h-11">Rédiger avec l'IA</Button>
+          )}
+        </div>
       </CardHeader>
       <CardContent className="space-y-4 text-sm">
         <p className="text-muted-foreground">Mode test : aucun e-mail n'est envoyé depuis cet écran.</p>
@@ -42,8 +48,9 @@ export const DailyBriefingPreview = () => {
               <pre className="whitespace-pre-wrap rounded-md bg-muted p-3 text-xs">{JSON.stringify(data.facts, null, 2)}</pre>
             </div>
             <div>
-              <div className="mb-1 flex items-center gap-2"><span className="font-medium">Texte rédigé</span><Badge variant="secondary">IA — non envoyé</Badge></div>
-              <p className="whitespace-pre-line rounded-md border p-3">{data.ai_text ?? "Le texte n'a pas pu être rédigé ; l'e-mail contiendrait seulement les chiffres."}</p>
+              <div className="mb-1 flex items-center gap-2"><span className="font-medium">Texte rédigé</span><Badge variant="secondary">{data.ai_text ? "IA — non envoyé" : "Résumé sans IA — non envoyé"}</Badge></div>
+              {data.ai_rejected && <p className="mb-1 text-muted-foreground">Le texte de l'IA contredisait les chiffres de la veille : il a été écarté.</p>}
+              <p className="whitespace-pre-line rounded-md border p-3">{data.ai_text ?? data.fallback_text}</p>
             </div>
           </>
         )}
