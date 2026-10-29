@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { ArrowLeft, Bot, Loader2, Send, ShieldCheck, Sparkles, Trash2, User } from "lucide-react";
 import { AssistantBriefing } from "@/components/admin/AssistantBriefing";
+import { DailyBriefingPreview } from "@/components/admin/DailyBriefingPreview";
 import { AssistantFinances } from "@/components/admin/AssistantFinances";
 import { AssistantActions, type AssistantActionsHandle } from "@/components/admin/AssistantActions";
 import { opportunityAction } from "@/components/admin/action-types";
@@ -145,6 +146,10 @@ const AdminAssistant = () => {
 
         <div className="mb-6">
           <AssistantBriefing onAsk={(q) => void ask(q)} onSuggestions={handleSuggestions} onPrepare={handlePrepare} />
+        </div>
+
+        <div className="mb-6">
+          <DailyBriefingPreview />
         </div>
 
         <div className="mb-6">
