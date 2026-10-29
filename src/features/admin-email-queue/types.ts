@@ -1,3 +1,4 @@
+import { csvCell } from "@/lib/csv-safe";
 /* eslint-disable @typescript-eslint/no-explicit-any -- metadata JSON is untyped */
 
 export type EmailLog = {
@@ -189,13 +190,7 @@ export const buildAvgTimeData = (rows: QueueRow[]): { name: string; avgSec: numb
 
 /** Export CSV (séparateur ;, BOM UTF-8). */
 export const buildQueueCsv = (rows: QueueRow[]): string => {
-  const escapeCsv = (val: string) => {
-    const str = String(val ?? "");
-    if (str.includes(";") || str.includes("\n") || str.includes('"')) {
-      return `"${str.replace(/"/g, '""')}"`;
-    }
-    return str;
-  };
+  const escapeCsv = (val: string) => csvCell(val);
 
   const headers = [
     "Statut",

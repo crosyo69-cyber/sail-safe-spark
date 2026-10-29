@@ -1,3 +1,4 @@
+import { csvCell } from "@/lib/csv-safe";
 import { useCallback, useEffect, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -178,7 +179,7 @@ const AdminCredits = () => {
       c.reason || "",
     ]);
     const csv = "\uFEFF" + [header, ...rows]
-      .map((r) => r.map((x) => `"${String(x ?? "").replace(/"/g, '""')}"`).join(";"))
+      .map((r) => r.map(csvCell).join(";"))
       .join("\r\n");
     const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));
     const a = document.createElement("a");
@@ -223,7 +224,7 @@ const AdminCredits = () => {
       w.expires_at ? format(parseISO(w.expires_at), "dd/MM/yyyy") : "",
     ]);
     const csv = "\uFEFF" + [header, ...rows]
-      .map((r) => r.map((c) => `"${String(c ?? "").replace(/"/g, '""')}"`).join(";"))
+      .map((r) => r.map(csvCell).join(";"))
       .join("\r\n");
     const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));
     const a = document.createElement("a");

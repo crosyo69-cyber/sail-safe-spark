@@ -1,3 +1,4 @@
+import { csvCell } from "@/lib/csv-safe";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { opsService } from "@/services/ops.service";
@@ -181,7 +182,7 @@ const AdminOverview = () => {
         ]);
       });
     });
-    const csv = rows.map((r) => r.map((c) => `"${c.replace(/"/g, '""')}"`).join(",")).join("\n");
+    const csv = rows.map((r) => r.map(csvCell).join(",")).join("\n");
     const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");

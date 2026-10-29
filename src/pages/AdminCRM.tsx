@@ -1,3 +1,4 @@
+import { csvCell } from "@/lib/csv-safe";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -77,7 +78,7 @@ const AdminCRM = () => {
       c.marketing_consent ? "Oui" : "Non",
     ]);
     const csv = [headers, ...rows]
-      .map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(";"))
+      .map((r) => r.map(csvCell).join(";"))
       .join("\r\n");
     const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
     const a = document.createElement("a");
