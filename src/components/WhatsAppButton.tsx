@@ -15,7 +15,7 @@ export function WhatsAppButton() {
       aria-label="Écrire sur WhatsApp"
       title="Écrire sur WhatsApp"
       onClick={() => trackEvent("whatsapp_click", { location: "floating_button" })}
-      className="fixed bottom-[10.5rem] md:bottom-24 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-sunset-strong text-primary-foreground shadow-lg transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring"
+      className="fixed bottom-[10.5rem] right-6 md:bottom-6 md:right-24 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-sunset-strong text-primary-foreground shadow-lg transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring"
     >
       <MessageCircle className="h-6 w-6" aria-hidden="true" />
     </a>
