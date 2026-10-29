@@ -63,4 +63,4 @@
 - [ ] Déploiement de la fonction et activation réelle : uniquement sur autorisation explicite
 
 - [x] Rapport rapprochement Stripe (14 commandes, cas récents, correctif acompte) — lecture seule
-- [ ] Briefing IA quotidien par e-mail (ventes, réservations, tâches de la veille)
+- [ ] Briefing IA quotidien 9h : fonction prête et en ligne ; planification bloquée (accès aux secrets refusé par les réglages du projet)
