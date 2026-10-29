@@ -1,6 +1,7 @@
 import { isServiceRoleRequest } from "../_shared/service-role-auth.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { parisHour, parisYesterday, eur, resolveMode } from "./briefing-utils.ts";
+import { parisHour, parisYesterday, resolveMode } from "./briefing-utils.ts";
+import { AI_INSTRUCTIONS, aiTextIsSafe, buildFacts, fallbackSummary } from "./facts.ts";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -50,7 +51,7 @@ async function writeWithAI(facts: unknown): Promise<string | null> {
       model: MODEL,
       reasoning: { effort: "low" },
       max_output_tokens: 1500,
-      instructions: "Tu rédiges le briefing matinal du gérant d'une école de kitesurf à Hyères. Français, vouvoiement, 5 à 8 phrases courtes, factuel. Utilise uniquement les chiffres fournis, n'invente rien. Si une donnée est indisponible, dis-le. Termine par les 1 à 3 actions prioritaires du jour.",
+      instructions: AI_INSTRUCTIONS,
       input: JSON.stringify(facts),
     }),
   });
@@ -80,35 +81,34 @@ Deno.serve(async (req) => {
     stripeYesterday(y.startTs, y.endTs),
     supabase.from("reservations").select("participants,status,client_activity").gte("created_at", y.startIso).lt("created_at", y.endIso),
     supabase.from("client_packages").select("activity,package_type").gte("created_at", y.startIso).lt("created_at", y.endIso),
-    supabase.from("admin_notifications").select("severity,title").is("read_at", null).order("created_at", { ascending: false }).limit(10),
+    Promise.all([
+      supabase.from("admin_notifications").select("id", { count: "exact", head: true }).is("read_at", null),
+      supabase.from("admin_notifications").select("created_at").is("read_at", null).order("created_at", { ascending: true }).limit(1),
+      supabase.from("admin_notifications").select("created_at").is("read_at", null).order("created_at", { ascending: false }).limit(1),
+    ]).then(([c, o, n]) => (c.error ? null : { count: c.count ?? 0, oldest: o.data?.[0]?.created_at ?? null, newest: n.data?.[0]?.created_at ?? null, sample: [] })),
     supabase.from("assistant_prepared_actions").select("title,priority").eq("status", "pending").limit(10),
     supabase.from("daily_waitlist").select("id", { count: "exact", head: true }).eq("status", "waiting"),
     supabase.from("daily_groups").select("activity,status").eq("date", y.today),
   ]);
 
-  const r = resas.data ?? [];
-  const facts = {
-    jour: y.date,
-    ventes_stripe: stripe.ok
-      ? { paiements: stripe.count, encaisse: eur(stripe.gross), rembourse: eur(stripe.refunded), incomplet: stripe.truncated }
-      : { indisponible: stripe.error },
-    reservations: resas.error ? "indisponible" : {
-      nouvelles: r.length,
-      confirmees: r.filter((x: any) => x.status === "confirmed").length,
-      annulees: r.filter((x: any) => x.status === "cancelled").length,
-      participants: r.filter((x: any) => x.status !== "cancelled").reduce((a: number, x: any) => a + (x.participants || 1), 0),
-    },
-    packs_achetes: packs.error ? "indisponible" : (packs.data ?? []).length,
-    taches_ouvertes: {
-      alertes_non_lues: (notifs.data ?? []).map((n: any) => `${n.severity}: ${n.title}`),
-      actions_a_valider: (actions.data ?? []).map((a: any) => a.title),
-      liste_attente: waitlist.count ?? "indisponible",
-    },
-    groupes_aujourdhui: (today.data ?? []).length,
-  };
+  const facts = buildFacts({
+    day: y.date,
+    stripe: stripe.ok ? stripe : { ok: false, error: String(stripe.error) },
+    reservations: resas.error ? null : (resas.data ?? []),
+    packs: packs.error ? null : (packs.data ?? []).length,
+    notifs,
+    actions: actions.error ? null : (actions.data ?? []).map((a: any) => a.title),
+    waitlist: waitlist.error ? null : (waitlist.count ?? 0),
+    groupsToday: today.error ? null : (today.data ?? []).length,
+  });
 
-  const aiText = await writeWithAI(facts);
-  const summary = aiText ?? "Le résumé rédigé n'a pas pu être généré ce matin. Voici les chiffres bruts.";
+  // AI is called only for the scheduled send, or when an admin explicitly asks (with_ai) in preview.
+  const wantAI = !preview || body?.with_ai === true;
+  const raw = wantAI ? await writeWithAI(facts) : null;
+  const aiRejected = raw !== null && !aiTextIsSafe(raw, facts);
+  const aiText = raw !== null && !aiRejected ? raw : null;
+
+  const summary = aiText ?? fallbackSummary(facts);
   const factsHtml = `<pre style="white-space:pre-wrap;font-size:12px;color:#475569;background:#f8fafc;padding:12px;border-radius:8px;">${esc(JSON.stringify(facts, null, 2))}</pre>`;
   const html = `<!DOCTYPE html><html lang="fr"><body style="margin:0;background:#fff;font-family:Arial,sans-serif;">
 <table width="100%" style="max-width:600px;margin:0 auto;"><tr><td style="background:#0F172A;padding:20px;color:#fff;font-size:18px;font-weight:bold;">Briefing du ${esc(y.label)}</td></tr>
@@ -119,7 +119,7 @@ Deno.serve(async (req) => {
   if (preview) {
     return new Response(JSON.stringify({
       preview: true, recipient: OWNER_EMAIL, period: { day: y.date, label: y.label, from: y.startIso, to: y.endIso, timezone: "Europe/Paris" },
-      facts, ai_text: aiText, already_sent_today: !!already?.length,
+      facts, ai_text: aiText, ai_requested: wantAI, ai_rejected: aiRejected, fallback_text: fallbackSummary(facts), already_sent_today: !!already?.length,
     }), { headers: json });
   }
   // Defence in depth: only the scheduled service-role call may ever reach the send path.
