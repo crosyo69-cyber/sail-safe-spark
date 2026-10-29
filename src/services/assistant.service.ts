@@ -19,8 +19,8 @@ export const assistantService = {
     api.invoke("assistant-prepare-action", body, { retries: 1, timeoutMs: 60_000 }),
 
   /** Preview only: the server never sends when called by an admin. */
-  dailyBriefingPreview: () =>
-    api.invoke<DailyBriefingPreview>("daily-briefing", { preview: true }, { retries: 0, timeoutMs: 90_000 }),
+  dailyBriefingPreview: (withAI = false) =>
+    api.invoke<DailyBriefingPreview>("daily-briefing", { preview: true, with_ai: withAI }, { retries: 0, timeoutMs: 90_000 }),
 };
 
 export interface DailyBriefingPreview {
@@ -29,6 +29,9 @@ export interface DailyBriefingPreview {
   period: { day: string; label: string; from: string; to: string; timezone: string };
   facts: Record<string, unknown>;
   ai_text: string | null;
+  ai_requested: boolean;
+  ai_rejected: boolean;
+  fallback_text: string;
   already_sent_today: boolean;
 };
 
