@@ -61,3 +61,6 @@
 - [x] Fonction d'envoi admin + tests simulés (15/15, aucun SMS réel)
 - [x] Fenêtre de prévisualisation/confirmation dans Gestion des journées
 - [ ] Déploiement de la fonction et activation réelle : uniquement sur autorisation explicite
+
+- [ ] Rapport rapprochement Stripe (14 commandes, cas récents, correctif acompte) — lecture seule
+- [ ] Briefing IA quotidien par e-mail (ventes, réservations, tâches de la veille)
