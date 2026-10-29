@@ -33,3 +33,9 @@ export function parisYesterday(now: Date) {
 }
 
 export const eur = (cents: number) => `${(cents / 100).toLocaleString("fr-FR")} €`;
+
+/** Admin (non-service) callers can only preview; only the service role may send. */
+export function resolveMode(service: boolean, body: { preview?: unknown; force?: unknown } | null) {
+  const preview = !service || body?.preview === true;
+  return { preview, force: preview || body?.force === true };
+}

@@ -15,3 +15,13 @@ Deno.test("yesterday covers the full Paris day", () => {
   const s = parisYesterday(new Date("2026-07-03T07:00:00Z"));
   assertEquals(s.startIso, "2026-07-01T22:00:00.000Z");
 });
+
+import { resolveMode } from "./briefing-utils.ts";
+Deno.test("an admin can never trigger a real send, even asking preview:false", () => {
+  assertEquals(resolveMode(false, { preview: false }).preview, true);
+  assertEquals(resolveMode(false, null).preview, true);
+});
+Deno.test("the scheduled service call sends unless preview is requested", () => {
+  assertEquals(resolveMode(true, {}).preview, false);
+  assertEquals(resolveMode(true, { preview: true }).preview, true);
+});

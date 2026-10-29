@@ -1,6 +1,6 @@
 import { isServiceRoleRequest } from "../_shared/service-role-auth.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { parisHour, parisYesterday, eur } from "./briefing-utils.ts";
+import { parisHour, parisYesterday, eur, resolveMode } from "./briefing-utils.ts";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -65,8 +65,7 @@ Deno.serve(async (req) => {
   const service = isServiceRoleRequest(req);
   if (!service && !(await isAdmin(req))) return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: json });
   const body = await req.json().catch(() => ({}));
-  const preview = !service || body?.preview === true;
-  const force = preview || body?.force === true;
+  const { preview, force } = resolveMode(service, body);
   const now = new Date();
   // Cron fires at 07:00 and 08:00 UTC; only the run matching 09:00 Paris sends (DST-safe).
   if (!force && parisHour(now) !== SEND_HOUR_PARIS) return new Response(JSON.stringify({ skipped: "hour" }), { headers: json });
