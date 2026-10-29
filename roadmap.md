@@ -64,3 +64,4 @@
 
 - [x] Rapport rapprochement Stripe (14 commandes, cas récents, correctif acompte) — lecture seule
 - [ ] Briefing IA quotidien 9h : fonction prête et en ligne ; planification bloquée (accès aux secrets refusé par les réglages du projet)
+- [ ] Assistant WhatsApp (leads 24/7, devis, réservation, transfert) — bloqué : réception des messages impossible sur cette version du site
