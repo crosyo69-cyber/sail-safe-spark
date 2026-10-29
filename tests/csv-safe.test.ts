@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { csvCell, csvRow, neutralizeFormula } from "./csv-safe";
+import { csvCell, csvRow, neutralizeFormula } from "../src/lib/csv-safe";
 
 describe("protection des exports contre les formules", () => {
   test.each(["=1+1", "+1+1", "-1+1", "@SUM(A1:A2)"])("%s est neutralisée", (v) => {
