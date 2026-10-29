@@ -25,3 +25,8 @@ Deno.test("the scheduled service call sends unless preview is requested", () => 
   assertEquals(resolveMode(true, {}).preview, false);
   assertEquals(resolveMode(true, { preview: true }).preview, true);
 });
+Deno.test("admin forced send requests stay previews", () => {
+  for (const b of [{ preview: false, force: true }, { send: true } as never, { preview: "false" } as never]) {
+    assertEquals(resolveMode(false, b).preview, true);
+  }
+});
