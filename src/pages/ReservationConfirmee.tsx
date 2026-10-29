@@ -26,7 +26,12 @@ const ReservationConfirmee = () => {
     if (!sessionId) return;
     const checkStatus = async () => {
       try {
-        const { data, error } = settle(await (isPack ? paymentService.getPackStatus(sessionId) : paymentService.getBookingStatus(sessionId)));
+        let { data, error } = settle(await (isPack ? paymentService.getPackStatus(sessionId) : paymentService.getBookingStatus(sessionId)));
+        if (isPack && error) {
+          // Pack status RPC not activated yet: only a positive existing check may confirm.
+          const fallback = settle(await paymentService.getBookingStatus(sessionId));
+          ({ data, error } = fallback.data === "confirmed" ? fallback : { data: null, error });
+        }
         if (cancelled) return;
         const nextStatus = !error && (data === "confirmed" || data === "failed") ? data : "pending";
         setStatus(nextStatus);
