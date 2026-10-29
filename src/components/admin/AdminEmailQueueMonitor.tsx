@@ -24,6 +24,7 @@ const AdminEmailQueueMonitor = () => {
         refresh={q.refresh}
         loading={q.loading}
         onExportCsv={q.handleExportCSV}
+        onExportXlsx={q.handleExportXLSX}
       />
 
       <QueueStatCards stats={q.stats} />

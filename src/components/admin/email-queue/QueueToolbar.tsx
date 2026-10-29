@@ -16,11 +16,12 @@ interface Props {
   refresh: () => void;
   loading: boolean;
   onExportCsv: () => void;
+  onExportXlsx: () => void;
 }
 
 export const QueueToolbar = ({
   hours, setHours, statusFilter, setStatusFilter, search, setSearch,
-  autoRefresh, toggleAutoRefresh, refresh, loading, onExportCsv,
+  autoRefresh, toggleAutoRefresh, refresh, loading, onExportCsv, onExportXlsx,
 }: Props) => (
   <div className="flex flex-wrap gap-3 items-center">
     <div className="flex gap-1">
@@ -60,9 +61,12 @@ export const QueueToolbar = ({
     <Button variant="ghost" size="sm" onClick={refresh} disabled={loading}>
       <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
     </Button>
-    <Button variant="outline" size="sm" onClick={onExportCsv} className="gap-1">
+    <Button variant="outline" size="sm" onClick={onExportXlsx} className="gap-1">
       <Download className="w-4 h-4" />
-      Export CSV
+      Export Excel
+    </Button>
+    <Button variant="ghost" size="sm" onClick={onExportCsv}>
+      CSV
     </Button>
   </div>
 );
