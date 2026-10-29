@@ -1,4 +1,5 @@
 import { csvCell } from "@/lib/csv-safe";
+import { downloadXlsx, type XlsxColumn } from "@/lib/xlsx-safe";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { opsService } from "@/services/ops.service";
@@ -160,7 +161,7 @@ const AdminOverview = () => {
     0
   );
 
-  const exportCSV = () => {
+  const exportCSV = (fmt: "xlsx" | "csv" = "xlsx") => {
     const rows: string[][] = [
       ["Date", "Créneau", "Activité", "Prénom", "Nom", "Email", "Téléphone", "Niveau", "Participants", "Statut", "Stripe ID"],
     ];
@@ -182,6 +183,12 @@ const AdminOverview = () => {
         ]);
       });
     });
+    if (fmt === "xlsx") {
+      const kinds: XlsxColumn["kind"][] = ["date", "text", "text", "text", "text", "text", "text", "text", "number", "text", "text"];
+      const [head, ...body] = rows;
+      void downloadXlsx(`reservations_${format(new Date(), "yyyy-MM-dd")}.xlsx`, head.map((h, i) => ({ header: h, kind: kinds[i] })), body);
+      return;
+    }
     const csv = rows.map((r) => r.map(csvCell).join(",")).join("\n");
     const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
@@ -227,8 +234,11 @@ const AdminOverview = () => {
           {showPast ? "Masquer l'historique" : "Voir l'historique"}
         </Button>
         {totalReservations > 0 && (
-          <Button size="sm" variant="outline" onClick={exportCSV} className="gap-1">
-            <Download className="w-3 h-3" /> Exporter CSV
+          <Button size="sm" variant="outline" onClick={() => exportCSV("xlsx")} className="gap-1">
+            <Download className="w-3 h-3" /> Exporter Excel
+          </Button>
+          <Button size="sm" variant="ghost" onClick={() => exportCSV("csv")}>
+            CSV
           </Button>
         )}
         <Button

@@ -1,4 +1,5 @@
 import { csvCell } from "@/lib/csv-safe";
+import { downloadXlsx, type XlsxColumn } from "@/lib/xlsx-safe";
 import { useCallback, useEffect, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -165,7 +166,7 @@ const AdminCredits = () => {
     if (selected) await openWallet(selected);
   };
 
-  const exportCreditsCsv = () => {
+  const exportCreditsCsv = (fmt: "xlsx" | "csv" = "xlsx") => {
     if (!selected) return;
     const header = ["Code pack", "Client", "Activité", "Origine", "Statut", "Créé le", "Expire le", "Consommé le", "Motif"];
     const rows = credits.map((c) => [
@@ -178,6 +179,11 @@ const AdminCredits = () => {
       c.consumed_at ? format(parseISO(c.consumed_at), "dd/MM/yyyy") : "",
       c.reason || "",
     ]);
+    if (fmt === "xlsx") {
+      const kinds: XlsxColumn["kind"][] = ["text", "text", "text", "text", "text", "date", "date", "date", "text"];
+      void downloadXlsx(`credits-${selected.package_code}.xlsx`, header.map((h, i) => ({ header: h, kind: kinds[i] })), rows);
+      return;
+    }
     const csv = "\uFEFF" + [header, ...rows]
       .map((r) => r.map(csvCell).join(";"))
       .join("\r\n");
@@ -212,7 +218,7 @@ const AdminCredits = () => {
     }
   };
 
-  const exportCsv = () => {
+  const exportCsv = (fmt: "xlsx" | "csv" = "xlsx") => {
     const header = [
       "Code pack", "Prénom", "Nom", "Email", "Activité", "Type",
       "Achetées", "Consommées", "Recréditées", "Restantes", "Statut", "Expire le",
@@ -223,6 +229,11 @@ const AdminCredits = () => {
       w.purchased, w.consumed, w.recredited, w.remaining, w.status,
       w.expires_at ? format(parseISO(w.expires_at), "dd/MM/yyyy") : "",
     ]);
+    if (fmt === "xlsx") {
+      const kinds: XlsxColumn["kind"][] = ["text", "text", "text", "text", "text", "text", "number", "number", "number", "number", "text", "date"];
+      void downloadXlsx(`credits-${format(new Date(), "yyyy-MM-dd")}.xlsx`, header.map((h, i) => ({ header: h, kind: kinds[i] })), rows);
+      return;
+    }
     const csv = "\uFEFF" + [header, ...rows]
       .map((r) => r.map(csvCell).join(";"))
       .join("\r\n");
@@ -271,8 +282,11 @@ const AdminCredits = () => {
             <Button variant="outline" size="sm" asChild>
               <Link to="/admin/journees"><CalendarDays className="w-4 h-4 mr-2" />Journées</Link>
             </Button>
-            <Button variant="outline" size="sm" onClick={exportCsv} disabled={!wallets.length}>
-              <Download className="w-4 h-4 mr-2" />Export CSV
+            <Button variant="outline" size="sm" onClick={() => exportCsv("xlsx")} disabled={!wallets.length}>
+              <Download className="w-4 h-4 mr-2" />Export Excel
+            </Button>
+            <Button variant="ghost" size="sm" onClick={() => exportCsv("csv")} disabled={!wallets.length}>
+              CSV
             </Button>
           </div>
         </div>
@@ -379,8 +393,11 @@ const AdminCredits = () => {
                         <SelectItem value="expired">Expirées</SelectItem>
                       </SelectContent>
                     </Select>
-                    <Button size="sm" variant="outline" onClick={exportCreditsCsv} disabled={!credits.length}>
+                    <Button size="sm" variant="outline" onClick={() => exportCreditsCsv("xlsx")} disabled={!credits.length} aria-label="Exporter en Excel" title="Exporter en Excel">
                       <Download className="w-4 h-4" />
+                    </Button>
+                    <Button size="sm" variant="ghost" onClick={() => exportCreditsCsv("csv")} disabled={!credits.length} aria-label="Exporter en CSV" title="Exporter en CSV">
+                      CSV
                     </Button>
                   </div>
                 </div>

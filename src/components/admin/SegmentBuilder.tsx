@@ -1,4 +1,5 @@
 import { csvCell } from "@/lib/csv-safe";
+import { downloadXlsx, type XlsxColumn } from "@/lib/xlsx-safe";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { marketingService } from "@/services/marketing.service";
@@ -125,13 +126,24 @@ const SegmentBuilder = () => {
     void loadSegments();
   };
 
-  const exportCsv = async () => {
+  const exportCsv = async (fmt: "xlsx" | "csv" = "xlsx") => {
     const { data, error } = settle(
       await marketingService.getSegment({ p_definition: def as unknown as never }),
     );
     if (error) { toast.error("Export impossible", { description: error.message }); return; }
     const rows = (data ?? []) as Array<Record<string, unknown>>;
     const headers = ["email", "first_name", "last_name", "phone", "activities", "level", "lifecycle", "last_date", "credits_remaining", "revenue", "consent"];
+    if (fmt === "xlsx") {
+      const kinds: XlsxColumn["kind"][] = ["text", "text", "text", "text", "text", "text", "text", "text", "number", "number", "text"];
+      const body = rows.map((r) => headers.map((h) => {
+        const v = r[h];
+        if (Array.isArray(v)) return v.join("|");
+        if (h === "last_date" && typeof v === "string" && /^\d{4}-\d{2}-\d{2}/.test(v)) return v.slice(0, 10);
+        return v;
+      }));
+      void downloadXlsx("segment.xlsx", headers.map((h, i) => ({ header: h, kind: kinds[i] })), body);
+      return;
+    }
     const csv = [
       headers.map(csvCell).join(";"),
       ...rows.map((r) => headers.map((h) => {
@@ -253,8 +265,11 @@ const SegmentBuilder = () => {
               <Button variant="outline" size="sm" onClick={() => setDef(EMPTY_SEGMENT)}>
                 <RotateCcw className="mr-2 h-4 w-4" />Réinitialiser
               </Button>
-              <Button variant="outline" size="sm" onClick={() => void exportCsv()}>
-                <Download className="mr-2 h-4 w-4" />Exporter CSV
+              <Button variant="outline" size="sm" onClick={() => void exportCsv("xlsx")}>
+                <Download className="mr-2 h-4 w-4" />Exporter Excel
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => void exportCsv("csv")}>
+                CSV
               </Button>
             </div>
           </CardContent>
