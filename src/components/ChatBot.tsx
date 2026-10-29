@@ -137,7 +137,7 @@ export function ChatBot() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          className="fixed bottom-24 md:bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-ocean to-ocean-light text-primary-foreground shadow-lg transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ocean/50"
+          className="fixed bottom-24 right-6 md:bottom-6 md:right-auto md:left-24 xl:left-auto xl:right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-ocean to-ocean-light text-primary-foreground shadow-lg transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ocean/50"
           aria-label="Ouvrir l'assistant"
         >
           <MessageCircle className="h-6 w-6" />
@@ -146,7 +146,7 @@ export function ChatBot() {
 
       {/* Chat panel */}
       {open && (
-        <div className="fixed bottom-24 md:bottom-6 right-6 z-50 flex w-[360px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl sm:w-[400px]"
+        <div className="fixed bottom-24 right-6 md:bottom-6 md:right-auto md:left-24 xl:left-auto xl:right-6 z-50 flex w-[360px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl sm:w-[400px]"
           style={{ height: "min(520px, calc(100vh - 6rem))" }}
         >
           {/* Header */}
