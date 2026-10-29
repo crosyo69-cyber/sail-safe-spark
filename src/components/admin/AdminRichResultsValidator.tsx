@@ -1,3 +1,4 @@
+import { csvCell } from "@/lib/csv-safe";
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -304,7 +305,7 @@ const AdminRichResultsValidator = () => {
 
   const downloadBulkCsv = () => {
     if (bulkReports.length === 0) return;
-    const esc = (v: any) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const esc = csvCell;
     const header = ["url", "scripts", "types", "hasArticle", "hasFAQPage", "faqQuestionsCount", "visibleQuestionsCount", "questionsMatch", "error"];
     const rows = bulkReports.map((r) => [
       r.url, r.scripts, r.types.join("|"), r.hasArticle, r.hasFAQPage,

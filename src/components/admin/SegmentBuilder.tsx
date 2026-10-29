@@ -1,3 +1,4 @@
+import { csvCell } from "@/lib/csv-safe";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { marketingService } from "@/services/marketing.service";
@@ -132,10 +133,10 @@ const SegmentBuilder = () => {
     const rows = (data ?? []) as Array<Record<string, unknown>>;
     const headers = ["email", "first_name", "last_name", "phone", "activities", "level", "lifecycle", "last_date", "credits_remaining", "revenue", "consent"];
     const csv = [
-      headers.join(";"),
+      headers.map(csvCell).join(";"),
       ...rows.map((r) => headers.map((h) => {
         const v = r[h];
-        return Array.isArray(v) ? v.join("|") : v === null || v === undefined ? "" : String(v);
+        return csvCell(Array.isArray(v) ? v.join("|") : v);
       }).join(";")),
     ].join("\n");
     const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" });
