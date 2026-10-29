@@ -9,7 +9,7 @@
  */
 import writeXlsxFile from "write-excel-file/universal";
 
-export type XlsxKind = "text" | "number" | "date";
+export type XlsxKind = "text" | "number" | "date" | "datetime";
 export interface XlsxColumn { header: string; kind: XlsxKind }
 
 // Caractères interdits par XML 1.0 (ne peuvent exister dans un fichier XLSX valide).
@@ -31,9 +31,9 @@ export function xlsxCell(value: unknown, kind: XlsxKind): Cell {
       return { value: Number(value.trim().replace(",", ".")), type: Number };
     }
   }
-  if (kind === "date") {
+  if (kind === "date" || kind === "datetime") {
     if (value instanceof Date && !Number.isNaN(value.getTime())) {
-      return { value, type: Date, format: "dd/mm/yyyy" };
+      return { value, type: Date, format: kind === "date" ? "dd/mm/yyyy" : "dd/mm/yyyy hh:mm" };
     }
     const m = typeof value === "string" ? FR_DATE.exec(value.trim()) : null;
     if (m) return { value: new Date(Date.UTC(+m[3], +m[2] - 1, +m[1])), type: Date, format: "dd/mm/yyyy" };
