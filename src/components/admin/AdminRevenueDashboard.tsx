@@ -318,10 +318,10 @@ const AdminRevenueDashboard = () => {
       startY: 60,
       head: [["Revenu total", "Transactions", "Participants", "Panier moyen"]],
       body: [[
-        `${totalRevenue.toLocaleString("fr-FR")} €`,
-        `${totalTransactions}`,
+        ledgerUnavailable ? "À vérifier" : `${totalRevenue.toLocaleString("fr-FR")} €`,
+        ledgerUnavailable ? "À vérifier" : `${totalTransactions}`,
         `${totalParticipants}`,
-        `${avgPerTransaction} €`,
+        ledgerUnavailable ? "À vérifier" : `${avgPerTransaction} €`,
       ]],
       theme: "grid",
       headStyles: { fillColor: [8, 145, 178], fontSize: 9 },
@@ -482,7 +482,7 @@ const AdminRevenueDashboard = () => {
       {/* Stats cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { icon: Euro, label: "Encaissé vérifié", value: ledgerUnavailable ? "À vérifier" : `${totalRevenue.toLocaleString("fr-FR")} €`, trend: ledgerUnavailable ? 0 : calcTrend(totalRevenue, prevRevenue) },
+          { icon: Euro, label: "Encaissé vérifié", value: ledgerUnavailable ? "À vérifier" : ledgerUnavailable ? "À vérifier" : `${totalRevenue.toLocaleString("fr-FR")} €`, trend: ledgerUnavailable ? 0 : calcTrend(totalRevenue, prevRevenue) },
           { icon: TrendingUp, label: "Transactions", value: ledgerUnavailable ? "À vérifier" : `${totalTransactions}`, trend: ledgerUnavailable ? 0 : calcTrend(totalTransactions, prevTransactions) },
           { icon: Users, label: "Participants", value: `${totalParticipants}`, trend: calcTrend(totalParticipants, prevParticipants) },
           { icon: CalendarDays, label: "Panier moyen", value: ledgerUnavailable ? "À vérifier" : `${avgPerTransaction} €`, trend: ledgerUnavailable ? 0 : calcTrend(avgPerTransaction, prevAvg) },
