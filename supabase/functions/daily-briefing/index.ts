@@ -1,8 +1,24 @@
 import { isServiceRoleRequest } from "../_shared/service-role-auth.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { parisHour, parisYesterday, eur } from "./briefing-utils.ts";
+import { parisHour, parisYesterday, eur, resolveMode } from "./briefing-utils.ts";
 
-const json = { "Content-Type": "application/json" };
+const cors = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
+const json = { ...cors, "Content-Type": "application/json" };
+
+/** Non-service callers must be admins, and may only request a preview (no send). */
+async function isAdmin(req: Request): Promise<boolean> {
+  const auth = req.headers.get("Authorization") ?? "";
+  if (!auth.startsWith("Bearer ")) return false;
+  const c = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY") ?? Deno.env.get("SUPABASE_PUBLISHABLE_KEY")!,
+    { global: { headers: { Authorization: auth } }, auth: { persistSession: false } });
+  const { data } = await c.auth.getUser();
+  if (!data?.user) return false;
+  const { data: ok } = await c.rpc("has_role", { _user_id: data.user.id, _role: "admin" });
+  return ok === true;
+}
 const OWNER_EMAIL = "crosyo69@gmail.com";
 const FROM_DOMAIN = "kitesurfpassion.fr";
 const SEND_HOUR_PARIS = 9;
@@ -45,9 +61,11 @@ async function writeWithAI(facts: unknown): Promise<string | null> {
 }
 
 Deno.serve(async (req) => {
-  if (!isServiceRoleRequest(req)) return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: json });
+  if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
+  const service = isServiceRoleRequest(req);
+  if (!service && !(await isAdmin(req))) return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403, headers: json });
   const body = await req.json().catch(() => ({}));
-  const force = body?.force === true;
+  const { preview, force } = resolveMode(service, body);
   const now = new Date();
   // Cron fires at 07:00 and 08:00 UTC; only the run matching 09:00 Paris sends (DST-safe).
   if (!force && parisHour(now) !== SEND_HOUR_PARIS) return new Response(JSON.stringify({ skipped: "hour" }), { headers: json });
@@ -56,7 +74,7 @@ Deno.serve(async (req) => {
   const y = parisYesterday(now);
   const dedupe = `daily-briefing-${y.date}`;
   const { data: already } = await supabase.from("email_send_log").select("id").eq("message_id", dedupe).limit(1);
-  if (already?.length && !force) return new Response(JSON.stringify({ skipped: "already_sent" }), { headers: json });
+  if (already?.length && !force && !preview) return new Response(JSON.stringify({ skipped: "already_sent" }), { headers: json });
 
   const [stripe, resas, packs, notifs, actions, waitlist, today] = await Promise.all([
     stripeYesterday(y.startTs, y.endTs),
@@ -98,6 +116,12 @@ Deno.serve(async (req) => {
 <tr><td style="padding:0 20px 20px;">${factsHtml}</td></tr>
 <tr><td style="padding:0 20px 24px;"><a href="https://www.kitesurfpassion.fr/admin" style="background:#F97316;color:#fff;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:bold;">Ouvrir l'administration</a></td></tr></table></body></html>`;
 
+  if (preview) {
+    return new Response(JSON.stringify({
+      preview: true, recipient: OWNER_EMAIL, period: { day: y.date, label: y.label, from: y.startIso, to: y.endIso, timezone: "Europe/Paris" },
+      facts, ai_text: aiText, already_sent_today: !!already?.length,
+    }), { headers: json });
+  }
   await supabase.from("email_send_log").insert({ message_id: dedupe, template_name: "daily_briefing", recipient_email: OWNER_EMAIL, status: "pending" });
   const { error } = await supabase.rpc("enqueue_email", {
     queue_name: "transactional_emails",
