@@ -2,6 +2,9 @@
 
 # Correction Stripe — acomptes et fiabilité comptable
 
+- [x] 29/10 : version actuelle retestée — 90 tests Deno + 26 tests Bun réussis ; typage serveur checkout/webhook validé sans --no-check.
+- [ ] 29/10 : rapprochement 14 commandes, incidents, Stage remboursée, CRM/assistant — bloqués : base de données inaccessible (« Database is possibly not accessible »).
+
 - [ ] Finalisation demandée le 23 octobre : tableau des 14 commandes, lectures CRM/assistant vérifiées, reprise idempotente préparée, tests et dossier de validation ; aperçu uniquement, aucune activation.
 - [x] Distinguer réservation datée et achat individuel : utilisateur confirme pack sans journée automatique.
 - [x] Préparer checkout explicite, montants Stripe réels, brouillon du journal non appliqué et affichages revenus/fiche CRM ; 90 tests simulés passent et deux états visibles vérifiés.
