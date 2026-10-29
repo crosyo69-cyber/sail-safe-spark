@@ -122,6 +122,8 @@ Deno.serve(async (req) => {
       facts, ai_text: aiText, already_sent_today: !!already?.length,
     }), { headers: json });
   }
+  // Defence in depth: only the scheduled service-role call may ever reach the send path.
+  if (!service) return new Response(JSON.stringify({ error: "Send forbidden" }), { status: 403, headers: json });
   await supabase.from("email_send_log").insert({ message_id: dedupe, template_name: "daily_briefing", recipient_email: OWNER_EMAIL, status: "pending" });
   const { error } = await supabase.rpc("enqueue_email", {
     queue_name: "transactional_emails",

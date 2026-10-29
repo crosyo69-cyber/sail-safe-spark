@@ -10,6 +10,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { PWAInstallBanner } from "@/components/PWAInstallBanner";
 import { CookieConsent } from "@/components/CookieConsent";
 import { ChatBot } from "@/components/ChatBot";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { WebVitalsDashboard } from "@/components/WebVitalsDashboard";
 import { PageTracker } from "@/components/PageTracker";
 import { StickyMobileCTA } from "@/components/StickyMobileCTA";
@@ -87,6 +88,7 @@ const App = () => {
         <Sonner />
         <PWAInstallBanner />
         <CookieConsent />
+        <WhatsAppButton />
         <ChatBot />
         <WebVitalsDashboard />
         <BrowserRouter>
