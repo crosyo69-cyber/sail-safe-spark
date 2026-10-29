@@ -33,3 +33,40 @@ Aucune.
 1. Intégrer le scan approfondi. 2. CSP / anti-iframe. 3. Mise à jour des dépendances.
 
 ## Statut : SÉCURITÉ VALIDÉE AVEC RÉSERVES (scan approfondi en attente).
+
+---
+# Complément — 29/10/2026 23:18 Paris
+
+## Scan approfondi
+Non terminé au moment du complément (état « inconnu », aucun résultat publié). Non intégré : reste à faire.
+
+## Analyse des dépendances de production (62 paquets contrôlés)
+| Dépendance | Version | Sévérité outil | Dans le site public | Exposition réelle | Recommandation | Risque de régression |
+|---|---|---|---|---|---|---|
+| @lovable.dev/mcp-js (express, proxy-addr, MCP SDK, fast-uri, body-parser, hono) | 0.23.0 | 1 critique + hauts | Non : sert au connecteur assistant (MCP), hors pages | Faible : la faille proxy-addr exige un réglage « proxy de confiance » ; serveur MCP en lecture (infos école, réservations de l'utilisateur connecté) | Mettre à jour mcp-js quand une version corrigée existe | Moyen (connecteur MCP) |
+| xlsx | 0.18.5 | haut | Non : importé nulle part | Nulle | Retirer la dépendance | Nul |
+| dompurify | 3.3.1 | haut | Oui (articles de blog) | Faible : la faille concerne le mode IN_PLACE, non utilisé | Mettre à jour vers ≥3.4.17 | Faible |
+| jspdf (dompurify) | 4.2.1 | haut | Admin seulement (export PDF) | Faible | Mise à jour | Faible |
+| recharts (lodash `_.template`) | 2.15.4 | haut | Admin seulement | Nulle : `_.template` non utilisé | Mise à jour mineure | Faible |
+| @supabase/supabase-js (ws) | 2.89.0 | haut | ws sert côté serveur Node, pas au navigateur | Très faible | Mise à jour mineure | Faible |
+| zod | 3.25.76 | haut | Oui (validation formulaires) | Faible : données saisies de petite taille | Correction en v4 = changement majeur, à évaluer | Élevé |
+| vite-imagetools (sharp, picomatch) | 9.0.2 | haut | Non : outil de construction | Nulle en production | Mise à jour | Faible |
+
+Aucune alerte de dépendance ne constitue une faille critique du site public.
+
+## Réserves confirmées
+CSP / anti-iframe absents ; dépendances à mettre à jour.
+
+## Limites maintenues
+- Version des fonctions Stripe en production non vérifiable.
+- Pages admin non retestées dans un navigateur pendant le premier audit.
+- Liste des images des e-mails : réserve connue, non traitée (décision précédente).
+- Scan approfondi non terminé.
+
+## Plan priorisé (sur autorisation)
+1. Intégrer le scan approfondi dès sa fin.
+2. Retirer xlsx ; mettre à jour dompurify, jspdf, recharts, supabase-js, vite-imagetools (risque faible).
+3. CSP et protection anti-iframe.
+4. mcp-js dès version corrigée ; zod v4 dans un lot dédié et testé.
+
+## Statut : inchangé — SÉCURITÉ VALIDÉE AVEC RÉSERVES (révisable selon le scan approfondi).
