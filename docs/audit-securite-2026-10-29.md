@@ -70,3 +70,45 @@ CSP / anti-iframe absents ; dépendances à mettre à jour.
 4. mcp-js dès version corrigée ; zod v4 dans un lot dédié et testé.
 
 ## Statut : inchangé — SÉCURITÉ VALIDÉE AVEC RÉSERVES (révisable selon le scan approfondi).
+
+---
+# Cadrage remédiation — 29/10/2026 23:25 Paris (préparation, aucune modification)
+
+## 1. Scan approfondi (relancé une fois, terminé) — 15 alertes
+Vérifiées pendant ce cadrage :
+- « Réservation confirmée sans payer » (erreur) : NON EXPLOITABLE. La règle d'insertion est trop large, mais ni les visiteurs ni les comptes connectés n'ont le droit d'insérer (privilège INSERT absent, vérifié). Recommandation : supprimer la règle inutile (nettoyage, faible).
+- « Assistant payant utilisable par tous » (erreur) : assistant public voulu, déjà limité par IP côté serveur. Risque réel : coût IA si abus malgré les limites. Recommandation : revoir les seuils, moyen.
+Non encore vérifiées une à une (avertissements) :
+- Formules dans 5 exports CSV admin (crédits ×2, réservations, CRM, segments) : un nom commençant par « = » peut s'exécuter à l'ouverture dans Excel. Priorité haute, correction simple.
+- Abonnements alertes météo et dernière minute (5 alertes) : on peut modifier les préférences d'un autre abonné en connaissant son e-mail. Priorité moyenne.
+- Assistants (2) : l'historique envoyé peut contenir de faux messages « assistant ». Faible.
+- E-mail client écrit dans un journal d'erreur de la reprise Stripe. Faible ; Stripe hors périmètre.
+Statut révisé : SÉCURITÉ VALIDÉE AVEC RÉSERVES — corrections recommandées (aucune critique exploitable confirmée).
+
+## 2. Lot 1 — détail
+| Outil | Actuel | Cible | Alertes corrigées | Risque |
+|---|---|---|---|---|
+| xlsx | 0.18.5 | retrait (importé nulle part) | 2 hautes | nul |
+| dompurify | 3.3.1 | 3.4.17 (même version majeure) | 1 haute | faible |
+| jspdf | 4.2.1 | 4.2.1 = dernière ; corrigé par dompurify à jour | 1 haute | faible |
+| recharts | 2.15.4 | 2.15.4 = dernière v2 ; lodash à forcer ≥4.17.24 | 1 haute | faible ; v3 = refonte, exclue |
+| @supabase/supabase-js | 2.89.0 | 2.118.0 (même version majeure) | 1 haute (ws) | faible-moyen |
+| vite-imagetools | 9.0.2 | 12.0.1 (majeure, outil de construction) | 4 hautes (sharp, picomatch) | moyen : à valider sur la construction |
+Tests : construction, article de blog, export PDF, graphiques, connexion, réservation (sans payer), tests existants. Retour arrière : version précédente du projet.
+
+## 3. Hébergement
+- IONOS gère uniquement le domaine (DNS ui-dns). Le site est servi par l'hébergement Lovable (185.158.133.1, Cloudflare, identifiant de déploiement).
+- La documentation Lovable indique que `_headers` n'est pas utilisé ; aucun réglage d'en-têtes personnalisés n'est documenté.
+- En ligne aujourd'hui : HSTS, nosniff, Referrer-Policy. Absents : CSP, X-Frame-Options, Permissions-Policy.
+- Options : A) en-têtes par l'hébergement Lovable — non disponible à ce jour selon la doc ; B) proxy devant le site (ex. Cloudflare propre via DNS IONOS) — vrais en-têtes dont frame-ancestors, mais changement d'architecture et risque sur le certificat/domaine ; C) CSP en balise meta — protège les scripts, mais ne permet PAS frame-ancestors ni X-Frame-Options ; un garde-fou JavaScript anti-iframe n'est pas équivalent.
+
+## 4. Fichier public/_headers (non modifié)
+Déclare : X-Frame-Options DENY, CSP, Permissions-Policy, X-XSS-Protection, HSTS preload, cache. Appliqué : aucun de ses réglages propres (les en-têtes présents viennent de l'hébergeur). Sa CSP casserait le site si appliquée : manquent connect.facebook.net, www.facebook.com, googleads.g.doubleclick.net, ad.doubleclick.net, maps.googleapis.com, maps.gstatic.com, www.windguru.net. Risque : fausse impression de sécurité.
+
+Domaines réellement chargés (site public, cookies acceptés) : googletagmanager.com, google.com, googleads.g.doubleclick.net, ad.doubleclick.net, connect.facebook.net, facebook.com, fonts.googleapis.com, fonts.gstatic.com, maps.googleapis.com, maps.gstatic.com, windguru.cz, windguru.net, votre base (supabase.co). Admin non parcouru.
+
+## 5. Lot 3 — formulaires (ordre proposé)
+1. Tableau de conversion (admin, filtres simples). 2. Newsletter (e-mail ≤255). 3. Alertes météo (e-mail ≤255). 4. Commentaires (3–1000 car.). 5. Avis (nom 2–50, e-mail ≤100, activité, note 1–5, avis 10–500). 6. Connexion (e-mail, mot de passe 6–128, nom 2–50).
+Pour chacun : saisie valide acceptée, chaque limite refusée avec le même message français, anti-robots (piège + délai) intact.
+
+## 6. Lot 4 : reporté, analyse conservée.
