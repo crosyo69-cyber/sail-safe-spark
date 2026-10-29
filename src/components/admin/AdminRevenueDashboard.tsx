@@ -99,6 +99,7 @@ const AdminRevenueDashboard = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [groups, setGroups] = useState<SessionInfo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [ledgerUnavailable, setLedgerUnavailable] = useState(false);
   const [period, setPeriod] = useState<Period>("month");
   const [activityFilter, setActivityFilter] = useState<string>("all");
 
@@ -110,6 +111,7 @@ const AdminRevenueDashboard = () => {
       paymentAccountingService.ledger().then(settle),
     ]);
 
+    setLedgerUnavailable(!!paymentResult.error);
     if (resResult.data) {
       const legacy = resResult.data.filter(r => !paymentResult.data?.some(p => p.stripe_session_id === r.stripe_session_id))
         .map(r => ({ ...r, ...paymentAmounts() }));
@@ -472,13 +474,18 @@ const AdminRevenueDashboard = () => {
         </div>
       </div>
 
+      {ledgerUnavailable && (
+        <Card className="p-4 border-destructive/40 text-sm text-foreground" role="status">
+          Journal des paiements non activé : les montants encaissés sont « À vérifier », jamais 0 €.
+        </Card>
+      )}
       {/* Stats cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { icon: Euro, label: "Encaissé vérifié", value: `${totalRevenue.toLocaleString("fr-FR")} €`, trend: calcTrend(totalRevenue, prevRevenue) },
-          { icon: TrendingUp, label: "Transactions", value: `${totalTransactions}`, trend: calcTrend(totalTransactions, prevTransactions) },
+          { icon: Euro, label: "Encaissé vérifié", value: ledgerUnavailable ? "À vérifier" : `${totalRevenue.toLocaleString("fr-FR")} €`, trend: ledgerUnavailable ? 0 : calcTrend(totalRevenue, prevRevenue) },
+          { icon: TrendingUp, label: "Transactions", value: ledgerUnavailable ? "À vérifier" : `${totalTransactions}`, trend: ledgerUnavailable ? 0 : calcTrend(totalTransactions, prevTransactions) },
           { icon: Users, label: "Participants", value: `${totalParticipants}`, trend: calcTrend(totalParticipants, prevParticipants) },
-          { icon: CalendarDays, label: "Panier moyen", value: `${avgPerTransaction} €`, trend: calcTrend(avgPerTransaction, prevAvg) },
+          { icon: CalendarDays, label: "Panier moyen", value: ledgerUnavailable ? "À vérifier" : `${avgPerTransaction} €`, trend: ledgerUnavailable ? 0 : calcTrend(avgPerTransaction, prevAvg) },
         ].map((stat, i) => {
           const TrendIcon = stat.trend > 0 ? TrendingUp : stat.trend < 0 ? TrendingDown : Minus;
           const trendColor = stat.trend > 0 ? "text-green-600" : stat.trend < 0 ? "text-destructive" : "text-muted-foreground";
