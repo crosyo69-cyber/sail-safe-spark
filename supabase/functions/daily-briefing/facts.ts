@@ -61,11 +61,14 @@ export const AI_INSTRUCTIONS = [
 export function aiTextIsSafe(text: string, f: Facts): boolean {
   const t = text.toLowerCase();
   const res = f.pendant_la_periode.reservations;
-  if (res !== UNAVAILABLE && res.nouvelles === 0) {
-    if (!/\b0 (nouvelle )?r[ée]servation/.test(t) && !/aucune (nouvelle )?r[ée]servation/.test(t)) return false;
-    if (/nouvelles? r[ée]servations?(?! *: *0)/.test(t.replace(/\b0 nouvelles? r[ée]servations?/g, "").replace(/aucune nouvelles? r[ée]servations?/g, ""))) return false;
+  const positiveCount = /\b[1-9]\d* (nouvelles? )?r[ée]servations?/.test(t);
+  if (res === UNAVAILABLE) return !positiveCount;
+  if (res.nouvelles === 0) {
+    const saysZero = /\b0 (nouvelles? )?r[ée]servations?|aucune (nouvelle )?r[ée]servation/.test(t);
+    const stripped = t.replace(/\b0 (nouvelles? )?r[ée]servations?|aucune (nouvelle )?r[ée]servation/g, "");
+    const mentionsNew = /nouvelles? r[ée]servations?/.test(stripped);
+    return saysZero && !positiveCount && !mentionsNew;
   }
-  if (res === UNAVAILABLE && /\b\d+ (nouvelles? )?r[ée]servations?/.test(t)) return false;
   return true;
 }
 
